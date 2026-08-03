@@ -1,0 +1,38 @@
+{
+  "by_environment": {
+    "Ant-v4": {
+      "aggregate_env_fps": 199.8913667922442,
+      "aggregate_updates_per_s": 199.8913667922442,
+      "cost_per_mstep_cny": 2.056672670302949,
+      "env_id": "Ant-v4",
+      "processes": 4,
+      "vector_envs_per_process": 1
+    },
+    "SafetyPointGoal1-v0": {
+      "aggregate_env_fps": 178.2345183236862,
+      "aggregate_updates_per_s": 178.2345183236862,
+      "cost_per_mstep_cny": 2.3065740294172703,
+      "env_id": "SafetyPointGoal1-v0",
+      "processes": 4,
+      "vector_envs_per_process": 1
+    }
+  },
+  "generated_at_utc": "2026-08-03T15:55:51.754661+00:00",
+  "mujoco": {
+    "aggregate_env_fps": 199.8913667922442,
+    "aggregate_updates_per_s": 199.8913667922442,
+    "cost_per_mstep_cny": 2.056672670302949,
+    "env_id": "Ant-v4",
+    "processes": 4,
+    "vector_envs_per_process": 1
+  },
+  "point": {
+    "aggregate_env_fps": 178.2345183236862,
+    "aggregate_updates_per_s": 178.2345183236862,
+    "cost_per_mstep_cny": 2.3065740294172703,
+    "env_id": "SafetyPointGoal1-v0",
+    "processes": 4,
+    "vector_envs_per_process": 1
+  },
+  "selection_rule": "maximum valid aggregate end-to-end FPS at UTD=1"
+}

@@ -127,7 +127,11 @@ class OffPolicyAdapter(OnlineAdapter):
         """
         for _ in range(rollout_step):
             if use_rand_action:
-                act = (torch.rand(self.action_space.shape) * 2 - 1).unsqueeze(0).to(self._device)  # type: ignore
+                act = torch.empty(
+                    (self._env.num_envs, *self.action_space.shape),
+                    dtype=torch.float32,
+                    device=self._device,
+                ).uniform_(-1.0, 1.0)
             else:
                 act = agent.step(self._current_obs, deterministic=False)
             next_obs, reward, cost, terminated, truncated, info = self.step(act)
