@@ -233,13 +233,49 @@ SafetyPointGoal1-v0:
   # lagrangian configurations
   lagrange_cfgs:
     # Tolerance of constraint violation
-    cost_limit: 25.0
+    cost_limit: 10.0
     # Initial value of lagrangian multiplier
     lagrangian_multiplier_init: 0.000
     # Learning rate of lagrangian multiplier
     lambda_lr: 0.0000005
     # Type of lagrangian optimizer
     lambda_optimizer: "Adam"
+
+SafetyPointButton1-v0:
+  # algorithm configurations
+  algo_cfgs:
+    # The value of alpha
+    alpha: 0.00001
+    # preserve the native sparse cost scale
+    cost_normalize: False
+  # model configurations
+  model_cfgs:
+    actor:
+      lr: 0.000005
+    critic:
+      lr: 0.001
+  # episode cumulative-cost budget used by STAR
+  lagrange_cfgs:
+    cost_limit: 10.0
+    lagrangian_multiplier_init: 0.000
+    lambda_lr: 0.0000005
+    lambda_optimizer: "Adam"
+
+Ant-v4:
+  algo_cfgs:
+    # a terminal failure is already on an interpretable binary scale
+    cost_normalize: False
+  lagrange_cfgs:
+    # formal failure budget used by STAR; raw failure rate is still reported
+    cost_limit: 0.0
+
+Walker2d-v4:
+  algo_cfgs:
+    # a terminal failure is already on an interpretable binary scale
+    cost_normalize: False
+  lagrange_cfgs:
+    # formal failure budget used by STAR; raw failure rate is still reported
+    cost_limit: 0.0
 
 SafeMetaDrive:
   # training configurations

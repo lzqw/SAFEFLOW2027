@@ -97,6 +97,8 @@ class VectorOffPolicyBuffer(OffPolicyBuffer):
             'reward': torch.zeros((size, num_envs), dtype=torch.float32, device=device),
             'cost': torch.zeros((size, num_envs), dtype=torch.float32, device=device),
             'done': torch.zeros((size, num_envs), dtype=torch.float32, device=device),
+            'terminated': torch.zeros((size, num_envs), dtype=torch.float32, device=device),
+            'truncated': torch.zeros((size, num_envs), dtype=torch.float32, device=device),
             'next_obs': next_obs_buf,
         }
 

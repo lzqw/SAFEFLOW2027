@@ -150,7 +150,9 @@ class OffPolicyAdapter(OnlineAdapter):
                 act=act,
                 reward=reward,
                 cost=cost,
-                done=torch.logical_and(terminated, torch.logical_xor(terminated, truncated)),
+                done=terminated,
+                terminated=terminated,
+                truncated=truncated,
                 next_obs=real_next_obs,
             )
 

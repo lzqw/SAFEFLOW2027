@@ -186,6 +186,8 @@ class Evaluator:  # pylint: disable=too-many-instance-attributes
                 device=torch.device('cpu'),
                 times=self._cfgs['algo_cfgs']['action_repeat'],
             )
+        # Evaluation uses a deterministic seed stream that is disjoint from training.
+        self._env.set_seed(int(self._cfgs.seed) + 10_000)
         if hasattr(self._cfgs, 'algo') and self._cfgs['algo'] in [
             'LOOP',
             'SafeLOOP',

@@ -250,5 +250,6 @@ ban-relative-imports = "all"
 filterwarnings = [
     "error",
     "ignore: distutils Version classes are deprecated. Use packaging.version instead.",
-    "ignore::DeprecationWarning"
+    "ignore::DeprecationWarning",
+    "ignore:pkg_resources is deprecated as an API.*:UserWarning",
 ]

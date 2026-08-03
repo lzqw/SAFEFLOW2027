@@ -40,9 +40,7 @@ class MujocoEnv(CMDP):
     need_time_limit_wrapper = False
     need_action_repeat_wrapper = True
     _support_envs: ClassVar[list[str]] = [
-        'Ant-v4',
         'Hopper-v4',
-        'Walker2d-v4',
         'Humanoid-v4',
         'Swimmer-v4',
         'HalfCheetah-v4',
