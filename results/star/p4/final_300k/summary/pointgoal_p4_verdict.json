@@ -1,0 +1,53 @@
+{
+  "criteria_by_seed": {
+    "2027": {
+      "actor_critic_duals_nondegenerate": true,
+      "boundary_not_mainly_random_or_violating": true,
+      "completed_without_crash": true,
+      "dangerous_normal_velocity_reduced": false,
+      "evaluation_cost_or_tail_improved": true,
+      "final_warmup_evidence_passed": true,
+      "near_boundary_gate_dominates": true,
+      "normal_variance_reduced": true,
+      "predicted_empirical_risk_positive": true,
+      "return_improved_without_collapse": true,
+      "tangent_variance_preserved": true
+    },
+    "2028": {
+      "actor_critic_duals_nondegenerate": true,
+      "boundary_not_mainly_random_or_violating": true,
+      "completed_without_crash": true,
+      "dangerous_normal_velocity_reduced": false,
+      "evaluation_cost_or_tail_improved": true,
+      "final_warmup_evidence_passed": false,
+      "near_boundary_gate_dominates": true,
+      "normal_variance_reduced": true,
+      "predicted_empirical_risk_positive": true,
+      "return_improved_without_collapse": true,
+      "tangent_variance_preserved": true
+    },
+    "2029": {
+      "actor_critic_duals_nondegenerate": true,
+      "boundary_not_mainly_random_or_violating": true,
+      "completed_without_crash": true,
+      "dangerous_normal_velocity_reduced": true,
+      "evaluation_cost_or_tail_improved": true,
+      "final_warmup_evidence_passed": true,
+      "near_boundary_gate_dominates": true,
+      "normal_variance_reduced": true,
+      "predicted_empirical_risk_positive": true,
+      "return_improved_without_collapse": true,
+      "tangent_variance_preserved": true
+    }
+  },
+  "observed_seed_count": 3,
+  "required_seed_count": 3,
+  "seed_pass": {
+    "2027": false,
+    "2028": false,
+    "2029": true
+  },
+  "status": "failed",
+  "total_estimated_cost_cny": 25.547770037138626,
+  "total_training_seconds": 62120.15082255006
+}
