@@ -92,7 +92,8 @@ def test_checkpoint_evaluation_serializes_degenerate_spearman_as_null() -> None:
         'predicted_risk_mean': 0.1,
         'empirical_risk_mean': 0.0,
     }
-    row = public_row(payload, Path('milestone_50000.pt'), evaluation)
+    row = public_row(payload, Path('milestone_50000.pt'), evaluation, 'cuda:0')
+    assert row['evaluation_device'] == 'cuda:0'
     assert row['spearman'] is None
     assert json_safe({'spearman': float('nan')}) == {'spearman': None}
 

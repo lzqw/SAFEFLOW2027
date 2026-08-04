@@ -129,12 +129,14 @@ def public_row(
     payload: dict[str, Any],
     checkpoint: Path,
     evaluation: dict[str, Any],
+    device: str,
 ) -> dict[str, Any]:
     """Return one compact public CSV row from a raw evaluation result."""
     row = {
         'training_seed': int(payload['extra']['seed']),
         'milestone': int(payload['counters']['env_steps']),
         'checkpoint': str(checkpoint),
+        'evaluation_device': device,
         'spearman_method': 'average-rank tie-correct',
     }
     row.update(
@@ -178,13 +180,14 @@ def evaluate_checkpoint(  # pylint: disable=too-many-locals
         'training_seed': seed,
         'environment': 'SafetyPointGoal1-v0',
         'checkpoint': str(checkpoint),
+        'evaluation_device': device,
         'spearman_method': 'average-rank tie-correct',
         **evaluation,
     }
     atomic_json(output_dir / f'evaluation_seed_{seed}_step_{step}.json', result)
     if trajectory:
         atomic_csv(output_dir / f'trajectory_seed_{seed}_step_{step}.csv', trajectory)
-    return public_row(payload, checkpoint, evaluation)
+    return public_row(payload, checkpoint, evaluation, device)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -193,7 +196,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--checkpoints', nargs='+', type=Path, required=True)
     result.add_argument('--output-dir', type=Path, required=True)
     result.add_argument('--work-dir', type=Path, required=True)
-    result.add_argument('--device', default='cpu')
+    result.add_argument('--device', default='cuda:0')
     result.add_argument('--eval-seeds', default='12027,12028,12029,12030,12031')
     return result
 
