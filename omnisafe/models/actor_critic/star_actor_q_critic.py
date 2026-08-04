@@ -28,6 +28,7 @@ from omnisafe.utils.model import build_mlp_network
 
 
 @torch.no_grad()
+# pylint: disable-next=too-many-arguments
 def flac_reward_target(
     reward: torch.Tensor,
     done: torch.Tensor,
@@ -76,7 +77,7 @@ class TwinRewardCritic(nn.Module):
         return first, second
 
 
-class STARActorQCritic(nn.Module):
+class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attributes
     """Route-A STAR model container with explicit optimizers and target networks."""
 
     def __init__(  # pylint: disable=too-many-arguments,too-many-locals
@@ -124,6 +125,19 @@ class STARActorQCritic(nn.Module):
             lr=reward_critic_lr,
         )
         self.cost_critic_optimizer = optim.Adam(self.cost_critic.parameters(), lr=cost_critic_lr)
+
+    def forward(
+        self,
+        augmented_obs: torch.Tensor,
+        deterministic: bool = False,
+        base_action: torch.Tensor | None = None,
+    ) -> FlowOutput:
+        """Expose the actor flow through the standard module interface."""
+        return self.flow(
+            augmented_obs,
+            deterministic=deterministic,
+            base_action=base_action,
+        )
 
     def flow(
         self,

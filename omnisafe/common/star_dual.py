@@ -47,6 +47,10 @@ class EnergyDual(nn.Module):
         """Return the positive energy multiplier."""
         return self.log_multiplier.exp()
 
+    def forward(self) -> torch.Tensor:
+        """Return the current positive multiplier through the module interface."""
+        return self.value
+
     def update(self, path_energy: torch.Tensor, target_energy: float) -> torch.Tensor:
         """Increase the multiplier above target and decrease it below target."""
         loss = self.log_multiplier * (target_energy - path_energy.detach())
@@ -61,7 +65,7 @@ class EnergyDual(nn.Module):
 class GlobalSafetyDual:
     """Projected CMDP multiplier updated only from completed true episode costs."""
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         initial_value: float,
         learning_rate: float,

@@ -102,7 +102,7 @@ class FlowActor(nn.Module):
             return torch.zeros(batch_shape, device=obs.device, dtype=obs.dtype)
         return torch.empty(batch_shape, device=obs.device, dtype=obs.dtype).uniform_(-1.0, 1.0)
 
-    def forward(
+    def forward(  # pylint: disable=too-many-locals
         self,
         obs: torch.Tensor,
         deterministic: bool = False,

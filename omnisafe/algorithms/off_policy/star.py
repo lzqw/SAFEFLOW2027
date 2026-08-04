@@ -89,6 +89,11 @@ LOG_KEYS = (
     'Critic/PredictedRisk',
     'Critic/EmpiricalRisk',
     'Critic/LabeledRatio',
+    'Critic/RiskP10',
+    'Critic/RiskP50',
+    'Critic/RiskP90',
+    'Critic/RiskUCBMean',
+    'Critic/RiskUCBBoundaryRate',
     'Geometry/GateActivation',
     'Geometry/CandidateGateActivation',
     'Geometry/ValidGradientRate',
@@ -136,8 +141,22 @@ def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
     """Write a small JSON artifact atomically."""
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
-    temporary.write_text(f'{json.dumps(payload, indent=2, sort_keys=True)}\n', encoding='utf-8')
+    temporary.write_text(
+        f'{json.dumps(_json_safe(payload), indent=2, sort_keys=True, allow_nan=False)}\n',
+        encoding='utf-8',
+    )
     os.replace(temporary, path)
+
+
+def _json_safe(value: Any) -> Any:
+    """Replace undefined floating diagnostics with JSON ``null`` recursively."""
+    if isinstance(value, dict):
+        return {key: _json_safe(child) for key, child in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(child) for child in value]
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    return value
 
 
 def _append_csv(path: Path, row: dict[str, Any]) -> None:
@@ -188,6 +207,7 @@ class STAR(BaseAlgo):
     _next_log_step: int
     _last_log_step: int
     _last_log_time: float
+    _run_env_steps: int
 
     def _init_env(self) -> None:
         """Create isolated STAR train/evaluation adapters."""
@@ -277,6 +297,7 @@ class STAR(BaseAlgo):
         self._latest_values: dict[str, float] = {}
         self._last_update_order: tuple[str, ...] = ()
         self._training_seconds = 0.0
+        self._run_env_steps = 0
         total_steps = int(self._cfgs.train_cfgs.total_steps)
         configured_milestones = [int(step) for step in algo.eval_milestones]
         self._milestones = sorted({0, total_steps, *configured_milestones})
@@ -339,6 +360,11 @@ class STAR(BaseAlgo):
     def training_seconds(self) -> float:
         """Return measured end-to-end training wall time."""
         return self._training_seconds
+
+    @property
+    def run_env_steps(self) -> int:
+        """Return transitions collected by this process segment, excluding restored history."""
+        return self._run_env_steps
 
     @property
     def last_update_order(self) -> tuple[str, ...]:
@@ -428,9 +454,14 @@ class STAR(BaseAlgo):
                 (episode.episode_return, episode.episode_cost, episode.episode_length),
             )
             self._pending_episode_costs.append(episode.episode_cost)
-            self._accumulate('Metrics/EpRet', episode.episode_return)
-            self._accumulate('Metrics/EpCost', episode.episode_cost)
-            self._accumulate('Metrics/EpLen', episode.episode_length)
+            episode_metrics = {
+                'Metrics/EpRet': episode.episode_return,
+                'Metrics/EpCost': episode.episode_cost,
+                'Metrics/EpLen': float(episode.episode_length),
+            }
+            self._latest_values.update(episode_metrics)
+            for key, value in episode_metrics.items():
+                self._accumulate(key, value)
 
         with torch.no_grad():
             self._obs_normalizer.normalize(self._env.current_obs)
@@ -500,7 +531,8 @@ class STAR(BaseAlgo):
             risk_heads = torch.sigmoid(
                 (prediction - threshold) / float(self._cfgs.algo_cfgs.risk_temperature),
             ).mean(dim=-1)
-            ucb = risk_heads.mean(dim=0) + float(self._cfgs.algo_cfgs.risk_ucb_beta) * (
+            mean_risk = risk_heads.mean(dim=0)
+            ucb = mean_risk + float(self._cfgs.algo_cfgs.risk_ucb_beta) * (
                 risk_heads.std(dim=0, unbiased=False)
             )
             near_boundary = torch.logical_and(
@@ -518,6 +550,11 @@ class STAR(BaseAlgo):
             'Critic/PredictedRisk': calibration['predicted_risk'],
             'Critic/EmpiricalRisk': calibration['empirical_risk'],
             'Critic/LabeledRatio': calibration['labeled_ratio'],
+            'Critic/RiskP10': float(torch.quantile(mean_risk, 0.1).item()),
+            'Critic/RiskP50': float(torch.quantile(mean_risk, 0.5).item()),
+            'Critic/RiskP90': float(torch.quantile(mean_risk, 0.9).item()),
+            'Critic/RiskUCBMean': float(ucb.mean().item()),
+            'Critic/RiskUCBBoundaryRate': float(near_boundary.float().mean().item()),
         }
         return metrics, prediction.detach()
 
@@ -1148,6 +1185,7 @@ class STAR(BaseAlgo):
         """Run STAR collection, ordered UTD-one updates, milestones, and atomic recovery."""
         self._logger.log('INFO: Start STAR route-A training')
         started = time.monotonic()
+        starting_env_steps = self._env_steps
         if 0 in self._milestones and 0 not in self._completed_milestones:
             self._evaluate_milestone(0)
         total_steps = int(self._cfgs.train_cfgs.total_steps)
@@ -1174,16 +1212,18 @@ class STAR(BaseAlgo):
                 )
         finally:
             self._training_seconds = time.monotonic() - started
+            self._run_env_steps = self._env_steps - starting_env_steps
             summary = {
                 'status': 'completed' if self._env_steps >= total_steps else 'interrupted',
                 'environment': self._env_id,
                 'seed': self._seed,
                 'env_steps': self._env_steps,
+                'run_env_steps': self._run_env_steps,
                 'updates': self._update_count,
                 'warmup_stage': self._warmup.stage,
                 'geometry_activation_step': self._warmup.geometry_activation_step,
                 'training_seconds': self._training_seconds,
-                'end_to_end_fps': self._env_steps / max(self._training_seconds, 1e-9),
+                'end_to_end_fps': self._run_env_steps / max(self._training_seconds, 1e-9),
                 'replay': self._buf.category_ratios(),
                 'violation_ratio': self._violation_count / max(self._env_steps, 1),
                 'last_update_order': list(self._last_update_order),

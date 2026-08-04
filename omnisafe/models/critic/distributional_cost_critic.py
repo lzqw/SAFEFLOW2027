@@ -62,7 +62,12 @@ class DistributionalCostCritic(nn.Module):
     def forward(self, obs: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
         """Return quantiles with shape ``[ensemble, batch, quantile]``."""
         inputs = torch.cat((obs, action), dim=-1)
-        return torch.stack([functional.softplus(head(inputs)) for head in self.heads], dim=0)
+        return torch.stack(
+            [
+                functional.softplus(head(inputs)) for head in self.heads
+            ],  # pylint: disable=not-callable
+            dim=0,
+        )
 
     def expected_cost(self, obs: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
         """Return each ensemble head's expected future cost."""
@@ -99,6 +104,7 @@ def distributional_bellman_target(
     return cost.unsqueeze(0) + gamma_cost * (1.0 - done.unsqueeze(0)) * next_quantiles
 
 
+# pylint: disable-next=too-many-arguments
 def quantile_huber_loss(
     prediction: torch.Tensor,
     target: torch.Tensor,

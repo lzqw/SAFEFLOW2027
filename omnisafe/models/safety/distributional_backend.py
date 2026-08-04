@@ -25,7 +25,7 @@ from omnisafe.models.critic.distributional_cost_critic import DistributionalCost
 
 
 @dataclass
-class SafetyGeometry:
+class SafetyGeometry:  # pylint: disable=too-many-instance-attributes
     """Differentiable energy plus detached first-order safety diagnostics."""
 
     energy: torch.Tensor
