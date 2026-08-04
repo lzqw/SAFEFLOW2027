@@ -45,6 +45,11 @@ def number(value: Any) -> float:
     return result
 
 
+def optional_number(value: Any) -> float | None:
+    """Convert a present finite value while preserving undefined CSV cells."""
+    return None if value is None or value == '' else number(value)
+
+
 def atomic_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     """Write rows atomically with their stable first-row field order."""
     if not rows:
@@ -96,6 +101,20 @@ def evaluation_rows(run_dirs: list[Path]) -> list[dict[str, Any]]:
     return sorted(rows, key=lambda row: (row['milestone'], row['seed']))
 
 
+def checkpoint_evaluation_rows(path: Path) -> list[dict[str, Any]]:
+    """Read the tie-correct fixed-device checkpoint evaluation table."""
+    rows = []
+    for source in read_csv(path):
+        row: dict[str, Any] = {
+            'seed': int(source['training_seed']),
+            'milestone': int(source['milestone']),
+            'episodes': int(source['episodes']),
+        }
+        row.update({metric: optional_number(source[metric]) for metric in EVALUATION_METRICS})
+        rows.append(row)
+    return sorted(rows, key=lambda row: (row['milestone'], row['seed']))
+
+
 def aggregate_evaluations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Aggregate run-level evaluation metrics by milestone."""
     milestones = sorted({int(row['milestone']) for row in rows})
@@ -104,11 +123,14 @@ def aggregate_evaluations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         selected = [row for row in rows if int(row['milestone']) == milestone]
         output: dict[str, Any] = {'milestone': milestone, 'seed_count': len(selected)}
         for metric in EVALUATION_METRICS:
-            values = [number(row[metric]) for row in selected]
-            output[f'{metric}_mean'] = statistics.fmean(values)
-            output[f'{metric}_std'] = statistics.stdev(values) if len(values) > 1 else 0.0
-            output[f'{metric}_min'] = min(values)
-            output[f'{metric}_max'] = max(values)
+            values = [number(row[metric]) for row in selected if row[metric] is not None]
+            output[f'{metric}_count'] = len(values)
+            output[f'{metric}_mean'] = statistics.fmean(values) if values else None
+            output[f'{metric}_std'] = (
+                statistics.stdev(values) if len(values) > 1 else (0.0 if values else None)
+            )
+            output[f'{metric}_min'] = min(values) if values else None
+            output[f'{metric}_max'] = max(values) if values else None
         aggregate.append(output)
     return aggregate
 
@@ -122,16 +144,19 @@ def mechanism_row(  # pylint: disable=too-many-locals
     run_dir: Path,
     audit: dict[str, Any],
     receipt: dict[str, Any],
+    fixed_evaluations: list[dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], dict[str, bool]]:
     """Collect one seed's mechanism evidence and evaluate its P4 conditions."""
     training = read_json(run_dir / 'artifacts/training_summary.json')
     warmup = read_json(run_dir / 'artifacts/warmup_status.json')
     counterfactual = final_counterfactual(run_dir)
     diagnostics = read_csv(run_dir / 'artifacts/diagnostics.csv')
-    evaluations = sorted(
-        read_csv(run_dir / 'artifacts/evaluation.csv'),
-        key=lambda row: int(row['milestone']),
+    evaluation_source = (
+        fixed_evaluations
+        if fixed_evaluations is not None
+        else read_csv(run_dir / 'artifacts/evaluation.csv')
     )
+    evaluations = sorted(evaluation_source, key=lambda row: int(row['milestone']))
     if not diagnostics or len(evaluations) < 2:
         raise ValueError(f'incomplete P4 artifacts in {run_dir}')
     seed = int(training['seed'])
@@ -145,6 +170,8 @@ def mechanism_row(  # pylint: disable=too-many-locals
     last_w2 = w2_rows[-1]
     initial_evaluation = evaluations[0]
     final_evaluation = evaluations[-1]
+    if int(initial_evaluation['milestone']) != 0 or int(final_evaluation['milestone']) != 300_000:
+        raise ValueError(f'run {seed} is missing the fixed 0/300000 evaluation endpoints')
 
     boundary_gate = number(counterfactual['gate_boundary_mean'])
     interior_gate = number(counterfactual['gate_interior_mean'])
@@ -224,24 +251,33 @@ def mechanism_row(  # pylint: disable=too-many-locals
     return row, criteria
 
 
-def summarize(  # pylint: disable=too-many-locals
+def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     run_dirs: list[Path],
     audit_dirs: list[Path],
     receipts: list[Path],
     output_dir: Path,
     required_seed_count: int = 3,
+    checkpoint_evaluation_csv: Path | None = None,
 ) -> dict[str, Any]:
     """Generate compact P4 CSV/JSON deliverables and return the verdict."""
     if len(run_dirs) != len(audit_dirs) or len(run_dirs) != len(receipts):
         raise ValueError('run, audit, and receipt counts must match')
     output_dir.mkdir(parents=True, exist_ok=True)
-    evaluations = evaluation_rows(run_dirs)
-    atomic_csv(output_dir / 'pointgoal_evaluation_runs.csv', evaluations)
-    atomic_csv(
-        output_dir / 'pointgoal_evaluation_summary.csv',
-        aggregate_evaluations(evaluations),
+    evaluations = (
+        checkpoint_evaluation_rows(checkpoint_evaluation_csv)
+        if checkpoint_evaluation_csv is not None
+        else evaluation_rows(run_dirs)
     )
-
+    evaluation_keys = [(int(row['seed']), int(row['milestone'])) for row in evaluations]
+    if len(evaluation_keys) != len(set(evaluation_keys)):
+        raise ValueError('evaluation table contains duplicate seed/milestone rows')
+    run_seeds = [
+        int(read_json(run_dir / 'artifacts/training_summary.json')['seed']) for run_dir in run_dirs
+    ]
+    if len(run_seeds) != len(set(run_seeds)):
+        raise ValueError('run directories contain duplicate training seeds')
+    if {int(row['seed']) for row in evaluations} != set(run_seeds):
+        raise ValueError('evaluation seeds do not match the run directories')
     audits = {
         int(payload['seed']): payload
         for payload in (read_json(path / 'replay_risk_summary.json') for path in audit_dirs)
@@ -249,11 +285,28 @@ def summarize(  # pylint: disable=too-many-locals
     receipt_payloads = {
         int(payload['seed']): payload for payload in (read_json(path) for path in receipts)
     }
+    if set(audits) != set(run_seeds) or set(receipt_payloads) != set(run_seeds):
+        raise ValueError('audit or receipt seeds do not match the run directories')
+
+    atomic_csv(output_dir / 'pointgoal_evaluation_runs.csv', evaluations)
+    atomic_csv(
+        output_dir / 'pointgoal_evaluation_summary.csv',
+        aggregate_evaluations(evaluations),
+    )
     mechanism_rows: list[dict[str, Any]] = []
     criteria_by_seed: dict[str, dict[str, bool]] = {}
-    for run_dir in run_dirs:
-        seed = int(read_json(run_dir / 'artifacts/training_summary.json')['seed'])
-        row, criteria = mechanism_row(run_dir, audits[seed], receipt_payloads[seed])
+    for run_dir, seed in zip(run_dirs, run_seeds):
+        fixed_evaluations = (
+            [row for row in evaluations if int(row['seed']) == seed]
+            if checkpoint_evaluation_csv is not None
+            else None
+        )
+        row, criteria = mechanism_row(
+            run_dir,
+            audits[seed],
+            receipt_payloads[seed],
+            fixed_evaluations,
+        )
         mechanism_rows.append(row)
         criteria_by_seed[str(seed)] = criteria
     mechanism_rows.sort(key=lambda row: row['seed'])
@@ -282,6 +335,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--receipts', nargs='+', type=Path, required=True)
     result.add_argument('--output-dir', type=Path, required=True)
     result.add_argument('--required-seed-count', type=int, default=3)
+    result.add_argument('--checkpoint-evaluation-csv', type=Path)
     return result
 
 
@@ -294,6 +348,7 @@ def main() -> None:
         args.receipts,
         args.output_dir,
         args.required_seed_count,
+        args.checkpoint_evaluation_csv,
     )
     print(json.dumps(verdict, indent=2, sort_keys=True, allow_nan=False))
 

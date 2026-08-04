@@ -160,9 +160,12 @@ def test_aggregate_evaluations_reports_sample_standard_deviation() -> None:
         {'milestone': 0, **{metric: 1.0 for metric in EVALUATION_METRICS}},
         {'milestone': 0, **{metric: 3.0 for metric in EVALUATION_METRICS}},
     ]
+    rows[1]['spearman'] = None
     summary = aggregate_evaluations(rows)
     assert summary[0]['mean_return_mean'] == 2.0
     assert summary[0]['mean_return_std'] == 2**0.5
+    assert summary[0]['spearman_count'] == 1
+    assert summary[0]['spearman_mean'] == 1.0
 
 
 def test_summarize_requires_every_seed_to_pass(tmp_path: Path) -> None:
@@ -184,3 +187,58 @@ def test_summarize_requires_every_seed_to_pass(tmp_path: Path) -> None:
     assert verdict['status'] == 'failed'
     assert not verdict['seed_pass']['2029']
     assert not verdict['criteria_by_seed']['2029']['dangerous_normal_velocity_reduced']
+
+
+def test_summarize_uses_tie_correct_checkpoint_evaluations(tmp_path: Path) -> None:
+    """Offline fixed-device rows drive both tables and strict endpoint criteria."""
+    fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
+    runs = [item[0] for item in fixtures]
+    audits = [item[1] for item in fixtures]
+    receipts = [item[2] for item in fixtures]
+    for run_dir in runs:
+        online = run_dir / 'artifacts/evaluation.csv'
+        with online.open(encoding='utf-8', newline='') as stream:
+            rows = list(csv.DictReader(stream))
+        rows[-1]['mean_return'] = '-2.0'
+        rows[-1]['mean_cost'] = '30.0'
+        rows[-1]['cost_cvar_20'] = '60.0'
+        write_csv(online, rows)
+
+    checkpoint_rows = []
+    for seed in (2027, 2028, 2029):
+        checkpoint_rows.extend(
+            [
+                {
+                    'training_seed': seed,
+                    'milestone': 0,
+                    'episodes': 5,
+                    **{metric: 1.0 for metric in EVALUATION_METRICS},
+                },
+                {
+                    'training_seed': seed,
+                    'milestone': 300_000,
+                    'episodes': 5,
+                    **{metric: 0.5 for metric in EVALUATION_METRICS},
+                    'mean_return': 2.0,
+                    'spearman': '',
+                },
+            ],
+        )
+    checkpoint_csv = tmp_path / 'checkpoint-evaluations.csv'
+    write_csv(checkpoint_csv, checkpoint_rows)
+    verdict = summarize(
+        runs,
+        audits,
+        receipts,
+        tmp_path / 'offline',
+        checkpoint_evaluation_csv=checkpoint_csv,
+    )
+    assert verdict['status'] == 'passed'
+    assert verdict['criteria_by_seed']['2027']['return_improved_without_collapse']
+    with (tmp_path / 'offline/pointgoal_evaluation_summary.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        summary = list(csv.DictReader(stream))
+    assert summary[-1]['spearman_count'] == '0'
+    assert summary[-1]['spearman_mean'] == ''

@@ -126,13 +126,28 @@ scripts/star/resume_star.sh FINAL_FULL_CHECKPOINT SafetyPointGoal1-v0 300000 RES
 ```
 
 After running `analyze_pointgoal_replay.py` for every final full checkpoint, aggregate the three
-run directories, three audit directories, and three launcher receipts with:
+run directories, three audit directories, and three launcher receipts. First re-evaluate every
+milestone checkpoint on the same CUDA device with the fixed evaluation seeds; this uses
+average-rank tie handling and emits JSON `null`/blank CSV cells when Spearman correlation is
+undefined:
+
+```bash
+python scripts/star/evaluate_pointgoal_checkpoints.py \
+  --checkpoints CHECKPOINTS_FOR_ALL_THREE_SEEDS \
+  --device cuda:0 --eval-seeds 12027,12028,12029,12030,12031 \
+  --output-dir /root/autodl-tmp/SAFE/artifacts/p4/checkpoint-evaluation \
+  --work-dir /root/autodl-tmp/SAFE/runs/analysis/p4-checkpoint-evaluation
+```
+
+Then run the strict aggregator with that corrected fixed-device table:
 
 ```bash
 python scripts/star/summarize_pointgoal_p4.py \
   --run-dirs RUN_2027 RUN_2028 RUN_2029 \
   --audit-dirs AUDIT_2027 AUDIT_2028 AUDIT_2029 \
   --receipts RECEIPT_2027.json RECEIPT_2028.json RECEIPT_2029.json \
+  --checkpoint-evaluation-csv \
+    /root/autodl-tmp/SAFE/artifacts/p4/checkpoint-evaluation/pointgoal_checkpoint_evaluation.csv \
   --output-dir /root/autodl-tmp/SAFE/artifacts/p4/summary
 ```
 
