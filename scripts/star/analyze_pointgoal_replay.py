@@ -22,6 +22,7 @@ import omnisafe
 from omnisafe.common.buffer.star_replay_buffer import BOUNDARY
 from omnisafe.utils.star_validation import (
     calibration_rows,
+    checkpoint_reconstruction_config,
     deterministic_indices,
     spearman,
     threshold_rows,
@@ -63,6 +64,7 @@ def checkpoint_metadata(path: Path) -> dict[str, Any]:
         'seed': int(payload['extra']['seed']),
         'replay_capacity': int(payload['replay']['capacity']),
         'replay_size': int(payload['replay']['size']),
+        'reconstruction_cfgs': checkpoint_reconstruction_config(payload),
     }
 
 
@@ -74,17 +76,19 @@ def build_algorithm(
 ) -> Any:
     """Restore the trained model, normalizer, and compact resident replay."""
     batch_size = max(1, min(256, metadata['replay_capacity'] - 1))
-    custom = {
-        'seed': metadata['seed'],
-        'train_cfgs': {
-            'device': device,
-            'torch_threads': 1,
-            'vector_env_nums': 1,
-            'parallel': 1,
-            'total_steps': metadata['env_steps'],
-            'eval_episodes': 0,
-        },
-        'algo_cfgs': {
+    custom = metadata['reconstruction_cfgs']
+    custom['seed'] = metadata['seed']
+    custom['train_cfgs'] = {
+        'device': device,
+        'torch_threads': 1,
+        'vector_env_nums': 1,
+        'parallel': 1,
+        'total_steps': metadata['env_steps'],
+        'eval_episodes': 0,
+    }
+    algo_cfgs = custom.setdefault('algo_cfgs', {})
+    algo_cfgs.update(
+        {
             'steps_per_epoch': max(1, metadata['env_steps']),
             'size': metadata['replay_capacity'],
             'batch_size': batch_size,
@@ -93,11 +97,11 @@ def build_algorithm(
             'milestone_checkpoints': False,
             'checkpoint_replay': False,
         },
-        'logger_cfgs': {
-            'log_dir': str(work_dir),
-            'use_tensorboard': False,
-            'use_wandb': False,
-        },
+    )
+    custom['logger_cfgs'] = {
+        'log_dir': str(work_dir),
+        'use_tensorboard': False,
+        'use_wandb': False,
     }
     wrapper = omnisafe.Agent('STAR', metadata['environment'], custom_cfgs=custom)
     return wrapper.agent
@@ -264,7 +268,11 @@ def main() -> None:  # pylint: disable=too-many-locals
         resident_boundary = resident.data['category'][:valid] == BOUNDARY
         boundary_count = int(resident_boundary.sum().item())
         summary = {
-            **metadata,
+            'env_steps': metadata['env_steps'],
+            'environment': metadata['environment'],
+            'seed': metadata['seed'],
+            'replay_capacity': metadata['replay_capacity'],
+            'replay_size': metadata['replay_size'],
             'checkpoint': str(args.checkpoint),
             'sample_count': int(indices.numel()),
             'sample_is_full_replay': int(indices.numel()) == metadata['replay_size'],

@@ -22,10 +22,47 @@ import torch
 from omnisafe.utils.star_validation import (
     average_ranks,
     calibration_rows,
+    checkpoint_reconstruction_config,
     deterministic_indices,
     spearman,
     threshold_rows,
 )
+
+
+def test_checkpoint_reconstruction_prefers_saved_config_and_infers_legacy_shapes() -> None:
+    saved = {
+        'extra': {
+            'resolved_config': {
+                'algo_cfgs': {'boundary_low': 0.07},
+                'model_cfgs': {'actor': {'hidden_sizes': [11, 13]}},
+            },
+        },
+    }
+    config = checkpoint_reconstruction_config(saved)
+    assert config['algo_cfgs']['boundary_low'] == pytest.approx(0.07)
+    assert config['model_cfgs']['actor']['hidden_sizes'] == [11, 13]
+
+    legacy = {
+        'model': {
+            'actor.velocity_net.0.weight': torch.zeros(16, 7),
+            'actor.velocity_net.2.weight': torch.zeros(16, 16),
+            'actor.velocity_net.4.weight': torch.zeros(2, 16),
+            'reward_critic.critics.0.0.weight': torch.zeros(32, 8),
+            'reward_critic.critics.0.2.weight': torch.zeros(32, 32),
+            'reward_critic.critics.0.4.weight': torch.zeros(1, 32),
+            'cost_critic.heads.0.0.weight': torch.zeros(32, 9),
+            'cost_critic.heads.0.2.weight': torch.zeros(32, 32),
+            'cost_critic.heads.0.4.weight': torch.zeros(5, 32),
+            'cost_critic.heads.1.0.weight': torch.zeros(32, 9),
+            'cost_critic.heads.1.2.weight': torch.zeros(32, 32),
+            'cost_critic.heads.1.4.weight': torch.zeros(5, 32),
+        },
+    }
+    inferred = checkpoint_reconstruction_config(legacy)
+    assert inferred['model_cfgs']['actor']['hidden_sizes'] == [16, 16]
+    assert inferred['model_cfgs']['critic']['hidden_sizes'] == [32, 32]
+    assert inferred['model_cfgs']['critic']['num_quantiles'] == 5
+    assert inferred['model_cfgs']['critic']['ensemble_size'] == 2
 
 
 def test_tie_correct_ranks_and_spearman() -> None:

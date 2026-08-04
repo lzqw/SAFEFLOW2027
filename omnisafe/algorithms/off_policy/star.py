@@ -1118,6 +1118,7 @@ class STAR(BaseAlgo):
             extra={
                 'environment': self._env_id,
                 'seed': self._seed,
+                'resolved_config': self._cfgs.todict(),
                 'rollout_state': self._env.rollout_state(),
                 'completed_milestones': sorted(self._completed_milestones),
             },

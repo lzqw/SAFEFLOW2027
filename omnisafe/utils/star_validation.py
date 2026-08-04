@@ -16,9 +16,48 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 import torch
+
+
+def checkpoint_reconstruction_config(payload: dict[str, Any]) -> dict[str, Any]:
+    """Return saved STAR construction settings, with a legacy shape-based fallback."""
+    saved = payload.get('extra', {}).get('resolved_config')
+    sections = ('algo_cfgs', 'model_cfgs', 'dual_cfgs', 'lagrange_cfgs')
+    if isinstance(saved, dict):
+        return {key: deepcopy(saved[key]) for key in sections if key in saved}
+
+    state = payload.get('model')
+    if not isinstance(state, dict):
+        raise ValueError('STAR checkpoint has no model state for configuration inference')
+
+    def linear_shapes(prefix: str) -> list[torch.Size]:
+        keys = [key for key in state if key.startswith(prefix) and key.endswith('.weight')]
+        keys.sort(key=lambda key: int(key.rsplit('.', maxsplit=2)[-2]))
+        return [state[key].shape for key in keys]
+
+    actor_shapes = linear_shapes('actor.velocity_net.')
+    reward_shapes = linear_shapes('reward_critic.critics.0.')
+    cost_shapes = linear_shapes('cost_critic.heads.0.')
+    if min(len(actor_shapes), len(reward_shapes), len(cost_shapes)) < 2:
+        raise ValueError('STAR checkpoint network shapes are incomplete')
+    head_indices = {
+        int(key.split('.')[2])
+        for key in state
+        if key.startswith('cost_critic.heads.') and key.endswith('.weight')
+    }
+    return {
+        'model_cfgs': {
+            'actor': {'hidden_sizes': [int(shape[0]) for shape in actor_shapes[:-1]]},
+            'critic': {
+                'hidden_sizes': [int(shape[0]) for shape in reward_shapes[:-1]],
+                'num_quantiles': int(cost_shapes[-1][0]),
+                'ensemble_size': len(head_indices),
+            },
+        },
+    }
 
 
 def deterministic_indices(size: int, maximum: int) -> torch.Tensor:

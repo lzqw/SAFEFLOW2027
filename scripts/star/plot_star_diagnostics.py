@@ -248,7 +248,8 @@ def plot_training(run_dirs: list[Path], output: Path) -> None:  # pylint: disabl
         axes_item.set_xlabel('environment steps')
         axes_item.grid(alpha=0.25)
         axes_item.legend(fontsize=7)
-    axes[3].set_yscale('log')
+    if any(any(value > 0 for value in line.get_ydata()) for line in axes[3].lines):
+        axes[3].set_yscale('log')
     figure.savefig(output, dpi=180)
     plt.close(figure)
 

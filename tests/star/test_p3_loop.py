@@ -21,6 +21,8 @@ import json
 from copy import deepcopy
 from pathlib import Path
 
+import torch
+
 import omnisafe
 from omnisafe.algorithms.off_policy.star import UPDATE_ORDER
 
@@ -125,6 +127,8 @@ def test_star_full_checkpoint_resume_preserves_counters_and_log_interval(tmp_pat
     source.learn()
     checkpoint = Path(source.agent.logger.log_dir) / 'checkpoints/final_full.pt'
     assert checkpoint.is_file()
+    payload = torch.load(checkpoint, map_location='cpu', weights_only=False)
+    assert payload['extra']['resolved_config']['model_cfgs']['actor']['hidden_sizes'] == [16, 16]
 
     resumed_config = deepcopy(source_config)
     resumed_config['train_cfgs']['total_steps'] = 24
