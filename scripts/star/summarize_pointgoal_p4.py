@@ -192,8 +192,9 @@ def mechanism_row(  # pylint: disable=too-many-locals
     audit: dict[str, Any],
     receipts: list[dict[str, Any]],
     fixed_evaluations: list[dict[str, Any]] | None = None,
+    target_steps: int = 300_000,
 ) -> tuple[dict[str, Any], dict[str, bool]]:
-    """Collect one seed's mechanism evidence and evaluate its P4 conditions."""
+    """Collect one seed's mechanism evidence at the requested endpoint."""
     run_dir = run_dirs[-1]
     training_segments = [
         read_json(segment / 'artifacts/training_summary.json') for segment in run_dirs
@@ -221,8 +222,11 @@ def mechanism_row(  # pylint: disable=too-many-locals
     last_w2 = w2_rows[-1]
     initial_evaluation = evaluations[0]
     final_evaluation = evaluations[-1]
-    if int(initial_evaluation['milestone']) != 0 or int(final_evaluation['milestone']) != 300_000:
-        raise ValueError(f'run {seed} is missing the fixed 0/300000 evaluation endpoints')
+    if (
+        int(initial_evaluation['milestone']) != 0
+        or int(final_evaluation['milestone']) != target_steps
+    ):
+        raise ValueError(f'run {seed} is missing the fixed 0/{target_steps} evaluation endpoints')
 
     boundary_gate = number(counterfactual['gate_boundary_mean'])
     interior_gate = number(counterfactual['gate_interior_mean'])
@@ -292,7 +296,7 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'completed_without_crash': all(
             segment['status'] == 'completed' for segment in training_segments
         )
-        and int(training['env_steps']) == 300_000,
+        and int(training['env_steps']) == target_steps,
         'mean_goal_met_positive': row['final_eval_goals_per_episode'] > 0.0,
         'no_stall': row['final_eval_stall_ratio'] <= 1e-12,
         'cost_within_budget': row['final_eval_cost'] <= 10.0,
@@ -315,8 +319,14 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     output_dir: Path,
     required_seed_count: int = 3,
     checkpoint_evaluation_csv: Path | None = None,
+    target_steps: int = 300_000,
+    assessment_scope: str = 'final',
 ) -> dict[str, Any]:
-    """Generate compact P4 CSV/JSON deliverables and return the verdict."""
+    """Generate compact P4 CSV/JSON deliverables and return the scoped assessment."""
+    if target_steps <= 0:
+        raise ValueError('target steps must be positive')
+    if assessment_scope not in {'final', 'minimum-mechanism'}:
+        raise ValueError(f'unsupported assessment scope: {assessment_scope}')
     output_dir.mkdir(parents=True, exist_ok=True)
     run_segments = group_run_segments(run_dirs)
     evaluations = (
@@ -371,19 +381,37 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
             audits[seed],
             receipt_payloads[seed],
             fixed_evaluations,
+            target_steps,
         )
         mechanism_rows.append(row)
         criteria_by_seed[str(seed)] = criteria
     mechanism_rows.sort(key=lambda row: row['seed'])
     atomic_csv(output_dir / 'pointgoal_mechanism_summary.csv', mechanism_rows)
 
-    seed_pass = {seed: all(criteria.values()) for seed, criteria in criteria_by_seed.items()}
-    overall_pass = len(seed_pass) == required_seed_count and all(seed_pass.values())
+    observed_seed_criteria_satisfied = {
+        seed: all(criteria.values()) for seed, criteria in criteria_by_seed.items()
+    }
+    overall_pass = len(observed_seed_criteria_satisfied) == required_seed_count and all(
+        observed_seed_criteria_satisfied.values(),
+    )
+    final_assessment = assessment_scope == 'final'
     verdict = {
-        'status': 'passed' if overall_pass else 'failed',
+        'status': (
+            ('passed' if overall_pass else 'failed')
+            if final_assessment
+            else (
+                'completed'
+                if len(observed_seed_criteria_satisfied) == required_seed_count
+                else 'incomplete'
+            )
+        ),
+        'assessment_scope': assessment_scope,
+        'target_steps': target_steps,
+        'final_p4_verdict': ('passed' if overall_pass else 'failed') if final_assessment else None,
         'required_seed_count': required_seed_count,
-        'observed_seed_count': len(seed_pass),
-        'seed_pass': seed_pass,
+        'observed_seed_count': len(observed_seed_criteria_satisfied),
+        'seed_pass': observed_seed_criteria_satisfied if final_assessment else None,
+        'observed_seed_criteria_satisfied': observed_seed_criteria_satisfied,
         'criteria_by_seed': criteria_by_seed,
         'total_training_seconds': sum(row['training_seconds'] for row in mechanism_rows),
         'total_estimated_cost_cny': sum(row['estimated_cost_cny'] for row in mechanism_rows),
@@ -401,6 +429,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--output-dir', type=Path, required=True)
     result.add_argument('--required-seed-count', type=int, default=3)
     result.add_argument('--checkpoint-evaluation-csv', type=Path)
+    result.add_argument('--target-steps', type=int, default=300_000)
+    result.add_argument(
+        '--assessment-scope',
+        choices=('final', 'minimum-mechanism'),
+        default='final',
+    )
     return result
 
 
@@ -414,6 +448,8 @@ def main() -> None:
         args.output_dir,
         args.required_seed_count,
         args.checkpoint_evaluation_csv,
+        args.target_steps,
+        args.assessment_scope,
     )
     print(json.dumps(verdict, indent=2, sort_keys=True, allow_nan=False))
 

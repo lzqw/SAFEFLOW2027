@@ -268,6 +268,39 @@ def test_summarize_requires_every_seed_to_pass(tmp_path: Path) -> None:
     assert not verdict['criteria_by_seed']['2029']['dangerous_normal_velocity_reduced']
 
 
+def test_minimum_mechanism_scope_never_emits_final_verdict(tmp_path: Path) -> None:
+    """The preregistered 100k check reports evidence without claiming a final result."""
+    fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
+    for run_dir, _, receipt in fixtures:
+        training_path = run_dir / 'artifacts/training_summary.json'
+        training = json.loads(training_path.read_text(encoding='utf-8'))
+        training['env_steps'] = 100_000
+        training['updates'] = 98_000
+        write_json(training_path, training)
+        evaluation_path = run_dir / 'artifacts/evaluation.csv'
+        evaluations = read_csv_fixture(evaluation_path)
+        evaluations[-1]['milestone'] = 100_000
+        write_csv(evaluation_path, evaluations)
+        receipt_payload = json.loads(receipt.read_text(encoding='utf-8'))
+        receipt_payload['steps'] = 100_000
+        write_json(receipt, receipt_payload)
+
+    verdict = summarize(
+        [item[0] for item in fixtures],
+        [item[1] for item in fixtures],
+        [item[2] for item in fixtures],
+        tmp_path / 'minimum-mechanism',
+        target_steps=100_000,
+        assessment_scope='minimum-mechanism',
+    )
+    assert verdict['status'] == 'completed'
+    assert verdict['assessment_scope'] == 'minimum-mechanism'
+    assert verdict['target_steps'] == 100_000
+    assert verdict['final_p4_verdict'] is None
+    assert verdict['seed_pass'] is None
+    assert all(verdict['observed_seed_criteria_satisfied'].values())
+
+
 def test_summarize_uses_tie_correct_checkpoint_evaluations(tmp_path: Path) -> None:
     """Offline fixed-device rows drive both tables and strict endpoint criteria."""
     fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
