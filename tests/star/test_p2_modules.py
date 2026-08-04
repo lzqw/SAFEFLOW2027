@@ -25,6 +25,7 @@ import torch
 from torch import nn, optim
 
 from omnisafe.adapter.star_adapter import STARContext
+from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
 from omnisafe.common.buffer.star_replay_buffer import STARReplayBuffer, updates_for_transitions
 from omnisafe.common.normalizer import Normalizer
 from omnisafe.common.star_checkpoint import load_star_checkpoint, save_star_checkpoint
@@ -298,3 +299,33 @@ def test_checkpoint_restores_model_optimizer_dual_normalizer_rng_and_steps(
     assert actual_random[0] == expected_random[0]
     assert actual_random[1] == expected_random[1]
     assert torch.equal(actual_random[2], expected_random[2])
+
+
+def test_w3_requires_non_temporal_critic_and_geometry_evidence() -> None:
+    warmup = STARWarmup(
+        random_steps=10,
+        terminal_utility_steps=20,
+        geometry_min_steps=30,
+        td_error_threshold=0.5,
+        calibration_threshold=0.2,
+        valid_gradient_threshold=0.5,
+        disagreement_threshold=0.25,
+        boundary_samples_threshold=8,
+        ema_rate=1.0,
+    )
+    assert warmup.advance(5, 0) == 'W0'
+    assert warmup.advance(15, 0) == 'W1'
+    assert warmup.advance(10_000, 1000) == 'W2'
+    conditions = warmup.conditions(10_000, 1000)
+    assert conditions['minimum_steps']
+    assert not conditions['td_error']
+    assert not conditions['calibration']
+
+    warmup.observe(
+        cost_td_error=0.4,
+        calibration_error=0.1,
+        valid_gradient_rate=0.8,
+        ensemble_disagreement=0.1,
+    )
+    assert warmup.advance(10_000, 1000) == 'W3'
+    assert warmup.geometry_activation_step == 10_000

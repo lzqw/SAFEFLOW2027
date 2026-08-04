@@ -242,7 +242,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         normal = batch_size - failures - boundaries
         return [normal, boundaries, failures]
 
-    def sample_batch(
+    def sample_batch(  # pylint: disable=too-many-locals
         self,
         device: torch.device | str = 'cpu',
         batch_size: int | None = None,
@@ -306,6 +306,10 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         """Return resident replay fractions for training diagnostics."""
         denominator = max(self._size, 1)
         return {key: value / denominator for key, value in self.pool_sizes.items()}
+
+    def reset_pending_episodes(self) -> None:
+        """Drop unfinished slot chains when a simulator cannot be restored exactly."""
+        self._episode_slots = [[] for _ in range(self.num_envs)]
 
     def state_dict(self) -> dict[str, Any]:
         """Return a compact replay snapshot suitable for local full checkpoints."""

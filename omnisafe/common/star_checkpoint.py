@@ -40,9 +40,9 @@ def restore_rng_state(state: dict[str, Any]) -> None:
     """Restore every generator captured by :func:`capture_rng_state`."""
     random.setstate(state['python'])
     np.random.set_state(state['numpy'])
-    torch.set_rng_state(state['torch'])
+    torch.set_rng_state(state['torch'].cpu())
     if state.get('cuda') is not None and torch.cuda.is_available():
-        torch.cuda.set_rng_state_all(state['cuda'])
+        torch.cuda.set_rng_state_all([generator_state.cpu() for generator_state in state['cuda']])
 
 
 def save_star_checkpoint(  # pylint: disable=too-many-arguments

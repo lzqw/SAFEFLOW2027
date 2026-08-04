@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 import torch
 
@@ -43,7 +43,7 @@ class CompletedEpisode:
 class STARContext:
     """Maintain remaining budget for Point or remaining horizon for failure tasks."""
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         env_id: str,
         num_envs: int,
@@ -152,7 +152,33 @@ class STARAdapter(OnlineAdapter):  # pylint: disable=too-many-instance-attribute
         """Return current normalized context and raw risk threshold."""
         return self.context.values()
 
-    def collect_step(
+    @property
+    def evaluation_env(self) -> Any:
+        """Return the isolated evaluation environment."""
+        if self._eval_env is None:
+            raise RuntimeError('STAR requires an isolated evaluation environment')
+        return self._eval_env
+
+    def evaluation_position(self) -> tuple[float, float] | None:
+        """Read Point robot XY without changing either environment state."""
+        current = cast(Any, self.evaluation_env)
+        while current.__class__.__module__.startswith('omnisafe.envs.wrapper'):
+            current = current._env  # pylint: disable=protected-access
+        native = getattr(current, '_env', None)
+        if native is None:
+            return None
+        base = cast(Any, native.unwrapped)
+        task = getattr(base, 'task', None)
+        agent = getattr(task, 'agent', None)
+        position = getattr(agent, 'pos', None)
+        if position is None:
+            return None
+        values = torch.as_tensor(position).flatten()
+        if values.numel() < 2:
+            return None
+        return float(values[0].item()), float(values[1].item())
+
+    def collect_step(  # pylint: disable=too-many-locals
         self,
         action: torch.Tensor,
     ) -> tuple[dict[str, torch.Tensor], list[CompletedEpisode]]:
