@@ -18,7 +18,7 @@ import torch
 from matplotlib.patches import Circle
 
 import omnisafe
-from omnisafe.utils.star_validation import checkpoint_reconstruction_config
+from omnisafe.utils.star_validation import checkpoint_reconstruction_config, deterministic_indices
 
 
 plt.switch_backend('Agg')
@@ -89,15 +89,16 @@ def build_algorithm(
 
 
 def representative_state(algorithm: Any, sample_size: int) -> dict[str, torch.Tensor]:
-    """Select the sampled replay state whose deterministic action is nearest risk 0.5."""
-    requested = min(sample_size, algorithm._buf.size)  # pylint: disable=protected-access
-    batch = algorithm._buf.sample_batch(  # pylint: disable=protected-access
-        algorithm._device,  # pylint: disable=protected-access
-        batch_size=requested,
-    )
+    """Select a deterministic temporal replay midpoint without consulting predicted risk."""
+    resident = algorithm._buf  # pylint: disable=protected-access
+    indices = deterministic_indices(resident.size, sample_size)
+    index = int(indices[indices.numel() // 2].item())
+    device = algorithm._device  # pylint: disable=protected-access
+    raw_obs = resident.data['obs'][index : index + 1].to(device)
+    context = resident.data['context'][index : index + 1].to(device)
     augmented = algorithm._augment(  # pylint: disable=protected-access
-        batch['obs'],
-        batch['context'],
+        raw_obs,
+        context,
     )
     with torch.no_grad():
         action = algorithm._actor_critic.step(  # pylint: disable=protected-access
@@ -109,14 +110,14 @@ def representative_state(algorithm: Any, sample_size: int) -> dict[str, torch.Te
             raise RuntimeError('P4.1 probability critic is unavailable')
         risk_heads = critic.probabilities(augmented, action)
         risk = risk_heads.mean(dim=0)
-    index = int((risk - 0.5).abs().argmin().item())
     return {
-        'raw_obs': batch['obs'][index : index + 1],
-        'augmented': augmented[index : index + 1],
-        'context': batch['context'][index : index + 1],
-        'deterministic_action': action[index : index + 1],
-        'risk': risk[index : index + 1],
-        'risk_heads': risk_heads[:, index : index + 1],
+        'raw_obs': raw_obs,
+        'augmented': augmented,
+        'context': context,
+        'deterministic_action': action,
+        'risk': risk,
+        'risk_heads': risk_heads,
+        'replay_index': torch.tensor(index),
     }
 
 
@@ -653,6 +654,10 @@ def main() -> None:  # pylint: disable=too-many-locals
                 'seed': metadata['seed'],
                 'replay_capacity': metadata['replay_capacity'],
                 'checkpoint': str(args.checkpoint),
+                'representative_selection': (
+                    'deterministic_time_stratified_midpoint_independent_of_predicted_risk'
+                ),
+                'representative_replay_index': int(state['replay_index'].item()),
                 'representative_context': state['context'].flatten().cpu().tolist(),
                 'representative_predicted_risk': float(state['risk'].item()),
                 'representative_head_risks': state['risk_heads'].flatten().detach().cpu().tolist(),
