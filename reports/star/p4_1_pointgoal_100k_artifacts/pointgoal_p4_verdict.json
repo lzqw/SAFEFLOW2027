@@ -1,0 +1,51 @@
+{
+  "assessment_scope": "minimum-mechanism",
+  "criteria_by_seed": {
+    "2027": {
+      "completed_without_crash": true,
+      "cost_within_budget": true,
+      "dangerous_normal_velocity_reduced": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": true,
+      "no_stall": false,
+      "positive_brier_skill": true,
+      "probability_auroc_above_065": true,
+      "tangent_variance_preserved": true
+    },
+    "2028": {
+      "completed_without_crash": true,
+      "cost_within_budget": false,
+      "dangerous_normal_velocity_reduced": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": false,
+      "no_stall": false,
+      "positive_brier_skill": true,
+      "probability_auroc_above_065": true,
+      "tangent_variance_preserved": true
+    },
+    "2029": {
+      "completed_without_crash": true,
+      "cost_within_budget": true,
+      "dangerous_normal_velocity_reduced": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": false,
+      "no_stall": false,
+      "positive_brier_skill": true,
+      "probability_auroc_above_065": true,
+      "tangent_variance_preserved": true
+    }
+  },
+  "final_p4_verdict": null,
+  "observed_seed_count": 3,
+  "observed_seed_criteria_satisfied": {
+    "2027": false,
+    "2028": false,
+    "2029": false
+  },
+  "required_seed_count": 3,
+  "seed_pass": null,
+  "status": "completed",
+  "target_steps": 100000,
+  "total_estimated_cost_cny": 9.655441903429395,
+  "total_training_seconds": 23438.66268698126
+}

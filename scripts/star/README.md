@@ -191,13 +191,31 @@ python scripts/star/summarize_pointgoal_p4.py \
   --output-dir /root/autodl-tmp/SAFE/artifacts/p4/summary
 ```
 
-The summarizer emits per-run and cross-seed evaluation CSVs, a mechanism CSV, and a strict
-machine-readable verdict. A seed passes only with positive mean goal completions, no stall, mean
-cost at or below the Point budget, probability-head AUROC above 0.65, positive Brier skill, W3
-evidence, reduced dangerous normal velocity, and at least 0.8 tangent preservation. In particular,
-dangerous normal velocity is compared from the final W2 diagnostic interval to the final 300k
-interval; toggling a gate on one already-trained actor is not misreported as a flow-motion
-counterfactual. Mechanism rendering also emits the fixed `1.0/0.5/0.2/0.0` budget by
+The 100k promotion checkpoint is a minimum mechanism test, not a final P4 verdict. Pass both the
+initial and resumed logger segments and receipts, select the exact endpoint, and use the scoped
+assessment so the machine-readable `final_p4_verdict` remains JSON `null`:
+
+```bash
+python scripts/star/summarize_pointgoal_p4.py \
+  --run-dirs RUN_2027_20K RUN_2027_100K RUN_2028_20K RUN_2028_100K \
+    RUN_2029_20K RUN_2029_100K \
+  --audit-dirs AUDIT_2027_100K AUDIT_2028_100K AUDIT_2029_100K \
+  --receipts RECEIPT_2027_20K.json RECEIPT_2027_100K.json \
+    RECEIPT_2028_20K.json RECEIPT_2028_100K.json \
+    RECEIPT_2029_20K.json RECEIPT_2029_100K.json \
+  --checkpoint-evaluation-csv COMBINED_0_20K_50K_100K.csv \
+  --target-steps 100000 --assessment-scope minimum-mechanism \
+  --output-dir /root/autodl-tmp/SAFE/artifacts/p4/minimum-100k-summary
+```
+
+The summarizer emits per-run and cross-seed evaluation CSVs, a mechanism CSV, and a scoped
+machine-readable assessment. In final scope, a seed passes only with positive mean goal
+completions, no stall, mean cost at or below the Point budget, probability-head AUROC above 0.65,
+positive Brier skill, W3 evidence, reduced dangerous normal velocity, and at least 0.8 tangent
+preservation. In particular, dangerous normal velocity is compared from the final W2 diagnostic
+interval to the selected final interval; toggling a gate on one already-trained actor is not
+misreported as a flow-motion counterfactual. Mechanism rendering also emits the fixed
+`1.0/0.5/0.2/0.0` budget by
 `safe/boundary/high-risk` table and visualization with P95-P5 risk span, action-gradient norm,
 ensemble disagreement, and mean normal.
 
