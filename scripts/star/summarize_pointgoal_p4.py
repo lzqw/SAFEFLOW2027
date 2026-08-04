@@ -186,6 +186,7 @@ def mechanism_row(  # pylint: disable=too-many-locals
     replay_spearman = optional_number(
         audit['predicted_cost_empirical_cost_spearman'],
     )
+    activation_step = warmup['geometry_activation_step']
 
     row = {
         'seed': seed,
@@ -195,7 +196,7 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'training_seconds': number(training['training_seconds']),
         'estimated_cost_cny': number(receipt['estimated_cost_cny']),
         'warmup_stage': warmup['stage'],
-        'geometry_activation_step': int(warmup['geometry_activation_step']),
+        'geometry_activation_step': (int(activation_step) if activation_step is not None else None),
         'boundary_samples': int(warmup['boundary_samples']),
         'calibration_ema': number(warmup['ema']['calibration_error']),
         'cost_td_ema': number(warmup['ema']['cost_td_error']),

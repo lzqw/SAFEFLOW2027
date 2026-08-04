@@ -259,3 +259,29 @@ def test_undefined_replay_spearman_fails_without_crashing(tmp_path: Path) -> Non
     )
     assert verdict['status'] == 'failed'
     assert not verdict['criteria_by_seed']['2029']['predicted_empirical_risk_positive']
+
+
+def test_w2_seed_without_activation_step_fails_without_crashing(tmp_path: Path) -> None:
+    """A seed that remains in W2 yields a strict failure and a blank activation step."""
+    fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
+    warmup = fixtures[1][0] / 'artifacts/warmup_status.json'
+    payload = json.loads(warmup.read_text(encoding='utf-8'))
+    payload['stage'] = 'W2'
+    payload['geometry_activation_step'] = None
+    payload['conditions']['boundary_samples'] = False
+    write_json(warmup, payload)
+    output_dir = tmp_path / 'w2'
+    verdict = summarize(
+        [item[0] for item in fixtures],
+        [item[1] for item in fixtures],
+        [item[2] for item in fixtures],
+        output_dir,
+    )
+    assert verdict['status'] == 'failed'
+    assert not verdict['criteria_by_seed']['2028']['final_warmup_evidence_passed']
+    with (output_dir / 'pointgoal_mechanism_summary.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        rows = {int(row['seed']): row for row in csv.DictReader(stream)}
+    assert rows[2028]['geometry_activation_step'] == ''
