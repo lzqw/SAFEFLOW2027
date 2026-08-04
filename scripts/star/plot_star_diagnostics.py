@@ -59,6 +59,24 @@ def evaluation_rows(run_dir: Path) -> list[dict[str, str]]:
     return read_csv(run_dir / 'artifacts/evaluation.csv')
 
 
+def checkpoint_evaluation_rows(path: Path) -> dict[int, list[dict[str, str]]]:
+    """Group tie-correct fixed-device checkpoint evaluations by training seed."""
+    grouped: dict[int, list[dict[str, str]]] = {}
+    for row in read_csv(path):
+        grouped.setdefault(int(row['training_seed']), []).append(row)
+    for rows in grouped.values():
+        rows.sort(key=lambda row: int(row['milestone']))
+    return grouped
+
+
+def run_seed(run_dir: Path) -> int:
+    """Read a run's training seed from its compact summary."""
+    summary = json.loads(
+        (run_dir / 'artifacts/training_summary.json').read_text(encoding='utf-8'),
+    )
+    return int(summary['seed'])
+
+
 def plot_line(
     axes: Any,
     x_values: list[float],
@@ -80,14 +98,24 @@ def plot_line(
         )
 
 
-def plot_training(run_dirs: list[Path], output: Path) -> None:  # pylint: disable=too-many-locals
+def plot_training(  # pylint: disable=too-many-locals
+    run_dirs: list[Path],
+    output: Path,
+    fixed_evaluations: dict[int, list[dict[str, str]]] | None = None,
+) -> None:
     """Render the required scalar mechanism diagnostics in one nine-panel figure."""
     figure, panels = plt.subplots(3, 3, figsize=(14.0, 10.5), constrained_layout=True)
     axes = panels.flatten()
     for run_dir in run_dirs:
         label = run_label(run_dir)
         diagnostics = read_csv(run_dir / 'artifacts/diagnostics.csv')
-        evaluations = evaluation_rows(run_dir)
+        if fixed_evaluations is None:
+            evaluations = evaluation_rows(run_dir)
+        else:
+            seed = run_seed(run_dir)
+            if seed not in fixed_evaluations:
+                raise ValueError(f'checkpoint evaluations are missing training seed {seed}')
+            evaluations = fixed_evaluations[seed]
         steps = [number(row, 'TotalEnvSteps') for row in diagnostics]
         milestones = [number(row, 'milestone') for row in evaluations]
 
@@ -159,13 +187,23 @@ def plot_training(run_dirs: list[Path], output: Path) -> None:  # pylint: disabl
             [number(row, 'Critic/CalibrationError') for row in diagnostics],
             f'calibration {label}',
         )
-        plot_line(
-            axes[4],
-            steps,
-            [number(row, 'Critic/Spearman') for row in diagnostics],
-            f'Spearman {label}',
-            linestyle='--',
-        )
+        if fixed_evaluations is None:
+            plot_line(
+                axes[4],
+                steps,
+                [number(row, 'Critic/Spearman') for row in diagnostics],
+                f'Spearman {label}',
+                linestyle='--',
+            )
+        else:
+            plot_line(
+                axes[4],
+                milestones,
+                [number(row, 'spearman') for row in evaluations],
+                f'tie-correct eval Spearman {label}',
+                linestyle='--',
+                marker='o',
+            )
         plot_line(
             axes[5],
             steps,
@@ -348,6 +386,7 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument('--run-dirs', nargs='+', type=Path, required=True)
     result.add_argument('--output-dir', type=Path, required=True)
+    result.add_argument('--checkpoint-evaluation-csv', type=Path)
     return result
 
 
@@ -355,7 +394,16 @@ def main() -> None:
     """Render plots and machine-readable compact tables."""
     args = parser().parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    plot_training(args.run_dirs, args.output_dir / 'star_training_diagnostics.png')
+    fixed_evaluations = (
+        checkpoint_evaluation_rows(args.checkpoint_evaluation_csv)
+        if args.checkpoint_evaluation_csv is not None
+        else None
+    )
+    plot_training(
+        args.run_dirs,
+        args.output_dir / 'star_training_diagnostics.png',
+        fixed_evaluations,
+    )
     trajectory_count = plot_trajectories(
         args.run_dirs,
         args.output_dir / 'pointgoal_trajectories.png',
@@ -382,6 +430,7 @@ def main() -> None:
                 'diagnostics_rows': len(diagnostics),
                 'counterfactual_rows': len(counterfactuals),
                 'trajectory_files': trajectory_count,
+                'fixed_checkpoint_evaluations': fixed_evaluations is not None,
                 'output_dir': str(args.output_dir),
             },
             indent=2,

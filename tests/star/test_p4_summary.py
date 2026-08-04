@@ -242,3 +242,20 @@ def test_summarize_uses_tie_correct_checkpoint_evaluations(tmp_path: Path) -> No
         summary = list(csv.DictReader(stream))
     assert summary[-1]['spearman_count'] == '0'
     assert summary[-1]['spearman_mean'] == ''
+
+
+def test_undefined_replay_spearman_fails_without_crashing(tmp_path: Path) -> None:
+    """A degenerate replay statistic is evidence failure, not a serializer crash."""
+    fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
+    audit = fixtures[-1][1] / 'replay_risk_summary.json'
+    payload = json.loads(audit.read_text(encoding='utf-8'))
+    payload['predicted_cost_empirical_cost_spearman'] = None
+    write_json(audit, payload)
+    verdict = summarize(
+        [item[0] for item in fixtures],
+        [item[1] for item in fixtures],
+        [item[2] for item in fixtures],
+        tmp_path / 'undefined',
+    )
+    assert verdict['status'] == 'failed'
+    assert not verdict['criteria_by_seed']['2029']['predicted_empirical_risk_positive']

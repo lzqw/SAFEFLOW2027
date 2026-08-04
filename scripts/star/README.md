@@ -156,6 +156,20 @@ machine-readable verdict. In particular, dangerous normal velocity is compared f
 diagnostic interval to the final 300k interval; toggling a gate on one already-trained actor is not
 misreported as a flow-motion counterfactual.
 
+Use the same corrected checkpoint table for the aggregate diagnostic figure:
+
+```bash
+python scripts/star/plot_star_diagnostics.py \
+  --run-dirs RUN_2027 RUN_2028 RUN_2029 \
+  --checkpoint-evaluation-csv \
+    /root/autodl-tmp/SAFE/artifacts/p4/checkpoint-evaluation/pointgoal_checkpoint_evaluation.csv \
+  --output-dir /root/autodl-tmp/SAFE/artifacts/p4/figures
+```
+
+With this option, fixed-milestone return/cost and tie-correct Spearman values come from the offline
+CUDA re-evaluation. The legacy online per-batch rank statistic remains in the raw diagnostic CSV
+for provenance, but it is not plotted or used as formal correlation evidence.
+
 ## Monitoring and publication
 
 Port 6006 is reserved for TensorBoard:

@@ -183,6 +183,9 @@ def mechanism_row(  # pylint: disable=too-many-locals
     reward_losses = [number(row['Loss/RewardCritic']) for row in diagnostics]
     energy_duals = [number(row['Dual/Energy']) for row in diagnostics]
     global_duals = [number(row['Dual/GlobalSafety']) for row in diagnostics]
+    replay_spearman = optional_number(
+        audit['predicted_cost_empirical_cost_spearman'],
+    )
 
     row = {
         'seed': seed,
@@ -211,9 +214,7 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'dangerous_normal_velocity_change': final_danger - w2_danger,
         'replay_calibration_ece': number(audit['calibration_ece']),
         'replay_calibration_mae': number(audit['calibration_mae']),
-        'replay_cost_spearman': number(
-            audit['predicted_cost_empirical_cost_spearman'],
-        ),
+        'replay_cost_spearman': replay_spearman,
         'boundary_source_random_fraction': number(
             audit['resident_boundary_source_random_fraction'],
         ),
@@ -233,7 +234,7 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'return_improved_without_collapse': row['final_eval_return'] > row['initial_eval_return'],
         'evaluation_cost_or_tail_improved': row['final_eval_cost'] < row['initial_eval_cost']
         or row['final_eval_cvar'] < row['initial_eval_cvar'],
-        'predicted_empirical_risk_positive': row['replay_cost_spearman'] > 0.0,
+        'predicted_empirical_risk_positive': replay_spearman is not None and replay_spearman > 0.0,
         'near_boundary_gate_dominates': boundary_gate > interior_gate,
         'normal_variance_reduced': row['directional_vn'] < 0.9 * row['isotropic_vn'],
         'tangent_variance_preserved': row['vt_preservation_ratio'] >= 0.8,
