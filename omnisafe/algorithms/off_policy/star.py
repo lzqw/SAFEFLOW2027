@@ -52,6 +52,7 @@ from omnisafe.models.critic.distributional_cost_critic import (
     quantile_huber_loss,
 )
 from omnisafe.models.safety.distributional_backend import SafetyGeometry, compute_safety_geometry
+from omnisafe.utils.star_validation import spearman as tie_correct_spearman
 
 
 UPDATE_ORDER = (
@@ -171,17 +172,10 @@ def _append_csv(path: Path, row: dict[str, Any]) -> None:
 
 
 def _spearman(first: torch.Tensor, second: torch.Tensor) -> float:
-    """Return rank correlation without a SciPy dependency."""
-    if first.numel() < 3 or second.numel() != first.numel():
+    """Return tie-correct rank correlation without a SciPy dependency."""
+    if second.numel() != first.numel():
         return float('nan')
-    first_rank = torch.argsort(torch.argsort(first)).float()
-    second_rank = torch.argsort(torch.argsort(second)).float()
-    first_centered = first_rank - first_rank.mean()
-    second_centered = second_rank - second_rank.mean()
-    denominator = first_centered.norm() * second_centered.norm()
-    if denominator <= 0:
-        return float('nan')
-    return float((first_centered * second_centered).sum().div(denominator).item())
+    return tie_correct_spearman(first, second)
 
 
 def _tail_mean(values: list[float], fraction: float = 0.2) -> float:

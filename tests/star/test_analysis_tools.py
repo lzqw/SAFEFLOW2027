@@ -16,9 +16,12 @@
 
 from __future__ import annotations
 
+import math
+
 import pytest
 import torch
 
+from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
     average_ranks,
     calibration_rows,
@@ -70,6 +73,8 @@ def test_tie_correct_ranks_and_spearman() -> None:
     assert torch.equal(average_ranks(values), torch.tensor([0.5, 0.5, 2.0, 3.0]))
     assert spearman(values, values) == pytest.approx(1.0)
     assert spearman(values, -values) == pytest.approx(-1.0)
+    assert _spearman(values, values) == pytest.approx(1.0)
+    assert math.isnan(_spearman(values, torch.ones_like(values)))
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:
