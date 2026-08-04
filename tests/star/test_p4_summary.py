@@ -21,6 +21,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pytest
+
 from scripts.star.summarize_pointgoal_p4 import EVALUATION_METRICS, aggregate_evaluations, summarize
 
 
@@ -178,6 +180,59 @@ def make_seed(tmp_path: Path, seed: int) -> tuple[Path, Path, Path]:
     return run_dir, audit_dir, receipt
 
 
+def split_seed_run(
+    tmp_path: Path,
+    fixture: tuple[Path, Path, Path],
+) -> tuple[list[Path], Path, list[Path]]:
+    """Split one synthetic run into contiguous 20k and 300k logger segments."""
+    final_run, audit_dir, final_receipt = fixture
+    training_path = final_run / 'artifacts/training_summary.json'
+    training = json.loads(training_path.read_text(encoding='utf-8'))
+    seed = int(training['seed'])
+    history_run = tmp_path / f'history-{seed}'
+    history_artifacts = history_run / 'artifacts'
+    write_json(history_artifacts / 'run_manifest.json', {'seed': seed})
+    write_json(
+        history_artifacts / 'training_summary.json',
+        {
+            'seed': seed,
+            'status': 'completed',
+            'env_steps': 20_000,
+            'run_env_steps': 20_000,
+            'updates': 18_000,
+            'training_seconds': 30.0,
+        },
+    )
+
+    diagnostics_path = final_run / 'artifacts/diagnostics.csv'
+    diagnostics = read_csv_fixture(diagnostics_path)
+    diagnostics[0]['TotalEnvSteps'] = 10_000
+    diagnostics[1]['TotalEnvSteps'] = 300_000
+    write_csv(history_artifacts / 'diagnostics.csv', diagnostics[:1])
+    write_csv(diagnostics_path, diagnostics[1:])
+
+    evaluation_path = final_run / 'artifacts/evaluation.csv'
+    evaluations = read_csv_fixture(evaluation_path)
+    write_csv(history_artifacts / 'evaluation.csv', evaluations[:1])
+    write_csv(evaluation_path, evaluations[1:])
+
+    training['run_env_steps'] = 280_000
+    training['training_seconds'] = 70.0
+    write_json(training_path, training)
+    final_payload = json.loads(final_receipt.read_text(encoding='utf-8'))
+    final_payload['estimated_cost_cny'] = 0.35
+    write_json(final_receipt, final_payload)
+    history_receipt = tmp_path / f'history-receipt-{seed}.json'
+    write_json(history_receipt, {'seed': seed, 'estimated_cost_cny': 0.15})
+    return [final_run, history_run], audit_dir, [final_receipt, history_receipt]
+
+
+def read_csv_fixture(path: Path) -> list[dict[str, str]]:
+    """Read a fixture CSV for segment construction."""
+    with path.open(encoding='utf-8', newline='') as stream:
+        return list(csv.DictReader(stream))
+
+
 def test_aggregate_evaluations_reports_sample_standard_deviation() -> None:
     """Aggregate rows retain milestone-level means and sample deviations."""
     rows = [
@@ -311,3 +366,38 @@ def test_w2_seed_without_activation_step_fails_without_crashing(tmp_path: Path) 
     ) as stream:
         rows = {int(row['seed']): row for row in csv.DictReader(stream)}
     assert rows[2028]['geometry_activation_step'] == ''
+
+
+def test_summarize_stitches_contiguous_resume_segments(tmp_path: Path) -> None:
+    """Chunked resumes retain their early W2 baseline and aggregate segment costs."""
+    fixtures = [split_seed_run(tmp_path, make_seed(tmp_path, seed)) for seed in (2027, 2028, 2029)]
+    runs = [run for item in fixtures for run in item[0]]
+    audits = [item[1] for item in fixtures]
+    receipts = [receipt for item in fixtures for receipt in item[2]]
+    output_dir = tmp_path / 'segmented'
+    verdict = summarize(runs, audits, receipts, output_dir)
+    assert verdict['status'] == 'passed'
+    with (output_dir / 'pointgoal_mechanism_summary.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        rows = list(csv.DictReader(stream))
+    assert {row['segment_count'] for row in rows} == {'2'}
+    assert {row['training_seconds'] for row in rows} == {'100.0'}
+    assert {row['estimated_cost_cny'] for row in rows} == {'0.5'}
+
+
+def test_summarize_rejects_noncontiguous_resume_segments(tmp_path: Path) -> None:
+    """A missing interval in a resume chain is rejected instead of silently summarized."""
+    fixtures = [split_seed_run(tmp_path, make_seed(tmp_path, seed)) for seed in (2027, 2028, 2029)]
+    final_training = fixtures[0][0][0] / 'artifacts/training_summary.json'
+    payload = json.loads(final_training.read_text(encoding='utf-8'))
+    payload['run_env_steps'] = 279_000
+    write_json(final_training, payload)
+    with pytest.raises(ValueError, match='not contiguous'):
+        summarize(
+            [run for item in fixtures for run in item[0]],
+            [item[1] for item in fixtures],
+            [receipt for item in fixtures for receipt in item[2]],
+            tmp_path / 'gap',
+        )

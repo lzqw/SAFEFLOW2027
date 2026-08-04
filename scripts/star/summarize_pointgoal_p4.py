@@ -142,27 +142,74 @@ def aggregate_evaluations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return aggregate
 
 
+def group_run_segments(run_dirs: list[Path]) -> dict[int, list[Path]]:
+    """Group chronologically contiguous training segments by seed."""
+    grouped: dict[int, list[tuple[int, Path, dict[str, Any]]]] = {}
+    for run_dir in run_dirs:
+        training = read_json(run_dir / 'artifacts/training_summary.json')
+        seed = int(training['seed'])
+        grouped.setdefault(seed, []).append((int(training['env_steps']), run_dir, training))
+    if not grouped:
+        raise ValueError('at least one run directory is required')
+
+    result: dict[int, list[Path]] = {}
+    for seed, entries in grouped.items():
+        entries.sort(key=lambda item: item[0])
+        endpoints = [entry[0] for entry in entries]
+        if len(endpoints) != len(set(endpoints)):
+            raise ValueError(f'run segments for seed {seed} have duplicate endpoints')
+        previous_endpoint: int | None = None
+        for endpoint, run_dir, training in entries:
+            run_steps = training.get('run_env_steps')
+            if run_steps is not None:
+                start = endpoint - int(run_steps)
+                if start < 0:
+                    raise ValueError(f'run segment {run_dir} has invalid step counters')
+                if previous_endpoint is None and len(entries) > 1 and start != 0:
+                    raise ValueError(f'run chain for seed {seed} does not start at zero')
+                if previous_endpoint is not None and start != previous_endpoint:
+                    raise ValueError(f'run chain for seed {seed} is not contiguous at {run_dir}')
+            previous_endpoint = endpoint
+        result[seed] = [entry[1] for entry in entries]
+    return result
+
+
+def segment_diagnostics(run_dirs: list[Path]) -> list[dict[str, str]]:
+    """Merge diagnostics from an ordered run chain without hiding duplicate steps."""
+    rows = [row for run_dir in run_dirs for row in read_csv(run_dir / 'artifacts/diagnostics.csv')]
+    if rows and all(row.get('TotalEnvSteps', '') != '' for row in rows):
+        steps = [int(number(row['TotalEnvSteps'])) for row in rows]
+        if len(steps) != len(set(steps)):
+            raise ValueError('run chain diagnostics contain duplicate environment steps')
+        rows = [row for _, row in sorted(zip(steps, rows), key=lambda item: item[0])]
+    return rows
+
+
 def mechanism_row(  # pylint: disable=too-many-locals
-    run_dir: Path,
+    run_dirs: list[Path],
     audit: dict[str, Any],
-    receipt: dict[str, Any],
+    receipts: list[dict[str, Any]],
     fixed_evaluations: list[dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], dict[str, bool]]:
     """Collect one seed's mechanism evidence and evaluate its P4 conditions."""
+    run_dir = run_dirs[-1]
+    training_segments = [
+        read_json(segment / 'artifacts/training_summary.json') for segment in run_dirs
+    ]
     training = read_json(run_dir / 'artifacts/training_summary.json')
     warmup = read_json(run_dir / 'artifacts/warmup_status.json')
     counterfactual = final_counterfactual(run_dir)
-    diagnostics = read_csv(run_dir / 'artifacts/diagnostics.csv')
+    diagnostics = segment_diagnostics(run_dirs)
     evaluation_source = (
         fixed_evaluations
         if fixed_evaluations is not None
-        else read_csv(run_dir / 'artifacts/evaluation.csv')
+        else [row for segment in run_dirs for row in read_csv(segment / 'artifacts/evaluation.csv')]
     )
     evaluations = sorted(evaluation_source, key=lambda row: int(row['milestone']))
     if not diagnostics or len(evaluations) < 2:
         raise ValueError(f'incomplete P4 artifacts in {run_dir}')
     seed = int(training['seed'])
-    if int(audit['seed']) != seed or int(receipt['seed']) != seed:
+    if int(audit['seed']) != seed or any(int(receipt['seed']) != seed for receipt in receipts):
         raise ValueError(f'seed mismatch while aggregating run {seed}')
 
     w2_rows = [row for row in diagnostics if int(number(row['Train/WarmupStage'])) == 2]
@@ -190,8 +237,11 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'status': training['status'],
         'env_steps': int(training['env_steps']),
         'updates': int(training['updates']),
-        'training_seconds': number(training['training_seconds']),
-        'estimated_cost_cny': number(receipt['estimated_cost_cny']),
+        'segment_count': len(run_dirs),
+        'training_seconds': sum(
+            number(segment['training_seconds']) for segment in training_segments
+        ),
+        'estimated_cost_cny': sum(number(receipt['estimated_cost_cny']) for receipt in receipts),
         'warmup_stage': warmup['stage'],
         'geometry_activation_step': (int(activation_step) if activation_step is not None else None),
         'boundary_samples': int(warmup['boundary_samples']),
@@ -237,7 +287,9 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'final_eval_action_norm': number(final_evaluation['mean_action_norm']),
     }
     criteria = {
-        'completed_without_crash': training['status'] == 'completed'
+        'completed_without_crash': all(
+            segment['status'] == 'completed' for segment in training_segments
+        )
         and int(training['env_steps']) == 300_000,
         'mean_goal_met_positive': row['final_eval_goals_per_episode'] > 0.0,
         'no_stall': row['final_eval_stall_ratio'] <= 1e-12,
@@ -263,9 +315,8 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     checkpoint_evaluation_csv: Path | None = None,
 ) -> dict[str, Any]:
     """Generate compact P4 CSV/JSON deliverables and return the verdict."""
-    if len(run_dirs) != len(audit_dirs) or len(run_dirs) != len(receipts):
-        raise ValueError('run, audit, and receipt counts must match')
     output_dir.mkdir(parents=True, exist_ok=True)
+    run_segments = group_run_segments(run_dirs)
     evaluations = (
         checkpoint_evaluation_rows(checkpoint_evaluation_csv)
         if checkpoint_evaluation_csv is not None
@@ -274,22 +325,31 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     evaluation_keys = [(int(row['seed']), int(row['milestone'])) for row in evaluations]
     if len(evaluation_keys) != len(set(evaluation_keys)):
         raise ValueError('evaluation table contains duplicate seed/milestone rows')
-    run_seeds = [
-        int(read_json(run_dir / 'artifacts/training_summary.json')['seed']) for run_dir in run_dirs
-    ]
-    if len(run_seeds) != len(set(run_seeds)):
-        raise ValueError('run directories contain duplicate training seeds')
+    run_seeds = sorted(run_segments)
     if {int(row['seed']) for row in evaluations} != set(run_seeds):
         raise ValueError('evaluation seeds do not match the run directories')
-    audits = {
-        int(payload['seed']): payload
-        for payload in (read_json(path / 'replay_risk_summary.json') for path in audit_dirs)
-    }
-    receipt_payloads = {
-        int(payload['seed']): payload for payload in (read_json(path) for path in receipts)
-    }
+    audit_payloads = [read_json(path / 'replay_risk_summary.json') for path in audit_dirs]
+    audits = {int(payload['seed']): payload for payload in audit_payloads}
+    if len(audits) != len(audit_payloads):
+        raise ValueError('audit directories contain duplicate seeds')
+    receipt_payloads: dict[int, list[dict[str, Any]]] = {}
+    for payload in (read_json(path) for path in receipts):
+        receipt_payloads.setdefault(int(payload['seed']), []).append(payload)
     if set(audits) != set(run_seeds) or set(receipt_payloads) != set(run_seeds):
         raise ValueError('audit or receipt seeds do not match the run directories')
+    for seed in run_seeds:
+        if len(receipt_payloads[seed]) != len(run_segments[seed]):
+            raise ValueError(f'receipt count does not match run segments for seed {seed}')
+        receipt_steps = sorted(
+            int(payload['steps']) for payload in receipt_payloads[seed] if 'steps' in payload
+        )
+        if receipt_steps and len(receipt_steps) == len(run_segments[seed]):
+            segment_steps = sorted(
+                int(read_json(path / 'artifacts/training_summary.json')['env_steps'])
+                for path in run_segments[seed]
+            )
+            if receipt_steps != segment_steps:
+                raise ValueError(f'receipt endpoints do not match run segments for seed {seed}')
 
     atomic_csv(output_dir / 'pointgoal_evaluation_runs.csv', evaluations)
     atomic_csv(
@@ -298,14 +358,14 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     )
     mechanism_rows: list[dict[str, Any]] = []
     criteria_by_seed: dict[str, dict[str, bool]] = {}
-    for run_dir, seed in zip(run_dirs, run_seeds):
+    for seed in run_seeds:
         fixed_evaluations = (
             [row for row in evaluations if int(row['seed']) == seed]
             if checkpoint_evaluation_csv is not None
             else None
         )
         row, criteria = mechanism_row(
-            run_dir,
+            run_segments[seed],
             audits[seed],
             receipt_payloads[seed],
             fixed_evaluations,

@@ -201,6 +201,12 @@ counterfactual. Mechanism rendering also emits the fixed `1.0/0.5/0.2/0.0` budge
 `safe/boundary/high-risk` table and visualization with P95-P5 risk span, action-gradient norm,
 ensemble disagreement, and mean normal.
 
+For checkpointed promotion runs, pass every chronological logger segment in `--run-dirs` and the
+matching launcher receipt for every segment in `--receipts`. The summarizer groups them by seed,
+verifies that their `run_env_steps` counters form an unbroken chain from zero, retains the early W2
+diagnostics, and uses the last segment for final W3 evidence and counterfactuals. Single-segment
+runs remain supported.
+
 Use the same corrected checkpoint table for the aggregate diagnostic figure:
 
 ```bash
