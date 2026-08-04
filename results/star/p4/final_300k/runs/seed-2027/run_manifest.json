@@ -1,0 +1,28 @@
+{
+  "algorithm": "STAR",
+  "amp": false,
+  "environment": "SafetyPointGoal1-v0",
+  "eval_milestones": [
+    0,
+    50000,
+    100000,
+    200000,
+    300000
+  ],
+  "latent_flow": false,
+  "route": "A",
+  "second_order": false,
+  "seed": 2027,
+  "torch_compile": false,
+  "update_order": [
+    "distributional_cost_critic",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ]
+}

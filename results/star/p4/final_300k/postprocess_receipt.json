@@ -1,0 +1,7 @@
+{
+  "completed_at_utc": "2026-08-04T11:55:24.262421+00:00",
+  "elapsed_seconds": 16975.823001109064,
+  "error": "Command '['/root/autodl-tmp/SAFE/envs/star-p0-p1/bin/python', 'scripts/star/summarize_pointgoal_p4.py', '--run-dirs', '/root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2027-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-04-13-38-59', '/root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2028-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-04-13-38-59', '/root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2029-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-04-13-38-59', '--audit-dirs', '/root/autodl-tmp/SAFE/artifacts/p4/final-300k-fd03cc0/audit/seed-2027', '/root/autodl-tmp/SAFE/artifacts/p4/final-300k-fd03cc0/audit/seed-2028', '/root/autodl-tmp/SAFE/artifacts/p4/final-300k-fd03cc0/audit/seed-2029', '--receipts', '/root/autodl-tmp/SAFE/artifacts/p4/star-p4-300k-seed2027-1a4533c.json', '/root/autodl-tmp/SAFE/artifacts/p4/star-p4-300k-seed2028-1a4533c.json', '/root/autodl-tmp/SAFE/artifacts/p4/star-p4-300k-seed2029-1a4533c.json', '--checkpoint-evaluation-csv', '/root/autodl-tmp/SAFE/artifacts/p4/final-300k-fd03cc0/checkpoint-evaluation/pointgoal_checkpoint_evaluation.csv', '--output-dir', '/root/autodl-tmp/SAFE/artifacts/p4/final-300k-fd03cc0/summary']' returned non-zero exit status 1.",
+  "error_type": "CalledProcessError",
+  "status": "failed"
+}
