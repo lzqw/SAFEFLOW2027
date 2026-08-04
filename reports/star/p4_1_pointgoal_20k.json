@@ -1,8 +1,8 @@
 {
-  "analysis_source_commit": "094e7961b3279b9ecf3faafc54527c23acf16512",
-  "captured_at_utc": "2026-08-04T15:17:02Z",
+  "captured_at_utc": "2026-08-04T15:59:23Z",
   "estimated_training_cost_cny": 1.9442878304693434,
   "evaluation": {
+    "analysis_source_commit": "25ebf09dc79251030bc43b22ee6bdf9e5e9c3e10",
     "episodes_per_checkpoint_per_seed": 20,
     "mode": "fixed-random-flow",
     "results": [
@@ -132,6 +132,7 @@
       "geometry_activation_step": null,
       "mechanism_visualization": {
         "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
         "trajectory_files": 2
       },
       "replay_audit": {
@@ -158,6 +159,7 @@
       "geometry_activation_step": null,
       "mechanism_visualization": {
         "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
         "trajectory_files": 2
       },
       "replay_audit": {
@@ -184,6 +186,7 @@
       "geometry_activation_step": 12000,
       "mechanism_visualization": {
         "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
         "trajectory_files": 2
       },
       "replay_audit": {
@@ -199,5 +202,6 @@
       "warmup_stage": "W3"
     }
   ],
+  "mechanism_source_commit": "267d1a189180f1ba23ad1770caf3280dd0c356ec",
   "training_source_commit": "e71e7a1d78002203cfba430f3ba5948b3a1b1fdd"
 }
