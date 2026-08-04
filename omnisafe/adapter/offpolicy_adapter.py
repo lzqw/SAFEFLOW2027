@@ -127,8 +127,9 @@ class OffPolicyAdapter(OnlineAdapter):
         """
         for _ in range(rollout_step):
             if use_rand_action:
+                action_shape = tuple(self.action_space.shape or ())
                 act = torch.empty(
-                    (self._env.num_envs, *self.action_space.shape),
+                    (self._env.num_envs, *action_shape),
                     dtype=torch.float32,
                     device=self._device,
                 ).uniform_(-1.0, 1.0)

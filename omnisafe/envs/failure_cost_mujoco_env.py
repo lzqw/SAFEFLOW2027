@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import math
-from typing import Any, ClassVar
+from typing import Any, ClassVar, cast
 
 import gymnasium
 import numpy as np
@@ -80,7 +80,8 @@ class FailureCostMujocoEnv(CMDP):
         """Classify an unhealthy state without changing the binary cost label."""
         if not np.isfinite(qpos).all():
             return 'unhealthy_nonfinite_state'
-        base_env = self._env.unwrapped
+        # Gymnasium erases the concrete MuJoCo environment type at the wrapper boundary.
+        base_env = cast(Any, self._env.unwrapped)
         height = float(qpos[2] if self._env_id == 'Ant-v4' else qpos[1])
         healthy_z_range = getattr(base_env, '_healthy_z_range', None)
         if healthy_z_range is not None and not healthy_z_range[0] < height < healthy_z_range[1]:
@@ -101,8 +102,8 @@ class FailureCostMujocoEnv(CMDP):
         truncated: bool,
     ) -> dict[str, Any]:
         """Return health, pose, time, and failure diagnostics for ``info``."""
-        base_env = self._env.unwrapped
-        qpos = np.asarray(base_env.data.qpos, dtype=np.float64).copy()
+        base_env = cast(Any, self._env.unwrapped)
+        qpos: np.ndarray = np.asarray(base_env.data.qpos, dtype=np.float64).copy()
         is_healthy = bool(base_env.is_healthy)
         height = float(qpos[2] if self._env_id == 'Ant-v4' else qpos[1])
         if self._env_id == 'Ant-v4':
@@ -190,12 +191,12 @@ class FailureCostMujocoEnv(CMDP):
 
     def get_sim_state(self) -> tuple[np.ndarray, np.ndarray]:
         """Copy the MuJoCo position and velocity state for semantic tests."""
-        base_env = self._env.unwrapped
+        base_env = cast(Any, self._env.unwrapped)
         return base_env.data.qpos.copy(), base_env.data.qvel.copy()
 
     def set_sim_state(self, qpos: np.ndarray, qvel: np.ndarray) -> None:
         """Set the MuJoCo state for controlled failure tests."""
-        self._env.unwrapped.set_state(np.asarray(qpos), np.asarray(qvel))
+        cast(Any, self._env.unwrapped).set_state(np.asarray(qpos), np.asarray(qvel))
 
     def render(self) -> Any:
         """Render using Gymnasium's configured render mode."""

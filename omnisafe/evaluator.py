@@ -219,6 +219,7 @@ class Evaluator:  # pylint: disable=too-many-instance-attributes
             if self._actor_critic is not None:
                 self._actor_critic.load_state_dict(model_params['actor_critic'])
                 self._actor_critic.to('cpu')
+            assert dynamics_state_space.shape is not None
             self._dynamics = EnsembleDynamicsModel(
                 model_cfgs=self._cfgs.dynamics_cfgs,
                 device=torch.device('cpu'),
