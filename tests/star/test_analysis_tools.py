@@ -17,9 +17,11 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import pytest
 import torch
+from scripts.star.evaluate_pointgoal_checkpoints import json_safe, public_row
 
 from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
@@ -75,6 +77,24 @@ def test_tie_correct_ranks_and_spearman() -> None:
     assert spearman(values, -values) == pytest.approx(-1.0)
     assert _spearman(values, values) == pytest.approx(1.0)
     assert math.isnan(_spearman(values, torch.ones_like(values)))
+
+
+def test_checkpoint_evaluation_serializes_degenerate_spearman_as_null() -> None:
+    payload = {'extra': {'seed': 2027}, 'counters': {'env_steps': 50_000}}
+    evaluation = {
+        'episodes': 5,
+        'mean_return': 1.0,
+        'mean_cost': 0.0,
+        'cost_cvar_20': 0.0,
+        'violation_ratio': 0.0,
+        'calibration_error': 0.1,
+        'spearman': float('nan'),
+        'predicted_risk_mean': 0.1,
+        'empirical_risk_mean': 0.0,
+    }
+    row = public_row(payload, Path('milestone_50000.pt'), evaluation)
+    assert row['spearman'] is None
+    assert json_safe({'spearman': float('nan')}) == {'spearman': None}
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:
