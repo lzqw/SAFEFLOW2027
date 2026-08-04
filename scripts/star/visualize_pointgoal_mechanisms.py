@@ -149,6 +149,7 @@ def action_risk_grid(
         dim=0,
         unbiased=False,
     )
+    ucb = ucb.clamp(0.0, 1.0)
     return {'axis': axis, 'actions': actions, 'heads': heads, 'mean': mean, 'ucb': ucb}
 
 

@@ -653,9 +653,10 @@ class STAR(BaseAlgo):
             bootstrap_mask=bootstrap,
         )
         optimizer.zero_grad()
-        loss.backward()
-        clip_grad_norm_(critic.parameters(), float(self._cfgs.algo_cfgs.max_grad_norm))
-        optimizer.step()
+        if bool(labeled.any()):
+            loss.backward()
+            clip_grad_norm_(critic.parameters(), float(self._cfgs.algo_cfgs.max_grad_norm))
+            optimizer.step()
 
         with torch.no_grad():
             probabilities = logits.sigmoid()
