@@ -32,6 +32,7 @@ from scripts.star.evaluate_pointgoal_checkpoints import (
 )
 from scripts.star.visualize_pointgoal_mechanisms import (
     fixed_budget_risk_strata,
+    plot_fixed_budget_strata,
     plot_trajectories,
     representative_state,
 )
@@ -349,7 +350,7 @@ def test_fixed_budget_visuals_select_each_replay_risk_stratum() -> None:
     assert all(row['risk_p95_minus_p05'] > 0 for row in rows)
 
 
-def test_fixed_budget_visuals_mark_zero_gradient_normals_undefined() -> None:
+def test_fixed_budget_visuals_mark_zero_gradient_normals_undefined(tmp_path: Path) -> None:
     """Saturated action-risk surfaces do not invent a normal direction."""
 
     class _ConstantRiskHead(torch.nn.Module):
@@ -378,11 +379,14 @@ def test_fixed_budget_visuals_mark_zero_gradient_normals_undefined() -> None:
         ),
         _device=torch.device('cpu'),
     )
-    rows, _ = fixed_budget_risk_strata(algorithm, sample_size=2, grid_size=3)
+    rows, panels = fixed_budget_risk_strata(algorithm, sample_size=2, grid_size=3)
     high_risk = [row for row in rows if row['risk_stratum'] == 'high_risk']
     assert {row['gradient_norm'] for row in high_risk} == {0.0}
     assert all(row['ensemble_disagreement'] is None for row in high_risk)
     assert all(row['normal_0'] is None and row['normal_1'] is None for row in high_risk)
+    output = tmp_path / 'fixed-budget.png'
+    plot_fixed_budget_strata(output, panels, step=20_000)
+    assert output.stat().st_size > 0
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:

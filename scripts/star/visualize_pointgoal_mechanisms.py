@@ -336,15 +336,16 @@ def plot_fixed_budget_strata(path: Path, panels: list[dict[str, Any]], step: int
                 vmax=1.0,
                 s=7,
             )
-            axis.quiver(
-                panel['selected_action_0'],
-                panel['selected_action_1'],
-                panel['normal_0'],
-                panel['normal_1'],
-                color='black',
-                scale=4.0,
-                width=0.012,
-            )
+            if panel['normal_0'] is not None and panel['normal_1'] is not None:
+                axis.quiver(
+                    panel['selected_action_0'],
+                    panel['selected_action_1'],
+                    panel['normal_0'],
+                    panel['normal_1'],
+                    color='black',
+                    scale=4.0,
+                    width=0.012,
+                )
         axis.set_title(
             f"b={panel['budget_ratio']:.1f}, {panel['risk_stratum']}\n"
             f"states={panel['sample_count']}, |∇p|={panel['gradient_norm'] or 0.0:.3g}",
