@@ -93,6 +93,28 @@ Run the focused module and loop tests before launching GPU work:
 python -m pytest tests/star -q
 ```
 
+P4.1 deliberately separates the legacy training-length diagnosis from the corrected algorithm.
+Legacy checkpoints are reconstructed with `legacy_checkpoint_compatibility=True` only for
+read-only evaluation; they cannot enter the P4.1 training loop. Corrected runs use one state for
+all actor/reward/cost/probability networks:
+
+```text
+[normalized observation, remaining budget / episode budget, (H - t) / H]
+```
+
+Reward backup stops only on `terminated`; cost backup stops on `terminated | truncated`. The
+distributional cost critic remains the global cost utility. A separate ensemble probability head
+is trained with masked BCE only after an episode has supplied
+`1[empirical cost-to-go > remaining budget]`. Its action gradients drive W3 geometry. Replay keeps
+the continuous Gaussian boundary score centered at probability 0.5, while W3 additionally requires
+resident positive and negative labels, positive Brier skill, AUROC, valid action gradients, and
+bounded ensemble disagreement. The actor objective is
+`(alpha_E * E - Q_R + lambda * Q_C) / (1 + lambda)`.
+
+The promotion ladder is unit/synthetic risk tests, four environments at 5k, PointGoal at 20k for
+three seeds, PointGoal at 100k for three seeds, then 100k chunks up to 300k/600k/1M subject to the
+registered early-stop rules. Do not mix a legacy continuation artifact into a P4.1 verdict.
+
 The P3 compatibility matrix runs STAR for 20k steps on PointGoal, PointButton, Ant, and Walker.
 The throughput benchmark is a workload measurement and explicitly labels forced-W3 measurements;
 it is not evidence that a training run passed the W3 gate:
@@ -111,7 +133,8 @@ python scripts/star/train_star.py \
   --config configs/star/SafetyPointGoal1-v0.yaml \
   --steps 300000 --steps-per-epoch 5000 --seed 2027 --device cuda:0 \
   --batch-size 256 --replay-size 500000 --random-steps 2000 \
-  --eval-episodes 5 --eval-seeds 12027,12028,12029,12030,12031 \
+  --eval-episodes 20 \
+  --eval-seeds 12027,12028,12029,12030,12031,12032,12033,12034,12035,12036,12037,12038,12039,12040,12041,12042,12043,12044,12045,12046 \
   --eval-milestones 0,50000,100000,200000,300000 \
   --log-dir /root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2027/runs \
   --result /root/autodl-tmp/SAFE/artifacts/p4/star-p4-300k-seed2027.json \
@@ -169,9 +192,14 @@ python scripts/star/summarize_pointgoal_p4.py \
 ```
 
 The summarizer emits per-run and cross-seed evaluation CSVs, a mechanism CSV, and a strict
-machine-readable verdict. In particular, dangerous normal velocity is compared from the final W2
-diagnostic interval to the final 300k interval; toggling a gate on one already-trained actor is not
-misreported as a flow-motion counterfactual.
+machine-readable verdict. A seed passes only with positive mean goal completions, no stall, mean
+cost at or below the Point budget, probability-head AUROC above 0.65, positive Brier skill, W3
+evidence, reduced dangerous normal velocity, and at least 0.8 tangent preservation. In particular,
+dangerous normal velocity is compared from the final W2 diagnostic interval to the final 300k
+interval; toggling a gate on one already-trained actor is not misreported as a flow-motion
+counterfactual. Mechanism rendering also emits the fixed `1.0/0.5/0.2/0.0` budget by
+`safe/boundary/high-risk` table and visualization with P95-P5 risk span, action-gradient norm,
+ensemble disagreement, and mean normal.
 
 Use the same corrected checkpoint table for the aggregate diagnostic figure:
 
@@ -219,4 +247,4 @@ server used `nohup` with separate PID and console-log files).
 
 After a gate passes, sync only source and small reports back to the host. Do not copy environments,
 caches, replay, checkpoints, videos, or full run directories. Commit and push from the host branch
-`codex/star-p2-p4` to the private `lzqw/SAFEFLOW2027` repository.
+`codex/star-p4.1-correctness` to the private `lzqw/SAFEFLOW2027` repository.

@@ -34,6 +34,7 @@ from scripts.star.evaluate_pointgoal_checkpoints import (
 from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
     average_ranks,
+    boundary_score_rows,
     calibration_rows,
     checkpoint_reconstruction_config,
     deterministic_indices,
@@ -239,7 +240,7 @@ def test_center_flow_rollout_reports_goal_progress_and_stall_metrics() -> None:
             algo_cfgs=SimpleNamespace(max_episode_steps=2, risk_temperature=1.0),
             lagrange_cfgs=SimpleNamespace(cost_limit=10.0),
         ),
-        _augment=lambda obs, context: torch.cat((obs, context.reshape(-1, 1)), dim=-1),
+        _augment=lambda obs, context: torch.cat((obs, context), dim=-1),
     )
     result = evaluate_rollouts(
         algorithm,
@@ -286,3 +287,19 @@ def test_deterministic_replay_subset_and_boundary_sensitivity() -> None:
     assert current['sample_fraction'] == pytest.approx(0.4)
     assert current['source_random_fraction'] == pytest.approx(0.5)
     assert current['immediate_violation_fraction'] == pytest.approx(0.5)
+
+
+def test_continuous_boundary_score_sensitivity_uses_finalized_labels() -> None:
+    audit = {
+        'boundary_score': torch.tensor([0.05, 0.5, 0.8, 0.95]),
+        'source_random': torch.tensor([False, True, False, True]),
+        'is_failure': torch.tensor([False, False, True, False]),
+        'violation_label': torch.tensor([0.0, float('nan'), 1.0, 0.0]),
+    }
+    rows = boundary_score_rows(audit, current_threshold=0.5)
+    current = next(row for row in rows if row['is_current'])
+    assert current['sample_count'] == 3
+    assert current['positive_label_fraction'] == pytest.approx(0.5)
+    assert current['sample_fraction'] == pytest.approx(0.75)
+    assert current['source_random_fraction'] == pytest.approx(2 / 3)
+    assert current['immediate_violation_fraction'] == pytest.approx(1 / 3)

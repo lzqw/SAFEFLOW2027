@@ -53,10 +53,12 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         failure_fraction: float = 0.2,
         boundary_fraction: float = 0.4,
         importance_beta: float = 0.4,
+        boundary_score_threshold: float = 0.5,
+        context_dim: int = 2,
         pin_memory: bool = True,
     ) -> None:
         """Allocate every transition field and category pool on CPU."""
-        if min(obs_dim, act_dim, capacity, batch_size, num_envs) <= 0:
+        if min(obs_dim, act_dim, capacity, batch_size, num_envs, context_dim) <= 0:
             raise ValueError('replay dimensions and sizes must be positive')
         if capacity <= batch_size:
             raise ValueError('replay capacity must exceed the global batch size')
@@ -66,6 +68,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             raise ValueError('failure and boundary fractions cannot exceed one')
         if not 0 <= importance_beta <= 1:
             raise ValueError('importance beta must lie in [0, 1]')
+        if not 0 <= boundary_score_threshold <= 1:
+            raise ValueError('boundary score threshold must lie in [0, 1]')
         self.obs_dim = obs_dim
         self.act_dim = act_dim
         self.capacity = capacity
@@ -74,6 +78,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         self.failure_fraction = failure_fraction
         self.boundary_fraction = boundary_fraction
         self.importance_beta = importance_beta
+        self.boundary_score_threshold = boundary_score_threshold
+        self.context_dim = context_dim
         self._pin_memory = bool(pin_memory and torch.cuda.is_available())
         self._ptr = 0
         self._size = 0
@@ -85,13 +91,16 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             'cost': self._allocate((capacity,)),
             'terminated': self._allocate((capacity,)),
             'truncated': self._allocate((capacity,)),
-            'done': self._allocate((capacity,)),
+            'reward_done': self._allocate((capacity,)),
+            'cost_done': self._allocate((capacity,)),
             'next_obs': self._allocate((capacity, obs_dim)),
-            'context': self._allocate((capacity,)),
-            'next_context': self._allocate((capacity,)),
+            'context': self._allocate((capacity, context_dim)),
+            'next_context': self._allocate((capacity, context_dim)),
             'risk_threshold': self._allocate((capacity,)),
             'next_risk_threshold': self._allocate((capacity,)),
             'empirical_cost_to_go': self._allocate((capacity,), fill=float('nan')),
+            'violation_label': self._allocate((capacity,), fill=float('nan')),
+            'boundary_score': self._allocate((capacity,)),
             'is_boundary': self._allocate((capacity,), dtype=torch.bool),
             'is_failure': self._allocate((capacity,), dtype=torch.bool),
             'source_random': self._allocate((capacity,), dtype=torch.bool),
@@ -179,7 +188,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         next_context: torch.Tensor,
         risk_threshold: torch.Tensor,
         next_risk_threshold: torch.Tensor,
-        boundary: torch.Tensor,
+        boundary_score: torch.Tensor,
         failure: torch.Tensor,
         source_random: torch.Tensor,
     ) -> None:
@@ -198,11 +207,20 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
                 'next_context': next_context,
                 'risk_threshold': risk_threshold,
                 'next_risk_threshold': next_risk_threshold,
-                'is_boundary': boundary,
+                'boundary_score': boundary_score,
                 'is_failure': failure,
                 'source_random': source_random,
             }.items()
         }
+        for name in ('context', 'next_context'):
+            if values[name].shape[1:] != (self.context_dim,):
+                raise ValueError(
+                    f'{name} must have shape [num_envs, {self.context_dim}], '
+                    f'got {tuple(values[name].shape)}',
+                )
+        scores = values['boundary_score'].float()
+        if not bool(torch.isfinite(scores).all()) or bool(((scores < 0) | (scores > 1)).any()):
+            raise ValueError('boundary scores must be finite and lie in [0, 1]')
         for env_index in range(self.num_envs):
             slot = self._ptr
             if self._size == self.capacity:
@@ -211,10 +229,18 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             generation = int(self.data['generation'][slot].item())
             for key, value in values.items():
                 self.data[key][slot].copy_(value[env_index])
-            self.data['done'][slot] = values['terminated'][env_index].float()
+            self.data['reward_done'][slot] = values['terminated'][env_index].float()
+            self.data['cost_done'][slot] = torch.logical_or(
+                values['terminated'][env_index].bool(),
+                values['truncated'][env_index].bool(),
+            ).float()
             self.data['empirical_cost_to_go'][slot] = float('nan')
+            self.data['violation_label'][slot] = float('nan')
             is_failure = bool(values['is_failure'][env_index].item())
-            is_boundary = bool(values['is_boundary'][env_index].item())
+            is_boundary = (
+                float(values['boundary_score'][env_index].item()) >= self.boundary_score_threshold
+            )
+            self.data['is_boundary'][slot] = is_boundary
             category = FAILURE if is_failure else BOUNDARY if is_boundary else NORMAL
             self._add_pool_slot(slot, category)
             self._episode_slots[env_index].append((slot, generation))
@@ -234,11 +260,13 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
                 continue
             future_cost += float(self.data['cost'][slot].item())
             self.data['empirical_cost_to_go'][slot] = future_cost
+            threshold = float(self.data['risk_threshold'][slot].item())
+            self.data['violation_label'][slot] = float(future_cost > threshold)
         self._episode_slots[env_index] = []
 
     def _desired_counts(self, batch_size: int) -> list[int]:
-        failures = int(round(batch_size * self.failure_fraction))
-        boundaries = int(round(batch_size * self.boundary_fraction))
+        failures = round(batch_size * self.failure_fraction)
+        boundaries = round(batch_size * self.boundary_fraction)
         normal = batch_size - failures - boundaries
         return [normal, boundaries, failures]
 
@@ -289,18 +317,42 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         batch['importance_weights'] = importance.to(target_device, non_blocking=self._pin_memory)
         return batch
 
-    def relabel_boundaries(self, indices: torch.Tensor, boundary: torch.Tensor) -> None:
-        """Refresh boundary membership without overriding true failure transitions."""
+    def relabel_boundaries(self, indices: torch.Tensor, boundary_score: torch.Tensor) -> None:
+        """Refresh continuous boundary scores and their derived sampling category."""
         cpu_indices = indices.detach().to('cpu', dtype=torch.long)
-        cpu_boundary = boundary.detach().to('cpu', dtype=torch.bool)
-        for slot, is_boundary in zip(cpu_indices.tolist(), cpu_boundary.tolist()):
+        cpu_scores = boundary_score.detach().to('cpu', dtype=torch.float32).reshape(-1)
+        if cpu_indices.numel() != cpu_scores.numel():
+            raise ValueError('boundary indices and scores must have the same size')
+        if not bool(torch.isfinite(cpu_scores).all()) or bool(
+            ((cpu_scores < 0) | (cpu_scores > 1)).any(),
+        ):
+            raise ValueError('boundary scores must be finite and lie in [0, 1]')
+        for slot, score in zip(cpu_indices.tolist(), cpu_scores.tolist()):
+            if not 0 <= slot < self._size:
+                raise IndexError(f'replay boundary slot {slot} is not resident')
+            self.data['boundary_score'][slot] = score
+            is_boundary = score >= self.boundary_score_threshold
+            self.data['is_boundary'][slot] = is_boundary
             if bool(self.data['is_failure'][slot].item()):
                 continue
             desired = BOUNDARY if is_boundary else NORMAL
             if int(self.data['category'][slot].item()) != desired:
                 self._remove_pool_slot(slot)
                 self._add_pool_slot(slot, desired)
-            self.data['is_boundary'][slot] = is_boundary
+
+    @property
+    def label_counts(self) -> dict[str, int]:
+        """Return finalized resident negative/positive probability labels."""
+        valid = self.capacity if self._size == self.capacity else self._size
+        labels = self.data['violation_label'][:valid]
+        finalized = torch.isfinite(labels)
+        positives = int((labels[finalized] > 0.5).sum().item())
+        negatives = int(finalized.sum().item()) - positives
+        return {
+            'negative': negatives,
+            'positive': positives,
+            'finalized': int(finalized.sum().item()),
+        }
 
     def category_ratios(self) -> dict[str, float]:
         """Return resident replay fractions for training diagnostics."""
@@ -315,8 +367,11 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         """Return a compact replay snapshot suitable for local full checkpoints."""
         valid = self.capacity if self._size == self.capacity else self._size
         return {
-            'version': 1,
+            'version': 2,
             'capacity': self.capacity,
+            'obs_dim': self.obs_dim,
+            'act_dim': self.act_dim,
+            'context_dim': self.context_dim,
             'size': self._size,
             'pointer': self._ptr,
             'data': {key: value[:valid].clone() for key, value in self.data.items()},
@@ -325,14 +380,25 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
 
     def load_state_dict(self, state: dict[str, Any]) -> None:
         """Restore a compact replay snapshot and rebuild category pools."""
-        if state.get('version') != 1:
+        if state.get('version') != 2:
             raise ValueError('unsupported STAR replay checkpoint version')
+        for name, expected in (
+            ('obs_dim', self.obs_dim),
+            ('act_dim', self.act_dim),
+            ('context_dim', self.context_dim),
+        ):
+            if int(state[name]) != expected:
+                raise ValueError(f'saved replay {name} does not match configured replay')
         saved_size = int(state['size'])
         saved_data = state['data']
         valid = next(iter(saved_data.values())).shape[0]
         if saved_size > self.capacity or valid > self.capacity:
             raise ValueError('saved replay does not fit the configured capacity')
+        if set(saved_data) != set(self.data):
+            raise ValueError('saved replay fields do not match configured replay fields')
         for key, value in saved_data.items():
+            if value.shape[1:] != self.data[key].shape[1:]:
+                raise ValueError(f'saved replay field {key!r} has an incompatible shape')
             self.data[key][:valid].copy_(value)
         self._size = saved_size
         self._ptr = int(state['pointer']) % self.capacity

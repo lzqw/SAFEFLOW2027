@@ -45,13 +45,15 @@ defaults:
     w3_valid_gradient_threshold: 0.10
     w3_disagreement_threshold: 0.75
     w3_boundary_samples_threshold: 128
+    w3_positive_labels_threshold: 128
+    w3_negative_labels_threshold: 128
+    w3_brier_skill_threshold: 0.0
+    w3_auroc_threshold: 0.60
     warmup_ema_rate: 0.05
     bootstrap_probability: 0.8
-    risk_temperature: 1.0
     risk_boundary: 0.5
-    boundary_bandwidth: 0.25
-    boundary_low: 0.10
-    boundary_safe: 0.40
+    boundary_bandwidth: 0.15
+    boundary_score_threshold: 0.50
     risk_ucb_beta: 0.5
     cost_ucb_beta: 0.25
     minimum_gradient_norm: 0.00001
@@ -71,6 +73,7 @@ defaults:
     checkpoint_replay: False
     full_checkpoint_freq: 0
     resume_from: ""
+    legacy_checkpoint_compatibility: False
   logger_cfgs:
     use_wandb: False
     wandb_project: omnisafe
@@ -86,6 +89,7 @@ defaults:
       hidden_sizes: [256, 256]
       reward_lr: 0.0003
       cost_lr: 0.0003
+      violation_lr: 0.0003
       num_quantiles: 25
       ensemble_size: 2
     flow:

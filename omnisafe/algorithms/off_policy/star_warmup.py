@@ -35,6 +35,10 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
         valid_gradient_threshold: float,
         disagreement_threshold: float,
         boundary_samples_threshold: int,
+        positive_labels_threshold: int,
+        negative_labels_threshold: int,
+        brier_skill_threshold: float,
+        auroc_threshold: float,
         ema_rate: float = 0.05,
     ) -> None:
         """Initialize ordered step gates and non-temporal W3 thresholds."""
@@ -42,6 +46,17 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
             raise ValueError('warmup step boundaries must be ordered')
         if not 0 < ema_rate <= 1:
             raise ValueError('warmup EMA rate must lie in (0, 1]')
+        if (
+            min(boundary_samples_threshold, positive_labels_threshold, negative_labels_threshold)
+            < 0
+        ):
+            raise ValueError('warmup sample thresholds must be non-negative')
+        if not 0 <= valid_gradient_threshold <= 1:
+            raise ValueError('valid-gradient threshold must lie in [0, 1]')
+        if not 0 <= disagreement_threshold <= 1:
+            raise ValueError('disagreement threshold must lie in [0, 1]')
+        if not 0 <= auroc_threshold <= 1:
+            raise ValueError('AUROC threshold must lie in [0, 1]')
         self.random_steps = random_steps
         self.terminal_utility_steps = terminal_utility_steps
         self.geometry_min_steps = geometry_min_steps
@@ -50,6 +65,10 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
         self.valid_gradient_threshold = valid_gradient_threshold
         self.disagreement_threshold = disagreement_threshold
         self.boundary_samples_threshold = boundary_samples_threshold
+        self.positive_labels_threshold = positive_labels_threshold
+        self.negative_labels_threshold = negative_labels_threshold
+        self.brier_skill_threshold = brier_skill_threshold
+        self.auroc_threshold = auroc_threshold
         self.ema_rate = ema_rate
         self.stage = 'W0'
         self.geometry_activation_step: int | None = None
@@ -58,6 +77,8 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
             'calibration_error': None,
             'valid_gradient_rate': None,
             'ensemble_disagreement': None,
+            'brier_skill': None,
+            'auroc': None,
         }
 
     def observe(self, **metrics: float) -> None:
@@ -74,12 +95,20 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
                 else (1.0 - self.ema_rate) * previous + self.ema_rate * value
             )
 
-    def conditions(self, env_steps: int, boundary_samples: int) -> dict[str, bool]:
+    def conditions(
+        self,
+        env_steps: int,
+        boundary_samples: int,
+        positive_labels: int,
+        negative_labels: int,
+    ) -> dict[str, bool]:
         """Return every independently auditable W3 activation condition."""
         td_error = self.ema['cost_td_error']
         calibration = self.ema['calibration_error']
         valid_gradient = self.ema['valid_gradient_rate']
         disagreement = self.ema['ensemble_disagreement']
+        brier_skill = self.ema['brier_skill']
+        auroc = self.ema['auroc']
         return {
             'minimum_steps': env_steps >= self.geometry_min_steps,
             'td_error': td_error is not None and td_error <= self.td_error_threshold,
@@ -89,9 +118,19 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
             'ensemble_disagreement': disagreement is not None
             and disagreement <= self.disagreement_threshold,
             'boundary_samples': boundary_samples >= self.boundary_samples_threshold,
+            'positive_labels': positive_labels >= self.positive_labels_threshold,
+            'negative_labels': negative_labels >= self.negative_labels_threshold,
+            'brier_skill': brier_skill is not None and brier_skill > self.brier_skill_threshold,
+            'auroc': auroc is not None and auroc >= self.auroc_threshold,
         }
 
-    def advance(self, env_steps: int, boundary_samples: int) -> str:
+    def advance(
+        self,
+        env_steps: int,
+        boundary_samples: int,
+        positive_labels: int,
+        negative_labels: int,
+    ) -> str:
         """Advance monotonically through W0, W1, W2, and evidence-gated W3."""
         if env_steps < self.random_steps:
             self.stage = 'W0'
@@ -99,7 +138,14 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
             self.stage = 'W1'
         elif self.stage != 'W3':
             self.stage = 'W2'
-            if all(self.conditions(env_steps, boundary_samples).values()):
+            if all(
+                self.conditions(
+                    env_steps,
+                    boundary_samples,
+                    positive_labels,
+                    negative_labels,
+                ).values(),
+            ):
                 self.stage = 'W3'
                 self.geometry_activation_step = env_steps
         return self.stage
@@ -124,4 +170,5 @@ class STARWarmup:  # pylint: disable=too-many-instance-attributes
             raise ValueError(f'unknown STAR warmup stage {stage!r}')
         self.stage = stage
         self.geometry_activation_step = state['geometry_activation_step']
-        self.ema = dict(state['ema'])
+        restored = dict(state['ema'])
+        self.ema = {key: restored.get(key) for key in self.ema}

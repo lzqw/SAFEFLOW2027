@@ -19,7 +19,14 @@ EVALUATION_METRICS = (
     'cost_cvar_20',
     'violation_ratio',
     'calibration_error',
+    'brier_score',
+    'brier_skill',
+    'auroc',
     'spearman',
+    'goals_per_episode_mean',
+    'stall_ratio',
+    'mean_start_end_displacement',
+    'mean_action_norm',
 )
 
 
@@ -135,11 +142,6 @@ def aggregate_evaluations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return aggregate
 
 
-def _changed(values: list[float], tolerance: float = 1e-8) -> bool:
-    """Return whether a finite series has a non-degenerate range."""
-    return bool(values) and max(values) - min(values) > tolerance
-
-
 def mechanism_row(  # pylint: disable=too-many-locals
     run_dir: Path,
     audit: dict[str, Any],
@@ -178,11 +180,6 @@ def mechanism_row(  # pylint: disable=too-many-locals
     gate_ratio = boundary_gate / max(interior_gate, 1e-12)
     w2_danger = number(last_w2['Geometry/DangerousNormalVelocity'])
     final_danger = number(final_diagnostic['Geometry/DangerousNormalVelocity'])
-    actor_losses = [number(row['Loss/Actor']) for row in diagnostics]
-    cost_losses = [number(row['Loss/CostCritic']) for row in diagnostics]
-    reward_losses = [number(row['Loss/RewardCritic']) for row in diagnostics]
-    energy_duals = [number(row['Dual/Energy']) for row in diagnostics]
-    global_duals = [number(row['Dual/GlobalSafety']) for row in diagnostics]
     replay_spearman = optional_number(
         audit['predicted_cost_empirical_cost_spearman'],
     )
@@ -202,6 +199,8 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'cost_td_ema': number(warmup['ema']['cost_td_error']),
         'valid_gradient_ema': number(warmup['ema']['valid_gradient_rate']),
         'ensemble_disagreement_ema': number(warmup['ema']['ensemble_disagreement']),
+        'brier_skill_ema': number(warmup['ema']['brier_skill']),
+        'auroc_ema': number(warmup['ema']['auroc']),
         'gate_boundary_mean': boundary_gate,
         'gate_interior_mean': interior_gate,
         'gate_boundary_interior_ratio': gate_ratio,
@@ -216,6 +215,10 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'replay_calibration_ece': number(audit['calibration_ece']),
         'replay_calibration_mae': number(audit['calibration_mae']),
         'replay_cost_spearman': replay_spearman,
+        'replay_brier_skill': optional_number(audit['brier_skill']),
+        'replay_auroc': optional_number(audit['auroc']),
+        'replay_positive_labels': int(audit['positive_labels']),
+        'replay_negative_labels': int(audit['negative_labels']),
         'boundary_source_random_fraction': number(
             audit['resident_boundary_source_random_fraction'],
         ),
@@ -228,25 +231,23 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'final_eval_cost': number(final_evaluation['mean_cost']),
         'initial_eval_cvar': number(initial_evaluation['cost_cvar_20']),
         'final_eval_cvar': number(final_evaluation['cost_cvar_20']),
+        'final_eval_goals_per_episode': number(final_evaluation['goals_per_episode_mean']),
+        'final_eval_stall_ratio': number(final_evaluation['stall_ratio']),
+        'final_eval_displacement': number(final_evaluation['mean_start_end_displacement']),
+        'final_eval_action_norm': number(final_evaluation['mean_action_norm']),
     }
     criteria = {
         'completed_without_crash': training['status'] == 'completed'
         and int(training['env_steps']) == 300_000,
-        'return_improved_without_collapse': row['final_eval_return'] > row['initial_eval_return'],
-        'evaluation_cost_or_tail_improved': row['final_eval_cost'] < row['initial_eval_cost']
-        or row['final_eval_cvar'] < row['initial_eval_cvar'],
-        'predicted_empirical_risk_positive': replay_spearman is not None and replay_spearman > 0.0,
-        'near_boundary_gate_dominates': boundary_gate > interior_gate,
-        'normal_variance_reduced': row['directional_vn'] < 0.9 * row['isotropic_vn'],
+        'mean_goal_met_positive': row['final_eval_goals_per_episode'] > 0.0,
+        'no_stall': row['final_eval_stall_ratio'] <= 1e-12,
+        'cost_within_budget': row['final_eval_cost'] <= 10.0,
+        'probability_auroc_above_065': row['replay_auroc'] is not None
+        and row['replay_auroc'] > 0.65,
+        'positive_brier_skill': row['replay_brier_skill'] is not None
+        and row['replay_brier_skill'] > 0.0,
         'tangent_variance_preserved': row['vt_preservation_ratio'] >= 0.8,
         'dangerous_normal_velocity_reduced': final_danger < w2_danger,
-        'actor_critic_duals_nondegenerate': any(abs(value) > 1e-8 for value in actor_losses)
-        and any(value > 0.0 for value in cost_losses)
-        and any(value > 0.0 for value in reward_losses)
-        and _changed(energy_duals)
-        and _changed(global_duals),
-        'boundary_not_mainly_random_or_violating': row['boundary_source_random_fraction'] < 0.5
-        and row['boundary_immediate_violation_fraction'] < 0.5,
         'final_warmup_evidence_passed': warmup['stage'] == 'W3'
         and all(bool(value) for value in warmup['conditions'].values()),
     }

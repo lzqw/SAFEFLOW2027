@@ -85,7 +85,7 @@ def average_ranks(values: torch.Tensor) -> torch.Tensor:
     ends = counts.cumsum(dim=0).to(torch.float64)
     starts = ends - counts
     group_ranks = 0.5 * (starts + ends - 1.0)
-    ranks = torch.empty(values.shape[0], dtype=torch.float64)
+    ranks = torch.empty(values.shape[0], dtype=torch.float64, device=values.device)
     ranks[order] = group_ranks[inverse]
     return ranks
 
@@ -176,6 +176,42 @@ def threshold_rows(
                 ),
                 'immediate_violation_fraction': (
                     float(audit['is_failure'][selected].float().mean().item()) if count else 0.0
+                ),
+            },
+        )
+    return rows
+
+
+def boundary_score_rows(
+    audit: dict[str, torch.Tensor],
+    current_threshold: float,
+) -> list[dict[str, Any]]:
+    """Measure replay coverage under fixed thresholds of the continuous Gaussian score."""
+    if not 0.0 <= current_threshold <= 1.0:
+        raise ValueError('current boundary-score threshold must lie in [0, 1]')
+    thresholds = {0.1, 0.25, 0.5, 0.75, 0.9, current_threshold}
+    rows = []
+    for threshold in sorted(thresholds):
+        selected = audit['boundary_score'] >= threshold
+        count = int(selected.sum().item())
+        selected_labels = audit['violation_label'][selected]
+        finalized = torch.isfinite(selected_labels)
+        rows.append(
+            {
+                'boundary_score_threshold': threshold,
+                'is_current': threshold == current_threshold,
+                'sample_count': count,
+                'sample_fraction': count / audit['boundary_score'].numel(),
+                'source_random_fraction': (
+                    float(audit['source_random'][selected].float().mean().item()) if count else 0.0
+                ),
+                'immediate_violation_fraction': (
+                    float(audit['is_failure'][selected].float().mean().item()) if count else 0.0
+                ),
+                'positive_label_fraction': (
+                    float(selected_labels[finalized].mean().item())
+                    if bool(finalized.any())
+                    else None
                 ),
             },
         )

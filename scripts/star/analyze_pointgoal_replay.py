@@ -20,12 +20,18 @@ import torch
 
 import omnisafe
 from omnisafe.common.buffer.star_replay_buffer import BOUNDARY
+from omnisafe.models.critic.violation_probability_critic import (
+    binary_auroc,
+    binary_brier_score,
+    binary_brier_skill,
+)
+from omnisafe.models.safety.distributional_backend import boundary_gate
 from omnisafe.utils.star_validation import (
+    boundary_score_rows,
     calibration_rows,
     checkpoint_reconstruction_config,
     deterministic_indices,
     spearman,
-    threshold_rows,
 )
 
 
@@ -58,6 +64,8 @@ def checkpoint_metadata(path: Path) -> dict[str, Any]:
         raise ValueError(f'{path} is not a STAR checkpoint')
     if payload.get('replay') is None:
         raise ValueError('replay calibration requires a full checkpoint with replay')
+    if not any(key.startswith('violation_critic.') for key in payload['model']):
+        raise ValueError('P4.1 replay calibration requires the independent probability head')
     return {
         'env_steps': int(payload['counters']['env_steps']),
         'environment': str(payload['extra']['environment']),
@@ -121,27 +129,37 @@ def infer_replay(  # pylint: disable=too-many-locals
     for start in range(0, indices.numel(), chunk_size):
         selected = indices[start : start + chunk_size]
         raw_obs = buffer.data['obs'][selected].to(device)
-        obs = algorithm._normalize_obs(raw_obs)  # pylint: disable=protected-access
-        context = buffer.data['context'][selected].to(device).reshape(-1, 1)
-        augmented = torch.cat((obs, context), dim=-1)
+        context = buffer.data['context'][selected].to(device)
+        augmented = algorithm._augment(raw_obs, context)  # pylint: disable=protected-access
         action = buffer.data['action'][selected].to(device)
-        threshold = buffer.data['risk_threshold'][selected].to(device)
         quantiles = algorithm._actor_critic.cost_critic(  # pylint: disable=protected-access
             augmented,
             action,
         )
-        heads = torch.sigmoid(
-            (quantiles - threshold.reshape(1, -1, 1)) / float(algo_cfgs.risk_temperature),
-        ).mean(dim=-1)
+        probability_critic = (  # pylint: disable=protected-access
+            algorithm._actor_critic.violation_critic
+        )
+        if probability_critic is None:
+            raise RuntimeError('P4.1 probability critic is unavailable')
+        heads = probability_critic.probabilities(augmented, action)
         mean_risk = heads.mean(dim=0)
         outputs['predicted_risk'].append(mean_risk.cpu())
-        outputs['risk_ucb'].append(
-            (mean_risk + float(algo_cfgs.risk_ucb_beta) * heads.std(dim=0, unbiased=False)).cpu(),
+        risk_ucb = (
+            mean_risk + float(algo_cfgs.risk_ucb_beta) * heads.std(dim=0, unbiased=False)
+        ).clamp(0.0, 1.0)
+        outputs['risk_ucb'].append(risk_ucb.cpu())
+        outputs.setdefault('boundary_score', []).append(
+            boundary_gate(
+                risk_ucb,
+                float(algo_cfgs.risk_boundary),
+                float(algo_cfgs.boundary_bandwidth),
+            ).cpu(),
         )
         outputs['cost'].append(quantiles.mean(dim=-1).mean(dim=0).cpu())
     result = {key: torch.cat(value) for key, value in outputs.items()}
     for key in (
         'empirical_cost_to_go',
+        'violation_label',
         'risk_threshold',
         'category',
         'source_random',
@@ -231,20 +249,17 @@ def main() -> None:  # pylint: disable=too-many-locals
         resident = algorithm._buf  # pylint: disable=protected-access
         indices = deterministic_indices(resident.size, args.max_samples)
         audit = infer_replay(algorithm, indices, args.chunk_size)
-        labeled = torch.isfinite(audit['empirical_cost_to_go'])
+        labeled = torch.isfinite(audit['violation_label'])
         if int(labeled.sum().item()) < 2:
             raise ValueError('replay audit requires at least two finalized cost-to-go labels')
         predicted = audit['predicted_risk'][labeled]
         empirical_cost = audit['empirical_cost_to_go'][labeled]
-        threshold = audit['risk_threshold'][labeled]
-        empirical_risk = (empirical_cost > threshold).float()
+        empirical_risk = audit['violation_label'][labeled]
         rows = calibration_rows(predicted, empirical_risk, args.bins)
         algo_cfgs = algorithm._cfgs.algo_cfgs  # pylint: disable=protected-access
-        sensitivity = threshold_rows(
+        sensitivity = boundary_score_rows(
             audit,
-            float(algo_cfgs.boundary_low),
-            float(algo_cfgs.boundary_safe),
-            float(algo_cfgs.risk_boundary),
+            float(algo_cfgs.boundary_score_threshold),
         )
         atomic_csv(
             args.output_dir / 'replay_risk_calibration.csv',
@@ -252,7 +267,7 @@ def main() -> None:  # pylint: disable=too-many-locals
             rows,
         )
         atomic_csv(
-            args.output_dir / 'replay_boundary_thresholds.csv',
+            args.output_dir / 'replay_boundary_scores.csv',
             list(sensitivity[0]),
             sensitivity,
         )
@@ -303,9 +318,14 @@ def main() -> None:  # pylint: disable=too-many-locals
                 if boundary_count
                 else 0.0
             ),
-            'current_boundary_low': float(algo_cfgs.boundary_low),
-            'current_boundary_safe': float(algo_cfgs.boundary_safe),
+            'brier_score': binary_brier_score(predicted, empirical_risk),
+            'brier_skill': finite_or_none(binary_brier_skill(predicted, empirical_risk)),
+            'auroc': finite_or_none(binary_auroc(predicted, empirical_risk)),
+            'positive_labels': int(empirical_risk.sum().item()),
+            'negative_labels': int(empirical_risk.numel() - empirical_risk.sum().item()),
+            'current_boundary_score_threshold': float(algo_cfgs.boundary_score_threshold),
             'risk_boundary': float(algo_cfgs.risk_boundary),
+            'boundary_bandwidth': float(algo_cfgs.boundary_bandwidth),
         }
         atomic_json(args.output_dir / 'replay_risk_summary.json', summary)
         print(json.dumps({'status': 'passed', **summary}, indent=2, sort_keys=True))

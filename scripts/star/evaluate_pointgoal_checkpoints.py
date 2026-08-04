@@ -17,6 +17,11 @@ import torch
 
 import omnisafe
 from omnisafe.adapter.star_adapter import STARContext
+from omnisafe.models.critic.violation_probability_critic import (
+    binary_auroc,
+    binary_brier_score,
+    binary_brier_skill,
+)
 from omnisafe.utils.star_validation import checkpoint_reconstruction_config
 
 
@@ -39,6 +44,9 @@ SUMMARY_FIELDS = (
     'cost_cvar_20',
     'violation_ratio',
     'calibration_error',
+    'brier_score',
+    'brier_skill',
+    'auroc',
     'spearman',
     'predicted_risk_mean',
     'empirical_risk_mean',
@@ -175,6 +183,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
         },
     )
     algo_cfgs = custom.setdefault('algo_cfgs', {})
+    has_probability_head = any(key.startswith('violation_critic.') for key in payload['model'])
     replay_size = max(2, int(algo_cfgs.get('size', 500_000)))
     algo_cfgs.update(
         {
@@ -186,6 +195,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
             'resume_from': '',
             'milestone_checkpoints': False,
             'checkpoint_replay': False,
+            'legacy_checkpoint_compatibility': not has_probability_head,
         },
     )
     custom['logger_cfgs'] = {
@@ -321,10 +331,18 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                     quantiles = (  # pylint: disable=protected-access
                         algorithm._actor_critic.cost_critic(augmented, action)
                     )
-                    risk = torch.sigmoid(
-                        (quantiles - threshold.reshape(1, 1, 1))
-                        / float(algo_cfgs.risk_temperature),
-                    ).mean()
+                    probability_critic = getattr(  # pylint: disable=protected-access
+                        algorithm._actor_critic,
+                        'violation_critic',
+                        None,
+                    )
+                    if probability_critic is None:
+                        risk = torch.sigmoid(
+                            (quantiles - threshold.reshape(1, 1, 1))
+                            / float(algo_cfgs.risk_temperature),
+                        ).mean()
+                    else:
+                        risk = probability_critic.probabilities(augmented, action).mean()
                 action_norm = float(torch.linalg.vector_norm(action, dim=-1).item())
                 action_norms.append(action_norm)
                 all_action_norms.append(action_norm)
@@ -458,6 +476,9 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
         'cost_cvar_20': _tail_mean(costs),
         'violation_ratio': violations / max(transitions, 1),
         'calibration_error': float((predicted_tensor - empirical_risk).abs().mean().item()),
+        'brier_score': binary_brier_score(predicted_tensor, empirical_risk),
+        'brier_skill': binary_brier_skill(predicted_tensor, empirical_risk),
+        'auroc': binary_auroc(predicted_tensor, empirical_risk),
         'spearman': _spearman(predicted_cost_tensor, empirical_tensor),
         'predicted_risk_mean': float(predicted_tensor.mean().item()),
         'empirical_risk_mean': float(empirical_risk.mean().item()),

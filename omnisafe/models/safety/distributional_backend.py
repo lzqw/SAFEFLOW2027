@@ -21,7 +21,7 @@ from dataclasses import dataclass
 import torch
 
 from omnisafe.models.actor.flow_actor import FlowOutput
-from omnisafe.models.critic.distributional_cost_critic import DistributionalCostCritic
+from omnisafe.models.critic.violation_probability_critic import ViolationProbabilityCritic
 
 
 @dataclass
@@ -92,22 +92,15 @@ def _normal_consistency(head_gradients: torch.Tensor, epsilon: float) -> torch.T
 
 
 def _risk_action_gradients(
-    critic: DistributionalCostCritic,
+    critic: ViolationProbabilityCritic,
     obs: torch.Tensor,
     action: torch.Tensor,
-    threshold: torch.Tensor,
-    risk_temperature: float,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Evaluate head risks and detached first action gradients with frozen critic weights."""
     parameter_flags = [parameter.requires_grad for parameter in critic.parameters()]
     critic.requires_grad_(False)
     try:
-        head_risk = critic.exceedance_probability(
-            obs,
-            action,
-            threshold,
-            risk_temperature,
-        )
+        head_risk = critic.probabilities(obs, action)
         gradients = [
             torch.autograd.grad(
                 head_risk[index].sum(),
@@ -125,13 +118,11 @@ def _risk_action_gradients(
 
 # pylint: disable-next=too-many-arguments,too-many-locals
 def compute_safety_geometry(
-    critic: DistributionalCostCritic,
+    critic: ViolationProbabilityCritic,
     augmented_obs: torch.Tensor,
-    risk_threshold: torch.Tensor,
     flow: FlowOutput,
     enabled: bool,
     late_time: float = 0.5,
-    risk_temperature: float = 1.0,
     boundary: float = 0.5,
     boundary_bandwidth: float = 0.2,
     minimum_gradient_norm: float = 1e-5,
@@ -162,13 +153,10 @@ def compute_safety_geometry(
             augmented_obs.shape[-1],
         )
     )
-    repeated_threshold = risk_threshold.reshape(-1, 1).expand(-1, selected_count).reshape(-1)
     head_risk, head_gradients = _risk_action_gradients(
         critic,
         repeated_obs,
         selected_points,
-        repeated_threshold,
-        risk_temperature,
     )
     risk = head_risk.mean(dim=0)
     gradient = head_gradients.mean(dim=0)

@@ -17,7 +17,7 @@ from typing import Any
 
 MILESTONES = (0, 50_000, 100_000, 200_000, 300_000)
 EXPECTED_SEEDS = (2027, 2028, 2029)
-EXPECTED_EVAL_SEEDS = (12027, 12028, 12029, 12030, 12031)
+EXPECTED_EVAL_SEEDS = tuple(range(12_027, 12_047))
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -300,7 +300,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--output-root', type=Path, required=True)
     result.add_argument('--work-root', type=Path, required=True)
     result.add_argument('--device', default='cuda:0')
-    result.add_argument('--eval-seeds', default='12027,12028,12029,12030,12031')
+    result.add_argument(
+        '--eval-seeds',
+        default=','.join(str(seed) for seed in EXPECTED_EVAL_SEEDS),
+    )
     result.add_argument('--poll-seconds', type=float, default=30.0)
     result.add_argument('--training-source-commit', required=True)
     result.add_argument('--analysis-source-commit')
