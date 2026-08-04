@@ -161,6 +161,8 @@ def group_run_segments(run_dirs: list[Path]) -> dict[int, list[Path]]:
         previous_endpoint: int | None = None
         for endpoint, run_dir, training in entries:
             run_steps = training.get('run_env_steps')
+            if len(entries) > 1 and run_steps is None:
+                raise ValueError(f'run segment {run_dir} is missing run_env_steps')
             if run_steps is not None:
                 start = endpoint - int(run_steps)
                 if start < 0:

@@ -30,6 +30,7 @@ from scripts.star.evaluate_pointgoal_checkpoints import (
     resolve_eval_seeds,
     sample_flow_base,
 )
+from scripts.star.visualize_pointgoal_mechanisms import plot_trajectories
 
 from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
@@ -257,6 +258,19 @@ def test_center_flow_rollout_reports_goal_progress_and_stall_metrics() -> None:
     assert result['step_stall_ratio'] == 1.0
     assert result['mean_return'] == 2.0
     assert algorithm._actor_critic.training
+
+
+def test_trajectory_plot_accepts_seed_qualified_evaluator_artifacts(tmp_path: Path) -> None:
+    """Mechanism rendering consumes the evaluator's current trajectory filename schema."""
+    header = 'milestone,x,y,goal_x,goal_y,hazards_json,hazard_radius\n'
+    row = '20000,0.0,0.0,1.0,1.0,[],0.2\n'
+    (tmp_path / 'trajectory_seed_2027_step_20000.csv').write_text(
+        header + row,
+        encoding='utf-8',
+    )
+    output = tmp_path / 'trajectories.png'
+    assert plot_trajectories(tmp_path, output) == 1
+    assert output.stat().st_size > 0
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:

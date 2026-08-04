@@ -512,7 +512,10 @@ def plot_trajectories(  # pylint: disable=too-many-locals
 ) -> int:
     """Plot every fixed-seed PointGoal trajectory found in a run artifact directory."""
     paths = sorted(
-        artifact_dir.glob('trajectory_step_*.csv'),
+        (
+            *artifact_dir.glob('trajectory_step_*.csv'),
+            *artifact_dir.glob('trajectory_seed_*_step_*.csv'),
+        ),
         key=lambda path: int(path.stem.rsplit('_', maxsplit=1)[-1]),
     )
     if not paths:

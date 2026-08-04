@@ -401,3 +401,19 @@ def test_summarize_rejects_noncontiguous_resume_segments(tmp_path: Path) -> None
             [receipt for item in fixtures for receipt in item[2]],
             tmp_path / 'gap',
         )
+
+
+def test_summarize_rejects_segment_without_run_length(tmp_path: Path) -> None:
+    """Every member of a multi-segment chain must identify its own run length."""
+    fixtures = [split_seed_run(tmp_path, make_seed(tmp_path, seed)) for seed in (2027, 2028, 2029)]
+    final_training = fixtures[0][0][0] / 'artifacts/training_summary.json'
+    payload = json.loads(final_training.read_text(encoding='utf-8'))
+    del payload['run_env_steps']
+    write_json(final_training, payload)
+    with pytest.raises(ValueError, match='missing run_env_steps'):
+        summarize(
+            [run for item in fixtures for run in item[0]],
+            [item[1] for item in fixtures],
+            [receipt for item in fixtures for receipt in item[2]],
+            tmp_path / 'missing-run-length',
+        )
