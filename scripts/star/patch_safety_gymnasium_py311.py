@@ -50,7 +50,7 @@ def patch_package(package_root: Path) -> int:
         changed += int(did_change)
         old = f"    color: np.array = COLOR['{asset_name}']"
         new = (
-            f"    color: np.ndarray = field("
+            f'    color: np.ndarray = field('
             f"default_factory=lambda: COLOR['{asset_name}'].copy())"
         )
         text, did_change = _replace_once(text, old, new, path)
@@ -59,7 +59,7 @@ def patch_package(package_root: Path) -> int:
         # GROUP values are integers and therefore valid dataclass defaults. Undo an early
         # compatibility-patch revision that treated every subscripted value as mutable.
         patched_group = (
-            f"    group: np.ndarray = field("
+            f'    group: np.ndarray = field('
             f"default_factory=lambda: GROUP['{asset_name}'].copy())"
         )
         original_group = f"    group: np.array = GROUP['{asset_name}']"

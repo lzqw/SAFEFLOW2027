@@ -185,7 +185,7 @@ class FailureCostMujocoEnv(CMDP):
         return torch.as_tensor(obs, dtype=torch.float32, device=self._device), info
 
     def set_seed(self, seed: int) -> None:
-        """Seed the environment once; later automatic resets advance its RNG state."""
+        """Seed once; later automatic resets advance the random-number generator state."""
         self.reset(seed=seed)
 
     def get_sim_state(self) -> tuple[np.ndarray, np.ndarray]:

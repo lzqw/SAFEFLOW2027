@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Benchmark end-to-end SACLag throughput across process/vector-env configurations.
 
-Each worker pre-fills replay, performs a real update warmup, waits at a file barrier,
+Each worker pre-fills replay, performs a real update warm-up, waits at a file barrier,
 then measures rollout + backward updates + periodic evaluation.  For E vector
 environments, the worker performs E optimizer updates per vector step and scales the
 OmniSafe per-environment batch so that the global batch remains constant.  Therefore
@@ -20,6 +20,7 @@ import subprocess
 import sys
 import time
 import traceback
+from contextlib import suppress
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import fmean
@@ -84,9 +85,13 @@ def read_number(path: Path) -> float | None:
 
 def cpu_quota() -> float:
     try:
-        quota_text, period_text = Path('/sys/fs/cgroup/cpu.max').read_text(
-            encoding='utf-8',
-        ).split()
+        quota_text, period_text = (
+            Path('/sys/fs/cgroup/cpu.max')
+            .read_text(
+                encoding='utf-8',
+            )
+            .split()
+        )
     except (OSError, ValueError):
         return float(psutil.cpu_count() or 1)
     return (
@@ -115,6 +120,7 @@ def run_worker(args: argparse.Namespace) -> None:  # pylint: disable=too-many-lo
     algo: Any = None
     try:
         import torch
+
         import omnisafe
 
         if args.global_batch_size % args.vector_envs:
@@ -268,14 +274,10 @@ def run_worker(args: argparse.Namespace) -> None:  # pylint: disable=too-many-lo
         raise
     finally:
         if algo is not None:
-            try:
+            with suppress(Exception):
                 algo._logger.close()
-            except Exception:  # pylint: disable=broad-exception-caught
-                pass
-            try:
+            with suppress(Exception):
                 algo._env.close()
-            except Exception:  # pylint: disable=broad-exception-caught
-                pass
 
     atomic_json(result_path, payload)
 
@@ -399,15 +401,9 @@ def write_recommendations(csv_path: Path, rows: list[dict[str, Any]]) -> None:
             by_env[env_id] = row
 
     def best_family(point: bool) -> dict[str, Any] | None:
-        candidates = [
-            row
-            for row in valid
-            if str(row['env_id']).startswith('SafetyPoint') is point
-        ]
+        candidates = [row for row in valid if str(row['env_id']).startswith('SafetyPoint') is point]
         return (
-            max(candidates, key=lambda row: float(row['aggregate_env_fps']))
-            if candidates
-            else None
+            max(candidates, key=lambda row: float(row['aggregate_env_fps'])) if candidates else None
         )
 
     def compact(row: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -531,10 +527,8 @@ def run_matrix(  # pylint: disable=too-many-locals,too-many-statements
 
             roots = [psutil.Process(worker.pid) for worker in workers]
             for process in processes_for(roots):
-                try:
+                with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
                     process.cpu_percent(interval=None)
-                except (psutil.NoSuchProcess, psutil.AccessDenied):
-                    pass
             atomic_json(start_marker, {'start_at_utc': utc_now(), 'config': config_name})
             measurement_wall_started = time.monotonic()
             samples: list[dict[str, float]] = []
