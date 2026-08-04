@@ -156,94 +156,144 @@ def action_risk_grid(
 
 def fixed_budget_risk_strata(  # pylint: disable=too-many-locals
     algorithm: Any,
-    state: dict[str, torch.Tensor],
+    sample_size: int,
     grid_size: int,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Measure fixed-budget safe/boundary/high-risk samples and their action normals."""
+    """Select fixed-budget replay strata and measure each selected action-risk surface."""
     device = algorithm._device  # pylint: disable=protected-access
     algo_cfgs = algorithm._cfgs.algo_cfgs  # pylint: disable=protected-access
     critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
     if critic is None:
         raise RuntimeError('P4.1 probability critic is unavailable')
+    resident = algorithm._buf  # pylint: disable=protected-access
+    replay_indices = deterministic_indices(resident.size, sample_size)
+    replay_obs = resident.data['obs'][replay_indices].to(device)
+    replay_context = resident.data['context'][replay_indices].to(device)
     axis = torch.linspace(-1.0, 1.0, grid_size, device=device)
     first, second = torch.meshgrid(axis, axis, indexing='ij')
     base_actions = torch.stack((first.reshape(-1), second.reshape(-1)), dim=-1)
     boundary = float(algo_cfgs.risk_boundary)
     bandwidth = float(algo_cfgs.boundary_bandwidth)
+    ucb_beta = float(algo_cfgs.risk_ucb_beta)
     rows: list[dict[str, Any]] = []
     panels: list[dict[str, Any]] = []
 
     for budget_ratio in (1.0, 0.5, 0.2, 0.0):
-        context = state['context'].clone()
+        context = replay_context.clone()
         context[:, 0] = budget_ratio
-        augmented = algorithm._augment(  # pylint: disable=protected-access
-            state['raw_obs'],
+        augmented_candidates = algorithm._augment(  # pylint: disable=protected-access
+            replay_obs,
             context,
-        ).expand(base_actions.shape[0], -1)
-        actions = base_actions.detach().clone().requires_grad_(True)
-        parameter_flags = [parameter.requires_grad for parameter in critic.parameters()]
-        critic.requires_grad_(False)
-        try:
-            head_risk = critic.probabilities(augmented, actions)
-            head_gradients = torch.stack(
-                [
-                    torch.autograd.grad(
-                        head_risk[index].sum(),
-                        actions,
-                        retain_graph=True,
-                    )[0]
-                    for index in range(head_risk.shape[0])
-                ],
-                dim=0,
-            )
-        finally:
-            for parameter, flag in zip(critic.parameters(), parameter_flags):
-                parameter.requires_grad_(flag)
-        risk = head_risk.detach().mean(dim=0)
-        gradient = head_gradients.mean(dim=0)
-        gradient_norm = gradient.norm(dim=-1)
-        normals = gradient / gradient_norm.unsqueeze(-1).clamp_min(1e-8)
-        unit_heads = head_gradients / head_gradients.norm(dim=-1, keepdim=True).clamp_min(1e-8)
-        agreements = []
-        for first_head in range(head_gradients.shape[0]):
-            for second_head in range(first_head + 1, head_gradients.shape[0]):
-                cosine = (unit_heads[first_head] * unit_heads[second_head]).sum(dim=-1)
-                agreements.append(0.5 * (1.0 + cosine.clamp(-1.0, 1.0)))
-        consistency = (
-            torch.stack(agreements).mean(dim=0) if agreements else torch.ones_like(gradient_norm)
         )
+        with torch.no_grad():
+            candidate_actions = algorithm._actor_critic.step(  # pylint: disable=protected-access
+                augmented_candidates,
+                deterministic=True,
+            )
+            candidate_heads = critic.probabilities(augmented_candidates, candidate_actions)
+            candidate_mean = candidate_heads.mean(dim=0)
+            candidate_ucb = (
+                candidate_mean + ucb_beta * candidate_heads.std(dim=0, unbiased=False)
+            ).clamp(0.0, 1.0)
         strata = {
-            'safe': risk < boundary - bandwidth,
-            'boundary': (risk - boundary).abs() <= bandwidth,
-            'high_risk': risk > boundary + bandwidth,
+            'safe': candidate_ucb < boundary - bandwidth,
+            'boundary': (candidate_ucb - boundary).abs() <= bandwidth,
+            'high_risk': candidate_ucb > boundary + bandwidth,
         }
         for name, selected in strata.items():
             count = int(selected.sum().item())
             risk_span = None
-            mean_gradient_norm = None
+            local_gradient_norm = None
             disagreement = None
             probability_disagreement = None
             normal = [None, None]
+            selected_action = [None, None]
+            selected_mean_risk = None
+            selected_risk_ucb = None
+            selected_replay_index = None
+            surface_actions = torch.empty((0, 2))
+            surface_risk = torch.empty(0)
             if count:
-                selected_risk = risk[selected]
+                positions = torch.nonzero(selected, as_tuple=False).flatten()
+                stratum_risk = candidate_ucb[positions]
+                if name == 'safe':
+                    relative_index = int(stratum_risk.argmin().item())
+                elif name == 'boundary':
+                    relative_index = int((stratum_risk - boundary).abs().argmin().item())
+                else:
+                    relative_index = int(stratum_risk.argmax().item())
+                position = int(positions[relative_index].item())
+                chosen_augmented = augmented_candidates[position : position + 1]
+                chosen_action = candidate_actions[position : position + 1]
+                surface_augmented = chosen_augmented.expand(base_actions.shape[0], -1)
+                with torch.no_grad():
+                    surface_heads = critic.probabilities(surface_augmented, base_actions)
+                    surface_mean = surface_heads.mean(dim=0)
                 risk_span = float(
-                    (torch.quantile(selected_risk, 0.95) - torch.quantile(selected_risk, 0.05))
+                    (torch.quantile(surface_mean, 0.95) - torch.quantile(surface_mean, 0.05))
                     .detach()
                     .item(),
                 )
-                mean_gradient_norm = float(gradient_norm[selected].mean().detach().item())
-                disagreement = float((1.0 - consistency[selected]).mean().detach().item())
-                probability_disagreement = float(
-                    head_risk[:, selected].std(dim=0, unbiased=False).mean().detach().item(),
+                differentiable_action = chosen_action.detach().clone().requires_grad_(True)
+                parameter_flags = [parameter.requires_grad for parameter in critic.parameters()]
+                critic.requires_grad_(False)
+                try:
+                    local_heads = critic.probabilities(chosen_augmented, differentiable_action)
+                    head_gradients = torch.stack(
+                        [
+                            torch.autograd.grad(
+                                local_heads[index].sum(),
+                                differentiable_action,
+                                retain_graph=True,
+                            )[0]
+                            for index in range(local_heads.shape[0])
+                        ],
+                        dim=0,
+                    )
+                finally:
+                    for parameter, flag in zip(critic.parameters(), parameter_flags):
+                        parameter.requires_grad_(flag)
+                gradient = head_gradients.mean(dim=0)[0]
+                gradient_norm = gradient.norm()
+                local_gradient_norm = float(gradient_norm.detach().item())
+                normal_tensor = (gradient / gradient_norm.clamp_min(1e-8)).detach().cpu()
+                normal = [float(normal_tensor[0]), float(normal_tensor[1])]
+                unit_heads = head_gradients / head_gradients.norm(
+                    dim=-1,
+                    keepdim=True,
+                ).clamp_min(1e-8)
+                agreements = []
+                for first_head in range(head_gradients.shape[0]):
+                    for second_head in range(first_head + 1, head_gradients.shape[0]):
+                        cosine = (unit_heads[first_head] * unit_heads[second_head]).sum(dim=-1)
+                        agreements.append(0.5 * (1.0 + cosine.clamp(-1.0, 1.0)))
+                consistency = (
+                    torch.stack(agreements).mean() if agreements else torch.ones((), device=device)
                 )
-                mean_normal = normals[selected].mean(dim=0).detach().cpu()
-                normal = [float(mean_normal[0]), float(mean_normal[1])]
+                disagreement = float((1.0 - consistency).detach().item())
+                probability_disagreement = float(
+                    local_heads.std(dim=0, unbiased=False).mean().detach().item(),
+                )
+                selected_action = [
+                    float(chosen_action[0, 0].item()),
+                    float(chosen_action[0, 1].item()),
+                ]
+                selected_mean_risk = float(candidate_mean[position].item())
+                selected_risk_ucb = float(candidate_ucb[position].item())
+                selected_replay_index = int(replay_indices[position].item())
+                surface_actions = base_actions.detach().cpu()
+                surface_risk = surface_mean.detach().cpu()
             row = {
                 'budget_ratio': budget_ratio,
                 'risk_stratum': name,
                 'sample_count': count,
+                'selected_replay_index': selected_replay_index,
+                'selected_predicted_risk': selected_mean_risk,
+                'selected_risk_ucb': selected_risk_ucb,
+                'selected_action_0': selected_action[0],
+                'selected_action_1': selected_action[1],
                 'risk_p95_minus_p05': risk_span,
-                'gradient_norm': mean_gradient_norm,
+                'gradient_norm': local_gradient_norm,
                 'ensemble_disagreement': disagreement,
                 'probability_disagreement': probability_disagreement,
                 'normal_0': normal[0],
@@ -253,8 +303,8 @@ def fixed_budget_risk_strata(  # pylint: disable=too-many-locals
             panels.append(
                 {
                     **row,
-                    'actions': actions.detach()[selected].cpu(),
-                    'risk': risk[selected].cpu(),
+                    'actions': surface_actions,
+                    'risk': surface_risk,
                 },
             )
     return rows, panels
@@ -269,7 +319,7 @@ def write_fixed_budget_strata(path: Path, rows: list[dict[str, Any]]) -> None:
 
 
 def plot_fixed_budget_strata(path: Path, panels: list[dict[str, Any]], step: int) -> None:
-    """Render fixed budgets by safe/boundary/high-risk action samples and mean normal."""
+    """Render action-risk surfaces for fixed-budget safe/boundary/high-risk states."""
     figure, axes = plt.subplots(4, 3, figsize=(10.5, 12.5), sharex=True, sharey=True)
     for panel, axis in zip(panels, axes.flat):
         actions = panel['actions']
@@ -285,8 +335,8 @@ def plot_fixed_budget_strata(path: Path, panels: list[dict[str, Any]], step: int
                 s=7,
             )
             axis.quiver(
-                0.0,
-                0.0,
+                panel['selected_action_0'],
+                panel['selected_action_1'],
                 panel['normal_0'],
                 panel['normal_1'],
                 color='black',
@@ -295,7 +345,7 @@ def plot_fixed_budget_strata(path: Path, panels: list[dict[str, Any]], step: int
             )
         axis.set_title(
             f"b={panel['budget_ratio']:.1f}, {panel['risk_stratum']}\n"
-            f"n={panel['sample_count']}, |∇p|={panel['gradient_norm'] or 0.0:.3g}",
+            f"states={panel['sample_count']}, |∇p|={panel['gradient_norm'] or 0.0:.3g}",
         )
         axis.set_xlim(-1.0, 1.0)
         axis.set_ylim(-1.0, 1.0)
@@ -587,7 +637,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--work-dir', type=Path, required=True)
     result.add_argument('--trajectory-artifact-dir', type=Path)
     result.add_argument('--device', default='cuda:0')
-    result.add_argument('--sample-size', type=int, default=4096)
+    result.add_argument('--sample-size', type=int, default=50_000)
     result.add_argument('--grid-size', type=int, default=51)
     result.add_argument('--base-grid-size', type=int, default=7)
     return result
@@ -612,7 +662,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         story = flow_storyboard(algorithm, state, args.base_grid_size)
         strata_rows, strata_panels = fixed_budget_risk_strata(
             algorithm,
-            state,
+            args.sample_size,
             args.grid_size,
         )
         write_action_grid(args.output_dir / 'action_risk_map.csv', grid)

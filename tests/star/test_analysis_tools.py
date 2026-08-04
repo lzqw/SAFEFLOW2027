@@ -30,7 +30,11 @@ from scripts.star.evaluate_pointgoal_checkpoints import (
     resolve_eval_seeds,
     sample_flow_base,
 )
-from scripts.star.visualize_pointgoal_mechanisms import plot_trajectories, representative_state
+from scripts.star.visualize_pointgoal_mechanisms import (
+    fixed_budget_risk_strata,
+    plot_trajectories,
+    representative_state,
+)
 
 from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
@@ -303,6 +307,46 @@ def test_mechanism_representative_is_deterministic_and_risk_independent() -> Non
     assert first['replay_index'].item() == 2
     assert first['raw_obs'].item() == pytest.approx(0.9)
     assert torch.equal(first['raw_obs'], second['raw_obs'])
+
+
+def test_fixed_budget_visuals_select_each_replay_risk_stratum() -> None:
+    """Each fixed budget selects safe, boundary, and high-risk replay observations."""
+
+    class _SmoothRiskHead(torch.nn.Module):
+        @staticmethod
+        def probabilities(observation: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
+            risk = torch.sigmoid(4.0 * (observation[:, 0] + 0.25 * action[:, 0]))
+            return torch.stack((risk, risk))
+
+    actor_critic = SimpleNamespace(
+        violation_critic=_SmoothRiskHead(),
+        step=lambda observation, deterministic: torch.zeros(observation.shape[0], 2),
+    )
+    algorithm = SimpleNamespace(
+        _actor_critic=actor_critic,
+        _augment=lambda observation, context: torch.cat((observation, context), dim=-1),
+        _buf=SimpleNamespace(
+            size=3,
+            data={
+                'obs': torch.tensor([[-2.0], [0.0], [2.0]]),
+                'context': torch.zeros(3, 2),
+            },
+        ),
+        _cfgs=SimpleNamespace(
+            algo_cfgs=SimpleNamespace(
+                boundary_bandwidth=0.15,
+                risk_boundary=0.5,
+                risk_ucb_beta=0.0,
+            ),
+        ),
+        _device=torch.device('cpu'),
+    )
+    rows, panels = fixed_budget_risk_strata(algorithm, sample_size=3, grid_size=5)
+    assert len(rows) == 12
+    assert len(panels) == 12
+    assert {row['sample_count'] for row in rows} == {1}
+    assert [row['selected_replay_index'] for row in rows[:3]] == [0, 1, 2]
+    assert all(row['risk_p95_minus_p05'] > 0 for row in rows)
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:
