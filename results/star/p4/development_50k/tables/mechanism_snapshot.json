@@ -1,0 +1,26 @@
+{
+  "checkpoint": "/root/autodl-tmp/SAFE/runs/active/star-p4-dev50-original-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-04-12-42-51/checkpoints/final_full.pt",
+  "env_steps": 50000,
+  "environment": "SafetyPointGoal1-v0",
+  "flow_terminal_risk_mean": 0.5000335574150085,
+  "replay_capacity": 100000,
+  "representative_action": [
+    0.2166953831911087,
+    0.9386193156242371
+  ],
+  "representative_context": 0.0,
+  "representative_head_risks": [
+    0.5000129342079163,
+    0.5000528693199158
+  ],
+  "representative_predicted_risk": 0.500032901763916,
+  "representative_threshold": 0.0,
+  "risk_grid_max": 0.5000539422035217,
+  "risk_grid_min": 0.5000176429748535,
+  "risk_normal": [
+    0.9997801184654236,
+    -0.02096756547689438
+  ],
+  "seed": 2027,
+  "trajectory_files": 2
+}

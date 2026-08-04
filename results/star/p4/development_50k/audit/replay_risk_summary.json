@@ -1,0 +1,30 @@
+{
+  "calibration_ece": 0.17593649276757162,
+  "calibration_mae": 0.19077929854393005,
+  "checkpoint": "/root/autodl-tmp/SAFE/runs/active/star-p4-dev50-original-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-04-12-42-51/checkpoints/final_full.pt",
+  "current_boundary_low": 0.1,
+  "current_boundary_safe": 0.4,
+  "empirical_risk_mean": 0.13605999946594238,
+  "env_steps": 50000,
+  "environment": "SafetyPointGoal1-v0",
+  "labeled_count": 50000,
+  "predicted_cost_empirical_cost_spearman": 0.1996438090805949,
+  "predicted_risk_mean": 0.11671038717031479,
+  "predicted_risk_p10": 4.539808287518099e-05,
+  "predicted_risk_p50": 4.542090027825907e-05,
+  "predicted_risk_p90": 0.502637505531311,
+  "replay_capacity": 100000,
+  "replay_size": 50000,
+  "resident_boundary_immediate_violation_fraction": 0.0,
+  "resident_boundary_source_random_fraction": 0.0,
+  "resident_pool_sizes": {
+    "boundary": 564,
+    "failure": 1229,
+    "normal": 48207
+  },
+  "risk_boundary": 0.5,
+  "sample_count": 50000,
+  "sample_is_full_replay": true,
+  "seed": 2027,
+  "unlabeled_count": 0
+}
