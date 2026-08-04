@@ -913,6 +913,8 @@ class STAR(BaseAlgo):
                         if position is None:
                             position = (float(obs[0, 0].item()), float(obs[0, 1].item()))
                             position_source = 'observation_projection'
+                        layout = self._env.evaluation_layout() or {}
+                        goal = layout.get('goal')
                         trajectory.append(
                             {
                                 'milestone': milestone,
@@ -921,6 +923,15 @@ class STAR(BaseAlgo):
                                 'x': position[0],
                                 'y': position[1],
                                 'position_source': position_source,
+                                'goal_x': goal[0] if goal is not None else None,
+                                'goal_y': goal[1] if goal is not None else None,
+                                'hazards_json': (
+                                    json.dumps(layout.get('hazards', []), separators=(',', ':'))
+                                    if step == 0
+                                    else ''
+                                ),
+                                'goal_radius': layout.get('goal_radius'),
+                                'hazard_radius': layout.get('hazard_radius'),
                             },
                         )
                     next_obs, reward, cost, terminated, truncated, info = evaluation_env.step(

@@ -18,13 +18,15 @@ from __future__ import annotations
 
 import random
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 import pytest
 import torch
 from torch import nn, optim
 
-from omnisafe.adapter.star_adapter import STARContext
+from omnisafe.adapter.star_adapter import STARAdapter, STARContext
 from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
 from omnisafe.common.buffer.star_replay_buffer import STARReplayBuffer, updates_for_transitions
 from omnisafe.common.normalizer import Normalizer
@@ -239,6 +241,30 @@ def test_point_budget_and_locomotion_horizon_have_distinct_semantics() -> None:
     )
     assert next_horizon.item() == pytest.approx(0.999)
     assert next_failure_threshold.item() == 0.5
+
+
+def test_point_evaluation_layout_reads_native_goal_and_hazards() -> None:
+    task = SimpleNamespace(
+        agent=SimpleNamespace(pos=torch.tensor([0.25, -0.5, 0.1])),
+        goal=SimpleNamespace(pos=torch.tensor([1.0, -1.0, 0.16]), size=0.3),
+        hazards=SimpleNamespace(
+            pos=[torch.tensor([0.5, 0.75, 0.02]), torch.tensor([-0.25, 0.0, 0.02])],
+            size=0.2,
+        ),
+    )
+    adapter = object.__new__(STARAdapter)
+    with patch.object(
+        STARAdapter,
+        '_evaluation_task',  # pylint: disable=protected-access
+        return_value=task,
+    ):
+        assert adapter.evaluation_position() == (0.25, -0.5)
+        layout = adapter.evaluation_layout()
+    assert layout is not None
+    assert layout['goal'] == (1.0, -1.0)
+    assert layout['hazards'] == [(0.5, 0.75), (-0.25, 0.0)]
+    assert layout['goal_radius'] == pytest.approx(0.3)
+    assert layout['hazard_radius'] == pytest.approx(0.2)
 
 
 def test_checkpoint_restores_model_optimizer_dual_normalizer_rng_and_steps(

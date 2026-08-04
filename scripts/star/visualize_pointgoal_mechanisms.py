@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Render PointGoal action-risk, flow-storyboard, and trajectory mechanism artifacts."""
 
+# The two standalone visualization CLIs intentionally share compact layout-rendering logic.
+# pylint: disable=duplicate-code
+
 from __future__ import annotations
 
 import argparse
@@ -12,6 +15,7 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import torch
+from matplotlib.patches import Circle
 
 import omnisafe
 
@@ -353,7 +357,10 @@ def plot_storyboard(
     plt.close(figure)
 
 
-def plot_trajectories(artifact_dir: Path, output: Path) -> int:
+def plot_trajectories(  # pylint: disable=too-many-locals
+    artifact_dir: Path,
+    output: Path,
+) -> int:
     """Plot every fixed-seed PointGoal trajectory found in a run artifact directory."""
     paths = sorted(
         artifact_dir.glob('trajectory_step_*.csv'),
@@ -362,6 +369,8 @@ def plot_trajectories(artifact_dir: Path, output: Path) -> int:
     if not paths:
         return 0
     figure, axes = plt.subplots(figsize=(6.0, 5.5), constrained_layout=True)
+    hazards_drawn = False
+    goals_labeled = False
     for path in paths:
         with path.open(encoding='utf-8', newline='') as stream:
             rows = list(csv.DictReader(stream))
@@ -373,6 +382,42 @@ def plot_trajectories(artifact_dir: Path, output: Path) -> int:
         axes.plot(x_values, y_values, linewidth=1.4, label=f'{step // 1000}k')
         axes.scatter([x_values[0]], [y_values[0]], s=18, marker='o')
         axes.scatter([x_values[-1]], [y_values[-1]], s=28, marker='x')
+        if not hazards_drawn:
+            hazards_json = next(
+                (row.get('hazards_json', '') for row in rows if row.get('hazards_json')),
+                '',
+            )
+            hazards = json.loads(hazards_json) if hazards_json else []
+            radius_text = rows[0].get('hazard_radius', '')
+            hazard_radius = float(radius_text) if radius_text else 0.2
+            for hazard_index, center in enumerate(hazards):
+                axes.add_patch(
+                    Circle(
+                        center,
+                        hazard_radius,
+                        color='tab:red',
+                        alpha=0.22,
+                        label='hazard' if hazard_index == 0 else None,
+                    ),
+                )
+            hazards_drawn = bool(hazards)
+        goals = {
+            (float(row['goal_x']), float(row['goal_y']))
+            for row in rows
+            if row.get('goal_x') and row.get('goal_y')
+        }
+        if goals:
+            goal_x, goal_y = zip(*sorted(goals))
+            axes.scatter(
+                goal_x,
+                goal_y,
+                s=70,
+                marker='*',
+                color='tab:green',
+                label=None if goals_labeled else 'goal locations',
+                zorder=4,
+            )
+            goals_labeled = True
     axes.set(xlabel='simulator x', ylabel='simulator y', title='Fixed-seed PointGoal trajectories')
     axes.axis('equal')
     axes.legend(title='checkpoint')

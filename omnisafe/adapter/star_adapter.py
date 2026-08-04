@@ -161,6 +161,13 @@ class STARAdapter(OnlineAdapter):  # pylint: disable=too-many-instance-attribute
 
     def evaluation_position(self) -> tuple[float, float] | None:
         """Read Point robot XY without changing either environment state."""
+        task = self._evaluation_task()
+        agent = getattr(task, 'agent', None)
+        position = getattr(agent, 'pos', None)
+        return self._xy(position)
+
+    def _evaluation_task(self) -> Any | None:
+        """Unwrap the isolated evaluator and return its native task object."""
         current = cast(Any, self.evaluation_env)
         while current.__class__.__module__.startswith('omnisafe.envs.wrapper'):
             current = current._env  # pylint: disable=protected-access
@@ -168,15 +175,42 @@ class STARAdapter(OnlineAdapter):  # pylint: disable=too-many-instance-attribute
         if native is None:
             return None
         base = cast(Any, native.unwrapped)
-        task = getattr(base, 'task', None)
-        agent = getattr(task, 'agent', None)
-        position = getattr(agent, 'pos', None)
+        return getattr(base, 'task', None)
+
+    @staticmethod
+    def _xy(position: Any) -> tuple[float, float] | None:
+        """Convert a simulator position to a plain XY pair."""
         if position is None:
             return None
         values = torch.as_tensor(position).flatten()
         if values.numel() < 2:
             return None
         return float(values[0].item()), float(values[1].item())
+
+    def evaluation_layout(self) -> dict[str, Any] | None:
+        """Read Point goal and hazard geometry without mutating evaluator state."""
+        task = self._evaluation_task()
+        goal_object = getattr(task, 'goal', None)
+        hazards_object = getattr(task, 'hazards', None)
+        goal = self._xy(getattr(goal_object, 'pos', None))
+        hazard_positions = getattr(hazards_object, 'pos', None)
+        hazards: list[tuple[float, float]] = []
+        if hazard_positions is not None:
+            positions: Any
+            if isinstance(hazard_positions, (list, tuple)):
+                positions = hazard_positions
+            else:
+                values = torch.as_tensor(hazard_positions)
+                positions = values.unsqueeze(0) if values.ndim == 1 else values
+            hazards = [pair for position in positions if (pair := self._xy(position)) is not None]
+        if goal is None and not hazards:
+            return None
+        return {
+            'goal': goal,
+            'hazards': hazards,
+            'goal_radius': float(getattr(goal_object, 'size', 0.3)),
+            'hazard_radius': float(getattr(hazards_object, 'size', 0.2)),
+        }
 
     def collect_step(  # pylint: disable=too-many-locals
         self,

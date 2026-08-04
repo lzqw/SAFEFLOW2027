@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Plot compact STAR training, evaluation, counterfactual, and trajectory diagnostics."""
 
+# The two standalone visualization CLIs intentionally share compact layout-rendering logic.
+# pylint: disable=duplicate-code
+
 from __future__ import annotations
 
 import argparse
@@ -12,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 
 
 plt.switch_backend('Agg')
@@ -249,10 +253,15 @@ def plot_training(run_dirs: list[Path], output: Path) -> None:  # pylint: disabl
     plt.close(figure)
 
 
-def plot_trajectories(run_dirs: list[Path], output: Path) -> int:
+def plot_trajectories(  # pylint: disable=too-many-locals
+    run_dirs: list[Path],
+    output: Path,
+) -> int:
     """Overlay every saved fixed-seed PointGoal trajectory."""
     figure, axes = plt.subplots(figsize=(6.2, 5.6), constrained_layout=True)
     count = 0
+    hazards_drawn = False
+    goals_labeled = False
     for run_index, run_dir in enumerate(run_dirs):
         paths = sorted(
             (run_dir / 'artifacts').glob('trajectory_step_*.csv'),
@@ -269,6 +278,41 @@ def plot_trajectories(run_dirs: list[Path], output: Path) -> int:
             axes.plot(x_values, y_values, linewidth=1.2, alpha=0.85, label=label)
             axes.scatter([x_values[0]], [y_values[0]], s=14, marker='o')
             axes.scatter([x_values[-1]], [y_values[-1]], s=22, marker='x')
+            if not hazards_drawn:
+                hazards_json = next(
+                    (row.get('hazards_json', '') for row in rows if row.get('hazards_json')),
+                    '',
+                )
+                hazards = json.loads(hazards_json) if hazards_json else []
+                hazard_radius = number(rows[0], 'hazard_radius')
+                for hazard_index, center in enumerate(hazards):
+                    axes.add_patch(
+                        Circle(
+                            center,
+                            hazard_radius if math.isfinite(hazard_radius) else 0.2,
+                            color='tab:red',
+                            alpha=0.22,
+                            label='hazard' if hazard_index == 0 else None,
+                        ),
+                    )
+                hazards_drawn = bool(hazards)
+            goals = {
+                (number(row, 'goal_x'), number(row, 'goal_y'))
+                for row in rows
+                if math.isfinite(number(row, 'goal_x')) and math.isfinite(number(row, 'goal_y'))
+            }
+            if goals:
+                goal_x, goal_y = zip(*sorted(goals))
+                axes.scatter(
+                    goal_x,
+                    goal_y,
+                    s=70,
+                    marker='*',
+                    color='tab:green',
+                    label=None if goals_labeled else 'goal locations',
+                    zorder=4,
+                )
+                goals_labeled = True
             count += 1
     if count:
         axes.set(
