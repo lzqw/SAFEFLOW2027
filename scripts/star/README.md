@@ -170,6 +170,24 @@ With this option, fixed-milestone return/cost and tie-correct Spearman values co
 CUDA re-evaluation. The legacy online per-batch rank statistic remains in the raw diagnostic CSV
 for provenance, but it is not plotted or used as formal correlation evidence.
 
+The same sequence can be run unattended after launching all three training processes:
+
+```bash
+nohup python scripts/star/run_pointgoal_p4_postprocess.py \
+  --source-dir ANALYSIS_WORKTREE --python PYTHON_IN_PINNED_ENV \
+  --run-parents RUN_PARENT_2027 RUN_PARENT_2028 RUN_PARENT_2029 \
+  --receipts RECEIPT_2027.json RECEIPT_2028.json RECEIPT_2029.json \
+  --pid-files RUN_PARENT_2027/pid RUN_PARENT_2028/pid RUN_PARENT_2029/pid \
+  --output-root /root/autodl-tmp/SAFE/artifacts/p4/final-300k \
+  --work-root /root/autodl-tmp/SAFE/runs/analysis/p4-final-300k \
+  --device cuda:0 --training-source-commit TRAINING_COMMIT \
+  --analysis-source-commit ANALYSIS_COMMIT >p4-postprocess.log 2>&1 &
+```
+
+The launcher first validates exact 300k/298k counters, seeds, milestones, and non-empty checkpoint
+files. Its `postprocess_receipt.json` status only records pipeline completion; the scientific
+PASS/FAIL remains exclusively in `summary/pointgoal_p4_verdict.json`.
+
 ## Monitoring and publication
 
 Port 6006 is reserved for TensorBoard:
