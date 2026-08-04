@@ -1,7 +1,7 @@
-# STAR P0/P1 server reproduction
+# STAR server reproduction
 
-This directory reproduces only the P0 and P1 engineering gates. It does not launch STAR P2+
-training. The development branch starts from OmniSafe commit
+This directory reproduces the P0/P1 engineering gates and the P2-P4 STAR route-A validation.
+The development branch starts from OmniSafe commit
 `15603dd7a654a991d0a4648216b69d60b81a6366`; FLAC
 `61a25eef42935fc395b1e04071e2779311fcb705` and SHAPO
 `1bb770437bbbe40a89938661343744243e164bf9` are read-only references.
@@ -19,7 +19,7 @@ kept below `/root/autodl-tmp/SAFE`:
   envs/star-p0-p1/
   cache/{pip,conda,torchinductor,tmp}/
   runs/{active,completed}/
-  artifacts/{p0,p1}/
+  artifacts/{p0,p1,p2,p3,p4}/
 ```
 
 The system disk is not used for environments, caches, runs, checkpoints, or videos. P0 requires
@@ -85,6 +85,62 @@ has cost 1. A time-limit truncation has cost 0. Replay stores `terminated` and `
 separately, and the Bellman `done` mask is exactly `terminated`, including the rare case where
 termination and truncation coincide.
 
+## P2-P4 validation
+
+Run the focused module and loop tests before launching GPU work:
+
+```bash
+python -m pytest tests/star -q
+```
+
+The P3 compatibility matrix runs STAR for 20k steps on PointGoal, PointButton, Ant, and Walker.
+The throughput benchmark is a workload measurement and explicitly labels forced-W3 measurements;
+it is not evidence that a training run passed the W3 gate:
+
+```bash
+python scripts/star/run_star_smoke_matrix.py --help
+python scripts/star/benchmark_star_throughput.py --help
+```
+
+One preregistered P4 PointGoal seed is launched as follows. Use seeds 2027, 2028, and 2029 as
+three independent processes for the final validation; all three use the same fixed evaluation
+seeds.
+
+```bash
+python scripts/star/train_star.py \
+  --config configs/star/SafetyPointGoal1-v0.yaml \
+  --steps 300000 --steps-per-epoch 5000 --seed 2027 --device cuda:0 \
+  --batch-size 256 --replay-size 500000 --random-steps 2000 \
+  --eval-episodes 5 --eval-seeds 12027,12028,12029,12030,12031 \
+  --eval-milestones 0,50000,100000,200000,300000 \
+  --log-dir /root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2027/runs \
+  --result /root/autodl-tmp/SAFE/artifacts/p4/star-p4-300k-seed2027.json \
+  --checkpoint-replay --no-tensorboard
+```
+
+Resume only from a full checkpoint, preserving the final total-step target:
+
+```bash
+scripts/star/resume_star.sh FINAL_FULL_CHECKPOINT SafetyPointGoal1-v0 300000 RESUME_LOG_DIR \
+  --device cuda:0 --result RESUME_RECEIPT.json --no-tensorboard
+```
+
+After running `analyze_pointgoal_replay.py` for every final full checkpoint, aggregate the three
+run directories, three audit directories, and three launcher receipts with:
+
+```bash
+python scripts/star/summarize_pointgoal_p4.py \
+  --run-dirs RUN_2027 RUN_2028 RUN_2029 \
+  --audit-dirs AUDIT_2027 AUDIT_2028 AUDIT_2029 \
+  --receipts RECEIPT_2027.json RECEIPT_2028.json RECEIPT_2029.json \
+  --output-dir /root/autodl-tmp/SAFE/artifacts/p4/summary
+```
+
+The summarizer emits per-run and cross-seed evaluation CSVs, a mechanism CSV, and a strict
+machine-readable verdict. In particular, dangerous normal velocity is compared from the final W2
+diagnostic interval to the final 300k interval; toggling a gate on one already-trained actor is not
+misreported as a flow-motion counterfactual.
+
 ## Monitoring and publication
 
 Port 6006 is reserved for TensorBoard:
@@ -93,9 +149,10 @@ Port 6006 is reserved for TensorBoard:
 scripts/star/launch_p0_p1.sh tensorboard
 ```
 
-Port 6008 is reserved for read-only monitoring and is never a training dependency. Runs are safe
-to execute in `tmux`; browser disconnection does not affect them.
+Port 6008 is reserved for read-only monitoring and is never a training dependency. Long runs must
+be detached from the SSH connection with the server's available process supervisor (the validated
+server used `nohup` with separate PID and console-log files).
 
 After a gate passes, sync only source and small reports back to the host. Do not copy environments,
 caches, replay, checkpoints, videos, or full run directories. Commit and push from the host branch
-`codex/star-p0-p1` to the private `lzqw/SAFEFLOW2027` repository.
+`codex/star-p2-p4` to the private `lzqw/SAFEFLOW2027` repository.
