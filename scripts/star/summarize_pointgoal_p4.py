@@ -228,9 +228,9 @@ def mechanism_row(  # pylint: disable=too-many-locals
     ):
         raise ValueError(f'run {seed} is missing the fixed 0/{target_steps} evaluation endpoints')
 
-    boundary_gate = number(counterfactual['gate_boundary_mean'])
+    boundary_gate = optional_number(counterfactual['gate_boundary_mean'])
     interior_gate = number(counterfactual['gate_interior_mean'])
-    gate_ratio = boundary_gate / max(interior_gate, 1e-12)
+    gate_ratio = boundary_gate / max(interior_gate, 1e-12) if boundary_gate is not None else None
     w2_danger = number(last_w2['Geometry/DangerousNormalVelocity'])
     final_danger = number(final_diagnostic['Geometry/DangerousNormalVelocity'])
     replay_spearman = optional_number(

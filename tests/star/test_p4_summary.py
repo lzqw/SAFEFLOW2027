@@ -375,6 +375,26 @@ def test_undefined_probability_auroc_fails_without_crashing(tmp_path: Path) -> N
     assert not verdict['criteria_by_seed']['2029']['probability_auroc_above_065']
 
 
+def test_undefined_counterfactual_boundary_gate_remains_blank(tmp_path: Path) -> None:
+    """A missing sampled boundary is preserved as missing evidence instead of crashing."""
+    fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
+    counterfactual = fixtures[-1][0] / 'artifacts/counterfactual_step_300000.json'
+    payload = json.loads(counterfactual.read_text(encoding='utf-8'))
+    payload['gate_boundary_mean'] = None
+    write_json(counterfactual, payload)
+    output_dir = tmp_path / 'undefined-boundary-gate'
+    verdict = summarize(
+        [item[0] for item in fixtures],
+        [item[1] for item in fixtures],
+        [item[2] for item in fixtures],
+        output_dir,
+    )
+    assert verdict['status'] == 'passed'
+    mechanism_rows = read_csv_fixture(output_dir / 'pointgoal_mechanism_summary.csv')
+    assert mechanism_rows[-1]['gate_boundary_mean'] == ''
+    assert mechanism_rows[-1]['gate_boundary_interior_ratio'] == ''
+
+
 def test_w2_seed_without_activation_step_fails_without_crashing(tmp_path: Path) -> None:
     """A seed that remains in W2 yields a strict failure and a blank activation step."""
     fixtures = [make_seed(tmp_path, seed) for seed in (2027, 2028, 2029)]
