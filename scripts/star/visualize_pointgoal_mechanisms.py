@@ -256,21 +256,23 @@ def fixed_budget_risk_strata(  # pylint: disable=too-many-locals
                 gradient = head_gradients.mean(dim=0)[0]
                 gradient_norm = gradient.norm()
                 local_gradient_norm = float(gradient_norm.detach().item())
-                normal_tensor = (gradient / gradient_norm.clamp_min(1e-8)).detach().cpu()
-                normal = [float(normal_tensor[0]), float(normal_tensor[1])]
-                unit_heads = head_gradients / head_gradients.norm(
-                    dim=-1,
-                    keepdim=True,
-                ).clamp_min(1e-8)
-                agreements = []
-                for first_head in range(head_gradients.shape[0]):
-                    for second_head in range(first_head + 1, head_gradients.shape[0]):
-                        cosine = (unit_heads[first_head] * unit_heads[second_head]).sum(dim=-1)
-                        agreements.append(0.5 * (1.0 + cosine.clamp(-1.0, 1.0)))
-                consistency = (
-                    torch.stack(agreements).mean() if agreements else torch.ones((), device=device)
-                )
-                disagreement = float((1.0 - consistency).detach().item())
+                head_gradient_norms = head_gradients.norm(dim=-1)
+                if local_gradient_norm > 1e-8:
+                    normal_tensor = (gradient / gradient_norm).detach().cpu()
+                    normal = [float(normal_tensor[0]), float(normal_tensor[1])]
+                if bool((head_gradient_norms > 1e-8).all()):
+                    unit_heads = head_gradients / head_gradient_norms.unsqueeze(-1)
+                    agreements = []
+                    for first_head in range(head_gradients.shape[0]):
+                        for second_head in range(first_head + 1, head_gradients.shape[0]):
+                            cosine = (unit_heads[first_head] * unit_heads[second_head]).sum(dim=-1)
+                            agreements.append(0.5 * (1.0 + cosine.clamp(-1.0, 1.0)))
+                    consistency = (
+                        torch.stack(agreements).mean()
+                        if agreements
+                        else torch.ones((), device=device)
+                    )
+                    disagreement = float((1.0 - consistency).detach().item())
                 probability_disagreement = float(
                     local_heads.std(dim=0, unbiased=False).mean().detach().item(),
                 )

@@ -349,6 +349,42 @@ def test_fixed_budget_visuals_select_each_replay_risk_stratum() -> None:
     assert all(row['risk_p95_minus_p05'] > 0 for row in rows)
 
 
+def test_fixed_budget_visuals_mark_zero_gradient_normals_undefined() -> None:
+    """Saturated action-risk surfaces do not invent a normal direction."""
+
+    class _ConstantRiskHead(torch.nn.Module):
+        @staticmethod
+        def probabilities(observation: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
+            del observation
+            risk = action[:, 0] * 0.0 + 1.0
+            return torch.stack((risk, risk))
+
+    algorithm = SimpleNamespace(
+        _actor_critic=SimpleNamespace(
+            violation_critic=_ConstantRiskHead(),
+            step=lambda observation, deterministic: torch.zeros(observation.shape[0], 2),
+        ),
+        _augment=lambda observation, context: torch.cat((observation, context), dim=-1),
+        _buf=SimpleNamespace(
+            size=2,
+            data={'obs': torch.zeros(2, 1), 'context': torch.zeros(2, 2)},
+        ),
+        _cfgs=SimpleNamespace(
+            algo_cfgs=SimpleNamespace(
+                boundary_bandwidth=0.15,
+                risk_boundary=0.5,
+                risk_ucb_beta=0.0,
+            ),
+        ),
+        _device=torch.device('cpu'),
+    )
+    rows, _ = fixed_budget_risk_strata(algorithm, sample_size=2, grid_size=3)
+    high_risk = [row for row in rows if row['risk_stratum'] == 'high_risk']
+    assert {row['gradient_norm'] for row in high_risk} == {0.0}
+    assert all(row['ensemble_disagreement'] is None for row in high_risk)
+    assert all(row['normal_0'] is None and row['normal_1'] is None for row in high_risk)
+
+
 def test_calibration_rows_are_finite_or_empty() -> None:
     rows = calibration_rows(
         torch.tensor([0.05, 0.15, 0.85, 0.95]),
