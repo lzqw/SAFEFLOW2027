@@ -127,17 +127,34 @@ scripts/star/resume_star.sh FINAL_FULL_CHECKPOINT SafetyPointGoal1-v0 300000 RES
 
 After running `analyze_pointgoal_replay.py` for every final full checkpoint, aggregate the three
 run directories, three audit directories, and three launcher receipts. First re-evaluate every
-milestone checkpoint on the same CUDA device with the fixed evaluation seeds; this uses
-average-rank tie handling and emits JSON `null`/blank CSV cells when Spearman correlation is
-undefined:
+milestone checkpoint on the same CUDA device. The primary policy evaluation uses a local random
+generator seeded from each fixed evaluation seed to sample uniform flow base actions. The former
+zero-base result is retained separately and explicitly marked `center-flow-diagnostic`; it is not
+the primary policy estimate. Development runs use 20 fixed seeds by default, while a formal run
+uses 50:
 
 ```bash
 python scripts/star/evaluate_pointgoal_checkpoints.py \
   --checkpoints CHECKPOINTS_FOR_ALL_THREE_SEEDS \
-  --device cuda:0 --eval-seeds 12027,12028,12029,12030,12031 \
+  --device cuda:0 --evaluation-tier development \
   --output-dir /root/autodl-tmp/SAFE/artifacts/p4/checkpoint-evaluation \
   --work-dir /root/autodl-tmp/SAFE/runs/analysis/p4-checkpoint-evaluation
+
+# Replace the tier for a preregistered 50-seed result.
+python scripts/star/evaluate_pointgoal_checkpoints.py \
+  --checkpoints CHECKPOINTS_FOR_ALL_THREE_SEEDS \
+  --device cuda:0 --evaluation-tier formal \
+  --output-dir /root/autodl-tmp/SAFE/artifacts/p4/formal-checkpoint-evaluation \
+  --work-dir /root/autodl-tmp/SAFE/runs/analysis/p4-formal-checkpoint-evaluation
 ```
+
+`pointgoal_checkpoint_evaluation.csv` contains only the fixed-random-flow primary rows;
+`pointgoal_center_flow_diagnostic.csv` contains the zero-base diagnostic rows. Per-checkpoint JSON
+also records goal completions, goals per episode, start/end displacement, mean action norm, minimum
+goal distance, episode and step stall ratios, sample standard deviations, and normal-approximation
+95% confidence intervals. The default episode stall definition is zero goals and displacement no
+larger than 0.25 simulator units (smaller than one PointGoal goal diameter); both stall thresholds
+are CLI-configurable. Tie-correct Spearman remains JSON `null`/blank in CSV when undefined.
 
 Then run the strict aggregator with that corrected fixed-device table:
 

@@ -18,10 +18,18 @@ from __future__ import annotations
 
 import math
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import torch
-from scripts.star.evaluate_pointgoal_checkpoints import json_safe, public_row
+from scripts.star.evaluate_pointgoal_checkpoints import (
+    confidence_summary,
+    evaluate_rollouts,
+    json_safe,
+    public_row,
+    resolve_eval_seeds,
+    sample_flow_base,
+)
 
 from omnisafe.algorithms.off_policy.star import _spearman
 from omnisafe.utils.star_validation import (
@@ -96,6 +104,158 @@ def test_checkpoint_evaluation_serializes_degenerate_spearman_as_null() -> None:
     assert row['evaluation_device'] == 'cuda:0'
     assert row['spearman'] is None
     assert json_safe({'spearman': float('nan')}) == {'spearman': None}
+
+
+def test_evaluation_tiers_resolve_fixed_unique_seed_counts() -> None:
+    development = resolve_eval_seeds(None, 'development')
+    formal = resolve_eval_seeds(None, 'formal')
+    assert development == list(range(12_027, 12_047))
+    assert formal == list(range(12_027, 12_077))
+    assert resolve_eval_seeds('7,11,13', 'development') == [7, 11, 13]
+    with pytest.raises(ValueError, match='unique'):
+        resolve_eval_seeds('7,7', 'formal')
+
+
+def test_confidence_summary_reports_sample_std_and_normal_interval() -> None:
+    summary = confidence_summary([1.0, 2.0, 3.0])
+    assert summary['mean'] == pytest.approx(2.0)
+    assert summary['std'] == pytest.approx(1.0)
+    assert summary['ci95_low'] < 1.0
+    assert summary['ci95_high'] > 3.0
+    singleton = confidence_summary([4.0])
+    assert singleton == {'mean': 4.0, 'std': 0.0, 'ci95_low': 4.0, 'ci95_high': 4.0}
+
+
+def test_fixed_random_flow_bases_are_reproducible_and_center_is_zero() -> None:
+    first = torch.Generator().manual_seed(123)
+    second = torch.Generator().manual_seed(123)
+    first_sequence = [
+        sample_flow_base(
+            2,
+            first,
+            'fixed-random-flow',
+            device=torch.device('cpu'),
+            dtype=torch.float32,
+        )
+        for _ in range(3)
+    ]
+    second_sequence = [
+        sample_flow_base(
+            2,
+            second,
+            'fixed-random-flow',
+            device=torch.device('cpu'),
+            dtype=torch.float32,
+        )
+        for _ in range(3)
+    ]
+    assert all(torch.equal(left, right) for left, right in zip(first_sequence, second_sequence))
+    assert all(torch.all(base.abs() <= 1.0) for base in first_sequence)
+    center = sample_flow_base(
+        2,
+        torch.Generator().manual_seed(9),
+        'center-flow-diagnostic',
+        device=torch.device('cpu'),
+        dtype=torch.float32,
+    )
+    assert torch.equal(center, torch.zeros(1, 2))
+
+
+class _EvaluationProbeEnv:
+    """Two-step vector environment exposing deterministic goal and position signals."""
+
+    def reset(self, seed: int) -> tuple[torch.Tensor, dict[str, object]]:
+        self.seed = seed
+        self.step_index = 0
+        self.position = [0.0, 0.0]
+        return torch.zeros(1, 2), {}
+
+    def step(
+        self,
+        action: torch.Tensor,
+    ) -> tuple[
+        torch.Tensor,
+        torch.Tensor,
+        torch.Tensor,
+        torch.Tensor,
+        torch.Tensor,
+        dict[str, object],
+    ]:
+        self.position[0] += 0.2 * float(action[0, 0].item())
+        self.position[1] += 0.2 * float(action[0, 1].item())
+        goal_met = self.seed == 1 and self.step_index == 0
+        self.step_index += 1
+        return (
+            torch.tensor([self.position], dtype=torch.float32),
+            torch.ones(1),
+            torch.zeros(1),
+            torch.zeros(1, dtype=torch.bool),
+            torch.tensor([self.step_index == 2]),
+            {
+                'goal_met': goal_met,
+                'original_reward': torch.ones(1),
+                'original_cost': torch.zeros(1),
+            },
+        )
+
+
+class _EvaluationProbeAdapter:
+    def __init__(self) -> None:
+        self.evaluation_env = _EvaluationProbeEnv()
+
+    def evaluation_position(self) -> tuple[float, float]:
+        return tuple(self.evaluation_env.position)
+
+    @staticmethod
+    def evaluation_layout() -> dict[str, object]:
+        return {'goal': (1.0, 0.0), 'hazards': [], 'goal_radius': 0.3, 'hazard_radius': 0.2}
+
+
+class _EvaluationProbeModel:
+    def __init__(self) -> None:
+        self.training = True
+        self.cost_critic = lambda obs, action: torch.zeros(2, obs.shape[0], 3)
+
+    def eval(self) -> None:
+        self.training = False
+
+    def train(self) -> None:
+        self.training = True
+
+    @staticmethod
+    def flow(obs: torch.Tensor, base_action: torch.Tensor) -> SimpleNamespace:
+        del obs
+        return SimpleNamespace(action=base_action)
+
+
+def test_center_flow_rollout_reports_goal_progress_and_stall_metrics() -> None:
+    algorithm = SimpleNamespace(
+        _env=_EvaluationProbeAdapter(),
+        _env_id='SafetyPointGoal1-v0',
+        _device=torch.device('cpu'),
+        _act_dim=2,
+        _actor_critic=_EvaluationProbeModel(),
+        _cfgs=SimpleNamespace(
+            algo_cfgs=SimpleNamespace(max_episode_steps=2, risk_temperature=1.0),
+            lagrange_cfgs=SimpleNamespace(cost_limit=10.0),
+        ),
+        _augment=lambda obs, context: torch.cat((obs, context.reshape(-1, 1)), dim=-1),
+    )
+    result = evaluate_rollouts(
+        algorithm,
+        milestone=300_000,
+        eval_seeds=[1, 2],
+        mode='center-flow-diagnostic',
+    )
+    assert result['evaluation_role'] == 'diagnostic'
+    assert result['goal_met_total'] == 1
+    assert result['goal_met_episode_rate'] == pytest.approx(0.5)
+    assert result['mean_start_end_displacement'] == 0.0
+    assert result['mean_action_norm'] == 0.0
+    assert result['stall_ratio'] == pytest.approx(0.5)
+    assert result['step_stall_ratio'] == 1.0
+    assert result['mean_return'] == 2.0
+    assert algorithm._actor_critic.training
 
 
 def test_calibration_rows_are_finite_or_empty() -> None:
