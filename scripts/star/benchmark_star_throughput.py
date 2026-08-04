@@ -216,9 +216,7 @@ def run_worker(  # pylint: disable=too-many-locals,too-many-branches,too-many-st
                 'warmup_stage': algorithm._warmup.stage,  # pylint: disable=protected-access
                 'actor_parameter_delta_linf': parameter_delta,
                 'peak_cuda_memory_mib': (
-                    torch.cuda.max_memory_allocated() / 2**20
-                    if torch.cuda.is_available()
-                    else 0.0
+                    torch.cuda.max_memory_allocated() / 2**20 if torch.cuda.is_available() else 0.0
                 ),
             },
         )
