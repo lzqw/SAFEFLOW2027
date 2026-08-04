@@ -30,6 +30,10 @@
 
 --------------------------------------------------------------------------------
 
+> **SAFEFLOW2027 / STAR:** 本仓库以固定的 OmniSafe 基线开发安全关键参考熵方法。
+> RTX 3090 服务器上的 P0/P1 环境、语义测试、吞吐标定和复现命令见
+> [scripts/star/README.md](scripts/star/README.md)。P0/P1 通过前不会启动 P2 及后续长训练。
+
 OmniSafe is an infrastructural framework designed to accelerate safe reinforcement learning (RL) research.
 It provides a comprehensive and reliable benchmark for safe RL algorithms, and also an out-of-box modular toolkit for researchers.
 SafeRL intends to develop algorithms that minimize the risk of unintended harm or unsafe behavior.

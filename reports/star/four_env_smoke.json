@@ -1,0 +1,73 @@
+{
+  "gymnasium_version": "0.28.1",
+  "results": [
+    {
+      "cost_sum": 421.0,
+      "env_id": "SafetyPointGoal1-v0",
+      "episodes_started": 2,
+      "native_cost_channel": true,
+      "observation_dtype": "float64",
+      "observation_shape": [
+        60
+      ],
+      "observed_nonzero_cost": true,
+      "provider": "safety_gymnasium",
+      "reward_sum": 0.17612467741629123,
+      "steps": 1000,
+      "terminations": 0,
+      "truncations": 1
+    },
+    {
+      "cost_sum": 7.0,
+      "env_id": "SafetyPointButton1-v0",
+      "episodes_started": 2,
+      "native_cost_channel": true,
+      "observation_dtype": "float64",
+      "observation_shape": [
+        76
+      ],
+      "observed_nonzero_cost": true,
+      "provider": "safety_gymnasium",
+      "reward_sum": -0.6171964058535573,
+      "steps": 1000,
+      "terminations": 0,
+      "truncations": 1
+    },
+    {
+      "cost_sum": null,
+      "env_id": "Ant-v4",
+      "episodes_started": 10,
+      "native_cost_channel": false,
+      "observation_dtype": "float64",
+      "observation_shape": [
+        27
+      ],
+      "observed_nonzero_cost": null,
+      "provider": "gymnasium",
+      "reward_sum": -289.27649775281935,
+      "steps": 1000,
+      "terminations": 9,
+      "truncations": 0
+    },
+    {
+      "cost_sum": null,
+      "env_id": "Walker2d-v4",
+      "episodes_started": 46,
+      "native_cost_channel": false,
+      "observation_dtype": "float64",
+      "observation_shape": [
+        17
+      ],
+      "observed_nonzero_cost": null,
+      "provider": "gymnasium",
+      "reward_sum": 148.94814457279037,
+      "steps": 1000,
+      "terminations": 45,
+      "truncations": 0
+    }
+  ],
+  "safety_gymnasium_version": "1.0.0",
+  "seed": 2027,
+  "status": "passed",
+  "timestamp_utc": "2026-08-03T13:58:32.714430+00:00"
+}

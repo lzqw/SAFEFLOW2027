@@ -81,6 +81,8 @@ class OnlineAdapter:
             self._wrapper_eval(obs_normalize=cfgs.algo_cfgs.obs_normalize)
 
         self._env.set_seed(seed)
+        if self._eval_env is not None:
+            self._eval_env.set_seed(seed + 10_000)
 
     def _wrapper(
         self,
@@ -151,7 +153,7 @@ class OnlineAdapter:
             cost_normalize (bool, optional): Whether to normalize the cost. Defaults to True.
         """
         assert self._eval_env, 'Your environment for evaluation does not exist!'
-        if self._env.need_time_limit_wrapper:
+        if self._eval_env.need_time_limit_wrapper:
             assert (
                 self._eval_env.max_episode_steps
             ), 'You must define max_episode_steps as an\
@@ -161,7 +163,7 @@ class OnlineAdapter:
                 time_limit=self._eval_env.max_episode_steps,
                 device=self._device,
             )
-        if self._env.need_auto_reset_wrapper:
+        if self._eval_env.need_auto_reset_wrapper:
             self._eval_env = AutoReset(self._eval_env, device=self._device)
         if obs_normalize:
             self._eval_env = ObsNormalize(self._eval_env, device=self._device)
@@ -237,6 +239,8 @@ class OnlineAdapter:
     def close(self) -> None:
         """Close the environment after training."""
         self._env.close()
+        if self._eval_env is not None:
+            self._eval_env.close()
 
     @property
     def env_spec_keys(self) -> list[str]:

@@ -31,11 +31,15 @@ class OffPolicyBuffer(BaseBuffer):
 
     Compared to the base buffer, the off-policy buffer stores extra data:
 
-    +----------+---------------------------+---------------+----------------------------------------+
-    | Name     | Shape                     | Dtype         | Description                            |
-    +==========+===========================+===============+========================================+
-    | next_obs | (size, \*obs_space.shape) | torch.float32 | The next observation from environment. |
-    +----------+---------------------------+---------------+----------------------------------------+
+    +------------+---------------------------+---------------+----------------------------------------+
+    | Name       | Shape                     | Dtype         | Description                            |
+    +============+===========================+===============+========================================+
+    | next_obs   | (size, \*obs_space.shape) | torch.float32 | The next observation from environment. |
+    +------------+---------------------------+---------------+----------------------------------------+
+    | terminated | (size,)                   | torch.float32 | True environment termination.          |
+    +------------+---------------------------+---------------+----------------------------------------+
+    | truncated  | (size,)                   | torch.float32 | Time-limit or external truncation.     |
+    +------------+---------------------------+---------------+----------------------------------------+
 
     Args:
         obs_space (OmnisafeSpace): The observation space.
@@ -69,6 +73,8 @@ class OffPolicyBuffer(BaseBuffer):
             )
         else:
             raise NotImplementedError
+        self.data['terminated'] = torch.zeros(size, dtype=torch.float32, device=device)
+        self.data['truncated'] = torch.zeros(size, dtype=torch.float32, device=device)
 
         self._ptr: int = 0
         self._size: int = 0

@@ -144,10 +144,10 @@ class Logger:  # pylint: disable=too-many-instance-attributes
                 config=config,
             )
             if config is not None:
-                wandb.config.update(config)  # type: ignore
+                wandb.config.update(config)
             if models is not None:
                 for model in models:
-                    wandb.watch(model)  # type: ignore
+                    wandb.watch(model)
 
     def log(self, msg: str, color: str = 'green', bold: bool = False) -> None:
         """Log the message to the console and the file.

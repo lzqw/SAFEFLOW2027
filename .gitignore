@@ -2,6 +2,19 @@
 **/runs
 **/exp-x
 
+# STAR server-only runtime state.  Small audited reports belong in reports/star/.
+artifacts/**/checkpoints/
+artifacts/**/replay/
+artifacts/**/runtime/
+artifacts/**/videos/
+cache/
+checkpoints/
+replay_buffers/
+videos/
+wandb/
+.star-runtime/
+*.pt.tmp
+
 ##### Python.gitignore #####
 # Byte-compiled / optimized / DLL files
 __pycache__/

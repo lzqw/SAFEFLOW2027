@@ -90,6 +90,7 @@ repos:
         exclude: |
           (?x)(
             ^examples/|
+            ^scripts/star/|
             ^tests/|
             ^setup.py$|
             ^omnisafe/envs/classic_control/envs_from_crabs.py$|
@@ -111,6 +112,7 @@ repos:
             ^.github/|
             ^docs/|
             ^examples/|
+            ^scripts/star/|
             ^tests/|
             ^setup.py$|
             ^omnisafe/envs/classic_control/envs_from_crabs.py$|

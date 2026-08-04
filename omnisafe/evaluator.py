@@ -186,6 +186,8 @@ class Evaluator:  # pylint: disable=too-many-instance-attributes
                 device=torch.device('cpu'),
                 times=self._cfgs['algo_cfgs']['action_repeat'],
             )
+        # Evaluation uses a deterministic seed stream that is disjoint from training.
+        self._env.set_seed(int(self._cfgs.seed) + 10_000)
         if hasattr(self._cfgs, 'algo') and self._cfgs['algo'] in [
             'LOOP',
             'SafeLOOP',
@@ -217,6 +219,7 @@ class Evaluator:  # pylint: disable=too-many-instance-attributes
             if self._actor_critic is not None:
                 self._actor_critic.load_state_dict(model_params['actor_critic'])
                 self._actor_critic.to('cpu')
+            assert dynamics_state_space.shape is not None
             self._dynamics = EnsembleDynamicsModel(
                 model_cfgs=self._cfgs.dynamics_cfgs,
                 device=torch.device('cpu'),
