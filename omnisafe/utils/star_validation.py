@@ -1,0 +1,143 @@
+# Copyright 2026 OmniSafe Team. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Pure numerical helpers for auditable STAR replay validation artifacts."""
+
+from __future__ import annotations
+
+from typing import Any
+
+import torch
+
+
+def deterministic_indices(size: int, maximum: int) -> torch.Tensor:
+    """Select the full replay or a deterministic time-stratified subset."""
+    count = min(size, maximum)
+    if count <= 0:
+        raise ValueError('resident replay and maximum sample count must be non-empty')
+    if count == size:
+        return torch.arange(size, dtype=torch.long)
+    indices = torch.linspace(0, size - 1, count, dtype=torch.float64).round().long()
+    if indices.unique().numel() != count:
+        raise RuntimeError('deterministic replay subsampling produced duplicate indices')
+    return indices
+
+
+def average_ranks(values: torch.Tensor) -> torch.Tensor:
+    """Return average ranks with exact tie handling."""
+    order = torch.argsort(values)
+    sorted_values = values[order]
+    _, inverse, counts = torch.unique_consecutive(
+        sorted_values,
+        return_inverse=True,
+        return_counts=True,
+    )
+    ends = counts.cumsum(dim=0).to(torch.float64)
+    starts = ends - counts
+    group_ranks = 0.5 * (starts + ends - 1.0)
+    ranks = torch.empty(values.shape[0], dtype=torch.float64)
+    ranks[order] = group_ranks[inverse]
+    return ranks
+
+
+def spearman(first: torch.Tensor, second: torch.Tensor) -> float:
+    """Return tie-correct rank correlation or NaN for a degenerate sample."""
+    if first.numel() < 2:
+        return float('nan')
+    first_rank = average_ranks(first.to(torch.float64))
+    second_rank = average_ranks(second.to(torch.float64))
+    first_centered = first_rank - first_rank.mean()
+    second_centered = second_rank - second_rank.mean()
+    denominator = first_centered.norm() * second_centered.norm()
+    if float(denominator.item()) == 0.0:
+        return float('nan')
+    return float((first_centered * second_centered).sum().div(denominator).item())
+
+
+def calibration_rows(
+    predicted: torch.Tensor,
+    empirical: torch.Tensor,
+    bins: int,
+) -> list[dict[str, Any]]:
+    """Aggregate reliability values in equal-width predicted-risk bins."""
+    boundaries = torch.linspace(0.0, 1.0, bins + 1)
+    assignments = torch.bucketize(predicted, boundaries[1:-1])
+    rows = []
+    for index in range(bins):
+        selected = assignments == index
+        count = int(selected.sum().item())
+        if count:
+            predicted_mean = float(predicted[selected].mean().item())
+            empirical_mean = float(empirical[selected].mean().item())
+            absolute_gap = abs(predicted_mean - empirical_mean)
+        else:
+            predicted_mean = None
+            empirical_mean = None
+            absolute_gap = None
+        rows.append(
+            {
+                'bin': index,
+                'lower': float(boundaries[index].item()),
+                'upper': float(boundaries[index + 1].item()),
+                'count': count,
+                'predicted_risk_mean': predicted_mean,
+                'empirical_risk_mean': empirical_mean,
+                'absolute_gap': absolute_gap,
+            },
+        )
+    return rows
+
+
+def threshold_rows(
+    audit: dict[str, torch.Tensor],
+    current_low: float,
+    current_safe: float,
+    boundary: float,
+) -> list[dict[str, Any]]:
+    """Measure conservative inner-boundary coverage under a small fixed threshold grid."""
+    pairs = {
+        (0.02, 0.30),
+        (0.02, 0.40),
+        (0.02, 0.45),
+        (0.02, 0.49),
+        (0.05, 0.40),
+        (0.05, 0.45),
+        (0.05, 0.49),
+        (0.10, 0.40),
+        (0.10, 0.45),
+        (0.10, 0.49),
+        (current_low, current_safe),
+    }
+    rows = []
+    for low, safe in sorted(pairs):
+        if not 0.0 <= low < safe < boundary:
+            continue
+        selected = torch.logical_and(audit['risk_ucb'] >= low, audit['risk_ucb'] <= safe)
+        count = int(selected.sum().item())
+        rows.append(
+            {
+                'boundary_low': low,
+                'boundary_safe': safe,
+                'is_current': low == current_low and safe == current_safe,
+                'sample_count': count,
+                'sample_fraction': count / audit['risk_ucb'].numel(),
+                'source_random_fraction': (
+                    float(audit['source_random'][selected].float().mean().item()) if count else 0.0
+                ),
+                'immediate_violation_fraction': (
+                    float(audit['is_failure'][selected].float().mean().item()) if count else 0.0
+                ),
+            },
+        )
+    return rows

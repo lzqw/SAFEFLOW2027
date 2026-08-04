@@ -18,7 +18,8 @@ from __future__ import annotations
 
 import pytest
 import torch
-from scripts.star.analyze_pointgoal_replay import (
+
+from omnisafe.utils.star_validation import (
     average_ranks,
     calibration_rows,
     deterministic_indices,
