@@ -1,0 +1,149 @@
+{
+  "analysis": {
+    "frozen_replay_tracking": {
+      "exact_r2_after_2000_outer_updates": {
+        "newest_decile_td": 0.007974006235599518,
+        "oldest_decile_td": 0.008411542512476444,
+        "recent_fraction": 0.5,
+        "recent_window": 10000,
+        "reward_gradient_updates": 4000,
+        "uniform_q_abs_mean": 0.36405840516090393,
+        "uniform_td": 0.010381631553173065
+      },
+      "initial": {
+        "newest_decile_td": 0.009166540578007698,
+        "oldest_decile_td": 0.007937179878354073,
+        "uniform_q_abs_mean": 0.32986992597579956,
+        "uniform_td": 0.009616931900382042
+      },
+      "rejected_recent_0_75_after_2000_outer_updates": {
+        "newest_decile_td": 0.007605031598359346,
+        "oldest_decile_td": 0.00984292570501566,
+        "uniform_q_abs_mean": 0.36325180530548096,
+        "uniform_td": 0.0112624391913414
+      }
+    },
+    "reward_target_sampling": {
+      "draws": 32,
+      "four_sample_mean_td": 0.00996584352105856,
+      "online_actor_target_mean": 0.2889154553413391,
+      "online_actor_td_to_all_draw_mean": 0.0096536660566926,
+      "sampling_std_to_reference_td_ratio": 0.7439203000441299,
+      "target_actor_target_mean": 0.2888946235179901,
+      "target_actor_td_to_all_draw_mean": 0.009517958387732506,
+      "target_sampling_std_mean": 0.0070806024596095085,
+      "transition_count": 4096
+    },
+    "scope": "post-hoc read-only diagnostics; not promotion metrics or a formal verdict"
+  },
+  "analysis_source_commit": "913f758ca07c0af5ea85491459b0e9eeadc91af1",
+  "continuation_beyond_50k_launched": false,
+  "external_fixed_random_flow": {
+    "episodes_per_endpoint": 20,
+    "evaluation_seeds": [
+      12027,
+      12028,
+      12029,
+      12030,
+      12031,
+      12032,
+      12033,
+      12034,
+      12035,
+      12036,
+      12037,
+      12038,
+      12039,
+      12040,
+      12041,
+      12042,
+      12043,
+      12044,
+      12045,
+      12046
+    ],
+    "step_0": {
+      "goal_met_episode_rate": 0.15,
+      "goal_met_total": 3,
+      "mean_path_length": 20.207316889304913,
+      "mean_return": -3.310983299403398,
+      "mean_start_end_displacement": 4.402720971338905,
+      "mean_step_displacement": 0.020227544433738646,
+      "stall_ratio": 0.0
+    },
+    "step_50000": {
+      "goal_met_episode_rate": 0.95,
+      "goal_met_total": 122,
+      "mean_path_length": 10.981307124588913,
+      "mean_return": 12.954160399278749,
+      "mean_start_end_displacement": 0.8963112658223398,
+      "mean_step_displacement": 0.010992299424012924,
+      "stall_ratio": 0.05
+    }
+  },
+  "final_p4_verdict": null,
+  "formal_four_environment_experiment_launched": false,
+  "pilot": {
+    "actor_updates": 21000,
+    "checkpoint_bytes": {
+      "final_full": 37253819,
+      "latest_full": 37254447,
+      "milestone_0": 4126429,
+      "milestone_50000": 8898778
+    },
+    "env_steps": 50000,
+    "estimated_cost_cny": 1.003680281737778,
+    "hard_stops": {
+      "endpoint_stall_at_least_0_5": false,
+      "non_finite_artifact": false,
+      "reward_td_monotonic_divergence": true,
+      "zero_endpoint_success": false
+    },
+    "pilot_decision": "continue_backbone_repair_and_pause_safety",
+    "replay_size": 50000,
+    "reward_critic_updates": 96000,
+    "reward_target_sampling_std": {
+      "final": 0.005935818845639006,
+      "mean_over_5k_rows": 0.005535916466893784
+    },
+    "reward_td": {
+      "final_to_historical_minimum_ratio": 3.482571768479523,
+      "values_by_5000_steps": [
+        0.005051785033972313,
+        0.0051179426558082925,
+        0.00384017218593508,
+        0.002926837123488076,
+        0.0026509792413096874,
+        0.003425898129818961,
+        0.004963549851463176,
+        0.006795792048983276,
+        0.008510686089238152,
+        0.009232225464610383
+      ]
+    },
+    "seed": 2028,
+    "training_seconds": 2434.096685193479,
+    "updates": 48000
+  },
+  "raw_artifact_sha256": {
+    "diagnostics_csv": "96def48fe96d00909099263e4fb114e295f81b96ce5b92e242eedce575d619a5",
+    "external_evaluation_csv": "86b9e86874afda49c79ac7d0ec2ca45acb0ea2b9b6cb473f1e5c2bfb26f89df0",
+    "pilot_decision": "9852535cf133d67e3a7edce3afd7d5beb69f34758a0ef4fd199eaa39f59f6432",
+    "receipt": "0d8e9c4d3e9453f0a43dea90b99cfb086a0b4aa0bc65845e524b2070fd255528",
+    "reward_critic_tracking": "b3282393a75e0cf42034584542b601ab4cb42b2f6cbc7d0572b03ec68999b301",
+    "reward_target_sampling_variance": "d90c79e8aee7a1f56648ae8483d7b10093828ab61fda217ac286050f090747ca",
+    "training_summary": "e2973b4e329d5dc47b6ce81bc184d39092f182e20d17ca454e9b704144b84433"
+  },
+  "repair": {
+    "actor_update_interval": 2,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "target_flow_actor_for_reward_backup": true
+  },
+  "schema_version": 1,
+  "stage": "P4.2-B0-R2-seed-2028-feasibility",
+  "training_source_commit": "2332a550cc0a366c436c9a116b72b7bfc918bef2"
+}
