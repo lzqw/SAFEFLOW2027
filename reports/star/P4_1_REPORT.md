@@ -39,6 +39,7 @@ experiment were not launched.
 | 50k evaluation and final 20k rendering | `267d1a189180f1ba23ad1770caf3280dd0c356ec` |
 | 100k evaluation and replay audit | `614dda284c7392628a6206139467a5c1b2366e2b` |
 | 100k mechanism rendering and scoped summary | `ddc90a351d0d3a7d7e6c2401c0a7f475b6343ea8` |
+| P4.1 metric-namespace seal and exact summary rerun | `8bb5099acb1d4994960562d24599f56743a1521c` |
 
 The fixed-random-flow evaluator implementation is identical across the listed P4.1 invocation
 commits. Training and analysis ran from clean detached worktrees; the corrected model was never
@@ -106,6 +107,12 @@ safety learning.
 The replay classifier is nearly perfect on its on-policy finalized labels, while fixed-random-flow
 calibration is poor. Combined with the almost empty boundary pool, this indicates a replay/support
 and generalization problem rather than an untrained probability head.
+
+These are deliberately separate evidence namespaces. `replay_*` is a full-replay checkpoint audit;
+`external_*` is the fixed-random-flow checkpoint evaluation. P4.1 did not implement an
+episode-separated held-out split, so `held_out_*` is explicitly unavailable (`null`) rather than
+being inferred from either replay or external data. The scoped assessment and both machine reports
+use these prefixes throughout; no replay AUROC or Brier value is reported as held-out evidence.
 
 ## Mechanism evidence
 
