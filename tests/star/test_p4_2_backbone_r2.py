@@ -17,6 +17,17 @@ from scripts.star.summarize_p4_2_backbone_repair_r2_pilot import (
     pilot_summary,
     validate_r1_parent,
 )
+from scripts.star.summarize_p4_2_backbone_repair_r3 import (
+    repair_summary as r3_repair_summary,
+    validate_r3_pilot_parent,
+)
+from scripts.star.summarize_p4_2_backbone_repair_r3_pilot import (
+    EXPECTED_TIMESCALE,
+    R2_SOURCE_COMMIT,
+    R3_SOURCE_COMMIT,
+    pilot_summary as r3_pilot_summary,
+    validate_r2_parent,
+)
 
 
 STABLE_TD = [0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.04, 0.03, 0.04, 0.03]
@@ -182,6 +193,34 @@ def r1_parent(path: Path) -> None:
     )
 
 
+def promote_run_to_r3(run_dir: Path) -> None:
+    """Add the independently manifested R3 target timescale to an R2 fixture."""
+    summary_path = run_dir / 'artifacts/training_summary.json'
+    summary = json.loads(summary_path.read_text(encoding='utf-8'))
+    summary.update(EXPECTED_TIMESCALE)
+    write_json(summary_path, summary)
+    manifest_path = run_dir / 'artifacts/run_manifest.json'
+    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+    manifest['p4_2_reward_target_timescale'] = EXPECTED_TIMESCALE
+    write_json(manifest_path, manifest)
+
+
+def r2_parent(path: Path) -> None:
+    """Write the failed immutable R2 parent fixture that authorizes R3."""
+    write_json(
+        path,
+        {
+            'training_source_commit': R2_SOURCE_COMMIT,
+            'pilot': {
+                'pilot_decision': 'continue_backbone_repair_and_pause_safety',
+                'hard_stops': {'reward_td_monotonic_divergence': True},
+            },
+            'r3_candidate': {'reward_target_polyak': 0.001},
+            'final_p4_verdict': None,
+        },
+    )
+
+
 def test_r2_pilot_passes_stable_tracking_and_authorizes_remaining_seeds(tmp_path: Path) -> None:
     run, receipt = make_run(tmp_path, 2028, STABLE_TD)
     evaluation = tmp_path / 'pilot-evaluation.csv'
@@ -248,3 +287,73 @@ def test_r2_parent_validators_require_failed_r1_then_passing_r2_pilot(tmp_path: 
         },
     )
     assert validate_r2_pilot_parent(r2_pilot)['final_p4_verdict'] is None
+
+
+def test_r3_pilot_passes_only_with_stable_td_and_exact_timescale(tmp_path: Path) -> None:
+    run, receipt = make_run(tmp_path, 2028, STABLE_TD)
+    promote_run_to_r3(run)
+    evaluation = tmp_path / 'r3-pilot-evaluation.csv'
+    write_evaluation(evaluation, (2028,))
+    result = r3_pilot_summary(run, receipt, evaluation)
+    assert result['feasibility_passed'] is True
+    assert result['pilot_decision'] == 'launch_remaining_r3_repair_seeds'
+    assert result['target_timescale'] == EXPECTED_TIMESCALE
+
+
+def test_r3_pilot_keeps_safety_paused_on_unchanged_td_hard_stop(tmp_path: Path) -> None:
+    run, receipt = make_run(tmp_path, 2028, DIVERGENT_TD)
+    promote_run_to_r3(run)
+    evaluation = tmp_path / 'r3-pilot-evaluation.csv'
+    write_evaluation(evaluation, (2028,))
+    result = r3_pilot_summary(run, receipt, evaluation)
+    assert result['feasibility_passed'] is False
+    assert result['hard_stops']['reward_td_monotonic_divergence'] is True
+    assert result['pilot_decision'] == 'continue_backbone_repair_and_pause_safety'
+
+
+def test_r3_rejects_shared_reward_target_timescale(tmp_path: Path) -> None:
+    run, receipt = make_run(tmp_path, 2028, STABLE_TD)
+    promote_run_to_r3(run)
+    summary_path = run / 'artifacts/training_summary.json'
+    summary = json.loads(summary_path.read_text(encoding='utf-8'))
+    summary['reward_target_polyak'] = 0.005
+    write_json(summary_path, summary)
+    evaluation = tmp_path / 'r3-pilot-evaluation.csv'
+    write_evaluation(evaluation, (2028,))
+    with pytest.raises(ValueError, match='reward_target_polyak'):
+        r3_pilot_summary(run, receipt, evaluation)
+
+
+def test_r3_three_seed_gate_retains_all_five_functional_criteria(tmp_path: Path) -> None:
+    pairs = [make_run(tmp_path, seed, STABLE_TD) for seed in (2027, 2028, 2029)]
+    for run, _ in pairs:
+        promote_run_to_r3(run)
+    evaluation = tmp_path / 'r3-evaluation.csv'
+    write_evaluation(evaluation, (2027, 2028, 2029))
+    result = r3_repair_summary(
+        [pair[0] for pair in pairs],
+        [pair[1] for pair in pairs],
+        evaluation,
+    )
+    assert result['name'] == 'B0-R3'
+    assert result['target_timescale'] == EXPECTED_TIMESCALE
+    assert result['functional_gate_passed'] is True
+    assert all(result['criteria'].values())
+
+
+def test_r3_parent_validators_require_failed_r2_then_passing_r3_pilot(tmp_path: Path) -> None:
+    parent = tmp_path / 'r2.json'
+    r2_parent(parent)
+    assert validate_r2_parent(parent)['final_p4_verdict'] is None
+    r3_pilot = tmp_path / 'r3-pilot.json'
+    write_json(
+        r3_pilot,
+        {
+            'stage': 'P4.2-B0-R3-seed-2028-feasibility',
+            'repair_source_commit': R3_SOURCE_COMMIT,
+            'target_timescale': EXPECTED_TIMESCALE,
+            'pilot': {'pilot_decision': 'launch_remaining_r3_repair_seeds'},
+            'final_p4_verdict': None,
+        },
+    )
+    assert validate_r3_pilot_parent(r3_pilot)['final_p4_verdict'] is None
