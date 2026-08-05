@@ -27,6 +27,7 @@ from omnisafe.adapter.star_adapter import STARContext
 from omnisafe.algorithms.off_policy.star import STAR, normalized_actor_objective
 from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
 from omnisafe.common.buffer.star_replay_buffer import BOUNDARY, NORMAL, STARReplayBuffer
+from omnisafe.common.star_checkpoint import load_star_model_state
 from omnisafe.common.star_dual import GlobalSafetyDual
 from omnisafe.models.actor.flow_actor import FlowActor
 from omnisafe.models.actor_critic.star_actor_q_critic import STARActorQCritic
@@ -90,6 +91,38 @@ def test_every_p4_network_consumes_the_same_augmented_state() -> None:
     assert model.cost_critic(augmented, action).shape == (2, 4, 5)
     assert model.violation_critic is not None
     assert model.violation_critic(augmented, action).shape == (2, 4)
+
+
+def test_reward_target_actor_is_frozen_and_polyak_tracks_online_flow() -> None:
+    model = _model()
+    assert all(not parameter.requires_grad for parameter in model.target_actor.parameters())
+    with torch.no_grad():
+        for parameter in model.actor.parameters():
+            parameter.add_(0.25)
+    assert any(
+        not torch.equal(target, online)
+        for target, online in zip(model.target_actor.parameters(), model.actor.parameters())
+    )
+    model.polyak_update(1.0, update_actor=True)
+    assert all(
+        torch.equal(target, online)
+        for target, online in zip(model.target_actor.parameters(), model.actor.parameters())
+    )
+
+
+def test_legacy_model_state_initializes_missing_target_actor() -> None:
+    source = _model()
+    legacy_state = {
+        key: value.clone()
+        for key, value in source.state_dict().items()
+        if not key.startswith('target_actor.')
+    }
+    restored = _model()
+    load_star_model_state(restored, legacy_state)
+    assert all(
+        torch.equal(target, online)
+        for target, online in zip(restored.target_actor.parameters(), restored.actor.parameters())
+    )
 
 
 def test_legacy_model_is_shape_compatible_and_evaluation_only() -> None:

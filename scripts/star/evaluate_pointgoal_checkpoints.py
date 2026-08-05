@@ -17,6 +17,7 @@ import torch
 
 import omnisafe
 from omnisafe.adapter.star_adapter import STARContext
+from omnisafe.common.star_checkpoint import load_star_model_state
 from omnisafe.models.critic.violation_probability_critic import (
     binary_auroc,
     binary_brier_score,
@@ -54,6 +55,8 @@ SUMMARY_FIELDS = (
     'goals_per_episode_mean',
     'goal_met_episode_rate',
     'mean_start_end_displacement',
+    'mean_step_displacement',
+    'mean_path_length',
     'mean_action_norm',
     'mean_min_goal_distance',
     'stall_ratio',
@@ -205,7 +208,10 @@ def build_algorithm(  # pylint: disable=too-many-locals
     }
     wrapper = omnisafe.Agent('STAR', 'SafetyPointGoal1-v0', custom_cfgs=custom)
     algorithm: Any = wrapper.agent
-    algorithm._actor_critic.load_state_dict(payload['model'])  # pylint: disable=protected-access
+    load_star_model_state(
+        algorithm._actor_critic,  # pylint: disable=protected-access
+        payload['model'],
+    )
     algorithm._obs_normalizer.load_state_dict(  # pylint: disable=protected-access
         payload['normalizer'],
     )
@@ -254,6 +260,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     lengths: list[int] = []
     goal_counts: list[int] = []
     displacements: list[float] = []
+    path_lengths: list[float] = []
     episode_action_norms: list[float] = []
     minimum_goal_distances: list[float] = []
     stall_flags: list[bool] = []
@@ -266,6 +273,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     all_action_norms: list[float] = []
     total_stalled_movements = 0
     total_measured_movements = 0
+    total_movement_distance = 0.0
     violations = 0
     transitions = 0
     actor_was_training = algorithm._actor_critic.training  # pylint: disable=protected-access
@@ -292,6 +300,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
             action_norms: list[float] = []
             measured_movements = 0
             stalled_movements = 0
+            path_length = 0.0
             start_position: tuple[float, float] | None = None
             last_position: tuple[float, float] | None = None
             previous_position: tuple[float, float] | None = None
@@ -305,6 +314,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                     movement = math.dist(previous_position, position)
                     measured_movements += 1
                     stalled_movements += int(movement <= step_stall_threshold)
+                    path_length += movement
                 previous_position = position
                 layout = (  # pylint: disable=protected-access
                     algorithm._env.evaluation_layout() or {}
@@ -424,6 +434,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
             assert start_position is not None and last_position is not None
             displacement = math.dist(start_position, last_position)
             displacements.append(displacement)
+            path_lengths.append(path_length)
             episode_action_norms.append(statistics.fmean(action_norms))
             minimum_goal_distances.append(minimum_goal_distance)
             stall_flags.append(episode_goals == 0 and displacement <= stall_displacement_threshold)
@@ -432,6 +443,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
             )
             total_stalled_movements += stalled_movements
             total_measured_movements += measured_movements
+            total_movement_distance += path_length
     finally:
         if actor_was_training:
             algorithm._actor_critic.train()  # pylint: disable=protected-access
@@ -460,6 +472,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
         'lengths': lengths,
         'goal_met_counts': goal_counts,
         'start_end_displacements': displacements,
+        'path_lengths': path_lengths,
         'episode_mean_action_norms': episode_action_norms,
         'minimum_goal_distances': minimum_goal_distances,
         'stall_flags': stall_flags,
@@ -486,6 +499,8 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
         'goals_per_episode_mean': statistics.fmean(goal_counts),
         'goal_met_episode_rate': sum(value > 0 for value in goal_counts) / len(goal_counts),
         'mean_start_end_displacement': statistics.fmean(displacements),
+        'mean_step_displacement': total_movement_distance / max(total_measured_movements, 1),
+        'mean_path_length': statistics.fmean(path_lengths),
         'mean_action_norm': statistics.fmean(all_action_norms),
         'mean_min_goal_distance': _mean_finite(minimum_goal_distances),
         'stall_ratio': statistics.fmean(stall_flags),

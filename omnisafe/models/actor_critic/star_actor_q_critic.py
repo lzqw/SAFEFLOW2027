@@ -133,9 +133,10 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
                 ensemble_size=safety_ensemble_size,
             )
         )
+        self.target_actor = deepcopy(self.actor)
         self.target_reward_critic = deepcopy(self.reward_critic)
         self.target_cost_critic = deepcopy(self.cost_critic)
-        for target in (self.target_reward_critic, self.target_cost_critic):
+        for target in (self.target_actor, self.target_reward_critic, self.target_cost_critic):
             target.requires_grad_(False)
 
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=actor_lr)
@@ -176,20 +177,35 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             base_action=base_action,
         )
 
+    def target_flow(
+        self,
+        augmented_obs: torch.Tensor,
+        deterministic: bool = False,
+        base_action: torch.Tensor | None = None,
+    ) -> FlowOutput:
+        """Generate a reward-backup trajectory from the slowly moving target actor."""
+        return self.target_actor(
+            augmented_obs,
+            deterministic=deterministic,
+            base_action=base_action,
+        )
+
     def step(self, augmented_obs: torch.Tensor, deterministic: bool = False) -> torch.Tensor:
         """Generate only the terminal action used by the environment."""
         with torch.no_grad():
             return self.flow(augmented_obs, deterministic=deterministic).action
 
     @torch.no_grad()
-    def polyak_update(self, coefficient: float) -> None:
-        """Soft-update reward and distributional cost targets."""
+    def polyak_update(self, coefficient: float, *, update_actor: bool = True) -> None:
+        """Soft-update critic targets and, after an actor step, the target flow."""
         if not 0.0 < coefficient <= 1.0:
             raise ValueError('Polyak coefficient must lie in (0, 1]')
-        pairs = (
+        pairs = [
             (self.target_reward_critic, self.reward_critic),
             (self.target_cost_critic, self.cost_critic),
-        )
+        ]
+        if update_actor:
+            pairs.append((self.target_actor, self.actor))
         for target, online in pairs:
             for target_parameter, online_parameter in zip(
                 target.parameters(),

@@ -6,6 +6,8 @@ custom_cfgs:
   algo_cfgs:
     enable_global_safety_constraint: true
     enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: false
+    actor_update_interval: 1
     eval_milestones: [0, 50000]
     checkpoint_replay: true
     milestone_checkpoints: true

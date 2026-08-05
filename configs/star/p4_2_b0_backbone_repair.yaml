@@ -1,0 +1,14 @@
+# P4.2 B0-R1: stabilize reward backups with a target flow and delayed actor updates.
+env_id: SafetyPointGoal1-v0
+custom_cfgs:
+  train_cfgs:
+    eval_episodes: 0
+  algo_cfgs:
+    enable_global_safety_constraint: false
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    eval_milestones: [0, 50000]
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 10000

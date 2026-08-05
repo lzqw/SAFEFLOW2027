@@ -97,6 +97,7 @@ LOG_KEYS = (
     'Evaluation/GoalsPerEpisode',
     'Evaluation/StallRatio',
     'Evaluation/Displacement',
+    'Evaluation/StepDisplacement',
     'Evaluation/ActionNorm',
     'Loss/CostCritic',
     'Loss/ViolationCritic',
@@ -136,6 +137,7 @@ LOG_KEYS = (
     'Geometry/NormalEnergy',
     'Actor/TerminalReward',
     'Actor/TerminalCost',
+    'Actor/UpdateApplied',
     'Energy/Path',
     'Dual/Energy',
     'Dual/GlobalSafety',
@@ -242,6 +244,7 @@ class STAR(BaseAlgo):
 
     _env_steps: int
     _update_count: int
+    _actor_update_count: int
     _utd_carry: float
     _violation_count: int
     _last_update_order: tuple[str, ...]
@@ -342,6 +345,7 @@ class STAR(BaseAlgo):
         )
         self._env_steps = 0
         self._update_count = 0
+        self._actor_update_count = 0
         self._utd_carry = 0.0
         self._violation_count = 0
         self._pending_episode_costs: deque[float] = deque()
@@ -360,6 +364,12 @@ class STAR(BaseAlgo):
         self._next_log_step = int(algo.steps_per_epoch)
         self._last_log_step = 0
         self._last_log_time = time.monotonic()
+
+        actor_update_interval = int(algo.actor_update_interval)
+        if actor_update_interval <= 0 or actor_update_interval != float(
+            algo.actor_update_interval,
+        ):
+            raise ValueError('actor_update_interval must be a positive integer')
 
         resume_from = str(algo.resume_from)
         if resume_from:
@@ -401,6 +411,10 @@ class STAR(BaseAlgo):
                     'reward_flow_enabled': True,
                     'global_safety_constraint_enabled': self._global_safety_enabled(),
                     'local_safety_geometry_enabled': self._local_geometry_enabled(),
+                },
+                'p4_2_reward_backbone_repair': {
+                    'target_flow_actor_for_reward_backup': (self._reward_target_actor_enabled()),
+                    'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
                 },
                 'p4_1_correctness': {
                     'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
@@ -480,6 +494,10 @@ class STAR(BaseAlgo):
     def _effective_global_safety_multiplier(self) -> float:
         """Return zero for B0 and the learned true-episode multiplier otherwise."""
         return self._global_dual.value if self._global_safety_enabled() else 0.0
+
+    def _reward_target_actor_enabled(self) -> bool:
+        """Return whether reward Bellman backups use the slowly moving target flow."""
+        return bool(self._cfgs.algo_cfgs.use_target_flow_for_reward_backup)
 
     def _select_action(self) -> tuple[torch.Tensor, torch.Tensor]:
         """Use bounded random actions in W0/W1 and learned flow actions in W2/W3."""
@@ -739,12 +757,18 @@ class STAR(BaseAlgo):
         next_augmented_obs: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Generate target action and matching FLAC future reference energy."""
+        flow_function = (
+            self._actor_critic.target_flow
+            if self._reward_target_actor_enabled()
+            else self._actor_critic.flow
+        )
         if not self._training_geometry_enabled():
             with torch.no_grad():
-                flow = self._actor_critic.flow(next_augmented_obs)
+                flow = flow_function(next_augmented_obs)
                 return flow.action, flow.kinetic_energy
-        flow = self._actor_critic.flow(next_augmented_obs)
-        geometry = self._geometry(next_augmented_obs, flow, enabled=True)
+        geometry_obs = next_augmented_obs.detach().requires_grad_(True)
+        flow = flow_function(geometry_obs)
+        geometry = self._geometry(geometry_obs, flow, enabled=True)
         return flow.action.detach(), geometry.per_sample_energy.detach()
 
     def _update_reward_critics(  # pylint: disable=too-many-locals
@@ -907,10 +931,18 @@ class STAR(BaseAlgo):
         metrics = self._update_cost_critic(batch, augmented_obs, next_augmented_obs)
         metrics.update(self._update_violation_critic(batch, augmented_obs))
         metrics.update(self._update_reward_critics(batch, augmented_obs, next_augmented_obs))
-        if self._warmup.stage in {'W2', 'W3'}:
+        actor_updated = False
+        actor_interval = int(self._cfgs.algo_cfgs.actor_update_interval)
+        if self._warmup.stage in {'W2', 'W3'} and self._update_count % actor_interval == 0:
             metrics.update(self._update_actor(augmented_obs))
+            self._actor_update_count += 1
+            actor_updated = True
+        metrics['Actor/UpdateApplied'] = float(actor_updated)
         self._consume_episode_dual_updates()
-        self._actor_critic.polyak_update(float(self._cfgs.algo_cfgs.polyak))
+        self._actor_critic.polyak_update(
+            float(self._cfgs.algo_cfgs.polyak),
+            update_actor=actor_updated,
+        )
         self._update_count += 1
         self._last_update_order = UPDATE_ORDER
 
@@ -1032,6 +1064,8 @@ class STAR(BaseAlgo):
                 'stall_ratio': 0.0,
                 'mean_displacement': 0.0,
                 'mean_start_end_displacement': 0.0,
+                'mean_step_displacement': 0.0,
+                'mean_path_length': 0.0,
                 'mean_action_norm': 0.0,
                 'trajectory': [],
             }
@@ -1045,6 +1079,7 @@ class STAR(BaseAlgo):
         thresholds: list[float] = []
         goal_counts: list[int] = []
         displacements: list[float] = []
+        path_lengths: list[float] = []
         minimum_goal_distances: list[float] = []
         episode_action_norms: list[float] = []
         stall_flags: list[bool] = []
@@ -1053,6 +1088,8 @@ class STAR(BaseAlgo):
         trajectory: list[dict[str, Any]] = []
         violations = 0
         transitions = 0
+        total_movement_distance = 0.0
+        total_measured_movements = 0
         actor_was_training = self._actor_critic.training
         self._actor_critic.eval()
         try:
@@ -1079,6 +1116,7 @@ class STAR(BaseAlgo):
                 minimum_goal_distance = float('inf')
                 measured_movements = 0
                 stalled_movements = 0
+                path_length = 0.0
                 generator = torch.Generator(device='cpu')
                 generator.manual_seed(1_000_003 + seed)
                 for step in range(int(self._cfgs.algo_cfgs.max_episode_steps)):
@@ -1091,8 +1129,10 @@ class STAR(BaseAlgo):
                         start_position = position
                     last_position = position
                     if previous_position is not None:
+                        movement = math.dist(previous_position, position)
                         measured_movements += 1
-                        stalled_movements += int(math.dist(previous_position, position) <= 1e-3)
+                        stalled_movements += int(movement <= 1e-3)
+                        path_length += movement
                     previous_position = position
                     layout = self._env.evaluation_layout() or {}
                     goal = layout.get('goal')
@@ -1191,6 +1231,7 @@ class STAR(BaseAlgo):
                     else 0.0
                 )
                 displacements.append(displacement)
+                path_lengths.append(path_length)
                 minimum_goal_distances.append(minimum_goal_distance)
                 episode_action_norms.append(
                     sum(action_norms) / len(action_norms) if action_norms else 0.0,
@@ -1199,6 +1240,8 @@ class STAR(BaseAlgo):
                 episode_step_stall_ratios.append(
                     stalled_movements / max(measured_movements, 1),
                 )
+                total_movement_distance += path_length
+                total_measured_movements += measured_movements
         finally:
             if actor_was_training:
                 self._actor_critic.train()
@@ -1233,6 +1276,8 @@ class STAR(BaseAlgo):
             'displacements': displacements,
             'mean_displacement': sum(displacements) / len(displacements),
             'mean_start_end_displacement': sum(displacements) / len(displacements),
+            'mean_step_displacement': total_movement_distance / max(total_measured_movements, 1),
+            'mean_path_length': sum(path_lengths) / len(path_lengths),
             'mean_action_norm': sum(all_action_norms) / max(len(all_action_norms), 1),
             'episode_action_norms': episode_action_norms,
             'minimum_goal_distances': minimum_goal_distances,
@@ -1407,6 +1452,7 @@ class STAR(BaseAlgo):
             counters={
                 'env_steps': self._env_steps,
                 'updates': self._update_count,
+                'actor_updates': self._actor_update_count,
                 'utd_carry': self._utd_carry,
                 'violations': self._violation_count,
             },
@@ -1436,6 +1482,7 @@ class STAR(BaseAlgo):
         counters = metadata['counters']
         self._env_steps = int(counters['env_steps'])
         self._update_count = int(counters['updates'])
+        self._actor_update_count = int(counters.get('actor_updates', 0))
         self._utd_carry = float(counters['utd_carry'])
         self._violation_count = int(counters['violations'])
         self._warmup.load_state_dict(metadata['warmup'])
@@ -1477,6 +1524,8 @@ class STAR(BaseAlgo):
                 'goals_per_episode_mean': result['goals_per_episode_mean'],
                 'stall_ratio': result['stall_ratio'],
                 'mean_start_end_displacement': result['mean_start_end_displacement'],
+                'mean_step_displacement': result['mean_step_displacement'],
+                'mean_path_length': result['mean_path_length'],
                 'mean_action_norm': result['mean_action_norm'],
             },
         )
@@ -1493,6 +1542,7 @@ class STAR(BaseAlgo):
             'Evaluation/GoalsPerEpisode': result['goals_per_episode'],
             'Evaluation/StallRatio': result['stall_ratio'],
             'Evaluation/Displacement': result['mean_displacement'],
+            'Evaluation/StepDisplacement': result['mean_step_displacement'],
             'Evaluation/ActionNorm': result['mean_action_norm'],
         }.items():
             if math.isfinite(float(value)):
@@ -1543,6 +1593,7 @@ class STAR(BaseAlgo):
                 'env_steps': self._env_steps,
                 'run_env_steps': self._run_env_steps,
                 'updates': self._update_count,
+                'actor_updates': self._actor_update_count,
                 'warmup_stage': self._warmup.stage,
                 'training_geometry_enabled': self._training_geometry_enabled(),
                 'geometry_activation_step': (
@@ -1553,6 +1604,8 @@ class STAR(BaseAlgo):
                 'warmup_geometry_eligibility_step': self._warmup.geometry_activation_step,
                 'global_safety_constraint_enabled': self._global_safety_enabled(),
                 'local_safety_geometry_enabled': self._local_geometry_enabled(),
+                'reward_target_actor_enabled': self._reward_target_actor_enabled(),
+                'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
                 'effective_global_safety_multiplier': (self._effective_global_safety_multiplier()),
                 'global_dual_state': self._global_dual.state_dict(),
                 'training_seconds': self._training_seconds,
