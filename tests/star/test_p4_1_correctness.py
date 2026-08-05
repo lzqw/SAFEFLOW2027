@@ -16,14 +16,18 @@
 
 from __future__ import annotations
 
+from collections import deque
+from types import SimpleNamespace
+
 import pytest
 import torch
 from torch.nn import functional
 
 from omnisafe.adapter.star_adapter import STARContext
-from omnisafe.algorithms.off_policy.star import normalized_actor_objective
+from omnisafe.algorithms.off_policy.star import STAR, normalized_actor_objective
 from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
 from omnisafe.common.buffer.star_replay_buffer import BOUNDARY, NORMAL, STARReplayBuffer
+from omnisafe.common.star_checkpoint import load_star_model_state
 from omnisafe.common.star_dual import GlobalSafetyDual
 from omnisafe.models.actor.flow_actor import FlowActor
 from omnisafe.models.actor_critic.star_actor_q_critic import STARActorQCritic
@@ -87,6 +91,64 @@ def test_every_p4_network_consumes_the_same_augmented_state() -> None:
     assert model.cost_critic(augmented, action).shape == (2, 4, 5)
     assert model.violation_critic is not None
     assert model.violation_critic(augmented, action).shape == (2, 4)
+
+
+def test_reward_target_actor_is_frozen_and_polyak_tracks_online_flow() -> None:
+    model = _model()
+    assert all(not parameter.requires_grad for parameter in model.target_actor.parameters())
+    with torch.no_grad():
+        for parameter in model.actor.parameters():
+            parameter.add_(0.25)
+    assert any(
+        not torch.equal(target, online)
+        for target, online in zip(model.target_actor.parameters(), model.actor.parameters())
+    )
+    model.polyak_update(1.0, update_actor=True)
+    assert all(
+        torch.equal(target, online)
+        for target, online in zip(model.target_actor.parameters(), model.actor.parameters())
+    )
+
+
+def test_reward_target_polyak_can_be_slower_than_actor_and_cost_targets() -> None:
+    model = _model()
+    target_reward_before = [
+        parameter.clone() for parameter in model.target_reward_critic.parameters()
+    ]
+    target_cost_before = [parameter.clone() for parameter in model.target_cost_critic.parameters()]
+    target_actor_before = [parameter.clone() for parameter in model.target_actor.parameters()]
+    with torch.no_grad():
+        for module in (model.reward_critic, model.cost_critic, model.actor):
+            for parameter in module.parameters():
+                parameter.add_(1.0)
+    model.polyak_update(0.005, update_actor=True, reward_coefficient=0.001)
+    for before, target in zip(target_reward_before, model.target_reward_critic.parameters()):
+        assert torch.allclose(target, before + 0.001)
+    for before, target in zip(target_cost_before, model.target_cost_critic.parameters()):
+        assert torch.allclose(target, before + 0.005)
+    for before, target in zip(target_actor_before, model.target_actor.parameters()):
+        assert torch.allclose(target, before + 0.005)
+
+
+@pytest.mark.parametrize('coefficient', [0.0, -0.1, 1.1])
+def test_reward_target_polyak_rejects_invalid_coefficient(coefficient: float) -> None:
+    with pytest.raises(ValueError, match='Reward Polyak coefficient'):
+        _model().polyak_update(0.005, reward_coefficient=coefficient)
+
+
+def test_legacy_model_state_initializes_missing_target_actor() -> None:
+    source = _model()
+    legacy_state = {
+        key: value.clone()
+        for key, value in source.state_dict().items()
+        if not key.startswith('target_actor.')
+    }
+    restored = _model()
+    load_star_model_state(restored, legacy_state)
+    assert all(
+        torch.equal(target, online)
+        for target, online in zip(restored.target_actor.parameters(), restored.actor.parameters())
+    )
 
 
 def test_legacy_model_is_shape_compatible_and_evaluation_only() -> None:
@@ -246,6 +308,58 @@ def test_normalized_actor_objective_matches_required_formula() -> None:
     objective = normalized_actor_objective(energy, reward, cost, 0.2, 9.0)
     expected = (0.2 * energy - reward + 9.0 * cost) / 10.0
     assert torch.allclose(objective, expected)
+
+
+def test_b0_switches_remove_both_safety_paths_without_hiding_episode_costs() -> None:
+    algorithm = object.__new__(STAR)
+    algorithm._cfgs = SimpleNamespace(  # pylint: disable=protected-access
+        algo_cfgs=SimpleNamespace(
+            enable_global_safety_constraint=False,
+            enable_local_safety_geometry=False,
+        ),
+    )
+    algorithm._warmup = SimpleNamespace(stage='W3')  # pylint: disable=protected-access
+    algorithm._global_dual = GlobalSafetyDual(  # pylint: disable=protected-access
+        0.1,
+        0.01,
+        1.0,
+        cost_limit=1.0,
+    )
+    algorithm._pending_episode_costs = deque([5.0])  # pylint: disable=protected-access
+
+    assert not algorithm._training_geometry_enabled()  # pylint: disable=protected-access
+    assert (
+        algorithm._effective_global_safety_multiplier() == 0.0
+    )  # pylint: disable=protected-access
+    algorithm._consume_episode_dual_updates()  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_observations == 1  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_updates == 0  # pylint: disable=protected-access
+
+
+def test_b1_updates_only_the_global_constraint_with_local_geometry_off() -> None:
+    algorithm = object.__new__(STAR)
+    algorithm._cfgs = SimpleNamespace(  # pylint: disable=protected-access
+        algo_cfgs=SimpleNamespace(
+            enable_global_safety_constraint=True,
+            enable_local_safety_geometry=False,
+        ),
+    )
+    algorithm._warmup = SimpleNamespace(stage='W3')  # pylint: disable=protected-access
+    algorithm._global_dual = GlobalSafetyDual(  # pylint: disable=protected-access
+        0.1,
+        0.01,
+        1.0,
+        cost_limit=1.0,
+    )
+    algorithm._pending_episode_costs = deque([5.0])  # pylint: disable=protected-access
+
+    assert not algorithm._training_geometry_enabled()  # pylint: disable=protected-access
+    assert algorithm._effective_global_safety_multiplier() == pytest.approx(
+        0.1,
+    )  # pylint: disable=protected-access
+    algorithm._consume_episode_dual_updates()  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_updates == 1  # pylint: disable=protected-access
+    assert algorithm._global_dual.value > 0.1  # pylint: disable=protected-access
 
 
 def test_global_dual_can_record_without_updating_multiplier() -> None:

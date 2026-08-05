@@ -1,0 +1,279 @@
+{
+  "backbone_repair_decision": "proceed_to_bellman_probability_critic",
+  "continuation_beyond_50k_launched": false,
+  "external_evaluation_protocol": {
+    "episodes_per_checkpoint_per_seed": 20,
+    "milestones": [
+      0,
+      50000
+    ],
+    "mode": "fixed-random-flow"
+  },
+  "final_p4_verdict": null,
+  "formal_four_environment_experiment_launched": false,
+  "functional_gate_rule": {
+    "arm_pass": "all five criteria must pass",
+    "pooled_return": "strictly improves from 0 to 50k",
+    "pooled_stall": "does not rise from 0 to 50k",
+    "pooled_step_displacement": "does not decline from 0 to 50k",
+    "pooled_success_rate": "strictly rises from 0 to 50k",
+    "reward_td": "no seed triggers the unchanged monotonic-divergence rule"
+  },
+  "repair_arm": {
+    "actor_updates_by_seed": {
+      "2027": 21000,
+      "2028": 21000,
+      "2029": 21000
+    },
+    "checkpoint_bytes_by_seed": {
+      "2027": {
+        "final_full": 37254011,
+        "latest_full": 37254639,
+        "milestone_0": 4126621,
+        "milestone_50000": 8899034
+      },
+      "2028": {
+        "final_full": 37254011,
+        "latest_full": 37254639,
+        "milestone_0": 4126621,
+        "milestone_50000": 8898970
+      },
+      "2029": {
+        "final_full": 37254075,
+        "latest_full": 37254703,
+        "milestone_0": 4126685,
+        "milestone_50000": 8899034
+      }
+    },
+    "criteria": {
+      "return_improves_vs_initial": true,
+      "reward_td_not_monotonic_divergence": true,
+      "stall_does_not_rise": true,
+      "step_displacement_does_not_decline": true,
+      "success_rate_rises": true
+    },
+    "estimated_cost_cny": 3.20643537755501,
+    "external_evaluation_by_seed": {
+      "2027": {
+        "0": {
+          "episodes": 20,
+          "external_auroc": 0.51808961671568,
+          "external_brier_skill": -0.11704611778259277,
+          "external_goal_met_total": 2,
+          "external_mean_cost": 77.3,
+          "goal_met_episode_rate": 0.1,
+          "mean_action_norm": 0.7786159000469838,
+          "mean_return": 0.03893223329509965,
+          "mean_start_end_displacement": 0.9307516416246886,
+          "mean_step_displacement": 0.003777483261186514,
+          "stall_ratio": 0.0
+        },
+        "50000": {
+          "episodes": 20,
+          "external_auroc": 0.6630433897036637,
+          "external_brier_skill": -0.4282102584838867,
+          "external_goal_met_total": 25,
+          "external_mean_cost": 98.75,
+          "goal_met_episode_rate": 0.7,
+          "mean_action_norm": 0.6791543796780752,
+          "mean_return": 3.570007015912863,
+          "mean_start_end_displacement": 1.1153398197121254,
+          "mean_step_displacement": 0.011959295712180056,
+          "stall_ratio": 0.0
+        }
+      },
+      "2028": {
+        "0": {
+          "episodes": 20,
+          "external_auroc": 0.5312578227213596,
+          "external_brier_skill": -0.20033323764801025,
+          "external_goal_met_total": 3,
+          "external_mean_cost": 17.45,
+          "goal_met_episode_rate": 0.15,
+          "mean_action_norm": 0.8832656748628244,
+          "mean_return": -3.310983299403398,
+          "mean_start_end_displacement": 4.402720971338905,
+          "mean_step_displacement": 0.020227544433738646,
+          "stall_ratio": 0.0
+        },
+        "50000": {
+          "episodes": 20,
+          "external_auroc": 0.626226235795245,
+          "external_brier_skill": -0.5004801750183105,
+          "external_goal_met_total": 20,
+          "external_mean_cost": 166.15,
+          "goal_met_episode_rate": 0.55,
+          "mean_action_norm": 0.6463714631232665,
+          "mean_return": 2.770146515312002,
+          "mean_start_end_displacement": 1.0402256086118018,
+          "mean_step_displacement": 0.005324561409161721,
+          "stall_ratio": 0.0
+        }
+      },
+      "2029": {
+        "0": {
+          "episodes": 20,
+          "external_auroc": 0.4888469328684622,
+          "external_brier_skill": -0.6138652563095093,
+          "external_goal_met_total": 0,
+          "external_mean_cost": 39.3,
+          "goal_met_episode_rate": 0.0,
+          "mean_action_norm": 0.7918745708407369,
+          "mean_return": -0.7556809977584671,
+          "mean_start_end_displacement": 1.673212888218924,
+          "mean_step_displacement": 0.00604105566131949,
+          "stall_ratio": 0.05
+        },
+        "50000": {
+          "episodes": 20,
+          "external_auroc": 0.6655733749741611,
+          "external_brier_skill": -0.6662224531173706,
+          "external_goal_met_total": 112,
+          "external_mean_cost": 77.3,
+          "goal_met_episode_rate": 0.95,
+          "mean_action_norm": 0.6485134360313881,
+          "mean_return": 12.125324437209986,
+          "mean_start_end_displacement": 1.3919493252285915,
+          "mean_step_displacement": 0.013050036284907024,
+          "stall_ratio": 0.0
+        }
+      }
+    },
+    "functional_gate_passed": true,
+    "name": "B0-R3",
+    "pooled_external_evaluation": {
+      "0": {
+        "goal_met_episode_rate": 0.08333333333333333,
+        "mean_action_norm": 0.8179187152501818,
+        "mean_return": -1.3425773546222552,
+        "mean_start_end_displacement": 2.335561833727506,
+        "mean_step_displacement": 0.010015361118748217,
+        "stall_ratio": 0.016666666666666666
+      },
+      "50000": {
+        "goal_met_episode_rate": 0.7333333333333334,
+        "mean_action_norm": 0.6580130929442433,
+        "mean_return": 6.155159322811617,
+        "mean_start_end_displacement": 1.1825049178508396,
+        "mean_step_displacement": 0.010111297802082935,
+        "stall_ratio": 0.0
+      }
+    },
+    "repair": {
+      "actor_update_interval": 2,
+      "reward_critic_updates_per_update": 2,
+      "reward_replay_recent_fraction": 0.5,
+      "reward_replay_recent_window": 10000,
+      "reward_target_samples": 4,
+      "separate_reward_replay": true,
+      "target_flow_actor_for_reward_backup": true
+    },
+    "reward_critic_updates_by_seed": {
+      "2027": 96000,
+      "2028": 96000,
+      "2029": 96000
+    },
+    "reward_target_sampling_std_by_seed": {
+      "2027": {
+        "final": 0.0023902158347074874,
+        "mean_over_5k_rows": 0.0031530102166882714
+      },
+      "2028": {
+        "final": 0.0027187186738010494,
+        "mean_over_5k_rows": 0.003964514680611901
+      },
+      "2029": {
+        "final": 0.0031978938673157243,
+        "mean_over_5k_rows": 0.003951786011632842
+      }
+    },
+    "reward_td_trend_by_seed": {
+      "2027": {
+        "final": 0.0023306960985530166,
+        "final_to_historical_minimum_ratio": 1.3238561299532825,
+        "historical_minimum": 0.0017605357907246799,
+        "historical_minimum_step": 40000,
+        "last_four_steps": [
+          35000,
+          40000,
+          45000,
+          50000
+        ],
+        "last_four_values": [
+          0.0018232451158110051,
+          0.0017605357907246799,
+          0.0019123682344681584,
+          0.0023306960985530166
+        ],
+        "monotonic_divergence": false,
+        "strictly_rising_last_three_intervals": false
+      },
+      "2028": {
+        "final": 0.002878022883622907,
+        "final_to_historical_minimum_ratio": 1.1078045167452393,
+        "historical_minimum": 0.0025979519311571495,
+        "historical_minimum_step": 30000,
+        "last_four_steps": [
+          35000,
+          40000,
+          45000,
+          50000
+        ],
+        "last_four_values": [
+          0.0026254073905060066,
+          0.0028018374007660897,
+          0.0029041831572540104,
+          0.002878022883622907
+        ],
+        "monotonic_divergence": false,
+        "strictly_rising_last_three_intervals": false
+      },
+      "2029": {
+        "final": 0.0041938697771402075,
+        "final_to_historical_minimum_ratio": 1.598573915524508,
+        "historical_minimum": 0.00262350694979541,
+        "historical_minimum_step": 15000,
+        "last_four_steps": [
+          35000,
+          40000,
+          45000,
+          50000
+        ],
+        "last_four_values": [
+          0.003549927190807648,
+          0.00336560432955157,
+          0.00329732923922129,
+          0.0041938697771402075
+        ],
+        "monotonic_divergence": false,
+        "strictly_rising_last_three_intervals": false
+      }
+    },
+    "target_timescale": {
+      "actor_target_polyak": 0.005,
+      "cost_target_polyak": 0.005,
+      "reward_target_polyak": 0.001
+    },
+    "training_seconds": 7777.169502072036
+  },
+  "repair_source_commit": "b3c490309d465b89a5ae5a6ed235835587074abb",
+  "reward_td_divergence_rule": {
+    "arm_pass_requires_no_seed_divergence": true,
+    "final_to_historical_minimum_ratio_at_least": 2.0,
+    "strictly_rising": true,
+    "tail": "last four 5k diagnostic rows"
+  },
+  "schema_version": 1,
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "stage": "P4.2-B0-R3-reward-backbone-repair",
+  "target_steps": 50000,
+  "target_timescale": {
+    "actor_target_polyak": 0.005,
+    "cost_target_polyak": 0.005,
+    "reward_target_polyak": 0.001
+  }
+}

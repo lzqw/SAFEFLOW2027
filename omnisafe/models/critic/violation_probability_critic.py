@@ -37,7 +37,7 @@ class ViolationProbabilityCritic(nn.Module):
         activation: Activation = 'relu',
         weight_initialization_mode: InitFunction = 'kaiming_uniform',
     ) -> None:
-        """Initialize independent logit networks without a forced 0.5 cost threshold."""
+        """Initialize independent raw-score networks without a forced 0.5 cost threshold."""
         super().__init__()
         if min(obs_dim, act_dim, ensemble_size) <= 0:
             raise ValueError('probability critic dimensions and ensemble size must be positive')
@@ -80,6 +80,39 @@ class ViolationProbabilityCritic(nn.Module):
         )
 
 
+@torch.no_grad()
+def violation_bellman_target(
+    next_probability: torch.Tensor,
+    next_violation: torch.Tensor,
+    episode_done: torch.Tensor,
+) -> torch.Tensor:
+    """Build the absorbing probability-of-event Bellman target without a discount.
+
+    A budget breach takes precedence over termination. A terminal transition that remains safe
+    has zero future violation probability; every other transition bootstraps head-wise from the
+    target probability critic under the target actor.
+    """
+    if next_probability.ndim != 2:
+        raise ValueError('next probability must have [ensemble, batch] shape')
+    next_violation = next_violation.reshape(-1).bool().to(next_probability.device)
+    episode_done = episode_done.reshape(-1).bool().to(next_probability.device)
+    if next_violation.shape[0] != next_probability.shape[1] or episode_done.shape != (
+        next_probability.shape[1],
+    ):
+        raise ValueError('Bellman event masks must match the probability batch')
+    if not bool(torch.isfinite(next_probability).all()) or bool(
+        ((next_probability < 0.0) | (next_probability > 1.0)).any(),
+    ):
+        raise ValueError('next probabilities must be finite and lie in [0, 1]')
+    breached = next_violation.unsqueeze(0).expand_as(next_probability)
+    safe_end = (episode_done & ~next_violation).unsqueeze(0).expand_as(next_probability)
+    return torch.where(
+        breached,
+        torch.ones_like(next_probability),
+        torch.where(safe_end, torch.zeros_like(next_probability), next_probability),
+    )
+
+
 def masked_bce_loss(
     logits: torch.Tensor,
     target: torch.Tensor,
@@ -90,12 +123,17 @@ def masked_bce_loss(
     """Train only finalized episode labels, with optional replay and bootstrap weights."""
     if logits.ndim != 2:
         raise ValueError('probability logits must have [ensemble, batch] shape')
-    target = target.reshape(-1).to(logits)
+    target = target.to(logits)
     labeled = labeled.reshape(-1).bool().to(logits.device)
-    if target.shape[0] != logits.shape[1] or labeled.shape[0] != logits.shape[1]:
+    if target.ndim == 1 and target.shape[0] == logits.shape[1]:
+        expanded_target = target.unsqueeze(0).expand_as(logits)
+    elif target.shape == logits.shape:
+        expanded_target = target
+    else:
+        raise ValueError('probability target must have [batch] or [ensemble, batch] shape')
+    if labeled.shape[0] != logits.shape[1]:
         raise ValueError('probability targets and masks must match the batch dimension')
-    expanded_target = target.unsqueeze(0).expand_as(logits)
-    selected_target = target[labeled]
+    selected_target = expanded_target[:, labeled]
     if bool((~torch.isfinite(selected_target)).any()) or bool(
         ((selected_target < 0) | (selected_target > 1)).any(),
     ):

@@ -258,6 +258,8 @@ def test_center_flow_rollout_reports_goal_progress_and_stall_metrics() -> None:
     assert result['goal_met_total'] == 1
     assert result['goal_met_episode_rate'] == pytest.approx(0.5)
     assert result['mean_start_end_displacement'] == 0.0
+    assert result['mean_step_displacement'] == 0.0
+    assert result['mean_path_length'] == 0.0
     assert result['mean_action_norm'] == 0.0
     assert result['stall_ratio'] == pytest.approx(0.5)
     assert result['step_stall_ratio'] == 1.0

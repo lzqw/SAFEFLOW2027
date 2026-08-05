@@ -50,6 +50,7 @@ class STARContext:
         cost_limit: float,
         max_episode_steps: int,
         device: torch.device | str,
+        include_violation: bool = False,
     ) -> None:
         """Initialize per-environment context without inventing locomotion budgets."""
         if num_envs <= 0 or max_episode_steps <= 0:
@@ -61,12 +62,14 @@ class STARContext:
         self.cost_limit = float(cost_limit)
         self.max_episode_steps = max_episode_steps
         self.device = torch.device(device)
+        self.include_violation = include_violation
         self.remaining_budget = torch.full(
             (num_envs,),
             self.cost_limit if self.is_point else 0.0,
             device=self.device,
         )
         self.episode_step = torch.zeros(num_envs, dtype=torch.long, device=self.device)
+        self.violation_so_far = torch.zeros(num_envs, dtype=torch.bool, device=self.device)
 
     def values(self) -> tuple[torch.Tensor, torch.Tensor]:
         """Return ``[budget ratio, horizon ratio]`` and the raw label threshold."""
@@ -78,7 +81,15 @@ class STARContext:
         else:
             budget = torch.ones_like(horizon)
             threshold = torch.full_like(horizon, 0.5)
-        return torch.stack((budget, horizon), dim=-1), threshold
+        fields = (
+            (budget, horizon, self.violation_so_far.to(horizon))
+            if self.include_violation
+            else (
+                budget,
+                horizon,
+            )
+        )
+        return torch.stack(fields, dim=-1), threshold
 
     def advance(
         self,
@@ -92,19 +103,30 @@ class STARContext:
         next_horizon = (self.max_episode_steps - transition_step).clamp_min(0).float()
         next_horizon = next_horizon / self.max_episode_steps
         if self.is_point:
-            transition_budget = (self.remaining_budget - cost).clamp_min(0.0)
+            transition_budget = self.remaining_budget - cost
+            transition_violation = self.violation_so_far | (transition_budget < 0.0)
+            if not self.include_violation:
+                transition_budget = transition_budget.clamp_min(0.0)
             next_budget = transition_budget / self.cost_limit
             next_threshold = transition_budget.clone()
             self.remaining_budget = transition_budget
         else:
             next_budget = torch.ones_like(next_horizon)
             next_threshold = torch.full_like(next_horizon, 0.5)
-        next_context = torch.stack((next_budget, next_horizon), dim=-1)
+            transition_violation = self.violation_so_far | (cost > next_threshold)
+        self.violation_so_far = transition_violation
+        fields = (
+            (next_budget, next_horizon, transition_violation.to(next_horizon))
+            if self.include_violation
+            else (next_budget, next_horizon)
+        )
+        next_context = torch.stack(fields, dim=-1)
         self.episode_step = transition_step
 
         episode_done = torch.logical_or(terminated.bool(), truncated.bool()).to(self.device)
         if self.is_point:
             self.remaining_budget[episode_done] = self.cost_limit
+        self.violation_so_far[episode_done] = False
         self.episode_step[episode_done] = 0
         return next_context, next_threshold
 
@@ -113,12 +135,16 @@ class STARContext:
         return {
             'remaining_budget': self.remaining_budget.clone(),
             'episode_step': self.episode_step.clone(),
+            'violation_so_far': self.violation_so_far.clone(),
         }
 
     def load_state_dict(self, state: dict[str, torch.Tensor]) -> None:
         """Restore rollout context tensors."""
         self.remaining_budget.copy_(state['remaining_budget'].to(self.device))
         self.episode_step.copy_(state['episode_step'].to(self.device))
+        self.violation_so_far.copy_(
+            state.get('violation_so_far', torch.zeros_like(self.violation_so_far)).to(self.device),
+        )
 
 
 class STARAdapter(OnlineAdapter):  # pylint: disable=too-many-instance-attributes
@@ -141,6 +167,7 @@ class STARAdapter(OnlineAdapter):  # pylint: disable=too-many-instance-attribute
             cost_limit=float(cfgs.lagrange_cfgs.cost_limit),
             max_episode_steps=max_steps,
             device=self._device,
+            include_violation=bool(getattr(cfgs.algo_cfgs, 'bellman_probability_enabled', False)),
         )
         self._episode_return = torch.zeros(num_envs, device=self._device)
         self._episode_cost = torch.zeros(num_envs, device=self._device)

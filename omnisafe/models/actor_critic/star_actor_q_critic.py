@@ -46,6 +46,37 @@ def flac_reward_target(
     )
 
 
+@torch.no_grad()
+# pylint: disable-next=too-many-arguments
+def flac_sampled_reward_target(
+    reward: torch.Tensor,
+    done: torch.Tensor,
+    next_q_first: torch.Tensor,
+    next_q_second: torch.Tensor,
+    next_path_energy: torch.Tensor,
+    energy_multiplier: torch.Tensor | float,
+    gamma: float,
+) -> torch.Tensor:
+    """Average the FLAC backup over stochastic target-flow samples.
+
+    The three future tensors use ``[target samples, replay batch]`` layout. Averaging follows
+    ``min(Q1, Q2) - alpha_E * energy`` so the conservative twin-critic operator is applied to
+    every sampled action before taking the policy expectation.
+    """
+    if next_q_first.ndim != 2:
+        raise ValueError('sampled FLAC tensors must have [samples, batch] shape')
+    expected_shape = next_q_first.shape
+    if next_q_second.shape != expected_shape or next_path_energy.shape != expected_shape:
+        raise ValueError('sampled FLAC future tensors must share one shape')
+    if reward.shape != expected_shape[1:] or done.shape != reward.shape:
+        raise ValueError('sampled FLAC reward and done tensors must match the replay batch')
+    continuation = (
+        torch.minimum(next_q_first, next_q_second)
+        - torch.as_tensor(energy_multiplier, device=reward.device) * next_path_energy
+    ).mean(dim=0)
+    return reward + gamma * (1.0 - done) * continuation
+
+
 class TwinRewardCritic(nn.Module):
     """Two independent scalar reward Q-functions."""
 
@@ -133,9 +164,16 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
                 ensemble_size=safety_ensemble_size,
             )
         )
+        self.target_actor = deepcopy(self.actor)
         self.target_reward_critic = deepcopy(self.reward_critic)
         self.target_cost_critic = deepcopy(self.cost_critic)
-        for target in (self.target_reward_critic, self.target_cost_critic):
+        self.target_violation_critic = (
+            None if self.violation_critic is None else deepcopy(self.violation_critic)
+        )
+        targets = [self.target_actor, self.target_reward_critic, self.target_cost_critic]
+        if self.target_violation_critic is not None:
+            targets.append(self.target_violation_critic)
+        for target in targets:
             target.requires_grad_(False)
 
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=actor_lr)
@@ -176,31 +214,63 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             base_action=base_action,
         )
 
+    def target_flow(
+        self,
+        augmented_obs: torch.Tensor,
+        deterministic: bool = False,
+        base_action: torch.Tensor | None = None,
+    ) -> FlowOutput:
+        """Generate a reward-backup trajectory from the slowly moving target actor."""
+        return self.target_actor(
+            augmented_obs,
+            deterministic=deterministic,
+            base_action=base_action,
+        )
+
     def step(self, augmented_obs: torch.Tensor, deterministic: bool = False) -> torch.Tensor:
         """Generate only the terminal action used by the environment."""
         with torch.no_grad():
             return self.flow(augmented_obs, deterministic=deterministic).action
 
     @torch.no_grad()
-    def polyak_update(self, coefficient: float) -> None:
-        """Soft-update reward and distributional cost targets."""
+    def polyak_update(
+        self,
+        coefficient: float,
+        *,
+        update_actor: bool = True,
+        reward_coefficient: float | None = None,
+        violation_coefficient: float | None = None,
+    ) -> None:
+        """Soft-update targets with independently configurable probability/reward steps."""
         if not 0.0 < coefficient <= 1.0:
             raise ValueError('Polyak coefficient must lie in (0, 1]')
-        pairs = (
-            (self.target_reward_critic, self.reward_critic),
-            (self.target_cost_critic, self.cost_critic),
-        )
-        for target, online in pairs:
+        reward_step = coefficient if reward_coefficient is None else reward_coefficient
+        if not 0.0 < reward_step <= 1.0:
+            raise ValueError('Reward Polyak coefficient must lie in (0, 1]')
+        violation_step = coefficient if violation_coefficient is None else violation_coefficient
+        if not 0.0 < violation_step <= 1.0:
+            raise ValueError('Violation Polyak coefficient must lie in (0, 1]')
+        pairs: list[tuple[nn.Module, nn.Module, float]] = [
+            (self.target_reward_critic, self.reward_critic, reward_step),
+            (self.target_cost_critic, self.cost_critic, coefficient),
+        ]
+        if self.target_violation_critic is not None and self.violation_critic is not None:
+            pairs.append(
+                (self.target_violation_critic, self.violation_critic, violation_step),
+            )
+        if update_actor:
+            pairs.append((self.target_actor, self.actor, coefficient))
+        for target, online, step in pairs:
             for target_parameter, online_parameter in zip(
                 target.parameters(),
                 online.parameters(),
             ):
-                target_parameter.lerp_(online_parameter, coefficient)
+                target_parameter.lerp_(online_parameter, step)
 
     @property
     def optimizers(self) -> dict[str, optim.Optimizer]:
         """Return every network optimizer for checkpointing."""
-        result = {
+        result: dict[str, optim.Optimizer] = {
             'actor': self.actor_optimizer,
             'reward_critic': self.reward_critic_optimizer,
             'cost_critic': self.cost_critic_optimizer,
