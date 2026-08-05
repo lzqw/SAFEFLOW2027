@@ -415,9 +415,9 @@ def screen_decision(arms: dict[str, dict[str, Any]]) -> dict[str, Any]:
     selected_payload = [
         {
             'arm': evidence['arm'],
-            'selection_basis': 'performance_eligible'
-            if evidence['performance_eligible']
-            else 'fallback',
+            'selection_basis': (
+                'performance_eligible' if evidence['performance_eligible'] else 'fallback'
+            ),
         }
         for evidence in selected
     ]
