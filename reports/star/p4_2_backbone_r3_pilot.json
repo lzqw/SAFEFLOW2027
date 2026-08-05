@@ -1,0 +1,92 @@
+{
+  "continuation_beyond_50k_launched": false,
+  "final_p4_verdict": null,
+  "formal_four_environment_experiment_launched": false,
+  "pilot": {
+    "actor_updates": 21000,
+    "checkpoint_bytes": {
+      "final_full": 37254011,
+      "latest_full": 37254639,
+      "milestone_0": 4126621,
+      "milestone_50000": 8898970
+    },
+    "endpoints": {
+      "0": {
+        "goal_met_episode_rate": 0.15,
+        "mean_action_norm": 0.8832656748628244,
+        "mean_return": -3.310983299403398,
+        "mean_start_end_displacement": 4.402720971338905,
+        "mean_step_displacement": 0.020227544433738646,
+        "stall_ratio": 0.0
+      },
+      "50000": {
+        "goal_met_episode_rate": 0.55,
+        "mean_action_norm": 0.6463714631232665,
+        "mean_return": 2.770146515312002,
+        "mean_start_end_displacement": 1.0402256086118018,
+        "mean_step_displacement": 0.005324561409161721,
+        "stall_ratio": 0.0
+      }
+    },
+    "estimated_cost_cny": 1.0108065933903887,
+    "feasibility_passed": true,
+    "hard_stops": {
+      "endpoint_stall_at_least_0_5": false,
+      "non_finite_artifact": false,
+      "reward_td_monotonic_divergence": false,
+      "zero_endpoint_success": false
+    },
+    "outer_updates": 48000,
+    "pilot_decision": "launch_remaining_r3_repair_seeds",
+    "reward_critic_updates": 96000,
+    "reward_target_sampling_std": {
+      "final": 0.0027187186738010494,
+      "mean_over_5k_rows": 0.003964514680611901
+    },
+    "reward_td_trend": {
+      "final": 0.002878022883622907,
+      "final_to_historical_minimum_ratio": 1.1078045167452393,
+      "historical_minimum": 0.0025979519311571495,
+      "historical_minimum_step": 30000,
+      "last_four_steps": [
+        35000,
+        40000,
+        45000,
+        50000
+      ],
+      "last_four_values": [
+        0.0026254073905060066,
+        0.0028018374007660897,
+        0.0029041831572540104,
+        0.002878022883622907
+      ],
+      "monotonic_divergence": false,
+      "strictly_rising_last_three_intervals": false
+    },
+    "seed": 2028,
+    "target_timescale": {
+      "actor_target_polyak": 0.005,
+      "cost_target_polyak": 0.005,
+      "reward_target_polyak": 0.001
+    },
+    "training_seconds": 2451.426514208317
+  },
+  "r2_training_source_commit": "2332a550cc0a366c436c9a116b72b7bfc918bef2",
+  "repair": {
+    "actor_update_interval": 2,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "target_flow_actor_for_reward_backup": true
+  },
+  "repair_source_commit": "b3c490309d465b89a5ae5a6ed235835587074abb",
+  "schema_version": 1,
+  "stage": "P4.2-B0-R3-seed-2028-feasibility",
+  "target_timescale": {
+    "actor_target_polyak": 0.005,
+    "cost_target_polyak": 0.005,
+    "reward_target_polyak": 0.001
+  }
+}
