@@ -55,6 +55,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         importance_beta: float = 0.4,
         boundary_score_threshold: float = 0.5,
         context_dim: int = 2,
+        heldout_episode_period: int = 0,
         pin_memory: bool = True,
     ) -> None:
         """Allocate every transition field and category pool on CPU."""
@@ -70,6 +71,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             raise ValueError('importance beta must lie in [0, 1]')
         if not 0 <= boundary_score_threshold <= 1:
             raise ValueError('boundary score threshold must lie in [0, 1]')
+        if heldout_episode_period < 0:
+            raise ValueError('held-out episode period cannot be negative')
         self.obs_dim = obs_dim
         self.act_dim = act_dim
         self.capacity = capacity
@@ -80,6 +83,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         self.importance_beta = importance_beta
         self.boundary_score_threshold = boundary_score_threshold
         self.context_dim = context_dim
+        self.heldout_episode_period = heldout_episode_period
         self._pin_memory = bool(pin_memory and torch.cuda.is_available())
         self._ptr = 0
         self._size = 0
@@ -104,6 +108,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             'is_boundary': self._allocate((capacity,), dtype=torch.bool),
             'is_failure': self._allocate((capacity,), dtype=torch.bool),
             'source_random': self._allocate((capacity,), dtype=torch.bool),
+            'episode_id': self._allocate((capacity,), dtype=torch.long, fill=-1),
+            'is_heldout': self._allocate((capacity,), dtype=torch.bool),
             'category': self._allocate((capacity,), dtype=torch.long, fill=-1),
             'generation': self._allocate((capacity,), dtype=torch.long),
         }
@@ -111,6 +117,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         self._pool_positions = torch.full((CATEGORY_COUNT, capacity), -1, dtype=torch.long)
         self._pool_sizes = [0 for _ in range(CATEGORY_COUNT)]
         self._episode_slots: list[list[tuple[int, int]]] = [[] for _ in range(num_envs)]
+        self._active_episode_ids = list(range(num_envs))
+        self._next_episode_id = num_envs
 
     def _allocate(
         self,
@@ -135,6 +143,28 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
     def pointer(self) -> int:
         """Return the next ring slot."""
         return self._ptr
+
+    @property
+    def training_size(self) -> int:
+        """Return resident transitions assigned to the episode-level training split."""
+        return sum(self._pool_sizes)
+
+    @property
+    def heldout_size(self) -> int:
+        """Return resident transitions reserved from every optimizer replay stream."""
+        valid = self.capacity if self._size == self.capacity else self._size
+        return int(self.data['is_heldout'][:valid].sum().item())
+
+    def current_episode_is_heldout(
+        self,
+        device: torch.device | str = 'cpu',
+    ) -> torch.Tensor:
+        """Return the pre-collection split assignment for every vector environment."""
+        return torch.tensor(
+            [self._is_heldout_episode(episode_id) for episode_id in self._active_episode_ids],
+            dtype=torch.bool,
+            device=torch.device(device),
+        )
 
     @property
     def pool_sizes(self) -> dict[str, int]:
@@ -229,6 +259,10 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             generation = int(self.data['generation'][slot].item())
             for key, value in values.items():
                 self.data[key][slot].copy_(value[env_index])
+            episode_id = self._active_episode_ids[env_index]
+            is_heldout = self._is_heldout_episode(episode_id)
+            self.data['episode_id'][slot] = episode_id
+            self.data['is_heldout'][slot] = is_heldout
             self.data['reward_done'][slot] = values['terminated'][env_index].float()
             self.data['cost_done'][slot] = torch.logical_or(
                 values['terminated'][env_index].bool(),
@@ -242,7 +276,9 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             )
             self.data['is_boundary'][slot] = is_boundary
             category = FAILURE if is_failure else BOUNDARY if is_boundary else NORMAL
-            self._add_pool_slot(slot, category)
+            self.data['category'][slot] = -1
+            if not is_heldout:
+                self._add_pool_slot(slot, category)
             self._episode_slots[env_index].append((slot, generation))
 
             episode_done = bool(values['terminated'][env_index].item()) or bool(
@@ -250,8 +286,16 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             )
             if episode_done:
                 self._finalize_episode(env_index)
+                self._active_episode_ids[env_index] = self._next_episode_id
+                self._next_episode_id += 1
             self._ptr = (self._ptr + 1) % self.capacity
             self._size = min(self._size + 1, self.capacity)
+
+    def _is_heldout_episode(self, episode_id: int) -> bool:
+        """Reserve complete episodes deterministically without transition-level leakage."""
+        return self.heldout_episode_period > 0 and (
+            (episode_id + 1) % self.heldout_episode_period == 0
+        )
 
     def _finalize_episode(self, env_index: int) -> None:
         future_cost = 0.0
@@ -270,14 +314,23 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         normal = batch_size - failures - boundaries
         return [normal, boundaries, failures]
 
+    def _training_slots(self) -> torch.Tensor:
+        """Return the union of the three train-only category pools."""
+        pools = [
+            self._pool_indices[category, : self._pool_sizes[category]]
+            for category in range(CATEGORY_COUNT)
+            if self._pool_sizes[category]
+        ]
+        return torch.cat(pools) if pools else torch.empty(0, dtype=torch.long)
+
     def sample_batch(  # pylint: disable=too-many-locals
         self,
         device: torch.device | str = 'cpu',
         batch_size: int | None = None,
     ) -> dict[str, torch.Tensor]:
         """Sample a fixed global batch and transfer it non-blockingly to the learner device."""
-        if self._size == 0:
-            raise RuntimeError('cannot sample an empty replay buffer')
+        if self.training_size == 0:
+            raise RuntimeError('cannot sample replay before a training-split transition exists')
         requested = self.batch_size if batch_size is None else batch_size
         if requested <= 0:
             raise ValueError('sample batch size must be positive')
@@ -293,7 +346,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             positions = torch.randint(pool_size, (count,))
             sampled.append(self._pool_indices[category, positions])
         if fallback:
-            sampled.append(torch.randint(self._size, (fallback,)))
+            training_slots = self._training_slots()
+            sampled.append(training_slots[torch.randint(training_slots.numel(), (fallback,))])
         indices = torch.cat(sampled)
         indices = indices[torch.randperm(indices.numel())]
 
@@ -302,7 +356,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         pool_sizes = torch.tensor(self._pool_sizes, dtype=torch.float32).clamp_min(1.0)
         mixture = selected_counts / requested
         probability = mixture[sampled_category] / pool_sizes[sampled_category]
-        uniform_probability = 1.0 / self._size
+        uniform_probability = 1.0 / self.training_size
         importance = (uniform_probability / probability.clamp_min(1e-12)).pow(
             self.importance_beta,
         )
@@ -332,8 +386,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         therefore valid before and after capacity wraparound. Sampling is with replacement, as in
         the safety-stratified sampler, and the deliberate mixture receives unit weights.
         """
-        if self._size == 0:
-            raise RuntimeError('cannot sample an empty replay buffer')
+        if self.training_size == 0:
+            raise RuntimeError('cannot sample replay before a training-split transition exists')
         requested = self.batch_size if batch_size is None else batch_size
         if requested <= 0:
             raise ValueError('sample batch size must be positive')
@@ -345,12 +399,22 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         recent_count = round(requested * recent_fraction)
         uniform_count = requested - recent_count
         sampled: list[torch.Tensor] = []
+        training_slots = self._training_slots()
         if uniform_count:
-            sampled.append(torch.randint(self._size, (uniform_count,)))
+            sampled.append(
+                training_slots[torch.randint(training_slots.numel(), (uniform_count,))],
+            )
         if recent_count:
-            available = min(self._size, recent_window)
-            offsets = torch.randint(available, (recent_count,))
-            sampled.append((self._ptr - 1 - offsets).remainder(self.capacity))
+            chronology = (
+                torch.arange(self._size)
+                if self._size < self.capacity
+                else torch.cat((torch.arange(self._ptr, self.capacity), torch.arange(self._ptr)))
+            )
+            recent_train = chronology[~self.data['is_heldout'][chronology]]
+            recent_train = recent_train[-recent_window:]
+            sampled.append(
+                recent_train[torch.randint(recent_train.numel(), (recent_count,))],
+            )
         indices = torch.cat(sampled)
         indices = indices[torch.randperm(indices.numel())]
 
@@ -383,6 +447,8 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             self.data['boundary_score'][slot] = score
             is_boundary = score >= self.boundary_score_threshold
             self.data['is_boundary'][slot] = is_boundary
+            if bool(self.data['is_heldout'][slot].item()):
+                continue
             if bool(self.data['is_failure'][slot].item()):
                 continue
             desired = BOUNDARY if is_boundary else NORMAL
@@ -392,10 +458,21 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
 
     @property
     def label_counts(self) -> dict[str, int]:
-        """Return finalized resident negative/positive probability labels."""
+        """Return finalized train-split negative/positive probability labels."""
+        return self.label_counts_for('train')
+
+    def label_counts_for(self, split: str) -> dict[str, int]:
+        """Return finalized resident labels for one episode-level split."""
+        if split not in {'train', 'heldout', 'all'}:
+            raise ValueError("replay split must be 'train', 'heldout', or 'all'")
         valid = self.capacity if self._size == self.capacity else self._size
         labels = self.data['violation_label'][:valid]
         finalized = torch.isfinite(labels)
+        heldout = self.data['is_heldout'][:valid]
+        if split == 'train':
+            finalized &= ~heldout
+        elif split == 'heldout':
+            finalized &= heldout
         positives = int((labels[finalized] > 0.5).sum().item())
         negatives = int(finalized.sum().item()) - positives
         return {
@@ -404,20 +481,67 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             'finalized': int(finalized.sum().item()),
         }
 
+    def recent_heldout_batch(
+        self,
+        device: torch.device | str = 'cpu',
+        *,
+        recent_episodes: int = 20,
+        batch_size: int | None = None,
+    ) -> dict[str, torch.Tensor]:
+        """Return finalized transitions from the most recent held-out episodes only."""
+        if recent_episodes <= 0:
+            raise ValueError('recent held-out episode count must be positive')
+        if batch_size is not None and batch_size <= 0:
+            raise ValueError('held-out batch size must be positive')
+        valid = self.capacity if self._size == self.capacity else self._size
+        resident = torch.arange(valid)
+        eligible = (
+            self.data['is_heldout'][:valid]
+            & torch.isfinite(self.data['violation_label'][:valid])
+            & (self.data['episode_id'][:valid] >= 0)
+        )
+        indices = resident[eligible]
+        if indices.numel() == 0:
+            raise RuntimeError('no finalized held-out episode is resident')
+        episode_ids = self.data['episode_id'][indices]
+        selected_ids = torch.unique(episode_ids, sorted=True)[-recent_episodes:]
+        selected = (episode_ids.unsqueeze(1) == selected_ids.unsqueeze(0)).any(dim=1)
+        indices = indices[selected]
+        order = torch.argsort(self.data['episode_id'][indices] * self.capacity + indices)
+        indices = indices[order]
+        if batch_size is not None:
+            indices = indices[-batch_size:]
+        target_device = torch.device(device)
+        batch = {
+            key: value[indices].to(target_device, non_blocking=self._pin_memory)
+            for key, value in self.data.items()
+        }
+        batch['indices'] = indices.to(target_device)
+        batch['importance_weights'] = torch.ones(
+            indices.numel(),
+            dtype=torch.float32,
+            device=target_device,
+        )
+        return batch
+
     def category_ratios(self) -> dict[str, float]:
         """Return resident replay fractions for training diagnostics."""
-        denominator = max(self._size, 1)
+        denominator = max(self.training_size, 1)
         return {key: value / denominator for key, value in self.pool_sizes.items()}
 
     def reset_pending_episodes(self) -> None:
         """Drop unfinished slot chains when a simulator cannot be restored exactly."""
         self._episode_slots = [[] for _ in range(self.num_envs)]
+        self._active_episode_ids = list(
+            range(self._next_episode_id, self._next_episode_id + self.num_envs),
+        )
+        self._next_episode_id += self.num_envs
 
     def state_dict(self) -> dict[str, Any]:
         """Return a compact replay snapshot suitable for local full checkpoints."""
         valid = self.capacity if self._size == self.capacity else self._size
         return {
-            'version': 2,
+            'version': 3,
             'capacity': self.capacity,
             'obs_dim': self.obs_dim,
             'act_dim': self.act_dim,
@@ -426,11 +550,18 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             'pointer': self._ptr,
             'data': {key: value[:valid].clone() for key, value in self.data.items()},
             'episode_slots': self._episode_slots,
+            'active_episode_ids': self._active_episode_ids,
+            'next_episode_id': self._next_episode_id,
+            'heldout_episode_period': self.heldout_episode_period,
         }
 
-    def load_state_dict(self, state: dict[str, Any]) -> None:
+    def load_state_dict(  # pylint: disable=too-many-branches
+        self,
+        state: dict[str, Any],
+    ) -> None:
         """Restore a compact replay snapshot and rebuild category pools."""
-        if state.get('version') != 2:
+        version = int(state.get('version', -1))
+        if version not in {2, 3}:
             raise ValueError('unsupported STAR replay checkpoint version')
         for name, expected in (
             ('obs_dim', self.obs_dim),
@@ -444,18 +575,31 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         valid = next(iter(saved_data.values())).shape[0]
         if saved_size > self.capacity or valid > self.capacity:
             raise ValueError('saved replay does not fit the configured capacity')
-        if set(saved_data) != set(self.data):
+        required_fields = set(self.data) - {'episode_id', 'is_heldout'}
+        if not required_fields.issubset(saved_data) or not set(saved_data).issubset(self.data):
             raise ValueError('saved replay fields do not match configured replay fields')
         for key, value in saved_data.items():
             if value.shape[1:] != self.data[key].shape[1:]:
                 raise ValueError(f'saved replay field {key!r} has an incompatible shape')
             self.data[key][:valid].copy_(value)
+        if version == 2:
+            self.data['episode_id'][:valid] = -1
+            self.data['is_heldout'][:valid] = False
         self._size = saved_size
         self._ptr = int(state['pointer']) % self.capacity
         self._pool_positions.fill_(-1)
         self._pool_sizes = [0 for _ in range(CATEGORY_COUNT)]
         for slot in range(valid):
             category = int(self.data['category'][slot].item())
-            if category >= 0:
+            if category >= 0 and not bool(self.data['is_heldout'][slot].item()):
                 self._add_pool_slot(slot, category)
         self._episode_slots = state['episode_slots']
+        if version == 3:
+            saved_period = int(state['heldout_episode_period'])
+            if saved_period != self.heldout_episode_period:
+                raise ValueError('saved held-out episode period does not match configured replay')
+            self._active_episode_ids = [int(value) for value in state['active_episode_ids']]
+            self._next_episode_id = int(state['next_episode_id'])
+        else:
+            self._active_episode_ids = list(range(self.num_envs))
+            self._next_episode_id = self.num_envs

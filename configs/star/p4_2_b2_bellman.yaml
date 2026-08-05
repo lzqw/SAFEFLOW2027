@@ -1,0 +1,28 @@
+# P4.2 B2: B1 plus Bellman-consistent violation probability learning.
+env_id: SafetyPointGoal1-v0
+custom_cfgs:
+  train_cfgs:
+    eval_episodes: 0
+  algo_cfgs:
+    enable_global_safety_constraint: true
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    reward_target_samples: 4
+    reward_critic_updates_per_update: 2
+    separate_reward_replay: true
+    reward_replay_recent_fraction: 0.5
+    reward_replay_recent_window: 10000
+    reward_target_polyak: 0.001
+    bellman_probability_enabled: true
+    probability_mc_aux_weight: 0.10
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 4096
+    dynamic_geometry_gate: false
+    candidate_probing_enabled: false
+    eval_milestones: [0, 50000]
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 10000

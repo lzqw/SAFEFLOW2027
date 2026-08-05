@@ -50,6 +50,20 @@ defaults:
     reward_replay_recent_window: 10000
     enable_global_safety_constraint: True
     enable_local_safety_geometry: True
+    bellman_probability_enabled: False
+    probability_mc_aux_weight: 0.10
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 2048
+    dynamic_geometry_gate: False
+    geometry_enable_passes: 3
+    geometry_disable_failures: 2
+    candidate_probing_enabled: False
+    candidate_probing_count: 16
+    candidate_disagreement_threshold: 0.15
+    candidate_risk_tie_band: 0.02
+    candidate_tangent_scale: 0.05
     w3_td_error_threshold: 3.0
     w3_calibration_threshold: 0.35
     w3_valid_gradient_threshold: 0.10

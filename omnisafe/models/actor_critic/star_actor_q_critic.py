@@ -167,7 +167,13 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         self.target_actor = deepcopy(self.actor)
         self.target_reward_critic = deepcopy(self.reward_critic)
         self.target_cost_critic = deepcopy(self.cost_critic)
-        for target in (self.target_actor, self.target_reward_critic, self.target_cost_critic):
+        self.target_violation_critic = (
+            None if self.violation_critic is None else deepcopy(self.violation_critic)
+        )
+        targets = [self.target_actor, self.target_reward_critic, self.target_cost_critic]
+        if self.target_violation_critic is not None:
+            targets.append(self.target_violation_critic)
+        for target in targets:
             target.requires_grad_(False)
 
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=actor_lr)
@@ -233,17 +239,25 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         *,
         update_actor: bool = True,
         reward_coefficient: float | None = None,
+        violation_coefficient: float | None = None,
     ) -> None:
-        """Soft-update targets, optionally slowing only the reward critic target."""
+        """Soft-update targets with independently configurable probability/reward steps."""
         if not 0.0 < coefficient <= 1.0:
             raise ValueError('Polyak coefficient must lie in (0, 1]')
         reward_step = coefficient if reward_coefficient is None else reward_coefficient
         if not 0.0 < reward_step <= 1.0:
             raise ValueError('Reward Polyak coefficient must lie in (0, 1]')
+        violation_step = coefficient if violation_coefficient is None else violation_coefficient
+        if not 0.0 < violation_step <= 1.0:
+            raise ValueError('Violation Polyak coefficient must lie in (0, 1]')
         pairs: list[tuple[nn.Module, nn.Module, float]] = [
             (self.target_reward_critic, self.reward_critic, reward_step),
             (self.target_cost_critic, self.cost_critic, coefficient),
         ]
+        if self.target_violation_critic is not None and self.violation_critic is not None:
+            pairs.append(
+                (self.target_violation_critic, self.violation_critic, violation_step),
+            )
         if update_actor:
             pairs.append((self.target_actor, self.actor, coefficient))
         for target, online, step in pairs:

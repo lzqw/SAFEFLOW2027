@@ -287,6 +287,9 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                 float(algorithm._cfgs.lagrange_cfgs.cost_limit),  # pylint: disable=protected-access
                 int(algo_cfgs.max_episode_steps),
                 device,
+                include_violation=bool(
+                    getattr(algo_cfgs, 'bellman_probability_enabled', False),
+                ),
             )
             generator = torch.Generator(device='cpu')
             generator.manual_seed(flow_seed_offset + seed)
@@ -457,6 +460,7 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     cost_stats = confidence_summary(costs)
     return {
         'milestone': milestone,
+        'probability_split': 'external_isolated_environment',
         'evaluation_mode': mode,
         'evaluation_role': 'primary' if mode == 'fixed-random-flow' else 'diagnostic',
         'base_action_policy': (
@@ -544,6 +548,10 @@ def public_row(
         'evaluation_device': device,
         'evaluation_mode': evaluation.get('evaluation_mode', 'legacy-unspecified'),
         'evaluation_role': evaluation.get('evaluation_role', 'legacy-unspecified'),
+        'probability_split': evaluation.get(
+            'probability_split',
+            'external_isolated_environment',
+        ),
         'spearman_method': 'average-rank tie-correct',
         'ci95_method': evaluation.get('ci95_method'),
     }

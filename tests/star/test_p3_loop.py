@@ -246,3 +246,62 @@ def test_star_r2_reward_tracking_is_counted_manifested_and_checkpointed(tmp_path
         row = next(csv.DictReader(stream))
     assert float(row['TotalRewardCriticUpdates']) == 16.0
     assert float(row['Critic/RewardTargetSamplingStd']) > 0.0
+
+
+def test_star_p4_2_bellman_and_candidate_probe_micro_loop(tmp_path: Path) -> None:
+    custom = {
+        'seed': 2427,
+        'train_cfgs': {
+            'device': 'cpu',
+            'torch_threads': 1,
+            'total_steps': 12,
+            'eval_episodes': 0,
+        },
+        'algo_cfgs': {
+            'steps_per_epoch': 12,
+            'size': 64,
+            'batch_size': 8,
+            'random_steps': 2,
+            'terminal_utility_steps': 4,
+            'geometry_min_steps': 8,
+            'bellman_probability_enabled': True,
+            'heldout_episode_period': 5,
+            'candidate_probing_enabled': True,
+            'candidate_probing_count': 4,
+            'enable_global_safety_constraint': True,
+            'enable_local_safety_geometry': False,
+            'eval_milestones': [0, 12],
+            'milestone_checkpoints': False,
+        },
+        'model_cfgs': {
+            'actor': {'hidden_sizes': [16, 16]},
+            'critic': {'hidden_sizes': [16, 16], 'num_quantiles': 5},
+        },
+        'logger_cfgs': {
+            'log_dir': str(tmp_path),
+            'use_tensorboard': False,
+            'use_wandb': False,
+        },
+    }
+    wrapper = omnisafe.Agent('STAR', 'SafetyPointGoal1-v0', custom_cfgs=custom)
+    wrapper.learn()
+    algorithm = wrapper.agent
+    log_dir = Path(algorithm.logger.log_dir)
+    summary = json.loads((log_dir / 'artifacts/training_summary.json').read_text('utf-8'))
+    manifest = json.loads((log_dir / 'artifacts/run_manifest.json').read_text('utf-8'))
+    with (log_dir / 'artifacts/diagnostics.csv').open(encoding='utf-8', newline='') as stream:
+        row = next(csv.DictReader(stream))
+
+    assert algorithm._actor_critic.context_dim == 3  # pylint: disable=protected-access
+    assert (
+        algorithm._actor_critic.target_violation_critic is not None
+    )  # pylint: disable=protected-access
+    assert summary['bellman_probability_enabled'] is True
+    assert summary['candidate_probing_enabled'] is True
+    assert (
+        manifest['p4_2_probability_critic']['episode_split']['optimizer_access_to_heldout'] is False
+    )
+    assert manifest['p4_2_candidate_probing']['candidate_count'] == 4
+    assert float(row['Loss/ViolationBellman']) > 0.0
+    assert float(row['Probing/SelectedRisk']) > 0.0
+    assert float(row['Probing/EffectiveBoundarySamples']) >= 0.0

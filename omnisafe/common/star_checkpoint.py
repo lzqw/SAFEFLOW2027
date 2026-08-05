@@ -27,7 +27,7 @@ from torch import nn, optim
 
 
 def load_star_model_state(model: nn.Module, state: dict[str, torch.Tensor]) -> None:
-    """Load STAR weights, initializing a missing legacy target actor from the online actor."""
+    """Load STAR weights, initializing targets absent from older STAR checkpoints."""
     migrated = dict(state)
     expected = model.state_dict()
     target_actor_keys = [key for key in expected if key.startswith('target_actor.')]
@@ -38,6 +38,16 @@ def load_star_model_state(model: nn.Module, state: dict[str, torch.Tensor]) -> N
             if actor_key not in migrated:
                 raise KeyError(f'legacy STAR checkpoint is missing {actor_key!r}')
             migrated[target_key] = migrated[actor_key]
+    target_violation_keys = [key for key in expected if key.startswith('target_violation_critic.')]
+    supplied_target_violation = [
+        key for key in migrated if key.startswith('target_violation_critic.')
+    ]
+    if target_violation_keys and not supplied_target_violation:
+        for target_key in target_violation_keys:
+            critic_key = target_key[len('target_') :]
+            if critic_key not in migrated:
+                raise KeyError(f'legacy STAR checkpoint is missing {critic_key!r}')
+            migrated[target_key] = migrated[critic_key]
     model.load_state_dict(migrated)
 
 

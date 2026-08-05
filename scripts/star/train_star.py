@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import subprocess
 import time
 from pathlib import Path
 from typing import Any, cast
@@ -48,6 +50,31 @@ def atomic_json(path: Path, payload: dict[str, Any]) -> None:
     temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
     temporary.write_text(f'{json.dumps(payload, indent=2, sort_keys=True)}\n', encoding='utf-8')
     os.replace(temporary, path)
+
+
+def sha256_bytes(payload: bytes) -> str:
+    """Return a lowercase SHA-256 fingerprint."""
+    return hashlib.sha256(payload).hexdigest()
+
+
+def source_revision() -> dict[str, Any]:
+    """Return the exact Git source identity without mutating the worktree."""
+    try:
+        revision = subprocess.run(
+            ['git', 'rev-parse', 'HEAD'],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        status = subprocess.run(
+            ['git', 'status', '--porcelain'],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return {'source_commit': None, 'source_dirty': None}
+    return {'source_commit': revision, 'source_dirty': bool(status.strip())}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -183,6 +210,14 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-branches
         'peak_cuda_memory_mib': (
             torch.cuda.max_memory_allocated() / 2**20 if torch.cuda.is_available() else 0.0
         ),
+        'config_file': str(args.config) if args.config is not None else None,
+        'config_sha256': (
+            sha256_bytes(args.config.read_bytes()) if args.config is not None else None
+        ),
+        'resolved_overrides_sha256': sha256_bytes(
+            json.dumps(custom, sort_keys=True, separators=(',', ':')).encode('utf-8'),
+        ),
+        **source_revision(),
         'log_dir': str(log_dir),
         'training_summary': summary,
     }

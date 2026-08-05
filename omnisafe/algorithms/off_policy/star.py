@@ -25,7 +25,7 @@ import math
 import os
 import time
 from collections import deque
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -60,6 +60,7 @@ from omnisafe.models.critic.violation_probability_critic import (
     binary_brier_score,
     binary_brier_skill,
     masked_bce_loss,
+    violation_bellman_target,
 )
 from omnisafe.models.safety.distributional_backend import (
     SafetyGeometry,
@@ -85,6 +86,7 @@ UPDATE_ORDER = (
 LOG_KEYS = (
     'Train/Epoch',
     'Train/WarmupStage',
+    'Train/GeometryEnabled',
     'Metrics/EpRet',
     'Metrics/EpCost',
     'Metrics/EpLen',
@@ -104,6 +106,8 @@ LOG_KEYS = (
     'Evaluation/ActionNorm',
     'Loss/CostCritic',
     'Loss/ViolationCritic',
+    'Loss/ViolationBellman',
+    'Loss/ViolationMCAuxiliary',
     'Loss/RewardCritic',
     'Loss/Actor',
     'Loss/EnergyDual',
@@ -125,6 +129,23 @@ LOG_KEYS = (
     'Critic/RiskP90',
     'Critic/RiskUCBMean',
     'Critic/RiskUCBBoundaryRate',
+    'ReplayProbability/CalibrationError',
+    'ReplayProbability/BrierScore',
+    'ReplayProbability/BrierSkill',
+    'ReplayProbability/AUROC',
+    'ReplayProbability/BellmanError',
+    'Heldout/CalibrationError',
+    'Heldout/BrierScore',
+    'Heldout/BrierSkill',
+    'Heldout/AUROC',
+    'Heldout/BellmanError',
+    'Heldout/GradientNorm',
+    'Heldout/EnsembleDisagreement',
+    'Heldout/BoundarySamples',
+    'Heldout/PositiveLabels',
+    'Heldout/NegativeLabels',
+    'Heldout/Episodes',
+    'Heldout/Transitions',
     'Geometry/GateActivation',
     'Geometry/CandidateGateActivation',
     'Geometry/ValidGradientRate',
@@ -139,6 +160,16 @@ LOG_KEYS = (
     'Geometry/DangerousNormalVelocity',
     'Geometry/TangentEnergy',
     'Geometry/NormalEnergy',
+    'Probing/CandidateRiskP10',
+    'Probing/CandidateRiskP50',
+    'Probing/CandidateRiskP90',
+    'Probing/SelectedRisk',
+    'Probing/SelectedDisagreement',
+    'Probing/ActualCost',
+    'Probing/ActualViolation',
+    'Probing/EffectiveBoundarySamples',
+    'Probing/TangentRatio',
+    'Probing/DangerousNormalVelocity',
     'Actor/TerminalReward',
     'Actor/TerminalCost',
     'Actor/UpdateApplied',
@@ -242,6 +273,53 @@ def normalized_actor_objective(
     return numerator / (1.0 + safety)
 
 
+def select_boundary_candidates(  # pylint: disable=too-many-arguments
+    risk_ucb: torch.Tensor,
+    disagreement: torch.Tensor,
+    reward_value: torch.Tensor,
+    *,
+    risk_boundary: float,
+    disagreement_threshold: float,
+    risk_tie_band: float,
+) -> torch.Tensor:
+    """Select the closest trusted inside-boundary candidate, breaking ties by reward value."""
+    if risk_ucb.ndim != 2 or disagreement.shape != risk_ucb.shape:
+        raise ValueError('candidate risk and disagreement must share [env, candidate] shape')
+    if reward_value.shape != risk_ucb.shape:
+        raise ValueError('candidate reward values must match candidate risks')
+    if disagreement_threshold < 0.0 or risk_tie_band < 0.0:
+        raise ValueError('candidate disagreement and tie thresholds cannot be negative')
+    selections = []
+    for env_index in range(risk_ucb.shape[0]):
+        risk = risk_ucb[env_index]
+        trusted = disagreement[env_index] <= disagreement_threshold
+        safe = trusted & (risk <= risk_boundary)
+        if bool(safe.any()):
+            frontier = risk[safe].max()
+            eligible = safe & (risk >= frontier - risk_tie_band)
+        else:
+            pool = trusted if bool(trusted.any()) else torch.ones_like(trusted)
+            safest = risk[pool].min()
+            eligible = pool & (risk <= safest + risk_tie_band)
+        score = reward_value[env_index].masked_fill(~eligible, -torch.inf)
+        selections.append(score.argmax())
+    return torch.stack(selections)
+
+
+def tangent_projection(
+    noise: torch.Tensor,
+    gradient: torch.Tensor,
+    epsilon: float = 1e-8,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Project action noise onto the local risk tangent and return its retained-norm ratio."""
+    if noise.shape != gradient.shape or noise.ndim != 2:
+        raise ValueError('tangent projection expects matching rank-two action tensors')
+    normal = gradient / gradient.norm(dim=-1, keepdim=True).clamp_min(epsilon)
+    tangent = noise - (noise * normal).sum(dim=-1, keepdim=True) * normal
+    ratio = tangent.norm(dim=-1) / noise.norm(dim=-1).clamp_min(epsilon)
+    return tangent, ratio
+
+
 @registry.register
 # pylint: disable-next=too-many-instance-attributes,too-few-public-methods
 class STAR(BaseAlgo):
@@ -260,6 +338,8 @@ class STAR(BaseAlgo):
     _last_log_step: int
     _last_log_time: float
     _run_env_steps: int
+    _last_heldout_evidence: dict[str, float]
+    _pending_probe_metrics: dict[str, torch.Tensor] | None
 
     def _init_env(self) -> None:
         """Create isolated STAR train/evaluation adapters."""
@@ -289,6 +369,7 @@ class STAR(BaseAlgo):
         actor_lr = model.actor.lr
         assert actor_lr is not None
         legacy_compatibility = bool(getattr(algo, 'legacy_checkpoint_compatibility', False))
+        context_dim = 1 if legacy_compatibility else 3 if self._bellman_probability_enabled() else 2
         self._actor_critic = STARActorQCritic(
             obs_dim=self._obs_dim,
             act_dim=self._act_dim,
@@ -302,11 +383,13 @@ class STAR(BaseAlgo):
             max_velocity=float(model.flow.max_velocity),
             num_quantiles=int(model.critic.num_quantiles),
             safety_ensemble_size=int(model.critic.ensemble_size),
-            context_dim=1 if legacy_compatibility else 2,
+            context_dim=context_dim,
             legacy_compatibility=legacy_compatibility,
         ).to(self._device)
 
-    def _init(self) -> None:  # pylint: disable=too-many-locals
+    def _init(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+        self,
+    ) -> None:
         """Initialize CPU replay, warmup evidence, duals, normalizer, and counters."""
         algo = self._cfgs.algo_cfgs
         self._buf = STARReplayBuffer(
@@ -320,6 +403,9 @@ class STAR(BaseAlgo):
             importance_beta=float(algo.replay_importance_beta),
             boundary_score_threshold=float(algo.boundary_score_threshold),
             context_dim=self._actor_critic.context_dim,
+            heldout_episode_period=(
+                int(algo.heldout_episode_period) if self._bellman_probability_enabled() else 0
+            ),
         )
         self._obs_normalizer = Normalizer((self._obs_dim,), clip=10.0).to(self._device)
         dual = self._cfgs.dual_cfgs
@@ -348,6 +434,9 @@ class STAR(BaseAlgo):
             brier_skill_threshold=float(algo.w3_brier_skill_threshold),
             auroc_threshold=float(algo.w3_auroc_threshold),
             ema_rate=float(algo.warmup_ema_rate),
+            dynamic_geometry_gate=self._dynamic_geometry_gate_enabled(),
+            geometry_enable_passes=int(algo.geometry_enable_passes),
+            geometry_disable_failures=int(algo.geometry_disable_failures),
         )
         self._env_steps = 0
         self._update_count = 0
@@ -360,6 +449,8 @@ class STAR(BaseAlgo):
         self._metric_sums: dict[str, float] = {}
         self._metric_counts: dict[str, int] = {}
         self._latest_values: dict[str, float] = {}
+        self._last_heldout_evidence: dict[str, float] = {}
+        self._pending_probe_metrics: dict[str, torch.Tensor] | None = None
         self._last_update_order: tuple[str, ...] = ()
         self._training_seconds = 0.0
         self._run_env_steps = 0
@@ -398,13 +489,43 @@ class STAR(BaseAlgo):
             raise ValueError('reward_replay_recent_window must be a positive integer')
         if recent_fraction > 0.0 and not bool(algo.separate_reward_replay):
             raise ValueError('recent reward replay requires separate_reward_replay')
+        probability_target_polyak = self._probability_target_polyak()
+        if not 0.0 < probability_target_polyak <= 1.0:
+            raise ValueError('probability_target_polyak must lie in (0, 1]')
+        auxiliary_weight = float(algo.probability_mc_aux_weight)
+        if auxiliary_weight < 0.0:
+            raise ValueError('probability_mc_aux_weight cannot be negative')
+        heldout_period = int(algo.heldout_episode_period)
+        if self._bellman_probability_enabled() and heldout_period < 2:
+            raise ValueError('Bellman probability training requires heldout_episode_period >= 2')
+        if int(algo.heldout_recent_episodes) <= 0 or int(algo.heldout_eval_batch_size) <= 0:
+            raise ValueError('held-out evaluation sizes must be positive')
+        if self._dynamic_geometry_gate_enabled() and (
+            not self._bellman_probability_enabled() or not self._local_geometry_enabled()
+        ):
+            raise ValueError('dynamic geometry gating requires Bellman probability and geometry')
+        candidate_count = int(algo.candidate_probing_count)
+        if candidate_count <= 0 or candidate_count != float(algo.candidate_probing_count):
+            raise ValueError('candidate_probing_count must be a positive integer')
+        if self._candidate_probing_enabled() and not self._bellman_probability_enabled():
+            raise ValueError('candidate probing requires Bellman probability training')
+        if float(algo.candidate_disagreement_threshold) < 0.0:
+            raise ValueError('candidate_disagreement_threshold cannot be negative')
+        if float(algo.candidate_risk_tie_band) < 0.0:
+            raise ValueError('candidate_risk_tie_band cannot be negative')
+        if float(algo.candidate_tangent_scale) < 0.0:
+            raise ValueError('candidate_tangent_scale cannot be negative')
 
         resume_from = str(algo.resume_from)
         if resume_from:
             self._restore_checkpoint(Path(resume_from))
         else:
             with torch.no_grad():
-                self._obs_normalizer.normalize(self._env.current_obs)
+                initial_obs = self._env.current_obs
+                if self._bellman_probability_enabled():
+                    initial_obs = initial_obs[~self._buf.current_episode_is_heldout(self._device)]
+                if initial_obs.shape[0]:
+                    self._obs_normalizer.normalize(initial_obs)
 
     def _init_log(self) -> None:
         """Initialize tabular, JSON, evaluation, and checkpoint artifact directories."""
@@ -464,8 +585,50 @@ class STAR(BaseAlgo):
                     'cost_target_polyak': float(self._cfgs.algo_cfgs.polyak),
                     'actor_target_polyak': float(self._cfgs.algo_cfgs.polyak),
                 },
+                'p4_2_probability_critic': {
+                    'bellman_probability_enabled': self._bellman_probability_enabled(),
+                    'target_actor': self._bellman_probability_enabled(),
+                    'target_probability_critic': self._bellman_probability_enabled(),
+                    'probability_target_polyak': self._probability_target_polyak(),
+                    'mc_auxiliary_weight': float(
+                        self._cfgs.algo_cfgs.probability_mc_aux_weight,
+                    ),
+                    'remaining_budget_clipped': not self._bellman_probability_enabled(),
+                    'violation_so_far_context': self._bellman_probability_enabled(),
+                    'episode_split': {
+                        'heldout_period': (
+                            int(self._cfgs.algo_cfgs.heldout_episode_period)
+                            if self._bellman_probability_enabled()
+                            else 0
+                        ),
+                        'optimizer_access_to_heldout': False,
+                        'global_dual_access_to_heldout': False,
+                        'observation_normalizer_access_to_heldout': False,
+                    },
+                },
+                'p4_2_dynamic_geometry': {
+                    'enabled': self._dynamic_geometry_gate_enabled(),
+                    'enable_after_consecutive_passes': int(
+                        self._cfgs.algo_cfgs.geometry_enable_passes,
+                    ),
+                    'disable_after_consecutive_failures': int(
+                        self._cfgs.algo_cfgs.geometry_disable_failures,
+                    ),
+                    'gate_evidence_split': 'heldout_episode',
+                },
+                'p4_2_candidate_probing': {
+                    'enabled': self._candidate_probing_enabled(),
+                    'candidate_count': int(self._cfgs.algo_cfgs.candidate_probing_count),
+                    'risk_selection': 'closest_trusted_safe_boundary_then_reward_q',
+                    'tangent_requires_geometry_enabled': True,
+                },
                 'p4_1_correctness': {
-                    'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
+                    'context': (
+                        '[observation, remaining_budget_ratio, remaining_horizon_ratio, '
+                        'violation_so_far]'
+                        if self._bellman_probability_enabled()
+                        else '[observation, remaining_budget_ratio, remaining_horizon_ratio]'
+                    ),
                     'reward_done': 'terminated',
                     'cost_done': 'terminated_or_truncated',
                     'geometry_risk_source': 'independent_violation_probability_ensemble',
@@ -527,6 +690,25 @@ class STAR(BaseAlgo):
             raise RuntimeError('legacy checkpoint compatibility is evaluation-only')
         return critic
 
+    def _target_violation_critic(self) -> ViolationProbabilityCritic:
+        """Return the frozen probability target required by Bellman risk learning."""
+        critic = self._actor_critic.target_violation_critic
+        if critic is None:
+            raise RuntimeError('legacy checkpoint compatibility has no probability target')
+        return critic
+
+    def _bellman_probability_enabled(self) -> bool:
+        """Return whether probability learning uses the absorbing Bellman target."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'bellman_probability_enabled', False))
+
+    def _dynamic_geometry_gate_enabled(self) -> bool:
+        """Return whether held-out evidence controls a reversible geometry switch."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'dynamic_geometry_gate', False))
+
+    def _candidate_probing_enabled(self) -> bool:
+        """Return whether behavior actions use inside-boundary candidate probing."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'candidate_probing_enabled', False))
+
     def _global_safety_enabled(self) -> bool:
         """Return whether the global cost constraint may affect training."""
         return bool(self._cfgs.algo_cfgs.enable_global_safety_constraint)
@@ -537,7 +719,12 @@ class STAR(BaseAlgo):
 
     def _training_geometry_enabled(self) -> bool:
         """Return the actual local-geometry state, including the W3 evidence gate."""
-        return self._local_geometry_enabled() and self._warmup.stage == 'W3'
+        gate_open = (
+            self._warmup.geometry_enabled
+            if self._dynamic_geometry_gate_enabled()
+            else self._warmup.stage == 'W3'
+        )
+        return self._local_geometry_enabled() and gate_open
 
     def _effective_global_safety_multiplier(self) -> float:
         """Return zero for B0 and the learned true-episode multiplier otherwise."""
@@ -557,6 +744,16 @@ class STAR(BaseAlgo):
             ),
         )
 
+    def _probability_target_polyak(self) -> float:
+        """Return the independent probability-target Polyak coefficient."""
+        return float(
+            getattr(
+                self._cfgs.algo_cfgs,
+                'probability_target_polyak',
+                self._cfgs.algo_cfgs.polyak,
+            ),
+        )
+
     def _sample_reward_batch(self) -> dict[str, torch.Tensor]:
         """Draw the reward/actor replay mixture independently of safety strata."""
         algo = self._cfgs.algo_cfgs
@@ -570,6 +767,7 @@ class STAR(BaseAlgo):
         """Use bounded random actions in W0/W1 and learned flow actions in W2/W3."""
         context, _ = self._env.current_context()
         random_action = self._warmup.stage in {'W0', 'W1'}
+        self._pending_probe_metrics = None
         if random_action:
             action = torch.empty(
                 (self._num_envs, self._act_dim),
@@ -577,7 +775,11 @@ class STAR(BaseAlgo):
                 device=self._device,
             ).uniform_(-1.0, 1.0)
         else:
-            action = self._actor_critic.step(self._augment(self._env.current_obs, context))
+            augmented = self._augment(self._env.current_obs, context)
+            if self._candidate_probing_enabled() and self._update_count > 0:
+                action, self._pending_probe_metrics = self._candidate_probe(augmented)
+            else:
+                action = self._actor_critic.step(augmented)
         source_random = torch.full(
             (self._num_envs,),
             random_action,
@@ -585,6 +787,137 @@ class STAR(BaseAlgo):
             device=self._device,
         )
         return action, source_random
+
+    def _candidate_probe(  # pylint: disable=too-many-locals
+        self,
+        augmented_obs: torch.Tensor,
+    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+        """Choose one trusted action from K stochastic flow candidates per environment."""
+        algo = self._cfgs.algo_cfgs
+        candidate_count = int(algo.candidate_probing_count)
+        expanded_obs = (
+            augmented_obs.unsqueeze(1)
+            .expand(-1, candidate_count, -1)
+            .reshape(self._num_envs * candidate_count, -1)
+        )
+        with torch.no_grad():
+            candidate_action = self._actor_critic.flow(expanded_obs).action
+            head_probability = self._violation_critic().probabilities(
+                expanded_obs,
+                candidate_action,
+            )
+            head_probability = head_probability.reshape(
+                head_probability.shape[0],
+                self._num_envs,
+                candidate_count,
+            )
+            mean_risk = head_probability.mean(dim=0)
+            disagreement = head_probability.std(dim=0, unbiased=False)
+            risk_ucb = (mean_risk + float(algo.risk_ucb_beta) * disagreement).clamp(0.0, 1.0)
+            reward_first, reward_second = self._actor_critic.reward_critic(
+                expanded_obs,
+                candidate_action,
+            )
+            reward_value = torch.minimum(reward_first, reward_second).reshape(
+                self._num_envs,
+                candidate_count,
+            )
+            selected_index = select_boundary_candidates(
+                risk_ucb,
+                disagreement,
+                reward_value,
+                risk_boundary=float(algo.risk_boundary),
+                disagreement_threshold=float(algo.candidate_disagreement_threshold),
+                risk_tie_band=float(algo.candidate_risk_tie_band),
+            )
+            candidate_action = candidate_action.reshape(
+                self._num_envs,
+                candidate_count,
+                self._act_dim,
+            )
+            env_index = torch.arange(self._num_envs, device=self._device)
+            selected_action = candidate_action[env_index, selected_index]
+            deterministic_action = self._actor_critic.flow(
+                augmented_obs,
+                deterministic=True,
+            ).action
+            trusted_boundary = (
+                (risk_ucb <= float(algo.risk_boundary))
+                & (disagreement <= float(algo.candidate_disagreement_threshold))
+                & ((risk_ucb - float(algo.risk_boundary)).abs() <= float(algo.boundary_bandwidth))
+            )
+            effective_boundary = trusted_boundary.sum(dim=1).float()
+
+        differentiable_action = selected_action.detach().requires_grad_(True)
+        with _frozen_parameters(self._violation_critic()):
+            selected_probability = self._violation_critic().probabilities(
+                augmented_obs.detach(),
+                differentiable_action,
+            )
+            selected_mean = selected_probability.mean(dim=0)
+            risk_gradient = torch.autograd.grad(selected_mean.sum(), differentiable_action)[0]
+        gradient_norm = risk_gradient.norm(dim=-1)
+        normal = risk_gradient / gradient_norm.unsqueeze(-1).clamp_min(1e-8)
+        dangerous_normal_velocity = (
+            ((selected_action - deterministic_action) * normal).sum(dim=-1).clamp_min(0.0)
+        )
+
+        tangent_ratio = torch.zeros(self._num_envs, device=self._device)
+        final_action = selected_action
+        selected_disagreement = selected_probability.std(dim=0, unbiased=False).detach()
+        trusted_gradient = (
+            self._training_geometry_enabled()
+            & (gradient_norm >= float(algo.minimum_gradient_norm))
+            & (selected_disagreement <= float(algo.candidate_disagreement_threshold))
+        )
+        if bool(trusted_gradient.any()) and float(algo.candidate_tangent_scale) > 0.0:
+            tangent, retained_ratio = tangent_projection(
+                torch.randn_like(selected_action),
+                risk_gradient.detach(),
+            )
+            tangent = tangent / tangent.norm(dim=-1, keepdim=True).clamp_min(1e-8)
+            proposal = (selected_action + float(algo.candidate_tangent_scale) * tangent).clamp(
+                -1.0,
+                1.0,
+            )
+            with torch.no_grad():
+                proposal_probability = self._violation_critic().probabilities(
+                    augmented_obs,
+                    proposal,
+                )
+                proposal_disagreement = proposal_probability.std(dim=0, unbiased=False)
+                proposal_ucb = (
+                    proposal_probability.mean(dim=0)
+                    + float(algo.risk_ucb_beta) * proposal_disagreement
+                ).clamp(0.0, 1.0)
+                accepted = (
+                    trusted_gradient
+                    & (proposal_ucb <= float(algo.risk_boundary))
+                    & (proposal_disagreement <= float(algo.candidate_disagreement_threshold))
+                )
+                final_action = torch.where(accepted.unsqueeze(-1), proposal, selected_action)
+                tangent_ratio = torch.where(accepted, retained_ratio, tangent_ratio)
+
+        with torch.no_grad():
+            final_probability = self._violation_critic().probabilities(
+                augmented_obs,
+                final_action,
+            )
+            final_disagreement = final_probability.std(dim=0, unbiased=False)
+            final_risk = (
+                final_probability.mean(dim=0) + float(algo.risk_ucb_beta) * final_disagreement
+            ).clamp(0.0, 1.0)
+        metrics = {
+            'candidate_risk_p10': torch.quantile(risk_ucb, 0.1, dim=1),
+            'candidate_risk_p50': torch.quantile(risk_ucb, 0.5, dim=1),
+            'candidate_risk_p90': torch.quantile(risk_ucb, 0.9, dim=1),
+            'selected_risk': final_risk,
+            'selected_disagreement': final_disagreement,
+            'effective_boundary_samples': effective_boundary,
+            'tangent_ratio': tangent_ratio,
+            'dangerous_normal_velocity': dangerous_normal_velocity,
+        }
+        return final_action.detach(), metrics
 
     @torch.no_grad()
     def _boundary_scores(
@@ -621,6 +954,7 @@ class STAR(BaseAlgo):
     def _collect_once(self) -> None:
         """Collect one vector transition and execute the explicit UTD entitlement."""
         stage_before_collection = self._warmup.stage
+        episode_heldout = self._buf.current_episode_is_heldout(self._device)
         context, _ = self._env.current_context()
         action, source_random = self._select_action()
         boundary_score = self._boundary_scores(
@@ -630,6 +964,38 @@ class STAR(BaseAlgo):
         )
         transition, completed = self._env.collect_step(action)
         failure = transition['cost'] > 0
+        if self._pending_probe_metrics is not None:
+            actual_violation = (
+                transition['next_context'][:, -1]
+                if self._bellman_probability_enabled()
+                else failure.float()
+            )
+            probe_metrics = {
+                'Probing/CandidateRiskP10': self._pending_probe_metrics[
+                    'candidate_risk_p10'
+                ].mean(),
+                'Probing/CandidateRiskP50': self._pending_probe_metrics[
+                    'candidate_risk_p50'
+                ].mean(),
+                'Probing/CandidateRiskP90': self._pending_probe_metrics[
+                    'candidate_risk_p90'
+                ].mean(),
+                'Probing/SelectedRisk': self._pending_probe_metrics['selected_risk'].mean(),
+                'Probing/SelectedDisagreement': self._pending_probe_metrics[
+                    'selected_disagreement'
+                ].mean(),
+                'Probing/ActualCost': transition['cost'].mean(),
+                'Probing/ActualViolation': actual_violation.float().mean(),
+                'Probing/EffectiveBoundarySamples': self._pending_probe_metrics[
+                    'effective_boundary_samples'
+                ].mean(),
+                'Probing/TangentRatio': self._pending_probe_metrics['tangent_ratio'].mean(),
+                'Probing/DangerousNormalVelocity': self._pending_probe_metrics[
+                    'dangerous_normal_velocity'
+                ].mean(),
+            }
+            for key, probe_value in probe_metrics.items():
+                self._accumulate(key, float(probe_value.item()))
         self._buf.store_batch(
             **transition,
             boundary_score=boundary_score,
@@ -641,18 +1007,25 @@ class STAR(BaseAlgo):
             self._episode_history.append(
                 (episode.episode_return, episode.episode_cost, episode.episode_length),
             )
-            self._pending_episode_costs.append(episode.episode_cost)
+            if not bool(episode_heldout[episode.env_index].item()):
+                self._pending_episode_costs.append(episode.episode_cost)
             episode_metrics = {
                 'Metrics/EpRet': episode.episode_return,
                 'Metrics/EpCost': episode.episode_cost,
                 'Metrics/EpLen': float(episode.episode_length),
             }
             self._latest_values.update(episode_metrics)
-            for key, value in episode_metrics.items():
-                self._accumulate(key, value)
+            for key, episode_value in episode_metrics.items():
+                self._accumulate(key, episode_value)
 
         with torch.no_grad():
-            self._obs_normalizer.normalize(self._env.current_obs)
+            if self._bellman_probability_enabled():
+                next_episode_heldout = self._buf.current_episode_is_heldout(self._device)
+                training_obs = self._env.current_obs[~next_episode_heldout]
+                if training_obs.shape[0]:
+                    self._obs_normalizer.normalize(training_obs)
+            else:
+                self._obs_normalizer.normalize(self._env.current_obs)
         self._env_steps += self._num_envs
         self._advance_warmup()
         if stage_before_collection == 'W0':
@@ -738,28 +1111,83 @@ class STAR(BaseAlgo):
             'Critic/Spearman': correlation,
         }
 
+    @torch.no_grad()
+    def _violation_bellman_target(
+        self,
+        batch: dict[str, torch.Tensor],
+        next_augmented_obs: torch.Tensor,
+    ) -> torch.Tensor:
+        """Bootstrap event probability under the target actor and target probability critic."""
+        next_action = self._actor_critic.target_flow(next_augmented_obs).action
+        next_probability = self._target_violation_critic().probabilities(
+            next_augmented_obs,
+            next_action,
+        )
+        next_violation = batch['next_context'][:, -1] > 0.5
+        return violation_bellman_target(
+            next_probability,
+            next_violation,
+            batch['cost_done'],
+        )
+
     def _update_violation_critic(  # pylint: disable=too-many-locals
         self,
         batch: dict[str, torch.Tensor],
         augmented_obs: torch.Tensor,
+        next_augmented_obs: torch.Tensor,
     ) -> dict[str, float]:
-        """Fit completed-episode violation labels and refresh Gaussian boundary scores."""
+        """Fit Bellman event probabilities with MC labels used only as calibration auxiliary."""
         critic = self._violation_critic()
         optimizer = self._actor_critic.violation_critic_optimizer
         assert optimizer is not None
         labels = batch['violation_label']
-        labeled = torch.isfinite(labels)
+        training = ~batch['is_heldout'].bool()
+        labeled = torch.isfinite(labels) & training
         logits = critic(augmented_obs, batch['action'])
-        bootstrap = self._bootstrap_mask(logits.shape[0], logits.shape[1], eligible=labeled)
-        loss = masked_bce_loss(
+        mc_bootstrap = self._bootstrap_mask(logits.shape[0], logits.shape[1], eligible=labeled)
+        mc_loss = masked_bce_loss(
             logits,
             labels.nan_to_num(0.0),
             labeled,
             importance_weights=batch['importance_weights'],
-            bootstrap_mask=bootstrap,
+            bootstrap_mask=mc_bootstrap,
         )
+        bellman_loss = logits.sum() * 0.0
+        bellman_error = float('nan')
+        if self._bellman_probability_enabled():
+            bellman_target = self._violation_bellman_target(batch, next_augmented_obs)
+            bellman_bootstrap = self._bootstrap_mask(
+                logits.shape[0],
+                logits.shape[1],
+                eligible=training,
+            )
+            bellman_loss = masked_bce_loss(
+                logits,
+                bellman_target,
+                training,
+                importance_weights=batch['importance_weights'],
+                bootstrap_mask=bellman_bootstrap,
+            )
+            with torch.no_grad():
+                bellman_error = float(
+                    (logits.sigmoid().mean(dim=0) - bellman_target.mean(dim=0))
+                    .abs()[training]
+                    .mean()
+                    .item(),
+                )
+            loss = (
+                bellman_loss
+                + float(
+                    self._cfgs.algo_cfgs.probability_mc_aux_weight,
+                )
+                * mc_loss
+            )
+            update_eligible = training
+        else:
+            loss = mc_loss
+            update_eligible = labeled
         optimizer.zero_grad()
-        if bool(labeled.any()):
+        if bool(update_eligible.any()):
             loss.backward()
             clip_grad_norm_(critic.parameters(), float(self._cfgs.algo_cfgs.max_grad_norm))
             optimizer.step()
@@ -798,6 +1226,8 @@ class STAR(BaseAlgo):
         counts = self._buf.label_counts
         return {
             'Loss/ViolationCritic': float(loss.item()),
+            'Loss/ViolationBellman': float(bellman_loss.item()),
+            'Loss/ViolationMCAuxiliary': float(mc_loss.item()),
             'Critic/CalibrationError': calibration_error,
             'Critic/PredictedRisk': float(mean_risk.mean().item()),
             'Critic/EmpiricalRisk': empirical_risk,
@@ -817,6 +1247,11 @@ class STAR(BaseAlgo):
                 .mean()
                 .item(),
             ),
+            'ReplayProbability/CalibrationError': calibration_error,
+            'ReplayProbability/BrierScore': brier_score,
+            'ReplayProbability/BrierSkill': brier_skill,
+            'ReplayProbability/AUROC': auroc,
+            'ReplayProbability/BellmanError': bellman_error,
         }
 
     def _next_path(
@@ -1037,7 +1472,13 @@ class STAR(BaseAlgo):
             safety_augmented_obs,
             safety_next_augmented_obs,
         )
-        metrics.update(self._update_violation_critic(safety_batch, safety_augmented_obs))
+        metrics.update(
+            self._update_violation_critic(
+                safety_batch,
+                safety_augmented_obs,
+                safety_next_augmented_obs,
+            ),
+        )
 
         reward_metric_sums: dict[str, float] = {}
         reward_updates = int(self._cfgs.algo_cfgs.reward_critic_updates_per_update)
@@ -1080,28 +1521,31 @@ class STAR(BaseAlgo):
             float(self._cfgs.algo_cfgs.polyak),
             update_actor=actor_updated,
             reward_coefficient=self._reward_target_polyak(),
+            violation_coefficient=self._probability_target_polyak(),
         )
         self._update_count += 1
         self._last_update_order = UPDATE_ORDER
 
-        actor_evidence = 'Geometry/ValidGradientRate' in metrics
-        evidence = {
-            'cost_td_error': metrics['Critic/CostTD'],
-            'calibration_error': metrics['Critic/CalibrationError'],
-            'brier_skill': metrics['Critic/BrierSkill'],
-            'auroc': metrics['Critic/AUROC'],
-        }
-        if actor_evidence:
-            evidence.update(
-                {
-                    'valid_gradient_rate': metrics['Geometry/ValidGradientRate'],
-                    'ensemble_disagreement': metrics['Geometry/EnsembleDisagreement'],
-                },
-            )
-        self._warmup.observe(**evidence)
+        if not self._dynamic_geometry_gate_enabled():
+            actor_evidence = 'Geometry/ValidGradientRate' in metrics
+            evidence = {
+                'cost_td_error': metrics['Critic/CostTD'],
+                'calibration_error': metrics['Critic/CalibrationError'],
+                'brier_skill': metrics['Critic/BrierSkill'],
+                'auroc': metrics['Critic/AUROC'],
+            }
+            if actor_evidence:
+                evidence.update(
+                    {
+                        'valid_gradient_rate': metrics['Geometry/ValidGradientRate'],
+                        'ensemble_disagreement': metrics['Geometry/EnsembleDisagreement'],
+                    },
+                )
+            self._warmup.observe(**evidence)
         self._advance_warmup()
         metrics['Dual/GlobalSafety'] = self._effective_global_safety_multiplier()
         metrics['Train/WarmupStage'] = float(self._warmup.stage_index)
+        metrics['Train/GeometryEnabled'] = float(self._training_geometry_enabled())
         ratios = self._buf.category_ratios()
         metrics['Replay/FailureRatio'] = ratios['failure']
         metrics['Replay/BoundaryRatio'] = ratios['boundary']
@@ -1124,8 +1568,135 @@ class STAR(BaseAlgo):
             return self._metric_sums[key] / count
         return self._latest_values.get(key, 0.0)
 
+    def _heldout_probability_evidence(self) -> dict[str, float]:  # pylint: disable=too-many-locals
+        """Evaluate recent episode-separated held-out data without touching any optimizer."""
+        if not self._bellman_probability_enabled():
+            return {}
+        algo = self._cfgs.algo_cfgs
+        batch: dict[str, torch.Tensor] | None = None
+        with suppress(RuntimeError):
+            batch = self._buf.recent_heldout_batch(
+                self._device,
+                recent_episodes=int(algo.heldout_recent_episodes),
+                batch_size=int(algo.heldout_eval_batch_size),
+            )
+
+        calibration_error = float('nan')
+        brier_score = float('nan')
+        brier_skill = float('nan')
+        auroc = float('nan')
+        bellman_error = float('nan')
+        gradient_norm = float('nan')
+        disagreement = float('nan')
+        boundary_samples = 0
+        positives = 0
+        negatives = 0
+        episodes = 0
+        transitions = 0
+        if batch is not None:
+            augmented = self._augment(batch['obs'], batch['context'])
+            next_augmented = self._augment(batch['next_obs'], batch['next_context'])
+            labels = batch['violation_label']
+            with torch.no_grad():
+                head_probability = self._violation_critic().probabilities(
+                    augmented,
+                    batch['action'],
+                )
+                probability = head_probability.mean(dim=0)
+                probability_disagreement = head_probability.std(dim=0, unbiased=False)
+                risk_ucb = (
+                    probability + float(algo.risk_ucb_beta) * probability_disagreement
+                ).clamp(0.0, 1.0)
+                target = self._violation_bellman_target(batch, next_augmented).mean(dim=0)
+                calibration_error = float((probability - labels).abs().mean().item())
+                brier_score = binary_brier_score(probability, labels)
+                brier_skill = binary_brier_skill(probability, labels)
+                auroc = binary_auroc(probability, labels)
+                bellman_error = float((probability - target).abs().mean().item())
+                disagreement = float(probability_disagreement.mean().item())
+                boundary_samples = int(
+                    (
+                        boundary_gate(
+                            risk_ucb,
+                            float(algo.risk_boundary),
+                            float(algo.boundary_bandwidth),
+                        )
+                        >= float(algo.boundary_score_threshold)
+                    )
+                    .sum()
+                    .item(),
+                )
+                positives = int((labels > 0.5).sum().item())
+                negatives = int(labels.numel()) - positives
+                episodes = int(torch.unique(batch['episode_id']).numel())
+                transitions = int(labels.numel())
+
+            heldout_action = batch['action'].detach().requires_grad_(True)
+            with _frozen_parameters(self._violation_critic()):
+                differentiable_risk = (
+                    self._violation_critic()
+                    .probabilities(
+                        augmented.detach(),
+                        heldout_action,
+                    )
+                    .mean(dim=0)
+                )
+                action_gradient = torch.autograd.grad(
+                    differentiable_risk.sum(),
+                    heldout_action,
+                )[0]
+            gradient_norm = float(action_gradient.norm(dim=-1).mean().item())
+
+        evidence = {
+            'Heldout/CalibrationError': calibration_error,
+            'Heldout/BrierScore': brier_score,
+            'Heldout/BrierSkill': brier_skill,
+            'Heldout/AUROC': auroc,
+            'Heldout/BellmanError': bellman_error,
+            'Heldout/GradientNorm': gradient_norm,
+            'Heldout/EnsembleDisagreement': disagreement,
+            'Heldout/BoundarySamples': float(boundary_samples),
+            'Heldout/PositiveLabels': float(positives),
+            'Heldout/NegativeLabels': float(negatives),
+            'Heldout/Episodes': float(episodes),
+            'Heldout/Transitions': float(transitions),
+        }
+        gate_passed: bool | None = None
+        if self._dynamic_geometry_gate_enabled():
+            gate_passed = self._warmup.evaluate_geometry_gate(
+                self._env_steps,
+                boundary_samples,
+                positives,
+                negatives,
+                cost_td_error=bellman_error,
+                calibration_error=calibration_error,
+                valid_gradient_rate=gradient_norm,
+                ensemble_disagreement=disagreement,
+                brier_skill=brier_skill,
+                auroc=auroc,
+            )
+        for key, value in evidence.items():
+            if math.isfinite(value):
+                self._latest_values[key] = value
+                self._accumulate(key, value)
+        artifact = {
+            'env_steps': self._env_steps,
+            'split': 'heldout_episode',
+            'recent_episode_limit': int(algo.heldout_recent_episodes),
+            'transition_limit': int(algo.heldout_eval_batch_size),
+            'gate_passed': gate_passed,
+            'curriculum_stage': self._warmup.stage,
+            'geometry_enabled': self._training_geometry_enabled(),
+            **{key.removeprefix('Heldout/'): value for key, value in evidence.items()},
+        }
+        _append_csv(self._artifact_dir / 'heldout_probability.csv', artifact)
+        _atomic_json(self._artifact_dir / 'heldout_probability_latest.json', artifact)
+        self._last_heldout_evidence = evidence
+        return evidence
+
     def _log_epoch(self, start_time: float) -> None:
         """Dump one complete metrics row and auditable warmup status."""
+        self._heldout_probability_evidence()
         now = time.monotonic()
         elapsed = now - self._last_log_time
         new_steps = self._env_steps - self._last_log_step
@@ -1134,6 +1705,7 @@ class STAR(BaseAlgo):
             {
                 'Train/Epoch': self._env_steps // int(self._cfgs.algo_cfgs.steps_per_epoch),
                 'Train/WarmupStage': float(self._warmup.stage_index),
+                'Train/GeometryEnabled': float(self._training_geometry_enabled()),
                 'Dual/Energy': float(self._energy_dual.value.detach().item()),
                 'Dual/GlobalSafety': self._effective_global_safety_multiplier(),
                 'TotalEnvSteps': self._env_steps,
@@ -1159,18 +1731,33 @@ class STAR(BaseAlgo):
                     if self._local_geometry_enabled()
                     else None
                 ),
-                'warmup_geometry_eligibility_step': self._warmup.geometry_activation_step,
+                'warmup_geometry_eligibility_step': self._warmup.geometry_eligibility_step,
+                'geometry_last_disable_step': self._warmup.geometry_last_disable_step,
                 'geometry_enabled': self._training_geometry_enabled(),
                 'local_geometry_configured': self._local_geometry_enabled(),
                 'ema': self._warmup.ema,
+                'latest_heldout_gate_values': self._warmup.latest,
                 'conditions': self._warmup.conditions(
                     self._env_steps,
                     self._buf.pool_sizes['boundary'],
                     self._buf.label_counts['positive'],
                     self._buf.label_counts['negative'],
                 ),
+                'gate_conditions': self._warmup.gate_conditions(
+                    self._env_steps,
+                    int(self._last_heldout_evidence.get('Heldout/BoundarySamples', 0.0)),
+                    int(self._last_heldout_evidence.get('Heldout/PositiveLabels', 0.0)),
+                    int(self._last_heldout_evidence.get('Heldout/NegativeLabels', 0.0)),
+                ),
+                'consecutive_passes': self._warmup.consecutive_passes,
+                'consecutive_failures': self._warmup.consecutive_failures,
+                'gate_evaluations': self._warmup.gate_evaluations,
                 'boundary_samples': self._buf.pool_sizes['boundary'],
-                'label_counts': self._buf.label_counts,
+                'label_counts': {
+                    'replay_train': self._buf.label_counts,
+                    'heldout': self._buf.label_counts_for('heldout'),
+                },
+                'heldout_evidence': self._last_heldout_evidence,
             },
         )
         self._metric_sums.clear()
@@ -1178,7 +1765,7 @@ class STAR(BaseAlgo):
         self._last_log_step = self._env_steps
         self._last_log_time = now
 
-    def _evaluate(  # pylint: disable=too-many-locals,too-many-statements
+    def _evaluate(  # pylint: disable=too-many-locals,too-many-statements,too-many-branches
         self,
         milestone: int,
     ) -> dict[str, Any]:
@@ -1188,6 +1775,7 @@ class STAR(BaseAlgo):
         if not seeds:
             return {
                 'milestone': milestone,
+                'probability_split': 'external_isolated_environment',
                 'episodes': 0,
                 'mean_return': 0.0,
                 'mean_cost': 0.0,
@@ -1240,6 +1828,7 @@ class STAR(BaseAlgo):
                     float(self._cfgs.lagrange_cfgs.cost_limit),
                     int(self._cfgs.algo_cfgs.max_episode_steps),
                     self._device,
+                    include_violation=self._bellman_probability_enabled(),
                 )
                 episode_return = 0.0
                 episode_cost = 0.0
@@ -1397,6 +1986,7 @@ class STAR(BaseAlgo):
         empirical_risk = (empirical_tensor > threshold_tensor).float()
         return {
             'milestone': milestone,
+            'probability_split': 'external_isolated_environment',
             'episodes': len(returns),
             'seeds': seeds,
             'returns': returns,
@@ -1750,13 +2340,17 @@ class STAR(BaseAlgo):
                     if self._local_geometry_enabled()
                     else None
                 ),
-                'warmup_geometry_eligibility_step': self._warmup.geometry_activation_step,
+                'warmup_geometry_eligibility_step': self._warmup.geometry_eligibility_step,
                 'global_safety_constraint_enabled': self._global_safety_enabled(),
                 'local_safety_geometry_enabled': self._local_geometry_enabled(),
                 'reward_target_actor_enabled': self._reward_target_actor_enabled(),
                 'reward_target_polyak': self._reward_target_polyak(),
                 'cost_target_polyak': float(self._cfgs.algo_cfgs.polyak),
                 'actor_target_polyak': float(self._cfgs.algo_cfgs.polyak),
+                'probability_target_polyak': self._probability_target_polyak(),
+                'bellman_probability_enabled': self._bellman_probability_enabled(),
+                'dynamic_geometry_gate': self._dynamic_geometry_gate_enabled(),
+                'candidate_probing_enabled': self._candidate_probing_enabled(),
                 'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
                 'reward_target_samples': int(self._cfgs.algo_cfgs.reward_target_samples),
                 'reward_critic_updates_per_update': int(
@@ -1776,6 +2370,13 @@ class STAR(BaseAlgo):
                 'training_seconds': self._training_seconds,
                 'end_to_end_fps': self._run_env_steps / max(self._training_seconds, 1e-9),
                 'replay': self._buf.category_ratios(),
+                'replay_split_counts': {
+                    'train_transitions': self._buf.training_size,
+                    'heldout_transitions': self._buf.heldout_size,
+                    'train_labels': self._buf.label_counts,
+                    'heldout_labels': self._buf.label_counts_for('heldout'),
+                },
+                'heldout_probability_latest': self._last_heldout_evidence,
                 'violation_ratio': self._violation_count / max(self._env_steps, 1),
                 'last_update_order': list(self._last_update_order),
             }
