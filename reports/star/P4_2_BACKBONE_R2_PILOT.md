@@ -50,9 +50,35 @@ A frozen-policy/frozen-replay continuation then applied the exact R2 update rule
 outer updates. Newest-decile TD fell from 0.00917 to 0.00797, but aggregate TD rose from 0.00962 to
 0.01038 and mean absolute Q rose from 0.32987 to 0.36406. A 75% recent mixture worsened aggregate
 TD further to 0.01126. More target samples, more repetitions of the same critic update, or more
-recent replay are therefore not supported as R3 repairs. The next diagnostic must isolate target
-critic self-bootstrap cadence and actor/energy-driven value-scale drift before any new training
-candidate is sealed.
+recent replay are therefore not supported as R3 repairs.
+
+An isolated target-timescale scan then retained the exact R2 critic update and changed only the
+reward target critic Polyak coefficient. After 2,000 frozen-replay outer updates:
+
+| reward target Polyak | uniform TD | mean abs Q | relative target gap |
+|---:|---:|---:|---:|
+| 0.00000 | 0.00795 | 0.32892 | 0.10213 |
+| 0.00025 | 0.00811 | 0.33143 | 0.07932 |
+| 0.00050 | 0.00823 | 0.33376 | 0.06378 |
+| 0.00100 | 0.00846 | 0.33812 | 0.04652 |
+| 0.00250 | 0.00930 | 0.34962 | 0.02935 |
+| 0.00500 | 0.01060 | 0.36225 | 0.02117 |
+
+Freezing the target minimizes the short counterfactual residual but creates 10.2% parameter lag;
+0.00025 and 0.00050 likewise trade a small TD reduction for substantially more lag. Coefficient
+0.001 is the first nonzero candidate that keeps relative target lag below 5% while reversing the
+TD and Q-scale drift. It is a factor-five slowdown from the shared 0.005 coefficient.
+
+A final four-way closed-loop diagnostic restored actor updates at interval 2 and optionally the
+energy dual while holding replay fixed. With coefficient 0.001, final TD was 0.00835 with both
+actor and dual frozen, 0.00841 with actor active and dual frozen, and 0.00835 with both active. The
+corresponding 0.005 actor-plus-dual control ended at TD 0.00975 and mean absolute Q 0.37987, versus
+0.34254 for 0.001. Actor/energy feedback is therefore not the causal difference in this window.
+
+The selected R3 candidate changes only the reward target critic Polyak coefficient from 0.005 to
+0.001. Cost-target and target-actor coefficients remain 0.005, and every R2 sampling, replay, UTD,
+and actor-cadence choice remains unchanged. This candidate still requires implementation and a
+new frozen protocol before any training run.
 
 ## Server evidence
 

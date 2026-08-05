@@ -1,5 +1,35 @@
 {
   "analysis": {
+    "actor_energy_closed_loop": {
+      "target_0_001_actor_active_dual_active": {
+        "actor_updates": 1000,
+        "energy_dual": 0.011730378493666649,
+        "energy_dual_updates": 1000,
+        "uniform_q_abs_mean": 0.3425370454788208,
+        "uniform_td": 0.008345323614776134
+      },
+      "target_0_001_actor_active_dual_frozen": {
+        "actor_updates": 1000,
+        "energy_dual": 0.01285625621676445,
+        "energy_dual_updates": 0,
+        "uniform_q_abs_mean": 0.34159570932388306,
+        "uniform_td": 0.008412839844822884
+      },
+      "target_0_001_actor_frozen_dual_frozen": {
+        "actor_updates": 0,
+        "energy_dual": 0.01285625621676445,
+        "energy_dual_updates": 0,
+        "uniform_q_abs_mean": 0.33974555134773254,
+        "uniform_td": 0.008350208401679993
+      },
+      "target_0_005_actor_active_dual_active": {
+        "actor_updates": 1000,
+        "energy_dual": 0.011738726869225502,
+        "energy_dual_updates": 1000,
+        "uniform_q_abs_mean": 0.37986940145492554,
+        "uniform_td": 0.009748843498528004
+      }
+    },
     "frozen_replay_tracking": {
       "exact_r2_after_2000_outer_updates": {
         "newest_decile_td": 0.007974006235599518,
@@ -34,9 +64,41 @@
       "target_sampling_std_mean": 0.0070806024596095085,
       "transition_count": 4096
     },
+    "reward_target_timescale_after_2000_outer_updates": {
+      "0": {
+        "relative_parameter_gap": 0.10212687608733338,
+        "uniform_q_abs_mean": 0.3289170265197754,
+        "uniform_td": 0.007945858873426914
+      },
+      "0.00025": {
+        "relative_parameter_gap": 0.07932323702362439,
+        "uniform_q_abs_mean": 0.3314250409603119,
+        "uniform_td": 0.008107844740152359
+      },
+      "0.0005": {
+        "relative_parameter_gap": 0.06378420196348293,
+        "uniform_q_abs_mean": 0.3337593376636505,
+        "uniform_td": 0.008233141154050827
+      },
+      "0.001": {
+        "relative_parameter_gap": 0.04651891815557762,
+        "uniform_q_abs_mean": 0.33812275528907776,
+        "uniform_td": 0.008457290008664131
+      },
+      "0.0025": {
+        "relative_parameter_gap": 0.029350086196430755,
+        "uniform_q_abs_mean": 0.3496198356151581,
+        "uniform_td": 0.009301461279392242
+      },
+      "0.005": {
+        "relative_parameter_gap": 0.021169087015304983,
+        "uniform_q_abs_mean": 0.3622509241104126,
+        "uniform_td": 0.010601086542010307
+      }
+    },
     "scope": "post-hoc read-only diagnostics; not promotion metrics or a formal verdict"
   },
-  "analysis_source_commit": "913f758ca07c0af5ea85491459b0e9eeadc91af1",
+  "analysis_source_commit": "3fdcae50ceb1825d8a28771297699f6183c667aa",
   "continuation_beyond_50k_launched": false,
   "external_fixed_random_flow": {
     "episodes_per_endpoint": 20,
@@ -131,7 +193,9 @@
     "pilot_decision": "9852535cf133d67e3a7edce3afd7d5beb69f34758a0ef4fd199eaa39f59f6432",
     "receipt": "0d8e9c4d3e9453f0a43dea90b99cfb086a0b4aa0bc65845e524b2070fd255528",
     "reward_critic_tracking": "b3282393a75e0cf42034584542b601ab4cb42b2f6cbc7d0572b03ec68999b301",
+    "reward_actor_drift": "388d31ae432c02a42286f03d5c8381cf1930da35fa10cff1bfb8325974875569",
     "reward_target_sampling_variance": "d90c79e8aee7a1f56648ae8483d7b10093828ab61fda217ac286050f090747ca",
+    "reward_target_timescale": "0002be08a7aec6a9a93164a3f056de9362cad84e951351a4ab26a71099048273",
     "training_summary": "e2973b4e329d5dc47b6ce81bc184d39092f182e20d17ca454e9b704144b84433"
   },
   "repair": {
@@ -139,6 +203,18 @@
     "reward_critic_updates_per_update": 2,
     "reward_replay_recent_fraction": 0.5,
     "reward_replay_recent_window": 10000,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "target_flow_actor_for_reward_backup": true
+  },
+  "r3_candidate": {
+    "actor_target_polyak": 0.005,
+    "actor_update_interval": 2,
+    "cost_target_polyak": 0.005,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_polyak": 0.001,
     "reward_target_samples": 4,
     "separate_reward_replay": true,
     "target_flow_actor_for_reward_backup": true
