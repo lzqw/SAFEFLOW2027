@@ -255,6 +255,16 @@ def test_summarize_requires_every_seed_to_pass(tmp_path: Path) -> None:
     receipts = [item[2] for item in fixtures]
     verdict = summarize(runs, audits, receipts, tmp_path / 'passing')
     assert verdict['status'] == 'passed'
+    assert verdict['risk_metric_namespaces']['replay']['available']
+    assert not verdict['risk_metric_namespaces']['held_out']['available']
+    assert verdict['risk_metric_namespaces']['external']['available']
+    criteria = verdict['criteria_by_seed']['2027']
+    assert criteria['replay_auroc_above_065']
+    assert criteria['replay_brier_skill_positive']
+    assert criteria['external_auroc_above_065']
+    assert criteria['external_brier_skill_positive']
+    assert 'probability_auroc_above_065' not in criteria
+    assert 'positive_brier_skill' not in criteria
     assert (tmp_path / 'passing/pointgoal_evaluation_summary.csv').exists()
 
     diagnostics = runs[-1] / 'artifacts/diagnostics.csv'
@@ -333,6 +343,7 @@ def test_summarize_uses_tie_correct_checkpoint_evaluations(tmp_path: Path) -> No
                     **dict.fromkeys(EVALUATION_METRICS, 0.5),
                     'mean_return': 2.0,
                     'spearman': '',
+                    'auroc': 0.8,
                     'goals_per_episode_mean': 1.0,
                     'stall_ratio': 0.0,
                 },
@@ -372,7 +383,7 @@ def test_undefined_probability_auroc_fails_without_crashing(tmp_path: Path) -> N
         tmp_path / 'undefined',
     )
     assert verdict['status'] == 'failed'
-    assert not verdict['criteria_by_seed']['2029']['probability_auroc_above_065']
+    assert not verdict['criteria_by_seed']['2029']['replay_auroc_above_065']
 
 
 def test_undefined_counterfactual_boundary_gate_remains_blank(tmp_path: Path) -> None:

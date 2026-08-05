@@ -255,8 +255,8 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'cost_td_ema': number(warmup['ema']['cost_td_error']),
         'valid_gradient_ema': number(warmup['ema']['valid_gradient_rate']),
         'ensemble_disagreement_ema': number(warmup['ema']['ensemble_disagreement']),
-        'brier_skill_ema': number(warmup['ema']['brier_skill']),
-        'auroc_ema': number(warmup['ema']['auroc']),
+        'replay_brier_skill_ema': number(warmup['ema']['brier_skill']),
+        'replay_auroc_ema': number(warmup['ema']['auroc']),
         'gate_boundary_mean': boundary_gate,
         'gate_interior_mean': interior_gate,
         'gate_boundary_interior_ratio': gate_ratio,
@@ -291,6 +291,8 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'final_eval_stall_ratio': number(final_evaluation['stall_ratio']),
         'final_eval_displacement': number(final_evaluation['mean_start_end_displacement']),
         'final_eval_action_norm': number(final_evaluation['mean_action_norm']),
+        'final_external_brier_skill': optional_number(final_evaluation['brier_skill']),
+        'final_external_auroc': optional_number(final_evaluation['auroc']),
     }
     criteria = {
         'completed_without_crash': all(
@@ -300,10 +302,13 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'mean_goal_met_positive': row['final_eval_goals_per_episode'] > 0.0,
         'no_stall': row['final_eval_stall_ratio'] <= 1e-12,
         'cost_within_budget': row['final_eval_cost'] <= 10.0,
-        'probability_auroc_above_065': row['replay_auroc'] is not None
-        and row['replay_auroc'] > 0.65,
-        'positive_brier_skill': row['replay_brier_skill'] is not None
+        'replay_auroc_above_065': row['replay_auroc'] is not None and row['replay_auroc'] > 0.65,
+        'replay_brier_skill_positive': row['replay_brier_skill'] is not None
         and row['replay_brier_skill'] > 0.0,
+        'external_auroc_above_065': row['final_external_auroc'] is not None
+        and row['final_external_auroc'] > 0.65,
+        'external_brier_skill_positive': row['final_external_brier_skill'] is not None
+        and row['final_external_brier_skill'] > 0.0,
         'tangent_variance_preserved': row['vt_preservation_ratio'] >= 0.8,
         'dangerous_normal_velocity_reduced': final_danger < w2_danger,
         'final_warmup_evidence_passed': warmup['stage'] == 'W3'
@@ -408,6 +413,24 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
         'assessment_scope': assessment_scope,
         'target_steps': target_steps,
         'final_p4_verdict': ('passed' if overall_pass else 'failed') if final_assessment else None,
+        'risk_metric_namespaces': {
+            'replay': {
+                'available': True,
+                'source': 'full replay checkpoint audit',
+                'criteria': ['replay_auroc_above_065', 'replay_brier_skill_positive'],
+            },
+            'held_out': {
+                'available': False,
+                'source': None,
+                'criteria': [],
+                'reason': 'P4.1 did not implement an episode-separated held-out split',
+            },
+            'external': {
+                'available': True,
+                'source': 'fixed-random-flow checkpoint evaluation',
+                'criteria': ['external_auroc_above_065', 'external_brier_skill_positive'],
+            },
+        },
         'required_seed_count': required_seed_count,
         'observed_seed_count': len(observed_seed_criteria_satisfied),
         'seed_pass': observed_seed_criteria_satisfied if final_assessment else None,
