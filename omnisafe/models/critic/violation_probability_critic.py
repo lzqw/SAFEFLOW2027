@@ -86,7 +86,7 @@ def violation_bellman_target(
     next_violation: torch.Tensor,
     episode_done: torch.Tensor,
 ) -> torch.Tensor:
-    """Build the absorbing, undiscounted probability-of-event Bellman target.
+    """Build the absorbing probability-of-event Bellman target without a discount.
 
     A budget breach takes precedence over termination. A terminal transition that remains safe
     has zero future violation probability; every other transition bootstraps head-wise from the

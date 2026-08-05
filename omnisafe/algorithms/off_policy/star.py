@@ -1687,7 +1687,7 @@ class STAR(BaseAlgo):
             'gate_passed': gate_passed,
             'curriculum_stage': self._warmup.stage,
             'geometry_enabled': self._training_geometry_enabled(),
-            **{key.removeprefix('Heldout/'): value for key, value in evidence.items()},
+            **{key[len('Heldout/') :]: value for key, value in evidence.items()},
         }
         _append_csv(self._artifact_dir / 'heldout_probability.csv', artifact)
         _atomic_json(self._artifact_dir / 'heldout_probability_latest.json', artifact)
