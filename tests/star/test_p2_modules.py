@@ -33,7 +33,10 @@ from omnisafe.common.normalizer import Normalizer
 from omnisafe.common.star_checkpoint import load_star_checkpoint, save_star_checkpoint
 from omnisafe.common.star_dual import EnergyDual, GlobalSafetyDual
 from omnisafe.models.actor.flow_actor import FlowActor
-from omnisafe.models.actor_critic.star_actor_q_critic import flac_reward_target
+from omnisafe.models.actor_critic.star_actor_q_critic import (
+    flac_reward_target,
+    flac_sampled_reward_target,
+)
 from omnisafe.models.critic.distributional_cost_critic import (
     DistributionalCostCritic,
     distributional_bellman_target,
@@ -86,6 +89,38 @@ def test_flac_reward_target_penalizes_future_path_energy() -> None:
     target = flac_reward_target(reward, done, first, second, energy, 0.5, gamma=0.9)
     assert torch.allclose(target, torch.tensor([3.7, 2.0]))
     assert not target.requires_grad
+
+
+def test_sampled_flac_target_applies_twin_minimum_before_policy_expectation() -> None:
+    reward = torch.tensor([1.0, 2.0])
+    done = torch.tensor([0.0, 1.0])
+    first = torch.tensor([[5.0, 8.0], [2.0, 10.0]], requires_grad=True)
+    second = torch.tensor([[4.0, 7.0], [3.0, 9.0]], requires_grad=True)
+    energy = torch.tensor([[2.0, 3.0], [0.0, 5.0]], requires_grad=True)
+    target = flac_sampled_reward_target(
+        reward,
+        done,
+        first,
+        second,
+        energy,
+        0.5,
+        gamma=0.9,
+    )
+    assert torch.allclose(target, torch.tensor([3.25, 2.0]))
+    assert not target.requires_grad
+
+
+def test_sampled_flac_target_rejects_misaligned_sample_tensors() -> None:
+    with pytest.raises(ValueError, match='share one shape'):
+        flac_sampled_reward_target(
+            torch.ones(2),
+            torch.zeros(2),
+            torch.ones(4, 2),
+            torch.ones(3, 2),
+            torch.ones(4, 2),
+            0.1,
+            gamma=0.99,
+        )
 
 
 def test_quantile_huber_loss_is_finite_with_bootstrap_and_importance() -> None:
@@ -213,6 +248,52 @@ def test_replay_is_cpu_and_global_batch_is_concurrency_invariant(num_envs: int) 
     updates, carry = updates_for_transitions(1.0, 25 * num_envs)
     assert updates / (25 * num_envs) == 1.0
     assert carry == 0.0
+
+
+def test_reward_replay_recent_window_follows_ring_chronology_after_wraparound() -> None:
+    replay = STARReplayBuffer(
+        obs_dim=3,
+        act_dim=2,
+        capacity=16,
+        batch_size=8,
+        num_envs=1,
+    )
+    for index in range(24):
+        marker = torch.tensor([float(index)])
+        replay.store_batch(
+            obs=marker.repeat(1, 3),
+            action=torch.zeros(1, 2),
+            reward=marker,
+            cost=torch.zeros(1),
+            terminated=torch.zeros(1),
+            truncated=torch.zeros(1),
+            next_obs=marker.repeat(1, 3),
+            context=torch.ones(1, 2),
+            next_context=torch.ones(1, 2),
+            risk_threshold=torch.ones(1),
+            next_risk_threshold=torch.ones(1),
+            boundary_score=torch.zeros(1),
+            failure=torch.zeros(1, dtype=torch.bool),
+            source_random=torch.zeros(1, dtype=torch.bool),
+        )
+    batch = replay.sample_uniform_recent_batch(
+        batch_size=128,
+        recent_fraction=1.0,
+        recent_window=4,
+    )
+    assert replay.pointer == 8
+    assert batch['reward'].min().item() >= 20.0
+    assert batch['reward'].max().item() <= 23.0
+    assert torch.equal(batch['importance_weights'], torch.ones(128))
+
+
+def test_reward_replay_mixture_validates_recent_controls() -> None:
+    replay = STARReplayBuffer(3, 2, capacity=16, batch_size=8)
+    _store_probe_batch(replay, 0)
+    with pytest.raises(ValueError, match='fraction'):
+        replay.sample_uniform_recent_batch(recent_fraction=1.1)
+    with pytest.raises(ValueError, match='window'):
+        replay.sample_uniform_recent_batch(recent_window=0)
 
 
 def test_point_budget_and_locomotion_horizon_have_distinct_semantics() -> None:

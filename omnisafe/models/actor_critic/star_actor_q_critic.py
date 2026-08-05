@@ -46,6 +46,37 @@ def flac_reward_target(
     )
 
 
+@torch.no_grad()
+# pylint: disable-next=too-many-arguments
+def flac_sampled_reward_target(
+    reward: torch.Tensor,
+    done: torch.Tensor,
+    next_q_first: torch.Tensor,
+    next_q_second: torch.Tensor,
+    next_path_energy: torch.Tensor,
+    energy_multiplier: torch.Tensor | float,
+    gamma: float,
+) -> torch.Tensor:
+    """Average the FLAC backup over stochastic target-flow samples.
+
+    The three future tensors use ``[target samples, replay batch]`` layout. Averaging follows
+    ``min(Q1, Q2) - alpha_E * energy`` so the conservative twin-critic operator is applied to
+    every sampled action before taking the policy expectation.
+    """
+    if next_q_first.ndim != 2:
+        raise ValueError('sampled FLAC tensors must have [samples, batch] shape')
+    expected_shape = next_q_first.shape
+    if next_q_second.shape != expected_shape or next_path_energy.shape != expected_shape:
+        raise ValueError('sampled FLAC future tensors must share one shape')
+    if reward.shape != expected_shape[1:] or done.shape != reward.shape:
+        raise ValueError('sampled FLAC reward and done tensors must match the replay batch')
+    continuation = (
+        torch.minimum(next_q_first, next_q_second)
+        - torch.as_tensor(energy_multiplier, device=reward.device) * next_path_energy
+    ).mean(dim=0)
+    return reward + gamma * (1.0 - done) * continuation
+
+
 class TwinRewardCritic(nn.Module):
     """Two independent scalar reward Q-functions."""
 

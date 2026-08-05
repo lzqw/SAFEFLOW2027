@@ -165,3 +165,75 @@ def test_star_full_checkpoint_resume_preserves_counters_and_log_interval(tmp_pat
     )
     assert summary['run_env_steps'] == 8
     assert summary['end_to_end_fps'] == algorithm.run_env_steps / algorithm.training_seconds
+
+
+def test_star_r2_reward_tracking_is_counted_manifested_and_checkpointed(tmp_path: Path) -> None:
+    custom = {
+        'seed': 2327,
+        'train_cfgs': {
+            'device': 'cpu',
+            'torch_threads': 1,
+            'total_steps': 12,
+            'eval_episodes': 0,
+        },
+        'algo_cfgs': {
+            'steps_per_epoch': 12,
+            'size': 64,
+            'batch_size': 8,
+            'random_steps': 4,
+            'terminal_utility_steps': 8,
+            'geometry_min_steps': 12,
+            'enable_global_safety_constraint': False,
+            'enable_local_safety_geometry': False,
+            'use_target_flow_for_reward_backup': True,
+            'actor_update_interval': 2,
+            'reward_target_samples': 4,
+            'reward_critic_updates_per_update': 2,
+            'separate_reward_replay': True,
+            'reward_replay_recent_fraction': 0.5,
+            'reward_replay_recent_window': 8,
+            'eval_milestones': [0, 12],
+            'milestone_checkpoints': False,
+            'checkpoint_replay': True,
+        },
+        'model_cfgs': {
+            'actor': {'hidden_sizes': [16, 16]},
+            'critic': {'hidden_sizes': [16, 16], 'num_quantiles': 5},
+        },
+        'logger_cfgs': {
+            'log_dir': str(tmp_path),
+            'use_tensorboard': False,
+            'use_wandb': False,
+        },
+    }
+    wrapper = omnisafe.Agent('STAR', 'SafetyPointGoal1-v0', custom_cfgs=custom)
+    wrapper.learn()
+    algorithm = wrapper.agent
+    log_dir = Path(algorithm.logger.log_dir)
+    summary = json.loads((log_dir / 'artifacts/training_summary.json').read_text('utf-8'))
+    manifest = json.loads((log_dir / 'artifacts/run_manifest.json').read_text('utf-8'))
+    checkpoint = torch.load(
+        log_dir / 'checkpoints/final_full.pt',
+        map_location='cpu',
+        weights_only=False,
+    )
+    assert summary['updates'] == 8
+    assert summary['reward_critic_updates'] == 16
+    assert summary['reward_target_samples'] == 4
+    assert summary['reward_critic_updates_per_update'] == 2
+    assert summary['separate_reward_replay'] is True
+    assert summary['reward_replay_recent_fraction'] == 0.5
+    assert manifest['p4_2_reward_backbone_repair'] == {
+        'target_flow_actor_for_reward_backup': True,
+        'actor_update_interval': 2,
+        'reward_target_samples': 4,
+        'reward_critic_updates_per_update': 2,
+        'separate_reward_replay': True,
+        'reward_replay_recent_fraction': 0.5,
+        'reward_replay_recent_window': 8,
+    }
+    assert checkpoint['counters']['reward_critic_updates'] == 16
+    with (log_dir / 'artifacts/diagnostics.csv').open(encoding='utf-8', newline='') as stream:
+        row = next(csv.DictReader(stream))
+    assert float(row['TotalRewardCriticUpdates']) == 16.0
+    assert float(row['Critic/RewardTargetSamplingStd']) > 0.0

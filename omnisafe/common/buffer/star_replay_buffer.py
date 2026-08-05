@@ -317,6 +317,56 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         batch['importance_weights'] = importance.to(target_device, non_blocking=self._pin_memory)
         return batch
 
+    def sample_uniform_recent_batch(
+        self,
+        device: torch.device | str = 'cpu',
+        batch_size: int | None = None,
+        *,
+        recent_fraction: float = 0.0,
+        recent_window: int = 10_000,
+    ) -> dict[str, torch.Tensor]:
+        """Sample a reward-learning mixture without safety-category stratification.
+
+        The uniform component preserves coverage of the complete resident replay. The recent
+        component follows ring chronology from the slot immediately preceding ``pointer`` and is
+        therefore valid before and after capacity wraparound. Sampling is with replacement, as in
+        the safety-stratified sampler, and the deliberate mixture receives unit weights.
+        """
+        if self._size == 0:
+            raise RuntimeError('cannot sample an empty replay buffer')
+        requested = self.batch_size if batch_size is None else batch_size
+        if requested <= 0:
+            raise ValueError('sample batch size must be positive')
+        if not 0.0 <= recent_fraction <= 1.0:
+            raise ValueError('recent replay fraction must lie in [0, 1]')
+        if recent_window <= 0:
+            raise ValueError('recent replay window must be positive')
+
+        recent_count = round(requested * recent_fraction)
+        uniform_count = requested - recent_count
+        sampled: list[torch.Tensor] = []
+        if uniform_count:
+            sampled.append(torch.randint(self._size, (uniform_count,)))
+        if recent_count:
+            available = min(self._size, recent_window)
+            offsets = torch.randint(available, (recent_count,))
+            sampled.append((self._ptr - 1 - offsets).remainder(self.capacity))
+        indices = torch.cat(sampled)
+        indices = indices[torch.randperm(indices.numel())]
+
+        target_device = torch.device(device)
+        batch = {
+            key: value[indices].to(target_device, non_blocking=self._pin_memory)
+            for key, value in self.data.items()
+        }
+        batch['indices'] = indices.to(target_device)
+        batch['importance_weights'] = torch.ones(
+            requested,
+            dtype=torch.float32,
+            device=target_device,
+        )
+        return batch
+
     def relabel_boundaries(self, indices: torch.Tensor, boundary_score: torch.Tensor) -> None:
         """Refresh continuous boundary scores and their derived sampling category."""
         cpu_indices = indices.detach().to('cpu', dtype=torch.long)

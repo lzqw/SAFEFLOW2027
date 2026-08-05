@@ -46,7 +46,10 @@ from omnisafe.common.logger import Logger
 from omnisafe.common.normalizer import Normalizer
 from omnisafe.common.star_checkpoint import load_star_checkpoint, save_star_checkpoint
 from omnisafe.common.star_dual import EnergyDual, GlobalSafetyDual
-from omnisafe.models.actor_critic.star_actor_q_critic import STARActorQCritic, flac_reward_target
+from omnisafe.models.actor_critic.star_actor_q_critic import (
+    STARActorQCritic,
+    flac_sampled_reward_target,
+)
 from omnisafe.models.critic.distributional_cost_critic import (
     distributional_bellman_target,
     quantile_huber_loss,
@@ -106,6 +109,7 @@ LOG_KEYS = (
     'Loss/EnergyDual',
     'Critic/CostTD',
     'Critic/RewardTD',
+    'Critic/RewardTargetSamplingStd',
     'Critic/CalibrationError',
     'Critic/Spearman',
     'Critic/PredictedRisk',
@@ -146,6 +150,7 @@ LOG_KEYS = (
     'Replay/ViolationRatio',
     'TotalEnvSteps',
     'TotalUpdates',
+    'TotalRewardCriticUpdates',
     'Time/FPS',
     'Time/Total',
 )
@@ -346,6 +351,7 @@ class STAR(BaseAlgo):
         self._env_steps = 0
         self._update_count = 0
         self._actor_update_count = 0
+        self._reward_critic_update_count = 0
         self._utd_carry = 0.0
         self._violation_count = 0
         self._pending_episode_costs: deque[float] = deque()
@@ -370,6 +376,24 @@ class STAR(BaseAlgo):
             algo.actor_update_interval,
         ):
             raise ValueError('actor_update_interval must be a positive integer')
+        reward_target_samples = int(algo.reward_target_samples)
+        if reward_target_samples <= 0 or reward_target_samples != float(
+            algo.reward_target_samples,
+        ):
+            raise ValueError('reward_target_samples must be a positive integer')
+        reward_updates = int(algo.reward_critic_updates_per_update)
+        if reward_updates <= 0 or reward_updates != float(
+            algo.reward_critic_updates_per_update,
+        ):
+            raise ValueError('reward_critic_updates_per_update must be a positive integer')
+        recent_fraction = float(algo.reward_replay_recent_fraction)
+        if not 0.0 <= recent_fraction <= 1.0:
+            raise ValueError('reward_replay_recent_fraction must lie in [0, 1]')
+        recent_window = int(algo.reward_replay_recent_window)
+        if recent_window <= 0 or recent_window != float(algo.reward_replay_recent_window):
+            raise ValueError('reward_replay_recent_window must be a positive integer')
+        if recent_fraction > 0.0 and not bool(algo.separate_reward_replay):
+            raise ValueError('recent reward replay requires separate_reward_replay')
 
         resume_from = str(algo.resume_from)
         if resume_from:
@@ -415,6 +439,21 @@ class STAR(BaseAlgo):
                 'p4_2_reward_backbone_repair': {
                     'target_flow_actor_for_reward_backup': (self._reward_target_actor_enabled()),
                     'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
+                    'reward_target_samples': int(
+                        self._cfgs.algo_cfgs.reward_target_samples,
+                    ),
+                    'reward_critic_updates_per_update': int(
+                        self._cfgs.algo_cfgs.reward_critic_updates_per_update,
+                    ),
+                    'separate_reward_replay': bool(
+                        self._cfgs.algo_cfgs.separate_reward_replay,
+                    ),
+                    'reward_replay_recent_fraction': float(
+                        self._cfgs.algo_cfgs.reward_replay_recent_fraction,
+                    ),
+                    'reward_replay_recent_window': int(
+                        self._cfgs.algo_cfgs.reward_replay_recent_window,
+                    ),
                 },
                 'p4_1_correctness': {
                     'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
@@ -498,6 +537,15 @@ class STAR(BaseAlgo):
     def _reward_target_actor_enabled(self) -> bool:
         """Return whether reward Bellman backups use the slowly moving target flow."""
         return bool(self._cfgs.algo_cfgs.use_target_flow_for_reward_backup)
+
+    def _sample_reward_batch(self) -> dict[str, torch.Tensor]:
+        """Draw the reward/actor replay mixture independently of safety strata."""
+        algo = self._cfgs.algo_cfgs
+        return self._buf.sample_uniform_recent_batch(
+            self._device,
+            recent_fraction=float(algo.reward_replay_recent_fraction),
+            recent_window=int(algo.reward_replay_recent_window),
+        )
 
     def _select_action(self) -> tuple[torch.Tensor, torch.Tensor]:
         """Use bounded random actions in W0/W1 and learned flow actions in W2/W3."""
@@ -771,6 +819,52 @@ class STAR(BaseAlgo):
         geometry = self._geometry(geometry_obs, flow, enabled=True)
         return flow.action.detach(), geometry.per_sample_energy.detach()
 
+    def _sampled_reward_backup(
+        self,
+        batch: dict[str, torch.Tensor],
+        next_augmented_obs: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return the expected stochastic-flow backup and its Monte Carlo target noise."""
+        samples = int(self._cfgs.algo_cfgs.reward_target_samples)
+        batch_size = next_augmented_obs.shape[0]
+        expanded_obs = (
+            next_augmented_obs.unsqueeze(0)
+            .expand(samples, -1, -1)
+            .reshape(samples * batch_size, -1)
+        )
+        next_action, next_energy = self._next_path(expanded_obs)
+        with torch.no_grad():
+            next_first, next_second = self._actor_critic.target_reward_critic(
+                expanded_obs,
+                next_action,
+            )
+            first_samples = next_first.reshape(samples, batch_size)
+            second_samples = next_second.reshape(samples, batch_size)
+            energy_samples = next_energy.reshape(samples, batch_size)
+            target = flac_sampled_reward_target(
+                batch['reward'],
+                batch['reward_done'],
+                first_samples,
+                second_samples,
+                energy_samples,
+                self._energy_dual.value.detach(),
+                float(self._cfgs.algo_cfgs.gamma),
+            )
+            sampled_continuation = (
+                torch.minimum(first_samples, second_samples)
+                - self._energy_dual.value.detach() * energy_samples
+            )
+            sampled_targets = (
+                batch['reward'].unsqueeze(0)
+                + float(
+                    self._cfgs.algo_cfgs.gamma,
+                )
+                * (1.0 - batch['reward_done']).unsqueeze(0)
+                * sampled_continuation
+            )
+            sampling_std = sampled_targets.std(dim=0, unbiased=False).mean()
+        return target, sampling_std
+
     def _update_reward_critics(  # pylint: disable=too-many-locals
         self,
         batch: dict[str, torch.Tensor],
@@ -778,21 +872,7 @@ class STAR(BaseAlgo):
         next_augmented_obs: torch.Tensor,
     ) -> dict[str, float]:
         """Apply the FLAC target to both reward critics after the safety update."""
-        next_action, next_energy = self._next_path(next_augmented_obs)
-        with torch.no_grad():
-            next_first, next_second = self._actor_critic.target_reward_critic(
-                next_augmented_obs,
-                next_action,
-            )
-            target = flac_reward_target(
-                batch['reward'],
-                batch['reward_done'],
-                next_first,
-                next_second,
-                next_energy,
-                self._energy_dual.value.detach(),
-                float(self._cfgs.algo_cfgs.gamma),
-            )
+        target, sampling_std = self._sampled_reward_backup(batch, next_augmented_obs)
         first, second = self._actor_critic.reward_critic(augmented_obs, batch['action'])
         per_sample = (first - target).square() + (second - target).square()
         weights = batch['importance_weights']
@@ -805,10 +885,12 @@ class STAR(BaseAlgo):
             float(self._cfgs.algo_cfgs.max_grad_norm),
         )
         optimizer.step()
+        self._reward_critic_update_count += 1
         td_error = 0.5 * ((first - target).abs() + (second - target).abs())
         return {
             'Loss/RewardCritic': float(loss.item()),
             'Critic/RewardTD': float(td_error.mean().item()),
+            'Critic/RewardTargetSamplingStd': float(sampling_std.item()),
         }
 
     def _geometry(
@@ -925,16 +1007,52 @@ class STAR(BaseAlgo):
 
     def _update(self) -> None:
         """Execute the fixed P3 update order exactly once."""
-        batch = self._buf.sample_batch(self._device)
-        augmented_obs = self._augment(batch['obs'], batch['context'])
-        next_augmented_obs = self._augment(batch['next_obs'], batch['next_context'])
-        metrics = self._update_cost_critic(batch, augmented_obs, next_augmented_obs)
-        metrics.update(self._update_violation_critic(batch, augmented_obs))
-        metrics.update(self._update_reward_critics(batch, augmented_obs, next_augmented_obs))
+        safety_batch = self._buf.sample_batch(self._device)
+        safety_augmented_obs = self._augment(safety_batch['obs'], safety_batch['context'])
+        safety_next_augmented_obs = self._augment(
+            safety_batch['next_obs'],
+            safety_batch['next_context'],
+        )
+        metrics = self._update_cost_critic(
+            safety_batch,
+            safety_augmented_obs,
+            safety_next_augmented_obs,
+        )
+        metrics.update(self._update_violation_critic(safety_batch, safety_augmented_obs))
+
+        reward_metric_sums: dict[str, float] = {}
+        reward_updates = int(self._cfgs.algo_cfgs.reward_critic_updates_per_update)
+        actor_augmented_obs = safety_augmented_obs
+        for reward_index in range(reward_updates):
+            if bool(self._cfgs.algo_cfgs.separate_reward_replay):
+                reward_batch = self._sample_reward_batch()
+            elif reward_index == 0:
+                reward_batch = safety_batch
+            else:
+                reward_batch = self._buf.sample_batch(self._device)
+            reward_augmented_obs = self._augment(
+                reward_batch['obs'],
+                reward_batch['context'],
+            )
+            reward_next_augmented_obs = self._augment(
+                reward_batch['next_obs'],
+                reward_batch['next_context'],
+            )
+            reward_metrics = self._update_reward_critics(
+                reward_batch,
+                reward_augmented_obs,
+                reward_next_augmented_obs,
+            )
+            for key, value in reward_metrics.items():
+                reward_metric_sums[key] = reward_metric_sums.get(key, 0.0) + value
+            actor_augmented_obs = reward_augmented_obs
+        metrics.update(
+            {key: value / reward_updates for key, value in reward_metric_sums.items()},
+        )
         actor_updated = False
         actor_interval = int(self._cfgs.algo_cfgs.actor_update_interval)
         if self._warmup.stage in {'W2', 'W3'} and self._update_count % actor_interval == 0:
-            metrics.update(self._update_actor(augmented_obs))
+            metrics.update(self._update_actor(actor_augmented_obs))
             self._actor_update_count += 1
             actor_updated = True
         metrics['Actor/UpdateApplied'] = float(actor_updated)
@@ -1000,6 +1118,7 @@ class STAR(BaseAlgo):
                 'Dual/GlobalSafety': self._effective_global_safety_multiplier(),
                 'TotalEnvSteps': self._env_steps,
                 'TotalUpdates': self._update_count,
+                'TotalRewardCriticUpdates': self._reward_critic_update_count,
                 'Time/FPS': new_steps / max(elapsed, 1e-9),
                 'Time/Total': now - start_time,
             },
@@ -1453,6 +1572,7 @@ class STAR(BaseAlgo):
                 'env_steps': self._env_steps,
                 'updates': self._update_count,
                 'actor_updates': self._actor_update_count,
+                'reward_critic_updates': self._reward_critic_update_count,
                 'utd_carry': self._utd_carry,
                 'violations': self._violation_count,
             },
@@ -1483,6 +1603,9 @@ class STAR(BaseAlgo):
         self._env_steps = int(counters['env_steps'])
         self._update_count = int(counters['updates'])
         self._actor_update_count = int(counters.get('actor_updates', 0))
+        self._reward_critic_update_count = int(
+            counters.get('reward_critic_updates', self._update_count),
+        )
         self._utd_carry = float(counters['utd_carry'])
         self._violation_count = int(counters['violations'])
         self._warmup.load_state_dict(metadata['warmup'])
@@ -1594,6 +1717,7 @@ class STAR(BaseAlgo):
                 'run_env_steps': self._run_env_steps,
                 'updates': self._update_count,
                 'actor_updates': self._actor_update_count,
+                'reward_critic_updates': self._reward_critic_update_count,
                 'warmup_stage': self._warmup.stage,
                 'training_geometry_enabled': self._training_geometry_enabled(),
                 'geometry_activation_step': (
@@ -1606,6 +1730,19 @@ class STAR(BaseAlgo):
                 'local_safety_geometry_enabled': self._local_geometry_enabled(),
                 'reward_target_actor_enabled': self._reward_target_actor_enabled(),
                 'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
+                'reward_target_samples': int(self._cfgs.algo_cfgs.reward_target_samples),
+                'reward_critic_updates_per_update': int(
+                    self._cfgs.algo_cfgs.reward_critic_updates_per_update,
+                ),
+                'separate_reward_replay': bool(
+                    self._cfgs.algo_cfgs.separate_reward_replay,
+                ),
+                'reward_replay_recent_fraction': float(
+                    self._cfgs.algo_cfgs.reward_replay_recent_fraction,
+                ),
+                'reward_replay_recent_window': int(
+                    self._cfgs.algo_cfgs.reward_replay_recent_window,
+                ),
                 'effective_global_safety_multiplier': (self._effective_global_safety_multiplier()),
                 'global_dual_state': self._global_dual.state_dict(),
                 'training_seconds': self._training_seconds,

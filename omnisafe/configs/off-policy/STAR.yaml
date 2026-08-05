@@ -42,6 +42,11 @@ defaults:
     geometry_min_steps: 12000
     use_target_flow_for_reward_backup: True
     actor_update_interval: 1
+    reward_target_samples: 1
+    reward_critic_updates_per_update: 1
+    separate_reward_replay: False
+    reward_replay_recent_fraction: 0.0
+    reward_replay_recent_window: 10000
     enable_global_safety_constraint: True
     enable_local_safety_geometry: True
     w3_td_error_threshold: 3.0
