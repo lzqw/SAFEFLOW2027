@@ -240,7 +240,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         reward_step = coefficient if reward_coefficient is None else reward_coefficient
         if not 0.0 < reward_step <= 1.0:
             raise ValueError('Reward Polyak coefficient must lie in (0, 1]')
-        pairs = [
+        pairs: list[tuple[nn.Module, nn.Module, float]] = [
             (self.target_reward_critic, self.reward_critic, reward_step),
             (self.target_cost_critic, self.cost_critic, coefficient),
         ]
@@ -256,7 +256,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
     @property
     def optimizers(self) -> dict[str, optim.Optimizer]:
         """Return every network optimizer for checkpointing."""
-        result = {
+        result: dict[str, optim.Optimizer] = {
             'actor': self.actor_optimizer,
             'reward_critic': self.reward_critic_optimizer,
             'cost_critic': self.cost_critic_optimizer,
