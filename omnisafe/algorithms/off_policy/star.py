@@ -1295,8 +1295,11 @@ class STAR(BaseAlgo):
                         ).action
                         quantiles = self._actor_critic.cost_critic(augmented, action)
                         risk = self._violation_critic().probabilities(augmented, action).mean()
-                    action_norm = float(  # pylint: disable=not-callable
-                        torch.linalg.vector_norm(action, dim=-1).item(),
+                    action_norm = float(
+                        torch.linalg.vector_norm(  # pylint: disable=not-callable
+                            action,
+                            dim=-1,
+                        ).item(),
                     )
                     action_norms.append(action_norm)
                     all_action_norms.append(action_norm)
