@@ -250,6 +250,7 @@ class STAR(BaseAlgo):
     _env_steps: int
     _update_count: int
     _actor_update_count: int
+    _reward_critic_update_count: int
     _utd_carry: float
     _violation_count: int
     _last_update_order: tuple[str, ...]
@@ -1294,7 +1295,9 @@ class STAR(BaseAlgo):
                         ).action
                         quantiles = self._actor_critic.cost_critic(augmented, action)
                         risk = self._violation_critic().probabilities(augmented, action).mean()
-                    action_norm = float(torch.linalg.vector_norm(action, dim=-1).item())
+                    action_norm = float(  # pylint: disable=not-callable
+                        torch.linalg.vector_norm(action, dim=-1).item(),
+                    )
                     action_norms.append(action_norm)
                     all_action_norms.append(action_norm)
                     if episode_index == 0:

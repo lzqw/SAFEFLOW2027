@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any
 
 import torch
-
 from scripts.star.analyze_pointgoal_replay import build_algorithm, checkpoint_metadata
 from scripts.star.diagnose_reward_critic_tracking import (
     probe,

@@ -11,14 +11,13 @@ from pathlib import Path
 from typing import Any
 
 import torch
-from torch import nn
-
 from scripts.star.analyze_pointgoal_replay import build_algorithm, checkpoint_metadata
 from scripts.star.diagnose_reward_critic_tracking import probe, uniform_replay_indices
 from scripts.star.diagnose_reward_target_timescale import (
     reward_target_parameter_gap,
     soft_update_reward_target,
 )
+from torch import nn
 
 
 VARIANT_SPECS = (
@@ -114,11 +113,15 @@ def policy_probe(
     actor_critic = algorithm._actor_critic  # pylint: disable=protected-access
     generator = torch.Generator(device='cpu')
     generator.manual_seed(base_seed)
-    base_action = torch.empty(
-        (selected.numel(), actor_critic.act_dim),
-        dtype=augmented.dtype,
-        device='cpu',
-    ).uniform_(-1.0, 1.0, generator=generator).to(device)
+    base_action = (
+        torch.empty(
+            (selected.numel(), actor_critic.act_dim),
+            dtype=augmented.dtype,
+            device='cpu',
+        )
+        .uniform_(-1.0, 1.0, generator=generator)
+        .to(device)
+    )
     online_flow = actor_critic.flow(augmented, base_action=base_action)
     target_flow = actor_critic.target_flow(augmented, base_action=base_action)
     first, second = actor_critic.reward_critic(augmented, online_flow.action)
@@ -130,7 +133,9 @@ def policy_probe(
             (target_flow.action - online_flow.action).square().mean().sqrt().item(),
         ),
         'online_actor_terminal_reward_mean': float(torch.minimum(first, second).mean().item()),
-        'energy_dual': float(algorithm._energy_dual.value.item()),  # pylint: disable=protected-access
+        'energy_dual': float(
+            algorithm._energy_dual.value.item(),
+        ),  # pylint: disable=protected-access
         'actor_target_parameter_gap_rms': actor_gap['parameter_gap_rms'],
         'actor_target_relative_parameter_gap': actor_gap['relative_parameter_gap'],
     }

@@ -37,7 +37,7 @@ class ViolationProbabilityCritic(nn.Module):
         activation: Activation = 'relu',
         weight_initialization_mode: InitFunction = 'kaiming_uniform',
     ) -> None:
-        """Initialize independent logit networks without a forced 0.5 cost threshold."""
+        """Initialize independent raw-score networks without a forced 0.5 cost threshold."""
         super().__init__()
         if min(obs_dim, act_dim, ensemble_size) <= 0:
             raise ValueError('probability critic dimensions and ensemble size must be positive')

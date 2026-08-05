@@ -7,27 +7,21 @@ import json
 from pathlib import Path
 
 import pytest
-
-from scripts.star.summarize_p4_2_backbone_repair_r2 import (
-    repair_summary,
-    validate_r2_pilot_parent,
-)
+from scripts.star.summarize_p4_2_backbone_repair_r2 import repair_summary, validate_r2_pilot_parent
 from scripts.star.summarize_p4_2_backbone_repair_r2_pilot import (
     R1_SOURCE_COMMIT,
     pilot_summary,
     validate_r1_parent,
 )
-from scripts.star.summarize_p4_2_backbone_repair_r3 import (
-    repair_summary as r3_repair_summary,
-    validate_r3_pilot_parent,
-)
+from scripts.star.summarize_p4_2_backbone_repair_r3 import repair_summary as r3_repair_summary
+from scripts.star.summarize_p4_2_backbone_repair_r3 import validate_r3_pilot_parent
 from scripts.star.summarize_p4_2_backbone_repair_r3_pilot import (
     EXPECTED_TIMESCALE,
     R2_SOURCE_COMMIT,
     R3_SOURCE_COMMIT,
-    pilot_summary as r3_pilot_summary,
-    validate_r2_parent,
 )
+from scripts.star.summarize_p4_2_backbone_repair_r3_pilot import pilot_summary as r3_pilot_summary
+from scripts.star.summarize_p4_2_backbone_repair_r3_pilot import validate_r2_parent
 
 
 STABLE_TD = [0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.04, 0.03, 0.04, 0.03]

@@ -22,7 +22,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-
 from scripts.star.summarize_pointgoal_p4 import EVALUATION_METRICS, aggregate_evaluations, summarize
 
 

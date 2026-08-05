@@ -10,9 +10,8 @@ from pathlib import Path
 from typing import Any
 
 import torch
-from torch.nn.utils import clip_grad_norm_
-
 from scripts.star.analyze_pointgoal_replay import build_algorithm, checkpoint_metadata
+from torch.nn.utils import clip_grad_norm_
 
 
 def atomic_json(path: Path, payload: dict[str, Any]) -> None:

@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import pytest
 import torch
-from torch import nn
-
 from scripts.star.diagnose_reward_actor_drift import module_parameter_gap, soft_update_module
+from torch import nn
 
 
 def linear(weight: float) -> nn.Linear:

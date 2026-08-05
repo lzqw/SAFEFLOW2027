@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Any, Callable
 
 import torch
-
 from scripts.star.analyze_pointgoal_replay import build_algorithm, checkpoint_metadata
 
 

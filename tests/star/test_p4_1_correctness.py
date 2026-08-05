@@ -112,7 +112,9 @@ def test_reward_target_actor_is_frozen_and_polyak_tracks_online_flow() -> None:
 
 def test_reward_target_polyak_can_be_slower_than_actor_and_cost_targets() -> None:
     model = _model()
-    target_reward_before = [parameter.clone() for parameter in model.target_reward_critic.parameters()]
+    target_reward_before = [
+        parameter.clone() for parameter in model.target_reward_critic.parameters()
+    ]
     target_cost_before = [parameter.clone() for parameter in model.target_cost_critic.parameters()]
     target_actor_before = [parameter.clone() for parameter in model.target_actor.parameters()]
     with torch.no_grad():

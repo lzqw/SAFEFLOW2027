@@ -6,12 +6,11 @@ from types import SimpleNamespace
 
 import pytest
 import torch
-from torch import nn
-
 from scripts.star.diagnose_reward_target_timescale import (
     reward_target_parameter_gap,
     soft_update_reward_target,
 )
+from torch import nn
 
 
 def algorithm_with_weights(target: float, online: float) -> SimpleNamespace:
