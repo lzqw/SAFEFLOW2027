@@ -110,6 +110,30 @@ def test_reward_target_actor_is_frozen_and_polyak_tracks_online_flow() -> None:
     )
 
 
+def test_reward_target_polyak_can_be_slower_than_actor_and_cost_targets() -> None:
+    model = _model()
+    target_reward_before = [parameter.clone() for parameter in model.target_reward_critic.parameters()]
+    target_cost_before = [parameter.clone() for parameter in model.target_cost_critic.parameters()]
+    target_actor_before = [parameter.clone() for parameter in model.target_actor.parameters()]
+    with torch.no_grad():
+        for module in (model.reward_critic, model.cost_critic, model.actor):
+            for parameter in module.parameters():
+                parameter.add_(1.0)
+    model.polyak_update(0.005, update_actor=True, reward_coefficient=0.001)
+    for before, target in zip(target_reward_before, model.target_reward_critic.parameters()):
+        assert torch.allclose(target, before + 0.001)
+    for before, target in zip(target_cost_before, model.target_cost_critic.parameters()):
+        assert torch.allclose(target, before + 0.005)
+    for before, target in zip(target_actor_before, model.target_actor.parameters()):
+        assert torch.allclose(target, before + 0.005)
+
+
+@pytest.mark.parametrize('coefficient', [0.0, -0.1, 1.1])
+def test_reward_target_polyak_rejects_invalid_coefficient(coefficient: float) -> None:
+    with pytest.raises(ValueError, match='Reward Polyak coefficient'):
+        _model().polyak_update(0.005, reward_coefficient=coefficient)
+
+
 def test_legacy_model_state_initializes_missing_target_actor() -> None:
     source = _model()
     legacy_state = {

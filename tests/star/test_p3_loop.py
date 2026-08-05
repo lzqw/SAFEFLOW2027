@@ -192,6 +192,7 @@ def test_star_r2_reward_tracking_is_counted_manifested_and_checkpointed(tmp_path
             'separate_reward_replay': True,
             'reward_replay_recent_fraction': 0.5,
             'reward_replay_recent_window': 8,
+            'reward_target_polyak': 0.001,
             'eval_milestones': [0, 12],
             'milestone_checkpoints': False,
             'checkpoint_replay': True,
@@ -223,6 +224,9 @@ def test_star_r2_reward_tracking_is_counted_manifested_and_checkpointed(tmp_path
     assert summary['reward_critic_updates_per_update'] == 2
     assert summary['separate_reward_replay'] is True
     assert summary['reward_replay_recent_fraction'] == 0.5
+    assert summary['reward_target_polyak'] == 0.001
+    assert summary['cost_target_polyak'] == 0.005
+    assert summary['actor_target_polyak'] == 0.005
     assert manifest['p4_2_reward_backbone_repair'] == {
         'target_flow_actor_for_reward_backup': True,
         'actor_update_interval': 2,
@@ -231,6 +235,11 @@ def test_star_r2_reward_tracking_is_counted_manifested_and_checkpointed(tmp_path
         'separate_reward_replay': True,
         'reward_replay_recent_fraction': 0.5,
         'reward_replay_recent_window': 8,
+    }
+    assert manifest['p4_2_reward_target_timescale'] == {
+        'reward_target_polyak': 0.001,
+        'cost_target_polyak': 0.005,
+        'actor_target_polyak': 0.005,
     }
     assert checkpoint['counters']['reward_critic_updates'] == 16
     with (log_dir / 'artifacts/diagnostics.csv').open(encoding='utf-8', newline='') as stream:

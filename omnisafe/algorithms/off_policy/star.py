@@ -386,6 +386,9 @@ class STAR(BaseAlgo):
             algo.reward_critic_updates_per_update,
         ):
             raise ValueError('reward_critic_updates_per_update must be a positive integer')
+        reward_target_polyak = self._reward_target_polyak()
+        if not 0.0 < reward_target_polyak <= 1.0:
+            raise ValueError('reward_target_polyak must lie in (0, 1]')
         recent_fraction = float(algo.reward_replay_recent_fraction)
         if not 0.0 <= recent_fraction <= 1.0:
             raise ValueError('reward_replay_recent_fraction must lie in [0, 1]')
@@ -454,6 +457,11 @@ class STAR(BaseAlgo):
                     'reward_replay_recent_window': int(
                         self._cfgs.algo_cfgs.reward_replay_recent_window,
                     ),
+                },
+                'p4_2_reward_target_timescale': {
+                    'reward_target_polyak': self._reward_target_polyak(),
+                    'cost_target_polyak': float(self._cfgs.algo_cfgs.polyak),
+                    'actor_target_polyak': float(self._cfgs.algo_cfgs.polyak),
                 },
                 'p4_1_correctness': {
                     'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
@@ -537,6 +545,16 @@ class STAR(BaseAlgo):
     def _reward_target_actor_enabled(self) -> bool:
         """Return whether reward Bellman backups use the slowly moving target flow."""
         return bool(self._cfgs.algo_cfgs.use_target_flow_for_reward_backup)
+
+    def _reward_target_polyak(self) -> float:
+        """Return the independent reward-target step with legacy-config fallback."""
+        return float(
+            getattr(
+                self._cfgs.algo_cfgs,
+                'reward_target_polyak',
+                self._cfgs.algo_cfgs.polyak,
+            ),
+        )
 
     def _sample_reward_batch(self) -> dict[str, torch.Tensor]:
         """Draw the reward/actor replay mixture independently of safety strata."""
@@ -1060,6 +1078,7 @@ class STAR(BaseAlgo):
         self._actor_critic.polyak_update(
             float(self._cfgs.algo_cfgs.polyak),
             update_actor=actor_updated,
+            reward_coefficient=self._reward_target_polyak(),
         )
         self._update_count += 1
         self._last_update_order = UPDATE_ORDER
@@ -1729,6 +1748,9 @@ class STAR(BaseAlgo):
                 'global_safety_constraint_enabled': self._global_safety_enabled(),
                 'local_safety_geometry_enabled': self._local_geometry_enabled(),
                 'reward_target_actor_enabled': self._reward_target_actor_enabled(),
+                'reward_target_polyak': self._reward_target_polyak(),
+                'cost_target_polyak': float(self._cfgs.algo_cfgs.polyak),
+                'actor_target_polyak': float(self._cfgs.algo_cfgs.polyak),
                 'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
                 'reward_target_samples': int(self._cfgs.algo_cfgs.reward_target_samples),
                 'reward_critic_updates_per_update': int(

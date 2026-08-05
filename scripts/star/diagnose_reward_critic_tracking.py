@@ -253,6 +253,13 @@ def run_variant(  # pylint: disable=too-many-arguments
         algorithm._actor_critic.polyak_update(  # pylint: disable=protected-access
             float(algorithm._cfgs.algo_cfgs.polyak),  # pylint: disable=protected-access
             update_actor=False,
+            reward_coefficient=float(  # pylint: disable=protected-access
+                getattr(
+                    algorithm._cfgs.algo_cfgs,
+                    'reward_target_polyak',
+                    algorithm._cfgs.algo_cfgs.polyak,
+                ),
+            ),
         )
     return {
         'target_samples': target_samples,

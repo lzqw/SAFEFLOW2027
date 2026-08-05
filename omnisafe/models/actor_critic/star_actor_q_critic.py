@@ -227,22 +227,31 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             return self.flow(augmented_obs, deterministic=deterministic).action
 
     @torch.no_grad()
-    def polyak_update(self, coefficient: float, *, update_actor: bool = True) -> None:
-        """Soft-update critic targets and, after an actor step, the target flow."""
+    def polyak_update(
+        self,
+        coefficient: float,
+        *,
+        update_actor: bool = True,
+        reward_coefficient: float | None = None,
+    ) -> None:
+        """Soft-update targets, optionally slowing only the reward critic target."""
         if not 0.0 < coefficient <= 1.0:
             raise ValueError('Polyak coefficient must lie in (0, 1]')
+        reward_step = coefficient if reward_coefficient is None else reward_coefficient
+        if not 0.0 < reward_step <= 1.0:
+            raise ValueError('Reward Polyak coefficient must lie in (0, 1]')
         pairs = [
-            (self.target_reward_critic, self.reward_critic),
-            (self.target_cost_critic, self.cost_critic),
+            (self.target_reward_critic, self.reward_critic, reward_step),
+            (self.target_cost_critic, self.cost_critic, coefficient),
         ]
         if update_actor:
-            pairs.append((self.target_actor, self.actor))
-        for target, online in pairs:
+            pairs.append((self.target_actor, self.actor, coefficient))
+        for target, online, step in pairs:
             for target_parameter, online_parameter in zip(
                 target.parameters(),
                 online.parameters(),
             ):
-                target_parameter.lerp_(online_parameter, coefficient)
+                target_parameter.lerp_(online_parameter, step)
 
     @property
     def optimizers(self) -> dict[str, optim.Optimizer]:
