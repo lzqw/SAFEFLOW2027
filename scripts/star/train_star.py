@@ -72,8 +72,15 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--log-dir', type=Path, default=Path('./runs/star'))
     result.add_argument('--result', type=Path)
     result.add_argument('--resume', type=Path)
-    result.add_argument('--checkpoint-replay', action='store_true')
-    result.add_argument('--full-checkpoint-freq', type=int, default=0)
+    checkpoint = result.add_mutually_exclusive_group()
+    checkpoint.add_argument('--checkpoint-replay', dest='checkpoint_replay', action='store_true')
+    checkpoint.add_argument(
+        '--no-checkpoint-replay',
+        dest='checkpoint_replay',
+        action='store_false',
+    )
+    result.set_defaults(checkpoint_replay=None)
+    result.add_argument('--full-checkpoint-freq', type=int)
     result.add_argument('--no-tensorboard', action='store_true')
     result.add_argument('--hourly-rate-cny', type=float, default=1.48)
     return result
@@ -122,8 +129,6 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-branches
             'batch_size': args.batch_size,
             'eval_milestones': milestones,
             'resume_from': str(args.resume or ''),
-            'checkpoint_replay': bool(args.checkpoint_replay),
-            'full_checkpoint_freq': args.full_checkpoint_freq,
         },
         'logger_cfgs': {
             'log_dir': str(args.log_dir),
@@ -135,6 +140,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-branches
         'random_steps': args.random_steps,
         'terminal_utility_steps': args.terminal_utility_steps,
         'geometry_min_steps': args.geometry_min_steps,
+        'checkpoint_replay': args.checkpoint_replay,
+        'full_checkpoint_freq': args.full_checkpoint_freq,
     }
     overrides['algo_cfgs'].update(
         {key: value for key, value in optional_algo.items() if value is not None},

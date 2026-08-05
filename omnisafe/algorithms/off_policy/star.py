@@ -397,6 +397,11 @@ class STAR(BaseAlgo):
                 'torch_compile': False,
                 'update_order': list(UPDATE_ORDER),
                 'eval_milestones': self._milestones,
+                'p4_2_backbone_ablation': {
+                    'reward_flow_enabled': True,
+                    'global_safety_constraint_enabled': self._global_safety_enabled(),
+                    'local_safety_geometry_enabled': self._local_geometry_enabled(),
+                },
                 'p4_1_correctness': {
                     'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
                     'reward_done': 'terminated',
@@ -459,6 +464,22 @@ class STAR(BaseAlgo):
         if critic is None:
             raise RuntimeError('legacy checkpoint compatibility is evaluation-only')
         return critic
+
+    def _global_safety_enabled(self) -> bool:
+        """Return whether the global cost constraint may affect training."""
+        return bool(self._cfgs.algo_cfgs.enable_global_safety_constraint)
+
+    def _local_geometry_enabled(self) -> bool:
+        """Return whether evidence-ready local geometry may affect the flow."""
+        return bool(self._cfgs.algo_cfgs.enable_local_safety_geometry)
+
+    def _training_geometry_enabled(self) -> bool:
+        """Return the actual local-geometry state, including the W3 evidence gate."""
+        return self._local_geometry_enabled() and self._warmup.stage == 'W3'
+
+    def _effective_global_safety_multiplier(self) -> float:
+        """Return zero for B0 and the learned true-episode multiplier otherwise."""
+        return self._global_dual.value if self._global_safety_enabled() else 0.0
 
     def _select_action(self) -> tuple[torch.Tensor, torch.Tensor]:
         """Use bounded random actions in W0/W1 and learned flow actions in W2/W3."""
@@ -718,7 +739,7 @@ class STAR(BaseAlgo):
         next_augmented_obs: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Generate target action and matching FLAC future reference energy."""
-        if self._warmup.stage != 'W3':
+        if not self._training_geometry_enabled():
             with torch.no_grad():
                 flow = self._actor_critic.flow(next_augmented_obs)
                 return flow.action, flow.kinetic_energy
@@ -796,7 +817,7 @@ class STAR(BaseAlgo):
     ) -> dict[str, float]:
         """Regenerate flow, terminal utility, late geometry, actor, then energy dual."""
         flow = self._actor_critic.flow(augmented_obs)
-        enabled = self._warmup.stage == 'W3'
+        enabled = self._training_geometry_enabled()
         geometry = self._geometry(
             augmented_obs,
             flow,
@@ -811,16 +832,22 @@ class STAR(BaseAlgo):
                 flow.action,
             )
             terminal_reward = torch.minimum(reward_first, reward_second)
-            head_cost = self._actor_critic.cost_critic.expected_cost(augmented_obs, flow.action)
-            terminal_cost = head_cost.mean(dim=0) + float(
-                self._cfgs.algo_cfgs.cost_ucb_beta,
-            ) * head_cost.std(dim=0, unbiased=False)
+            if self._global_safety_enabled():
+                head_cost = self._actor_critic.cost_critic.expected_cost(
+                    augmented_obs,
+                    flow.action,
+                )
+                terminal_cost = head_cost.mean(dim=0) + float(
+                    self._cfgs.algo_cfgs.cost_ucb_beta,
+                ) * head_cost.std(dim=0, unbiased=False)
+            else:
+                terminal_cost = torch.zeros_like(terminal_reward)
             actor_loss = normalized_actor_objective(
                 geometry.per_sample_energy,
                 terminal_reward,
                 terminal_cost,
                 self._energy_dual.value.detach(),
-                self._global_dual.value,
+                self._effective_global_safety_multiplier(),
             ).mean()
             optimizer = self._actor_critic.actor_optimizer
             optimizer.zero_grad()
@@ -867,7 +894,7 @@ class STAR(BaseAlgo):
         """Record all episodes, activating multiplier steps only from W2 onward."""
         while self._pending_episode_costs:
             episode_cost = self._pending_episode_costs.popleft()
-            if self._warmup.stage in {'W2', 'W3'}:
+            if self._global_safety_enabled() and self._warmup.stage in {'W2', 'W3'}:
                 self._global_dual.update_episode(episode_cost)
             else:
                 self._global_dual.record_episode(episode_cost)
@@ -903,7 +930,7 @@ class STAR(BaseAlgo):
             )
         self._warmup.observe(**evidence)
         self._advance_warmup()
-        metrics['Dual/GlobalSafety'] = self._global_dual.value
+        metrics['Dual/GlobalSafety'] = self._effective_global_safety_multiplier()
         metrics['Train/WarmupStage'] = float(self._warmup.stage_index)
         ratios = self._buf.category_ratios()
         metrics['Replay/FailureRatio'] = ratios['failure']
@@ -938,7 +965,7 @@ class STAR(BaseAlgo):
                 'Train/Epoch': self._env_steps // int(self._cfgs.algo_cfgs.steps_per_epoch),
                 'Train/WarmupStage': float(self._warmup.stage_index),
                 'Dual/Energy': float(self._energy_dual.value.detach().item()),
-                'Dual/GlobalSafety': self._global_dual.value,
+                'Dual/GlobalSafety': self._effective_global_safety_multiplier(),
                 'TotalEnvSteps': self._env_steps,
                 'TotalUpdates': self._update_count,
                 'Time/FPS': new_steps / max(elapsed, 1e-9),
@@ -956,7 +983,14 @@ class STAR(BaseAlgo):
             {
                 'env_steps': self._env_steps,
                 'stage': self._warmup.stage,
-                'geometry_activation_step': self._warmup.geometry_activation_step,
+                'geometry_activation_step': (
+                    self._warmup.geometry_activation_step
+                    if self._local_geometry_enabled()
+                    else None
+                ),
+                'warmup_geometry_eligibility_step': self._warmup.geometry_activation_step,
+                'geometry_enabled': self._training_geometry_enabled(),
+                'local_geometry_configured': self._local_geometry_enabled(),
                 'ema': self._warmup.ema,
                 'conditions': self._warmup.conditions(
                     self._env_steps,
@@ -1320,6 +1354,8 @@ class STAR(BaseAlgo):
             'milestone': milestone,
             'available': True,
             'warmup_stage': self._warmup.stage,
+            'training_geometry_enabled': self._training_geometry_enabled(),
+            'local_safety_geometry_enabled': self._local_geometry_enabled(),
             'same_base_action': True,
             'gate_off_energy': float(off_geometry.energy.item()),
             'gate_on_energy': float(on_geometry.energy.item()),
@@ -1508,7 +1544,17 @@ class STAR(BaseAlgo):
                 'run_env_steps': self._run_env_steps,
                 'updates': self._update_count,
                 'warmup_stage': self._warmup.stage,
-                'geometry_activation_step': self._warmup.geometry_activation_step,
+                'training_geometry_enabled': self._training_geometry_enabled(),
+                'geometry_activation_step': (
+                    self._warmup.geometry_activation_step
+                    if self._local_geometry_enabled()
+                    else None
+                ),
+                'warmup_geometry_eligibility_step': self._warmup.geometry_activation_step,
+                'global_safety_constraint_enabled': self._global_safety_enabled(),
+                'local_safety_geometry_enabled': self._local_geometry_enabled(),
+                'effective_global_safety_multiplier': (self._effective_global_safety_multiplier()),
+                'global_dual_state': self._global_dual.state_dict(),
                 'training_seconds': self._training_seconds,
                 'end_to_end_fps': self._run_env_steps / max(self._training_seconds, 1e-9),
                 'replay': self._buf.category_ratios(),

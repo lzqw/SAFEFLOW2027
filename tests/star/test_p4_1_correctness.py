@@ -16,12 +16,15 @@
 
 from __future__ import annotations
 
+from collections import deque
+from types import SimpleNamespace
+
 import pytest
 import torch
 from torch.nn import functional
 
 from omnisafe.adapter.star_adapter import STARContext
-from omnisafe.algorithms.off_policy.star import normalized_actor_objective
+from omnisafe.algorithms.off_policy.star import STAR, normalized_actor_objective
 from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
 from omnisafe.common.buffer.star_replay_buffer import BOUNDARY, NORMAL, STARReplayBuffer
 from omnisafe.common.star_dual import GlobalSafetyDual
@@ -246,6 +249,58 @@ def test_normalized_actor_objective_matches_required_formula() -> None:
     objective = normalized_actor_objective(energy, reward, cost, 0.2, 9.0)
     expected = (0.2 * energy - reward + 9.0 * cost) / 10.0
     assert torch.allclose(objective, expected)
+
+
+def test_b0_switches_remove_both_safety_paths_without_hiding_episode_costs() -> None:
+    algorithm = object.__new__(STAR)
+    algorithm._cfgs = SimpleNamespace(  # pylint: disable=protected-access
+        algo_cfgs=SimpleNamespace(
+            enable_global_safety_constraint=False,
+            enable_local_safety_geometry=False,
+        ),
+    )
+    algorithm._warmup = SimpleNamespace(stage='W3')  # pylint: disable=protected-access
+    algorithm._global_dual = GlobalSafetyDual(  # pylint: disable=protected-access
+        0.1,
+        0.01,
+        1.0,
+        cost_limit=1.0,
+    )
+    algorithm._pending_episode_costs = deque([5.0])  # pylint: disable=protected-access
+
+    assert not algorithm._training_geometry_enabled()  # pylint: disable=protected-access
+    assert (
+        algorithm._effective_global_safety_multiplier() == 0.0
+    )  # pylint: disable=protected-access
+    algorithm._consume_episode_dual_updates()  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_observations == 1  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_updates == 0  # pylint: disable=protected-access
+
+
+def test_b1_updates_only_the_global_constraint_with_local_geometry_off() -> None:
+    algorithm = object.__new__(STAR)
+    algorithm._cfgs = SimpleNamespace(  # pylint: disable=protected-access
+        algo_cfgs=SimpleNamespace(
+            enable_global_safety_constraint=True,
+            enable_local_safety_geometry=False,
+        ),
+    )
+    algorithm._warmup = SimpleNamespace(stage='W3')  # pylint: disable=protected-access
+    algorithm._global_dual = GlobalSafetyDual(  # pylint: disable=protected-access
+        0.1,
+        0.01,
+        1.0,
+        cost_limit=1.0,
+    )
+    algorithm._pending_episode_costs = deque([5.0])  # pylint: disable=protected-access
+
+    assert not algorithm._training_geometry_enabled()  # pylint: disable=protected-access
+    assert algorithm._effective_global_safety_multiplier() == pytest.approx(
+        0.1,
+    )  # pylint: disable=protected-access
+    algorithm._consume_episode_dual_updates()  # pylint: disable=protected-access
+    assert algorithm._global_dual.episode_updates == 1  # pylint: disable=protected-access
+    assert algorithm._global_dual.value > 0.1  # pylint: disable=protected-access
 
 
 def test_global_dual_can_record_without_updating_multiplier() -> None:

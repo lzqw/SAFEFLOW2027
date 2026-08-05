@@ -40,6 +40,8 @@ defaults:
     random_steps: 2000
     terminal_utility_steps: 8000
     geometry_min_steps: 12000
+    enable_global_safety_constraint: True
+    enable_local_safety_geometry: True
     w3_td_error_threshold: 3.0
     w3_calibration_threshold: 0.35
     w3_valid_gradient_threshold: 0.10

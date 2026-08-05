@@ -87,6 +87,14 @@ def test_star_micro_loop_has_fixed_utd_order_and_artifacts(tmp_path: Path) -> No
     assert summary['last_update_order'] == list(UPDATE_ORDER)
     assert summary['updates'] == 20
     assert summary['run_env_steps'] == 24
+    assert summary['global_safety_constraint_enabled'] is True
+    assert summary['local_safety_geometry_enabled'] is True
+    manifest = json.loads((log_dir / 'artifacts/run_manifest.json').read_text(encoding='utf-8'))
+    assert manifest['p4_2_backbone_ablation'] == {
+        'reward_flow_enabled': True,
+        'global_safety_constraint_enabled': True,
+        'local_safety_geometry_enabled': True,
+    }
     with (log_dir / 'artifacts/diagnostics.csv').open(encoding='utf-8', newline='') as stream:
         rows = list(csv.DictReader(stream))
     assert len(rows) == 2
