@@ -41,7 +41,7 @@ class CompletedEpisode:
 
 
 class STARContext:
-    """Maintain remaining budget for Point or remaining horizon for failure tasks."""
+    """Maintain the shared budget and remaining-horizon augmentation for every STAR network."""
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
@@ -69,15 +69,16 @@ class STARContext:
         self.episode_step = torch.zeros(num_envs, dtype=torch.long, device=self.device)
 
     def values(self) -> tuple[torch.Tensor, torch.Tensor]:
-        """Return normalized actor context and raw risk threshold."""
+        """Return ``[budget ratio, horizon ratio]`` and the raw label threshold."""
+        horizon = (self.max_episode_steps - self.episode_step).clamp_min(0).float()
+        horizon = horizon / self.max_episode_steps
         if self.is_point:
-            context = self.remaining_budget / self.cost_limit
+            budget = self.remaining_budget / self.cost_limit
             threshold = self.remaining_budget
         else:
-            context = (self.max_episode_steps - self.episode_step).clamp_min(0).float()
-            context = context / self.max_episode_steps
-            threshold = torch.full_like(context, 0.5)
-        return context, threshold
+            budget = torch.ones_like(horizon)
+            threshold = torch.full_like(horizon, 0.5)
+        return torch.stack((budget, horizon), dim=-1), threshold
 
     def advance(
         self,
@@ -87,17 +88,19 @@ class STARContext:
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Return final-observation context, then reset context for auto-reset environments."""
         cost = cost.to(self.device).reshape(self.num_envs)
+        transition_step = self.episode_step + 1
+        next_horizon = (self.max_episode_steps - transition_step).clamp_min(0).float()
+        next_horizon = next_horizon / self.max_episode_steps
         if self.is_point:
             transition_budget = (self.remaining_budget - cost).clamp_min(0.0)
-            next_context = transition_budget / self.cost_limit
+            next_budget = transition_budget / self.cost_limit
             next_threshold = transition_budget.clone()
             self.remaining_budget = transition_budget
         else:
-            transition_step = self.episode_step + 1
-            next_context = (self.max_episode_steps - transition_step).clamp_min(0).float()
-            next_context = next_context / self.max_episode_steps
-            next_threshold = torch.full_like(next_context, 0.5)
-            self.episode_step = transition_step
+            next_budget = torch.ones_like(next_horizon)
+            next_threshold = torch.full_like(next_horizon, 0.5)
+        next_context = torch.stack((next_budget, next_horizon), dim=-1)
+        self.episode_step = transition_step
 
         episode_done = torch.logical_or(terminated.bool(), truncated.bool()).to(self.device)
         if self.is_point:

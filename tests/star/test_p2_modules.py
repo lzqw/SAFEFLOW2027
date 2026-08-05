@@ -39,6 +39,7 @@ from omnisafe.models.critic.distributional_cost_critic import (
     distributional_bellman_target,
     quantile_huber_loss,
 )
+from omnisafe.models.critic.violation_probability_critic import ViolationProbabilityCritic
 from omnisafe.models.safety.distributional_backend import (
     compute_safety_geometry,
     directional_variances,
@@ -143,13 +144,12 @@ def test_energy_and_global_duals_update_in_the_required_directions() -> None:
 
 def test_geometry_freezes_critic_avoids_hessian_and_keeps_actor_gradient() -> None:
     actor = FlowActor(obs_dim=5, act_dim=2, hidden_sizes=[16], num_steps=4)
-    critic = DistributionalCostCritic(5, 2, [16], num_quantiles=7, ensemble_size=2)
+    critic = ViolationProbabilityCritic(5, 2, [16], ensemble_size=2)
     obs = torch.randn(8, 5)
     flow = actor(obs)
     geometry = compute_safety_geometry(
         critic,
         obs,
-        torch.ones(8),
         flow,
         enabled=True,
         minimum_consistency=0.0,
@@ -171,7 +171,7 @@ def _store_probe_batch(buffer: STARReplayBuffer, index: int) -> None:
     done = torch.zeros(envs)
     if index == 2:
         done.fill_(1.0)
-    boundary = torch.tensor([(env + index) % 3 == 0 for env in range(envs)])
+    boundary = torch.tensor([(env + index) % 3 == 0 for env in range(envs)]).float()
     failure = torch.tensor([(env + index) % 5 == 0 for env in range(envs)])
     buffer.store_batch(
         obs=torch.randn(envs, buffer.obs_dim),
@@ -181,11 +181,11 @@ def _store_probe_batch(buffer: STARReplayBuffer, index: int) -> None:
         terminated=done,
         truncated=torch.zeros(envs),
         next_obs=torch.randn(envs, buffer.obs_dim),
-        context=torch.ones(envs),
-        next_context=torch.ones(envs) * 0.9,
+        context=torch.ones(envs, 2),
+        next_context=torch.ones(envs, 2) * 0.9,
         risk_threshold=torch.ones(envs),
         next_risk_threshold=torch.ones(envs) * 0.9,
-        boundary=boundary,
+        boundary_score=boundary,
         failure=failure,
         source_random=torch.full((envs,), index == 0),
     )
@@ -218,28 +218,28 @@ def test_replay_is_cpu_and_global_batch_is_concurrency_invariant(num_envs: int) 
 def test_point_budget_and_locomotion_horizon_have_distinct_semantics() -> None:
     point = STARContext('SafetyPointGoal1-v0', 2, 10.0, 1000, 'cpu')
     context, threshold = point.values()
-    assert torch.equal(context, torch.ones(2))
+    assert torch.equal(context, torch.ones(2, 2))
     assert torch.equal(threshold, torch.full((2,), 10.0))
     next_context, next_threshold = point.advance(
         torch.tensor([2.0, 0.0]),
         torch.tensor([0.0, 1.0]),
         torch.zeros(2),
     )
-    assert torch.allclose(next_context, torch.tensor([0.8, 1.0]))
+    assert torch.allclose(next_context, torch.tensor([[0.8, 0.999], [1.0, 0.999]]))
     assert torch.equal(next_threshold, torch.tensor([8.0, 10.0]))
     reset_context, _ = point.values()
-    assert torch.equal(reset_context, torch.tensor([0.8, 1.0]))
+    assert torch.allclose(reset_context, torch.tensor([[0.8, 0.999], [1.0, 1.0]]))
 
     walker = STARContext('Walker2d-v4', 1, 0.0, 1000, 'cpu')
     horizon, failure_threshold = walker.values()
-    assert horizon.item() == 1.0
+    assert torch.equal(horizon, torch.ones(1, 2))
     assert failure_threshold.item() == 0.5
     next_horizon, next_failure_threshold = walker.advance(
         torch.tensor([0.0]),
         torch.tensor([0.0]),
         torch.tensor([0.0]),
     )
-    assert next_horizon.item() == pytest.approx(0.999)
+    assert torch.allclose(next_horizon, torch.tensor([[1.0, 0.999]]))
     assert next_failure_threshold.item() == 0.5
 
 
@@ -337,12 +337,16 @@ def test_w3_requires_non_temporal_critic_and_geometry_evidence() -> None:
         valid_gradient_threshold=0.5,
         disagreement_threshold=0.25,
         boundary_samples_threshold=8,
+        positive_labels_threshold=4,
+        negative_labels_threshold=4,
+        brier_skill_threshold=0.0,
+        auroc_threshold=0.6,
         ema_rate=1.0,
     )
-    assert warmup.advance(5, 0) == 'W0'
-    assert warmup.advance(15, 0) == 'W1'
-    assert warmup.advance(10_000, 1000) == 'W2'
-    conditions = warmup.conditions(10_000, 1000)
+    assert warmup.advance(5, 0, 0, 0) == 'W0'
+    assert warmup.advance(15, 0, 0, 0) == 'W1'
+    assert warmup.advance(10_000, 1000, 100, 100) == 'W2'
+    conditions = warmup.conditions(10_000, 1000, 100, 100)
     assert conditions['minimum_steps']
     assert not conditions['td_error']
     assert not conditions['calibration']
@@ -352,6 +356,8 @@ def test_w3_requires_non_temporal_critic_and_geometry_evidence() -> None:
         calibration_error=0.1,
         valid_gradient_rate=0.8,
         ensemble_disagreement=0.1,
+        brier_skill=0.1,
+        auroc=0.8,
     )
-    assert warmup.advance(10_000, 1000) == 'W3'
+    assert warmup.advance(10_000, 1000, 100, 100) == 'W3'
     assert warmup.geometry_activation_step == 10_000

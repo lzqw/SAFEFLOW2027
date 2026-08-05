@@ -84,10 +84,11 @@ class GlobalSafetyDual:
         self.cost_limit = float(cost_limit)
         self.maximum_value = float(maximum_value)
         self.ema_episode_cost: float | None = None
+        self.episode_observations = 0
         self.episode_updates = 0
 
-    def update_episode(self, true_episode_cost: float) -> float:
-        """Project one update using a real completed episode cost."""
+    def record_episode(self, true_episode_cost: float) -> float:
+        """Record one true episode cost without changing the multiplier."""
         if not math.isfinite(true_episode_cost):
             raise ValueError('episode cost must be finite')
         if self.ema_episode_cost is None:
@@ -96,6 +97,13 @@ class GlobalSafetyDual:
             self.ema_episode_cost = (
                 1.0 - self.ema_rate
             ) * self.ema_episode_cost + self.ema_rate * true_episode_cost
+        self.episode_observations += 1
+        return self.value
+
+    def update_episode(self, true_episode_cost: float) -> float:
+        """Record a true episode and project one active multiplier update."""
+        self.record_episode(true_episode_cost)
+        assert self.ema_episode_cost is not None
         self.value += self.learning_rate * (self.ema_episode_cost - self.cost_limit)
         self.value = min(max(self.value, 0.0), self.maximum_value)
         self.episode_updates += 1
@@ -106,6 +114,7 @@ class GlobalSafetyDual:
         return {
             'value': self.value,
             'ema_episode_cost': self.ema_episode_cost,
+            'episode_observations': self.episode_observations,
             'episode_updates': self.episode_updates,
         }
 
@@ -115,3 +124,4 @@ class GlobalSafetyDual:
         ema = state['ema_episode_cost']
         self.ema_episode_cost = None if ema is None else float(ema)
         self.episode_updates = int(state['episode_updates'])
+        self.episode_observations = int(state.get('episode_observations', self.episode_updates))

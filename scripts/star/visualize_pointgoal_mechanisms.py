@@ -18,7 +18,7 @@ import torch
 from matplotlib.patches import Circle
 
 import omnisafe
-from omnisafe.utils.star_validation import checkpoint_reconstruction_config
+from omnisafe.utils.star_validation import checkpoint_reconstruction_config, deterministic_indices
 
 
 plt.switch_backend('Agg')
@@ -39,6 +39,8 @@ def checkpoint_metadata(path: Path) -> dict[str, Any]:
         raise ValueError(f'{path} is not a STAR checkpoint')
     if payload.get('replay') is None:
         raise ValueError('mechanism visualization requires a full checkpoint with replay')
+    if not any(key.startswith('violation_critic.') for key in payload['model']):
+        raise ValueError('P4.1 mechanism visualization requires the probability head')
     return {
         'env_steps': int(payload['counters']['env_steps']),
         'environment': str(payload['extra']['environment']),
@@ -87,36 +89,35 @@ def build_algorithm(
 
 
 def representative_state(algorithm: Any, sample_size: int) -> dict[str, torch.Tensor]:
-    """Select the sampled replay state whose deterministic action is nearest risk 0.5."""
-    requested = min(sample_size, algorithm._buf.size)  # pylint: disable=protected-access
-    batch = algorithm._buf.sample_batch(  # pylint: disable=protected-access
-        algorithm._device,  # pylint: disable=protected-access
-        batch_size=requested,
+    """Select a deterministic temporal replay midpoint without consulting predicted risk."""
+    resident = algorithm._buf  # pylint: disable=protected-access
+    indices = deterministic_indices(resident.size, sample_size)
+    index = int(indices[indices.numel() // 2].item())
+    device = algorithm._device  # pylint: disable=protected-access
+    raw_obs = resident.data['obs'][index : index + 1].to(device)
+    context = resident.data['context'][index : index + 1].to(device)
+    augmented = algorithm._augment(  # pylint: disable=protected-access
+        raw_obs,
+        context,
     )
-    obs = algorithm._normalize_obs(batch['obs'])  # pylint: disable=protected-access
-    augmented = torch.cat((obs, batch['context'].reshape(-1, 1)), dim=-1)
     with torch.no_grad():
         action = algorithm._actor_critic.step(  # pylint: disable=protected-access
             augmented,
             deterministic=True,
         )
-        risk_heads = algorithm._actor_critic.cost_critic.exceedance_probability(  # pylint: disable=protected-access
-            augmented,
-            action,
-            batch['risk_threshold'],
-            float(algorithm._cfgs.algo_cfgs.risk_temperature),  # pylint: disable=protected-access
-        )
+        critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
+        if critic is None:
+            raise RuntimeError('P4.1 probability critic is unavailable')
+        risk_heads = critic.probabilities(augmented, action)
         risk = risk_heads.mean(dim=0)
-    index = int((risk - 0.5).abs().argmin().item())
     return {
-        'raw_obs': batch['obs'][index : index + 1],
-        'obs': obs[index : index + 1],
-        'augmented': augmented[index : index + 1],
-        'context': batch['context'][index : index + 1],
-        'threshold': batch['risk_threshold'][index : index + 1],
-        'deterministic_action': action[index : index + 1],
-        'risk': risk[index : index + 1],
-        'risk_heads': risk_heads[:, index : index + 1],
+        'raw_obs': raw_obs,
+        'augmented': augmented,
+        'context': context,
+        'deterministic_action': action,
+        'risk': risk,
+        'risk_heads': risk_heads,
+        'replay_index': torch.tensor(index),
     }
 
 
@@ -137,14 +138,11 @@ def action_risk_grid(
     first, second = torch.meshgrid(axis, axis, indexing='ij')
     actions = torch.stack((first.reshape(-1), second.reshape(-1)), dim=-1)
     augmented = state['augmented'].expand(actions.shape[0], -1)
-    threshold = state['threshold'].expand(actions.shape[0])
     with torch.no_grad():
-        heads = algorithm._actor_critic.cost_critic.exceedance_probability(  # pylint: disable=protected-access
-            augmented,
-            actions,
-            threshold,
-            float(algo_cfgs.risk_temperature),
-        )
+        critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
+        if critic is None:
+            raise RuntimeError('P4.1 probability critic is unavailable')
+        heads = critic.probabilities(augmented, actions)
     mean = heads.mean(dim=0)
     ucb = mean + float(
         algo_cfgs.risk_ucb_beta,
@@ -152,22 +150,228 @@ def action_risk_grid(
         dim=0,
         unbiased=False,
     )
+    ucb = ucb.clamp(0.0, 1.0)
     return {'axis': axis, 'actions': actions, 'heads': heads, 'mean': mean, 'ucb': ucb}
+
+
+def fixed_budget_risk_strata(  # pylint: disable=too-many-locals
+    algorithm: Any,
+    sample_size: int,
+    grid_size: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Select fixed-budget replay strata and measure each selected action-risk surface."""
+    device = algorithm._device  # pylint: disable=protected-access
+    algo_cfgs = algorithm._cfgs.algo_cfgs  # pylint: disable=protected-access
+    critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
+    if critic is None:
+        raise RuntimeError('P4.1 probability critic is unavailable')
+    resident = algorithm._buf  # pylint: disable=protected-access
+    replay_indices = deterministic_indices(resident.size, sample_size)
+    replay_obs = resident.data['obs'][replay_indices].to(device)
+    replay_context = resident.data['context'][replay_indices].to(device)
+    axis = torch.linspace(-1.0, 1.0, grid_size, device=device)
+    first, second = torch.meshgrid(axis, axis, indexing='ij')
+    base_actions = torch.stack((first.reshape(-1), second.reshape(-1)), dim=-1)
+    boundary = float(algo_cfgs.risk_boundary)
+    bandwidth = float(algo_cfgs.boundary_bandwidth)
+    ucb_beta = float(algo_cfgs.risk_ucb_beta)
+    rows: list[dict[str, Any]] = []
+    panels: list[dict[str, Any]] = []
+
+    for budget_ratio in (1.0, 0.5, 0.2, 0.0):
+        context = replay_context.clone()
+        context[:, 0] = budget_ratio
+        augmented_candidates = algorithm._augment(  # pylint: disable=protected-access
+            replay_obs,
+            context,
+        )
+        with torch.no_grad():
+            candidate_actions = algorithm._actor_critic.step(  # pylint: disable=protected-access
+                augmented_candidates,
+                deterministic=True,
+            )
+            candidate_heads = critic.probabilities(augmented_candidates, candidate_actions)
+            candidate_mean = candidate_heads.mean(dim=0)
+            candidate_ucb = (
+                candidate_mean + ucb_beta * candidate_heads.std(dim=0, unbiased=False)
+            ).clamp(0.0, 1.0)
+        strata = {
+            'safe': candidate_ucb < boundary - bandwidth,
+            'boundary': (candidate_ucb - boundary).abs() <= bandwidth,
+            'high_risk': candidate_ucb > boundary + bandwidth,
+        }
+        for name, selected in strata.items():
+            count = int(selected.sum().item())
+            risk_span = None
+            local_gradient_norm = None
+            disagreement = None
+            probability_disagreement = None
+            normal = [None, None]
+            selected_action = [None, None]
+            selected_mean_risk = None
+            selected_risk_ucb = None
+            selected_replay_index = None
+            surface_actions = torch.empty((0, 2))
+            surface_risk = torch.empty(0)
+            if count:
+                positions = torch.nonzero(selected, as_tuple=False).flatten()
+                stratum_risk = candidate_ucb[positions]
+                if name == 'safe':
+                    relative_index = int(stratum_risk.argmin().item())
+                elif name == 'boundary':
+                    relative_index = int((stratum_risk - boundary).abs().argmin().item())
+                else:
+                    relative_index = int(stratum_risk.argmax().item())
+                position = int(positions[relative_index].item())
+                chosen_augmented = augmented_candidates[position : position + 1]
+                chosen_action = candidate_actions[position : position + 1]
+                surface_augmented = chosen_augmented.expand(base_actions.shape[0], -1)
+                with torch.no_grad():
+                    surface_heads = critic.probabilities(surface_augmented, base_actions)
+                    surface_mean = surface_heads.mean(dim=0)
+                risk_span = float(
+                    (torch.quantile(surface_mean, 0.95) - torch.quantile(surface_mean, 0.05))
+                    .detach()
+                    .item(),
+                )
+                differentiable_action = chosen_action.detach().clone().requires_grad_(True)
+                parameter_flags = [parameter.requires_grad for parameter in critic.parameters()]
+                critic.requires_grad_(False)
+                try:
+                    local_heads = critic.probabilities(chosen_augmented, differentiable_action)
+                    head_gradients = torch.stack(
+                        [
+                            torch.autograd.grad(
+                                local_heads[index].sum(),
+                                differentiable_action,
+                                retain_graph=True,
+                            )[0]
+                            for index in range(local_heads.shape[0])
+                        ],
+                        dim=0,
+                    )
+                finally:
+                    for parameter, flag in zip(critic.parameters(), parameter_flags):
+                        parameter.requires_grad_(flag)
+                gradient = head_gradients.mean(dim=0)[0]
+                gradient_norm = gradient.norm()
+                local_gradient_norm = float(gradient_norm.detach().item())
+                head_gradient_norms = head_gradients.norm(dim=-1)
+                if local_gradient_norm > 1e-8:
+                    normal_tensor = (gradient / gradient_norm).detach().cpu()
+                    normal = [float(normal_tensor[0]), float(normal_tensor[1])]
+                if bool((head_gradient_norms > 1e-8).all()):
+                    unit_heads = head_gradients / head_gradient_norms.unsqueeze(-1)
+                    agreements = []
+                    for first_head in range(head_gradients.shape[0]):
+                        for second_head in range(first_head + 1, head_gradients.shape[0]):
+                            cosine = (unit_heads[first_head] * unit_heads[second_head]).sum(dim=-1)
+                            agreements.append(0.5 * (1.0 + cosine.clamp(-1.0, 1.0)))
+                    consistency = (
+                        torch.stack(agreements).mean()
+                        if agreements
+                        else torch.ones((), device=device)
+                    )
+                    disagreement = float((1.0 - consistency).detach().item())
+                probability_disagreement = float(
+                    local_heads.std(dim=0, unbiased=False).mean().detach().item(),
+                )
+                selected_action = [
+                    float(chosen_action[0, 0].item()),
+                    float(chosen_action[0, 1].item()),
+                ]
+                selected_mean_risk = float(candidate_mean[position].item())
+                selected_risk_ucb = float(candidate_ucb[position].item())
+                selected_replay_index = int(replay_indices[position].item())
+                surface_actions = base_actions.detach().cpu()
+                surface_risk = surface_mean.detach().cpu()
+            row = {
+                'budget_ratio': budget_ratio,
+                'risk_stratum': name,
+                'sample_count': count,
+                'selected_replay_index': selected_replay_index,
+                'selected_predicted_risk': selected_mean_risk,
+                'selected_risk_ucb': selected_risk_ucb,
+                'selected_action_0': selected_action[0],
+                'selected_action_1': selected_action[1],
+                'risk_p95_minus_p05': risk_span,
+                'gradient_norm': local_gradient_norm,
+                'ensemble_disagreement': disagreement,
+                'probability_disagreement': probability_disagreement,
+                'normal_0': normal[0],
+                'normal_1': normal[1],
+            }
+            rows.append(row)
+            panels.append(
+                {
+                    **row,
+                    'actions': surface_actions,
+                    'risk': surface_risk,
+                },
+            )
+    return rows, panels
+
+
+def write_fixed_budget_strata(path: Path, rows: list[dict[str, Any]]) -> None:
+    """Write the fixed 4-by-3 P4.1 geometry evidence table."""
+    with path.open('w', encoding='utf-8', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def plot_fixed_budget_strata(path: Path, panels: list[dict[str, Any]], step: int) -> None:
+    """Render action-risk surfaces for fixed-budget safe/boundary/high-risk states."""
+    figure, axes = plt.subplots(4, 3, figsize=(10.5, 12.5), sharex=True, sharey=True)
+    for panel, axis in zip(panels, axes.flat):
+        actions = panel['actions']
+        risk = panel['risk']
+        if actions.numel():
+            axis.scatter(
+                actions[:, 0],
+                actions[:, 1],
+                c=risk,
+                cmap='coolwarm',
+                vmin=0.0,
+                vmax=1.0,
+                s=7,
+            )
+            if panel['normal_0'] is not None and panel['normal_1'] is not None:
+                axis.quiver(
+                    panel['selected_action_0'],
+                    panel['selected_action_1'],
+                    panel['normal_0'],
+                    panel['normal_1'],
+                    color='black',
+                    scale=4.0,
+                    width=0.012,
+                )
+        axis.set_title(
+            f"b={panel['budget_ratio']:.1f}, {panel['risk_stratum']}\n"
+            f"states={panel['sample_count']}, |∇p|={panel['gradient_norm'] or 0.0:.3g}",
+        )
+        axis.set_xlim(-1.0, 1.0)
+        axis.set_ylim(-1.0, 1.0)
+    for axis in axes[-1]:
+        axis.set_xlabel('action[0]')
+    for axis in axes[:, 0]:
+        axis.set_ylabel('action[1]')
+    figure.suptitle(f'P4.1 fixed-budget probability geometry at step {step:,}')
+    figure.tight_layout()
+    figure.savefig(path, dpi=180)
+    plt.close(figure)
 
 
 def risk_normal(algorithm: Any, state: dict[str, torch.Tensor]) -> torch.Tensor:
     """Return the normalized critic action gradient at the deterministic action."""
     action = state['deterministic_action'].detach().clone().requires_grad_(True)
-    critic = algorithm._actor_critic.cost_critic  # pylint: disable=protected-access
+    critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
+    if critic is None:
+        raise RuntimeError('P4.1 probability critic is unavailable')
     flags = [parameter.requires_grad for parameter in critic.parameters()]
     critic.requires_grad_(False)
     try:
-        risk = critic.exceedance_probability(
-            state['augmented'],
-            action,
-            state['threshold'],
-            float(algorithm._cfgs.algo_cfgs.risk_temperature),  # pylint: disable=protected-access
-        ).mean()
+        risk = critic.probabilities(state['augmented'], action).mean()
         gradient = torch.autograd.grad(risk, action, create_graph=False)[0]
     finally:
         for parameter, flag in zip(critic.parameters(), flags):
@@ -204,16 +408,11 @@ def flow_storyboard(
             augmented.shape[-1],
         )
     )
-    repeated_threshold = state['threshold'].expand(points.shape[0] * points.shape[1])
     with torch.no_grad():
-        risk = algorithm._actor_critic.cost_critic.exceedance_probability(  # pylint: disable=protected-access
-            repeated_obs,
-            points.reshape(-1, 2),
-            repeated_threshold,
-            float(algorithm._cfgs.algo_cfgs.risk_temperature),  # pylint: disable=protected-access
-        ).mean(
-            dim=0,
-        )
+        critic = algorithm._actor_critic.violation_critic  # pylint: disable=protected-access
+        if critic is None:
+            raise RuntimeError('P4.1 probability critic is unavailable')
+        risk = critic.probabilities(repeated_obs, points.reshape(-1, 2)).mean(dim=0)
     risk = risk.reshape(points.shape[0], points.shape[1])
     times = torch.linspace(0.0, 1.0, points.shape[1], device=points.device)
     return {'base': base, 'points': points, 'risk': risk, 'times': times}
@@ -367,7 +566,10 @@ def plot_trajectories(  # pylint: disable=too-many-locals
 ) -> int:
     """Plot every fixed-seed PointGoal trajectory found in a run artifact directory."""
     paths = sorted(
-        artifact_dir.glob('trajectory_step_*.csv'),
+        (
+            *artifact_dir.glob('trajectory_step_*.csv'),
+            *artifact_dir.glob('trajectory_seed_*_step_*.csv'),
+        ),
         key=lambda path: int(path.stem.rsplit('_', maxsplit=1)[-1]),
     )
     if not paths:
@@ -438,7 +640,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--work-dir', type=Path, required=True)
     result.add_argument('--trajectory-artifact-dir', type=Path)
     result.add_argument('--device', default='cuda:0')
-    result.add_argument('--sample-size', type=int, default=4096)
+    result.add_argument('--sample-size', type=int, default=50_000)
     result.add_argument('--grid-size', type=int, default=51)
     result.add_argument('--base-grid-size', type=int, default=7)
     return result
@@ -461,8 +663,17 @@ def main() -> None:  # pylint: disable=too-many-locals
         grid = action_risk_grid(algorithm, state, args.grid_size)
         normal = risk_normal(algorithm, state)
         story = flow_storyboard(algorithm, state, args.base_grid_size)
+        strata_rows, strata_panels = fixed_budget_risk_strata(
+            algorithm,
+            args.sample_size,
+            args.grid_size,
+        )
         write_action_grid(args.output_dir / 'action_risk_map.csv', grid)
         write_storyboard(args.output_dir / 'flow_storyboard.csv', story)
+        write_fixed_budget_strata(
+            args.output_dir / 'fixed_budget_risk_strata.csv',
+            strata_rows,
+        )
         plot_action_risk(
             args.output_dir / 'action_risk_map.png',
             grid,
@@ -475,6 +686,11 @@ def main() -> None:  # pylint: disable=too-many-locals
             args.output_dir / 'flow_storyboard.png',
             grid,
             story,
+            metadata['env_steps'],
+        )
+        plot_fixed_budget_strata(
+            args.output_dir / 'fixed_budget_risk_strata.png',
+            strata_panels,
             metadata['env_steps'],
         )
         trajectory_count = 0
@@ -491,8 +707,11 @@ def main() -> None:  # pylint: disable=too-many-locals
                 'seed': metadata['seed'],
                 'replay_capacity': metadata['replay_capacity'],
                 'checkpoint': str(args.checkpoint),
-                'representative_context': float(state['context'].item()),
-                'representative_threshold': float(state['threshold'].item()),
+                'representative_selection': (
+                    'deterministic_time_stratified_midpoint_independent_of_predicted_risk'
+                ),
+                'representative_replay_index': int(state['replay_index'].item()),
+                'representative_context': state['context'].flatten().cpu().tolist(),
                 'representative_predicted_risk': float(state['risk'].item()),
                 'representative_head_risks': state['risk_heads'].flatten().detach().cpu().tolist(),
                 'representative_action': state['deterministic_action'].flatten().cpu().tolist(),
@@ -500,6 +719,7 @@ def main() -> None:  # pylint: disable=too-many-locals
                 'risk_grid_min': float(grid['mean'].min().item()),
                 'risk_grid_max': float(grid['mean'].max().item()),
                 'flow_terminal_risk_mean': float(story['risk'][:, -1].mean().item()),
+                'fixed_budget_risk_strata': strata_rows,
                 'trajectory_files': trajectory_count,
             },
         )

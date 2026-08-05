@@ -51,12 +51,24 @@ from omnisafe.models.critic.distributional_cost_critic import (
     distributional_bellman_target,
     quantile_huber_loss,
 )
-from omnisafe.models.safety.distributional_backend import SafetyGeometry, compute_safety_geometry
+from omnisafe.models.critic.violation_probability_critic import (
+    ViolationProbabilityCritic,
+    binary_auroc,
+    binary_brier_score,
+    binary_brier_skill,
+    masked_bce_loss,
+)
+from omnisafe.models.safety.distributional_backend import (
+    SafetyGeometry,
+    boundary_gate,
+    compute_safety_geometry,
+)
 from omnisafe.utils.star_validation import spearman as tie_correct_spearman
 
 
 UPDATE_ORDER = (
     'distributional_cost_critic',
+    'violation_probability_ensemble',
     'twin_reward_critics',
     'differentiable_flow',
     'terminal_reward_cost_utility',
@@ -78,8 +90,16 @@ LOG_KEYS = (
     'Evaluation/CostCVaR',
     'Evaluation/ViolationRatio',
     'Evaluation/CalibrationError',
+    'Evaluation/BrierScore',
+    'Evaluation/BrierSkill',
+    'Evaluation/AUROC',
     'Evaluation/Spearman',
+    'Evaluation/GoalsPerEpisode',
+    'Evaluation/StallRatio',
+    'Evaluation/Displacement',
+    'Evaluation/ActionNorm',
     'Loss/CostCritic',
+    'Loss/ViolationCritic',
     'Loss/RewardCritic',
     'Loss/Actor',
     'Loss/EnergyDual',
@@ -90,6 +110,11 @@ LOG_KEYS = (
     'Critic/PredictedRisk',
     'Critic/EmpiricalRisk',
     'Critic/LabeledRatio',
+    'Critic/BrierScore',
+    'Critic/BrierSkill',
+    'Critic/AUROC',
+    'Critic/PositiveLabels',
+    'Critic/NegativeLabels',
     'Critic/RiskP10',
     'Critic/RiskP50',
     'Critic/RiskP90',
@@ -186,6 +211,30 @@ def _tail_mean(values: list[float], fraction: float = 0.2) -> float:
     return sum(sorted(values, reverse=True)[:count]) / count
 
 
+def _truthy(value: Any) -> bool:
+    """Interpret scalar or tensor environment flags without ambiguous tensor truth values."""
+    return bool(torch.as_tensor(value).bool().any().item())
+
+
+def normalized_actor_objective(
+    energy: torch.Tensor,
+    reward_value: torch.Tensor,
+    cost_value: torch.Tensor,
+    energy_multiplier: torch.Tensor | float,
+    safety_multiplier: torch.Tensor | float,
+) -> torch.Tensor:
+    """Return the dual-scale-stable STAR actor objective."""
+    safety = torch.as_tensor(safety_multiplier, device=reward_value.device)
+    if bool((safety < 0).any()):
+        raise ValueError('safety multiplier must be non-negative')
+    numerator = (
+        torch.as_tensor(energy_multiplier, device=reward_value.device) * energy
+        - reward_value
+        + safety * cost_value
+    )
+    return numerator / (1.0 + safety)
+
+
 @registry.register
 # pylint: disable-next=too-many-instance-attributes,too-few-public-methods
 class STAR(BaseAlgo):
@@ -227,8 +276,10 @@ class STAR(BaseAlgo):
     def _init_model(self) -> None:
         """Create action flow, twin reward critics, and quantile cost ensemble."""
         model = self._cfgs.model_cfgs
+        algo = self._cfgs.algo_cfgs
         actor_lr = model.actor.lr
         assert actor_lr is not None
+        legacy_compatibility = bool(getattr(algo, 'legacy_checkpoint_compatibility', False))
         self._actor_critic = STARActorQCritic(
             obs_dim=self._obs_dim,
             act_dim=self._act_dim,
@@ -237,10 +288,13 @@ class STAR(BaseAlgo):
             actor_lr=float(actor_lr),
             reward_critic_lr=float(model.critic.reward_lr),
             cost_critic_lr=float(model.critic.cost_lr),
+            violation_critic_lr=float(model.critic.violation_lr),
             flow_steps=int(model.flow.num_steps),
             max_velocity=float(model.flow.max_velocity),
             num_quantiles=int(model.critic.num_quantiles),
             safety_ensemble_size=int(model.critic.ensemble_size),
+            context_dim=1 if legacy_compatibility else 2,
+            legacy_compatibility=legacy_compatibility,
         ).to(self._device)
 
     def _init(self) -> None:  # pylint: disable=too-many-locals
@@ -255,6 +309,8 @@ class STAR(BaseAlgo):
             failure_fraction=float(algo.replay_failure_fraction),
             boundary_fraction=float(algo.replay_boundary_fraction),
             importance_beta=float(algo.replay_importance_beta),
+            boundary_score_threshold=float(algo.boundary_score_threshold),
+            context_dim=self._actor_critic.context_dim,
         )
         self._obs_normalizer = Normalizer((self._obs_dim,), clip=10.0).to(self._device)
         dual = self._cfgs.dual_cfgs
@@ -278,6 +334,10 @@ class STAR(BaseAlgo):
             valid_gradient_threshold=float(algo.w3_valid_gradient_threshold),
             disagreement_threshold=float(algo.w3_disagreement_threshold),
             boundary_samples_threshold=int(algo.w3_boundary_samples_threshold),
+            positive_labels_threshold=int(algo.w3_positive_labels_threshold),
+            negative_labels_threshold=int(algo.w3_negative_labels_threshold),
+            brier_skill_threshold=float(algo.w3_brier_skill_threshold),
+            auroc_threshold=float(algo.w3_auroc_threshold),
             ema_rate=float(algo.warmup_ema_rate),
         )
         self._env_steps = 0
@@ -337,6 +397,14 @@ class STAR(BaseAlgo):
                 'torch_compile': False,
                 'update_order': list(UPDATE_ORDER),
                 'eval_milestones': self._milestones,
+                'p4_1_correctness': {
+                    'context': '[observation, remaining_budget_ratio, remaining_horizon_ratio]',
+                    'reward_done': 'terminated',
+                    'cost_done': 'terminated_or_truncated',
+                    'geometry_risk_source': 'independent_violation_probability_ensemble',
+                    'boundary_score': 'gaussian_centered_at_probability_0.5',
+                    'actor_objective': '(alpha_E*E-Q_R+lambda*Q_C)/(1+lambda)',
+                },
             },
         )
 
@@ -374,8 +442,23 @@ class STAR(BaseAlgo):
         return normalized.clamp(-10.0, 10.0)
 
     def _augment(self, obs: torch.Tensor, context: torch.Tensor) -> torch.Tensor:
-        """Append remaining-budget or remaining-horizon context to normalized observations."""
-        return torch.cat((self._normalize_obs(obs), context.reshape(-1, 1)), dim=-1)
+        """Append the identical budget/horizon context consumed by every STAR network."""
+        context = context.reshape(obs.shape[0], -1)
+        if self._actor_critic.legacy_compatibility:
+            context = context[:, :1]
+        if context.shape[-1] != self._actor_critic.context_dim:
+            raise ValueError(
+                f'expected STAR context width {self._actor_critic.context_dim}, '
+                f'got {context.shape[-1]}',
+            )
+        return torch.cat((self._normalize_obs(obs), context), dim=-1)
+
+    def _violation_critic(self) -> ViolationProbabilityCritic:
+        """Return the P4.1 probability head or reject legacy-only training."""
+        critic = self._actor_critic.violation_critic
+        if critic is None:
+            raise RuntimeError('legacy checkpoint compatibility is evaluation-only')
+        return critic
 
     def _select_action(self) -> tuple[torch.Tensor, torch.Tensor]:
         """Use bounded random actions in W0/W1 and learned flow actions in W2/W3."""
@@ -398,47 +481,52 @@ class STAR(BaseAlgo):
         return action, source_random
 
     @torch.no_grad()
-    def _boundary_labels(
+    def _boundary_scores(
         self,
         obs: torch.Tensor,
         action: torch.Tensor,
         context: torch.Tensor,
-        threshold: torch.Tensor,
     ) -> torch.Tensor:
-        """Identify conservative inner-boundary samples from ensemble UCB risk."""
-        if self._update_count == 0:
-            return torch.zeros(action.shape[0], dtype=torch.bool, device=action.device)
-        risks = self._actor_critic.cost_critic.exceedance_probability(
+        """Return a continuous Gaussian score around the unified probability boundary."""
+        if self._update_count == 0 or self._actor_critic.violation_critic is None:
+            return torch.zeros(action.shape[0], dtype=torch.float32, device=action.device)
+        algo = self._cfgs.algo_cfgs
+        risk_ucb = self._violation_critic().ucb(
             self._augment(obs, context),
             action,
-            threshold,
-            float(self._cfgs.algo_cfgs.risk_temperature),
+            float(algo.risk_ucb_beta),
         )
-        ucb = risks.mean(dim=0) + float(self._cfgs.algo_cfgs.risk_ucb_beta) * risks.std(
-            dim=0,
-            unbiased=False,
+        return boundary_gate(
+            risk_ucb,
+            float(algo.risk_boundary),
+            float(algo.boundary_bandwidth),
         )
-        return torch.logical_and(
-            ucb >= float(self._cfgs.algo_cfgs.boundary_low),
-            ucb <= float(self._cfgs.algo_cfgs.boundary_safe),
+
+    def _advance_warmup(self) -> str:
+        """Advance warmup with resident finalized-label evidence."""
+        counts = self._buf.label_counts
+        return self._warmup.advance(
+            self._env_steps,
+            self._buf.pool_sizes['boundary'],
+            counts['positive'],
+            counts['negative'],
         )
 
     def _collect_once(self) -> None:
         """Collect one vector transition and execute the explicit UTD entitlement."""
         stage_before_collection = self._warmup.stage
-        context, threshold = self._env.current_context()
+        context, _ = self._env.current_context()
         action, source_random = self._select_action()
-        boundary = self._boundary_labels(
+        boundary_score = self._boundary_scores(
             self._env.current_obs,
             action,
             context,
-            threshold,
         )
         transition, completed = self._env.collect_step(action)
         failure = transition['cost'] > 0
         self._buf.store_batch(
             **transition,
-            boundary=boundary,
+            boundary_score=boundary_score,
             failure=failure,
             source_random=source_random,
         )
@@ -460,7 +548,7 @@ class STAR(BaseAlgo):
         with torch.no_grad():
             self._obs_normalizer.normalize(self._env.current_obs)
         self._env_steps += self._num_envs
-        self._warmup.advance(self._env_steps, self._buf.pool_sizes['boundary'])
+        self._advance_warmup()
         if stage_before_collection == 'W0':
             self._utd_carry = 0.0
             return
@@ -472,24 +560,31 @@ class STAR(BaseAlgo):
         for _ in range(updates):
             self._update()
 
-    def _bootstrap_mask(self, ensemble_size: int, batch_size: int) -> torch.Tensor:
+    def _bootstrap_mask(
+        self,
+        ensemble_size: int,
+        batch_size: int,
+        eligible: torch.Tensor | None = None,
+    ) -> torch.Tensor:
         """Sample non-empty independent bootstrap masks for ensemble diversity."""
         probability = float(self._cfgs.algo_cfgs.bootstrap_probability)
         mask = (torch.rand(ensemble_size, batch_size, device=self._device) < probability).float()
+        candidates = torch.arange(batch_size, device=self._device)
+        if eligible is not None:
+            candidates = candidates[eligible.reshape(-1).bool()]
         for head in range(ensemble_size):
-            if mask[head].sum() == 0:
-                mask[head, int(torch.randint(batch_size, ()).item())] = 1.0
+            if candidates.numel() and mask[head, candidates].sum() == 0:
+                selected = candidates[int(torch.randint(candidates.numel(), ()).item())]
+                mask[head, selected] = 1.0
         return mask
 
     def _update_cost_critic(  # pylint: disable=too-many-locals
         self,
         batch: dict[str, torch.Tensor],
-        obs: torch.Tensor,
         augmented_obs: torch.Tensor,
         next_augmented_obs: torch.Tensor,
-    ) -> tuple[dict[str, float], torch.Tensor]:
-        """Update ensemble quantiles first and refresh sampled boundary labels."""
-        del obs
+    ) -> dict[str, float]:
+        """Update the globally retained cost-distribution ensemble."""
         with torch.no_grad():
             next_action = self._actor_critic.flow(next_augmented_obs).action
             next_quantiles = self._actor_critic.target_cost_critic(
@@ -498,7 +593,7 @@ class STAR(BaseAlgo):
             )
             target = distributional_bellman_target(
                 batch['cost'],
-                batch['done'],
+                batch['cost_done'],
                 next_quantiles,
                 float(self._cfgs.algo_cfgs.gamma_cost),
             )
@@ -521,41 +616,106 @@ class STAR(BaseAlgo):
         optimizer.step()
 
         with torch.no_grad():
-            threshold = batch['risk_threshold'].reshape(1, -1, 1)
-            risk_heads = torch.sigmoid(
-                (prediction - threshold) / float(self._cfgs.algo_cfgs.risk_temperature),
-            ).mean(dim=-1)
-            mean_risk = risk_heads.mean(dim=0)
-            ucb = mean_risk + float(self._cfgs.algo_cfgs.risk_ucb_beta) * (
-                risk_heads.std(dim=0, unbiased=False)
+            predicted_cost = prediction.mean(dim=(0, 2))
+            target_cost = target.mean(dim=(0, 2))
+            td_error = (predicted_cost - target_cost).abs()
+            empirical = batch['empirical_cost_to_go']
+            labeled = torch.isfinite(empirical)
+            correlation = (
+                _spearman(predicted_cost[labeled], empirical[labeled])
+                if int(labeled.sum().item()) >= 3
+                else float('nan')
             )
-            near_boundary = torch.logical_and(
-                ucb >= float(self._cfgs.algo_cfgs.boundary_low),
-                ucb <= float(self._cfgs.algo_cfgs.boundary_safe),
-            )
-            self._buf.relabel_boundaries(batch['indices'], near_boundary)
-            td_error = (prediction.mean(dim=-1).mean(dim=0) - target.mean(dim=-1).mean(dim=0)).abs()
-        calibration = self._calibration(batch, prediction.detach(), risk_heads.detach())
-        metrics = {
+        return {
             'Loss/CostCritic': float(loss.item()),
             'Critic/CostTD': float(td_error.mean().item()),
-            'Critic/CalibrationError': calibration['calibration_error'],
-            'Critic/Spearman': calibration['spearman'],
-            'Critic/PredictedRisk': calibration['predicted_risk'],
-            'Critic/EmpiricalRisk': calibration['empirical_risk'],
-            'Critic/LabeledRatio': calibration['labeled_ratio'],
+            'Critic/Spearman': correlation,
+        }
+
+    def _update_violation_critic(  # pylint: disable=too-many-locals
+        self,
+        batch: dict[str, torch.Tensor],
+        augmented_obs: torch.Tensor,
+    ) -> dict[str, float]:
+        """Fit completed-episode violation labels and refresh Gaussian boundary scores."""
+        critic = self._violation_critic()
+        optimizer = self._actor_critic.violation_critic_optimizer
+        assert optimizer is not None
+        labels = batch['violation_label']
+        labeled = torch.isfinite(labels)
+        logits = critic(augmented_obs, batch['action'])
+        bootstrap = self._bootstrap_mask(logits.shape[0], logits.shape[1], eligible=labeled)
+        loss = masked_bce_loss(
+            logits,
+            labels.nan_to_num(0.0),
+            labeled,
+            importance_weights=batch['importance_weights'],
+            bootstrap_mask=bootstrap,
+        )
+        optimizer.zero_grad()
+        if bool(labeled.any()):
+            loss.backward()
+            clip_grad_norm_(critic.parameters(), float(self._cfgs.algo_cfgs.max_grad_norm))
+            optimizer.step()
+
+        with torch.no_grad():
+            probabilities = logits.sigmoid()
+            mean_risk = probabilities.mean(dim=0)
+            risk_ucb = (
+                mean_risk
+                + float(self._cfgs.algo_cfgs.risk_ucb_beta)
+                * probabilities.std(dim=0, unbiased=False)
+            ).clamp(0.0, 1.0)
+            scores = boundary_gate(
+                risk_ucb,
+                float(self._cfgs.algo_cfgs.risk_boundary),
+                float(self._cfgs.algo_cfgs.boundary_bandwidth),
+            )
+            self._buf.relabel_boundaries(batch['indices'], scores)
+
+        labeled_ratio = float(labeled.float().mean().item())
+        calibration_error = float('nan')
+        brier_score = float('nan')
+        brier_skill = float('nan')
+        auroc = float('nan')
+        empirical_risk = float('nan')
+        if bool(labeled.any()):
+            selected_probability = mean_risk[labeled]
+            selected_labels = labels[labeled]
+            calibration_error = float(
+                (selected_probability - selected_labels).abs().mean().item(),
+            )
+            brier_score = binary_brier_score(selected_probability, selected_labels)
+            brier_skill = binary_brier_skill(selected_probability, selected_labels)
+            auroc = binary_auroc(selected_probability, selected_labels)
+            empirical_risk = float(selected_labels.mean().item())
+        counts = self._buf.label_counts
+        return {
+            'Loss/ViolationCritic': float(loss.item()),
+            'Critic/CalibrationError': calibration_error,
+            'Critic/PredictedRisk': float(mean_risk.mean().item()),
+            'Critic/EmpiricalRisk': empirical_risk,
+            'Critic/LabeledRatio': labeled_ratio,
+            'Critic/BrierScore': brier_score,
+            'Critic/BrierSkill': brier_skill,
+            'Critic/AUROC': auroc,
+            'Critic/PositiveLabels': float(counts['positive']),
+            'Critic/NegativeLabels': float(counts['negative']),
             'Critic/RiskP10': float(torch.quantile(mean_risk, 0.1).item()),
             'Critic/RiskP50': float(torch.quantile(mean_risk, 0.5).item()),
             'Critic/RiskP90': float(torch.quantile(mean_risk, 0.9).item()),
-            'Critic/RiskUCBMean': float(ucb.mean().item()),
-            'Critic/RiskUCBBoundaryRate': float(near_boundary.float().mean().item()),
+            'Critic/RiskUCBMean': float(risk_ucb.mean().item()),
+            'Critic/RiskUCBBoundaryRate': float(
+                (scores >= float(self._cfgs.algo_cfgs.boundary_score_threshold))
+                .float()
+                .mean()
+                .item(),
+            ),
         }
-        return metrics, prediction.detach()
 
     def _next_path(
         self,
         next_augmented_obs: torch.Tensor,
-        threshold: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Generate target action and matching FLAC future reference energy."""
         if self._warmup.stage != 'W3':
@@ -563,36 +723,32 @@ class STAR(BaseAlgo):
                 flow = self._actor_critic.flow(next_augmented_obs)
                 return flow.action, flow.kinetic_energy
         flow = self._actor_critic.flow(next_augmented_obs)
-        geometry = self._geometry(next_augmented_obs, threshold, flow, enabled=True)
+        geometry = self._geometry(next_augmented_obs, flow, enabled=True)
         return flow.action.detach(), geometry.per_sample_energy.detach()
 
     def _update_reward_critics(  # pylint: disable=too-many-locals
         self,
         batch: dict[str, torch.Tensor],
-        obs: torch.Tensor,
-        next_obs: torch.Tensor,
+        augmented_obs: torch.Tensor,
         next_augmented_obs: torch.Tensor,
     ) -> dict[str, float]:
         """Apply the FLAC target to both reward critics after the safety update."""
-        next_action, next_energy = self._next_path(
-            next_augmented_obs,
-            batch['next_risk_threshold'],
-        )
+        next_action, next_energy = self._next_path(next_augmented_obs)
         with torch.no_grad():
             next_first, next_second = self._actor_critic.target_reward_critic(
-                next_obs,
+                next_augmented_obs,
                 next_action,
             )
             target = flac_reward_target(
                 batch['reward'],
-                batch['done'],
+                batch['reward_done'],
                 next_first,
                 next_second,
                 next_energy,
                 self._energy_dual.value.detach(),
                 float(self._cfgs.algo_cfgs.gamma),
             )
-        first, second = self._actor_critic.reward_critic(obs, batch['action'])
+        first, second = self._actor_critic.reward_critic(augmented_obs, batch['action'])
         per_sample = (first - target).square() + (second - target).square()
         weights = batch['importance_weights']
         loss = (per_sample * weights).sum() / weights.sum().clamp_min(1.0)
@@ -613,20 +769,17 @@ class STAR(BaseAlgo):
     def _geometry(
         self,
         augmented_obs: torch.Tensor,
-        threshold: torch.Tensor,
         flow: Any,
         enabled: bool,
     ) -> SafetyGeometry:
         """Apply the configured first-order distributional reference geometry."""
         algo = self._cfgs.algo_cfgs
         return compute_safety_geometry(
-            self._actor_critic.cost_critic,
+            self._violation_critic(),
             augmented_obs,
-            threshold,
             flow,
             enabled=enabled,
             late_time=float(algo.late_flow_time),
-            risk_temperature=float(algo.risk_temperature),
             boundary=float(algo.risk_boundary),
             boundary_bandwidth=float(algo.boundary_bandwidth),
             minimum_gradient_norm=float(algo.minimum_gradient_norm),
@@ -639,8 +792,6 @@ class STAR(BaseAlgo):
 
     def _update_actor(  # pylint: disable=too-many-locals
         self,
-        batch: dict[str, torch.Tensor],
-        obs: torch.Tensor,
         augmented_obs: torch.Tensor,
     ) -> dict[str, float]:
         """Regenerate flow, terminal utility, late geometry, actor, then energy dual."""
@@ -648,7 +799,6 @@ class STAR(BaseAlgo):
         enabled = self._warmup.stage == 'W3'
         geometry = self._geometry(
             augmented_obs,
-            batch['risk_threshold'],
             flow,
             enabled=enabled,
         )
@@ -656,17 +806,22 @@ class STAR(BaseAlgo):
             self._actor_critic.reward_critic,
             self._actor_critic.cost_critic,
         ):
-            reward_first, reward_second = self._actor_critic.reward_critic(obs, flow.action)
+            reward_first, reward_second = self._actor_critic.reward_critic(
+                augmented_obs,
+                flow.action,
+            )
             terminal_reward = torch.minimum(reward_first, reward_second)
             head_cost = self._actor_critic.cost_critic.expected_cost(augmented_obs, flow.action)
             terminal_cost = head_cost.mean(dim=0) + float(
                 self._cfgs.algo_cfgs.cost_ucb_beta,
             ) * head_cost.std(dim=0, unbiased=False)
-            actor_loss = (
-                self._energy_dual.value.detach() * geometry.energy
-                - terminal_reward.mean()
-                + self._global_dual.value * terminal_cost.mean()
-            )
+            actor_loss = normalized_actor_objective(
+                geometry.per_sample_energy,
+                terminal_reward,
+                terminal_cost,
+                self._energy_dual.value.detach(),
+                self._global_dual.value,
+            ).mean()
             optimizer = self._actor_critic.actor_optimizer
             optimizer.zero_grad()
             actor_loss.backward()
@@ -709,24 +864,24 @@ class STAR(BaseAlgo):
         }
 
     def _consume_episode_dual_updates(self) -> None:
-        """Update the global dual only from queued true completed episode costs."""
+        """Record all episodes, activating multiplier steps only from W2 onward."""
         while self._pending_episode_costs:
-            self._global_dual.update_episode(self._pending_episode_costs.popleft())
+            episode_cost = self._pending_episode_costs.popleft()
+            if self._warmup.stage in {'W2', 'W3'}:
+                self._global_dual.update_episode(episode_cost)
+            else:
+                self._global_dual.record_episode(episode_cost)
 
     def _update(self) -> None:
         """Execute the fixed P3 update order exactly once."""
         batch = self._buf.sample_batch(self._device)
-        obs = self._normalize_obs(batch['obs'])
-        next_obs = self._normalize_obs(batch['next_obs'])
-        augmented_obs = torch.cat((obs, batch['context'].reshape(-1, 1)), dim=-1)
-        next_augmented_obs = torch.cat(
-            (next_obs, batch['next_context'].reshape(-1, 1)),
-            dim=-1,
-        )
-        metrics, _ = self._update_cost_critic(batch, obs, augmented_obs, next_augmented_obs)
-        metrics.update(self._update_reward_critics(batch, obs, next_obs, next_augmented_obs))
+        augmented_obs = self._augment(batch['obs'], batch['context'])
+        next_augmented_obs = self._augment(batch['next_obs'], batch['next_context'])
+        metrics = self._update_cost_critic(batch, augmented_obs, next_augmented_obs)
+        metrics.update(self._update_violation_critic(batch, augmented_obs))
+        metrics.update(self._update_reward_critics(batch, augmented_obs, next_augmented_obs))
         if self._warmup.stage in {'W2', 'W3'}:
-            metrics.update(self._update_actor(batch, obs, augmented_obs))
+            metrics.update(self._update_actor(augmented_obs))
         self._consume_episode_dual_updates()
         self._actor_critic.polyak_update(float(self._cfgs.algo_cfgs.polyak))
         self._update_count += 1
@@ -736,6 +891,8 @@ class STAR(BaseAlgo):
         evidence = {
             'cost_td_error': metrics['Critic/CostTD'],
             'calibration_error': metrics['Critic/CalibrationError'],
+            'brier_skill': metrics['Critic/BrierSkill'],
+            'auroc': metrics['Critic/AUROC'],
         }
         if actor_evidence:
             evidence.update(
@@ -745,7 +902,7 @@ class STAR(BaseAlgo):
                 },
             )
         self._warmup.observe(**evidence)
-        self._warmup.advance(self._env_steps, self._buf.pool_sizes['boundary'])
+        self._advance_warmup()
         metrics['Dual/GlobalSafety'] = self._global_dual.value
         metrics['Train/WarmupStage'] = float(self._warmup.stage_index)
         ratios = self._buf.category_ratios()
@@ -754,37 +911,6 @@ class STAR(BaseAlgo):
         metrics['Replay/ViolationRatio'] = self._violation_count / max(self._env_steps, 1)
         for key, value in metrics.items():
             self._accumulate(key, value)
-
-    def _calibration(
-        self,
-        batch: dict[str, torch.Tensor],
-        prediction: torch.Tensor,
-        predicted_risk_heads: torch.Tensor,
-    ) -> dict[str, float]:
-        """Compare predicted future risk against finalized empirical cost-to-go labels."""
-        empirical = batch['empirical_cost_to_go']
-        labeled = torch.isfinite(empirical)
-        labeled_ratio = float(labeled.float().mean().item())
-        if int(labeled.sum().item()) < 3:
-            return {
-                'calibration_error': float('nan'),
-                'spearman': float('nan'),
-                'predicted_risk': float(predicted_risk_heads.mean().item()),
-                'empirical_risk': float('nan'),
-                'labeled_ratio': labeled_ratio,
-            }
-        predicted_risk = predicted_risk_heads.mean(dim=0)[labeled]
-        empirical_cost = empirical[labeled]
-        threshold = batch['risk_threshold'][labeled]
-        empirical_risk = (empirical_cost > threshold).float()
-        predicted_cost = prediction.mean(dim=(0, 2))[labeled]
-        return {
-            'calibration_error': float((predicted_risk - empirical_risk).abs().mean().item()),
-            'spearman': _spearman(predicted_cost, empirical_cost),
-            'predicted_risk': float(predicted_risk.mean().item()),
-            'empirical_risk': float(empirical_risk.mean().item()),
-            'labeled_ratio': labeled_ratio,
-        }
 
     def _accumulate(self, key: str, value: float) -> None:
         """Accumulate only finite diagnostics for the next tabular row."""
@@ -835,8 +961,11 @@ class STAR(BaseAlgo):
                 'conditions': self._warmup.conditions(
                     self._env_steps,
                     self._buf.pool_sizes['boundary'],
+                    self._buf.label_counts['positive'],
+                    self._buf.label_counts['negative'],
                 ),
                 'boundary_samples': self._buf.pool_sizes['boundary'],
+                'label_counts': self._buf.label_counts,
             },
         )
         self._metric_sums.clear()
@@ -848,7 +977,7 @@ class STAR(BaseAlgo):
         self,
         milestone: int,
     ) -> dict[str, Any]:
-        """Evaluate fixed disjoint seeds without touching training environment state."""
+        """Evaluate fixed seeds and fixed stochastic flow bases without touching training state."""
         requested = int(self._cfgs.train_cfgs.eval_episodes)
         seeds = [int(seed) for seed in self._cfgs.algo_cfgs.eval_seeds][:requested]
         if not seeds:
@@ -860,7 +989,16 @@ class STAR(BaseAlgo):
                 'cost_cvar_20': 0.0,
                 'violation_ratio': 0.0,
                 'calibration_error': float('nan'),
+                'brier_score': float('nan'),
+                'brier_skill': float('nan'),
+                'auroc': float('nan'),
                 'spearman': float('nan'),
+                'goals_per_episode': 0.0,
+                'goals_per_episode_mean': 0.0,
+                'stall_ratio': 0.0,
+                'mean_displacement': 0.0,
+                'mean_start_end_displacement': 0.0,
+                'mean_action_norm': 0.0,
                 'trajectory': [],
             }
         evaluation_env = self._env.evaluation_env
@@ -871,9 +1009,17 @@ class STAR(BaseAlgo):
         predicted_costs: list[float] = []
         empirical_costs: list[float] = []
         thresholds: list[float] = []
+        goal_counts: list[int] = []
+        displacements: list[float] = []
+        minimum_goal_distances: list[float] = []
+        episode_action_norms: list[float] = []
+        stall_flags: list[bool] = []
+        episode_step_stall_ratios: list[float] = []
+        all_action_norms: list[float] = []
         trajectory: list[dict[str, Any]] = []
         violations = 0
         transitions = 0
+        actor_was_training = self._actor_critic.training
         self._actor_critic.eval()
         try:
             for episode_index, seed in enumerate(seeds):
@@ -887,28 +1033,59 @@ class STAR(BaseAlgo):
                 )
                 episode_return = 0.0
                 episode_cost = 0.0
+                episode_goals = 0
                 step_costs: list[float] = []
                 step_predictions: list[float] = []
                 step_predicted_costs: list[float] = []
                 step_thresholds: list[float] = []
+                action_norms: list[float] = []
+                start_position: tuple[float, float] | None = None
+                last_position: tuple[float, float] | None = None
+                previous_position: tuple[float, float] | None = None
+                minimum_goal_distance = float('inf')
+                measured_movements = 0
+                stalled_movements = 0
+                generator = torch.Generator(device='cpu')
+                generator.manual_seed(1_000_003 + seed)
                 for step in range(int(self._cfgs.algo_cfgs.max_episode_steps)):
+                    position = self._env.evaluation_position()
+                    position_source = 'simulator_xy'
+                    if position is None:
+                        position = (float(obs[0, 0].item()), float(obs[0, 1].item()))
+                        position_source = 'observation_projection'
+                    if start_position is None:
+                        start_position = position
+                    last_position = position
+                    if previous_position is not None:
+                        measured_movements += 1
+                        stalled_movements += int(math.dist(previous_position, position) <= 1e-3)
+                    previous_position = position
+                    layout = self._env.evaluation_layout() or {}
+                    goal = layout.get('goal')
+                    if goal is not None:
+                        minimum_goal_distance = min(
+                            minimum_goal_distance,
+                            math.dist(position, goal),
+                        )
                     context, threshold = context_state.values()
                     augmented = self._augment(obs, context)
+                    base_action = torch.empty(
+                        (1, self._act_dim),
+                        dtype=augmented.dtype,
+                        device='cpu',
+                    ).uniform_(-1.0, 1.0, generator=generator)
+                    base_action = base_action.to(self._device)
                     with torch.no_grad():
-                        action = self._actor_critic.step(augmented, deterministic=True)
+                        action = self._actor_critic.flow(
+                            augmented,
+                            base_action=base_action,
+                        ).action
                         quantiles = self._actor_critic.cost_critic(augmented, action)
-                        risk = torch.sigmoid(
-                            (quantiles - threshold.reshape(1, 1, 1))
-                            / float(self._cfgs.algo_cfgs.risk_temperature),
-                        ).mean()
+                        risk = self._violation_critic().probabilities(augmented, action).mean()
+                    action_norm = float(torch.linalg.vector_norm(action, dim=-1).item())
+                    action_norms.append(action_norm)
+                    all_action_norms.append(action_norm)
                     if episode_index == 0:
-                        position = self._env.evaluation_position()
-                        position_source = 'simulator_xy'
-                        if position is None:
-                            position = (float(obs[0, 0].item()), float(obs[0, 1].item()))
-                            position_source = 'observation_projection'
-                        layout = self._env.evaluation_layout() or {}
-                        goal = layout.get('goal')
                         trajectory.append(
                             {
                                 'milestone': milestone,
@@ -919,6 +1096,12 @@ class STAR(BaseAlgo):
                                 'position_source': position_source,
                                 'goal_x': goal[0] if goal is not None else None,
                                 'goal_y': goal[1] if goal is not None else None,
+                                'action_norm': action_norm,
+                                'action_0': float(action[0, 0].item()),
+                                'action_1': float(action[0, 1].item()),
+                                'base_action_0': float(base_action[0, 0].item()),
+                                'base_action_1': float(base_action[0, 1].item()),
+                                'predicted_violation_probability': float(risk.item()),
                                 'hazards_json': (
                                     json.dumps(layout.get('hazards', []), separators=(',', ':'))
                                     if step == 0
@@ -937,6 +1120,7 @@ class STAR(BaseAlgo):
                     original_cost = float(
                         torch.as_tensor(info.get('original_cost', cost)).reshape(-1)[0].item(),
                     )
+                    episode_goals += int(_truthy(info.get('goal_met', False)))
                     episode_return += original_reward
                     episode_cost += original_cost
                     step_costs.append(original_cost)
@@ -966,8 +1150,24 @@ class STAR(BaseAlgo):
                 returns.append(episode_return)
                 costs.append(episode_cost)
                 lengths.append(len(step_costs))
+                goal_counts.append(episode_goals)
+                displacement = (
+                    math.dist(start_position, last_position)
+                    if start_position is not None and last_position is not None
+                    else 0.0
+                )
+                displacements.append(displacement)
+                minimum_goal_distances.append(minimum_goal_distance)
+                episode_action_norms.append(
+                    sum(action_norms) / len(action_norms) if action_norms else 0.0,
+                )
+                stall_flags.append(episode_goals == 0 and displacement <= 0.25)
+                episode_step_stall_ratios.append(
+                    stalled_movements / max(measured_movements, 1),
+                )
         finally:
-            self._actor_critic.train()
+            if actor_was_training:
+                self._actor_critic.train()
 
         predicted_tensor = torch.tensor(predicted_risks)
         predicted_cost_tensor = torch.tensor(predicted_costs)
@@ -986,9 +1186,26 @@ class STAR(BaseAlgo):
             'cost_cvar_20': _tail_mean(costs),
             'violation_ratio': violations / max(transitions, 1),
             'calibration_error': float((predicted_tensor - empirical_risk).abs().mean().item()),
+            'brier_score': binary_brier_score(predicted_tensor, empirical_risk),
+            'brier_skill': binary_brier_skill(predicted_tensor, empirical_risk),
+            'auroc': binary_auroc(predicted_tensor, empirical_risk),
             'spearman': _spearman(predicted_cost_tensor, empirical_tensor),
             'predicted_risk_mean': float(predicted_tensor.mean().item()),
             'empirical_risk_mean': float(empirical_risk.mean().item()),
+            'goal_counts': goal_counts,
+            'goals_per_episode': sum(goal_counts) / len(goal_counts),
+            'goals_per_episode_mean': sum(goal_counts) / len(goal_counts),
+            'goal_met_episodes': sum(count > 0 for count in goal_counts),
+            'displacements': displacements,
+            'mean_displacement': sum(displacements) / len(displacements),
+            'mean_start_end_displacement': sum(displacements) / len(displacements),
+            'mean_action_norm': sum(all_action_norms) / max(len(all_action_norms), 1),
+            'episode_action_norms': episode_action_norms,
+            'minimum_goal_distances': minimum_goal_distances,
+            'stall_ratio': sum(stall_flags) / len(stall_flags),
+            'step_stall_ratio': sum(episode_step_stall_ratios) / len(episode_step_stall_ratios),
+            'flow_mode': 'fixed-random-flow',
+            'flow_seed_offset': 1_000_003,
             'trajectory': trajectory,
         }
 
@@ -1011,27 +1228,27 @@ class STAR(BaseAlgo):
             return {'milestone': milestone, 'available': False}
         requested = min(int(self._cfgs.algo_cfgs.counterfactual_batch_size), self._buf.size)
         batch = self._buf.sample_batch(self._device, batch_size=requested)
-        obs = self._normalize_obs(batch['obs'])
-        augmented = torch.cat((obs, batch['context'].reshape(-1, 1)), dim=-1)
+        augmented = self._augment(batch['obs'], batch['context'])
         base_action = torch.zeros((requested, self._act_dim), device=self._device)
         off_flow = self._actor_critic.flow(augmented, base_action=base_action)
         off_geometry = self._geometry(
             augmented,
-            batch['risk_threshold'],
             off_flow,
             enabled=False,
         )
         on_flow = self._actor_critic.flow(augmented, base_action=base_action)
         on_geometry = self._geometry(
             augmented,
-            batch['risk_threshold'],
             on_flow,
             enabled=True,
         )
         near = (on_geometry.risk - float(self._cfgs.algo_cfgs.risk_boundary)).abs() <= float(
             self._cfgs.algo_cfgs.boundary_bandwidth,
         )
-        interior = on_geometry.risk < float(self._cfgs.algo_cfgs.boundary_low)
+        interior = on_geometry.risk < (
+            float(self._cfgs.algo_cfgs.risk_boundary)
+            - float(self._cfgs.algo_cfgs.boundary_bandwidth)
+        )
 
         valid = self._buf.capacity if self._buf.size == self._buf.capacity else self._buf.size
         resident_category = self._buf.data['category'][:valid]
@@ -1049,6 +1266,55 @@ class STAR(BaseAlgo):
 
         def masked_mean(values: torch.Tensor, mask: torch.Tensor) -> float:
             return float(values[mask].mean().item()) if bool(mask.any()) else float('nan')
+
+        fixed_budget_grid = []
+        boundary = float(self._cfgs.algo_cfgs.risk_boundary)
+        bandwidth = float(self._cfgs.algo_cfgs.boundary_bandwidth)
+        for budget_ratio in (1.0, 0.5, 0.2, 0.0):
+            fixed_context = batch['context'].clone()
+            fixed_context[:, 0] = budget_ratio
+            fixed_augmented = self._augment(batch['obs'], fixed_context)
+            fixed_flow = self._actor_critic.flow(fixed_augmented, base_action=base_action)
+            fixed_geometry = self._geometry(fixed_augmented, fixed_flow, enabled=True)
+            strata = {
+                'safe': fixed_geometry.risk < boundary - bandwidth,
+                'boundary': (fixed_geometry.risk - boundary).abs() <= bandwidth,
+                'high_risk': fixed_geometry.risk > boundary + bandwidth,
+            }
+            for risk_stratum, selected in strata.items():
+                count = int(selected.sum().item())
+                risk_span = float('nan')
+                normal = [float('nan')] * self._act_dim
+                if count:
+                    selected_risk = fixed_geometry.risk[selected]
+                    risk_span = float(
+                        (
+                            torch.quantile(selected_risk, 0.95)
+                            - torch.quantile(selected_risk, 0.05)
+                        ).item(),
+                    )
+                    normal = [
+                        float(value)
+                        for value in fixed_geometry.normals[selected].mean(dim=0).tolist()
+                    ]
+                fixed_budget_grid.append(
+                    {
+                        'budget_ratio': budget_ratio,
+                        'risk_stratum': risk_stratum,
+                        'count': count,
+                        'risk_p95_minus_p05': risk_span,
+                        'gradient_norm': masked_mean(fixed_geometry.gradient_norm, selected),
+                        'ensemble_disagreement': masked_mean(
+                            1.0 - fixed_geometry.consistency,
+                            selected,
+                        ),
+                        'normal': normal,
+                        'dangerous_normal_velocity': masked_mean(
+                            fixed_geometry.dangerous_normal_velocity,
+                            selected,
+                        ),
+                    },
+                )
 
         payload = {
             'milestone': milestone,
@@ -1079,6 +1345,7 @@ class STAR(BaseAlgo):
                 on_geometry.dangerous_normal_velocity.mean().item(),
             ),
             'normal_velocity': float(on_geometry.normal_velocity.mean().item()),
+            'fixed_budget_risk_grid': fixed_budget_grid,
             'replay_boundary_count': boundary_count,
             'boundary_source_random_fraction': source_random_fraction,
             'boundary_immediate_violation_fraction': immediate_violation_fraction,
@@ -1167,7 +1434,14 @@ class STAR(BaseAlgo):
                 'cost_cvar_20': result['cost_cvar_20'],
                 'violation_ratio': result['violation_ratio'],
                 'calibration_error': result['calibration_error'],
+                'brier_score': result['brier_score'],
+                'brier_skill': result['brier_skill'],
+                'auroc': result['auroc'],
                 'spearman': result['spearman'],
+                'goals_per_episode_mean': result['goals_per_episode_mean'],
+                'stall_ratio': result['stall_ratio'],
+                'mean_start_end_displacement': result['mean_start_end_displacement'],
+                'mean_action_norm': result['mean_action_norm'],
             },
         )
         for key, value in {
@@ -1176,7 +1450,14 @@ class STAR(BaseAlgo):
             'Evaluation/CostCVaR': result['cost_cvar_20'],
             'Evaluation/ViolationRatio': result['violation_ratio'],
             'Evaluation/CalibrationError': result['calibration_error'],
+            'Evaluation/BrierScore': result['brier_score'],
+            'Evaluation/BrierSkill': result['brier_skill'],
+            'Evaluation/AUROC': result['auroc'],
             'Evaluation/Spearman': result['spearman'],
+            'Evaluation/GoalsPerEpisode': result['goals_per_episode'],
+            'Evaluation/StallRatio': result['stall_ratio'],
+            'Evaluation/Displacement': result['mean_displacement'],
+            'Evaluation/ActionNorm': result['mean_action_norm'],
         }.items():
             if math.isfinite(float(value)):
                 self._latest_values[key] = float(value)

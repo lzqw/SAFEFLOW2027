@@ -23,6 +23,7 @@ from torch import nn, optim
 
 from omnisafe.models.actor.flow_actor import FlowActor, FlowOutput
 from omnisafe.models.critic.distributional_cost_critic import DistributionalCostCritic
+from omnisafe.models.critic.violation_probability_critic import ViolationProbabilityCritic
 from omnisafe.typing import Activation, InitFunction
 from omnisafe.utils.model import build_mlp_network
 
@@ -89,16 +90,23 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         actor_lr: float = 3e-4,
         reward_critic_lr: float = 3e-4,
         cost_critic_lr: float = 3e-4,
+        violation_critic_lr: float = 3e-4,
         flow_steps: int = 4,
         max_velocity: float = 2.0,
         num_quantiles: int = 25,
         safety_ensemble_size: int = 2,
+        context_dim: int = 2,
+        legacy_compatibility: bool = False,
     ) -> None:
         """Initialize online networks, frozen targets, and their optimizers."""
         super().__init__()
-        augmented_obs_dim = obs_dim + 1
+        if context_dim <= 0:
+            raise ValueError('STAR context dimension must be positive')
+        augmented_obs_dim = obs_dim + context_dim
         self.obs_dim = obs_dim
         self.act_dim = act_dim
+        self.context_dim = context_dim
+        self.legacy_compatibility = legacy_compatibility
         self.actor = FlowActor(
             obs_dim=augmented_obs_dim,
             act_dim=act_dim,
@@ -106,13 +114,24 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             num_steps=flow_steps,
             max_velocity=max_velocity,
         )
-        self.reward_critic = TwinRewardCritic(obs_dim, act_dim, critic_hidden_sizes)
+        reward_obs_dim = obs_dim if legacy_compatibility else augmented_obs_dim
+        self.reward_critic = TwinRewardCritic(reward_obs_dim, act_dim, critic_hidden_sizes)
         self.cost_critic = DistributionalCostCritic(
             obs_dim=augmented_obs_dim,
             act_dim=act_dim,
             hidden_sizes=critic_hidden_sizes,
             num_quantiles=num_quantiles,
             ensemble_size=safety_ensemble_size,
+        )
+        self.violation_critic = (
+            None
+            if legacy_compatibility
+            else ViolationProbabilityCritic(
+                obs_dim=augmented_obs_dim,
+                act_dim=act_dim,
+                hidden_sizes=critic_hidden_sizes,
+                ensemble_size=safety_ensemble_size,
+            )
         )
         self.target_reward_critic = deepcopy(self.reward_critic)
         self.target_cost_critic = deepcopy(self.cost_critic)
@@ -125,6 +144,11 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             lr=reward_critic_lr,
         )
         self.cost_critic_optimizer = optim.Adam(self.cost_critic.parameters(), lr=cost_critic_lr)
+        self.violation_critic_optimizer = (
+            None
+            if self.violation_critic is None
+            else optim.Adam(self.violation_critic.parameters(), lr=violation_critic_lr)
+        )
 
     def forward(
         self,
@@ -176,8 +200,11 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
     @property
     def optimizers(self) -> dict[str, optim.Optimizer]:
         """Return every network optimizer for checkpointing."""
-        return {
+        result = {
             'actor': self.actor_optimizer,
             'reward_critic': self.reward_critic_optimizer,
             'cost_critic': self.cost_critic_optimizer,
         }
+        if self.violation_critic_optimizer is not None:
+            result['violation_critic'] = self.violation_critic_optimizer
+        return result

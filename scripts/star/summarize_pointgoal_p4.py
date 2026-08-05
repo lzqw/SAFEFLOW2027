@@ -19,7 +19,14 @@ EVALUATION_METRICS = (
     'cost_cvar_20',
     'violation_ratio',
     'calibration_error',
+    'brier_score',
+    'brier_skill',
+    'auroc',
     'spearman',
+    'goals_per_episode_mean',
+    'stall_ratio',
+    'mean_start_end_displacement',
+    'mean_action_norm',
 )
 
 
@@ -135,32 +142,77 @@ def aggregate_evaluations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return aggregate
 
 
-def _changed(values: list[float], tolerance: float = 1e-8) -> bool:
-    """Return whether a finite series has a non-degenerate range."""
-    return bool(values) and max(values) - min(values) > tolerance
+def group_run_segments(run_dirs: list[Path]) -> dict[int, list[Path]]:
+    """Group chronologically contiguous training segments by seed."""
+    grouped: dict[int, list[tuple[int, Path, dict[str, Any]]]] = {}
+    for run_dir in run_dirs:
+        training = read_json(run_dir / 'artifacts/training_summary.json')
+        seed = int(training['seed'])
+        grouped.setdefault(seed, []).append((int(training['env_steps']), run_dir, training))
+    if not grouped:
+        raise ValueError('at least one run directory is required')
+
+    result: dict[int, list[Path]] = {}
+    for seed, entries in grouped.items():
+        entries.sort(key=lambda item: item[0])
+        endpoints = [entry[0] for entry in entries]
+        if len(endpoints) != len(set(endpoints)):
+            raise ValueError(f'run segments for seed {seed} have duplicate endpoints')
+        previous_endpoint: int | None = None
+        for endpoint, run_dir, training in entries:
+            run_steps = training.get('run_env_steps')
+            if len(entries) > 1 and run_steps is None:
+                raise ValueError(f'run segment {run_dir} is missing run_env_steps')
+            if run_steps is not None:
+                start = endpoint - int(run_steps)
+                if start < 0:
+                    raise ValueError(f'run segment {run_dir} has invalid step counters')
+                if previous_endpoint is None and len(entries) > 1 and start != 0:
+                    raise ValueError(f'run chain for seed {seed} does not start at zero')
+                if previous_endpoint is not None and start != previous_endpoint:
+                    raise ValueError(f'run chain for seed {seed} is not contiguous at {run_dir}')
+            previous_endpoint = endpoint
+        result[seed] = [entry[1] for entry in entries]
+    return result
+
+
+def segment_diagnostics(run_dirs: list[Path]) -> list[dict[str, str]]:
+    """Merge diagnostics from an ordered run chain without hiding duplicate steps."""
+    rows = [row for run_dir in run_dirs for row in read_csv(run_dir / 'artifacts/diagnostics.csv')]
+    if rows and all(row.get('TotalEnvSteps', '') != '' for row in rows):
+        steps = [int(number(row['TotalEnvSteps'])) for row in rows]
+        if len(steps) != len(set(steps)):
+            raise ValueError('run chain diagnostics contain duplicate environment steps')
+        rows = [row for _, row in sorted(zip(steps, rows), key=lambda item: item[0])]
+    return rows
 
 
 def mechanism_row(  # pylint: disable=too-many-locals
-    run_dir: Path,
+    run_dirs: list[Path],
     audit: dict[str, Any],
-    receipt: dict[str, Any],
+    receipts: list[dict[str, Any]],
     fixed_evaluations: list[dict[str, Any]] | None = None,
+    target_steps: int = 300_000,
 ) -> tuple[dict[str, Any], dict[str, bool]]:
-    """Collect one seed's mechanism evidence and evaluate its P4 conditions."""
+    """Collect one seed's mechanism evidence at the requested endpoint."""
+    run_dir = run_dirs[-1]
+    training_segments = [
+        read_json(segment / 'artifacts/training_summary.json') for segment in run_dirs
+    ]
     training = read_json(run_dir / 'artifacts/training_summary.json')
     warmup = read_json(run_dir / 'artifacts/warmup_status.json')
     counterfactual = final_counterfactual(run_dir)
-    diagnostics = read_csv(run_dir / 'artifacts/diagnostics.csv')
+    diagnostics = segment_diagnostics(run_dirs)
     evaluation_source = (
         fixed_evaluations
         if fixed_evaluations is not None
-        else read_csv(run_dir / 'artifacts/evaluation.csv')
+        else [row for segment in run_dirs for row in read_csv(segment / 'artifacts/evaluation.csv')]
     )
     evaluations = sorted(evaluation_source, key=lambda row: int(row['milestone']))
     if not diagnostics or len(evaluations) < 2:
         raise ValueError(f'incomplete P4 artifacts in {run_dir}')
     seed = int(training['seed'])
-    if int(audit['seed']) != seed or int(receipt['seed']) != seed:
+    if int(audit['seed']) != seed or any(int(receipt['seed']) != seed for receipt in receipts):
         raise ValueError(f'seed mismatch while aggregating run {seed}')
 
     w2_rows = [row for row in diagnostics if int(number(row['Train/WarmupStage'])) == 2]
@@ -170,19 +222,17 @@ def mechanism_row(  # pylint: disable=too-many-locals
     last_w2 = w2_rows[-1]
     initial_evaluation = evaluations[0]
     final_evaluation = evaluations[-1]
-    if int(initial_evaluation['milestone']) != 0 or int(final_evaluation['milestone']) != 300_000:
-        raise ValueError(f'run {seed} is missing the fixed 0/300000 evaluation endpoints')
+    if (
+        int(initial_evaluation['milestone']) != 0
+        or int(final_evaluation['milestone']) != target_steps
+    ):
+        raise ValueError(f'run {seed} is missing the fixed 0/{target_steps} evaluation endpoints')
 
-    boundary_gate = number(counterfactual['gate_boundary_mean'])
+    boundary_gate = optional_number(counterfactual['gate_boundary_mean'])
     interior_gate = number(counterfactual['gate_interior_mean'])
-    gate_ratio = boundary_gate / max(interior_gate, 1e-12)
+    gate_ratio = boundary_gate / max(interior_gate, 1e-12) if boundary_gate is not None else None
     w2_danger = number(last_w2['Geometry/DangerousNormalVelocity'])
     final_danger = number(final_diagnostic['Geometry/DangerousNormalVelocity'])
-    actor_losses = [number(row['Loss/Actor']) for row in diagnostics]
-    cost_losses = [number(row['Loss/CostCritic']) for row in diagnostics]
-    reward_losses = [number(row['Loss/RewardCritic']) for row in diagnostics]
-    energy_duals = [number(row['Dual/Energy']) for row in diagnostics]
-    global_duals = [number(row['Dual/GlobalSafety']) for row in diagnostics]
     replay_spearman = optional_number(
         audit['predicted_cost_empirical_cost_spearman'],
     )
@@ -193,8 +243,11 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'status': training['status'],
         'env_steps': int(training['env_steps']),
         'updates': int(training['updates']),
-        'training_seconds': number(training['training_seconds']),
-        'estimated_cost_cny': number(receipt['estimated_cost_cny']),
+        'segment_count': len(run_dirs),
+        'training_seconds': sum(
+            number(segment['training_seconds']) for segment in training_segments
+        ),
+        'estimated_cost_cny': sum(number(receipt['estimated_cost_cny']) for receipt in receipts),
         'warmup_stage': warmup['stage'],
         'geometry_activation_step': (int(activation_step) if activation_step is not None else None),
         'boundary_samples': int(warmup['boundary_samples']),
@@ -202,6 +255,8 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'cost_td_ema': number(warmup['ema']['cost_td_error']),
         'valid_gradient_ema': number(warmup['ema']['valid_gradient_rate']),
         'ensemble_disagreement_ema': number(warmup['ema']['ensemble_disagreement']),
+        'replay_brier_skill_ema': number(warmup['ema']['brier_skill']),
+        'replay_auroc_ema': number(warmup['ema']['auroc']),
         'gate_boundary_mean': boundary_gate,
         'gate_interior_mean': interior_gate,
         'gate_boundary_interior_ratio': gate_ratio,
@@ -216,6 +271,10 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'replay_calibration_ece': number(audit['calibration_ece']),
         'replay_calibration_mae': number(audit['calibration_mae']),
         'replay_cost_spearman': replay_spearman,
+        'replay_brier_skill': optional_number(audit['brier_skill']),
+        'replay_auroc': optional_number(audit['auroc']),
+        'replay_positive_labels': int(audit['positive_labels']),
+        'replay_negative_labels': int(audit['negative_labels']),
         'boundary_source_random_fraction': number(
             audit['resident_boundary_source_random_fraction'],
         ),
@@ -228,25 +287,30 @@ def mechanism_row(  # pylint: disable=too-many-locals
         'final_eval_cost': number(final_evaluation['mean_cost']),
         'initial_eval_cvar': number(initial_evaluation['cost_cvar_20']),
         'final_eval_cvar': number(final_evaluation['cost_cvar_20']),
+        'final_eval_goals_per_episode': number(final_evaluation['goals_per_episode_mean']),
+        'final_eval_stall_ratio': number(final_evaluation['stall_ratio']),
+        'final_eval_displacement': number(final_evaluation['mean_start_end_displacement']),
+        'final_eval_action_norm': number(final_evaluation['mean_action_norm']),
+        'final_external_brier_skill': optional_number(final_evaluation['brier_skill']),
+        'final_external_auroc': optional_number(final_evaluation['auroc']),
     }
     criteria = {
-        'completed_without_crash': training['status'] == 'completed'
-        and int(training['env_steps']) == 300_000,
-        'return_improved_without_collapse': row['final_eval_return'] > row['initial_eval_return'],
-        'evaluation_cost_or_tail_improved': row['final_eval_cost'] < row['initial_eval_cost']
-        or row['final_eval_cvar'] < row['initial_eval_cvar'],
-        'predicted_empirical_risk_positive': replay_spearman is not None and replay_spearman > 0.0,
-        'near_boundary_gate_dominates': boundary_gate > interior_gate,
-        'normal_variance_reduced': row['directional_vn'] < 0.9 * row['isotropic_vn'],
+        'completed_without_crash': all(
+            segment['status'] == 'completed' for segment in training_segments
+        )
+        and int(training['env_steps']) == target_steps,
+        'mean_goal_met_positive': row['final_eval_goals_per_episode'] > 0.0,
+        'no_stall': row['final_eval_stall_ratio'] <= 1e-12,
+        'cost_within_budget': row['final_eval_cost'] <= 10.0,
+        'replay_auroc_above_065': row['replay_auroc'] is not None and row['replay_auroc'] > 0.65,
+        'replay_brier_skill_positive': row['replay_brier_skill'] is not None
+        and row['replay_brier_skill'] > 0.0,
+        'external_auroc_above_065': row['final_external_auroc'] is not None
+        and row['final_external_auroc'] > 0.65,
+        'external_brier_skill_positive': row['final_external_brier_skill'] is not None
+        and row['final_external_brier_skill'] > 0.0,
         'tangent_variance_preserved': row['vt_preservation_ratio'] >= 0.8,
         'dangerous_normal_velocity_reduced': final_danger < w2_danger,
-        'actor_critic_duals_nondegenerate': any(abs(value) > 1e-8 for value in actor_losses)
-        and any(value > 0.0 for value in cost_losses)
-        and any(value > 0.0 for value in reward_losses)
-        and _changed(energy_duals)
-        and _changed(global_duals),
-        'boundary_not_mainly_random_or_violating': row['boundary_source_random_fraction'] < 0.5
-        and row['boundary_immediate_violation_fraction'] < 0.5,
         'final_warmup_evidence_passed': warmup['stage'] == 'W3'
         and all(bool(value) for value in warmup['conditions'].values()),
     }
@@ -260,11 +324,16 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     output_dir: Path,
     required_seed_count: int = 3,
     checkpoint_evaluation_csv: Path | None = None,
+    target_steps: int = 300_000,
+    assessment_scope: str = 'final',
 ) -> dict[str, Any]:
-    """Generate compact P4 CSV/JSON deliverables and return the verdict."""
-    if len(run_dirs) != len(audit_dirs) or len(run_dirs) != len(receipts):
-        raise ValueError('run, audit, and receipt counts must match')
+    """Generate compact P4 CSV/JSON deliverables and return the scoped assessment."""
+    if target_steps <= 0:
+        raise ValueError('target steps must be positive')
+    if assessment_scope not in {'final', 'minimum-mechanism'}:
+        raise ValueError(f'unsupported assessment scope: {assessment_scope}')
     output_dir.mkdir(parents=True, exist_ok=True)
+    run_segments = group_run_segments(run_dirs)
     evaluations = (
         checkpoint_evaluation_rows(checkpoint_evaluation_csv)
         if checkpoint_evaluation_csv is not None
@@ -273,22 +342,31 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     evaluation_keys = [(int(row['seed']), int(row['milestone'])) for row in evaluations]
     if len(evaluation_keys) != len(set(evaluation_keys)):
         raise ValueError('evaluation table contains duplicate seed/milestone rows')
-    run_seeds = [
-        int(read_json(run_dir / 'artifacts/training_summary.json')['seed']) for run_dir in run_dirs
-    ]
-    if len(run_seeds) != len(set(run_seeds)):
-        raise ValueError('run directories contain duplicate training seeds')
+    run_seeds = sorted(run_segments)
     if {int(row['seed']) for row in evaluations} != set(run_seeds):
         raise ValueError('evaluation seeds do not match the run directories')
-    audits = {
-        int(payload['seed']): payload
-        for payload in (read_json(path / 'replay_risk_summary.json') for path in audit_dirs)
-    }
-    receipt_payloads = {
-        int(payload['seed']): payload for payload in (read_json(path) for path in receipts)
-    }
+    audit_payloads = [read_json(path / 'replay_risk_summary.json') for path in audit_dirs]
+    audits = {int(payload['seed']): payload for payload in audit_payloads}
+    if len(audits) != len(audit_payloads):
+        raise ValueError('audit directories contain duplicate seeds')
+    receipt_payloads: dict[int, list[dict[str, Any]]] = {}
+    for payload in (read_json(path) for path in receipts):
+        receipt_payloads.setdefault(int(payload['seed']), []).append(payload)
     if set(audits) != set(run_seeds) or set(receipt_payloads) != set(run_seeds):
         raise ValueError('audit or receipt seeds do not match the run directories')
+    for seed in run_seeds:
+        if len(receipt_payloads[seed]) != len(run_segments[seed]):
+            raise ValueError(f'receipt count does not match run segments for seed {seed}')
+        receipt_steps = sorted(
+            int(payload['steps']) for payload in receipt_payloads[seed] if 'steps' in payload
+        )
+        if receipt_steps and len(receipt_steps) == len(run_segments[seed]):
+            segment_steps = sorted(
+                int(read_json(path / 'artifacts/training_summary.json')['env_steps'])
+                for path in run_segments[seed]
+            )
+            if receipt_steps != segment_steps:
+                raise ValueError(f'receipt endpoints do not match run segments for seed {seed}')
 
     atomic_csv(output_dir / 'pointgoal_evaluation_runs.csv', evaluations)
     atomic_csv(
@@ -297,30 +375,66 @@ def summarize(  # pylint: disable=too-many-arguments,too-many-locals
     )
     mechanism_rows: list[dict[str, Any]] = []
     criteria_by_seed: dict[str, dict[str, bool]] = {}
-    for run_dir, seed in zip(run_dirs, run_seeds):
+    for seed in run_seeds:
         fixed_evaluations = (
             [row for row in evaluations if int(row['seed']) == seed]
             if checkpoint_evaluation_csv is not None
             else None
         )
         row, criteria = mechanism_row(
-            run_dir,
+            run_segments[seed],
             audits[seed],
             receipt_payloads[seed],
             fixed_evaluations,
+            target_steps,
         )
         mechanism_rows.append(row)
         criteria_by_seed[str(seed)] = criteria
     mechanism_rows.sort(key=lambda row: row['seed'])
     atomic_csv(output_dir / 'pointgoal_mechanism_summary.csv', mechanism_rows)
 
-    seed_pass = {seed: all(criteria.values()) for seed, criteria in criteria_by_seed.items()}
-    overall_pass = len(seed_pass) == required_seed_count and all(seed_pass.values())
+    observed_seed_criteria_satisfied = {
+        seed: all(criteria.values()) for seed, criteria in criteria_by_seed.items()
+    }
+    overall_pass = len(observed_seed_criteria_satisfied) == required_seed_count and all(
+        observed_seed_criteria_satisfied.values(),
+    )
+    final_assessment = assessment_scope == 'final'
     verdict = {
-        'status': 'passed' if overall_pass else 'failed',
+        'status': (
+            ('passed' if overall_pass else 'failed')
+            if final_assessment
+            else (
+                'completed'
+                if len(observed_seed_criteria_satisfied) == required_seed_count
+                else 'incomplete'
+            )
+        ),
+        'assessment_scope': assessment_scope,
+        'target_steps': target_steps,
+        'final_p4_verdict': ('passed' if overall_pass else 'failed') if final_assessment else None,
+        'risk_metric_namespaces': {
+            'replay': {
+                'available': True,
+                'source': 'full replay checkpoint audit',
+                'criteria': ['replay_auroc_above_065', 'replay_brier_skill_positive'],
+            },
+            'held_out': {
+                'available': False,
+                'source': None,
+                'criteria': [],
+                'reason': 'P4.1 did not implement an episode-separated held-out split',
+            },
+            'external': {
+                'available': True,
+                'source': 'fixed-random-flow checkpoint evaluation',
+                'criteria': ['external_auroc_above_065', 'external_brier_skill_positive'],
+            },
+        },
         'required_seed_count': required_seed_count,
-        'observed_seed_count': len(seed_pass),
-        'seed_pass': seed_pass,
+        'observed_seed_count': len(observed_seed_criteria_satisfied),
+        'seed_pass': observed_seed_criteria_satisfied if final_assessment else None,
+        'observed_seed_criteria_satisfied': observed_seed_criteria_satisfied,
         'criteria_by_seed': criteria_by_seed,
         'total_training_seconds': sum(row['training_seconds'] for row in mechanism_rows),
         'total_estimated_cost_cny': sum(row['estimated_cost_cny'] for row in mechanism_rows),
@@ -338,6 +452,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--output-dir', type=Path, required=True)
     result.add_argument('--required-seed-count', type=int, default=3)
     result.add_argument('--checkpoint-evaluation-csv', type=Path)
+    result.add_argument('--target-steps', type=int, default=300_000)
+    result.add_argument(
+        '--assessment-scope',
+        choices=('final', 'minimum-mechanism'),
+        default='final',
+    )
     return result
 
 
@@ -351,6 +471,8 @@ def main() -> None:
         args.output_dir,
         args.required_seed_count,
         args.checkpoint_evaluation_csv,
+        args.target_steps,
+        args.assessment_scope,
     )
     print(json.dumps(verdict, indent=2, sort_keys=True, allow_nan=False))
 
