@@ -1,0 +1,161 @@
+{
+  "analysis_source_commit": "14724f3d33f15fa458b0aa3d0ce68263b59eff70",
+  "arms": {
+    "B0": {
+      "criteria": {
+        "displacement_does_not_decline": false,
+        "return_improves_vs_initial": true,
+        "reward_td_not_monotonic_divergence": false,
+        "stall_does_not_rise": true,
+        "success_rate_rises": true
+      },
+      "estimated_cost_cny": 5.46864173702995,
+      "functional_gate_passed": false,
+      "pooled_external_evaluation": {
+        "0": {
+          "goal_met_episode_rate": 0.08333333333333333,
+          "mean_return": -1.3425773546222552,
+          "mean_start_end_displacement": 2.335561833727506,
+          "stall_ratio": 0.016666666666666666
+        },
+        "50000": {
+          "goal_met_episode_rate": 0.9666666666666667,
+          "mean_return": 18.84506793028931,
+          "mean_start_end_displacement": 1.0922526849493472,
+          "stall_ratio": 0.0
+        }
+      },
+      "reward_td_tail_by_seed": {
+        "2027": {
+          "final": 0.01670396549347788,
+          "final_to_historical_minimum_ratio": 2.788926249230614,
+          "historical_minimum": 0.005989389464166015,
+          "last_four_values": [
+            0.011001335498970002,
+            0.012360830676089972,
+            0.013770287464372814,
+            0.01670396549347788
+          ],
+          "monotonic_divergence": true
+        },
+        "2028": {
+          "final": 0.010947018181625754,
+          "final_to_historical_minimum_ratio": 2.519779648533441,
+          "historical_minimum": 0.004344434715947136,
+          "last_four_values": [
+            0.005694736468000338,
+            0.007533744798880071,
+            0.010140100241359324,
+            0.010947018181625754
+          ],
+          "monotonic_divergence": true
+        },
+        "2029": {
+          "final": 0.014244179194793104,
+          "final_to_historical_minimum_ratio": 2.346254810622719,
+          "historical_minimum": 0.00607102823201567,
+          "last_four_values": [
+            0.009246738958079368,
+            0.010996473113447428,
+            0.012181666899193078,
+            0.014244179194793104
+          ],
+          "monotonic_divergence": true
+        }
+      },
+      "training_seconds": 13277.211424142122
+    },
+    "B1": {
+      "criteria": {
+        "displacement_does_not_decline": false,
+        "return_improves_vs_initial": true,
+        "reward_td_not_monotonic_divergence": true,
+        "stall_does_not_rise": false,
+        "success_rate_rises": true
+      },
+      "estimated_cost_cny": 5.505545720236169,
+      "functional_gate_passed": false,
+      "pooled_external_evaluation": {
+        "0": {
+          "goal_met_episode_rate": 0.08333333333333333,
+          "mean_return": -1.3425773546222552,
+          "mean_start_end_displacement": 2.335561833727506,
+          "stall_ratio": 0.016666666666666666
+        },
+        "50000": {
+          "goal_met_episode_rate": 0.11666666666666668,
+          "mean_return": 0.28969184123245256,
+          "mean_start_end_displacement": 0.8404846188496018,
+          "stall_ratio": 0.21666666666666667
+        }
+      },
+      "reward_td_tail_by_seed": {
+        "2027": {
+          "final": 0.012629356597177684,
+          "final_to_historical_minimum_ratio": 1.6422939132291055,
+          "historical_minimum": 0.007690070879179984,
+          "last_four_values": [
+            0.014207194848917425,
+            0.012714456016384065,
+            0.013370481863059103,
+            0.012629356597177684
+          ],
+          "monotonic_divergence": false
+        },
+        "2028": {
+          "final": 0.055921161306649446,
+          "final_to_historical_minimum_ratio": 6.356375336328334,
+          "historical_minimum": 0.008797649343808491,
+          "last_four_values": [
+            0.05532116263397038,
+            0.0479609573610127,
+            0.05028766778372228,
+            0.055921161306649446
+          ],
+          "monotonic_divergence": false
+        },
+        "2029": {
+          "final": 0.015360383946448565,
+          "final_to_historical_minimum_ratio": 2.1699628699134936,
+          "historical_minimum": 0.007078639067709446,
+          "last_four_values": [
+            0.012268668496795,
+            0.014879980312287808,
+            0.013578537615016102,
+            0.015360383946448565
+          ],
+          "monotonic_divergence": false
+        }
+      },
+      "training_seconds": 13366.898969396949
+    }
+  },
+  "backbone_decision": "repair_backbone_and_pause_safety",
+  "continuation_beyond_50k_launched": false,
+  "external_evaluation_protocol": {
+    "episodes_per_checkpoint_per_seed": 20,
+    "milestones": [
+      0,
+      50000
+    ],
+    "mode": "fixed-random-flow"
+  },
+  "final_p4_verdict": null,
+  "formal_four_environment_experiment_launched": false,
+  "reward_td_divergence_rule": {
+    "arm_pass_requires_no_seed_divergence": true,
+    "final_to_historical_minimum_ratio_at_least": 2.0,
+    "strictly_rising": true,
+    "tail": "last four 5k diagnostic rows"
+  },
+  "schema_version": 1,
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "server_artifact": "/root/autodl-tmp/SAFE/artifacts/p4.2/backbone-f437132/backbone_decision.json",
+  "stage": "P4.2-backbone-causal-localization",
+  "target_steps": 50000,
+  "training_source_commit": "f4371320a1683bc2130cd687213ffbac2d7da9d9"
+}
