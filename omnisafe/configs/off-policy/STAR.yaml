@@ -64,6 +64,19 @@ defaults:
     candidate_disagreement_threshold: 0.15
     candidate_risk_tie_band: 0.02
     candidate_tangent_scale: 0.05
+    stochastic_flow_enabled: False
+    safety_anisotropy_enabled: False
+    safety_inward_drift_enabled: False
+    safety_protocol_version: ""
+    safety_protocol_sha256: ""
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.10
+    safety_gradient_scale: 0.005
+    safety_ensemble_scale: 0.05
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_skill_full: 0.05
+    safety_drift_strength: 0.20
+    safety_drift_temperature: 0.05
     w3_td_error_threshold: 3.0
     w3_calibration_threshold: 0.35
     w3_valid_gradient_threshold: 0.10

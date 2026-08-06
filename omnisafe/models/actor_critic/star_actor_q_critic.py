@@ -21,7 +21,7 @@ from copy import deepcopy
 import torch
 from torch import nn, optim
 
-from omnisafe.models.actor.flow_actor import FlowActor, FlowOutput
+from omnisafe.models.actor.flow_actor import FlowActor, FlowOutput, FlowReferenceFunction
 from omnisafe.models.critic.distributional_cost_critic import DistributionalCostCritic
 from omnisafe.models.critic.violation_probability_critic import ViolationProbabilityCritic
 from omnisafe.typing import Activation, InitFunction
@@ -193,12 +193,16 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         augmented_obs: torch.Tensor,
         deterministic: bool = False,
         base_action: torch.Tensor | None = None,
+        reference: FlowReferenceFunction | None = None,
+        flow_noise: torch.Tensor | None = None,
     ) -> FlowOutput:
         """Expose the actor flow through the standard module interface."""
         return self.flow(
             augmented_obs,
             deterministic=deterministic,
             base_action=base_action,
+            reference=reference,
+            flow_noise=flow_noise,
         )
 
     def flow(
@@ -206,12 +210,16 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         augmented_obs: torch.Tensor,
         deterministic: bool = False,
         base_action: torch.Tensor | None = None,
+        reference: FlowReferenceFunction | None = None,
+        flow_noise: torch.Tensor | None = None,
     ) -> FlowOutput:
         """Generate a complete flow trajectory."""
         return self.actor(
             augmented_obs,
             deterministic=deterministic,
             base_action=base_action,
+            reference=reference,
+            flow_noise=flow_noise,
         )
 
     def target_flow(
@@ -219,12 +227,16 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         augmented_obs: torch.Tensor,
         deterministic: bool = False,
         base_action: torch.Tensor | None = None,
+        reference: FlowReferenceFunction | None = None,
+        flow_noise: torch.Tensor | None = None,
     ) -> FlowOutput:
         """Generate a reward-backup trajectory from the slowly moving target actor."""
         return self.target_actor(
             augmented_obs,
             deterministic=deterministic,
             base_action=base_action,
+            reference=reference,
+            flow_noise=flow_noise,
         )
 
     def step(self, augmented_obs: torch.Tensor, deterministic: bool = False) -> torch.Tensor:

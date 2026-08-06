@@ -1,0 +1,48 @@
+# P4.3 S0: B1/R3 plus a fixed-trace isotropic stochastic flow and shared Bellman critic.
+env_id: SafetyPointGoal1-v0
+custom_cfgs:
+  train_cfgs:
+    total_steps: 50000
+    eval_episodes: 0
+  algo_cfgs:
+    enable_global_safety_constraint: true
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    reward_target_samples: 4
+    reward_critic_updates_per_update: 2
+    separate_reward_replay: true
+    reward_replay_recent_fraction: 0.5
+    reward_replay_recent_window: 10000
+    reward_target_polyak: 0.001
+    bellman_probability_enabled: true
+    probability_mc_aux_weight: 0.10
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 4096
+    dynamic_geometry_gate: false
+    candidate_probing_enabled: false
+    stochastic_flow_enabled: true
+    safety_anisotropy_enabled: false
+    safety_inward_drift_enabled: false
+    safety_protocol_version: p4.3-safety-anisotropy-v1
+    safety_protocol_sha256: 271b65a6c1869de9d15cfc0037c5b0e61f7bf3864d022769dcc9ae256046e052
+    risk_boundary: 0.20
+    boundary_bandwidth: 0.10
+    risk_ucb_beta: 0.50
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.10
+    safety_gradient_scale: 0.005
+    safety_ensemble_scale: 0.05
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_skill_full: 0.05
+    safety_drift_strength: 0.20
+    safety_drift_temperature: 0.05
+    eval_milestones: [0, 50000]
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 10000
+  dual_cfgs:
+    energy_initial: 0.004
+    target_energy_per_action: 12.5

@@ -65,7 +65,10 @@ from omnisafe.models.critic.violation_probability_critic import (
 from omnisafe.models.safety.distributional_backend import (
     SafetyGeometry,
     boundary_gate,
+    calibration_reliability,
     compute_safety_geometry,
+    compute_stochastic_reference,
+    gaussian_directional_entropies,
 )
 from omnisafe.utils.star_validation import spearman as tie_correct_spearman
 
@@ -146,6 +149,7 @@ LOG_KEYS = (
     'Heldout/NegativeLabels',
     'Heldout/Episodes',
     'Heldout/Transitions',
+    'Heldout/CalibrationReliability',
     'Geometry/GateActivation',
     'Geometry/CandidateGateActivation',
     'Geometry/ValidGradientRate',
@@ -160,6 +164,24 @@ LOG_KEYS = (
     'Geometry/DangerousNormalVelocity',
     'Geometry/TangentEnergy',
     'Geometry/NormalEnergy',
+    'Reference/Reliability',
+    'Reference/BoundaryReliability',
+    'Reference/GradientReliability',
+    'Reference/EnsembleReliability',
+    'Reference/CalibrationReliability',
+    'Reference/RiskUCB',
+    'Reference/Margin',
+    'Reference/VN',
+    'Reference/VT',
+    'Reference/Trace',
+    'Reference/TraceRelativeError',
+    'Reference/HN',
+    'Reference/HT',
+    'Reference/NormalVelocity',
+    'Reference/DangerousNormalVelocity',
+    'Reference/InwardDrift',
+    'Reference/TangentEnergy',
+    'Reference/NormalEnergy',
     'Probing/CandidateRiskP10',
     'Probing/CandidateRiskP50',
     'Probing/CandidateRiskP90',
@@ -515,6 +537,43 @@ class STAR(BaseAlgo):
             raise ValueError('candidate_risk_tie_band cannot be negative')
         if float(algo.candidate_tangent_scale) < 0.0:
             raise ValueError('candidate_tangent_scale cannot be negative')
+        if self._safety_anisotropy_enabled() and not self._stochastic_flow_enabled():
+            raise ValueError('safety anisotropy requires stochastic flow')
+        if self._safety_inward_drift_enabled() and not self._safety_anisotropy_enabled():
+            raise ValueError('inward safety drift requires safety anisotropy')
+        if self._safety_anisotropy_enabled() and not self._bellman_probability_enabled():
+            raise ValueError('safety anisotropy requires Bellman probability training')
+        if self._stochastic_flow_enabled() and (
+            self._candidate_probing_enabled()
+            or self._dynamic_geometry_gate_enabled()
+            or self._local_geometry_enabled()
+        ):
+            raise ValueError(
+                'stochastic safety flow is one policy and cannot use legacy geometry/probing',
+            )
+        if self._stochastic_flow_enabled():
+            if not 0.0 < float(algo.risk_boundary) < 0.5:
+                raise ValueError('stochastic-flow risk tolerance must lie in (0, 0.5)')
+            if float(algo.flow_reference_variance) <= 0.0:
+                raise ValueError('flow reference variance must be positive')
+            if not 0.0 < float(algo.flow_normal_variance_ratio) <= 1.0:
+                raise ValueError('normal/reference variance ratio must lie in (0, 1]')
+            if (
+                min(
+                    float(algo.safety_gradient_scale),
+                    float(algo.safety_ensemble_scale),
+                    float(algo.safety_calibration_brier_skill_full),
+                    float(algo.safety_drift_temperature),
+                )
+                <= 0.0
+            ):
+                raise ValueError('stochastic-flow reliability scales must be positive')
+            if not 0.5 < float(algo.safety_calibration_auroc_full) <= 1.0:
+                raise ValueError('full calibration AUROC must lie in (0.5, 1]')
+            if float(algo.safety_drift_strength) < 0.0:
+                raise ValueError('safety drift strength cannot be negative')
+            if self._safety_anisotropy_enabled() and self._act_dim < 2:
+                raise ValueError('safety anisotropy requires action dimension at least two')
 
         resume_from = str(algo.resume_from)
         if resume_from:
@@ -622,6 +681,32 @@ class STAR(BaseAlgo):
                     'risk_selection': 'closest_trusted_safe_boundary_then_reward_q',
                     'tangent_requires_geometry_enabled': True,
                 },
+                'p4_3_stochastic_safety_reference': {
+                    'protocol_version': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_version', ''),
+                    ),
+                    'protocol_sha256': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_sha256', ''),
+                    ),
+                    'stochastic_flow_enabled': self._stochastic_flow_enabled(),
+                    'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
+                    'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
+                    'candidate_probing_enabled': self._candidate_probing_enabled(),
+                    'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
+                    'reference_variance': float(
+                        getattr(self._cfgs.algo_cfgs, 'flow_reference_variance', 0.0),
+                    ),
+                    'normal_variance_ratio': float(
+                        getattr(self._cfgs.algo_cfgs, 'flow_normal_variance_ratio', 1.0),
+                    ),
+                    'fixed_trace_budget': (
+                        self._act_dim
+                        * float(getattr(self._cfgs.algo_cfgs, 'flow_reference_variance', 0.0))
+                    ),
+                    'reliability': 'g_B*r_grad*r_ens*r_cal_continuous',
+                    'actor_energy': '0.5*integral(u_theta^T*D_C^-1*u_theta)',
+                    'inward_drift_excluded_from_actor_energy': True,
+                },
                 'p4_1_correctness': {
                     'context': (
                         '[observation, remaining_budget_ratio, remaining_horizon_ratio, '
@@ -709,6 +794,104 @@ class STAR(BaseAlgo):
         """Return whether behavior actions use inside-boundary candidate probing."""
         return bool(getattr(self._cfgs.algo_cfgs, 'candidate_probing_enabled', False))
 
+    def _stochastic_flow_enabled(self) -> bool:
+        """Return whether the policy follows a Brownian rather than ODE reference."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'stochastic_flow_enabled', False))
+
+    def _safety_anisotropy_enabled(self) -> bool:
+        """Return whether continuous risk reliability shapes the flow covariance."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'safety_anisotropy_enabled', False))
+
+    def _safety_inward_drift_enabled(self) -> bool:
+        """Return whether the stochastic reference also carries an inward drift."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'safety_inward_drift_enabled', False))
+
+    def _calibration_reliability(self) -> float:
+        """Return the held-out-only continuous probability-critic reliability."""
+        algo = self._cfgs.algo_cfgs
+        return calibration_reliability(
+            self._last_heldout_evidence.get('Heldout/AUROC'),
+            self._last_heldout_evidence.get('Heldout/BrierSkill'),
+            auroc_full=float(algo.safety_calibration_auroc_full),
+            brier_skill_full=float(algo.safety_calibration_brier_skill_full),
+        )
+
+    def _flow_reference(
+        self,
+        augmented_obs: torch.Tensor,
+        *,
+        target: bool,
+        anisotropy_enabled: bool | None = None,
+        inward_drift_enabled: bool | None = None,
+    ) -> Any:
+        """Close over observations and return the midpoint reference callback."""
+        algo = self._cfgs.algo_cfgs
+        anisotropy = (
+            self._safety_anisotropy_enabled() if anisotropy_enabled is None else anisotropy_enabled
+        )
+        inward_drift = (
+            self._safety_inward_drift_enabled()
+            if inward_drift_enabled is None
+            else inward_drift_enabled
+        )
+        critic: ViolationProbabilityCritic | None = None
+        if anisotropy:
+            critic = self._target_violation_critic() if target else self._violation_critic()
+        calibration = self._calibration_reliability() if anisotropy else 0.0
+
+        def reference(action: torch.Tensor) -> Any:
+            return compute_stochastic_reference(
+                critic,
+                augmented_obs,
+                action,
+                anisotropy_enabled=anisotropy,
+                inward_drift_enabled=inward_drift,
+                calibration=calibration,
+                risk_tolerance=float(algo.risk_boundary),
+                boundary_bandwidth=float(algo.boundary_bandwidth),
+                risk_ucb_beta=float(algo.risk_ucb_beta),
+                reference_variance=float(algo.flow_reference_variance),
+                normal_variance_ratio=float(algo.flow_normal_variance_ratio),
+                gradient_scale=float(algo.safety_gradient_scale),
+                ensemble_scale=float(algo.safety_ensemble_scale),
+                drift_strength=float(algo.safety_drift_strength),
+                drift_temperature=float(algo.safety_drift_temperature),
+            )
+
+        return reference
+
+    def _policy_flow(  # pylint: disable=too-many-arguments
+        self,
+        augmented_obs: torch.Tensor,
+        *,
+        target: bool = False,
+        deterministic: bool = False,
+        base_action: torch.Tensor | None = None,
+        flow_noise: torch.Tensor | None = None,
+        anisotropy_enabled: bool | None = None,
+        inward_drift_enabled: bool | None = None,
+    ) -> Any:
+        """Sample the one policy used by behavior, targets, actor learning, and evaluation."""
+        flow_function = self._actor_critic.target_flow if target else self._actor_critic.flow
+        if not self._stochastic_flow_enabled():
+            return flow_function(
+                augmented_obs,
+                deterministic=deterministic,
+                base_action=base_action,
+            )
+        return flow_function(
+            augmented_obs,
+            deterministic=deterministic,
+            base_action=base_action,
+            reference=self._flow_reference(
+                augmented_obs,
+                target=target,
+                anisotropy_enabled=anisotropy_enabled,
+                inward_drift_enabled=inward_drift_enabled,
+            ),
+            flow_noise=flow_noise,
+        )
+
     def _global_safety_enabled(self) -> bool:
         """Return whether the global cost constraint may affect training."""
         return bool(self._cfgs.algo_cfgs.enable_global_safety_constraint)
@@ -779,7 +962,8 @@ class STAR(BaseAlgo):
             if self._candidate_probing_enabled() and self._update_count > 0:
                 action, self._pending_probe_metrics = self._candidate_probe(augmented)
             else:
-                action = self._actor_critic.step(augmented)
+                with torch.no_grad():
+                    action = self._policy_flow(augmented).action
         source_random = torch.full(
             (self._num_envs,),
             random_action,
@@ -1065,7 +1249,7 @@ class STAR(BaseAlgo):
     ) -> dict[str, float]:
         """Update the globally retained cost-distribution ensemble."""
         with torch.no_grad():
-            next_action = self._actor_critic.flow(next_augmented_obs).action
+            next_action = self._policy_flow(next_augmented_obs).action
             next_quantiles = self._actor_critic.target_cost_critic(
                 next_augmented_obs,
                 next_action,
@@ -1118,7 +1302,7 @@ class STAR(BaseAlgo):
         next_augmented_obs: torch.Tensor,
     ) -> torch.Tensor:
         """Bootstrap event probability under the target actor and target probability critic."""
-        next_action = self._actor_critic.target_flow(next_augmented_obs).action
+        next_action = self._policy_flow(next_augmented_obs, target=True).action
         next_probability = self._target_violation_critic().probabilities(
             next_augmented_obs,
             next_action,
@@ -1264,6 +1448,13 @@ class STAR(BaseAlgo):
             if self._reward_target_actor_enabled()
             else self._actor_critic.flow
         )
+        if self._stochastic_flow_enabled():
+            with torch.no_grad():
+                flow = self._policy_flow(
+                    next_augmented_obs,
+                    target=self._reward_target_actor_enabled(),
+                )
+                return flow.action, flow.kinetic_energy
         if not self._training_geometry_enabled():
             with torch.no_grad():
                 flow = flow_function(next_augmented_obs)
@@ -1371,18 +1562,74 @@ class STAR(BaseAlgo):
             reference_temperature=float(algo.reference_temperature),
         )
 
+    def _stochastic_reference_metrics(self, flow: Any) -> dict[str, float]:
+        """Summarize the covariance, reliability, drift, and residual energy actually used."""
+        reference = flow.reference
+        if reference is None:
+            raise RuntimeError('stochastic policy flow did not retain its reference trace')
+        normal_entropy, tangent_entropy = gaussian_directional_entropies(
+            reference.normal_variance,
+            reference.tangent_variance,
+            self._act_dim,
+        )
+        trace = reference.normal_variance + (self._act_dim - 1) * reference.tangent_variance
+        trace_budget = self._act_dim * float(self._cfgs.algo_cfgs.flow_reference_variance)
+        normal_velocity = (flow.velocities * reference.normals).sum(dim=-1)
+        inward_drift = -(reference.drifts * reference.normals).sum(dim=-1)
+        return {
+            'Reference/Reliability': float(reference.reliability.mean().item()),
+            'Reference/BoundaryReliability': float(
+                reference.boundary_reliability.mean().item(),
+            ),
+            'Reference/GradientReliability': float(
+                reference.gradient_reliability.mean().item(),
+            ),
+            'Reference/EnsembleReliability': float(
+                reference.ensemble_reliability.mean().item(),
+            ),
+            'Reference/CalibrationReliability': float(
+                reference.calibration_reliability.mean().item(),
+            ),
+            'Reference/RiskUCB': float(reference.risk_ucb.mean().item()),
+            'Reference/Margin': float(reference.margins.mean().item()),
+            'Reference/VN': float(reference.normal_variance.mean().item()),
+            'Reference/VT': float(reference.tangent_variance.mean().item()),
+            'Reference/Trace': float(trace.mean().item()),
+            'Reference/TraceRelativeError': float(
+                ((trace - trace_budget).abs() / max(trace_budget, 1e-12)).max().item(),
+            ),
+            'Reference/HN': float(normal_entropy.mean().item()),
+            'Reference/HT': float(tangent_entropy.mean().item()),
+            'Reference/NormalVelocity': float(normal_velocity.mean().item()),
+            'Reference/DangerousNormalVelocity': float(
+                normal_velocity.clamp_min(0.0).mean().item(),
+            ),
+            'Reference/InwardDrift': float(inward_drift.mean().item()),
+            'Reference/TangentEnergy': float(reference.tangent_energy.mean().item()),
+            'Reference/NormalEnergy': float(reference.normal_energy.mean().item()),
+        }
+
     def _update_actor(  # pylint: disable=too-many-locals
         self,
         augmented_obs: torch.Tensor,
     ) -> dict[str, float]:
-        """Regenerate flow, terminal utility, late geometry, actor, then energy dual."""
-        flow = self._actor_critic.flow(augmented_obs)
-        enabled = self._training_geometry_enabled()
-        geometry = self._geometry(
-            augmented_obs,
-            flow,
-            enabled=enabled,
-        )
+        """Regenerate the one flow policy, terminal utility, actor, then energy dual."""
+        if self._stochastic_flow_enabled():
+            flow = self._policy_flow(augmented_obs)
+            per_sample_energy = flow.kinetic_energy
+            path_energy = per_sample_energy.mean()
+            reference_metrics = self._stochastic_reference_metrics(flow)
+            geometry = None
+        else:
+            flow = self._actor_critic.flow(augmented_obs)
+            geometry = self._geometry(
+                augmented_obs,
+                flow,
+                enabled=self._training_geometry_enabled(),
+            )
+            per_sample_energy = geometry.per_sample_energy
+            path_energy = geometry.energy
+            reference_metrics = {}
         with _frozen_parameters(
             self._actor_critic.reward_critic,
             self._actor_critic.cost_critic,
@@ -1403,7 +1650,7 @@ class STAR(BaseAlgo):
             else:
                 terminal_cost = torch.zeros_like(terminal_reward)
             actor_loss = normalized_actor_objective(
-                geometry.per_sample_energy,
+                per_sample_energy,
                 terminal_reward,
                 terminal_cost,
                 self._energy_dual.value.detach(),
@@ -1419,17 +1666,23 @@ class STAR(BaseAlgo):
             optimizer.step()
 
         target_energy = float(self._cfgs.dual_cfgs.target_energy_per_action) * self._act_dim
-        dual_loss = self._energy_dual.update(geometry.energy, target_energy)
-        valid = geometry.gradient_norm >= float(self._cfgs.algo_cfgs.minimum_gradient_norm)
-        gate_activation = (geometry.gate > 0.1).float().mean()
-        candidate_activation = (geometry.candidate_gate > 0.1).float().mean()
-        return {
+        dual_loss = self._energy_dual.update(path_energy, target_energy)
+        common_metrics = {
             'Loss/Actor': float(actor_loss.item()),
             'Loss/EnergyDual': float(dual_loss.item()),
             'Actor/TerminalReward': float(terminal_reward.mean().item()),
             'Actor/TerminalCost': float(terminal_cost.mean().item()),
-            'Energy/Path': float(geometry.energy.item()),
+            'Energy/Path': float(path_energy.item()),
             'Dual/Energy': float(self._energy_dual.value.detach().item()),
+        }
+        if self._stochastic_flow_enabled():
+            return {**common_metrics, **reference_metrics}
+        assert geometry is not None
+        valid = geometry.gradient_norm >= float(self._cfgs.algo_cfgs.minimum_gradient_norm)
+        gate_activation = (geometry.gate > 0.1).float().mean()
+        candidate_activation = (geometry.candidate_gate > 0.1).float().mean()
+        return {
+            **common_metrics,
             'Geometry/GateActivation': float(gate_activation.item()),
             'Geometry/CandidateGateActivation': float(candidate_activation.item()),
             'Geometry/ValidGradientRate': float(valid.float().mean().item()),
@@ -1647,6 +1900,14 @@ class STAR(BaseAlgo):
                 )[0]
             gradient_norm = float(action_gradient.norm(dim=-1).mean().item())
 
+        heldout_calibration_reliability = calibration_reliability(
+            auroc,
+            brier_skill,
+            auroc_full=float(getattr(algo, 'safety_calibration_auroc_full', 0.75)),
+            brier_skill_full=float(
+                getattr(algo, 'safety_calibration_brier_skill_full', 0.05),
+            ),
+        )
         evidence = {
             'Heldout/CalibrationError': calibration_error,
             'Heldout/BrierScore': brier_score,
@@ -1660,6 +1921,7 @@ class STAR(BaseAlgo):
             'Heldout/NegativeLabels': float(negatives),
             'Heldout/Episodes': float(episodes),
             'Heldout/Transitions': float(transitions),
+            'Heldout/CalibrationReliability': heldout_calibration_reliability,
         }
         gate_passed: bool | None = None
         if self._dynamic_geometry_gate_enabled():
@@ -1877,10 +2139,19 @@ class STAR(BaseAlgo):
                         device='cpu',
                     ).uniform_(-1.0, 1.0, generator=generator)
                     base_action = base_action.to(self._device)
+                    flow_noise = None
+                    if self._stochastic_flow_enabled():
+                        flow_noise = torch.randn(
+                            (1, int(self._cfgs.model_cfgs.flow.num_steps), self._act_dim),
+                            dtype=augmented.dtype,
+                            device='cpu',
+                            generator=generator,
+                        ).to(self._device)
                     with torch.no_grad():
-                        action = self._actor_critic.flow(
+                        action = self._policy_flow(
                             augmented,
                             base_action=base_action,
+                            flow_noise=flow_noise,
                         ).action
                         quantiles = self._actor_critic.cost_critic(augmented, action)
                         risk = self._violation_critic().probabilities(augmented, action).mean()
@@ -1908,6 +2179,11 @@ class STAR(BaseAlgo):
                                 'action_1': float(action[0, 1].item()),
                                 'base_action_0': float(base_action[0, 0].item()),
                                 'base_action_1': float(base_action[0, 1].item()),
+                                'flow_noise_norm': (
+                                    float(flow_noise.norm().item())
+                                    if flow_noise is not None
+                                    else 0.0
+                                ),
                                 'predicted_violation_probability': float(risk.item()),
                                 'hazards_json': (
                                     json.dumps(layout.get('hazards', []), separators=(',', ':'))
@@ -2017,7 +2293,11 @@ class STAR(BaseAlgo):
             'minimum_goal_distances': minimum_goal_distances,
             'stall_ratio': sum(stall_flags) / len(stall_flags),
             'step_stall_ratio': sum(episode_step_stall_ratios) / len(episode_step_stall_ratios),
-            'flow_mode': 'fixed-random-flow',
+            'flow_mode': (
+                'fixed-random-base-and-wiener-flow'
+                if self._stochastic_flow_enabled()
+                else 'fixed-random-flow'
+            ),
             'flow_seed_offset': 1_000_003,
             'trajectory': trajectory,
         }
@@ -2032,11 +2312,98 @@ class STAR(BaseAlgo):
             writer.writeheader()
             writer.writerows(rows)
 
+    def _stochastic_reference_counterfactual(self, milestone: int) -> dict[str, Any]:
+        """Audit fixed-trace entropy and reference use on one same-state replay batch."""
+        if self._buf.size == 0:
+            return {'milestone': milestone, 'available': False}
+        requested = min(int(self._cfgs.algo_cfgs.counterfactual_batch_size), self._buf.size)
+        batch = self._buf.sample_batch(self._device, batch_size=requested)
+        augmented = self._augment(batch['obs'], batch['context'])
+        base_action = torch.zeros((requested, self._act_dim), device=self._device)
+        flow_noise = torch.zeros(
+            (requested, int(self._cfgs.model_cfgs.flow.num_steps), self._act_dim),
+            device=self._device,
+        )
+        with torch.no_grad():
+            flow = self._policy_flow(
+                augmented,
+                base_action=base_action,
+                flow_noise=flow_noise,
+            )
+        reference = flow.reference
+        if reference is None:
+            raise RuntimeError('stochastic counterfactual has no reference trace')
+        normal_entropy, tangent_entropy = gaussian_directional_entropies(
+            reference.normal_variance,
+            reference.tangent_variance,
+            self._act_dim,
+        )
+        entropy_total = normal_entropy + tangent_entropy
+        constant = torch.as_tensor(
+            2.0 * torch.pi * torch.e,
+            device=reference.normal_variance.device,
+        )
+        isotropic_low_entropy = (
+            0.5 * self._act_dim * torch.log(constant * reference.normal_variance)
+        )
+        trace = reference.normal_variance + (self._act_dim - 1) * reference.tangent_variance
+        trace_budget = self._act_dim * float(self._cfgs.algo_cfgs.flow_reference_variance)
+        payload = {
+            'milestone': milestone,
+            'available': True,
+            'method': 'single_stochastic_flow_policy',
+            'same_base_action': True,
+            'base_action': 'zero',
+            'wiener_noise': 'zero_for_same_path_reference_audit',
+            'sample_count': requested,
+            'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
+            'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
+            'candidate_probing_enabled': self._candidate_probing_enabled(),
+            'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
+            'calibration_reliability': self._calibration_reliability(),
+            'mean_reference_reliability': float(reference.reliability.mean().item()),
+            'mean_boundary_reliability': float(
+                reference.boundary_reliability.mean().item(),
+            ),
+            'mean_gradient_reliability': float(
+                reference.gradient_reliability.mean().item(),
+            ),
+            'mean_ensemble_reliability': float(
+                reference.ensemble_reliability.mean().item(),
+            ),
+            'mean_risk_ucb': float(reference.risk_ucb.mean().item()),
+            'mean_margin': float(reference.margins.mean().item()),
+            'mean_normal_variance': float(reference.normal_variance.mean().item()),
+            'mean_tangent_variance': float(reference.tangent_variance.mean().item()),
+            'mean_normal_entropy': float(normal_entropy.mean().item()),
+            'mean_tangent_entropy': float(tangent_entropy.mean().item()),
+            'mean_total_gaussian_entropy': float(entropy_total.mean().item()),
+            'matched_normal_isotropic_low_entropy': float(
+                isotropic_low_entropy.mean().item(),
+            ),
+            'entropy_advantage_vs_matched_normal_isotropic_low': float(
+                (entropy_total - isotropic_low_entropy).mean().item(),
+            ),
+            'trace_budget': trace_budget,
+            'mean_trace': float(trace.mean().item()),
+            'maximum_trace_relative_error': float(
+                ((trace - trace_budget).abs() / max(trace_budget, 1e-12)).max().item(),
+            ),
+            'mean_inward_drift': float(
+                (-(reference.drifts * reference.normals).sum(dim=-1)).mean().item(),
+            ),
+            'mean_path_energy': float(flow.kinetic_energy.mean().item()),
+        }
+        _atomic_json(self._artifact_dir / f'counterfactual_step_{milestone}.json', payload)
+        return payload
+
     def _counterfactual(  # pylint: disable=too-many-locals
         self,
         milestone: int,
     ) -> dict[str, Any]:
         """Compare same-state gate/covariance/JVP settings without extra training."""
+        if self._stochastic_flow_enabled():
+            return self._stochastic_reference_counterfactual(milestone)
         if self._buf.size == 0:
             return {'milestone': milestone, 'available': False}
         requested = min(int(self._cfgs.algo_cfgs.counterfactual_batch_size), self._buf.size)
@@ -2199,6 +2566,7 @@ class STAR(BaseAlgo):
                 'resolved_config': self._cfgs.todict(),
                 'rollout_state': self._env.rollout_state(),
                 'completed_milestones': sorted(self._completed_milestones),
+                'last_heldout_evidence': dict(self._last_heldout_evidence),
             },
         )
 
@@ -2226,6 +2594,11 @@ class STAR(BaseAlgo):
         self._warmup.load_state_dict(metadata['warmup'])
         self._completed_milestones = {
             int(step) for step in metadata['extra'].get('completed_milestones', [])
+        }
+        self._last_heldout_evidence = {
+            str(key): float(value)
+            for key, value in metadata['extra'].get('last_heldout_evidence', {}).items()
+            if value is not None
         }
         self._buf.reset_pending_episodes()
         if not metadata['has_replay'] and self._env_steps < int(self._cfgs.train_cfgs.total_steps):
@@ -2351,6 +2724,19 @@ class STAR(BaseAlgo):
                 'bellman_probability_enabled': self._bellman_probability_enabled(),
                 'dynamic_geometry_gate': self._dynamic_geometry_gate_enabled(),
                 'candidate_probing_enabled': self._candidate_probing_enabled(),
+                'stochastic_flow_enabled': self._stochastic_flow_enabled(),
+                'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
+                'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
+                'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
+                'flow_reference_variance': float(
+                    getattr(self._cfgs.algo_cfgs, 'flow_reference_variance', 0.0),
+                ),
+                'flow_normal_variance_ratio': float(
+                    getattr(self._cfgs.algo_cfgs, 'flow_normal_variance_ratio', 1.0),
+                ),
+                'calibration_reliability': (
+                    self._calibration_reliability() if self._stochastic_flow_enabled() else 0.0
+                ),
                 'actor_update_interval': int(self._cfgs.algo_cfgs.actor_update_interval),
                 'reward_target_samples': int(self._cfgs.algo_cfgs.reward_target_samples),
                 'reward_critic_updates_per_update': int(

@@ -152,6 +152,24 @@ def sample_flow_base(
     return base.to(device=device, dtype=dtype)
 
 
+def sample_flow_noise(
+    action_dim: int,
+    flow_steps: int,
+    generator: torch.Generator,
+    mode: FlowMode,
+    *,
+    device: torch.device,
+    dtype: torch.dtype,
+) -> torch.Tensor:
+    """Return fixed Wiener increments or the zero-path center diagnostic."""
+    shape = (1, flow_steps, action_dim)
+    if mode == 'center-flow-diagnostic':
+        return torch.zeros(shape, device=device, dtype=dtype)
+    if mode != 'fixed-random-flow':
+        raise ValueError(f'unknown flow evaluation mode {mode!r}')
+    return torch.randn(shape, generator=generator, dtype=dtype).to(device=device)
+
+
 def checkpoint_payload(path: Path) -> dict[str, Any]:
     """Load and validate one self-describing STAR checkpoint."""
     payload = torch.load(path, map_location='cpu', weights_only=False)
@@ -215,6 +233,11 @@ def build_algorithm(  # pylint: disable=too-many-locals
     algorithm._obs_normalizer.load_state_dict(  # pylint: disable=protected-access
         payload['normalizer'],
     )
+    algorithm._last_heldout_evidence = {  # pylint: disable=protected-access
+        str(key): float(value)
+        for key, value in extra.get('last_heldout_evidence', {}).items()
+        if value is not None
+    }
     return algorithm
 
 
@@ -335,11 +358,31 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                     device=device,
                     dtype=augmented.dtype,
                 )
-                with torch.no_grad():
-                    flow = algorithm._actor_critic.flow(  # pylint: disable=protected-access
-                        augmented,
-                        base_action=base_action,
+                flow_noise = None
+                stochastic_flow = bool(getattr(algo_cfgs, 'stochastic_flow_enabled', False))
+                if stochastic_flow:
+                    flow_noise = sample_flow_noise(
+                        action_dim,
+                        int(
+                            algorithm._cfgs.model_cfgs.flow.num_steps,
+                        ),  # pylint: disable=protected-access
+                        generator,
+                        mode,
+                        device=device,
+                        dtype=augmented.dtype,
                     )
+                with torch.no_grad():
+                    if hasattr(algorithm, '_policy_flow'):
+                        flow = algorithm._policy_flow(  # pylint: disable=protected-access
+                            augmented,
+                            base_action=base_action,
+                            flow_noise=flow_noise,
+                        )
+                    else:
+                        flow = algorithm._actor_critic.flow(  # pylint: disable=protected-access
+                            augmented,
+                            base_action=base_action,
+                        )
                     action = flow.action
                     quantiles = (  # pylint: disable=protected-access
                         algorithm._actor_critic.cost_critic(augmented, action)
@@ -376,6 +419,9 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                         'action_1': float(action[0, 1].item()),
                         'base_action_0': float(base_action[0, 0].item()),
                         'base_action_1': float(base_action[0, 1].item()),
+                        'flow_noise_norm': (
+                            float(flow_noise.norm().item()) if flow_noise is not None else 0.0
+                        ),
                         'hazards_json': (
                             json.dumps(layout.get('hazards', []), separators=(',', ':'))
                             if step == 0
@@ -467,6 +513,11 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
             'uniform[-1,1], local CPU generator seeded by flow_seed_offset + evaluation_seed'
             if mode == 'fixed-random-flow'
             else 'all-zero center base action'
+        ),
+        'wiener_increment_policy': (
+            'standard normal, same local CPU generator after each base draw'
+            if mode == 'fixed-random-flow'
+            else 'all-zero center path'
         ),
         'flow_seed_offset': flow_seed_offset if mode == 'fixed-random-flow' else None,
         'episodes': len(returns),
