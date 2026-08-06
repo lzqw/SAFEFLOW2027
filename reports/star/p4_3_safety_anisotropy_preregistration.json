@@ -1,0 +1,109 @@
+{
+  "arms": {
+    "S0": {
+      "candidate_probing_enabled": false,
+      "safety_anisotropy_enabled": false,
+      "safety_inward_drift_enabled": false,
+      "stochastic_flow_enabled": true
+    },
+    "S1": {
+      "candidate_probing_enabled": false,
+      "safety_anisotropy_enabled": true,
+      "safety_inward_drift_enabled": false,
+      "stochastic_flow_enabled": true
+    },
+    "S2": {
+      "candidate_probing_enabled": false,
+      "safety_anisotropy_enabled": true,
+      "safety_inward_drift_enabled": true,
+      "stochastic_flow_enabled": true
+    }
+  },
+  "backbone": {
+    "actor_update_interval": 2,
+    "bellman_probability_enabled": true,
+    "enable_global_safety_constraint": true,
+    "probability_target_polyak": 0.005,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_polyak": 0.001,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "use_target_flow_for_reward_backup": true
+  },
+  "decision_thresholds": {
+    "boundary_states_in_band_per_seed_minimum": 32,
+    "critic_good_seeds_per_arm_minimum": 2,
+    "critic_heldout_auroc_minimum": 0.65,
+    "critic_heldout_brier_skill_strictly_positive": true,
+    "drift_cost_cvar_increase_maximum": 0.0,
+    "drift_mean_cost_increase_maximum": 0.0,
+    "goal_met_episode_rate_loss_maximum": 0.1,
+    "reference_trace_relative_error_maximum": 1e-05,
+    "s1_crossing_absolute_reduction_minimum": 0.02,
+    "s1_crossing_ratio_maximum": 0.9,
+    "s1_normal_variance_ratio_maximum": 0.85,
+    "s1_tangent_variance_ratio_minimum": 1.05,
+    "stall_ratio_increase_maximum": 0.1
+  },
+  "environment": "SafetyPointGoal1-v0",
+  "evaluation": {
+    "action_samples_per_state": 256,
+    "boundary_states_per_seed": 64,
+    "crossing_definition": "Pr[m_C(s,A_1)-m_C(s,a_boundary)>0]",
+    "external_eval_seeds": [
+      12027,
+      12028,
+      12029,
+      12030,
+      12031,
+      12032,
+      12033,
+      12034,
+      12035,
+      12036,
+      12037,
+      12038,
+      12039,
+      12040,
+      12041,
+      12042,
+      12043,
+      12044,
+      12045,
+      12046
+    ],
+    "near_boundary_definition": "lowest |F_UCB-delta_C| on held-out replay",
+    "primary_policy_randomness": "uniform base plus Gaussian flow increments"
+  },
+  "method": {
+    "boundary_sigma": 0.1,
+    "calibration_auroc_full": 0.75,
+    "calibration_brier_score_scale": 0.25,
+    "calibration_formula": "sqrt(clip((AUROC-0.5)/0.25,0,1)*exp(-BrierScore/0.25))",
+    "drift_strength": 0.2,
+    "drift_temperature": 0.05,
+    "energy_initial": 0.004,
+    "energy_target_per_action": 12.5,
+    "ensemble_disagreement_scale": 0.05,
+    "gradient_scale": 0.005,
+    "normal_variance_ratio": 0.1,
+    "reference_variance": 0.04,
+    "risk_tolerance_delta_c": 0.2,
+    "risk_ucb_beta": 0.5
+  },
+  "protocol_revision_provenance": {
+    "v1_formal_evidence_included": false,
+    "v1_queue_scope_before_stop": "S0 seed 2027 through the 5000-step engineering diagnostic only; no S1 or S2 run began",
+    "v2_restart_policy": "all nine formal runs restart from zero under one clean v2 commit"
+  },
+  "protocol_version": "p4.3-safety-anisotropy-v2",
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "status": "locked_before_v2_formal_training",
+  "total_steps": 50000
+}

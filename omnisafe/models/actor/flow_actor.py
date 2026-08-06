@@ -16,6 +16,8 @@
 
 from __future__ import annotations
 
+import math
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import torch
@@ -23,6 +25,48 @@ from torch import nn
 
 from omnisafe.typing import Activation, InitFunction
 from omnisafe.utils.model import build_mlp_network
+
+
+@dataclass
+class FlowReference:
+    """One locally constant stochastic reference evaluated at a flow midpoint."""
+
+    drift: torch.Tensor
+    noise_transform: torch.Tensor
+    normal: torch.Tensor
+    risk_ucb: torch.Tensor
+    margin: torch.Tensor
+    reliability: torch.Tensor
+    boundary_reliability: torch.Tensor
+    gradient_reliability: torch.Tensor
+    ensemble_reliability: torch.Tensor
+    calibration_reliability: torch.Tensor
+    normal_variance: torch.Tensor
+    tangent_variance: torch.Tensor
+
+
+FlowReferenceFunction = Callable[[torch.Tensor], FlowReference]
+
+
+@dataclass
+class FlowReferenceTrace:
+    """Detached reference quantities actually used along one stochastic trajectory."""
+
+    drifts: torch.Tensor
+    noise_transforms: torch.Tensor
+    noises: torch.Tensor
+    normals: torch.Tensor
+    risk_ucb: torch.Tensor
+    margins: torch.Tensor
+    reliability: torch.Tensor
+    boundary_reliability: torch.Tensor
+    gradient_reliability: torch.Tensor
+    ensemble_reliability: torch.Tensor
+    calibration_reliability: torch.Tensor
+    normal_variance: torch.Tensor
+    tangent_variance: torch.Tensor
+    normal_energy: torch.Tensor
+    tangent_energy: torch.Tensor
 
 
 @dataclass
@@ -35,6 +79,7 @@ class FlowOutput:
     velocities: torch.Tensor
     times: torch.Tensor
     kinetic_energy: torch.Tensor
+    reference: FlowReferenceTrace | None = None
 
 
 class FlowActor(nn.Module):
@@ -102,20 +147,66 @@ class FlowActor(nn.Module):
             return torch.zeros(batch_shape, device=obs.device, dtype=obs.dtype)
         return torch.empty(batch_shape, device=obs.device, dtype=obs.dtype).uniform_(-1.0, 1.0)
 
-    def forward(  # pylint: disable=too-many-locals
+    @staticmethod
+    def _validate_reference(reference: FlowReference, action: torch.Tensor) -> None:
+        """Reject malformed reference shapes without synchronizing the GPU hot path."""
+        scalar_shape = action.shape[:-1]
+        matrix_shape = (*action.shape, action.shape[-1])
+        expected = {
+            'drift': action.shape,
+            'noise_transform': matrix_shape,
+            'normal': action.shape,
+            'risk_ucb': scalar_shape,
+            'margin': scalar_shape,
+            'reliability': scalar_shape,
+            'boundary_reliability': scalar_shape,
+            'gradient_reliability': scalar_shape,
+            'ensemble_reliability': scalar_shape,
+            'calibration_reliability': scalar_shape,
+            'normal_variance': scalar_shape,
+            'tangent_variance': scalar_shape,
+        }
+        for name, shape in expected.items():
+            value = getattr(reference, name)
+            if value.shape != shape:
+                raise ValueError(f'flow reference {name} has shape {value.shape}, expected {shape}')
+
+    def forward(  # pylint: disable=too-many-locals,too-many-statements
         self,
         obs: torch.Tensor,
         deterministic: bool = False,
         base_action: torch.Tensor | None = None,
+        reference: FlowReferenceFunction | None = None,
+        flow_noise: torch.Tensor | None = None,
     ) -> FlowOutput:
-        """Integrate the midpoint ODE and retain all intermediate action-space points."""
+        """Integrate a midpoint ODE or midpoint Euler--Maruyama stochastic flow.
+
+        The learned velocity remains the controlled residual.  A supplied reference contributes
+        detached drift and covariance at every midpoint, while the returned kinetic energy is the
+        residual velocity weighted by that covariance's inverse normal/tangent variances.
+        """
         if obs.shape[-1] != self.obs_dim:
             raise ValueError(f'expected observation width {self.obs_dim}, got {obs.shape[-1]}')
+        noise_shape = (*obs.shape[:-1], self.num_steps, self.act_dim)
+        if reference is None and flow_noise is not None:
+            raise ValueError('flow noise requires a stochastic reference')
+        if flow_noise is not None and flow_noise.shape != noise_shape:
+            raise ValueError(f'flow noise has shape {flow_noise.shape}, expected {noise_shape}')
+        if reference is not None:
+            if flow_noise is None:
+                flow_noise = (
+                    torch.zeros(noise_shape, device=obs.device, dtype=obs.dtype)
+                    if deterministic
+                    else torch.randn(noise_shape, device=obs.device, dtype=obs.dtype)
+                )
+            else:
+                flow_noise = flow_noise.to(device=obs.device, dtype=obs.dtype)
         action = self.sample_base(obs, deterministic=deterministic, base_action=base_action)
         points = [action]
         velocity_points: list[torch.Tensor] = []
         velocities: list[torch.Tensor] = []
         times: list[torch.Tensor] = []
+        references: list[FlowReference] = []
         step_size = 1.0 / self.num_steps
 
         for index in range(self.num_steps):
@@ -129,14 +220,81 @@ class FlowActor(nn.Module):
             midpoint = (action + 0.5 * step_size * start_velocity).clamp(-1.0, 1.0)
             midpoint_time = start_time + 0.5 * step_size
             midpoint_velocity = self.velocity(obs, midpoint, midpoint_time)
-            action = (action + step_size * midpoint_velocity).clamp(-1.0, 1.0)
+            if reference is None:
+                action = (action + step_size * midpoint_velocity).clamp(-1.0, 1.0)
+            else:
+                local_reference = reference(midpoint)
+                self._validate_reference(local_reference, midpoint)
+                assert flow_noise is not None
+                increment = torch.matmul(
+                    local_reference.noise_transform,
+                    flow_noise[..., index, :].unsqueeze(-1),
+                ).squeeze(-1)
+                action = (
+                    action
+                    + step_size * (midpoint_velocity + local_reference.drift)
+                    + math.sqrt(step_size) * increment
+                ).clamp(-1.0, 1.0)
+                references.append(local_reference)
             velocity_points.append(midpoint)
             velocities.append(midpoint_velocity)
             times.append(midpoint_time.squeeze(-1))
             points.append(action)
 
         velocity_tensor = torch.stack(velocities, dim=-2)
-        kinetic = 0.5 * step_size * velocity_tensor.square().sum(dim=-1).sum(dim=-1)
+        reference_trace = None
+        if reference is None:
+            kinetic = 0.5 * step_size * velocity_tensor.square().sum(dim=-1).sum(dim=-1)
+        else:
+            normals = torch.stack([item.normal for item in references], dim=-2)
+            normal_variance = torch.stack(
+                [item.normal_variance for item in references],
+                dim=-1,
+            )
+            tangent_variance = torch.stack(
+                [item.tangent_variance for item in references],
+                dim=-1,
+            )
+            normal_velocity = (velocity_tensor * normals).sum(dim=-1)
+            tangent_squared = (
+                velocity_tensor.square().sum(dim=-1) - normal_velocity.square()
+            ).clamp_min(0.0)
+            normal_energy = 0.5 * step_size * normal_velocity.square() / normal_variance
+            tangent_energy = 0.5 * step_size * tangent_squared / tangent_variance
+            kinetic = (normal_energy + tangent_energy).sum(dim=-1)
+            assert flow_noise is not None
+            reference_trace = FlowReferenceTrace(
+                drifts=torch.stack([item.drift for item in references], dim=-2),
+                noise_transforms=torch.stack(
+                    [item.noise_transform for item in references],
+                    dim=-3,
+                ),
+                noises=flow_noise,
+                normals=normals,
+                risk_ucb=torch.stack([item.risk_ucb for item in references], dim=-1),
+                margins=torch.stack([item.margin for item in references], dim=-1),
+                reliability=torch.stack([item.reliability for item in references], dim=-1),
+                boundary_reliability=torch.stack(
+                    [item.boundary_reliability for item in references],
+                    dim=-1,
+                ),
+                gradient_reliability=torch.stack(
+                    [item.gradient_reliability for item in references],
+                    dim=-1,
+                ),
+                ensemble_reliability=torch.stack(
+                    [item.ensemble_reliability for item in references],
+                    dim=-1,
+                ),
+                calibration_reliability=torch.stack(
+                    [item.calibration_reliability for item in references],
+                    dim=-1,
+                ),
+                normal_variance=normal_variance,
+                tangent_variance=tangent_variance,
+                normal_energy=normal_energy,
+                tangent_energy=tangent_energy,
+            )
         return FlowOutput(
             action=action,
             points=torch.stack(points, dim=-2),
@@ -144,4 +302,5 @@ class FlowActor(nn.Module):
             velocities=velocity_tensor,
             times=torch.stack(times, dim=-1),
             kinetic_energy=kinetic,
+            reference=reference_trace,
         )
