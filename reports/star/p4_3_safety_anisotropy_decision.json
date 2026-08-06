@@ -1,0 +1,969 @@
+{
+  "arms": {
+    "S0": {
+      "pooled_conditional_wiener": {
+        "clipping_rate": 0.22894287109375,
+        "crossing_rate": 0.41796875,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": -0.005674287570400338,
+        "mean_normal_displacement": -0.12478070419213812,
+        "normal_entropy": -0.6122314489909043,
+        "normal_variance": 0.02333906348609634,
+        "predicted_unsafe_rate": 0.4277750651041667,
+        "tangent_entropy": -0.5749490527787718,
+        "tangent_variance": 0.024333412565046803,
+        "total_directional_entropy": -1.187180501769676,
+        "trace": 0.04767247600217021
+      },
+      "pooled_external": {
+        "cost_cvar_20": 116.75,
+        "goal_met_episode_rate": 0.26666666666666666,
+        "mean_cost": 37.766666666666666,
+        "mean_return": 0.7268314324566626,
+        "stall_ratio": 0.05000000000000001
+      },
+      "pooled_full_policy": {
+        "clipping_rate": 0.20855712890625,
+        "crossing_rate": 0.4146525065104167,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": -0.0069963803210460656,
+        "mean_normal_displacement": -0.16594854149298044,
+        "normal_entropy": 0.24670269573798276,
+        "normal_variance": 0.11586808698484674,
+        "predicted_unsafe_rate": 0.4234822591145833,
+        "tangent_entropy": 0.3490022501511764,
+        "tangent_variance": 0.13986007974987538,
+        "total_directional_entropy": 0.5957049458891591,
+        "trace": 0.25572816682203364
+      },
+      "pooled_local_reference": {
+        "boundary_reliability": 0.0,
+        "calibration_reliability": 0.0,
+        "ensemble_reliability": 0.0,
+        "entropy": -0.38099878081059746,
+        "entropy_advantage_vs_matched_normal_isotropic_low": 0.0,
+        "gradient_reliability": 0.0,
+        "inward_drift": 0.0,
+        "matched_normal_isotropic_low_entropy": -0.38099878081059746,
+        "normal_variance": 0.03999999910593033,
+        "reliability": 0.0,
+        "tangent_variance": 0.03999999910593033,
+        "trace": 0.07999999821186066,
+        "trace_relative_error": 2.2351741811588166e-08
+      },
+      "runs": {
+        "2027": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.049072265625,
+              "crossing_rate": 0.49237060546875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.0016106368639157154,
+              "mean_normal_displacement": -0.013058535463642329,
+              "normal_entropy": -0.4219832803984848,
+              "normal_variance": 0.02658966355920711,
+              "predicted_unsafe_rate": 0.4814453125,
+              "tangent_entropy": -0.37416150596823433,
+              "tangent_variance": 0.028507784591056406,
+              "total_directional_entropy": -0.7961447863667191,
+              "trace": 0.055097447970183566
+            },
+            "full_policy": {
+              "clipping_rate": 0.0540771484375,
+              "crossing_rate": 0.435302734375,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.002914773326665454,
+              "mean_normal_displacement": -0.10070182362687774,
+              "normal_entropy": 0.3825605691325039,
+              "normal_variance": 0.1296371354837902,
+              "predicted_unsafe_rate": 0.43121337890625,
+              "tangent_entropy": 0.4966235184312164,
+              "tangent_variance": 0.1617295421892777,
+              "total_directional_entropy": 0.8791840875637204,
+              "trace": 0.29136667819693685
+            },
+            "heldout_auroc": 0.8864551033591732,
+            "heldout_brier_skill": 0.31660836935043335,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.0,
+              "calibration_reliability": 0.0,
+              "ensemble_reliability": 0.0,
+              "entropy": -0.38099878081059746,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.0,
+              "gradient_reliability": 0.0,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.38099878081059746,
+              "normal_variance": 0.03999999910593033,
+              "reliability": 0.0,
+              "tangent_variance": 0.03999999910593033,
+              "trace": 0.07999999821186066,
+              "trace_relative_error": 2.2351741811588166e-08
+            },
+            "maximum_reference_trace_relative_error": 2.2351741811588166e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S0/seed-2027/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-11-28-44/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803119,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.005310491442284547,
+              "final_to_minimum_ratio": 1.5030687804154748,
+              "last_four": [
+                0.005913536082440987,
+                0.005739482082938775,
+                0.005494902424002066,
+                0.005310491442284547
+              ],
+              "minimum": 0.0035330994239775463,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 33.25,
+            "goal_met_episode_rate": 0.25,
+            "mean_cost": 7.75,
+            "mean_return": 0.4886487858499162,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.7770732266592262,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2027/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-11-28-44",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2028": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.335693359375,
+              "crossing_rate": 0.35198974609375,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.013802701680106111,
+              "mean_normal_displacement": -0.24308634584303945,
+              "normal_entropy": -0.8585382354607276,
+              "normal_variance": 0.020063168764950734,
+              "predicted_unsafe_rate": 0.33697509765625,
+              "tangent_entropy": -0.7199211228540949,
+              "tangent_variance": 0.02201366510436742,
+              "total_directional_entropy": -1.5784593583148225,
+              "trace": 0.04207683389156536
+            },
+            "full_policy": {
+              "clipping_rate": 0.34246826171875,
+              "crossing_rate": 0.40435791015625,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.011958197685089544,
+              "mean_normal_displacement": -0.25876815934316255,
+              "normal_entropy": 0.11443512402930905,
+              "normal_variance": 0.1031002241288661,
+              "predicted_unsafe_rate": 0.3939208984375,
+              "tangent_entropy": 0.2038675564969747,
+              "tangent_variance": 0.1300153511983808,
+              "total_directional_entropy": 0.31830268052628374,
+              "trace": 0.23311557539273053
+            },
+            "heldout_auroc": 0.9685715648854961,
+            "heldout_brier_skill": 0.8641788959503174,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.0,
+              "calibration_reliability": 0.0,
+              "ensemble_reliability": 0.0,
+              "entropy": -0.38099878081059746,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.0,
+              "gradient_reliability": 0.0,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.38099878081059746,
+              "normal_variance": 0.03999999910593033,
+              "reliability": 0.0,
+              "tangent_variance": 0.03999999910593033,
+              "trace": 0.07999999821186066,
+              "trace_relative_error": 2.2351741811588166e-08
+            },
+            "maximum_reference_trace_relative_error": 2.2351741811588166e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S0/seed-2028/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-16-00-41/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803055,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.0042118264445569365,
+              "final_to_minimum_ratio": 1.6588335611825074,
+              "last_four": [
+                0.0037538123627891763,
+                0.004095488167647272,
+                0.00431075938984286,
+                0.0042118264445569365
+              ],
+              "minimum": 0.00253902895571664,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 154.25,
+            "goal_met_episode_rate": 0.2,
+            "mean_cost": 59.4,
+            "mean_return": 1.2349381321504649,
+            "stall_ratio": 0.1
+          },
+          "final_calibration_reliability": 0.934378915353828,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2028/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-16-00-41",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2029": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.30206298828125,
+              "crossing_rate": 0.4095458984375,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.004830797895010619,
+              "mean_normal_displacement": -0.11819723126973258,
+              "normal_entropy": -0.5561728311135004,
+              "normal_variance": 0.02336435813413118,
+              "predicted_unsafe_rate": 0.46490478515625,
+              "tangent_entropy": -0.6307645295139861,
+              "tangent_variance": 0.022478787999716587,
+              "total_directional_entropy": -1.1869373606274864,
+              "trace": 0.045843146144761704
+            },
+            "full_policy": {
+              "clipping_rate": 0.2291259765625,
+              "crossing_rate": 0.404296875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.006116169951383199,
+              "mean_normal_displacement": -0.13837564150890103,
+              "normal_entropy": 0.24311239405213525,
+              "normal_variance": 0.11486690134188393,
+              "predicted_unsafe_rate": 0.4453125,
+              "tangent_entropy": 0.34651567552533824,
+              "tangent_variance": 0.12783534586196765,
+              "total_directional_entropy": 0.5896280695774735,
+              "trace": 0.2427022468764335
+            },
+            "heldout_auroc": 0.5498056569343065,
+            "heldout_brier_skill": -1.0132970809936523,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.0,
+              "calibration_reliability": 0.0,
+              "ensemble_reliability": 0.0,
+              "entropy": -0.38099878081059746,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.0,
+              "gradient_reliability": 0.0,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.38099878081059746,
+              "normal_variance": 0.03999999910593033,
+              "reliability": 0.0,
+              "tangent_variance": 0.03999999910593033,
+              "trace": 0.07999999821186066,
+              "trace_relative_error": 2.2351741811588166e-08
+            },
+            "maximum_reference_trace_relative_error": 2.2351741811588166e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S0/seed-2029/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-20-37-45/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803183,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.005075545050553046,
+              "final_to_minimum_ratio": 1.8633197897382006,
+              "last_four": [
+                0.005252374718058854,
+                0.005098178379912861,
+                0.005128294067783281,
+                0.005075545050553046
+              ],
+              "minimum": 0.00272392590821255,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 162.75,
+            "goal_met_episode_rate": 0.35,
+            "mean_cost": 46.15,
+            "mean_return": 0.45690737936960646,
+            "stall_ratio": 0.0
+          },
+          "final_calibration_reliability": 0.20274660083241872,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2029/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S0/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-20-37-45",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        }
+      }
+    },
+    "S1": {
+      "pooled_conditional_wiener": {
+        "clipping_rate": 0.2509562174479167,
+        "crossing_rate": 0.6713663736979166,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": 0.009817204165301519,
+        "mean_normal_displacement": 0.06316274699444573,
+        "normal_entropy": -0.6819672094002497,
+        "normal_variance": 0.01984034713469403,
+        "predicted_unsafe_rate": 0.6827799479166666,
+        "tangent_entropy": -0.5353549150563879,
+        "tangent_variance": 0.023443534486432327,
+        "total_directional_entropy": -1.2173221244566375,
+        "trace": 0.043283881663228385
+      },
+      "pooled_external": {
+        "cost_cvar_20": 142.0,
+        "goal_met_episode_rate": 0.5,
+        "mean_cost": 42.666666666666664,
+        "mean_return": 1.4957288045288843,
+        "stall_ratio": 0.05000000000000001
+      },
+      "pooled_full_policy": {
+        "clipping_rate": 0.24873860677083334,
+        "crossing_rate": 0.6442667643229166,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": 0.0105889046314284,
+        "mean_normal_displacement": 0.040353365586876556,
+        "normal_entropy": 0.16212012046168958,
+        "normal_variance": 0.10655343541778468,
+        "predicted_unsafe_rate": 0.64923095703125,
+        "tangent_entropy": 0.18368912885942257,
+        "tangent_variance": 0.10075720620322197,
+        "total_directional_entropy": 0.3458092493211122,
+        "trace": 0.2073106414269811
+      },
+      "pooled_local_reference": {
+        "boundary_reliability": 0.9983252693588535,
+        "calibration_reliability": 0.3628559907277425,
+        "ensemble_reliability": 0.2699434681950758,
+        "entropy": -0.3909409701202214,
+        "entropy_advantage_vs_matched_normal_isotropic_low": 0.09258524359524462,
+        "gradient_reliability": 0.8583175224096825,
+        "inward_drift": 0.0,
+        "matched_normal_isotropic_low_entropy": -0.48352621371546595,
+        "normal_variance": 0.03636847803136334,
+        "reliability": 0.10087558889063075,
+        "tangent_variance": 0.04363152012228966,
+        "trace": 0.079999998153653,
+        "trace_relative_error": 2.312784395601686e-08
+      },
+      "runs": {
+        "2027": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.37957763671875,
+              "crossing_rate": 0.8697509765625,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.019687915537360823,
+              "mean_normal_displacement": 0.06850506202317774,
+              "normal_entropy": -0.9104026677489991,
+              "normal_variance": 0.01526958458464378,
+              "predicted_unsafe_rate": 0.8875732421875,
+              "tangent_entropy": -0.6242765473512819,
+              "tangent_variance": 0.019950489418988582,
+              "total_directional_entropy": -1.534679215100281,
+              "trace": 0.03522007404535543
+            },
+            "full_policy": {
+              "clipping_rate": 0.3531494140625,
+              "crossing_rate": 0.86114501953125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.019268036428002233,
+              "mean_normal_displacement": 0.05674890661612153,
+              "normal_entropy": -0.15948306880455795,
+              "normal_variance": 0.06048999386257492,
+              "predicted_unsafe_rate": 0.8604736328125,
+              "tangent_entropy": 0.04860053312334636,
+              "tangent_variance": 0.07336185174062848,
+              "total_directional_entropy": -0.11088253568121158,
+              "trace": 0.1338518455158919
+            },
+            "heldout_auroc": null,
+            "heldout_brier_skill": null,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.9992621392011642,
+              "calibration_reliability": 0.0,
+              "ensemble_reliability": 0.16160605219192803,
+              "entropy": -0.38099878081059746,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.0,
+              "gradient_reliability": 0.812706092139706,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.38099878081059746,
+              "normal_variance": 0.03999999910593033,
+              "reliability": 0.0,
+              "tangent_variance": 0.03999999910593033,
+              "trace": 0.07999999821186066,
+              "trace_relative_error": 2.2351741811588166e-08
+            },
+            "maximum_reference_trace_relative_error": 2.2351741811588166e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S1/seed-2027/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-12-21-04/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803119,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.008463016458647325,
+              "final_to_minimum_ratio": 2.4159126117106036,
+              "last_four": [
+                0.00734142408980988,
+                0.007283235519751906,
+                0.007820631823129951,
+                0.008463016458647325
+              ],
+              "minimum": 0.0035030308702494947,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 112.25,
+            "goal_met_episode_rate": 0.45,
+            "mean_cost": 31.25,
+            "mean_return": 1.5141294674680488,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.0,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2027/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-12-21-04",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2028": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.20379638671875,
+              "crossing_rate": 0.330078125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.006833828472736059,
+              "mean_normal_displacement": -0.1402514210785739,
+              "normal_entropy": -0.5901136726657904,
+              "normal_variance": 0.02171026144424104,
+              "predicted_unsafe_rate": 0.36553955078125,
+              "tangent_entropy": -0.5128219710330242,
+              "tangent_variance": 0.0247205433624913,
+              "total_directional_entropy": -1.1029356436988147,
+              "trace": 0.04643080483947415
+            },
+            "full_policy": {
+              "clipping_rate": 0.21600341796875,
+              "crossing_rate": 0.36767578125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.006163330814160872,
+              "mean_normal_displacement": -0.20430494724132586,
+              "normal_entropy": 0.36621407070064704,
+              "normal_variance": 0.14086392911849543,
+              "predicted_unsafe_rate": 0.387939453125,
+              "tangent_entropy": 0.2577721628732682,
+              "tangent_variance": 0.11194496118696406,
+              "total_directional_entropy": 0.6239862335739152,
+              "trace": 0.2528088903054595
+            },
+            "heldout_auroc": 0.7484906965648854,
+            "heldout_brier_skill": -0.3110823631286621,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.9969759853556752,
+              "calibration_reliability": 0.5177779197692871,
+              "ensemble_reliability": 0.39713652746286243,
+              "entropy": -0.3981166825852471,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.15976228080685484,
+              "gradient_reliability": 0.8636797512881458,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.5578789633921019,
+              "normal_variance": 0.033728330163285136,
+              "reliability": 0.1742130301427096,
+              "tangent_variance": 0.04627166799036786,
+              "trace": 0.079999998153653,
+              "trace_relative_error": 2.3195752892231358e-08
+            },
+            "maximum_reference_trace_relative_error": 4.563480617697513e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S1/seed-2028/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-16-52-20/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803055,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.00438490104319062,
+              "final_to_minimum_ratio": 1.7557427669736503,
+              "last_four": [
+                0.003592754334397614,
+                0.003977497993852012,
+                0.004249696529726498,
+                0.00438490104319062
+              ],
+              "minimum": 0.002497462114423979,
+              "monotonic_divergence": true,
+              "strictly_rising_last_three_intervals": true
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 174.0,
+            "goal_met_episode_rate": 0.25,
+            "mean_cost": 44.95,
+            "mean_return": 0.6576852041744272,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.5177779142613683,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2028/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-16-52-20",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2029": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.16949462890625,
+              "crossing_rate": 0.81427001953125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.01659752543127979,
+              "mean_normal_displacement": 0.26123460003873333,
+              "normal_entropy": -0.5453852877859592,
+              "normal_variance": 0.022541195375197276,
+              "predicted_unsafe_rate": 0.79522705078125,
+              "tangent_entropy": -0.46896622678485766,
+              "tangent_variance": 0.0256595706778171,
+              "total_directional_entropy": -1.0143515145708168,
+              "trace": 0.048200766104855575
+            },
+            "full_policy": {
+              "clipping_rate": 0.17706298828125,
+              "crossing_rate": 0.7039794921875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.018662008280443843,
+              "mean_normal_displacement": 0.268616137385834,
+              "normal_entropy": 0.27962935948897966,
+              "normal_variance": 0.11830638327228371,
+              "predicted_unsafe_rate": 0.69927978515625,
+              "tangent_entropy": 0.2446946905816531,
+              "tangent_variance": 0.11696480568207335,
+              "total_directional_entropy": 0.5243240500706328,
+              "trace": 0.23527118845959194
+            },
+            "heldout_auroc": 0.8218552971576228,
+            "heldout_brier_skill": -0.5193074941635132,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.998737683519721,
+              "calibration_reliability": 0.5707900524139404,
+              "ensemble_reliability": 0.2510878249304369,
+              "entropy": -0.3937074469648197,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.11799344997887899,
+              "gradient_reliability": 0.8985667238011956,
+              "inward_drift": 0.0,
+              "matched_normal_isotropic_low_entropy": -0.5117008969436987,
+              "normal_variance": 0.03537710482487455,
+              "reliability": 0.12841373652918264,
+              "tangent_variance": 0.044622893270570785,
+              "trace": 0.07999999809544533,
+              "trace_relative_error": 2.3836037164231064e-08
+            },
+            "maximum_reference_trace_relative_error": 4.563480617697513e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S1/seed-2029/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-21-29-12/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803183,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.005321311505557969,
+              "final_to_minimum_ratio": 1.9655772606470139,
+              "last_four": [
+                0.00555584982810542,
+                0.005418842029804364,
+                0.005426304041221738,
+                0.005321311505557969
+              ],
+              "minimum": 0.0027072512549348175,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 139.75,
+            "goal_met_episode_rate": 0.8,
+            "mean_cost": 51.8,
+            "mean_return": 2.3153717419441775,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.5707900671466565,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2029/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S1/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-21-29-12",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        }
+      }
+    },
+    "S2": {
+      "pooled_conditional_wiener": {
+        "clipping_rate": 0.2159423828125,
+        "crossing_rate": 0.4949951171875,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": 0.0028310626809494957,
+        "mean_normal_displacement": -0.009956234071675377,
+        "normal_entropy": -0.6646779164486073,
+        "normal_variance": 0.019132824292325285,
+        "predicted_unsafe_rate": 0.5047607421875,
+        "tangent_entropy": -0.5300637936972766,
+        "tangent_variance": 0.023856653850780656,
+        "total_directional_entropy": -1.194741710145884,
+        "trace": 0.042989478155069115
+      },
+      "pooled_external": {
+        "cost_cvar_20": 160.91666666666666,
+        "goal_met_episode_rate": 0.5,
+        "mean_cost": 49.9,
+        "mean_return": 1.872783754134087,
+        "stall_ratio": 0.06666666666666667
+      },
+      "pooled_full_policy": {
+        "clipping_rate": 0.2164306640625,
+        "crossing_rate": 0.48431396484375,
+        "maximum_path_trace_relative_error": 0.0,
+        "mean_end_margin": 0.002182599040073304,
+        "mean_normal_displacement": -0.04704278825374786,
+        "normal_entropy": 0.13756038288651942,
+        "normal_variance": 0.09346398054185556,
+        "predicted_unsafe_rate": 0.4877115885416667,
+        "tangent_entropy": 0.15346829849850444,
+        "tangent_variance": 0.09682448768095735,
+        "total_directional_entropy": 0.29102868138502386,
+        "trace": 0.19028846829314716
+      },
+      "pooled_local_reference": {
+        "boundary_reliability": 0.9990662510196368,
+        "calibration_reliability": 0.9169897437095642,
+        "ensemble_reliability": 0.21697270986624062,
+        "entropy": -0.40568450435888065,
+        "entropy_advantage_vs_matched_normal_isotropic_low": 0.15822666566999094,
+        "gradient_reliability": 0.8285909054490427,
+        "inward_drift": 0.016690962616848992,
+        "matched_normal_isotropic_low_entropy": -0.5639111700288716,
+        "normal_variance": 0.03396494744326143,
+        "reliability": 0.16764032654464245,
+        "tangent_variance": 0.046035050763748586,
+        "trace": 0.07999999820701002,
+        "trace_relative_error": 2.2722815648393638e-08
+      },
+      "runs": {
+        "2027": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.01788330078125,
+              "crossing_rate": 0.3680419921875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.0018006238342422876,
+              "mean_normal_displacement": -0.09733436448732391,
+              "normal_entropy": -0.4721230091020605,
+              "normal_variance": 0.023238958718138747,
+              "predicted_unsafe_rate": 0.37872314453125,
+              "tangent_entropy": -0.4201135966948307,
+              "tangent_variance": 0.02565747039625421,
+              "total_directional_entropy": -0.8922366057968912,
+              "trace": 0.04889642909984104
+            },
+            "full_policy": {
+              "clipping_rate": 0.03570556640625,
+              "crossing_rate": 0.38348388671875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": -0.004207369406685757,
+              "mean_normal_displacement": -0.19248466855788138,
+              "normal_entropy": 0.26915015087194427,
+              "normal_variance": 0.10367540078004822,
+              "predicted_unsafe_rate": 0.3720703125,
+              "tangent_entropy": 0.2396602418011697,
+              "tangent_variance": 0.09841568232513964,
+              "total_directional_entropy": 0.508810392673114,
+              "trace": 0.20209108269773424
+            },
+            "heldout_auroc": 0.9993533591731267,
+            "heldout_brier_skill": 0.905670166015625,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.999199409969151,
+              "calibration_reliability": 0.9657845497131348,
+              "ensemble_reliability": 0.1271243819501251,
+              "entropy": -0.3887397745577975,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.08588816400582304,
+              "gradient_reliability": 0.7420625099912286,
+              "inward_drift": 0.009307524996984284,
+              "matched_normal_isotropic_low_entropy": -0.47462793856362057,
+              "normal_variance": 0.03663408299325965,
+              "reliability": 0.0934976689168252,
+              "tangent_variance": 0.043365915247704834,
+              "trace": 0.07999999824096449,
+              "trace_relative_error": 2.2017047760685207e-08
+            },
+            "maximum_reference_trace_relative_error": 2.2351741811588166e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S2/seed-2027/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-14-10-16/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803119,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.00424301460692659,
+              "final_to_minimum_ratio": 1.2112409978917462,
+              "last_four": [
+                0.005011562428809703,
+                0.005172512059099972,
+                0.004718845392088406,
+                0.00424301460692659
+              ],
+              "minimum": 0.0035030308702494947,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 212.25,
+            "goal_met_episode_rate": 0.45,
+            "mean_cost": 64.65,
+            "mean_return": 1.6850026824961255,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.9657845461391017,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2027/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2027/run/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-06-14-10-16",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2028": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.283203125,
+              "crossing_rate": 0.65863037109375,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.009067647048141225,
+              "mean_normal_displacement": 0.08167897893872578,
+              "normal_entropy": -0.6534667109202669,
+              "normal_variance": 0.0181631124469277,
+              "predicted_unsafe_rate": 0.655029296875,
+              "tangent_entropy": -0.5617067944652779,
+              "tangent_variance": 0.0239037122373702,
+              "total_directional_entropy": -1.2151735053855448,
+              "trace": 0.04206682468065992
+            },
+            "full_policy": {
+              "clipping_rate": 0.28411865234375,
+              "crossing_rate": 0.6007080078125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.009464184796343034,
+              "mean_normal_displacement": 0.06990921107353643,
+              "normal_entropy": 0.17049059480632348,
+              "normal_variance": 0.10175606876146048,
+              "predicted_unsafe_rate": 0.60107421875,
+              "tangent_entropy": 0.17755160640629486,
+              "tangent_variance": 0.10846295673400164,
+              "total_directional_entropy": 0.34804220121261836,
+              "trace": 0.21021902572829276
+            },
+            "heldout_auroc": 0.9092156488549618,
+            "heldout_brier_skill": 0.6505236625671387,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.9996899422258139,
+              "calibration_reliability": 0.8397574424743652,
+              "ensemble_reliability": 0.26925292797386646,
+              "entropy": -0.41150610608828175,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.1864384120627063,
+              "gradient_reliability": 0.8755585737526417,
+              "inward_drift": 0.019693792030011537,
+              "matched_normal_isotropic_low_entropy": -0.597944518150988,
+              "normal_variance": 0.03289058301015757,
+              "reliability": 0.1974837863817811,
+              "tangent_variance": 0.047109415172599256,
+              "trace": 0.07999999818275683,
+              "trace_relative_error": 2.3530446943134317e-08
+            },
+            "maximum_reference_trace_relative_error": 4.563480617697513e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S2/seed-2028/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-18-45-07/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803055,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.004025662208208814,
+              "final_to_minimum_ratio": 1.6119012116174996,
+              "last_four": [
+                0.003267530901427381,
+                0.003666900487081148,
+                0.0037021425183163957,
+                0.004025662208208814
+              ],
+              "minimum": 0.002497462114423979,
+              "monotonic_divergence": true,
+              "strictly_rising_last_three_intervals": true
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 184.75,
+            "goal_met_episode_rate": 0.4,
+            "mean_cost": 45.65,
+            "mean_return": 1.1669674938727355,
+            "stall_ratio": 0.1
+          },
+          "final_calibration_reliability": 0.8397574528594294,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2028/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-06-18-45-07",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        },
+        "2029": {
+          "audit": {
+            "conditional_wiener": {
+              "clipping_rate": 0.34674072265625,
+              "crossing_rate": 0.45831298828125,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.0012261648289495497,
+              "mean_normal_displacement": -0.014213316666428,
+              "normal_entropy": -0.8684440293234945,
+              "normal_variance": 0.015996401711909414,
+              "predicted_unsafe_rate": 0.48052978515625,
+              "tangent_entropy": -0.6083709899317213,
+              "tangent_variance": 0.022008778918717553,
+              "total_directional_entropy": -1.4768150192552159,
+              "trace": 0.038005180684706374
+            },
+            "full_policy": {
+              "clipping_rate": 0.3294677734375,
+              "crossing_rate": 0.46875,
+              "maximum_path_trace_relative_error": 0.0,
+              "mean_end_margin": 0.0012909817305626348,
+              "mean_normal_displacement": -0.018552907276898623,
+              "normal_entropy": -0.02695959701870951,
+              "normal_variance": 0.07496047208405798,
+              "predicted_unsafe_rate": 0.489990234375,
+              "tangent_entropy": 0.043193047288048764,
+              "tangent_variance": 0.08359482398373075,
+              "total_directional_entropy": 0.01623345026933926,
+              "trace": 0.15855529645341448
+            },
+            "heldout_auroc": 0.98052838740458,
+            "heldout_brier_skill": 0.8877016305923462,
+            "in_band_state_count": 64,
+            "local_reference": {
+              "boundary_reliability": 0.9983094008639455,
+              "calibration_reliability": 0.9454272389411926,
+              "ensemble_reliability": 0.2545408196747303,
+              "entropy": -0.41680763243056274,
+              "entropy_advantage_vs_matched_normal_isotropic_low": 0.20235342094144348,
+              "gradient_reliability": 0.8681516326032579,
+              "inward_drift": 0.021071570823551156,
+              "matched_normal_isotropic_low_entropy": -0.6191610533720062,
+              "normal_variance": 0.03237017632636707,
+              "reliability": 0.21193952433532104,
+              "tangent_variance": 0.04762982187094167,
+              "trace": 0.07999999819730874,
+              "trace_relative_error": 2.262095224136139e-08
+            },
+            "maximum_reference_trace_relative_error": 4.563480617697513e-08,
+            "path": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/postprocess/S2/seed-2029/audit.json",
+            "valid_normal_state_count": 64
+          },
+          "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-23-24-43/checkpoints/final_full.pt",
+          "checkpoint_bytes": 38803183,
+          "diagnostics": {
+            "maximum_reference_trace_relative_error": 0.0,
+            "reward_td": {
+              "final": 0.006973501405259594,
+              "final_to_minimum_ratio": 2.5758604387192334,
+              "last_four": [
+                0.005845489806309343,
+                0.00616133271236904,
+                0.007118937768088654,
+                0.006973501405259594
+              ],
+              "minimum": 0.0027072512549348175,
+              "monotonic_divergence": false,
+              "strictly_rising_last_three_intervals": false
+            },
+            "rows": 10
+          },
+          "external": {
+            "cost_cvar_20": 85.75,
+            "goal_met_episode_rate": 0.65,
+            "mean_cost": 39.4,
+            "mean_return": 2.7663810860334004,
+            "stall_ratio": 0.05
+          },
+          "final_calibration_reliability": 0.9454272515932699,
+          "receipt": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2029/receipt.json",
+          "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.3-v2-43f48fc/S2/seed-2029/run/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-06-23-24-43",
+          "source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+        }
+      }
+    }
+  },
+  "criteria": {
+    "anisotropic_entropy_exceeds_matched_isotropic_low": true,
+    "boundary_evidence_every_s1_s2_seed": true,
+    "critic_evidence_s1": false,
+    "critic_evidence_s2": true,
+    "no_reward_td_divergence": false,
+    "s1_crossing_reduced": false,
+    "s1_functional_stall": true,
+    "s1_functional_success": true,
+    "s1_normal_variance_reduced": false,
+    "s1_tangent_entropy_increased": true,
+    "s1_tangent_variance_preserved": false,
+    "s2_crossing_no_higher_than_s1": true,
+    "s2_cvar_no_higher_than_s1": false,
+    "s2_functional_stall": true,
+    "s2_functional_success": true,
+    "s2_mean_cost_no_higher_than_s1": false,
+    "s2_more_inward_than_s1": true,
+    "s2_stall_within_0_10_of_s1": true,
+    "s2_success_within_0_10_of_s1": true
+  },
+  "decision": "hard_stop_reward_td_divergence",
+  "external_evaluation_seeds": [
+    12027,
+    12028,
+    12029,
+    12030,
+    12031,
+    12032,
+    12033,
+    12034,
+    12035,
+    12036,
+    12037,
+    12038,
+    12039,
+    12040,
+    12041,
+    12042,
+    12043,
+    12044,
+    12045,
+    12046
+  ],
+  "final_p5_verdict": null,
+  "protocol_sha256": "a05cb7dcaaee95cdbb75e005371e07ea04cfb59e765c4f5d70b9772d8bd29430",
+  "protocol_version": "p4.3-safety-anisotropy-v2",
+  "scope": "directional three-seed mechanism screen; no significance/global-safety claim",
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "stage": "P4.3-safety-conditioned-stochastic-flow-screen",
+  "target_steps": 50000,
+  "training_source_commit": "43f48fc05c3d63f4b13d08e88b1f4af707aba7d7"
+}

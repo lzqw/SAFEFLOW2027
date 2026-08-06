@@ -1,0 +1,22 @@
+{
+  "AUROC": 0.8864551033591732,
+  "BellmanError": 0.01925412379205227,
+  "BoundarySamples": 557.0,
+  "BrierScore": 0.12611034512519836,
+  "BrierSkill": 0.31660836935043335,
+  "CalibrationError": 0.20281721651554108,
+  "CalibrationReliability": 0.7770732266592262,
+  "EnsembleDisagreement": 0.033104535192251205,
+  "Episodes": 5.0,
+  "GradientNorm": 0.017297256737947464,
+  "NegativeLabels": 3096.0,
+  "PositiveLabels": 1000.0,
+  "Transitions": 4096.0,
+  "curriculum_stage": "W2",
+  "env_steps": 50000,
+  "gate_passed": null,
+  "geometry_enabled": false,
+  "recent_episode_limit": 20,
+  "split": "heldout_episode",
+  "transition_limit": 4096
+}
