@@ -562,7 +562,7 @@ class STAR(BaseAlgo):
                 min(
                     float(algo.safety_gradient_scale),
                     float(algo.safety_ensemble_scale),
-                    float(algo.safety_calibration_brier_skill_full),
+                    float(algo.safety_calibration_brier_score_scale),
                     float(algo.safety_drift_temperature),
                 )
                 <= 0.0
@@ -811,9 +811,9 @@ class STAR(BaseAlgo):
         algo = self._cfgs.algo_cfgs
         return calibration_reliability(
             self._last_heldout_evidence.get('Heldout/AUROC'),
-            self._last_heldout_evidence.get('Heldout/BrierSkill'),
+            self._last_heldout_evidence.get('Heldout/BrierScore'),
             auroc_full=float(algo.safety_calibration_auroc_full),
-            brier_skill_full=float(algo.safety_calibration_brier_skill_full),
+            brier_score_scale=float(algo.safety_calibration_brier_score_scale),
         )
 
     def _flow_reference(
@@ -1902,10 +1902,10 @@ class STAR(BaseAlgo):
 
         heldout_calibration_reliability = calibration_reliability(
             auroc,
-            brier_skill,
+            brier_score,
             auroc_full=float(getattr(algo, 'safety_calibration_auroc_full', 0.75)),
-            brier_skill_full=float(
-                getattr(algo, 'safety_calibration_brier_skill_full', 0.05),
+            brier_score_scale=float(
+                getattr(algo, 'safety_calibration_brier_score_scale', 0.25),
             ),
         )
         evidence = {

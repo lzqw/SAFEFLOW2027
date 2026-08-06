@@ -1,8 +1,14 @@
 # STAR P4.3 safety-conditioned stochastic-flow protocol
 
-Status: **locked before any P4.3 training**
+Status: **locked before any P4.3 v2 formal training**
 
-Protocol version: `p4.3-safety-anisotropy-v1`
+Protocol version: `p4.3-safety-anisotropy-v2`
+
+Revision provenance: the v1 engineering queue was stopped after only S0 seed 2027 reached its
+5,000-step diagnostic and before any S1/S2 run began.  Inspection showed that requiring positive
+Brier skill inside the continuous reference weight could make anisotropy identically zero even
+with useful discrimination.  That engineering artifact is retained separately but is excluded
+from every v2 decision.  All nine formal runs start from zero under this sealed v2 protocol.
 
 ## Question and causal arms
 
@@ -38,12 +44,13 @@ g_B = exp(-m_C^2 / (2 sigma_B^2))
 r_grad = ||grad_a F_UCB|| / (||grad_a F_UCB|| + 0.005)
 r_ens = exp(-std_head(F) / 0.05)
 r_cal = sqrt(clip((AUROC - 0.5) / 0.25, 0, 1)
-             * clip(BrierSkill / 0.05, 0, 1))
+             * exp(-BrierScore / 0.25))
 ```
 
-`sigma_B = 0.10`.  Missing or non-finite held-out evidence sets `r_cal = 0`; weak gradients,
-ensemble disagreement, and poor calibration therefore return the policy continuously to the
-isotropic reference.  There is no binary geometry gate.
+`sigma_B = 0.10`.  Missing or non-finite held-out evidence, invalid negative Brier score, or
+chance-or-worse AUROC sets `r_cal = 0`; otherwise Brier error attenuates reliability smoothly.
+Weak gradients, ensemble disagreement, and poor calibration therefore return the policy
+continuously toward the isotropic reference.  There is no positive-Brier-skill geometry gate.
 
 The per-dimension isotropic variance is `nu_0 = 0.04`, `nu_min = 0.004`, and the total trace is
 fixed at `B = d * nu_0`:

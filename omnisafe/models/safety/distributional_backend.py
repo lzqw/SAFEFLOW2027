@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 import torch
@@ -66,26 +67,28 @@ def boundary_gate(risk: torch.Tensor, boundary: float, bandwidth: float) -> torc
 
 def calibration_reliability(
     auroc: float | None,
-    brier_skill: float | None,
+    brier_score: float | None,
     *,
     auroc_full: float = 0.75,
-    brier_skill_full: float = 0.05,
+    brier_score_scale: float = 0.25,
 ) -> float:
     """Map held-out calibration evidence continuously to ``[0, 1]``.
 
-    Missing evidence and evidence no better than an uninformative probability model map to zero.
-    The geometric mean prevents strong discrimination from hiding poor probability calibration (or
-    vice versa) without introducing a binary geometry switch.
+    Missing evidence and chance-or-worse discrimination map to zero.  Otherwise Brier error causes
+    a smooth exponential decay, so imperfect calibration weakens anisotropy without recreating the
+    old positive-skill binary gate.
     """
-    if auroc_full <= 0.5 or brier_skill_full <= 0:
+    if auroc_full <= 0.5 or brier_score_scale <= 0:
         raise ValueError('full-reliability calibration scales are invalid')
-    if auroc is None or brier_skill is None:
+    if auroc is None or brier_score is None:
         return 0.0
-    evidence = torch.tensor((auroc, brier_skill), dtype=torch.float64)
+    evidence = torch.tensor((auroc, brier_score), dtype=torch.float64)
     if not bool(torch.isfinite(evidence).all()):
         return 0.0
+    if float(brier_score) < 0.0:
+        return 0.0
     discrimination = min(max((float(auroc) - 0.5) / (auroc_full - 0.5), 0.0), 1.0)
-    calibration = min(max(float(brier_skill) / brier_skill_full, 0.0), 1.0)
+    calibration = math.exp(-float(brier_score) / brier_score_scale)
     return float((discrimination * calibration) ** 0.5)
 
 

@@ -19,7 +19,7 @@ from scripts.star.evaluate_pointgoal_checkpoints import (
 )
 
 
-PROTOCOL_VERSION = 'p4.3-safety-anisotropy-v1'
+PROTOCOL_VERSION = 'p4.3-safety-anisotropy-v2'
 DEFAULT_STATE_COUNT = 64
 DEFAULT_ACTION_SAMPLES = 256
 DEFAULT_AUDIT_SEED = 3_000_007

@@ -23,7 +23,7 @@ from omnisafe.models.safety.distributional_backend import (
 
 ROOT = Path(__file__).resolve().parents[2]
 PROTOCOL = ROOT / 'reports/star/p4_3_safety_anisotropy_preregistration.json'
-PROTOCOL_SHA256 = '271b65a6c1869de9d15cfc0037c5b0e61f7bf3864d022769dcc9ae256046e052'
+PROTOCOL_SHA256 = 'a05cb7dcaaee95cdbb75e005371e07ea04cfb59e765c4f5d70b9772d8bd29430'
 
 
 class AnalyticProbabilityCritic(nn.Module):
@@ -72,7 +72,10 @@ def test_preregistration_is_immutable_and_all_arms_share_the_bellman_critic() ->
     payload = PROTOCOL.read_bytes()
     assert hashlib.sha256(payload).hexdigest() == PROTOCOL_SHA256
     protocol = json.loads(payload)
-    assert protocol['status'] == 'locked_before_training'
+    assert protocol['status'] == 'locked_before_v2_formal_training'
+    assert protocol['protocol_version'] == 'p4.3-safety-anisotropy-v2'
+    assert protocol['protocol_revision_provenance']['v1_formal_evidence_included'] is False
+    assert protocol['method']['calibration_brier_score_scale'] == 0.25
     assert protocol['backbone']['bellman_probability_enabled'] is True
     assert protocol['seeds'] == [2027, 2028, 2029]
     assert protocol['total_steps'] == 50_000
@@ -102,9 +105,10 @@ def test_calibration_reliability_is_continuous_and_fails_isotropically() -> None
     assert calibration_reliability(None, None) == 0.0
     assert calibration_reliability(float('nan'), 0.1) == 0.0
     assert calibration_reliability(0.9, -0.1) == 0.0
-    partial = calibration_reliability(0.625, 0.025)
-    assert math.isclose(partial, 0.5)
-    assert calibration_reliability(0.75, 0.05) == 1.0
+    assert calibration_reliability(0.5, 0.0) == 0.0
+    partial = calibration_reliability(0.625, 0.25)
+    assert math.isclose(partial, math.sqrt(0.5 * math.exp(-1.0)))
+    assert calibration_reliability(0.75, 0.0) == 1.0
 
 
 def test_fixed_trace_solution_has_more_entropy_than_matched_isotropic_low() -> None:

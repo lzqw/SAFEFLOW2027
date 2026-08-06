@@ -17,8 +17,8 @@ from typing import Any
 ARMS = ('S0', 'S1', 'S2')
 SEEDS = (2027, 2028, 2029)
 TARGET_STEPS = 50_000
-PROTOCOL_VERSION = 'p4.3-safety-anisotropy-v1'
-PROTOCOL_SHA256 = '271b65a6c1869de9d15cfc0037c5b0e61f7bf3864d022769dcc9ae256046e052'
+PROTOCOL_VERSION = 'p4.3-safety-anisotropy-v2'
+PROTOCOL_SHA256 = 'a05cb7dcaaee95cdbb75e005371e07ea04cfb59e765c4f5d70b9772d8bd29430'
 EVAL_SEEDS = tuple(range(12_027, 12_047))
 EXPECTED_FLAGS = {
     'S0': (True, False, False, False),

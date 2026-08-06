@@ -80,8 +80,8 @@
   "method": {
     "boundary_sigma": 0.1,
     "calibration_auroc_full": 0.75,
-    "calibration_brier_skill_full": 0.05,
-    "calibration_formula": "sqrt(clip((AUROC-0.5)/0.25,0,1)*clip(BrierSkill/0.05,0,1))",
+    "calibration_brier_score_scale": 0.25,
+    "calibration_formula": "sqrt(clip((AUROC-0.5)/0.25,0,1)*exp(-BrierScore/0.25))",
     "drift_strength": 0.2,
     "drift_temperature": 0.05,
     "energy_initial": 0.004,
@@ -93,12 +93,17 @@
     "risk_tolerance_delta_c": 0.2,
     "risk_ucb_beta": 0.5
   },
-  "protocol_version": "p4.3-safety-anisotropy-v1",
+  "protocol_revision_provenance": {
+    "v1_formal_evidence_included": false,
+    "v1_queue_scope_before_stop": "S0 seed 2027 through the 5000-step engineering diagnostic only; no S1 or S2 run began",
+    "v2_restart_policy": "all nine formal runs restart from zero under one clean v2 commit"
+  },
+  "protocol_version": "p4.3-safety-anisotropy-v2",
   "seeds": [
     2027,
     2028,
     2029
   ],
-  "status": "locked_before_training",
+  "status": "locked_before_v2_formal_training",
   "total_steps": 50000
 }

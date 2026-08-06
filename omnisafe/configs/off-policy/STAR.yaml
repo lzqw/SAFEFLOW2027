@@ -74,7 +74,7 @@ defaults:
     safety_gradient_scale: 0.005
     safety_ensemble_scale: 0.05
     safety_calibration_auroc_full: 0.75
-    safety_calibration_brier_skill_full: 0.05
+    safety_calibration_brier_score_scale: 0.25
     safety_drift_strength: 0.20
     safety_drift_temperature: 0.05
     w3_td_error_threshold: 3.0

@@ -26,8 +26,8 @@ custom_cfgs:
     stochastic_flow_enabled: true
     safety_anisotropy_enabled: true
     safety_inward_drift_enabled: false
-    safety_protocol_version: p4.3-safety-anisotropy-v1
-    safety_protocol_sha256: 271b65a6c1869de9d15cfc0037c5b0e61f7bf3864d022769dcc9ae256046e052
+    safety_protocol_version: p4.3-safety-anisotropy-v2
+    safety_protocol_sha256: a05cb7dcaaee95cdbb75e005371e07ea04cfb59e765c4f5d70b9772d8bd29430
     risk_boundary: 0.20
     boundary_bandwidth: 0.10
     risk_ucb_beta: 0.50
@@ -36,7 +36,7 @@ custom_cfgs:
     safety_gradient_scale: 0.005
     safety_ensemble_scale: 0.05
     safety_calibration_auroc_full: 0.75
-    safety_calibration_brier_skill_full: 0.05
+    safety_calibration_brier_score_scale: 0.25
     safety_drift_strength: 0.20
     safety_drift_temperature: 0.05
     eval_milestones: [0, 50000]

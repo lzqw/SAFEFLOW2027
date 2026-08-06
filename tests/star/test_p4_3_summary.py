@@ -14,7 +14,7 @@ from scripts.star.summarize_p4_3_safety_anisotropy import summarize
 
 ROOT = Path(__file__).resolve().parents[2]
 PROTOCOL = ROOT / 'reports/star/p4_3_safety_anisotropy_preregistration.json'
-PROTOCOL_SHA = '271b65a6c1869de9d15cfc0037c5b0e61f7bf3864d022769dcc9ae256046e052'
+PROTOCOL_SHA = 'a05cb7dcaaee95cdbb75e005371e07ea04cfb59e765c4f5d70b9772d8bd29430'
 FLAGS = {
     'S0': (True, False, False, False),
     'S1': (True, True, False, False),
@@ -70,7 +70,7 @@ def make_evidence(tmp_path: Path, *, s1_normal_variance: float = 0.02) -> argpar
                 {
                     'seed': seed,
                     'p4_3_stochastic_safety_reference': {
-                        'protocol_version': 'p4.3-safety-anisotropy-v1',
+                        'protocol_version': 'p4.3-safety-anisotropy-v2',
                         'protocol_sha256': PROTOCOL_SHA,
                         'stochastic_flow_enabled': stochastic,
                         'safety_anisotropy_enabled': anisotropy,
@@ -160,7 +160,7 @@ def make_evidence(tmp_path: Path, *, s1_normal_variance: float = 0.02) -> argpar
                 audit_path,
                 {
                     'stage': 'P4.3-safety-anisotropy-heldout-audit',
-                    'protocol_version': 'p4.3-safety-anisotropy-v1',
+                    'protocol_version': 'p4.3-safety-anisotropy-v2',
                     'protocol_sha256': PROTOCOL_SHA,
                     'training_seed': seed,
                     'env_steps': 50_000,
