@@ -194,6 +194,16 @@ def _integrate_mode(  # pylint: disable=too-many-locals
         anisotropy_enabled=algorithm._safety_anisotropy_enabled(),  # pylint: disable=protected-access
         inward_drift_enabled=False,
     )
+    diagnostic_normal_reference = (
+        reference
+        if algorithm._safety_anisotropy_enabled()  # pylint: disable=protected-access
+        else algorithm._flow_reference(  # pylint: disable=protected-access
+            repeated_obs,
+            target=False,
+            anisotropy_enabled=True,
+            inward_drift_enabled=False,
+        )
+    )
     for index in range(int(actor.num_steps)):
         start_time = torch.full(
             (sample_count, 1),
@@ -214,9 +224,10 @@ def _integrate_mode(  # pylint: disable=too-many-locals
             midpoint = action
             learned_velocity = torch.zeros_like(action)
         local_reference = reference(midpoint)
-        local_normal_velocity = (learned_velocity * local_reference.normal).sum(dim=-1)
+        diagnostic_geometry = diagnostic_normal_reference(midpoint)
+        local_normal_velocity = (learned_velocity * diagnostic_geometry.normal).sum(dim=-1)
         normal_velocities.append(local_normal_velocity)
-        path_normal_valid.append(local_reference.normal.norm(dim=-1) > 0.5)
+        path_normal_valid.append(diagnostic_geometry.normal.norm(dim=-1) > 0.5)
         if spec['wiener_noise']:
             increment = torch.matmul(
                 local_reference.noise_transform,
