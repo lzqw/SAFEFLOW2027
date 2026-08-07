@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import torch
+from omnisafe.models.actor.flow_actor import rectify_outward_velocity
 from scripts.star.evaluate_pointgoal_checkpoints import (
     atomic_json,
     build_algorithm,
@@ -136,7 +137,8 @@ def _mode_metrics(
     boundary_action: torch.Tensor,
     end_margin: torch.Tensor,
     start_margin: float,
-    normal_velocity: torch.Tensor,
+    raw_normal_velocity: torch.Tensor,
+    executed_normal_velocity: torch.Tensor,
     path_normal_valid: torch.Tensor,
     clipping_events: int,
 ) -> dict[str, float]:
@@ -153,13 +155,20 @@ def _mode_metrics(
             ],
             'crossing_rate': float((end_margin > start_margin).float().mean().item()),
             'mean_normal_displacement': float(normal_displacement.mean().item()),
-            'clipping_rate': clipping_events / normal_velocity.numel(),
+            'clipping_rate': clipping_events / executed_normal_velocity.numel(),
             'final_endpoint_clipping_rate': float(
                 (final_proposal.abs() > 1.0).any(dim=-1).float().mean().item(),
             ),
-            'outward_velocity_ratio': float((normal_velocity > 0.0).float().mean().item()),
-            'outward_speed': float(normal_velocity.clamp_min(0.0).mean().item()),
-            'mean_learned_normal_velocity': float(normal_velocity.mean().item()),
+            'outward_velocity_ratio': float(
+                (executed_normal_velocity > 0.0).float().mean().item(),
+            ),
+            'outward_speed': float(executed_normal_velocity.clamp_min(0.0).mean().item()),
+            'mean_learned_normal_velocity': float(executed_normal_velocity.mean().item()),
+            'raw_outward_velocity_ratio': float(
+                (raw_normal_velocity > 0.0).float().mean().item(),
+            ),
+            'raw_outward_speed': float(raw_normal_velocity.clamp_min(0.0).mean().item()),
+            'mean_raw_learned_normal_velocity': float(raw_normal_velocity.mean().item()),
             'path_valid_normal_ratio': float(path_normal_valid.float().mean().item()),
             'mean_end_margin': float(end_margin.mean().item()),
         },
@@ -185,7 +194,8 @@ def _integrate_mode(  # pylint: disable=too-many-locals
     repeated_obs = augmented.expand(sample_count, -1)
     step_size = 1.0 / int(actor.num_steps)
     clipping_events = 0
-    normal_velocities: list[torch.Tensor] = []
+    raw_normal_velocities: list[torch.Tensor] = []
+    executed_normal_velocities: list[torch.Tensor] = []
     path_normal_valid: list[torch.Tensor] = []
     final_proposal = action
     reference = algorithm._flow_reference(  # pylint: disable=protected-access
@@ -195,7 +205,7 @@ def _integrate_mode(  # pylint: disable=too-many-locals
         inward_drift_enabled=False,
     )
     diagnostic_normal_reference = (
-        reference
+        None
         if algorithm._safety_anisotropy_enabled()  # pylint: disable=protected-access
         else algorithm._flow_reference(  # pylint: disable=protected-access
             repeated_obs,
@@ -224,9 +234,27 @@ def _integrate_mode(  # pylint: disable=too-many-locals
             midpoint = action
             learned_velocity = torch.zeros_like(action)
         local_reference = reference(midpoint)
-        diagnostic_geometry = diagnostic_normal_reference(midpoint)
-        local_normal_velocity = (learned_velocity * diagnostic_geometry.normal).sum(dim=-1)
-        normal_velocities.append(local_normal_velocity)
+        diagnostic_geometry = (
+            local_reference
+            if diagnostic_normal_reference is None
+            else diagnostic_normal_reference(midpoint)
+        )
+        executed_velocity = (
+            rectify_outward_velocity(
+                learned_velocity,
+                diagnostic_geometry.normal,
+                diagnostic_geometry.reliability,
+            )
+            if spec['learned_drift']
+            and algorithm._safety_outward_rectification_enabled()  # pylint: disable=protected-access
+            else learned_velocity
+        )
+        raw_normal_velocities.append(
+            (learned_velocity * diagnostic_geometry.normal).sum(dim=-1),
+        )
+        executed_normal_velocities.append(
+            (executed_velocity * diagnostic_geometry.normal).sum(dim=-1),
+        )
         path_normal_valid.append(diagnostic_geometry.normal.norm(dim=-1) > 0.5)
         if spec['wiener_noise']:
             increment = torch.matmul(
@@ -237,7 +265,7 @@ def _integrate_mode(  # pylint: disable=too-many-locals
             increment = torch.zeros_like(action)
         final_proposal = (
             action
-            + step_size * learned_velocity
+            + step_size * executed_velocity
             + math.sqrt(step_size) * increment
         )
         clipping_events += int((final_proposal.abs() > 1.0).any(dim=-1).sum().item())
@@ -252,7 +280,8 @@ def _integrate_mode(  # pylint: disable=too-many-locals
         boundary_action,
         end_margin,
         start_margin,
-        torch.stack(normal_velocities, dim=-1),
+        torch.stack(raw_normal_velocities, dim=-1),
+        torch.stack(executed_normal_velocities, dim=-1),
         torch.stack(path_normal_valid, dim=-1),
         clipping_events,
     )
@@ -319,7 +348,7 @@ def _mean_rows(rows: list[dict[str, float]]) -> dict[str, float]:
 
 
 def _arm_from_flags(algo_cfgs: dict[str, Any]) -> str:
-    """Map the immutable P4.3 safety flags to their preregistered arm."""
+    """Map immutable P4.3/P4.4 safety flags to their preregistered arm."""
     flags = (
         bool(algo_cfgs['stochastic_flow_enabled']),
         bool(algo_cfgs['safety_anisotropy_enabled']),
@@ -331,8 +360,21 @@ def _arm_from_flags(algo_cfgs: dict[str, Any]) -> str:
         (True, True, False, False): 'S1',
         (True, True, True, False): 'S2',
     }
+    if bool(algo_cfgs.get('complete_heldout_evidence', False)):
+        p4_4_flags = (
+            *flags,
+            bool(algo_cfgs.get('safety_outward_rectification_enabled', False)),
+            bool(algo_cfgs.get('complete_heldout_evidence', False)),
+        )
+        p4_4_arms = {
+            (True, True, False, False, False, True): 'R0',
+            (True, True, False, False, True, True): 'R1',
+        }
+        if p4_4_flags not in p4_4_arms:
+            raise ValueError(f'checkpoint flags {p4_4_flags} do not identify a P4.3/P4.4 arm')
+        return p4_4_arms[p4_4_flags]
     if flags not in arms:
-        raise ValueError(f'checkpoint flags {flags} do not identify a P4.3 arm')
+        raise ValueError(f'checkpoint flags {flags} do not identify a P4.3/P4.4 arm')
     return arms[flags]
 
 
@@ -345,16 +387,26 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
     sample_count: int = DEFAULT_ACTION_SAMPLES,
     audit_seed: int = DEFAULT_AUDIT_SEED,
 ) -> dict[str, Any]:
-    """Audit one immutable final P4.3 checkpoint and write strict JSON evidence."""
+    """Audit one immutable P4.3 final or P4.4 milestone checkpoint."""
     payload = checkpoint_payload(checkpoint)
     if payload.get('replay') is None:
         raise ValueError('P4.4 decomposition requires a full checkpoint with replay')
     resolved = payload['extra']['resolved_config']
     algo_cfgs = resolved['algo_cfgs']
-    if algo_cfgs.get('safety_protocol_version') != PARENT_PROTOCOL_VERSION:
-        raise ValueError('checkpoint is not a P4.3 preregistered run')
-    if int(payload['counters']['env_steps']) != 50_000:
-        raise ValueError('P4.4 pretraining decomposition requires the final 50k checkpoint')
+    training_protocol = str(algo_cfgs.get('safety_protocol_version'))
+    env_steps = int(payload['counters']['env_steps'])
+    if training_protocol == PARENT_PROTOCOL_VERSION:
+        if env_steps != 50_000:
+            raise ValueError('P4.4 pretraining decomposition requires the final 50k checkpoint')
+        stage = 'P4.4-pretraining-outward-decomposition'
+    elif training_protocol == PROTOCOL_VERSION:
+        if algo_cfgs.get('safety_protocol_sha256') != PROTOCOL_SHA256:
+            raise ValueError('P4.4 checkpoint has the wrong protocol seal')
+        if env_steps not in {30_000, 50_000}:
+            raise ValueError('P4.4 checkpoint audit requires a 30k or 50k milestone')
+        stage = 'P4.4-checkpoint-outward-decomposition'
+    else:
+        raise ValueError('checkpoint is not a P4.3/P4.4 preregistered run')
     arm = _arm_from_flags(algo_cfgs)
     algorithm = build_algorithm(payload, device, [12_027], work_dir)
     algorithm._actor_critic.eval()  # pylint: disable=protected-access
@@ -422,11 +474,11 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
         cosines = [float(row['cosine']) for row in valid_alignments if row['cosine'] is not None]
         negative_count = sum(value < 0.0 for value in cosines)
         result = {
-            'stage': 'P4.4-pretraining-outward-decomposition',
+            'stage': stage,
             'protocol_version': PROTOCOL_VERSION,
             'protocol_sha256': PROTOCOL_SHA256,
-            'parent_protocol_version': PARENT_PROTOCOL_VERSION,
-            'parent_protocol_sha256': str(algo_cfgs['safety_protocol_sha256']),
+            'training_protocol_version': training_protocol,
+            'training_protocol_sha256': str(algo_cfgs['safety_protocol_sha256']),
             'checkpoint': str(checkpoint),
             'checkpoint_sha256': sha256(checkpoint),
             'parent_arm': arm,
@@ -444,6 +496,12 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
                 'safety_anisotropy_enabled': bool(algo_cfgs['safety_anisotropy_enabled']),
                 'checkpoint_inward_drift_enabled': bool(
                     algo_cfgs['safety_inward_drift_enabled'],
+                ),
+                'outward_rectification_enabled': bool(
+                    algo_cfgs.get('safety_outward_rectification_enabled', False),
+                ),
+                'complete_heldout_evidence': bool(
+                    algo_cfgs.get('complete_heldout_evidence', False),
                 ),
                 'decomposition_inward_drift_enabled': False,
                 'candidate_probing_enabled': bool(algo_cfgs['candidate_probing_enabled']),

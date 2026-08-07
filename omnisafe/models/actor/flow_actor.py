@@ -75,11 +75,27 @@ class FlowOutput:
 
     action: torch.Tensor
     points: torch.Tensor
+    proposals: torch.Tensor
     velocity_points: torch.Tensor
+    raw_velocities: torch.Tensor
     velocities: torch.Tensor
     times: torch.Tensor
     kinetic_energy: torch.Tensor
     reference: FlowReferenceTrace | None = None
+
+
+def rectify_outward_velocity(
+    velocity: torch.Tensor,
+    normal: torch.Tensor,
+    reliability: torch.Tensor,
+) -> torch.Tensor:
+    """Delete only the reliability-weighted outward normal velocity component."""
+    if velocity.shape != normal.shape:
+        raise ValueError('velocity and safety normal must have identical shapes')
+    if reliability.shape != velocity.shape[:-1]:
+        raise ValueError('rectification reliability must match the velocity batch shape')
+    outward = (velocity * normal).sum(dim=-1).clamp_min(0.0)
+    return velocity - reliability.unsqueeze(-1) * outward.unsqueeze(-1) * normal
 
 
 class FlowActor(nn.Module):
@@ -178,6 +194,7 @@ class FlowActor(nn.Module):
         base_action: torch.Tensor | None = None,
         reference: FlowReferenceFunction | None = None,
         flow_noise: torch.Tensor | None = None,
+        outward_rectification_enabled: bool = False,
     ) -> FlowOutput:
         """Integrate a midpoint ODE or midpoint Euler--Maruyama stochastic flow.
 
@@ -190,6 +207,8 @@ class FlowActor(nn.Module):
         noise_shape = (*obs.shape[:-1], self.num_steps, self.act_dim)
         if reference is None and flow_noise is not None:
             raise ValueError('flow noise requires a stochastic reference')
+        if reference is None and outward_rectification_enabled:
+            raise ValueError('outward rectification requires a stochastic safety reference')
         if flow_noise is not None and flow_noise.shape != noise_shape:
             raise ValueError(f'flow noise has shape {flow_noise.shape}, expected {noise_shape}')
         if reference is not None:
@@ -203,7 +222,9 @@ class FlowActor(nn.Module):
                 flow_noise = flow_noise.to(device=obs.device, dtype=obs.dtype)
         action = self.sample_base(obs, deterministic=deterministic, base_action=base_action)
         points = [action]
+        proposals: list[torch.Tensor] = []
         velocity_points: list[torch.Tensor] = []
+        raw_velocities: list[torch.Tensor] = []
         velocities: list[torch.Tensor] = []
         times: list[torch.Tensor] = []
         references: list[FlowReference] = []
@@ -219,24 +240,38 @@ class FlowActor(nn.Module):
             start_velocity = self.velocity(obs, action, start_time)
             midpoint = (action + 0.5 * step_size * start_velocity).clamp(-1.0, 1.0)
             midpoint_time = start_time + 0.5 * step_size
-            midpoint_velocity = self.velocity(obs, midpoint, midpoint_time)
+            raw_midpoint_velocity = self.velocity(obs, midpoint, midpoint_time)
             if reference is None:
-                action = (action + step_size * midpoint_velocity).clamp(-1.0, 1.0)
+                midpoint_velocity = raw_midpoint_velocity
+                proposal = action + step_size * midpoint_velocity
+                action = proposal.clamp(-1.0, 1.0)
             else:
                 local_reference = reference(midpoint)
                 self._validate_reference(local_reference, midpoint)
+                midpoint_velocity = (
+                    rectify_outward_velocity(
+                        raw_midpoint_velocity,
+                        local_reference.normal,
+                        local_reference.reliability,
+                    )
+                    if outward_rectification_enabled
+                    else raw_midpoint_velocity
+                )
                 assert flow_noise is not None
                 increment = torch.matmul(
                     local_reference.noise_transform,
                     flow_noise[..., index, :].unsqueeze(-1),
                 ).squeeze(-1)
-                action = (
+                proposal = (
                     action
                     + step_size * (midpoint_velocity + local_reference.drift)
                     + math.sqrt(step_size) * increment
-                ).clamp(-1.0, 1.0)
+                )
+                action = proposal.clamp(-1.0, 1.0)
                 references.append(local_reference)
+            proposals.append(proposal)
             velocity_points.append(midpoint)
+            raw_velocities.append(raw_midpoint_velocity)
             velocities.append(midpoint_velocity)
             times.append(midpoint_time.squeeze(-1))
             points.append(action)
@@ -298,7 +333,9 @@ class FlowActor(nn.Module):
         return FlowOutput(
             action=action,
             points=torch.stack(points, dim=-2),
+            proposals=torch.stack(proposals, dim=-2),
             velocity_points=torch.stack(velocity_points, dim=-2),
+            raw_velocities=torch.stack(raw_velocities, dim=-2),
             velocities=velocity_tensor,
             times=torch.stack(times, dim=-1),
             kinetic_energy=kinetic,

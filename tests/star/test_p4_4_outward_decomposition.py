@@ -146,6 +146,7 @@ def test_mode_metrics_record_pre_and_post_clipping_and_outward_velocity() -> Non
         torch.tensor([0.1, -0.1, 0.0]),
         0.0,
         normal_velocity,
+        normal_velocity,
         torch.ones_like(normal_velocity, dtype=torch.bool),
         clipping_events=2,
     )

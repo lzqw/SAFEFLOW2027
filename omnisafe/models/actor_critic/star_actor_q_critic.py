@@ -195,6 +195,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         base_action: torch.Tensor | None = None,
         reference: FlowReferenceFunction | None = None,
         flow_noise: torch.Tensor | None = None,
+        outward_rectification_enabled: bool = False,
     ) -> FlowOutput:
         """Expose the actor flow through the standard module interface."""
         return self.flow(
@@ -203,6 +204,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             base_action=base_action,
             reference=reference,
             flow_noise=flow_noise,
+            outward_rectification_enabled=outward_rectification_enabled,
         )
 
     def flow(
@@ -212,6 +214,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         base_action: torch.Tensor | None = None,
         reference: FlowReferenceFunction | None = None,
         flow_noise: torch.Tensor | None = None,
+        outward_rectification_enabled: bool = False,
     ) -> FlowOutput:
         """Generate a complete flow trajectory."""
         return self.actor(
@@ -220,6 +223,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             base_action=base_action,
             reference=reference,
             flow_noise=flow_noise,
+            outward_rectification_enabled=outward_rectification_enabled,
         )
 
     def target_flow(
@@ -229,6 +233,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
         base_action: torch.Tensor | None = None,
         reference: FlowReferenceFunction | None = None,
         flow_noise: torch.Tensor | None = None,
+        outward_rectification_enabled: bool = False,
     ) -> FlowOutput:
         """Generate a reward-backup trajectory from the slowly moving target actor."""
         return self.target_actor(
@@ -237,6 +242,7 @@ class STARActorQCritic(nn.Module):  # pylint: disable=too-many-instance-attribut
             base_action=base_action,
             reference=reference,
             flow_noise=flow_noise,
+            outward_rectification_enabled=outward_rectification_enabled,
         )
 
     def step(self, augmented_obs: torch.Tensor, deterministic: bool = False) -> torch.Tensor:

@@ -116,7 +116,13 @@ LOG_KEYS = (
     'Loss/EnergyDual',
     'Critic/CostTD',
     'Critic/RewardTD',
+    'Critic/RewardQAbsMax',
+    'Critic/RewardTargetQAbsMax',
     'Critic/RewardTargetSamplingStd',
+    'Numerics/CostGradientNorm',
+    'Numerics/ViolationGradientNorm',
+    'Numerics/RewardGradientNorm',
+    'Numerics/ActorGradientNorm',
     'Critic/CalibrationError',
     'Critic/Spearman',
     'Critic/PredictedRisk',
@@ -149,6 +155,7 @@ LOG_KEYS = (
     'Heldout/NegativeLabels',
     'Heldout/Episodes',
     'Heldout/Transitions',
+    'Heldout/EvidenceSufficient',
     'Heldout/CalibrationReliability',
     'Geometry/GateActivation',
     'Geometry/CandidateGateActivation',
@@ -179,6 +186,13 @@ LOG_KEYS = (
     'Reference/HT',
     'Reference/NormalVelocity',
     'Reference/DangerousNormalVelocity',
+    'Reference/ExecutedOutwardVelocityRatio',
+    'Reference/RawNormalVelocity',
+    'Reference/RawDangerousNormalVelocity',
+    'Reference/RawOutwardVelocityRatio',
+    'Reference/ClippingRate',
+    'Reference/PreClippingVariance',
+    'Reference/PostClippingVariance',
     'Reference/InwardDrift',
     'Reference/TangentEnergy',
     'Reference/NormalEnergy',
@@ -206,6 +220,43 @@ LOG_KEYS = (
     'TotalRewardCriticUpdates',
     'Time/FPS',
     'Time/Total',
+)
+
+MAX_LOG_KEYS = frozenset(
+    {
+        'Critic/RewardQAbsMax',
+        'Critic/RewardTargetQAbsMax',
+    },
+)
+REQUIRED_FINITE_KEYS = frozenset(
+    {
+        'Loss/CostCritic',
+        'Loss/ViolationCritic',
+        'Loss/ViolationBellman',
+        'Loss/RewardCritic',
+        'Loss/Actor',
+        'Loss/EnergyDual',
+        'Critic/CostTD',
+        'Critic/RewardTD',
+        'Critic/RewardQAbsMax',
+        'Critic/RewardTargetQAbsMax',
+        'ReplayProbability/BellmanError',
+        'Numerics/CostGradientNorm',
+        'Numerics/ViolationGradientNorm',
+        'Numerics/RewardGradientNorm',
+        'Numerics/ActorGradientNorm',
+        'Actor/TerminalReward',
+        'Actor/TerminalCost',
+        'Energy/Path',
+        'Dual/Energy',
+        'Dual/GlobalSafety',
+        'Reference/Reliability',
+        'Reference/TraceRelativeError',
+        'Reference/NormalVelocity',
+        'Reference/DangerousNormalVelocity',
+        'Reference/RawNormalVelocity',
+        'Reference/RawDangerousNormalVelocity',
+    },
 )
 
 
@@ -361,6 +412,9 @@ class STAR(BaseAlgo):
     _last_log_time: float
     _run_env_steps: int
     _last_heldout_evidence: dict[str, float]
+    _last_heldout_evidence_status: str
+    _reward_td_diagnostics: list[float]
+    _hard_stop_reason: str | None
     _pending_probe_metrics: dict[str, torch.Tensor] | None
 
     def _init_env(self) -> None:
@@ -472,6 +526,9 @@ class STAR(BaseAlgo):
         self._metric_counts: dict[str, int] = {}
         self._latest_values: dict[str, float] = {}
         self._last_heldout_evidence: dict[str, float] = {}
+        self._last_heldout_evidence_status = 'insufficient_evidence'
+        self._reward_td_diagnostics: list[float] = []
+        self._hard_stop_reason = None
         self._pending_probe_metrics: dict[str, torch.Tensor] | None = None
         self._last_update_order: tuple[str, ...] = ()
         self._training_seconds = 0.0
@@ -522,6 +579,14 @@ class STAR(BaseAlgo):
             raise ValueError('Bellman probability training requires heldout_episode_period >= 2')
         if int(algo.heldout_recent_episodes) <= 0 or int(algo.heldout_eval_batch_size) <= 0:
             raise ValueError('held-out evaluation sizes must be positive')
+        heldout_minimums = (
+            int(algo.heldout_min_positive_labels),
+            int(algo.heldout_min_negative_labels),
+        )
+        if min(heldout_minimums) <= 0:
+            raise ValueError('held-out positive/negative evidence minimums must be positive')
+        if self._complete_heldout_evidence_enabled() and not self._bellman_probability_enabled():
+            raise ValueError('complete held-out evidence requires Bellman probability training')
         if self._dynamic_geometry_gate_enabled() and (
             not self._bellman_probability_enabled() or not self._local_geometry_enabled()
         ):
@@ -541,6 +606,19 @@ class STAR(BaseAlgo):
             raise ValueError('safety anisotropy requires stochastic flow')
         if self._safety_inward_drift_enabled() and not self._safety_anisotropy_enabled():
             raise ValueError('inward safety drift requires safety anisotropy')
+        if self._safety_outward_rectification_enabled() and not (
+            self._stochastic_flow_enabled()
+            and self._safety_anisotropy_enabled()
+            and self._bellman_probability_enabled()
+        ):
+            raise ValueError(
+                'outward rectification requires stochastic anisotropic Bellman probability flow',
+            )
+        if (
+            self._safety_outward_rectification_enabled()
+            and self._safety_inward_drift_enabled()
+        ):
+            raise ValueError('P4.4 outward rectification excludes safety inward drift')
         if self._safety_anisotropy_enabled() and not self._bellman_probability_enabled():
             raise ValueError('safety anisotropy requires Bellman probability training')
         if self._stochastic_flow_enabled() and (
@@ -574,6 +652,12 @@ class STAR(BaseAlgo):
                 raise ValueError('safety drift strength cannot be negative')
             if self._safety_anisotropy_enabled() and self._act_dim < 2:
                 raise ValueError('safety anisotropy requires action dimension at least two')
+        if self._numerical_hard_stops_enabled() and min(
+            float(algo.reward_td_absolute_hard_stop),
+            float(algo.reward_q_absolute_hard_stop),
+            float(algo.reward_td_final_to_minimum_ratio_hard_stop),
+        ) <= 0.0:
+            raise ValueError('P4.4 numerical hard-stop thresholds must be positive')
 
         resume_from = str(algo.resume_from)
         if resume_from:
@@ -663,6 +747,11 @@ class STAR(BaseAlgo):
                         'optimizer_access_to_heldout': False,
                         'global_dual_access_to_heldout': False,
                         'observation_normalizer_access_to_heldout': False,
+                        'complete_episode_reader': self._complete_heldout_evidence_enabled(),
+                        'recent_complete_episodes': int(
+                            self._cfgs.algo_cfgs.heldout_recent_episodes,
+                        ),
+                        'transition_limit': int(self._cfgs.algo_cfgs.heldout_eval_batch_size),
                     },
                 },
                 'p4_2_dynamic_geometry': {
@@ -706,6 +795,33 @@ class STAR(BaseAlgo):
                     'reliability': 'g_B*r_grad*r_ens*r_cal_continuous',
                     'actor_energy': '0.5*integral(u_theta^T*D_C^-1*u_theta)',
                     'inward_drift_excluded_from_actor_energy': True,
+                },
+                'p4_4_outward_rectification': {
+                    'protocol_version': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_version', ''),
+                    ),
+                    'protocol_sha256': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_sha256', ''),
+                    ),
+                    'complete_heldout_evidence': self._complete_heldout_evidence_enabled(),
+                    'minimum_positive_labels': int(
+                        self._cfgs.algo_cfgs.heldout_min_positive_labels,
+                    ),
+                    'minimum_negative_labels': int(
+                        self._cfgs.algo_cfgs.heldout_min_negative_labels,
+                    ),
+                    'outward_rectification_enabled': (
+                        self._safety_outward_rectification_enabled()
+                    ),
+                    'rectification': 'u_theta-q_C*max(0,n^T*u_theta)*n',
+                    'actor_energy': 'executed_u_rect',
+                    'numerical_hard_stops_enabled': self._numerical_hard_stops_enabled(),
+                    'reward_td_absolute_hard_stop': float(
+                        self._cfgs.algo_cfgs.reward_td_absolute_hard_stop,
+                    ),
+                    'reward_q_absolute_hard_stop': float(
+                        self._cfgs.algo_cfgs.reward_q_absolute_hard_stop,
+                    ),
                 },
                 'p4_1_correctness': {
                     'context': (
@@ -806,9 +922,27 @@ class STAR(BaseAlgo):
         """Return whether the stochastic reference also carries an inward drift."""
         return bool(getattr(self._cfgs.algo_cfgs, 'safety_inward_drift_enabled', False))
 
+    def _safety_outward_rectification_enabled(self) -> bool:
+        """Return whether learned outward normal velocity is reliability-rectified."""
+        return bool(
+            getattr(self._cfgs.algo_cfgs, 'safety_outward_rectification_enabled', False),
+        )
+
+    def _complete_heldout_evidence_enabled(self) -> bool:
+        """Return whether balanced complete held-out evidence is mandatory for geometry."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'complete_heldout_evidence', False))
+
+    def _numerical_hard_stops_enabled(self) -> bool:
+        """Return whether the locked P4.4 numerical stop rules are active."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'numerical_hard_stops_enabled', False))
+
     def _calibration_reliability(self) -> float:
         """Return the held-out-only continuous probability-critic reliability."""
         algo = self._cfgs.algo_cfgs
+        if self._complete_heldout_evidence_enabled() and not bool(
+            self._last_heldout_evidence.get('Heldout/EvidenceSufficient', 0.0),
+        ):
+            return 0.0
         return calibration_reliability(
             self._last_heldout_evidence.get('Heldout/AUROC'),
             self._last_heldout_evidence.get('Heldout/BrierScore'),
@@ -870,6 +1004,7 @@ class STAR(BaseAlgo):
         flow_noise: torch.Tensor | None = None,
         anisotropy_enabled: bool | None = None,
         inward_drift_enabled: bool | None = None,
+        outward_rectification_enabled: bool | None = None,
     ) -> Any:
         """Sample the one policy used by behavior, targets, actor learning, and evaluation."""
         flow_function = self._actor_critic.target_flow if target else self._actor_critic.flow
@@ -890,6 +1025,11 @@ class STAR(BaseAlgo):
                 inward_drift_enabled=inward_drift_enabled,
             ),
             flow_noise=flow_noise,
+            outward_rectification_enabled=(
+                self._safety_outward_rectification_enabled()
+                if outward_rectification_enabled is None
+                else outward_rectification_enabled
+            ),
         )
 
     def _global_safety_enabled(self) -> bool:
@@ -1272,10 +1412,12 @@ class STAR(BaseAlgo):
         optimizer = self._actor_critic.cost_critic_optimizer
         optimizer.zero_grad()
         loss.backward()
-        clip_grad_norm_(
+        gradient_norm = clip_grad_norm_(
             self._actor_critic.cost_critic.parameters(),
             float(self._cfgs.algo_cfgs.max_grad_norm),
         )
+        if not bool(torch.isfinite(gradient_norm)):
+            raise FloatingPointError('non-finite cost-critic gradient norm')
         optimizer.step()
 
         with torch.no_grad():
@@ -1293,6 +1435,7 @@ class STAR(BaseAlgo):
             'Loss/CostCritic': float(loss.item()),
             'Critic/CostTD': float(td_error.mean().item()),
             'Critic/Spearman': correlation,
+            'Numerics/CostGradientNorm': float(gradient_norm.item()),
         }
 
     @torch.no_grad()
@@ -1371,9 +1514,15 @@ class STAR(BaseAlgo):
             loss = mc_loss
             update_eligible = labeled
         optimizer.zero_grad()
+        gradient_norm = torch.zeros((), device=self._device)
         if bool(update_eligible.any()):
             loss.backward()
-            clip_grad_norm_(critic.parameters(), float(self._cfgs.algo_cfgs.max_grad_norm))
+            gradient_norm = clip_grad_norm_(
+                critic.parameters(),
+                float(self._cfgs.algo_cfgs.max_grad_norm),
+            )
+            if not bool(torch.isfinite(gradient_norm)):
+                raise FloatingPointError('non-finite violation-critic gradient norm')
             optimizer.step()
 
         with torch.no_grad():
@@ -1436,6 +1585,7 @@ class STAR(BaseAlgo):
             'ReplayProbability/BrierSkill': brier_skill,
             'ReplayProbability/AUROC': auroc,
             'ReplayProbability/BellmanError': bellman_error,
+            'Numerics/ViolationGradientNorm': float(gradient_norm.item()),
         }
 
     def _next_path(
@@ -1525,17 +1675,24 @@ class STAR(BaseAlgo):
         optimizer = self._actor_critic.reward_critic_optimizer
         optimizer.zero_grad()
         loss.backward()
-        clip_grad_norm_(
+        gradient_norm = clip_grad_norm_(
             self._actor_critic.reward_critic.parameters(),
             float(self._cfgs.algo_cfgs.max_grad_norm),
         )
+        if not bool(torch.isfinite(gradient_norm)):
+            raise FloatingPointError('non-finite reward-critic gradient norm')
         optimizer.step()
         self._reward_critic_update_count += 1
         td_error = 0.5 * ((first - target).abs() + (second - target).abs())
         return {
             'Loss/RewardCritic': float(loss.item()),
             'Critic/RewardTD': float(td_error.mean().item()),
+            'Critic/RewardQAbsMax': float(
+                torch.maximum(first.abs().max(), second.abs().max()).item(),
+            ),
+            'Critic/RewardTargetQAbsMax': float(target.abs().max().item()),
             'Critic/RewardTargetSamplingStd': float(sampling_std.item()),
+            'Numerics/RewardGradientNorm': float(gradient_norm.item()),
         }
 
     def _geometry(
@@ -1575,7 +1732,10 @@ class STAR(BaseAlgo):
         trace = reference.normal_variance + (self._act_dim - 1) * reference.tangent_variance
         trace_budget = self._act_dim * float(self._cfgs.algo_cfgs.flow_reference_variance)
         normal_velocity = (flow.velocities * reference.normals).sum(dim=-1)
+        raw_normal_velocity = (flow.raw_velocities * reference.normals).sum(dim=-1)
         inward_drift = -(reference.drifts * reference.normals).sum(dim=-1)
+        pre_clipping_variance = flow.proposals[:, -1].var(dim=0, unbiased=False).sum()
+        post_clipping_variance = flow.action.var(dim=0, unbiased=False).sum()
         return {
             'Reference/Reliability': float(reference.reliability.mean().item()),
             'Reference/BoundaryReliability': float(
@@ -1604,6 +1764,21 @@ class STAR(BaseAlgo):
             'Reference/DangerousNormalVelocity': float(
                 normal_velocity.clamp_min(0.0).mean().item(),
             ),
+            'Reference/ExecutedOutwardVelocityRatio': float(
+                (normal_velocity > 0.0).float().mean().item(),
+            ),
+            'Reference/RawNormalVelocity': float(raw_normal_velocity.mean().item()),
+            'Reference/RawDangerousNormalVelocity': float(
+                raw_normal_velocity.clamp_min(0.0).mean().item(),
+            ),
+            'Reference/RawOutwardVelocityRatio': float(
+                (raw_normal_velocity > 0.0).float().mean().item(),
+            ),
+            'Reference/ClippingRate': float(
+                (flow.proposals.abs() > 1.0).any(dim=-1).float().mean().item(),
+            ),
+            'Reference/PreClippingVariance': float(pre_clipping_variance.item()),
+            'Reference/PostClippingVariance': float(post_clipping_variance.item()),
             'Reference/InwardDrift': float(inward_drift.mean().item()),
             'Reference/TangentEnergy': float(reference.tangent_energy.mean().item()),
             'Reference/NormalEnergy': float(reference.normal_energy.mean().item()),
@@ -1659,10 +1834,12 @@ class STAR(BaseAlgo):
             optimizer = self._actor_critic.actor_optimizer
             optimizer.zero_grad()
             actor_loss.backward()
-            clip_grad_norm_(
+            gradient_norm = clip_grad_norm_(
                 self._actor_critic.actor.parameters(),
                 float(self._cfgs.algo_cfgs.max_grad_norm),
             )
+            if not bool(torch.isfinite(gradient_norm)):
+                raise FloatingPointError('non-finite actor gradient norm')
             optimizer.step()
 
         target_energy = float(self._cfgs.dual_cfgs.target_energy_per_action) * self._act_dim
@@ -1674,6 +1851,7 @@ class STAR(BaseAlgo):
             'Actor/TerminalCost': float(terminal_cost.mean().item()),
             'Energy/Path': float(path_energy.item()),
             'Dual/Energy': float(self._energy_dual.value.detach().item()),
+            'Numerics/ActorGradientNorm': float(gradient_norm.item()),
         }
         if self._stochastic_flow_enabled():
             return {**common_metrics, **reference_metrics}
@@ -1757,10 +1935,16 @@ class STAR(BaseAlgo):
                 reward_next_augmented_obs,
             )
             for key, value in reward_metrics.items():
-                reward_metric_sums[key] = reward_metric_sums.get(key, 0.0) + value
+                if key in MAX_LOG_KEYS:
+                    reward_metric_sums[key] = max(reward_metric_sums.get(key, 0.0), value)
+                else:
+                    reward_metric_sums[key] = reward_metric_sums.get(key, 0.0) + value
             actor_augmented_obs = reward_augmented_obs
         metrics.update(
-            {key: value / reward_updates for key, value in reward_metric_sums.items()},
+            {
+                key: value if key in MAX_LOG_KEYS else value / reward_updates
+                for key, value in reward_metric_sums.items()
+            },
         )
         actor_updated = False
         actor_interval = int(self._cfgs.algo_cfgs.actor_update_interval)
@@ -1810,9 +1994,15 @@ class STAR(BaseAlgo):
         """Accumulate only finite diagnostics for the next tabular row."""
         numeric = float(value)
         if not math.isfinite(numeric):
+            if self._numerical_hard_stops_enabled() and key in REQUIRED_FINITE_KEYS:
+                raise FloatingPointError(f'non-finite required diagnostic {key}')
             return
-        self._metric_sums[key] = self._metric_sums.get(key, 0.0) + numeric
-        self._metric_counts[key] = self._metric_counts.get(key, 0) + 1
+        if key in MAX_LOG_KEYS:
+            self._metric_sums[key] = max(self._metric_sums.get(key, 0.0), numeric)
+            self._metric_counts[key] = 1
+        else:
+            self._metric_sums[key] = self._metric_sums.get(key, 0.0) + numeric
+            self._metric_counts[key] = self._metric_counts.get(key, 0) + 1
 
     def _mean_metric(self, key: str) -> float:
         """Return interval mean or the most recent persistent value."""
@@ -1820,6 +2010,74 @@ class STAR(BaseAlgo):
         if count:
             return self._metric_sums[key] / count
         return self._latest_values.get(key, 0.0)
+
+    @staticmethod
+    def _ordinary_least_squares_slope(values: list[float]) -> float:
+        """Return the equally spaced OLS slope of a non-empty scalar sequence."""
+        if not values:
+            raise ValueError('OLS slope requires at least one value')
+        center = 0.5 * (len(values) - 1)
+        denominator = sum((index - center) ** 2 for index in range(len(values)))
+        if denominator == 0.0:
+            return 0.0
+        return sum((index - center) * value for index, value in enumerate(values)) / denominator
+
+    def _check_numerical_hard_stops(self, row: dict[str, float]) -> None:
+        """Apply and persist the locked P4.4 5k Reward-TD/Q stopping rules."""
+        if not self._numerical_hard_stops_enabled():
+            return
+        required = (
+            'Critic/RewardTD',
+            'Critic/RewardQAbsMax',
+            'Critic/RewardTargetQAbsMax',
+        )
+        values = {key: float(row[key]) for key in required}
+        if not all(math.isfinite(value) for value in values.values()):
+            reasons = ['nonfinite_required_reward_diagnostic']
+        else:
+            reasons = []
+        reward_td = values['Critic/RewardTD']
+        self._reward_td_diagnostics.append(reward_td)
+        historical_minimum = min(self._reward_td_diagnostics)
+        final_ratio = reward_td / max(historical_minimum, 1e-12)
+        last_four = self._reward_td_diagnostics[-4:]
+        last_four_slope = self._ordinary_least_squares_slope(last_four)
+        if abs(reward_td) > float(self._cfgs.algo_cfgs.reward_td_absolute_hard_stop):
+            reasons.append('reward_td_absolute_threshold_exceeded')
+        q_limit = float(self._cfgs.algo_cfgs.reward_q_absolute_hard_stop)
+        if values['Critic/RewardQAbsMax'] > q_limit:
+            reasons.append('online_reward_q_absolute_threshold_exceeded')
+        if values['Critic/RewardTargetQAbsMax'] > q_limit:
+            reasons.append('reward_target_q_absolute_threshold_exceeded')
+        ratio_limit = float(
+            self._cfgs.algo_cfgs.reward_td_final_to_minimum_ratio_hard_stop,
+        )
+        if len(last_four) == 4 and final_ratio > ratio_limit and last_four_slope > 0.0:
+            reasons.append('reward_td_ratio_and_positive_last_four_slope')
+        warning = (
+            'positive_last_four_slope_without_ratio_trigger'
+            if len(last_four) == 4 and last_four_slope > 0.0 and final_ratio <= ratio_limit
+            else None
+        )
+        status = {
+            'env_steps': self._env_steps,
+            'enabled': True,
+            'reward_td_history': self._reward_td_diagnostics,
+            'historical_minimum': historical_minimum,
+            'final': reward_td,
+            'final_to_historical_minimum_ratio': final_ratio,
+            'last_four': last_four,
+            'last_four_ols_slope': last_four_slope,
+            'online_reward_q_abs_max': values['Critic/RewardQAbsMax'],
+            'reward_target_q_abs_max': values['Critic/RewardTargetQAbsMax'],
+            'warning': warning,
+            'hard_stop_reasons': reasons,
+            'passed': not reasons,
+        }
+        _atomic_json(self._artifact_dir / 'numerical_status_latest.json', status)
+        _append_csv(self._artifact_dir / 'numerical_status.csv', status)
+        if reasons:
+            raise FloatingPointError(f"P4.4 numerical hard stop: {', '.join(reasons)}")
 
     def _heldout_probability_evidence(self) -> dict[str, float]:  # pylint: disable=too-many-locals
         """Evaluate recent episode-separated held-out data without touching any optimizer."""
@@ -1900,14 +2158,21 @@ class STAR(BaseAlgo):
                 )[0]
             gradient_norm = float(action_gradient.norm(dim=-1).mean().item())
 
-        heldout_calibration_reliability = calibration_reliability(
-            auroc,
-            brier_score,
-            auroc_full=float(getattr(algo, 'safety_calibration_auroc_full', 0.75)),
-            brier_score_scale=float(
-                getattr(algo, 'safety_calibration_brier_score_scale', 0.25),
-            ),
+        evidence_sufficient = (
+            positives >= int(algo.heldout_min_positive_labels)
+            and negatives >= int(algo.heldout_min_negative_labels)
         )
+        evidence_status = 'sufficient' if evidence_sufficient else 'insufficient_evidence'
+        heldout_calibration_reliability = 0.0
+        if evidence_sufficient or not self._complete_heldout_evidence_enabled():
+            heldout_calibration_reliability = calibration_reliability(
+                auroc,
+                brier_score,
+                auroc_full=float(getattr(algo, 'safety_calibration_auroc_full', 0.75)),
+                brier_score_scale=float(
+                    getattr(algo, 'safety_calibration_brier_score_scale', 0.25),
+                ),
+            )
         evidence = {
             'Heldout/CalibrationError': calibration_error,
             'Heldout/BrierScore': brier_score,
@@ -1921,6 +2186,7 @@ class STAR(BaseAlgo):
             'Heldout/NegativeLabels': float(negatives),
             'Heldout/Episodes': float(episodes),
             'Heldout/Transitions': float(transitions),
+            'Heldout/EvidenceSufficient': float(evidence_sufficient),
             'Heldout/CalibrationReliability': heldout_calibration_reliability,
         }
         gate_passed: bool | None = None
@@ -1946,6 +2212,8 @@ class STAR(BaseAlgo):
             'split': 'heldout_episode',
             'recent_episode_limit': int(algo.heldout_recent_episodes),
             'transition_limit': int(algo.heldout_eval_batch_size),
+            'partial_episode_allowed': False,
+            'evidence_status': evidence_status,
             'gate_passed': gate_passed,
             'curriculum_stage': self._warmup.stage,
             'geometry_enabled': self._training_geometry_enabled(),
@@ -1954,6 +2222,7 @@ class STAR(BaseAlgo):
         _append_csv(self._artifact_dir / 'heldout_probability.csv', artifact)
         _atomic_json(self._artifact_dir / 'heldout_probability_latest.json', artifact)
         self._last_heldout_evidence = evidence
+        self._last_heldout_evidence_status = evidence_status
         return evidence
 
     def _log_epoch(self, start_time: float) -> None:
@@ -1983,6 +2252,7 @@ class STAR(BaseAlgo):
             self._artifact_dir / 'diagnostics.csv',
             {'wall_time_utc': time.time(), **row},
         )
+        self._check_numerical_hard_stops(row)
         _atomic_json(
             self._artifact_dir / 'warmup_status.json',
             {
@@ -2358,6 +2628,9 @@ class STAR(BaseAlgo):
             'sample_count': requested,
             'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
             'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
+            'safety_outward_rectification_enabled': (
+                self._safety_outward_rectification_enabled()
+            ),
             'candidate_probing_enabled': self._candidate_probing_enabled(),
             'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
             'calibration_reliability': self._calibration_reliability(),
@@ -2393,6 +2666,21 @@ class STAR(BaseAlgo):
                 (-(reference.drifts * reference.normals).sum(dim=-1)).mean().item(),
             ),
             'mean_path_energy': float(flow.kinetic_energy.mean().item()),
+            'mean_raw_normal_velocity': float(
+                (flow.raw_velocities * reference.normals).sum(dim=-1).mean().item(),
+            ),
+            'mean_executed_normal_velocity': float(
+                (flow.velocities * reference.normals).sum(dim=-1).mean().item(),
+            ),
+            'clipping_rate': float(
+                (flow.proposals.abs() > 1.0).any(dim=-1).float().mean().item(),
+            ),
+            'pre_clipping_variance': float(
+                flow.proposals[:, -1].var(dim=0, unbiased=False).sum().item(),
+            ),
+            'post_clipping_variance': float(
+                flow.action.var(dim=0, unbiased=False).sum().item(),
+            ),
         }
         _atomic_json(self._artifact_dir / f'counterfactual_step_{milestone}.json', payload)
         return payload
@@ -2567,6 +2855,8 @@ class STAR(BaseAlgo):
                 'rollout_state': self._env.rollout_state(),
                 'completed_milestones': sorted(self._completed_milestones),
                 'last_heldout_evidence': dict(self._last_heldout_evidence),
+                'last_heldout_evidence_status': self._last_heldout_evidence_status,
+                'reward_td_diagnostics': list(self._reward_td_diagnostics),
             },
         )
 
@@ -2600,6 +2890,17 @@ class STAR(BaseAlgo):
             for key, value in metadata['extra'].get('last_heldout_evidence', {}).items()
             if value is not None
         }
+        self._last_heldout_evidence_status = str(
+            metadata['extra'].get(
+                'last_heldout_evidence_status',
+                'sufficient'
+                if bool(self._last_heldout_evidence.get('Heldout/EvidenceSufficient', 0.0))
+                else 'insufficient_evidence',
+            ),
+        )
+        self._reward_td_diagnostics = [
+            float(value) for value in metadata['extra'].get('reward_td_diagnostics', [])
+        ]
         self._buf.reset_pending_episodes()
         if not metadata['has_replay'] and self._env_steps < int(self._cfgs.train_cfgs.total_steps):
             raise ValueError('training resume requires a full STAR checkpoint with replay')
@@ -2694,11 +2995,28 @@ class STAR(BaseAlgo):
                     self._checkpoint_dir / 'final_full.pt',
                     include_replay=True,
                 )
+        except FloatingPointError as error:
+            self._hard_stop_reason = str(error)
+            _atomic_json(
+                self._artifact_dir / 'numerical_hard_stop.json',
+                {
+                    'env_steps': self._env_steps,
+                    'updates': self._update_count,
+                    'reason': self._hard_stop_reason,
+                },
+            )
+            raise
         finally:
             self._training_seconds = time.monotonic() - started
             self._run_env_steps = self._env_steps - starting_env_steps
             summary = {
-                'status': 'completed' if self._env_steps >= total_steps else 'interrupted',
+                'status': (
+                    'hard_stopped'
+                    if self._hard_stop_reason is not None
+                    else 'completed'
+                    if self._env_steps >= total_steps
+                    else 'interrupted'
+                ),
                 'environment': self._env_id,
                 'seed': self._seed,
                 'env_steps': self._env_steps,
@@ -2727,6 +3045,14 @@ class STAR(BaseAlgo):
                 'stochastic_flow_enabled': self._stochastic_flow_enabled(),
                 'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
                 'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
+                'safety_outward_rectification_enabled': (
+                    self._safety_outward_rectification_enabled()
+                ),
+                'complete_heldout_evidence': self._complete_heldout_evidence_enabled(),
+                'heldout_evidence_status': self._last_heldout_evidence_status,
+                'numerical_hard_stops_enabled': self._numerical_hard_stops_enabled(),
+                'numerical_hard_stop_reason': self._hard_stop_reason,
+                'reward_td_diagnostics': self._reward_td_diagnostics,
                 'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
                 'flow_reference_variance': float(
                     getattr(self._cfgs.algo_cfgs, 'flow_reference_variance', 0.0),

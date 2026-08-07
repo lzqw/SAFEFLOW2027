@@ -488,7 +488,7 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
         recent_episodes: int = 20,
         batch_size: int | None = None,
     ) -> dict[str, torch.Tensor]:
-        """Return finalized transitions from the most recent held-out episodes only."""
+        """Return recent complete held-out episodes without transition-level truncation."""
         if recent_episodes <= 0:
             raise ValueError('recent held-out episode count must be positive')
         if batch_size is not None and batch_size <= 0:
@@ -505,12 +505,17 @@ class STARReplayBuffer:  # pylint: disable=too-many-instance-attributes
             raise RuntimeError('no finalized held-out episode is resident')
         episode_ids = self.data['episode_id'][indices]
         selected_ids = torch.unique(episode_ids, sorted=True)[-recent_episodes:]
+        if batch_size is not None:
+            counts = torch.stack([(episode_ids == episode_id).sum() for episode_id in selected_ids])
+            while selected_ids.numel() > 1 and int(counts.sum().item()) > batch_size:
+                selected_ids = selected_ids[1:]
+                counts = counts[1:]
+            if int(counts.sum().item()) > batch_size:
+                raise RuntimeError('most recent complete held-out episode exceeds transition limit')
         selected = (episode_ids.unsqueeze(1) == selected_ids.unsqueeze(0)).any(dim=1)
         indices = indices[selected]
         order = torch.argsort(self.data['episode_id'][indices] * self.capacity + indices)
         indices = indices[order]
-        if batch_size is not None:
-            indices = indices[-batch_size:]
         target_device = torch.device(device)
         batch = {
             key: value[indices].to(target_device, non_blocking=self._pin_memory)

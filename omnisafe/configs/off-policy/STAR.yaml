@@ -56,6 +56,9 @@ defaults:
     heldout_episode_period: 5
     heldout_recent_episodes: 20
     heldout_eval_batch_size: 2048
+    complete_heldout_evidence: False
+    heldout_min_positive_labels: 256
+    heldout_min_negative_labels: 256
     dynamic_geometry_gate: False
     geometry_enable_passes: 3
     geometry_disable_failures: 2
@@ -67,6 +70,7 @@ defaults:
     stochastic_flow_enabled: False
     safety_anisotropy_enabled: False
     safety_inward_drift_enabled: False
+    safety_outward_rectification_enabled: False
     safety_protocol_version: ""
     safety_protocol_sha256: ""
     flow_reference_variance: 0.04
@@ -77,6 +81,10 @@ defaults:
     safety_calibration_brier_score_scale: 0.25
     safety_drift_strength: 0.20
     safety_drift_temperature: 0.05
+    numerical_hard_stops_enabled: False
+    reward_td_absolute_hard_stop: 0.02
+    reward_q_absolute_hard_stop: 10.0
+    reward_td_final_to_minimum_ratio_hard_stop: 3.0
     w3_td_error_threshold: 3.0
     w3_calibration_threshold: 0.35
     w3_valid_gradient_threshold: 0.10
