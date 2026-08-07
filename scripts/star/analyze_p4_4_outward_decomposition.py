@@ -179,7 +179,7 @@ def _integrate_mode(  # pylint: disable=too-many-locals
 ) -> dict[str, float]:
     """Integrate one explicitly toggled drift/noise/clipping decomposition mode."""
     spec = MODE_SPECS[mode]
-    actor = algorithm._actor_critic.flow  # pylint: disable=protected-access
+    actor = algorithm._actor_critic.actor  # pylint: disable=protected-access
     device = algorithm._device  # pylint: disable=protected-access
     action = boundary_action.expand(sample_count, -1).clone()
     repeated_obs = augmented.expand(sample_count, -1)
@@ -381,7 +381,7 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
             generator = torch.Generator(device='cpu')
             generator.manual_seed(audit_seed + state_index)
             common_noise = torch.randn(
-                (sample_count, int(algorithm._actor_critic.flow.num_steps), action_dim),  # pylint: disable=protected-access
+                (sample_count, int(algorithm._actor_critic.actor.num_steps), action_dim),  # pylint: disable=protected-access
                 generator=generator,
             ).to(device=algorithm._device, dtype=boundary_action.dtype)  # pylint: disable=protected-access
             state_record: dict[str, Any] = {
@@ -425,7 +425,7 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
             'state_count': state_count,
             'action_samples_per_state': sample_count,
             'audit_seed': audit_seed,
-            'flow_steps': int(algorithm._actor_critic.flow.num_steps),  # pylint: disable=protected-access
+            'flow_steps': int(algorithm._actor_critic.actor.num_steps),  # pylint: disable=protected-access
             'selection': selection,
             'valid_fixed_normal_state_count': valid_fixed_normals,
             'flags': {
