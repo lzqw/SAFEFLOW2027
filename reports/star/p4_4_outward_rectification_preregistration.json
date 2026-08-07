@@ -1,0 +1,199 @@
+{
+  "arms": {
+    "R0": {
+      "candidate_probing_enabled": false,
+      "complete_heldout_evidence": true,
+      "safety_anisotropy_enabled": true,
+      "safety_inward_drift_enabled": false,
+      "safety_outward_rectification_enabled": false,
+      "stochastic_flow_enabled": true
+    },
+    "R1": {
+      "candidate_probing_enabled": false,
+      "complete_heldout_evidence": true,
+      "safety_anisotropy_enabled": true,
+      "safety_inward_drift_enabled": false,
+      "safety_outward_rectification_enabled": true,
+      "stochastic_flow_enabled": true
+    }
+  },
+  "backbone": {
+    "actor_update_interval": 2,
+    "bellman_probability_enabled": true,
+    "enable_global_safety_constraint": true,
+    "probability_target_polyak": 0.005,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_polyak": 0.001,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "use_target_flow_for_reward_backup": true
+  },
+  "base_commit": "59b3493d4a69435e63c0d81bbc77121803912c91",
+  "decomposition_audit": {
+    "action_samples_per_state": 256,
+    "audit_seed": 4000007,
+    "clipping_rate_definition": "fraction of flow steps whose proposed endpoint has any component outside [-1,1]",
+    "cost_normal": "gradient of mean-head expected distributional Q_C",
+    "critic_alignment": {
+      "epsilon": 1e-08,
+      "negative_fraction_block_threshold": 0.5,
+      "valid_states_per_checkpoint_minimum": 32
+    },
+    "crossing_definition": "Pr[F_UCB(s,A_1)-delta_C > F_UCB(s,a_boundary)-delta_C]",
+    "modes": {
+      "A": {
+        "action_clipping": false,
+        "learned_drift": false,
+        "wiener_noise": true
+      },
+      "B": {
+        "action_clipping": true,
+        "learned_drift": false,
+        "wiener_noise": true
+      },
+      "C": {
+        "action_clipping": true,
+        "learned_drift": true,
+        "wiener_noise": false
+      },
+      "D": {
+        "action_clipping": true,
+        "learned_drift": true,
+        "wiener_noise": true
+      }
+    },
+    "near_boundary_definition": "lowest |F_UCB-delta_C| on finalized held-out replay with stable replay-index tie break",
+    "parent_arms": [
+      "S0",
+      "S1",
+      "S2"
+    ],
+    "parent_checkpoint_steps": 50000,
+    "parent_seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "safety_reference_inward_drift": false,
+    "state_count": 64
+  },
+  "environment": "SafetyPointGoal1-v0",
+  "excluded": [
+    "modify_p4_3_reports_or_decision",
+    "distributional_probability_critic",
+    "candidate_probing",
+    "second_order_hessian",
+    "forced_inward_drift",
+    "additional_normal_penalty",
+    "new_environment",
+    "training_beyond_50000_steps",
+    "five_seeds",
+    "shapo_four_environment_suite",
+    "paper_or_method_edits"
+  ],
+  "expansion": {
+    "authorized_only_if_pilot_passes": true,
+    "new_seed_runs": [
+      2027,
+      2029
+    ],
+    "seed_2028_policy": "continue_30k_checkpoints_in_place_without_restart",
+    "target_steps": 50000
+  },
+  "external_evaluation": {
+    "flow_randomness": "uniform base plus standard-normal Wiener increments",
+    "seeds": [
+      12027,
+      12028,
+      12029,
+      12030,
+      12031,
+      12032,
+      12033,
+      12034,
+      12035,
+      12036,
+      12037,
+      12038,
+      12039,
+      12040,
+      12041,
+      12042,
+      12043,
+      12044,
+      12045,
+      12046
+    ]
+  },
+  "formal_thresholds": {
+    "heldout_auroc_minimum": 0.65,
+    "heldout_brier_skill_strictly_positive": true,
+    "heldout_good_seeds_per_arm_minimum": 2,
+    "r1_cost_cvar_ratio_maximum": 1.0,
+    "r1_mean_cost_ratio_maximum": 1.0,
+    "r1_outward_speed_strictly_lower": true,
+    "r1_pooled_crossing_strictly_lower": true,
+    "r1_success_loss_maximum": 0.1,
+    "r1_tangent_variance_ratio_minimum": 0.95
+  },
+  "heldout": {
+    "episode_period": 5,
+    "evidence_status_insufficient": "insufficient_evidence",
+    "evidence_status_sufficient": "sufficient",
+    "geometry_reliability_when_insufficient": 0.0,
+    "minimum_negative_labels": 256,
+    "minimum_positive_labels": 256,
+    "optimizer_access": false,
+    "partial_episode_allowed": false,
+    "recent_complete_episodes": 20,
+    "training_batch_metrics_may_activate_geometry": false,
+    "transition_limit": 20000
+  },
+  "method": {
+    "calibration_formula": "sqrt(clip((AUROC-0.5)/0.25,0,1)*exp(-BrierScore/0.25))",
+    "control_energy_velocity": "u_rect",
+    "inward_drift": 0.0,
+    "normal_variance_ratio": 0.1,
+    "outward_rectification": "u_rect=u_theta-q_C*max(0,n^T*u_theta)*n",
+    "reference_variance": 0.04,
+    "risk_tolerance_delta_c": 0.2,
+    "risk_ucb_beta": 0.5
+  },
+  "parent": {
+    "decision": "hard_stop_reward_td_divergence",
+    "decision_commit": "59b3493d4a69435e63c0d81bbc77121803912c91",
+    "reports_immutable": true
+  },
+  "pilot": {
+    "arms": [
+      "R0",
+      "R1"
+    ],
+    "execution": "sequential_on_single_rtx3090",
+    "seed": 2028,
+    "target_steps": 30000,
+    "thresholds": {
+      "heldout_requires_both_label_classes": true,
+      "r1_cost_cvar_ratio_maximum": 1.1,
+      "r1_crossing_ratio_maximum": 0.9,
+      "r1_mean_cost_ratio_maximum": 1.0,
+      "r1_outward_speed_ratio_maximum": 0.5,
+      "r1_stall_increase_maximum": 0.1,
+      "r1_success_loss_maximum": 0.1,
+      "r1_tangent_variance_ratio_minimum": 0.95
+    }
+  },
+  "protocol_version": "p4.4-outward-rectification-v1",
+  "reward_numerical_hard_stops": {
+    "any_nonfinite_required_value": true,
+    "final_to_historical_minimum_ratio": 3.0,
+    "last_four_ols_slope_must_also_be_positive": true,
+    "reward_q_absolute_maximum": 10.0,
+    "reward_target_q_absolute_maximum": 10.0,
+    "reward_td_absolute_maximum": 0.02,
+    "strictly_rising_last_four_alone_is_hard_stop": false
+  },
+  "status": "locked_before_pilot_training"
+}
