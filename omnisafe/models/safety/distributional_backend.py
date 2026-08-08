@@ -22,6 +22,7 @@ from dataclasses import dataclass
 import torch
 
 from omnisafe.models.actor.flow_actor import FlowOutput, FlowReference
+from omnisafe.models.critic.distributional_cost_critic import DistributionalCostCritic
 from omnisafe.models.critic.violation_probability_critic import ViolationProbabilityCritic
 
 
@@ -124,6 +125,129 @@ def gaussian_directional_entropies(
     return normal_entropy, tangent_entropy
 
 
+def normalized_directional_loss(
+    velocity: torch.Tensor,
+    normal: torch.Tensor,
+    weight: torch.Tensor,
+    epsilon: float = 1e-8,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Return the detached-geometry outward-direction ratio and its two moments."""
+    if velocity.shape != normal.shape or weight.shape != velocity.shape[:-1]:
+        raise ValueError('directional loss tensors have incompatible shapes')
+    if epsilon <= 0:
+        raise ValueError('directional loss epsilon must be positive')
+    detached_normal = normal.detach()
+    detached_weight = weight.detach().clamp_min(0.0)
+    outward = (velocity * detached_normal).sum(dim=-1).clamp_min(0.0)
+    numerator = (detached_weight * outward.square()).mean()
+    denominator = (detached_weight * velocity.square().sum(dim=-1)).mean()
+    return numerator / (denominator + epsilon), numerator, denominator
+
+
+# pylint: disable-next=too-many-arguments,too-many-locals
+def compute_cost_stochastic_reference(
+    critic: DistributionalCostCritic | None,
+    augmented_obs: torch.Tensor,
+    action: torch.Tensor,
+    remaining_budget_ratio: torch.Tensor,
+    *,
+    anisotropy_enabled: bool,
+    cost_limit: float,
+    boundary_bandwidth: float = 0.1,
+    reference_variance: float = 0.04,
+    normal_variance_ratio: float = 0.1,
+    gradient_scale: float = 0.005,
+    ensemble_scale: float = 0.05,
+    epsilon: float = 1e-8,
+) -> FlowReference:
+    """Build a Q-cost-normal stochastic reference without probability-critic policy access."""
+    if cost_limit <= 0.0:
+        raise ValueError('cost geometry requires a positive cost limit')
+    if min(boundary_bandwidth, gradient_scale, ensemble_scale, epsilon) <= 0.0:
+        raise ValueError('cost-geometry scales must be positive')
+    if remaining_budget_ratio.shape != action.shape[:-1]:
+        raise ValueError('remaining-budget ratio must match the action batch shape')
+    action_dim = action.shape[-1]
+    scalar_shape = action.shape[:-1]
+    zeros = torch.zeros(scalar_shape, device=action.device, dtype=action.dtype)
+    ones = torch.ones_like(zeros)
+    normal = torch.zeros_like(action)
+    cost_score = zeros
+    margin = zeros
+    safety_band_weight = zeros
+    gradient_reliability = zeros
+    gradient_norm = zeros
+    ensemble_reliability = zeros
+
+    if anisotropy_enabled:
+        if critic is None:
+            raise ValueError('Q-cost anisotropy requires a distributional cost critic')
+        if action_dim < 2:
+            raise ValueError('Q-cost anisotropy requires at least two action dimensions')
+        parameter_flags = [parameter.requires_grad for parameter in critic.parameters()]
+        critic.requires_grad_(False)
+        try:
+            with torch.enable_grad():
+                local_action = action.detach().requires_grad_(True)
+                head_cost = critic.expected_cost(augmented_obs.detach(), local_action)
+                mean_cost = head_cost.mean(dim=0)
+                cost_score_graph = mean_cost / cost_limit
+                gradient = torch.autograd.grad(cost_score_graph.sum(), local_action)[0]
+        finally:
+            for parameter, flag in zip(critic.parameters(), parameter_flags):
+                parameter.requires_grad_(flag)
+        cost_score = cost_score_graph.detach()
+        margin = cost_score - remaining_budget_ratio.detach()
+        gradient = gradient.detach()
+        gradient_norm = gradient.norm(dim=-1)
+        normal = gradient / gradient_norm.unsqueeze(-1).clamp_min(epsilon)
+        safety_band_weight = torch.exp(
+            -0.5 * (margin / boundary_bandwidth).square(),
+        )
+        gradient_reliability = gradient_norm / (gradient_norm + gradient_scale)
+        normalized_disagreement = head_cost.std(dim=0, unbiased=False).detach() / cost_limit
+        ensemble_reliability = torch.exp(-normalized_disagreement / ensemble_scale)
+
+    reliability = (safety_band_weight * gradient_reliability * ensemble_reliability).clamp(0.0, 1.0)
+    if anisotropy_enabled:
+        normal_variance, tangent_variance = fixed_trace_variances(
+            reliability,
+            action_dim,
+            reference_variance,
+            normal_variance_ratio,
+        )
+    else:
+        normal_variance = torch.full_like(zeros, reference_variance)
+        tangent_variance = torch.full_like(zeros, reference_variance)
+
+    identity = torch.eye(action_dim, device=action.device, dtype=action.dtype).expand(
+        *scalar_shape,
+        action_dim,
+        action_dim,
+    )
+    normal_projection = normal.unsqueeze(-1) * normal.unsqueeze(-2)
+    tangent_projection = identity - normal_projection
+    noise_transform = (
+        tangent_variance.sqrt().unsqueeze(-1).unsqueeze(-1) * tangent_projection
+        + normal_variance.sqrt().unsqueeze(-1).unsqueeze(-1) * normal_projection
+    )
+    return FlowReference(
+        drift=torch.zeros_like(action),
+        noise_transform=noise_transform.detach(),
+        normal=normal.detach(),
+        risk_ucb=cost_score.detach(),
+        margin=margin.detach(),
+        reliability=reliability.detach(),
+        boundary_reliability=safety_band_weight.detach(),
+        gradient_reliability=gradient_reliability.detach(),
+        gradient_norm=gradient_norm.detach(),
+        ensemble_reliability=ensemble_reliability.detach(),
+        calibration_reliability=ones,
+        normal_variance=normal_variance.detach(),
+        tangent_variance=tangent_variance.detach(),
+    )
+
+
 # pylint: disable-next=too-many-arguments,too-many-locals
 def compute_stochastic_reference(
     critic: ViolationProbabilityCritic | None,
@@ -166,6 +290,7 @@ def compute_stochastic_reference(
     boundary_reliability = zeros
     gradient_reliability = zeros
     ensemble_reliability = zeros
+    gradient_norm = zeros
 
     if anisotropy_enabled:
         if critic is None:
@@ -240,6 +365,7 @@ def compute_stochastic_reference(
         reliability=reliability.detach(),
         boundary_reliability=boundary_reliability.detach(),
         gradient_reliability=gradient_reliability.detach(),
+        gradient_norm=gradient_norm.detach(),
         ensemble_reliability=ensemble_reliability.detach(),
         calibration_reliability=calibration_tensor.detach(),
         normal_variance=normal_variance.detach(),

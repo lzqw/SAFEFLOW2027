@@ -132,6 +132,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-branches
     )
     if args.eval_milestones:
         milestones = parse_int_list(args.eval_milestones)
+    elif custom.get('algo_cfgs', {}).get('eval_milestones') is not None:
+        milestones = [int(value) for value in custom['algo_cfgs']['eval_milestones']]
     elif steps >= 300_000 and env_id == 'SafetyPointGoal1-v0':
         milestones = [0, 50_000, 100_000, 200_000, 300_000]
     else:

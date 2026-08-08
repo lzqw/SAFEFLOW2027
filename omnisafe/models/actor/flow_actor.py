@@ -39,6 +39,7 @@ class FlowReference:
     reliability: torch.Tensor
     boundary_reliability: torch.Tensor
     gradient_reliability: torch.Tensor
+    gradient_norm: torch.Tensor
     ensemble_reliability: torch.Tensor
     calibration_reliability: torch.Tensor
     normal_variance: torch.Tensor
@@ -61,6 +62,7 @@ class FlowReferenceTrace:  # pylint: disable=too-many-instance-attributes
     reliability: torch.Tensor
     boundary_reliability: torch.Tensor
     gradient_reliability: torch.Tensor
+    gradient_norm: torch.Tensor
     ensemble_reliability: torch.Tensor
     calibration_reliability: torch.Tensor
     normal_variance: torch.Tensor
@@ -177,6 +179,7 @@ class FlowActor(nn.Module):
             'reliability': scalar_shape,
             'boundary_reliability': scalar_shape,
             'gradient_reliability': scalar_shape,
+            'gradient_norm': scalar_shape,
             'ensemble_reliability': scalar_shape,
             'calibration_reliability': scalar_shape,
             'normal_variance': scalar_shape,
@@ -315,6 +318,10 @@ class FlowActor(nn.Module):
                 ),
                 gradient_reliability=torch.stack(
                     [item.gradient_reliability for item in references],
+                    dim=-1,
+                ),
+                gradient_norm=torch.stack(
+                    [item.gradient_norm for item in references],
                     dim=-1,
                 ),
                 ensemble_reliability=torch.stack(

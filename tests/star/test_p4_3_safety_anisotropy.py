@@ -61,6 +61,7 @@ def _constant_reference(
         reliability=scalar,
         boundary_reliability=scalar,
         gradient_reliability=scalar,
+        gradient_norm=scalar,
         ensemble_reliability=scalar,
         calibration_reliability=scalar,
         normal_variance=torch.full_like(scalar, normal_variance),

@@ -55,6 +55,7 @@ def _reference(action: torch.Tensor, reliability: float) -> FlowReference:
         reliability=torch.full_like(scalar, reliability),
         boundary_reliability=scalar,
         gradient_reliability=scalar,
+        gradient_norm=scalar,
         ensemble_reliability=scalar,
         calibration_reliability=torch.full_like(scalar, reliability),
         normal_variance=normal_variance,
