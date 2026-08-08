@@ -1,0 +1,38 @@
+bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+postprocess watcher starting at 2026-08-08T21:49:17Z
+audits for seed 2027 starting at 2026-08-08T21:49:17Z
+audits for seed 2027 completed at 2026-08-08T21:49:33Z
+audits for seed 2028 starting at 2026-08-08T21:49:33Z
+audits for seed 2028 completed at 2026-08-08T21:49:49Z
+audits for seed 2029 starting at 2026-08-08T21:49:49Z
+audits for seed 2029 completed at 2026-08-08T21:50:06Z
+Traceback (most recent call last):
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 89, in finite_number
+    number = float(value)
+             ^^^^^^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 643, in <module>
+    main()
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 631, in main
+    result = summarize(args)
+             ^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 538, in summarize
+    runs = {key: _validate_run(*key, run_paths[key], audit_paths[key]) for key in sorted(run_paths)}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 538, in <dictcomp>
+    runs = {key: _validate_run(*key, run_paths[key], audit_paths[key]) for key in sorted(run_paths)}
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 309, in _validate_run
+    checkpoint_rows.append(_checkpoint_metrics(payload, arm, seed))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 178, in _checkpoint_metrics
+    'cost_spearman': finite_number(payload['spearman'], 'spearman'),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 91, in finite_number
+    raise ValueError(f'{location} is not numeric: {value!r}') from error
+ValueError: spearman is not numeric: None
+postprocess exit=1 at 2026-08-08T21:50:07Z

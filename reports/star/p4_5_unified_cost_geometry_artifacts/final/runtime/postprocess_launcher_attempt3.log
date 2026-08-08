@@ -1,0 +1,22 @@
+bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+postprocess watcher starting at 2026-08-08T21:54:53Z
+audits for seed 2027 starting at 2026-08-08T21:54:53Z
+audits for seed 2027 completed at 2026-08-08T21:55:09Z
+audits for seed 2028 starting at 2026-08-08T21:55:09Z
+audits for seed 2028 completed at 2026-08-08T21:55:26Z
+audits for seed 2029 starting at 2026-08-08T21:55:26Z
+audits for seed 2029 completed at 2026-08-08T21:55:42Z
+{"classification": "safety_benefit_with_performance_cost", "output_dir": "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary"}
+{
+  "plots": [
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_return_success.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_cost_cvar_training_cost.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_geometry.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_critic_scales.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12027.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12036.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12046.png"
+  ]
+}
+postprocess completed at 2026-08-08T21:55:48Z
+postprocess exit=0 at 2026-08-08T21:55:48Z
