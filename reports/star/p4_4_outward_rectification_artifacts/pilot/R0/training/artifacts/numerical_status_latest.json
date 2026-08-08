@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "env_steps": 30000,
+  "final": 0.003199820241588168,
+  "final_to_historical_minimum_ratio": 1.2812287414122325,
+  "hard_stop_reasons": [],
+  "historical_minimum": 0.002497462114423979,
+  "last_four": [
+    0.002497462114423979,
+    0.002593139642989263,
+    0.0032704317515948786,
+    0.003199820241588168
+  ],
+  "last_four_ols_slope": 0.00027843664900981823,
+  "online_reward_q_abs_max": 0.9305609464645386,
+  "passed": true,
+  "reward_target_q_abs_max": 0.9409869313240051,
+  "reward_td_history": [
+    0.005045104409762038,
+    0.00275551628152607,
+    0.002497462114423979,
+    0.002593139642989263,
+    0.0032704317515948786,
+    0.003199820241588168
+  ],
+  "warning": "positive_last_four_slope_without_ratio_trigger"
+}

@@ -1,0 +1,177 @@
+{
+  "arms": {
+    "R0": {
+      "audit": {
+        "heldout_auroc": 0.688043875,
+        "heldout_brier_skill": 0.0940026044845581,
+        "heldout_evidence_sufficient": true,
+        "mode_D": {
+          "clipping_rate": 0.0543670654296875,
+          "crossing_rate": 0.51519775390625,
+          "final_endpoint_clipping_rate": 0.06793212890625,
+          "mean_end_margin": -0.0007151056825023261,
+          "mean_learned_normal_velocity": 0.027718562545487657,
+          "mean_normal_displacement": 0.029974484932608902,
+          "mean_raw_learned_normal_velocity": 0.027718562545487657,
+          "normal_variance": 0.02514818902272964,
+          "outward_speed": 0.1094960437058603,
+          "outward_velocity_ratio": 0.5270843505859375,
+          "path_valid_normal_ratio": 1.0,
+          "pre_clipping_normal_variance": 0.025882922956952825,
+          "pre_clipping_tangent_variance": 0.0375722796889022,
+          "pre_clipping_total_empirical_variance": 0.06345520232571289,
+          "raw_outward_speed": 0.1094960437058603,
+          "raw_outward_velocity_ratio": 0.5270843505859375,
+          "tangent_variance": 0.03658866533078253,
+          "total_empirical_variance": 0.061736854317132384
+        },
+        "path": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/postprocess/R0/audit.json"
+      },
+      "external": {
+        "cost_cvar_20": 310.25,
+        "goal_met_episode_rate": 0.35,
+        "mean_cost": 104.25,
+        "mean_return": 0.9097449285685169,
+        "stall_ratio": 0.05
+      },
+      "run": {
+        "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R0/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-11-03-40/checkpoints/final_full.pt",
+        "checkpoint_bytes": 27123823,
+        "diagnostics": {
+          "final_to_historical_minimum_ratio": 1.2812287414122325,
+          "hard_stop_reasons": [],
+          "historical_minimum": 0.002497462114423979,
+          "last_four_ols_slope": 0.00027843664900981823,
+          "maximum_online_reward_q_abs": 0.9305609464645386,
+          "maximum_reward_target_q_abs": 0.9409869313240051,
+          "passed": true,
+          "path": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R0/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-11-03-40/artifacts/diagnostics.csv",
+          "reward_td": [
+            0.005045104409762038,
+            0.00275551628152607,
+            0.002497462114423979,
+            0.002593139642989263,
+            0.0032704317515948786,
+            0.003199820241588168
+          ],
+          "rows": 6
+        },
+        "heldout_evidence_status": "sufficient",
+        "heldout_has_both_classes": true,
+        "heldout_negative_labels": 4000,
+        "heldout_positive_labels": 2000,
+        "receipt": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R0/seed-2028/receipt.json",
+        "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R0/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-11-03-40",
+        "source_commit": "9ba6250f44d008631612c25ffe01c4f3d35fe008"
+      }
+    },
+    "R1": {
+      "audit": {
+        "heldout_auroc": 0.75242425,
+        "heldout_brier_skill": 0.3119487762451172,
+        "heldout_evidence_sufficient": true,
+        "mode_D": {
+          "clipping_rate": 0.0662841796875,
+          "crossing_rate": 0.64227294921875,
+          "final_endpoint_clipping_rate": 0.0826416015625,
+          "mean_end_margin": 0.0004443121479198453,
+          "mean_learned_normal_velocity": 0.09535401127504883,
+          "mean_normal_displacement": 0.10661369583249325,
+          "mean_raw_learned_normal_velocity": 0.1490778727079487,
+          "normal_variance": 0.02626466912624892,
+          "outward_speed": 0.1705851416249402,
+          "outward_velocity_ratio": 0.6713409423828125,
+          "path_valid_normal_ratio": 1.0,
+          "pre_clipping_normal_variance": 0.027230594598222524,
+          "pre_clipping_tangent_variance": 0.0383660746156238,
+          "pre_clipping_total_empirical_variance": 0.065596669097431,
+          "raw_outward_speed": 0.22430900378685692,
+          "raw_outward_velocity_ratio": 0.6713409423828125,
+          "tangent_variance": 0.03683120479399804,
+          "total_empirical_variance": 0.06309587393479887
+        },
+        "path": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/postprocess/R1/audit.json"
+      },
+      "external": {
+        "cost_cvar_20": 307.0,
+        "goal_met_episode_rate": 0.3,
+        "mean_cost": 115.85,
+        "mean_return": 0.5749001832495203,
+        "stall_ratio": 0.05
+      },
+      "run": {
+        "checkpoint": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R1/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-12-09-51/checkpoints/final_full.pt",
+        "checkpoint_bytes": 27123823,
+        "diagnostics": {
+          "final_to_historical_minimum_ratio": 1.3100132997370733,
+          "hard_stop_reasons": [],
+          "historical_minimum": 0.002497462114423979,
+          "last_four_ols_slope": 0.0003000031521788335,
+          "maximum_online_reward_q_abs": 0.9367443323135376,
+          "maximum_reward_target_q_abs": 0.9446319341659546,
+          "passed": true,
+          "path": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R1/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-12-09-51/artifacts/diagnostics.csv",
+          "reward_td": [
+            0.005045104409762038,
+            0.00275551628152607,
+            0.002497462114423979,
+            0.002593139642989263,
+            0.0032704317515948786,
+            0.003271708585484885
+          ],
+          "rows": 6
+        },
+        "heldout_evidence_status": "sufficient",
+        "heldout_has_both_classes": true,
+        "heldout_negative_labels": 4000,
+        "heldout_positive_labels": 2000,
+        "receipt": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R1/seed-2028/receipt.json",
+        "run_dir": "/root/autodl-tmp/SAFE/experiments/p4.4-pilot-9ba6250/R1/seed-2028/run/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-07-12-09-51",
+        "source_commit": "9ba6250f44d008631612c25ffe01c4f3d35fe008"
+      }
+    }
+  },
+  "criteria": {
+    "r0_heldout_has_both_classes": true,
+    "r0_numerically_stable": true,
+    "r1_crossing_reduced_by_at_least_ten_percent": false,
+    "r1_cvar_within_ratio": true,
+    "r1_heldout_has_both_classes": true,
+    "r1_mean_cost_no_higher_than_r0": false,
+    "r1_numerically_stable": true,
+    "r1_outward_speed_reduced_by_at_least_half": false,
+    "r1_stall_within_0_10_of_r0": true,
+    "r1_success_within_0_10_of_r0": true,
+    "r1_tangent_variance_preserved": true
+  },
+  "decision": "stop_after_seed_2028_pilot",
+  "expansion_authorized": false,
+  "external_evaluation_seeds": [
+    12027,
+    12028,
+    12029,
+    12030,
+    12031,
+    12032,
+    12033,
+    12034,
+    12035,
+    12036,
+    12037,
+    12038,
+    12039,
+    12040,
+    12041,
+    12042,
+    12043,
+    12044,
+    12045,
+    12046
+  ],
+  "protocol_sha256": "005c42348a22f664448c688b3cecc16eba7cbbea55d7727537caeef5d3b69457",
+  "protocol_version": "p4.4-outward-rectification-v1",
+  "seed": 2028,
+  "stage": "P4.4-seed-2028-pilot-screen",
+  "target_steps": 30000,
+  "training_source_commit": "9ba6250f44d008631612c25ffe01c4f3d35fe008"
+}

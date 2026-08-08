@@ -11,3 +11,6 @@
 
 # Archive sealed STAR P4.3 CSVs byte-for-byte without line-ending conversion.
 reports/star/p4_3_safety_anisotropy_artifacts/**/*.csv binary -eol
+
+# Archive sealed STAR P4.4 pilot CSVs byte-for-byte without line-ending conversion.
+reports/star/p4_4_outward_rectification_artifacts/pilot/**/*.csv binary -eol
