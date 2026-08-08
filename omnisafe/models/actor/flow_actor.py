@@ -28,7 +28,7 @@ from omnisafe.utils.model import build_mlp_network
 
 
 @dataclass
-class FlowReference:
+class FlowReference:  # pylint: disable=too-many-instance-attributes
     """One locally constant stochastic reference evaluated at a flow midpoint."""
 
     drift: torch.Tensor

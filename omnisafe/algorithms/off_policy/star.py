@@ -3460,7 +3460,7 @@ class STAR(BaseAlgo):
             include_replay=False,
         )
 
-    def learn(self) -> tuple[float, float, float]:
+    def learn(self) -> tuple[float, float, float]:  # pylint: disable=too-many-branches
         """Run STAR collection, ordered UTD-one updates, milestones, and atomic recovery."""
         self._logger.log('INFO: Start STAR route-A training')
         started = time.monotonic()
@@ -3526,9 +3526,7 @@ class STAR(BaseAlgo):
                 'status': (
                     'hard_stopped'
                     if self._hard_stop_reason is not None
-                    else 'completed'
-                    if self._env_steps >= total_steps
-                    else 'interrupted'
+                    else 'completed' if self._env_steps >= total_steps else 'interrupted'
                 ),
                 'environment': self._env_id,
                 'seed': self._seed,

@@ -320,7 +320,7 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
                 inward_drift_enabled=False,
             )(replay_action)
             normal = local.normal[0]
-            valid_normal = bool(normal.norm().item() > 0.5)
+            valid_normal = normal.norm().item() > 0.5
             valid_normals += int(valid_normal)
             generator = torch.Generator(device='cpu')
             generator.manual_seed(audit_seed + state_index)

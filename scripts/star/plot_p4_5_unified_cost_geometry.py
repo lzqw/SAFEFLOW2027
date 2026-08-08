@@ -12,10 +12,11 @@ from pathlib import Path
 from typing import Any
 
 import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
 
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt  # pylint: disable=wrong-import-position
-from matplotlib.patches import Circle  # pylint: disable=wrong-import-position
 
 
 ARMS = ('C0', 'C1')

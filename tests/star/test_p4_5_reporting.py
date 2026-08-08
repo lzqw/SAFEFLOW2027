@@ -7,10 +7,7 @@ import csv
 import json
 from pathlib import Path
 
-from scripts.star.plot_p4_5_unified_cost_geometry import (
-    plot_learning_curves,
-    plot_trajectories,
-)
+from scripts.star.plot_p4_5_unified_cost_geometry import plot_learning_curves, plot_trajectories
 from scripts.star.summarize_p4_5_unified_cost_geometry import _classification
 
 
