@@ -1,0 +1,81 @@
+{
+  "assessment_scope": "minimum-mechanism",
+  "criteria_by_seed": {
+    "2027": {
+      "completed_without_crash": true,
+      "cost_within_budget": true,
+      "dangerous_normal_velocity_reduced": false,
+      "external_auroc_above_065": true,
+      "external_brier_skill_positive": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": true,
+      "no_stall": false,
+      "replay_auroc_above_065": true,
+      "replay_brier_skill_positive": true,
+      "tangent_variance_preserved": true
+    },
+    "2028": {
+      "completed_without_crash": true,
+      "cost_within_budget": false,
+      "dangerous_normal_velocity_reduced": false,
+      "external_auroc_above_065": true,
+      "external_brier_skill_positive": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": false,
+      "no_stall": false,
+      "replay_auroc_above_065": true,
+      "replay_brier_skill_positive": true,
+      "tangent_variance_preserved": true
+    },
+    "2029": {
+      "completed_without_crash": true,
+      "cost_within_budget": true,
+      "dangerous_normal_velocity_reduced": false,
+      "external_auroc_above_065": false,
+      "external_brier_skill_positive": false,
+      "final_warmup_evidence_passed": false,
+      "mean_goal_met_positive": false,
+      "no_stall": false,
+      "replay_auroc_above_065": true,
+      "replay_brier_skill_positive": true,
+      "tangent_variance_preserved": true
+    }
+  },
+  "final_p4_verdict": null,
+  "observed_seed_count": 3,
+  "observed_seed_criteria_satisfied": {
+    "2027": false,
+    "2028": false,
+    "2029": false
+  },
+  "required_seed_count": 3,
+  "risk_metric_namespaces": {
+    "external": {
+      "available": true,
+      "criteria": [
+        "external_auroc_above_065",
+        "external_brier_skill_positive"
+      ],
+      "source": "fixed-random-flow checkpoint evaluation"
+    },
+    "held_out": {
+      "available": false,
+      "criteria": [],
+      "reason": "P4.1 did not implement an episode-separated held-out split",
+      "source": null
+    },
+    "replay": {
+      "available": true,
+      "criteria": [
+        "replay_auroc_above_065",
+        "replay_brier_skill_positive"
+      ],
+      "source": "full replay checkpoint audit"
+    }
+  },
+  "seed_pass": null,
+  "status": "completed",
+  "target_steps": 100000,
+  "total_estimated_cost_cny": 9.655441903429395,
+  "total_training_seconds": 23438.66268698126
+}

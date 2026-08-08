@@ -1,0 +1,29 @@
+{
+  "end_to_end_fps": 23.332064478714706,
+  "env_steps": 20000,
+  "environment": "Walker2d-v4",
+  "geometry_activation_step": null,
+  "last_update_order": [
+    "distributional_cost_critic",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ],
+  "replay": {
+    "boundary": 0.0,
+    "failure": 0.02345,
+    "normal": 0.97655
+  },
+  "run_env_steps": 20000,
+  "seed": 2027,
+  "status": "completed",
+  "training_seconds": 857.1894706636667,
+  "updates": 18000,
+  "violation_ratio": 0.02345,
+  "warmup_stage": "W2"
+}

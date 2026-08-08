@@ -1,0 +1,6 @@
+env_id: Walker2d-v4
+custom_cfgs:
+  algo_cfgs:
+    w3_boundary_samples_threshold: 32
+  lagrange_cfgs:
+    cost_limit: 0.0

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "completed_after_summary_fix",
+  "recorded_at_utc": "2026-08-04T12:04:03Z",
+  "initial_pipeline": {
+    "analysis_commit": "fd03cc046d489e2157f6885ccfb674277f9b68e2",
+    "receipt": "../postprocess_initial_failure.json",
+    "status": "failed",
+    "completed_at_utc": "2026-08-04T11:55:24.262421+00:00"
+  },
+  "root_cause": "The strict summarizer attempted int(None) for seed 2028, which legitimately remained in W2 with geometry_activation_step=null.",
+  "recovery": {
+    "summary_commit": "ff62e5d9d663acc627b7ddc79fa77030ad0d55a3",
+    "training_rerun": false,
+    "gpu_evaluation_rerun": false,
+    "replay_audit_rerun": false,
+    "mechanism_export_rerun": false,
+    "cpu_summary_rerun": true,
+    "reused_checkpoint_evaluations": 15,
+    "reused_replay_audits": 3,
+    "reused_mechanism_exports": 3,
+    "outputs": [
+      "pointgoal_evaluation_runs.csv",
+      "pointgoal_evaluation_summary.csv",
+      "pointgoal_mechanism_summary.csv",
+      "pointgoal_p4_verdict.json"
+    ]
+  },
+  "verification": {
+    "server_star_tests": "42 passed in 23.93s",
+    "github_source_commit_checks": "Python 3.8, 3.9, 3.10 tests and lint passed"
+  }
+}

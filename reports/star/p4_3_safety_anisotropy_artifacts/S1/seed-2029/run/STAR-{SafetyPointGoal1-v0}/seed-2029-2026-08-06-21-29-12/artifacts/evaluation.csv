@@ -1,0 +1,3 @@
+milestone,episodes,mean_return,mean_cost,cost_cvar_20,violation_ratio,calibration_error,brier_score,brier_skill,auroc,spearman,goals_per_episode_mean,stall_ratio,mean_start_end_displacement,mean_step_displacement,mean_path_length,mean_action_norm
+0,0,0.0,0.0,0.0,0.0,nan,nan,nan,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0
+50000,0,0.0,0.0,0.0,0.0,nan,nan,nan,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0

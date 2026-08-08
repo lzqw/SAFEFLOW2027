@@ -1,0 +1,338 @@
+#!/usr/bin/env python3
+"""Audit PointGoal replay risk calibration and conservative-boundary coverage."""
+
+# This standalone checkpoint reader intentionally shares reconstruction logic with the
+# mechanism renderer so either artifact command can be reproduced independently.
+# pylint: disable=duplicate-code
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import math
+import os
+from pathlib import Path
+from typing import Any
+
+import matplotlib.pyplot as plt
+import torch
+
+import omnisafe
+from omnisafe.common.buffer.star_replay_buffer import BOUNDARY
+from omnisafe.models.critic.violation_probability_critic import (
+    binary_auroc,
+    binary_brier_score,
+    binary_brier_skill,
+)
+from omnisafe.models.safety.distributional_backend import boundary_gate
+from omnisafe.utils.star_validation import (
+    boundary_score_rows,
+    calibration_rows,
+    checkpoint_reconstruction_config,
+    deterministic_indices,
+    spearman,
+)
+
+
+plt.switch_backend('Agg')
+
+
+def atomic_json(path: Path, payload: dict[str, Any]) -> None:
+    """Write an audit receipt atomically."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
+    temporary.write_text(f'{json.dumps(payload, indent=2, sort_keys=True)}\n', encoding='utf-8')
+    os.replace(temporary, path)
+
+
+def atomic_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) -> None:
+    """Write one compact evidence table atomically."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
+    with temporary.open('w', encoding='utf-8', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    os.replace(temporary, path)
+
+
+def checkpoint_metadata(path: Path) -> dict[str, Any]:
+    """Read reconstruction fields and verify that replay is present."""
+    payload = torch.load(path, map_location='cpu', weights_only=False)
+    if payload.get('format') != 'star-checkpoint' or payload.get('version') != 1:
+        raise ValueError(f'{path} is not a STAR checkpoint')
+    if payload.get('replay') is None:
+        raise ValueError('replay calibration requires a full checkpoint with replay')
+    if not any(key.startswith('violation_critic.') for key in payload['model']):
+        raise ValueError('P4.1 replay calibration requires the independent probability head')
+    return {
+        'env_steps': int(payload['counters']['env_steps']),
+        'environment': str(payload['extra']['environment']),
+        'seed': int(payload['extra']['seed']),
+        'replay_capacity': int(payload['replay']['capacity']),
+        'replay_size': int(payload['replay']['size']),
+        'reconstruction_cfgs': checkpoint_reconstruction_config(payload),
+    }
+
+
+def build_algorithm(
+    checkpoint: Path,
+    metadata: dict[str, Any],
+    device: str,
+    work_dir: Path,
+) -> Any:
+    """Restore the trained model, normalizer, and compact resident replay."""
+    batch_size = max(1, min(256, metadata['replay_capacity'] - 1))
+    custom = metadata['reconstruction_cfgs']
+    custom['seed'] = metadata['seed']
+    custom['train_cfgs'] = {
+        'device': device,
+        'torch_threads': 1,
+        'vector_env_nums': 1,
+        'parallel': 1,
+        'total_steps': metadata['env_steps'],
+        'eval_episodes': 0,
+    }
+    algo_cfgs = custom.setdefault('algo_cfgs', {})
+    algo_cfgs.update(
+        {
+            'steps_per_epoch': max(1, metadata['env_steps']),
+            'size': metadata['replay_capacity'],
+            'batch_size': batch_size,
+            'eval_milestones': [],
+            'resume_from': str(checkpoint),
+            'milestone_checkpoints': False,
+            'checkpoint_replay': False,
+        },
+    )
+    custom['logger_cfgs'] = {
+        'log_dir': str(work_dir),
+        'use_tensorboard': False,
+        'use_wandb': False,
+    }
+    wrapper = omnisafe.Agent('STAR', metadata['environment'], custom_cfgs=custom)
+    return wrapper.agent
+
+
+@torch.no_grad()
+def infer_replay(  # pylint: disable=too-many-locals
+    algorithm: Any,
+    indices: torch.Tensor,
+    chunk_size: int,
+) -> dict[str, torch.Tensor]:
+    """Infer critic risk and expected cost on an unbiased resident replay subset."""
+    buffer = algorithm._buf  # pylint: disable=protected-access
+    device = algorithm._device  # pylint: disable=protected-access
+    algo_cfgs = algorithm._cfgs.algo_cfgs  # pylint: disable=protected-access
+    outputs: dict[str, list[torch.Tensor]] = {'predicted_risk': [], 'risk_ucb': [], 'cost': []}
+    for start in range(0, indices.numel(), chunk_size):
+        selected = indices[start : start + chunk_size]
+        raw_obs = buffer.data['obs'][selected].to(device)
+        context = buffer.data['context'][selected].to(device)
+        augmented = algorithm._augment(raw_obs, context)  # pylint: disable=protected-access
+        action = buffer.data['action'][selected].to(device)
+        quantiles = algorithm._actor_critic.cost_critic(  # pylint: disable=protected-access
+            augmented,
+            action,
+        )
+        probability_critic = (  # pylint: disable=protected-access
+            algorithm._actor_critic.violation_critic
+        )
+        if probability_critic is None:
+            raise RuntimeError('P4.1 probability critic is unavailable')
+        heads = probability_critic.probabilities(augmented, action)
+        mean_risk = heads.mean(dim=0)
+        outputs['predicted_risk'].append(mean_risk.cpu())
+        risk_ucb = (
+            mean_risk + float(algo_cfgs.risk_ucb_beta) * heads.std(dim=0, unbiased=False)
+        ).clamp(0.0, 1.0)
+        outputs['risk_ucb'].append(risk_ucb.cpu())
+        outputs.setdefault('boundary_score', []).append(
+            boundary_gate(
+                risk_ucb,
+                float(algo_cfgs.risk_boundary),
+                float(algo_cfgs.boundary_bandwidth),
+            ).cpu(),
+        )
+        outputs['cost'].append(quantiles.mean(dim=-1).mean(dim=0).cpu())
+    result = {key: torch.cat(value) for key, value in outputs.items()}
+    for key in (
+        'empirical_cost_to_go',
+        'violation_label',
+        'risk_threshold',
+        'category',
+        'source_random',
+        'is_failure',
+    ):
+        result[key] = buffer.data[key][indices].clone()
+    return result
+
+
+def plot_calibration(
+    path: Path,
+    rows: list[dict[str, Any]],
+    predicted: torch.Tensor,
+    empirical: torch.Tensor,
+) -> None:
+    """Render a reliability diagram and label-conditional risk histogram."""
+    figure, axes = plt.subplots(1, 2, figsize=(10.5, 4.4), constrained_layout=True)
+    valid_rows = [row for row in rows if row['count']]
+    axes[0].plot([0, 1], [0, 1], color='black', linestyle='--', label='ideal')
+    axes[0].plot(
+        [row['predicted_risk_mean'] for row in valid_rows],
+        [row['empirical_risk_mean'] for row in valid_rows],
+        marker='o',
+        label='resident replay',
+    )
+    axes[0].set(
+        xlabel='mean predicted risk',
+        ylabel='empirical exceedance frequency',
+        xlim=(0, 1),
+        ylim=(0, 1),
+        title='Risk reliability',
+    )
+    axes[0].grid(alpha=0.25)
+    axes[0].legend()
+    for label, color, name in ((0.0, 'tab:blue', 'empirical safe'), (1.0, 'tab:red', 'exceeded')):
+        selected = empirical == label
+        if bool(selected.any()):
+            axes[1].hist(
+                predicted[selected].numpy(),
+                bins=20,
+                range=(0, 1),
+                alpha=0.55,
+                density=True,
+                color=color,
+                label=name,
+            )
+    axes[1].set(
+        xlabel='predicted risk',
+        ylabel='density',
+        xlim=(0, 1),
+        title='Predicted-risk separation',
+    )
+    axes[1].legend()
+    figure.savefig(path, dpi=180)
+    plt.close(figure)
+
+
+def finite_or_none(value: float) -> float | None:
+    """Convert non-finite diagnostic values to strict-JSON null."""
+    return value if math.isfinite(value) else None
+
+
+def parser() -> argparse.ArgumentParser:
+    """Build replay-audit arguments."""
+    result = argparse.ArgumentParser(description=__doc__)
+    result.add_argument('--checkpoint', type=Path, required=True)
+    result.add_argument('--output-dir', type=Path, required=True)
+    result.add_argument('--work-dir', type=Path, required=True)
+    result.add_argument('--device', default='cuda:0')
+    result.add_argument('--max-samples', type=int, default=50_000)
+    result.add_argument('--chunk-size', type=int, default=8192)
+    result.add_argument('--bins', type=int, default=10)
+    return result
+
+
+def main() -> None:  # pylint: disable=too-many-locals
+    """Restore a full PointGoal checkpoint and emit unbiased replay-risk evidence."""
+    args = parser().parse_args()
+    if min(args.max_samples, args.chunk_size, args.bins) <= 1:
+        raise ValueError('sample, chunk, and bin sizes must exceed one')
+    metadata = checkpoint_metadata(args.checkpoint)
+    if metadata['environment'] != 'SafetyPointGoal1-v0':
+        raise ValueError('this replay audit is specific to SafetyPointGoal1-v0')
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    algorithm = build_algorithm(args.checkpoint, metadata, args.device, args.work_dir)
+    try:
+        resident = algorithm._buf  # pylint: disable=protected-access
+        indices = deterministic_indices(resident.size, args.max_samples)
+        audit = infer_replay(algorithm, indices, args.chunk_size)
+        labeled = torch.isfinite(audit['violation_label'])
+        if int(labeled.sum().item()) < 2:
+            raise ValueError('replay audit requires at least two finalized cost-to-go labels')
+        predicted = audit['predicted_risk'][labeled]
+        empirical_cost = audit['empirical_cost_to_go'][labeled]
+        empirical_risk = audit['violation_label'][labeled]
+        rows = calibration_rows(predicted, empirical_risk, args.bins)
+        algo_cfgs = algorithm._cfgs.algo_cfgs  # pylint: disable=protected-access
+        sensitivity = boundary_score_rows(
+            audit,
+            float(algo_cfgs.boundary_score_threshold),
+        )
+        atomic_csv(
+            args.output_dir / 'replay_risk_calibration.csv',
+            list(rows[0]),
+            rows,
+        )
+        atomic_csv(
+            args.output_dir / 'replay_boundary_scores.csv',
+            list(sensitivity[0]),
+            sensitivity,
+        )
+        plot_calibration(
+            args.output_dir / 'replay_risk_calibration.png',
+            rows,
+            predicted,
+            empirical_risk,
+        )
+        weighted_gap = sum(row['absolute_gap'] * row['count'] for row in rows if row['count'])
+        weighted_gap /= max(int(labeled.sum().item()), 1)
+        valid = resident.size
+        resident_boundary = resident.data['category'][:valid] == BOUNDARY
+        boundary_count = int(resident_boundary.sum().item())
+        summary = {
+            'env_steps': metadata['env_steps'],
+            'environment': metadata['environment'],
+            'seed': metadata['seed'],
+            'replay_capacity': metadata['replay_capacity'],
+            'replay_size': metadata['replay_size'],
+            'checkpoint': str(args.checkpoint),
+            'sample_count': int(indices.numel()),
+            'sample_is_full_replay': int(indices.numel()) == metadata['replay_size'],
+            'labeled_count': int(labeled.sum().item()),
+            'unlabeled_count': int((~labeled).sum().item()),
+            'calibration_mae': float((predicted - empirical_risk).abs().mean().item()),
+            'calibration_ece': weighted_gap,
+            'predicted_cost_empirical_cost_spearman': finite_or_none(
+                spearman(audit['cost'][labeled], empirical_cost),
+            ),
+            'predicted_risk_mean': float(predicted.mean().item()),
+            'empirical_risk_mean': float(empirical_risk.mean().item()),
+            'predicted_risk_p10': float(torch.quantile(predicted, 0.1).item()),
+            'predicted_risk_p50': float(torch.quantile(predicted, 0.5).item()),
+            'predicted_risk_p90': float(torch.quantile(predicted, 0.9).item()),
+            'resident_pool_sizes': resident.pool_sizes,
+            'resident_boundary_source_random_fraction': (
+                float(
+                    resident.data['source_random'][:valid][resident_boundary].float().mean().item(),
+                )
+                if boundary_count
+                else 0.0
+            ),
+            'resident_boundary_immediate_violation_fraction': (
+                float(
+                    resident.data['is_failure'][:valid][resident_boundary].float().mean().item(),
+                )
+                if boundary_count
+                else 0.0
+            ),
+            'brier_score': binary_brier_score(predicted, empirical_risk),
+            'brier_skill': finite_or_none(binary_brier_skill(predicted, empirical_risk)),
+            'auroc': finite_or_none(binary_auroc(predicted, empirical_risk)),
+            'positive_labels': int(empirical_risk.sum().item()),
+            'negative_labels': int(empirical_risk.numel() - empirical_risk.sum().item()),
+            'current_boundary_score_threshold': float(algo_cfgs.boundary_score_threshold),
+            'risk_boundary': float(algo_cfgs.risk_boundary),
+            'boundary_bandwidth': float(algo_cfgs.boundary_bandwidth),
+        }
+        atomic_json(args.output_dir / 'replay_risk_summary.json', summary)
+        print(json.dumps({'status': 'passed', **summary}, indent=2, sort_keys=True))
+    finally:
+        algorithm._logger.close()  # pylint: disable=protected-access
+        algorithm._env.close()  # pylint: disable=protected-access
+
+
+if __name__ == '__main__':
+    main()

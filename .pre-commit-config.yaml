@@ -13,7 +13,11 @@ repos:
       - id: check-symlinks
       - id: destroyed-symlinks
       - id: trailing-whitespace
+        # Transferred STAR evidence is checksum-sealed and must remain byte-for-byte unchanged.
+        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts)/
       - id: end-of-file-fixer
+        # Transferred STAR evidence is checksum-sealed and must remain byte-for-byte unchanged.
+        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts)/
       - id: check-yaml
       - id: check-toml
       - id: check-ast

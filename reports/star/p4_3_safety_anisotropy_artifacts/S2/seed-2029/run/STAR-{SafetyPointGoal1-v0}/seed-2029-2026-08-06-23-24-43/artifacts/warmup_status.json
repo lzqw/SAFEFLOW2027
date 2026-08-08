@@ -1,0 +1,80 @@
+{
+  "boundary_samples": 290,
+  "conditions": {
+    "auroc": true,
+    "boundary_samples": true,
+    "brier_skill": true,
+    "calibration": true,
+    "ensemble_disagreement": false,
+    "minimum_steps": true,
+    "negative_labels": true,
+    "positive_labels": true,
+    "td_error": true,
+    "valid_gradient": false
+  },
+  "consecutive_failures": 0,
+  "consecutive_passes": 0,
+  "ema": {
+    "auroc": 0.9999054885944821,
+    "brier_skill": 0.9611594578202128,
+    "calibration_error": 0.046782059997864466,
+    "cost_td_error": 0.030785151236848114,
+    "ensemble_disagreement": null,
+    "valid_gradient_rate": null
+  },
+  "env_steps": 50000,
+  "gate_conditions": {
+    "auroc": true,
+    "boundary_samples": false,
+    "brier_skill": true,
+    "calibration": true,
+    "ensemble_disagreement": false,
+    "minimum_steps": true,
+    "negative_labels": true,
+    "positive_labels": true,
+    "td_error": true,
+    "valid_gradient": false
+  },
+  "gate_evaluations": 0,
+  "geometry_activation_step": null,
+  "geometry_enabled": false,
+  "geometry_last_disable_step": null,
+  "heldout_evidence": {
+    "Heldout/AUROC": 0.98052838740458,
+    "Heldout/BellmanError": 0.005834867246448994,
+    "Heldout/BoundarySamples": 99.0,
+    "Heldout/BrierScore": 0.02805916778743267,
+    "Heldout/BrierSkill": 0.8877016305923462,
+    "Heldout/CalibrationError": 0.051212750375270844,
+    "Heldout/CalibrationReliability": 0.9454272515932699,
+    "Heldout/EnsembleDisagreement": 0.016771622002124786,
+    "Heldout/Episodes": 5.0,
+    "Heldout/GradientNorm": 0.0057394839823246,
+    "Heldout/NegativeLabels": 2096.0,
+    "Heldout/PositiveLabels": 2000.0,
+    "Heldout/Transitions": 4096.0
+  },
+  "label_counts": {
+    "heldout": {
+      "finalized": 10000,
+      "negative": 6000,
+      "positive": 4000
+    },
+    "replay_train": {
+      "finalized": 40000,
+      "negative": 23000,
+      "positive": 17000
+    }
+  },
+  "latest_heldout_gate_values": {
+    "auroc": 0.9997322623828648,
+    "brier_skill": 0.9708587527275085,
+    "calibration_error": 0.04245010018348694,
+    "cost_td_error": 0.02712324447929859,
+    "ensemble_disagreement": null,
+    "valid_gradient_rate": null
+  },
+  "local_geometry_configured": false,
+  "stage": "W2",
+  "warmup_geometry_eligibility_step": null
+}

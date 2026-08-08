@@ -1,0 +1,172 @@
+# Copyright 2026 OmniSafe Team. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+
+defaults:
+  seed: 2027
+  train_cfgs:
+    device: cpu
+    torch_threads: 1
+    vector_env_nums: 1
+    parallel: 1
+    total_steps: 300000
+    eval_episodes: 5
+  algo_cfgs:
+    steps_per_epoch: 5000
+    update_cycle: 1
+    update_iters: 1
+    size: 500000
+    batch_size: 256
+    reward_normalize: False
+    cost_normalize: False
+    obs_normalize: False
+    max_grad_norm: 10.0
+    gamma: 0.99
+    gamma_cost: 1.0
+    polyak: 0.005
+    reward_target_polyak: 0.005
+    utd_ratio: 1.0
+    max_episode_steps: 1000
+    random_steps: 2000
+    terminal_utility_steps: 8000
+    geometry_min_steps: 12000
+    use_target_flow_for_reward_backup: True
+    actor_update_interval: 1
+    reward_target_samples: 1
+    reward_critic_updates_per_update: 1
+    separate_reward_replay: False
+    reward_replay_recent_fraction: 0.0
+    reward_replay_recent_window: 10000
+    enable_global_safety_constraint: True
+    enable_local_safety_geometry: True
+    bellman_probability_enabled: False
+    probability_mc_aux_weight: 0.10
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 2048
+    complete_heldout_evidence: False
+    heldout_min_positive_labels: 256
+    heldout_min_negative_labels: 256
+    dynamic_geometry_gate: False
+    geometry_enable_passes: 3
+    geometry_disable_failures: 2
+    candidate_probing_enabled: False
+    candidate_probing_count: 16
+    candidate_disagreement_threshold: 0.15
+    candidate_risk_tie_band: 0.02
+    candidate_tangent_scale: 0.05
+    stochastic_flow_enabled: False
+    safety_anisotropy_enabled: False
+    safety_inward_drift_enabled: False
+    safety_outward_rectification_enabled: False
+    safety_protocol_version: ""
+    safety_protocol_sha256: ""
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.10
+    safety_gradient_scale: 0.005
+    safety_ensemble_scale: 0.05
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_score_scale: 0.25
+    safety_drift_strength: 0.20
+    safety_drift_temperature: 0.05
+    numerical_hard_stops_enabled: False
+    reward_td_absolute_hard_stop: 0.02
+    reward_q_absolute_hard_stop: 10.0
+    reward_td_final_to_minimum_ratio_hard_stop: 3.0
+    w3_td_error_threshold: 3.0
+    w3_calibration_threshold: 0.35
+    w3_valid_gradient_threshold: 0.10
+    w3_disagreement_threshold: 0.75
+    w3_boundary_samples_threshold: 128
+    w3_positive_labels_threshold: 128
+    w3_negative_labels_threshold: 128
+    w3_brier_skill_threshold: 0.0
+    w3_auroc_threshold: 0.60
+    warmup_ema_rate: 0.05
+    bootstrap_probability: 0.8
+    risk_boundary: 0.5
+    boundary_bandwidth: 0.15
+    boundary_score_threshold: 0.50
+    risk_ucb_beta: 0.5
+    cost_ucb_beta: 0.25
+    minimum_gradient_norm: 0.00001
+    minimum_consistency: 0.10
+    late_flow_time: 0.5
+    tangent_variance: 1.0
+    normal_contraction: 9.0
+    reference_strength: 1.0
+    reference_temperature: 0.25
+    replay_failure_fraction: 0.20
+    replay_boundary_fraction: 0.40
+    replay_importance_beta: 0.40
+    eval_seeds: [12027, 12028, 12029, 12030, 12031]
+    eval_milestones: [0, 50000, 100000, 200000, 300000]
+    counterfactual_batch_size: 512
+    milestone_checkpoints: True
+    checkpoint_replay: False
+    full_checkpoint_freq: 0
+    resume_from: ""
+    legacy_checkpoint_compatibility: False
+  logger_cfgs:
+    use_wandb: False
+    wandb_project: omnisafe
+    use_tensorboard: True
+    save_model_freq: 1
+    log_dir: "./runs"
+    window_lens: 10
+  model_cfgs:
+    actor:
+      hidden_sizes: [256, 256]
+      lr: 0.0003
+    critic:
+      hidden_sizes: [256, 256]
+      reward_lr: 0.0003
+      cost_lr: 0.0003
+      violation_lr: 0.0003
+      num_quantiles: 25
+      ensemble_size: 2
+    flow:
+      num_steps: 4
+      max_velocity: 2.0
+  dual_cfgs:
+    energy_initial: 0.10
+    energy_lr: 0.0001
+    target_energy_per_action: 0.50
+    global_initial: 0.01
+    global_lr: 0.005
+    global_ema_rate: 0.10
+    global_max: 100.0
+  lagrange_cfgs:
+    cost_limit: 10.0
+
+SafetyPointGoal1-v0:
+  lagrange_cfgs:
+    cost_limit: 10.0
+
+SafetyPointButton1-v0:
+  lagrange_cfgs:
+    cost_limit: 10.0
+
+Ant-v4:
+  algo_cfgs:
+    w3_boundary_samples_threshold: 32
+  lagrange_cfgs:
+    cost_limit: 0.0
+
+Walker2d-v4:
+  algo_cfgs:
+    w3_boundary_samples_threshold: 32
+  lagrange_cfgs:
+    cost_limit: 0.0

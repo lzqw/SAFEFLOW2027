@@ -1,0 +1,93 @@
+{
+  "actor_target_polyak": 0.005,
+  "actor_update_interval": 2,
+  "actor_updates": 21000,
+  "bellman_probability_enabled": true,
+  "calibration_reliability": 0.8397574528594294,
+  "candidate_probing_enabled": false,
+  "cost_target_polyak": 0.005,
+  "dynamic_geometry_gate": false,
+  "effective_global_safety_multiplier": 3.4415225813453327,
+  "end_to_end_fps": 7.411364234481386,
+  "env_steps": 50000,
+  "environment": "SafetyPointGoal1-v0",
+  "flow_normal_variance_ratio": 0.1,
+  "flow_reference_variance": 0.04,
+  "geometry_activation_step": null,
+  "global_dual_state": {
+    "ema_episode_cost": 49.32726152565933,
+    "episode_observations": 40,
+    "episode_updates": 34,
+    "value": 3.4415225813453327
+  },
+  "global_safety_constraint_enabled": true,
+  "heldout_probability_latest": {
+    "Heldout/AUROC": 0.9092156488549618,
+    "Heldout/BellmanError": 0.01834818348288536,
+    "Heldout/BoundarySamples": 912.0,
+    "Heldout/BrierScore": 0.08732108771800995,
+    "Heldout/BrierSkill": 0.6505236625671387,
+    "Heldout/CalibrationError": 0.1546371877193451,
+    "Heldout/CalibrationReliability": 0.8397574528594294,
+    "Heldout/EnsembleDisagreement": 0.04637252539396286,
+    "Heldout/Episodes": 5.0,
+    "Heldout/GradientNorm": 0.01699911803007126,
+    "Heldout/NegativeLabels": 2000.0,
+    "Heldout/PositiveLabels": 2096.0,
+    "Heldout/Transitions": 4096.0
+  },
+  "last_update_order": [
+    "distributional_cost_critic",
+    "violation_probability_ensemble",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ],
+  "local_safety_geometry_enabled": false,
+  "probability_target_polyak": 0.005,
+  "replay": {
+    "boundary": 0.011825,
+    "failure": 0.038425,
+    "normal": 0.94975
+  },
+  "replay_split_counts": {
+    "heldout_labels": {
+      "finalized": 10000,
+      "negative": 6000,
+      "positive": 4000
+    },
+    "heldout_transitions": 10000,
+    "train_labels": {
+      "finalized": 40000,
+      "negative": 25000,
+      "positive": 15000
+    },
+    "train_transitions": 40000
+  },
+  "reward_critic_updates": 96000,
+  "reward_critic_updates_per_update": 2,
+  "reward_replay_recent_fraction": 0.5,
+  "reward_replay_recent_window": 10000,
+  "reward_target_actor_enabled": true,
+  "reward_target_polyak": 0.001,
+  "reward_target_samples": 4,
+  "risk_tolerance_delta_c": 0.2,
+  "run_env_steps": 50000,
+  "safety_anisotropy_enabled": true,
+  "safety_inward_drift_enabled": true,
+  "seed": 2028,
+  "separate_reward_replay": true,
+  "status": "completed",
+  "stochastic_flow_enabled": true,
+  "training_geometry_enabled": false,
+  "training_seconds": 6746.396266341209,
+  "updates": 48000,
+  "violation_ratio": 0.03998,
+  "warmup_geometry_eligibility_step": null,
+  "warmup_stage": "W2"
+}
