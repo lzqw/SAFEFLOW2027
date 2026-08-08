@@ -14,10 +14,10 @@ repos:
       - id: destroyed-symlinks
       - id: trailing-whitespace
         # Transferred STAR evidence is checksum-sealed and must remain byte-for-byte unchanged.
-        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts)/
+        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts|p4_5_unified_cost_geometry_artifacts)/
       - id: end-of-file-fixer
         # Transferred STAR evidence is checksum-sealed and must remain byte-for-byte unchanged.
-        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts)/
+        exclude: ^reports/star/(p4_3_safety_anisotropy_artifacts|p4_4_outward_rectification_artifacts|p4_5_unified_cost_geometry_artifacts)/
       - id: check-yaml
       - id: check-toml
       - id: check-ast
@@ -94,6 +94,7 @@ repos:
         exclude: |
           (?x)(
             ^examples/|
+            ^reports/star/p4_5_unified_cost_geometry_artifacts/|
             ^scripts/star/|
             ^tests/|
             ^setup.py$|
