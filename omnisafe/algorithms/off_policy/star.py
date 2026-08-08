@@ -614,10 +614,7 @@ class STAR(BaseAlgo):
             raise ValueError(
                 'outward rectification requires stochastic anisotropic Bellman probability flow',
             )
-        if (
-            self._safety_outward_rectification_enabled()
-            and self._safety_inward_drift_enabled()
-        ):
+        if self._safety_outward_rectification_enabled() and self._safety_inward_drift_enabled():
             raise ValueError('P4.4 outward rectification excludes safety inward drift')
         if self._safety_anisotropy_enabled() and not self._bellman_probability_enabled():
             raise ValueError('safety anisotropy requires Bellman probability training')
@@ -652,11 +649,15 @@ class STAR(BaseAlgo):
                 raise ValueError('safety drift strength cannot be negative')
             if self._safety_anisotropy_enabled() and self._act_dim < 2:
                 raise ValueError('safety anisotropy requires action dimension at least two')
-        if self._numerical_hard_stops_enabled() and min(
-            float(algo.reward_td_absolute_hard_stop),
-            float(algo.reward_q_absolute_hard_stop),
-            float(algo.reward_td_final_to_minimum_ratio_hard_stop),
-        ) <= 0.0:
+        if (
+            self._numerical_hard_stops_enabled()
+            and min(
+                float(algo.reward_td_absolute_hard_stop),
+                float(algo.reward_q_absolute_hard_stop),
+                float(algo.reward_td_final_to_minimum_ratio_hard_stop),
+            )
+            <= 0.0
+        ):
             raise ValueError('P4.4 numerical hard-stop thresholds must be positive')
 
         resume_from = str(algo.resume_from)
@@ -810,9 +811,7 @@ class STAR(BaseAlgo):
                     'minimum_negative_labels': int(
                         self._cfgs.algo_cfgs.heldout_min_negative_labels,
                     ),
-                    'outward_rectification_enabled': (
-                        self._safety_outward_rectification_enabled()
-                    ),
+                    'outward_rectification_enabled': (self._safety_outward_rectification_enabled()),
                     'rectification': 'u_theta-q_C*max(0,n^T*u_theta)*n',
                     'actor_energy': 'executed_u_rect',
                     'numerical_hard_stops_enabled': self._numerical_hard_stops_enabled(),
@@ -2013,9 +2012,9 @@ class STAR(BaseAlgo):
 
     @staticmethod
     def _ordinary_least_squares_slope(values: list[float]) -> float:
-        """Return the equally spaced OLS slope of a non-empty scalar sequence."""
+        """Return the equally spaced least-squares slope of a non-empty scalar sequence."""
         if not values:
-            raise ValueError('OLS slope requires at least one value')
+            raise ValueError('least-squares slope requires at least one value')
         center = 0.5 * (len(values) - 1)
         denominator = sum((index - center) ** 2 for index in range(len(values)))
         if denominator == 0.0:
@@ -2158,10 +2157,9 @@ class STAR(BaseAlgo):
                 )[0]
             gradient_norm = float(action_gradient.norm(dim=-1).mean().item())
 
-        evidence_sufficient = (
-            positives >= int(algo.heldout_min_positive_labels)
-            and negatives >= int(algo.heldout_min_negative_labels)
-        )
+        evidence_sufficient = positives >= int(
+            algo.heldout_min_positive_labels,
+        ) and negatives >= int(algo.heldout_min_negative_labels)
         evidence_status = 'sufficient' if evidence_sufficient else 'insufficient_evidence'
         heldout_calibration_reliability = 0.0
         if evidence_sufficient or not self._complete_heldout_evidence_enabled():
@@ -2628,9 +2626,7 @@ class STAR(BaseAlgo):
             'sample_count': requested,
             'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
             'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
-            'safety_outward_rectification_enabled': (
-                self._safety_outward_rectification_enabled()
-            ),
+            'safety_outward_rectification_enabled': (self._safety_outward_rectification_enabled()),
             'candidate_probing_enabled': self._candidate_probing_enabled(),
             'risk_tolerance_delta_c': float(self._cfgs.algo_cfgs.risk_boundary),
             'calibration_reliability': self._calibration_reliability(),
@@ -2893,9 +2889,11 @@ class STAR(BaseAlgo):
         self._last_heldout_evidence_status = str(
             metadata['extra'].get(
                 'last_heldout_evidence_status',
-                'sufficient'
-                if bool(self._last_heldout_evidence.get('Heldout/EvidenceSufficient', 0.0))
-                else 'insufficient_evidence',
+                (
+                    'sufficient'
+                    if bool(self._last_heldout_evidence.get('Heldout/EvidenceSufficient', 0.0))
+                    else 'insufficient_evidence'
+                ),
             ),
         )
         self._reward_td_diagnostics = [
@@ -3013,9 +3011,7 @@ class STAR(BaseAlgo):
                 'status': (
                     'hard_stopped'
                     if self._hard_stop_reason is not None
-                    else 'completed'
-                    if self._env_steps >= total_steps
-                    else 'interrupted'
+                    else 'completed' if self._env_steps >= total_steps else 'interrupted'
                 ),
                 'environment': self._env_id,
                 'seed': self._seed,

@@ -12,12 +12,13 @@ from pathlib import Path
 from typing import Any
 
 import torch
-from omnisafe.models.actor.flow_actor import rectify_outward_velocity
 from scripts.star.evaluate_pointgoal_checkpoints import (
     atomic_json,
     build_algorithm,
     checkpoint_payload,
 )
+
+from omnisafe.models.actor.flow_actor import rectify_outward_velocity
 
 
 PROTOCOL_VERSION = 'p4.4-outward-rectification-v1'
@@ -120,9 +121,7 @@ def _covariance_metrics(
     covariance = centered.T @ centered / max(actions.shape[0] - 1, 1)
     normal_variance = normal @ covariance @ normal
     total_variance = torch.trace(covariance)
-    tangent_variance = (total_variance - normal_variance).clamp_min(0.0) / (
-        actions.shape[-1] - 1
-    )
+    tangent_variance = (total_variance - normal_variance).clamp_min(0.0) / (actions.shape[-1] - 1)
     return {
         'normal_variance': float(normal_variance.item()),
         'tangent_variance': float(tangent_variance.item()),
@@ -150,9 +149,7 @@ def _mode_metrics(
         {
             'pre_clipping_normal_variance': pre_clipping['normal_variance'],
             'pre_clipping_tangent_variance': pre_clipping['tangent_variance'],
-            'pre_clipping_total_empirical_variance': pre_clipping[
-                'total_empirical_variance'
-            ],
+            'pre_clipping_total_empirical_variance': pre_clipping['total_empirical_variance'],
             'crossing_rate': float((end_margin > start_margin).float().mean().item()),
             'mean_normal_displacement': float(normal_displacement.mean().item()),
             'clipping_rate': clipping_events / executed_normal_velocity.numel(),
@@ -263,11 +260,7 @@ def _integrate_mode(  # pylint: disable=too-many-locals
             ).squeeze(-1)
         else:
             increment = torch.zeros_like(action)
-        final_proposal = (
-            action
-            + step_size * executed_velocity
-            + math.sqrt(step_size) * increment
-        )
+        final_proposal = action + step_size * executed_velocity + math.sqrt(step_size) * increment
         clipping_events += int((final_proposal.abs() > 1.0).any(dim=-1).sum().item())
         action = final_proposal.clamp(-1.0, 1.0) if spec['action_clipping'] else final_proposal
     end_margin = _risk_ucb(algorithm, repeated_obs, action) - float(
@@ -296,9 +289,11 @@ def _gradient_alignment(
     """Compare probability-UCB and mean-head expected-cost action gradients."""
     with torch.enable_grad():
         probability_action = boundary_action.detach().requires_grad_(True)
-        head_probability = algorithm._violation_critic().probabilities(  # pylint: disable=protected-access
-            augmented.detach(),
-            probability_action,
+        head_probability = (
+            algorithm._violation_critic().probabilities(  # pylint: disable=protected-access
+                augmented.detach(),
+                probability_action,
+            )
         )
         probability_ucb = (
             head_probability.mean(dim=0)
@@ -308,12 +303,16 @@ def _gradient_alignment(
         probability_gradient = torch.autograd.grad(
             probability_ucb.sum(),
             probability_action,
-        )[0][0]
+        )[
+            0
+        ][0]
         cost_action = boundary_action.detach().requires_grad_(True)
-        expected_cost = algorithm._actor_critic.cost_critic.expected_cost(  # pylint: disable=protected-access
-            augmented.detach(),
-            cost_action,
-        ).mean(dim=0)
+        expected_cost = (
+            algorithm._actor_critic.cost_critic.expected_cost(  # pylint: disable=protected-access
+                augmented.detach(),
+                cost_action,
+            ).mean(dim=0)
+        )
         cost_gradient = torch.autograd.grad(expected_cost.sum(), cost_action)[0][0]
     probability_norm = float(probability_gradient.norm().item())
     cost_norm = float(cost_gradient.norm().item())
@@ -324,9 +323,12 @@ def _gradient_alignment(
     cosine = None
     if valid:
         cosine = float(
-            torch.dot(probability_gradient, cost_gradient).div(
+            torch.dot(probability_gradient, cost_gradient)
+            .div(
                 probability_gradient.norm() * cost_gradient.norm(),
-            ).clamp(-1.0, 1.0).item(),
+            )
+            .clamp(-1.0, 1.0)
+            .item(),
         )
     return {
         'probability_gradient_norm': probability_norm,
@@ -341,10 +343,7 @@ def _mean_rows(rows: list[dict[str, float]]) -> dict[str, float]:
     """Average a non-empty collection of finite scalar mappings."""
     if not rows:
         raise ValueError('cannot average an empty metric collection')
-    return {
-        key: statistics.fmean(row[key] for row in rows)
-        for key in rows[0]
-    }
+    return {key: statistics.fmean(row[key] for row in rows) for key in rows[0]}
 
 
 def _arm_from_flags(algo_cfgs: dict[str, Any]) -> str:
@@ -432,7 +431,7 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
                 inward_drift_enabled=False,
             )(boundary_action)
             normal = geometry.normal[0]
-            valid_normal = bool(normal.norm().item() > 0.5)
+            valid_normal = normal.norm().item() > 0.5
             valid_fixed_normals += int(valid_normal)
             alignment = _gradient_alignment(
                 algorithm,
@@ -444,9 +443,16 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
             generator = torch.Generator(device='cpu')
             generator.manual_seed(audit_seed + state_index)
             common_noise = torch.randn(
-                (sample_count, int(algorithm._actor_critic.actor.num_steps), action_dim),  # pylint: disable=protected-access
+                (
+                    sample_count,
+                    int(algorithm._actor_critic.actor.num_steps),
+                    action_dim,
+                ),  # pylint: disable=protected-access
                 generator=generator,
-            ).to(device=algorithm._device, dtype=boundary_action.dtype)  # pylint: disable=protected-access
+            ).to(
+                device=algorithm._device,
+                dtype=boundary_action.dtype,
+            )  # pylint: disable=protected-access
             state_record: dict[str, Any] = {
                 'ordinal': state_index,
                 'replay_index': selection['selected_replay_indices'][state_index],
@@ -488,7 +494,9 @@ def audit_checkpoint(  # pylint: disable=too-many-locals,too-many-statements
             'state_count': state_count,
             'action_samples_per_state': sample_count,
             'audit_seed': audit_seed,
-            'flow_steps': int(algorithm._actor_critic.actor.num_steps),  # pylint: disable=protected-access
+            'flow_steps': int(
+                algorithm._actor_critic.actor.num_steps,
+            ),  # pylint: disable=protected-access
             'selection': selection,
             'valid_fixed_normal_state_count': valid_fixed_normals,
             'flags': {

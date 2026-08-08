@@ -367,8 +367,7 @@ def summarize(args: argparse.Namespace) -> dict[str, Any]:  # pylint: disable=to
         'r1_crossing_reduced_by_at_least_ten_percent': r1_mode['crossing_rate']
         <= float(threshold['r1_crossing_ratio_maximum']) * r0_mode['crossing_rate'],
         'r1_tangent_variance_preserved': r1_mode['tangent_variance']
-        >= float(threshold['r1_tangent_variance_ratio_minimum'])
-        * r0_mode['tangent_variance'],
+        >= float(threshold['r1_tangent_variance_ratio_minimum']) * r0_mode['tangent_variance'],
         'r1_success_within_0_10_of_r0': r1_task['goal_met_episode_rate']
         >= r0_task['goal_met_episode_rate'] - float(threshold['r1_success_loss_maximum']),
         'r1_stall_within_0_10_of_r0': r1_task['stall_ratio']

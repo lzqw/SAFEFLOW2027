@@ -202,10 +202,7 @@ def validate_audit(path: Path, arm: str, seed: int) -> dict[str, Any]:
 def _pooled_mode(runs: dict[int, dict[str, Any]], mode: str) -> dict[str, float]:
     """Average one mode across the three fixed training seeds."""
     keys = runs[SEEDS[0]]['modes'][mode]
-    return {
-        key: statistics.fmean(runs[seed]['modes'][mode][key] for seed in SEEDS)
-        for key in keys
-    }
+    return {key: statistics.fmean(runs[seed]['modes'][mode][key] for seed in SEEDS) for key in keys}
 
 
 def render_report(result: dict[str, Any]) -> str:
@@ -283,17 +280,11 @@ def summarize(args: argparse.Namespace) -> dict[str, Any]:
     pooled_valid = sum(run['critic_alignment']['valid_state_count'] for run in all_runs)
     pooled_negative = sum(run['critic_alignment']['negative_count'] for run in all_runs)
     pooled_negative_fraction = 1.0 if pooled_valid <= 0 else pooled_negative / pooled_valid
-    minimum_observed = min(
-        run['critic_alignment']['valid_state_count'] for run in all_runs
-    )
+    minimum_observed = min(run['critic_alignment']['valid_state_count'] for run in all_runs)
     per_checkpoint_gate = minimum_observed >= minimum_valid
     pooled_orientation_gate = pooled_negative_fraction < negative_threshold
     training_authorized = per_checkpoint_gate and pooled_orientation_gate
-    decision = (
-        'p4_4_training_authorized'
-        if training_authorized
-        else 'blocked_for_critic_repair'
-    )
+    decision = 'p4_4_training_authorized' if training_authorized else 'blocked_for_critic_repair'
     result = {
         'stage': 'P4.4-pretraining-critic-alignment-gate',
         'protocol_version': PROTOCOL_VERSION,

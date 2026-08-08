@@ -17,8 +17,8 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Callable
 
 import torch
 from torch import nn
@@ -49,7 +49,7 @@ FlowReferenceFunction = Callable[[torch.Tensor], FlowReference]
 
 
 @dataclass
-class FlowReferenceTrace:
+class FlowReferenceTrace:  # pylint: disable=too-many-instance-attributes
     """Detached reference quantities actually used along one stochastic trajectory."""
 
     drifts: torch.Tensor
@@ -196,11 +196,11 @@ class FlowActor(nn.Module):
         flow_noise: torch.Tensor | None = None,
         outward_rectification_enabled: bool = False,
     ) -> FlowOutput:
-        """Integrate a midpoint ODE or midpoint Euler--Maruyama stochastic flow.
+        """Integrate a midpoint ODE or stochastic Euler flow.
 
         The learned velocity remains the controlled residual.  A supplied reference contributes
         detached drift and covariance at every midpoint, while the returned kinetic energy is the
-        residual velocity weighted by that covariance's inverse normal/tangent variances.
+        residual velocity weighted by the inverse normal/tangent variances of that covariance.
         """
         if obs.shape[-1] != self.obs_dim:
             raise ValueError(f'expected observation width {self.obs_dim}, got {obs.shape[-1]}')
