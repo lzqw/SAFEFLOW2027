@@ -94,6 +94,13 @@ def finite_number(value: Any, location: str) -> float:
     return number
 
 
+def _optional_finite_number(value: Any, location: str) -> float | None:
+    """Preserve an explicitly undefined diagnostic or validate its finite value."""
+    if value is None:
+        return None
+    return finite_number(value, location)
+
+
 def _bindings(values: list[str], label: str) -> dict[tuple[str, int], Path]:
     """Parse exactly six ``ARM:SEED=PATH`` bindings."""
     expected = {(arm, seed) for arm in ARMS for seed in SEEDS}
@@ -175,7 +182,7 @@ def _checkpoint_metrics(payload: dict[str, Any], arm: str, seed: int) -> dict[st
         'cost_per_successful_episode': payload.get('cost_per_successful_episode'),
         'cost_per_unit_path_length': payload.get('cost_per_unit_path_length'),
         'cost_to_go_mae': finite_number(payload['cost_to_go_mae'], 'cost_to_go_mae'),
-        'cost_spearman': finite_number(payload['spearman'], 'spearman'),
+        'cost_spearman': _optional_finite_number(payload['spearman'], 'spearman'),
         'probability_auroc': payload.get('auroc'),
         'probability_brier_score': payload.get('brier_score'),
         'probability_brier_skill': payload.get('brier_skill'),
@@ -516,9 +523,9 @@ def _render_report(result: dict[str, Any]) -> str:
             '- `p4_5_trajectory_eval_seed_12046.png`',
             '',
             (
-                'Large checkpoints and replay stay on the server. `checkpoint_sha256.csv` records '
-                'their immutable identities; the GitHub evidence bundle contains compact CSV/JSON, '
-                'plots, and this report.'
+                'Large checkpoints and replay stay on the server. '
+                '`p4_5_checkpoint_sha256.csv` records their immutable identities; the GitHub '
+                'evidence bundle contains compact CSV/JSON, plots, and this report.'
             ),
             '',
         ],

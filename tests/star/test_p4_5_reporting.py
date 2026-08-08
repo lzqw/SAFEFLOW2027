@@ -7,8 +7,12 @@ import csv
 import json
 from pathlib import Path
 
+import pytest
 from scripts.star.plot_p4_5_unified_cost_geometry import plot_learning_curves, plot_trajectories
-from scripts.star.summarize_p4_5_unified_cost_geometry import _classification
+from scripts.star.summarize_p4_5_unified_cost_geometry import (
+    _classification,
+    _optional_finite_number,
+)
 
 
 def _fake_runs(
@@ -61,6 +65,13 @@ def test_three_classification_labels_follow_the_preregistered_rules() -> None:
     unstable = _classification(_fake_runs(improve_seeds=(2027,)))
     assert unstable['label'] == 'no_stable_effect'
     assert unstable['safety_majority'] is False
+
+
+def test_undefined_spearman_remains_nullable_but_other_values_are_validated() -> None:
+    assert _optional_finite_number(None, 'spearman') is None
+    assert _optional_finite_number('0.25', 'spearman') == pytest.approx(0.25)
+    with pytest.raises(ValueError, match='spearman is not finite'):
+        _optional_finite_number(float('nan'), 'spearman')
 
 
 def _write_csv(path: Path, rows: list[dict]) -> None:
