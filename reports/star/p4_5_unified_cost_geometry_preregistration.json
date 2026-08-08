@@ -1,0 +1,286 @@
+{
+  "arms": {
+    "C0": {
+      "directional_loss_enabled": false,
+      "safety_anisotropy_enabled": true,
+      "unified_cost_geometry_enabled": true
+    },
+    "C1": {
+      "directional_loss_enabled": true,
+      "safety_anisotropy_enabled": true,
+      "unified_cost_geometry_enabled": true
+    }
+  },
+  "audit": {
+    "action_clipping": "enabled_in_all_modes",
+    "action_samples_per_state": 256,
+    "audit_seed": 4500007,
+    "checkpoint_step": 100000,
+    "common_randomness": "one uniform base-action tensor and one standard-normal Wiener tensor per state shared by modes A and C; mode B reuses the base actions and sets Wiener increments to zero",
+    "modes": {
+      "A": {
+        "learned_drift": false,
+        "wiener_noise": true
+      },
+      "B": {
+        "learned_drift": true,
+        "wiener_noise": false
+      },
+      "C": {
+        "learned_drift": true,
+        "wiener_noise": true
+      }
+    },
+    "state_count": 64,
+    "state_selection": "ascending absolute normalized Q-cost budget margin over resident finalized replay transitions with stable replay-index tie break"
+  },
+  "base_commit": "076e8d389ecb6fb4050f1ca2db78997ae2b6342e",
+  "checkpoints": {
+    "evaluation_steps": [
+      0,
+      25000,
+      50000,
+      75000,
+      100000
+    ],
+    "full_recovery_frequency": 10000,
+    "full_replay_checkpoint": "final_full_at_100000",
+    "lightweight_steps": [
+      0,
+      10000,
+      25000,
+      50000,
+      75000,
+      100000
+    ],
+    "training_log_frequency": 5000
+  },
+  "classification": {
+    "final_checkpoint": 100000,
+    "labels": [
+      "effective",
+      "safety_benefit_with_performance_cost",
+      "no_stable_effect"
+    ],
+    "no_stable_effect": "the safety-majority condition is false",
+    "performance_maintained": "pooled C1 success is no more than 0.10 below pooled C0 success and pooled C1 mean return is no more than 0.10 below pooled C0 mean return",
+    "reporting": "always include every arm-by-seed raw result and the full learning curves; do not replace them with pooled means",
+    "safety_benefit_with_performance_cost": "the safety-majority condition is true and performance-maintained is false",
+    "safety_majority": "for each of mean cost, cost CVaR-20, and dangerous normal velocity, C1 is lower than paired C0 in at least two of three seeds and the three-seed pooled C1 value is lower",
+    "effective": "the safety-majority and performance-maintained conditions are both true"
+  },
+  "delivery": {
+    "branch": "codex/star-p4.5-unified-cost-geometry",
+    "draft_pr_base": "codex/star-p4.4-outward-rectification",
+    "github_include": [
+      "code",
+      "configs",
+      "csv_json_evidence",
+      "plots",
+      "checkpoint_sha256",
+      "complete_report"
+    ],
+    "server_only": [
+      "large_checkpoints",
+      "replay_buffers",
+      "raw_videos"
+    ]
+  },
+  "engineering_stops": {
+    "allowed_reasons": [
+      "nan_or_inf",
+      "cuda_out_of_memory",
+      "checkpoint_corruption",
+      "environment_or_process_crash",
+      "q_value_numerical_overflow"
+    ],
+    "q_absolute_overflow_threshold": 1000000.0,
+    "reward_td_growth": "diagnostic_only",
+    "temporary_cost_increase": "diagnostic_only",
+    "temporary_critic_degradation": "diagnostic_only"
+  },
+  "environment": "SafetyPointGoal1-v0",
+  "excluded": [
+    "p4_4_execution_rectification",
+    "probability_critic_policy_control",
+    "directional_weight_scan",
+    "30k_pilot_or_early_scientific_gate",
+    "training_beyond_100000_steps",
+    "new_environment",
+    "four_environment_experiment",
+    "method_paper_or_reference_paper_edits"
+  ],
+  "external_evaluation": {
+    "episodes_per_checkpoint": 20,
+    "flow_randomness": "uniform[-1,1] base actions followed by standard-normal Wiener increments from one local CPU generator",
+    "flow_seed_offset": 1000003,
+    "same_randomness_across_arms": true,
+    "seeds": [
+      12027,
+      12028,
+      12029,
+      12030,
+      12031,
+      12032,
+      12033,
+      12034,
+      12035,
+      12036,
+      12037,
+      12038,
+      12039,
+      12040,
+      12041,
+      12042,
+      12043,
+      12044,
+      12045,
+      12046
+    ],
+    "trajectory_seeds": [
+      12027,
+      12036,
+      12046
+    ]
+  },
+  "metrics": {
+    "cost_critic": [
+      "bellman_td_error",
+      "q_mean",
+      "q_standard_deviation",
+      "q_maximum_absolute_value",
+      "target_q_mean",
+      "target_q_standard_deviation",
+      "target_q_maximum_absolute_value",
+      "action_gradient_norm",
+      "cost_to_go_mae",
+      "spearman_correlation",
+      "five_equal_count_predicted_risk_bins_with_true_mean_cost"
+    ],
+    "direction_geometry": [
+      "normal_variance",
+      "tangent_variance",
+      "normal_to_tangent_variance_ratio",
+      "dangerous_normal_velocity",
+      "outward_velocity_ratio",
+      "tangent_energy",
+      "normal_energy",
+      "crossing_rate",
+      "action_clipping_rate",
+      "safety_band_sample_ratio"
+    ],
+    "performance": [
+      "evaluation_return",
+      "success_rate",
+      "mean_cost",
+      "cost_cvar_20",
+      "violation_ratio",
+      "training_cumulative_cost",
+      "training_violation_ratio",
+      "stall_ratio",
+      "displacement",
+      "path_length",
+      "action_norm",
+      "cost_per_successful_episode",
+      "cost_per_unit_path_length"
+    ],
+    "probability_critic_diagnostic_only": [
+      "auroc",
+      "brier_score",
+      "brier_skill",
+      "calibration_error"
+    ]
+  },
+  "method": {
+    "action_normal": "n_C=grad_a(mean_heads(mean_quantiles(Q_C)))/(norm_2(grad_a(mean_heads(mean_quantiles(Q_C))))+1e-8)",
+    "anisotropy_reliability": "w_C=exp(-0.5*(m_C/0.10)^2)*(norm(grad_a(Q_C/cost_limit))/(norm(grad_a(Q_C/cost_limit))+0.005))*exp(-std_heads(Q_C/cost_limit)/0.05)",
+    "cost_critic": "existing distributional cumulative cost critic Q_C(s,a,b,h)",
+    "cost_score": "mean_heads(mean_quantiles(Q_C))/cost_limit",
+    "directional_loss": "mean(w_C*positive_part(n_C^T u_theta)^2)/(mean(w_C*norm_2(u_theta)^2)+1e-8)",
+    "directional_loss_epsilon": 1e-08,
+    "directional_loss_velocity": "raw learned midpoint velocity u_theta before noise and clipping",
+    "directional_loss_weight": 1.0,
+    "fixed_reference_variance": 0.04,
+    "global_safety": "unchanged Q_C terminal utility with learned true-episode dual",
+    "local_margin": "m_C=cost_score-remaining_budget_ratio",
+    "normal_variance_ratio": 0.1,
+    "outward_rectification_enabled": false,
+    "probability_critic": "continues Bellman training and diagnostics but has no behavior, reference-covariance, boundary-sampling, actor-loss, or policy-switch access",
+    "safety_band": "absolute local margin at most 0.10",
+    "safety_inward_drift_enabled": false
+  },
+  "objective": [
+    "preserve_task_learning",
+    "reduce_environment_mean_cost_and_cvar20",
+    "reduce_dangerous_normal_velocity",
+    "preserve_tangent_exploration",
+    "check_consistency_across_three_seeds"
+  ],
+  "parent": {
+    "decision": "stop_after_seed_2028_pilot",
+    "decision_commit": "076e8d389ecb6fb4050f1ca2db78997ae2b6342e",
+    "p4_4_reports_immutable": true
+  },
+  "plots": {
+    "learning_curves": [
+      "return_and_success",
+      "mean_cost_cvar20_and_training_cost",
+      "dangerous_normal_velocity_and_normal_to_tangent_variance_ratio",
+      "reward_td_cost_td_and_q_scales"
+    ],
+    "trajectory_contents": [
+      "c0_c1_paths",
+      "hazards_and_goal",
+      "cost_events",
+      "action_direction",
+      "cost_critic_normal",
+      "tangent_direction"
+    ]
+  },
+  "protocol_version": "p4.5-unified-cost-geometry-v1",
+  "shared_backbone": {
+    "actor_update_interval": 2,
+    "bellman_probability_enabled": true,
+    "candidate_probing_enabled": false,
+    "complete_heldout_evidence": true,
+    "dynamic_geometry_gate": false,
+    "enable_global_safety_constraint": true,
+    "enable_legacy_local_geometry": false,
+    "heldout_eval_batch_size": 20000,
+    "heldout_recent_complete_episodes": 20,
+    "probability_mc_aux_weight": 0.1,
+    "probability_target_polyak": 0.005,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_polyak": 0.001,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "stochastic_flow_enabled": true
+  },
+  "status": "locked_before_any_p4_5_training",
+  "training": {
+    "batches": [
+      [
+        "C0-2027",
+        "C1-2027",
+        "C0-2028",
+        "C1-2028"
+      ],
+      [
+        "C0-2029",
+        "C1-2029"
+      ]
+    ],
+    "configurations": 2,
+    "concurrency": "4x1_then_2x1_on_one_rtx3090",
+    "early_scientific_stop": false,
+    "seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "steps_per_run": 100000,
+    "total_runs": 6
+  }
+}
