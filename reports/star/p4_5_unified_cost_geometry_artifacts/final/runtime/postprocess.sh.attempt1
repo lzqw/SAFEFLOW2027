@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+source_dir=/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1
+run_root=/root/autodl-tmp/SAFE/p4_5_532d4b1
+python_bin=/root/autodl-tmp/SAFE/envs/star-p0-p1/bin/python
+status_file=$run_root/postprocess_exit_code.txt
+
+mkdir -p "$run_root/audits/work" "$run_root/summary"
+exec > >(tee -a "$run_root/postprocess.log") 2>&1
+
+finish() {
+    code=$?
+    printf '%s\n' "$code" >"$status_file"
+    echo "postprocess exit=$code at $(date -u +%FT%TZ)"
+}
+trap finish EXIT
+
+echo "postprocess watcher starting at $(date -u +%FT%TZ)"
+while [[ ! -f "$run_root/training_matrix_complete" && ! -f "$run_root/matrix_failure_count.txt" ]]; do
+    sleep 30
+done
+
+if [[ ! -f "$run_root/training_matrix_complete" ]]; then
+    echo "training matrix did not complete successfully" >&2
+    exit 3
+fi
+if [[ "$(<"$run_root/matrix_failure_count.txt")" != 0 ]]; then
+    echo "training matrix reported failures" >&2
+    exit 3
+fi
+
+"$python_bin" - "$run_root" <<'PY'
+import json
+import pathlib
+import sys
+
+root = pathlib.Path(sys.argv[1])
+for arm in ('C0', 'C1'):
+    for seed in (2027, 2028, 2029):
+        receipt = json.loads((root / 'runs' / f'{arm}-{seed}' / 'receipt.json').read_text())
+        if receipt.get('status') != 'passed' or receipt.get('steps') != 100_000:
+            raise SystemExit(f'incomplete receipt for {arm}:{seed}: {receipt}')
+PY
+
+audit_one() {
+    arm=$1
+    seed=$2
+    identity=${arm}-${seed}
+    container=$run_root/runs/$identity
+    mapfile -t runs < <(find "$container/training" -type d -path '*/seed-*' -print)
+    if [[ ${#runs[@]} -ne 1 ]]; then
+        echo "expected exactly one run for $identity, found ${#runs[@]}" >&2
+        return 4
+    fi
+    checkpoint=${runs[0]}/checkpoints/final_full.pt
+    if [[ ! -f "$checkpoint" ]]; then
+        echo "missing final checkpoint for $identity" >&2
+        return 4
+    fi
+    (
+        cd "$source_dir"
+        export CUDA_VISIBLE_DEVICES=0
+        export PYTHONPATH=$source_dir
+        export OMP_NUM_THREADS=1
+        "$python_bin" scripts/star/analyze_p4_5_cost_geometry.py \
+            --checkpoint "$checkpoint" \
+            --output "$run_root/audits/$identity.json" \
+            --work-dir "$run_root/audits/work/$identity" \
+            --device cuda:0
+    ) >"$run_root/audits/$identity.log" 2>&1
+}
+
+for seed in 2027 2028 2029; do
+    echo "audits for seed $seed starting at $(date -u +%FT%TZ)"
+    audit_one C0 "$seed" &
+    first=$!
+    audit_one C1 "$seed" &
+    second=$!
+    wait "$first"
+    wait "$second"
+    echo "audits for seed $seed completed at $(date -u +%FT%TZ)"
+done
+
+(
+    cd "$source_dir"
+    export PYTHONPATH=$source_dir
+    "$python_bin" scripts/star/summarize_p4_5_unified_cost_geometry.py \
+        --protocol reports/star/p4_5_unified_cost_geometry_preregistration.json \
+        --runs \
+            C0:2027="$run_root/runs/C0-2027" \
+            C1:2027="$run_root/runs/C1-2027" \
+            C0:2028="$run_root/runs/C0-2028" \
+            C1:2028="$run_root/runs/C1-2028" \
+            C0:2029="$run_root/runs/C0-2029" \
+            C1:2029="$run_root/runs/C1-2029" \
+        --audits \
+            C0:2027="$run_root/audits/C0-2027.json" \
+            C1:2027="$run_root/audits/C1-2027.json" \
+            C0:2028="$run_root/audits/C0-2028.json" \
+            C1:2028="$run_root/audits/C1-2028.json" \
+            C0:2029="$run_root/audits/C0-2029.json" \
+            C1:2029="$run_root/audits/C1-2029.json" \
+        --output-dir "$run_root/summary"
+    "$python_bin" scripts/star/plot_p4_5_unified_cost_geometry.py \
+        --summary-dir "$run_root/summary" \
+        --output-dir "$run_root/summary"
+)
+
+touch "$run_root/postprocess_complete"
+echo "postprocess completed at $(date -u +%FT%TZ)"

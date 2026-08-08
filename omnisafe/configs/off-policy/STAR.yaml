@@ -71,6 +71,11 @@ defaults:
     safety_anisotropy_enabled: False
     safety_inward_drift_enabled: False
     safety_outward_rectification_enabled: False
+    unified_cost_geometry_enabled: False
+    directional_loss_enabled: False
+    directional_loss_weight: 1.0
+    directional_loss_epsilon: 0.00000001
+    cost_geometry_bandwidth: 0.10
     safety_protocol_version: ""
     safety_protocol_sha256: ""
     flow_reference_variance: 0.04
@@ -82,6 +87,8 @@ defaults:
     safety_drift_strength: 0.20
     safety_drift_temperature: 0.05
     numerical_hard_stops_enabled: False
+    engineering_hard_stops_enabled: False
+    q_absolute_overflow_threshold: 1000000.0
     reward_td_absolute_hard_stop: 0.02
     reward_q_absolute_hard_stop: 10.0
     reward_td_final_to_minimum_ratio_hard_stop: 3.0
@@ -112,7 +119,9 @@ defaults:
     replay_boundary_fraction: 0.40
     replay_importance_beta: 0.40
     eval_seeds: [12027, 12028, 12029, 12030, 12031]
+    trajectory_eval_seeds: [12027, 12036, 12046]
     eval_milestones: [0, 50000, 100000, 200000, 300000]
+    checkpoint_milestones: []
     counterfactual_batch_size: 512
     milestone_checkpoints: True
     checkpoint_replay: False

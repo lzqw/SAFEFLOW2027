@@ -1,0 +1,81 @@
+{
+  "boundary_samples": 1179,
+  "conditions": {
+    "auroc": true,
+    "boundary_samples": true,
+    "brier_skill": true,
+    "calibration": true,
+    "ensemble_disagreement": false,
+    "minimum_steps": true,
+    "negative_labels": true,
+    "positive_labels": true,
+    "td_error": true,
+    "valid_gradient": false
+  },
+  "consecutive_failures": 0,
+  "consecutive_passes": 0,
+  "ema": {
+    "auroc": 0.9997375112925023,
+    "brier_skill": 0.9506103664699713,
+    "calibration_error": 0.0588348407436635,
+    "cost_td_error": 0.03849970038231788,
+    "ensemble_disagreement": null,
+    "valid_gradient_rate": null
+  },
+  "env_steps": 100000,
+  "gate_conditions": {
+    "auroc": true,
+    "boundary_samples": true,
+    "brier_skill": true,
+    "calibration": true,
+    "ensemble_disagreement": false,
+    "minimum_steps": true,
+    "negative_labels": true,
+    "positive_labels": true,
+    "td_error": true,
+    "valid_gradient": false
+  },
+  "gate_evaluations": 0,
+  "geometry_activation_step": null,
+  "geometry_enabled": false,
+  "geometry_last_disable_step": null,
+  "heldout_evidence": {
+    "Heldout/AUROC": 0.850081380952381,
+    "Heldout/BellmanError": 0.014072801917791367,
+    "Heldout/BoundarySamples": 2894.0,
+    "Heldout/BrierScore": 0.1282622069120407,
+    "Heldout/BrierSkill": 0.38922762870788574,
+    "Heldout/CalibrationError": 0.1858815848827362,
+    "Heldout/CalibrationReliability": 0.7737361044717437,
+    "Heldout/EnsembleDisagreement": 0.04193876311182976,
+    "Heldout/Episodes": 20.0,
+    "Heldout/EvidenceSufficient": 1.0,
+    "Heldout/GradientNorm": 0.014655126258730888,
+    "Heldout/NegativeLabels": 14000.0,
+    "Heldout/PositiveLabels": 6000.0,
+    "Heldout/Transitions": 20000.0
+  },
+  "label_counts": {
+    "heldout": {
+      "finalized": 20000,
+      "negative": 14000,
+      "positive": 6000
+    },
+    "replay_train": {
+      "finalized": 80000,
+      "negative": 53000,
+      "positive": 27000
+    }
+  },
+  "latest_heldout_gate_values": {
+    "auroc": 0.9999307862679955,
+    "brier_skill": 0.952059268951416,
+    "calibration_error": 0.05756118893623352,
+    "cost_td_error": 0.036170538514852524,
+    "ensemble_disagreement": null,
+    "valid_gradient_rate": null
+  },
+  "local_geometry_configured": false,
+  "stage": "W2",
+  "warmup_geometry_eligibility_step": null
+}

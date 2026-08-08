@@ -1,0 +1,6 @@
+bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+postprocess watcher starting at 2026-08-08T14:23:37Z
+audits for seed 2027 starting at 2026-08-08T21:47:07Z
+expected exactly one run for C0-2027, found 3
+expected exactly one run for C1-2027, found 3
+postprocess exit=4 at 2026-08-08T21:47:07Z
