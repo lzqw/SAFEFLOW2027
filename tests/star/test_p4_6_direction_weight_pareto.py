@@ -72,9 +72,9 @@ def test_candidate_configs_change_only_protocol_metadata_and_weight() -> None:
 
 
 def test_finalizer_exports_source_root_before_running_audits() -> None:
-    script = (
-        ROOT / 'scripts/star/finalize_p4_6_direction_weight_pareto.sh'
-    ).read_text(encoding='utf-8')
+    script = (ROOT / 'scripts/star/finalize_p4_6_direction_weight_pareto.sh').read_text(
+        encoding='utf-8',
+    )
     export = 'export PYTHONPATH="$SOURCE_DIR${PYTHONPATH:+:$PYTHONPATH}"'
     analyzer = '"$PYTHON_BIN" "$SOURCE_DIR/scripts/star/analyze_p4_6_cost_geometry.py"'
     assert export in script
