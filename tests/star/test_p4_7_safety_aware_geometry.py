@@ -67,6 +67,9 @@ def test_protocol_hash_scope_and_checkpoint_seals() -> None:
         '2028': 'bdc781c7ad152569314d128ebd65c4e838c6d9cbe6035f2b4d1cfd8c13c053da',
         '2029': '3ae57f4eb265cf5939af152eebf82ea4cda1bede3aa99d7f12764b20a47dbf8e',
     }
+    launcher = (ROOT / 'scripts/star/launch_p4_7_matrix.sh').read_text(encoding='utf-8')
+    assert 'rev-parse --is-inside-work-tree' in launcher
+    assert 'scientific_early_stop=false' in launcher
 
 
 def test_p47_is_exactly_one_joint_method_change_from_continued_c0() -> None:

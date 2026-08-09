@@ -15,7 +15,7 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
     echo "Python environment is unavailable: $PYTHON_BIN" >&2
     exit 2
 fi
-if [[ ! -d "$SOURCE_DIR/.git" ]]; then
+if ! git -C "$SOURCE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo "Formal training requires a Git worktree: $SOURCE_DIR" >&2
     exit 2
 fi
