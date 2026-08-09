@@ -8,6 +8,11 @@ RUN_ROOT=${2:-/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto}
 PYTHON_BIN=${3:-/root/autodl-tmp/SAFE/envs/star-p0-p1/bin/python}
 BASELINE_ROOT=${4:-$SOURCE_DIR/reports/star/p4_5_unified_cost_geometry_artifacts/final}
 
+# Executing an analyzer by absolute path places scripts/star, rather than the
+# repository root, on sys.path.  Export the sealed source root for every audit
+# invocation as well as the final summarization step.
+export PYTHONPATH="$SOURCE_DIR${PYTHONPATH:+:$PYTHONPATH}"
+
 mkdir -p "$RUN_ROOT/audits/work" "$RUN_ROOT/summary"
 trap 'status=$?; echo "$status" >"$RUN_ROOT/postprocess_exit_code.txt"; if [[ "$status" -eq 0 ]]; then touch "$RUN_ROOT/postprocess_complete"; fi' EXIT
 
