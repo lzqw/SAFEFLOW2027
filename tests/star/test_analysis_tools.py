@@ -171,8 +171,12 @@ def test_fixed_random_flow_bases_are_reproducible_and_center_is_zero() -> None:
 class _EvaluationProbeEnv:
     """Two-step vector environment exposing deterministic goal and position signals."""
 
-    def reset(self, seed: int) -> tuple[torch.Tensor, dict[str, object]]:
-        self.seed = seed
+    def reset(self, seed: int | None = None) -> tuple[torch.Tensor, dict[str, object]]:
+        if not hasattr(self, 'reset_seeds'):
+            self.reset_seeds: list[int | None] = []
+        self.reset_seeds.append(seed)
+        if seed is not None:
+            self.seed = seed
         self.step_index = 0
         self.position = [0.0, 0.0]
         return torch.zeros(1, 2), {}
@@ -265,6 +269,35 @@ def test_center_flow_rollout_reports_goal_progress_and_stall_metrics() -> None:
     assert result['step_stall_ratio'] == 1.0
     assert result['mean_return'] == 2.0
     assert algorithm._actor_critic.training
+
+
+def test_multi_episode_evaluation_seeds_once_then_advances_each_rng_stream() -> None:
+    algorithm = SimpleNamespace(
+        _env=_EvaluationProbeAdapter(),
+        _env_id='SafetyPointGoal1-v0',
+        _device=torch.device('cpu'),
+        _act_dim=2,
+        _actor_critic=_EvaluationProbeModel(),
+        _cfgs=SimpleNamespace(
+            algo_cfgs=SimpleNamespace(max_episode_steps=2, risk_temperature=1.0),
+            lagrange_cfgs=SimpleNamespace(cost_limit=10.0),
+        ),
+        _augment=lambda obs, context: torch.cat((obs, context), dim=-1),
+    )
+    result = evaluate_rollouts(
+        algorithm,
+        milestone=200_000,
+        eval_seeds=[1, 2],
+        mode='center-flow-diagnostic',
+        episodes_per_seed=3,
+    )
+    assert result['episodes'] == 6
+    assert result['base_seeds'] == [1, 2]
+    assert result['episodes_per_base_seed'] == 3
+    assert result['seeds'] == [1, 1, 1, 2, 2, 2]
+    assert result['episode_indices'] == [0, 1, 2, 0, 1, 2]
+    assert algorithm._env.evaluation_env.reset_seeds == [1, None, None, 2, None, None]
+    assert result['goal_met_episode_rate'] == pytest.approx(0.5)
 
 
 def test_trajectory_plot_accepts_seed_qualified_evaluator_artifacts(tmp_path: Path) -> None:

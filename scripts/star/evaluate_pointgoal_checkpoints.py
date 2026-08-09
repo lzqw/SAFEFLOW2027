@@ -17,6 +17,7 @@ import torch
 
 import omnisafe
 from omnisafe.adapter.star_adapter import STARContext
+from omnisafe.algorithms.off_policy.star import high_risk_geometry_summary
 from omnisafe.common.star_checkpoint import load_star_model_state
 from omnisafe.models.critic.violation_probability_critic import (
     binary_auroc,
@@ -61,6 +62,8 @@ SUMMARY_FIELDS = (
     'mean_min_goal_distance',
     'stall_ratio',
     'step_stall_ratio',
+    'high_risk_normal_to_tangent_variance_ratio',
+    'high_risk_dangerous_outward_velocity',
 )
 
 
@@ -186,6 +189,8 @@ def build_algorithm(  # pylint: disable=too-many-locals
     device: str,
     eval_seeds: list[int],
     work_dir: Path,
+    *,
+    episodes_per_seed: int = 1,
 ) -> Any:
     """Reconstruct the exact legacy actor, critics, adapter, and normalizer."""
     step = int(payload['counters']['env_steps'])
@@ -200,7 +205,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
             'vector_env_nums': 1,
             'parallel': 1,
             'total_steps': max(1, step),
-            'eval_episodes': len(eval_seeds),
+            'eval_episodes': len(eval_seeds) * episodes_per_seed,
         },
     )
     algo_cfgs = custom.setdefault('algo_cfgs', {})
@@ -212,6 +217,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
             'size': replay_size,
             'batch_size': max(1, min(int(algo_cfgs.get('batch_size', 256)), replay_size - 1)),
             'eval_seeds': eval_seeds,
+            'eval_episodes_per_seed': episodes_per_seed,
             'eval_milestones': [],
             'resume_from': '',
             'milestone_checkpoints': False,
@@ -267,11 +273,14 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     eval_seeds: list[int],
     mode: FlowMode,
     *,
+    episodes_per_seed: int = 1,
     flow_seed_offset: int = DEFAULT_FLOW_SEED_OFFSET,
     stall_displacement_threshold: float = 0.25,
     step_stall_threshold: float = 1e-3,
 ) -> dict[str, Any]:
     """Evaluate one flow mode without mutating training state or global RNG state."""
+    if episodes_per_seed <= 0:
+        raise ValueError('episodes_per_seed must be positive')
     if stall_displacement_threshold < 0 or step_stall_threshold < 0:
         raise ValueError('stall thresholds must be non-negative')
     evaluation_env = algorithm._env.evaluation_env  # pylint: disable=protected-access
@@ -293,6 +302,14 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     empirical_costs: list[float] = []
     thresholds: list[float] = []
     trajectory: list[dict[str, Any]] = []
+    high_risk_margin_chunks: list[torch.Tensor] = []
+    high_risk_metric_chunks: dict[str, list[torch.Tensor]] = {
+        'dangerous_outward_velocity': [],
+        'normal_to_tangent_variance_ratio': [],
+        'outward_velocity_ratio': [],
+        'reliability': [],
+        'safety_weight': [],
+    }
     all_action_norms: list[float] = []
     total_stalled_movements = 0
     total_measured_movements = 0
@@ -302,8 +319,21 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     actor_was_training = algorithm._actor_critic.training  # pylint: disable=protected-access
     algorithm._actor_critic.eval()  # pylint: disable=protected-access
     try:
-        for episode_index, seed in enumerate(eval_seeds):
-            obs, _ = evaluation_env.reset(seed=seed)
+        evaluation_schedule = [
+            (base_seed, episode_index)
+            for base_seed in eval_seeds
+            for episode_index in range(episodes_per_seed)
+        ]
+        flow_generators: dict[int, torch.Generator] = {}
+        for seed, episode_index in evaluation_schedule:
+            if episode_index == 0:
+                obs, _ = evaluation_env.reset(seed=seed)
+                generator = torch.Generator(device='cpu')
+                generator.manual_seed(flow_seed_offset + seed)
+                flow_generators[seed] = generator
+            else:
+                obs, _ = evaluation_env.reset()
+                generator = flow_generators[seed]
             context_state = STARContext(
                 algorithm._env_id,  # pylint: disable=protected-access
                 1,
@@ -314,8 +344,6 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                     getattr(algo_cfgs, 'bellman_probability_enabled', False),
                 ),
             )
-            generator = torch.Generator(device='cpu')
-            generator.manual_seed(flow_seed_offset + seed)
             episode_return = 0.0
             episode_cost = 0.0
             episode_goals = 0
@@ -399,6 +427,24 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                         ).mean()
                     else:
                         risk = probability_critic.probabilities(augmented, action).mean()
+                reference = getattr(flow, 'reference', None)
+                trajectory_normal = torch.zeros(action_dim, device=device)
+                if reference is not None:
+                    raw_normal_velocity = (flow.raw_velocities * reference.normals).sum(dim=-1)
+                    high_risk_margin_chunks.append(reference.margins.detach().flatten().cpu())
+                    high_risk_values = {
+                        'dangerous_outward_velocity': raw_normal_velocity.clamp_min(0.0),
+                        'normal_to_tangent_variance_ratio': (
+                            reference.normal_variance / reference.tangent_variance
+                        ),
+                        'outward_velocity_ratio': (raw_normal_velocity > 0.0).float(),
+                        'reliability': reference.reliability,
+                        'safety_weight': reference.boundary_reliability,
+                    }
+                    for name, values in high_risk_values.items():
+                        high_risk_metric_chunks[name].append(values.detach().flatten().cpu())
+                    trajectory_normal = reference.normals.mean(dim=-2)[0]
+                    trajectory_normal = trajectory_normal / trajectory_normal.norm().clamp_min(1e-8)
                 action_norm = float(torch.linalg.vector_norm(action, dim=-1).item())
                 action_norms.append(action_norm)
                 all_action_norms.append(action_norm)
@@ -408,6 +454,8 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                         'milestone': milestone,
                         'evaluation_mode': mode,
                         'seed': seed,
+                        'base_seed': seed,
+                        'episode_index': episode_index,
                         'step': step,
                         'x': position[0],
                         'y': position[1],
@@ -421,6 +469,15 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                         'base_action_1': float(base_action[0, 1].item()),
                         'flow_noise_norm': (
                             float(flow_noise.norm().item()) if flow_noise is not None else 0.0
+                        ),
+                        'cost_margin': float(
+                            quantiles.mean().item()
+                            / float(algorithm._cfgs.lagrange_cfgs.cost_limit)
+                            - context[0, 0].item(),
+                        ),
+                        'cost_normal_0': float(trajectory_normal[0].item()),
+                        'cost_normal_1': (
+                            float(trajectory_normal[1].item()) if action_dim >= 2 else 0.0
                         ),
                         'hazards_json': (
                             json.dumps(layout.get('hazards', []), separators=(',', ':'))
@@ -504,6 +561,13 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     empirical_risk = (empirical_tensor > threshold_tensor).float()
     return_stats = confidence_summary(returns)
     cost_stats = confidence_summary(costs)
+    high_risk_geometry = {}
+    if high_risk_margin_chunks:
+        high_risk_geometry = high_risk_geometry_summary(
+            torch.cat(high_risk_margin_chunks),
+            {name: torch.cat(chunks) for name, chunks in high_risk_metric_chunks.items()},
+            fraction=0.2,
+        )
     return {
         'milestone': milestone,
         'probability_split': 'external_isolated_environment',
@@ -521,7 +585,10 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
         ),
         'flow_seed_offset': flow_seed_offset if mode == 'fixed-random-flow' else None,
         'episodes': len(returns),
-        'seeds': eval_seeds,
+        'base_seeds': eval_seeds,
+        'episodes_per_base_seed': episodes_per_seed,
+        'seeds': [seed for seed, _ in evaluation_schedule],
+        'episode_indices': [index for _, index in evaluation_schedule],
         'returns': returns,
         'costs': costs,
         'lengths': lengths,
@@ -566,6 +633,15 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
         'step_stall_ratio': total_stalled_movements / max(total_measured_movements, 1),
         'step_stall_definition': f'consecutive simulator displacement <= {step_stall_threshold}',
         'step_stall_threshold': step_stall_threshold,
+        'direction_geometry_high_risk_top_20_percent': high_risk_geometry,
+        'high_risk_normal_to_tangent_variance_ratio': high_risk_geometry.get(
+            'normal_to_tangent_variance_ratio',
+            float('nan'),
+        ),
+        'high_risk_dangerous_outward_velocity': high_risk_geometry.get(
+            'dangerous_outward_velocity',
+            float('nan'),
+        ),
         'trajectory': trajectory,
     }
 
@@ -626,10 +702,12 @@ def evaluate_checkpoint(  # pylint: disable=too-many-arguments,too-many-locals
     device: str,
     eval_seeds: list[int],
     *,
+    episodes_per_seed: int,
     flow_seed_offset: int,
     stall_displacement_threshold: float,
     step_stall_threshold: float,
-) -> tuple[dict[str, Any], dict[str, Any]]:
+    primary_only: bool = False,
+) -> tuple[dict[str, Any], dict[str, Any] | None]:
     """Evaluate fixed-random and center-flow modes and write their raw artifacts."""
     payload = checkpoint_payload(checkpoint)
     step = int(payload['counters']['env_steps'])
@@ -639,32 +717,37 @@ def evaluate_checkpoint(  # pylint: disable=too-many-arguments,too-many-locals
         device,
         eval_seeds,
         work_dir / f'seed-{seed}-step-{step}',
+        episodes_per_seed=episodes_per_seed,
     )
+    center: dict[str, Any] | None = None
     try:
         primary = evaluate_rollouts(
             algorithm,
             step,
             eval_seeds,
             'fixed-random-flow',
+            episodes_per_seed=episodes_per_seed,
             flow_seed_offset=flow_seed_offset,
             stall_displacement_threshold=stall_displacement_threshold,
             step_stall_threshold=step_stall_threshold,
         )
-        center = evaluate_rollouts(
-            algorithm,
-            step,
-            eval_seeds,
-            'center-flow-diagnostic',
-            flow_seed_offset=flow_seed_offset,
-            stall_displacement_threshold=stall_displacement_threshold,
-            step_stall_threshold=step_stall_threshold,
-        )
+        if not primary_only:
+            center = evaluate_rollouts(
+                algorithm,
+                step,
+                eval_seeds,
+                'center-flow-diagnostic',
+                episodes_per_seed=episodes_per_seed,
+                flow_seed_offset=flow_seed_offset,
+                stall_displacement_threshold=stall_displacement_threshold,
+                step_stall_threshold=step_stall_threshold,
+            )
     finally:
         algorithm._logger.close()  # pylint: disable=protected-access
         algorithm._env.close()  # pylint: disable=protected-access
 
     primary_trajectory = primary.pop('trajectory')
-    center_trajectory = center.pop('trajectory')
+    center_trajectory = center.pop('trajectory') if center is not None else []
     common = {
         'training_seed': seed,
         'environment': 'SafetyPointGoal1-v0',
@@ -672,12 +755,15 @@ def evaluate_checkpoint(  # pylint: disable=too-many-arguments,too-many-locals
         'evaluation_device': device,
         'spearman_method': 'average-rank tie-correct',
     }
-    result = {**common, **primary, 'center_flow_diagnostic': center}
+    result = {**common, **primary}
+    if center is not None:
+        result['center_flow_diagnostic'] = center
     atomic_json(output_dir / f'evaluation_seed_{seed}_step_{step}.json', result)
-    atomic_json(
-        output_dir / f'center_flow_diagnostic_seed_{seed}_step_{step}.json',
-        {**common, **center},
-    )
+    if center is not None:
+        atomic_json(
+            output_dir / f'center_flow_diagnostic_seed_{seed}_step_{step}.json',
+            {**common, **center},
+        )
     if primary_trajectory:
         atomic_csv(output_dir / f'trajectory_seed_{seed}_step_{step}.csv', primary_trajectory)
     if center_trajectory:
@@ -687,7 +773,7 @@ def evaluate_checkpoint(  # pylint: disable=too-many-arguments,too-many-locals
         )
     return (
         public_row(payload, checkpoint, primary, device),
-        public_row(payload, checkpoint, center, device),
+        public_row(payload, checkpoint, center, device) if center is not None else None,
     )
 
 
@@ -704,16 +790,24 @@ def parser() -> argparse.ArgumentParser:
         default='development',
     )
     result.add_argument('--eval-seeds')
+    result.add_argument('--episodes-per-seed', type=int, default=1)
     result.add_argument('--eval-seed-start', type=int, default=DEFAULT_EVAL_SEED_START)
     result.add_argument('--flow-seed-offset', type=int, default=DEFAULT_FLOW_SEED_OFFSET)
     result.add_argument('--stall-displacement-threshold', type=float, default=0.25)
     result.add_argument('--step-stall-threshold', type=float, default=1e-3)
+    result.add_argument(
+        '--primary-only',
+        action='store_true',
+        help='skip the center-flow diagnostic so formal evaluation runs only the policy mode',
+    )
     return result
 
 
 def main() -> None:
     """Evaluate requested checkpoints and emit separate primary/diagnostic CSVs."""
     args = parser().parse_args()
+    if args.episodes_per_seed <= 0:
+        raise ValueError('episodes-per-seed must be positive')
     eval_seeds = resolve_eval_seeds(args.eval_seeds, args.evaluation_tier, args.eval_seed_start)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     args.work_dir.mkdir(parents=True, exist_ok=True)
@@ -726,16 +820,20 @@ def main() -> None:
             args.work_dir,
             args.device,
             eval_seeds,
+            episodes_per_seed=args.episodes_per_seed,
             flow_seed_offset=args.flow_seed_offset,
             stall_displacement_threshold=args.stall_displacement_threshold,
             step_stall_threshold=args.step_stall_threshold,
+            primary_only=args.primary_only,
         )
         primary_rows.append(primary)
-        center_rows.append(center)
+        if center is not None:
+            center_rows.append(center)
     primary_rows.sort(key=lambda row: (row['milestone'], row['training_seed']))
     center_rows.sort(key=lambda row: (row['milestone'], row['training_seed']))
     atomic_csv(args.output_dir / 'pointgoal_checkpoint_evaluation.csv', primary_rows)
-    atomic_csv(args.output_dir / 'pointgoal_center_flow_diagnostic.csv', center_rows)
+    if center_rows:
+        atomic_csv(args.output_dir / 'pointgoal_center_flow_diagnostic.csv', center_rows)
     print(
         json.dumps(
             {
@@ -743,8 +841,10 @@ def main() -> None:
                 'checkpoints': len(primary_rows),
                 'evaluation_tier': args.evaluation_tier,
                 'evaluation_seeds': eval_seeds,
+                'episodes_per_seed': args.episodes_per_seed,
+                'episodes_per_checkpoint': len(eval_seeds) * args.episodes_per_seed,
                 'primary_mode': 'fixed-random-flow',
-                'diagnostic_mode': 'center-flow-diagnostic',
+                'diagnostic_mode': None if args.primary_only else 'center-flow-diagnostic',
                 'output_dir': str(args.output_dir),
             },
             indent=2,

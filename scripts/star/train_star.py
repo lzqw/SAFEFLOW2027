@@ -138,7 +138,12 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-branches
         milestones = [0, 50_000, 100_000, 200_000, 300_000]
     else:
         milestones = [0, steps]
-    milestones = sorted({value for value in milestones if 0 <= value <= steps} | {0, steps})
+    required_milestones = {steps}
+    if bool(custom.get('algo_cfgs', {}).get('evaluate_initial_policy', True)):
+        required_milestones.add(0)
+    milestones = sorted(
+        {value for value in milestones if 0 <= value <= steps} | required_milestones,
+    )
     eval_seeds = parse_int_list(args.eval_seeds) if args.eval_seeds else None
     replay_size = args.replay_size or max(args.batch_size + 1, min(1_000_000, steps * 2))
 
