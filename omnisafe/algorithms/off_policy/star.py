@@ -2815,6 +2815,7 @@ class STAR(BaseAlgo):
         self._actor_critic.eval()
         try:
             flow_generators: dict[int, torch.Generator] = {}
+            stream_observations: dict[int, torch.Tensor] = {}
             for seed, episode_index in evaluation_schedule:
                 if episode_index == 0:
                     obs, _ = evaluation_env.reset(seed=seed)
@@ -2822,7 +2823,7 @@ class STAR(BaseAlgo):
                     generator.manual_seed(1_000_003 + seed)
                     flow_generators[seed] = generator
                 else:
-                    obs, _ = evaluation_env.reset()
+                    obs = stream_observations[seed]
                     generator = flow_generators[seed]
                 context_state = STARContext(
                     self._env_id,
@@ -3079,6 +3080,7 @@ class STAR(BaseAlgo):
                     obs = next_obs
                     if bool(terminated[0].item()) or bool(truncated[0].item()):
                         break
+                stream_observations[seed] = obs
                 future_cost = 0.0
                 episode_empirical = []
                 for value in reversed(step_costs):

@@ -196,12 +196,17 @@ class _EvaluationProbeEnv:
         self.position[1] += 0.2 * float(action[0, 1].item())
         goal_met = self.seed == 1 and self.step_index == 0
         self.step_index += 1
+        episode_done = self.step_index == 2
+        next_position = list(self.position)
+        if episode_done:
+            self.step_index = 0
+            self.position = [0.0, 0.0]
         return (
-            torch.tensor([self.position], dtype=torch.float32),
+            torch.tensor([self.position if episode_done else next_position], dtype=torch.float32),
             torch.ones(1),
             torch.zeros(1),
             torch.zeros(1, dtype=torch.bool),
-            torch.tensor([self.step_index == 2]),
+            torch.tensor([episode_done]),
             {
                 'goal_met': goal_met,
                 'original_reward': torch.ones(1),
@@ -296,7 +301,7 @@ def test_multi_episode_evaluation_seeds_once_then_advances_each_rng_stream() -> 
     assert result['episodes_per_base_seed'] == 3
     assert result['seeds'] == [1, 1, 1, 2, 2, 2]
     assert result['episode_indices'] == [0, 1, 2, 0, 1, 2]
-    assert algorithm._env.evaluation_env.reset_seeds == [1, None, None, 2, None, None]
+    assert algorithm._env.evaluation_env.reset_seeds == [1, 2]
     assert result['goal_met_episode_rate'] == pytest.approx(0.5)
 
 
