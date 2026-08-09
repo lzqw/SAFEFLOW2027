@@ -1,0 +1,13 @@
+arm,directional_loss_weight,training_seed,milestone,path
+C0,0.0,2027,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C0-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-08-20-55-46/artifacts/trajectory_step_100000.csv
+C0,0.0,2028,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C0-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-08-20-55-46/artifacts/trajectory_step_100000.csv
+C0,0.0,2029,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C0-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-09-01-42-12/artifacts/trajectory_step_100000.csv
+C025,0.25,2027,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C025-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-09-13-51-48/artifacts/trajectory_step_100000.csv
+C025,0.25,2028,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C025-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-09-13-51-48/artifacts/trajectory_step_100000.csv
+C025,0.25,2029,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C025-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-09-18-34-29/artifacts/trajectory_step_100000.csv
+C050,0.5,2027,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C050-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-09-13-51-48/artifacts/trajectory_step_100000.csv
+C050,0.5,2028,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C050-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-09-13-51-48/artifacts/trajectory_step_100000.csv
+C050,0.5,2029,100000,/root/autodl-tmp/SAFE/p4_6_direction_weight_pareto/runs/C050-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-09-18-34-29/artifacts/trajectory_step_100000.csv
+C1,1.0,2027,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C1-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-08-20-55-46/artifacts/trajectory_step_100000.csv
+C1,1.0,2028,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C1-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-08-20-55-47/artifacts/trajectory_step_100000.csv
+C1,1.0,2029,100000,/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.6-53e8c8e/reports/star/p4_5_unified_cost_geometry_artifacts/final/runs/C1-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-09-01-42-12/artifacts/trajectory_step_100000.csv
