@@ -3,16 +3,19 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 import math
 from pathlib import Path
 
-import omnisafe
 import torch
 import yaml
+from scripts.star.plot_p4_7_safety_aware_geometry import plot_curves, plot_pareto
+from scripts.star.summarize_p4_7_safety_aware_geometry import select_final
 from torch import nn
 
+import omnisafe
 from omnisafe.algorithms.off_policy.star import high_risk_geometry_summary
 from omnisafe.models.safety.distributional_backend import (
     compute_cost_stochastic_reference,
@@ -284,3 +287,114 @@ def test_p47_micro_loop_exercises_joint_geometry_and_writes_method_identity(
     diagnostics = (log_dir / 'artifacts/diagnostics.csv').read_text(encoding='utf-8')
     assert 'Loss/Direction' in diagnostics
     assert 'Direction/Denominator' in diagnostics
+
+
+def test_locked_final_selection_freezes_p47_only_when_every_gate_passes() -> None:
+    seed_rows: dict[str, dict[int, dict[str, float]]] = {arm: {} for arm in ('C0', 'C1', 'P47')}
+    for seed in (2027, 2028, 2029):
+        seed_rows['C0'][seed] = {
+            'mean_return': 1.0,
+            'success_rate': 0.30,
+            'mean_cost': 10.0,
+            'cost_cvar_20': 20.0,
+            'training_cumulative_cost': 100.0,
+        }
+        seed_rows['C1'][seed] = {
+            'mean_return': 1.0,
+            'success_rate': 0.30,
+            'mean_cost': 6.0,
+            'cost_cvar_20': 12.0,
+            'training_cumulative_cost': 80.0,
+        }
+        seed_rows['P47'][seed] = {
+            'mean_return': 0.95,
+            'success_rate': 0.28,
+            'mean_cost': 6.5,
+            'cost_cvar_20': 12.5,
+            'training_cumulative_cost': 70.0,
+        }
+    pooled = {
+        'C0': {
+            'mean_return': 1.0,
+            'success_rate': 0.30,
+            'mean_cost': 10.0,
+            'cost_cvar_20': 20.0,
+            'training_cumulative_cost_mean': 100.0,
+        },
+        'C1': {
+            'mean_return': 1.0,
+            'success_rate': 0.30,
+            'mean_cost': 6.0,
+            'cost_cvar_20': 12.0,
+            'training_cumulative_cost_mean': 80.0,
+        },
+        'P47': {
+            'mean_return': 0.95,
+            'success_rate': 0.28,
+            'mean_cost': 6.5,
+            'cost_cvar_20': 12.5,
+            'training_cumulative_cost_mean': 70.0,
+        },
+    }
+    decision = select_final(seed_rows, pooled)
+    assert decision['label'] == 'freeze_P47'
+    assert decision['all_gates_pass'] is True
+
+    pooled['P47']['mean_return'] = 0.7
+    decision = select_final(seed_rows, pooled)
+    assert decision['label'] == 'freeze_C1'
+    assert decision['gates']['performance_retention_vs_C1_100k'] is False
+
+
+def test_p47_plotter_renders_common_curves_and_formal_pareto(tmp_path: Path) -> None:
+    summary_dir = tmp_path / 'summary'
+    figures = tmp_path / 'figures'
+    summary_dir.mkdir()
+    figures.mkdir()
+    checkpoint_rows = []
+    final_rows = []
+    pooled = {}
+    for arm_index, arm in enumerate(('C0', 'C1', 'P47')):
+        for seed in (2027, 2028, 2029):
+            row = {
+                'arm': arm,
+                'training_seed': seed,
+                'milestone': 100_000,
+                'mean_return': 1.0 + 0.1 * arm_index,
+                'success_rate': 0.2 + 0.1 * arm_index,
+                'mean_cost': 10.0 - arm_index,
+                'cost_cvar_20': 20.0 - arm_index,
+                'training_cumulative_cost': 1000.0 - 100.0 * arm_index,
+                'high_risk_normal_to_tangent_variance_ratio': 1.0 - 0.1 * arm_index,
+                'high_risk_dangerous_outward_velocity': 0.5 - 0.1 * arm_index,
+            }
+            checkpoint_rows.append(row)
+            final_rows.append(row)
+        pooled[arm] = {
+            key: value
+            for key, value in checkpoint_rows[-1].items()
+            if key
+            in {
+                'mean_return',
+                'success_rate',
+                'mean_cost',
+                'cost_cvar_20',
+            }
+        }
+    for name, rows in (
+        ('p4_7_checkpoint_metrics.csv', checkpoint_rows),
+        ('p4_7_formal_final_seed_metrics.csv', final_rows),
+    ):
+        with (summary_dir / name).open('w', encoding='utf-8', newline='') as stream:
+            writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+    (summary_dir / 'p4_7_final_summary.json').write_text(
+        json.dumps({'pooled_formal': pooled}),
+        encoding='utf-8',
+    )
+    curve_paths = plot_curves(summary_dir, figures)
+    pareto_path = plot_pareto(summary_dir, figures)
+    assert len(curve_paths) == 3
+    assert all(path.is_file() and path.stat().st_size > 0 for path in curve_paths)
+    assert pareto_path.is_file() and pareto_path.stat().st_size > 0
