@@ -142,6 +142,48 @@ def run_state(
     }
 
 
+def formal_matrix_status(
+    run_root: Path,
+    matrix: dict[str, Any],
+    *,
+    now: float | None = None,
+    stale_after_seconds: float = 1800.0,
+    proc_root: Path | None = None,
+) -> dict[str, Any]:
+    """Build one reusable status payload for the complete preregistered matrix."""
+    active_containers = active_worker_containers(proc_root)
+    rows = []
+    for seed in matrix['training_seeds']:
+        for env_id, environment in matrix['environments'].items():
+            total_steps = int(environment['total_steps'])
+            container = run_root / 'runs' / f'{SLUGS[env_id]}-{seed}'
+            rows.append(
+                {
+                    'environment': env_id,
+                    'training_seed': int(seed),
+                    'total_steps': total_steps,
+                    **run_state(
+                        container,
+                        total_steps,
+                        now=now,
+                        stale_after_seconds=stale_after_seconds,
+                        worker_alive=str(container) in active_containers,
+                    ),
+                },
+            )
+    return {
+        'formal_matrix_complete': (run_root / 'formal_matrix_complete').is_file(),
+        'completed_runs': sum(row['state'] == 'completed' for row in rows),
+        'failed_runs': sum(row['state'] == 'engineering_failure' for row in rows),
+        'stale_runs': sum(row['state'] == 'stale_recoverable' for row in rows),
+        'full_checkpoint_runs': sum(bool(row['has_full_checkpoint']) for row in rows),
+        'total_runs': len(rows),
+        'completed_environment_steps': sum(int(row['env_steps']) for row in rows),
+        'planned_environment_steps': sum(int(row['total_steps']) for row in rows),
+        'runs': rows,
+    }
+
+
 def main() -> None:
     """Print a machine-readable status snapshot and a compact human table."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -156,36 +198,12 @@ def main() -> None:
     parser.add_argument('--json-only', action='store_true')
     args = parser.parse_args()
     matrix = yaml.safe_load(args.matrix.read_text(encoding='utf-8'))
-    active_containers = active_worker_containers()
-    rows = []
-    for seed in matrix['training_seeds']:
-        for env_id, environment in matrix['environments'].items():
-            total_steps = int(environment['total_steps'])
-            container = args.run_root / 'runs' / f'{SLUGS[env_id]}-{seed}'
-            rows.append(
-                {
-                    'environment': env_id,
-                    'training_seed': int(seed),
-                    'total_steps': total_steps,
-                    **run_state(
-                        container,
-                        total_steps,
-                        stale_after_seconds=args.stale_after_seconds,
-                        worker_alive=str(container) in active_containers,
-                    ),
-                },
-            )
-    payload = {
-        'formal_matrix_complete': (args.run_root / 'formal_matrix_complete').is_file(),
-        'completed_runs': sum(row['state'] == 'completed' for row in rows),
-        'failed_runs': sum(row['state'] == 'engineering_failure' for row in rows),
-        'stale_runs': sum(row['state'] == 'stale_recoverable' for row in rows),
-        'full_checkpoint_runs': sum(bool(row['has_full_checkpoint']) for row in rows),
-        'total_runs': len(rows),
-        'completed_environment_steps': sum(int(row['env_steps']) for row in rows),
-        'planned_environment_steps': sum(int(row['total_steps']) for row in rows),
-        'runs': rows,
-    }
+    payload = formal_matrix_status(
+        args.run_root,
+        matrix,
+        stale_after_seconds=args.stale_after_seconds,
+    )
+    rows = payload['runs']
     print(json.dumps(payload, indent=2, sort_keys=True))
     if not args.json_only:
         print('\nenvironment                   seed  state                         steps       %')
