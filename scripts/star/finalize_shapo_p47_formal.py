@@ -222,6 +222,14 @@ def render_report(
             '',
             *[f'- [`{path.name}`](figures/{path.name})' for path in figures],
             '',
+            '## Recovery evidence',
+            '',
+            (
+                '`shapo_p47_checkpoint_manifest.csv` records the validated SHA-256, byte size, '
+                'step, replay size, and replay dimensions for every retained checkpoint. Large '
+                'replay-bearing checkpoint payloads remain server-only.'
+            ),
+            '',
             '## Interpretation boundary',
             '',
             (
@@ -249,6 +257,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     final_rows: list[dict[str, Any]] = []
     curve_rows: list[dict[str, Any]] = []
     trajectory_sources: list[dict[str, Any]] = []
+    checkpoint_rows: list[dict[str, Any]] = []
     source_commits = set()
     for env_id, environment in matrix['environments'].items():
         expected_milestones = [int(step) for step in environment['milestones']]
@@ -297,6 +306,30 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                         **trajectory,
                     },
                 )
+            checkpoint_artifacts = validation.get('checkpoint_artifacts', [])
+            expected_checkpoint_labels = {
+                'latest_full',
+                'final_full',
+                'best_safe_return',
+                *[f'milestone_{step}' for step in expected_milestones],
+            }
+            labels = [str(row['label']) for row in checkpoint_artifacts]
+            if len(labels) != len(set(labels)) or set(labels) != expected_checkpoint_labels:
+                raise ValueError(f'{validation_path} has incomplete checkpoint identities')
+            for checkpoint in checkpoint_artifacts:
+                source = Path(checkpoint['artifact'])
+                if not source.is_file() or source.stat().st_size != int(checkpoint['bytes']):
+                    raise ValueError(f'checkpoint artifact is unavailable or changed: {source}')
+                if sha256_file(source) != checkpoint['sha256']:
+                    raise ValueError(f'checkpoint artifact identity mismatch: {source}')
+                checkpoint_rows.append(
+                    {
+                        'environment': env_id,
+                        'training_seed': seed,
+                        'server_only': True,
+                        **checkpoint,
+                    },
+                )
             final_rows.append(
                 {
                     'environment': env_id,
@@ -309,6 +342,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             )
     if len(final_rows) != 20 or len(source_commits) != 1:
         raise ValueError('formal matrix must contain 20 runs from one source commit')
+    if len(trajectory_sources) != 60 or len(checkpoint_rows) != 120:
+        raise ValueError('formal matrix has incomplete trajectory or checkpoint evidence')
 
     aggregate: dict[str, dict[str, Any]] = {}
     aggregate_rows = []
@@ -355,6 +390,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     write_csv(output / 'shapo_p47_learning_curves.csv', curve_rows)
     write_csv(output / 'shapo_p47_seed_level_aggregate.csv', aggregate_rows)
     write_csv(output / 'shapo_p47_trajectory_manifest.csv', trajectory_rows)
+    write_csv(output / 'shapo_p47_checkpoint_manifest.csv', checkpoint_rows)
     from scripts.star.plot_shapo_p47_formal import (  # pylint: disable=import-outside-toplevel
         plot_all,
     )
@@ -372,6 +408,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'episodes_per_training_seed': 100,
             'aggregate': aggregate,
             'trajectory_artifact_count': len(trajectory_rows),
+            'checkpoint_artifact_count': len(checkpoint_rows),
             'figures': [path.relative_to(output).as_posix() for path in figures],
         },
     )

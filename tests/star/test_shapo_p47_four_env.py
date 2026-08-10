@@ -15,7 +15,10 @@ import torch
 import yaml
 from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
 from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
-from scripts.star.validate_shapo_p47_run import validate_trajectory_artifact
+from scripts.star.validate_shapo_p47_run import (
+    validate_checkpoint_artifact,
+    validate_trajectory_artifact,
+)
 from torch import nn
 
 from omnisafe.algorithms.off_policy.star import (
@@ -75,6 +78,57 @@ def _write_trajectory(path: Path, milestone: int, seeds: list[int]) -> None:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _write_checkpoint(
+    path: Path,
+    *,
+    environment: str = 'Ant-v4',
+    seed: int = 2027,
+    step: int = 6,
+    capacity: int = 8,
+    include_replay: bool = True,
+) -> None:
+    """Write a tiny structurally complete STAR checkpoint fixture."""
+    replay = None
+    if include_replay:
+        size = min(step, capacity)
+        replay = {
+            'version': 3,
+            'capacity': capacity,
+            'size': size,
+            'pointer': step % capacity,
+            'obs_dim': 3,
+            'act_dim': 2,
+            'data': {
+                'obs': torch.zeros(size, 3),
+                'action': torch.zeros(size, 2),
+                'cost': torch.zeros(size),
+                'next_obs': torch.zeros(size, 3),
+                'context': torch.zeros(size, 3),
+                'next_context': torch.zeros(size, 3),
+                'is_failure': torch.zeros(size, dtype=torch.bool),
+            },
+        }
+    payload = {
+        'format': 'star-checkpoint',
+        'version': 1,
+        'model': {'weight': torch.ones(1)},
+        'optimizers': {'actor': {}},
+        'duals': {},
+        'normalizer': {},
+        'counters': {'env_steps': step, 'cumulative_training_cost': 2.0},
+        'warmup': {},
+        'rng': {},
+        'replay': replay,
+        'extra': {
+            'environment': environment,
+            'seed': seed,
+            'resolved_config': {'env_id': environment, 'seed': seed},
+        },
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(payload, path)
 
 
 def test_shapo_protocol_matrix_and_frozen_method_are_byte_sealed() -> None:
@@ -305,6 +359,73 @@ def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
         validate_trajectory_artifact(path, 100, seeds)
 
 
+def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: Path) -> None:
+    full = tmp_path / 'latest_full.pt'
+    lightweight = tmp_path / 'milestone_4.pt'
+    _write_checkpoint(full)
+    _write_checkpoint(lightweight, step=4, include_replay=False)
+    full_result = validate_checkpoint_artifact(
+        full,
+        label='latest_full',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={6},
+        replay_required=True,
+        replay_capacity=8,
+    )
+    assert full_result['replay_included'] is True
+    assert full_result['replay_size'] == 6
+    assert full_result['observation_dimension'] == 3
+    light_result = validate_checkpoint_artifact(
+        lightweight,
+        label='milestone_4',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={4},
+        replay_required=False,
+        replay_capacity=8,
+    )
+    assert light_result['replay_included'] is False
+    assert light_result['replay_size'] == 0
+
+
+def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / 'checkpoint.pt'
+    _write_checkpoint(path, include_replay=False)
+    with pytest.raises(ValueError, match='unexpected checkpoint step'):
+        validate_checkpoint_artifact(
+            path,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={8},
+            replay_required=True,
+            replay_capacity=8,
+        )
+    with pytest.raises(ValueError, match='not a replay-bearing'):
+        validate_checkpoint_artifact(
+            path,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+        )
+    with pytest.raises(ValueError, match='identity does not match'):
+        validate_checkpoint_artifact(
+            path,
+            label='milestone_6',
+            environment='Ant-v4',
+            seed=2028,
+            expected_steps={6},
+            replay_required=False,
+            replay_capacity=8,
+        )
+
+
 def test_finalizer_aggregates_twenty_runs_by_training_seed(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -365,6 +486,32 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         matrix['evaluation']['trajectory_base_seeds'],
                     ),
                 )
+            checkpoint_artifacts = []
+            checkpoint_specs = [
+                ('latest_full', environment['total_steps'], True),
+                ('final_full', environment['total_steps'], True),
+                ('best_safe_return', environment['milestones'][0], False),
+                *[
+                    (f'milestone_{milestone}', milestone, False)
+                    for milestone in environment['milestones']
+                ],
+            ]
+            for label, checkpoint_step, replay_included in checkpoint_specs:
+                checkpoint_path = container / 'checkpoint-fixtures' / f'{label}.pt'
+                checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+                checkpoint_path.write_bytes(f'{env_id}-{seed}-{label}'.encode())
+                checkpoint_artifacts.append(
+                    {
+                        'label': label,
+                        'artifact': str(checkpoint_path),
+                        'sha256': hashlib.sha256(checkpoint_path.read_bytes()).hexdigest(),
+                        'bytes': checkpoint_path.stat().st_size,
+                        'env_steps': checkpoint_step,
+                        'replay_included': replay_included,
+                        'replay_size': 400_000 if replay_included else 0,
+                        'replay_capacity': 400_000,
+                    },
+                )
             (container / 'formal_validation.json').write_text(
                 json.dumps(
                     {
@@ -374,6 +521,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'training_seed': seed,
                         'evaluation_rows': evaluations,
                         'trajectory_artifacts': trajectories,
+                        'checkpoint_artifacts': checkpoint_artifacts,
                     },
                 ),
                 encoding='utf-8',
@@ -402,6 +550,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     assert summary['statistical_unit'] == 'training_seed'
     assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
     assert summary['trajectory_artifact_count'] == 60
+    assert summary['checkpoint_artifact_count'] == 120
     assert len(summary['figures']) == 6
     assert all((output / path).is_file() for path in summary['figures'])
     with (output / 'shapo_p47_trajectory_manifest.csv').open(
@@ -410,7 +559,15 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     ) as stream:
         trajectory_rows = list(csv.DictReader(stream))
     assert len(trajectory_rows) == 60
+    with (output / 'shapo_p47_checkpoint_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        checkpoint_rows = list(csv.DictReader(stream))
+    assert len(checkpoint_rows) == 120
+    assert {row['server_only'] for row in checkpoint_rows} == {'True'}
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
     assert 'High-risk direction diagnostics' in report
     assert 'shapo_p47_ant_trajectory_risk.png' in report
+    assert 'Large replay-bearing checkpoint payloads remain server-only' in report

@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 from typing import Any
 
+import torch
 import yaml
 
 
@@ -41,7 +42,11 @@ def newest(container: Path, pattern: str) -> Path:
 
 def sha256_file(path: Path) -> str:
     """Return a lowercase SHA-256 file digest."""
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def atomic_json(path: Path, payload: dict[str, Any]) -> None:
@@ -140,6 +145,108 @@ def validate_trajectory_artifact(
         'row_count': len(rows),
         'trajectory_seeds': sorted(expected),
         'rows_per_seed': {str(seed): rows_per_seed[seed] for seed in sorted(expected)},
+    }
+
+
+def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
+    path: Path,
+    *,
+    label: str,
+    environment: str,
+    seed: int,
+    expected_steps: set[int],
+    replay_required: bool,
+    replay_capacity: int,
+) -> dict[str, Any]:
+    """Deeply validate one STAR checkpoint and return its immutable compact identity."""
+    if path.stat().st_size <= 0:
+        raise ValueError(f'checkpoint {path} is empty')
+    payload = torch.load(path, map_location='cpu', weights_only=False)
+    required = {
+        'format',
+        'version',
+        'model',
+        'optimizers',
+        'duals',
+        'normalizer',
+        'counters',
+        'warmup',
+        'rng',
+        'replay',
+        'extra',
+    }
+    if not isinstance(payload, dict) or not required.issubset(payload):
+        raise ValueError(f'{path} is not a complete STAR checkpoint payload')
+    if payload['format'] != 'star-checkpoint' or int(payload['version']) != 1:
+        raise ValueError(f'{path} has an unsupported STAR checkpoint format')
+    if not isinstance(payload['model'], dict) or not payload['model']:
+        raise ValueError(f'{path} has no model state')
+    if not isinstance(payload['optimizers'], dict) or not payload['optimizers']:
+        raise ValueError(f'{path} has no optimizer state')
+    counters = payload['counters']
+    step = int(counters['env_steps'])
+    if step not in expected_steps:
+        raise ValueError(f'{path} has unexpected checkpoint step {step}')
+    finite(f'{path} cumulative training cost', counters['cumulative_training_cost'])
+    extra = payload['extra']
+    if extra.get('environment') != environment or int(extra.get('seed', -1)) != seed:
+        raise ValueError(f'{path} checkpoint identity does not match its matrix cell')
+    resolved = extra.get('resolved_config', {})
+    if resolved.get('env_id') != environment or int(resolved.get('seed', -1)) != seed:
+        raise ValueError(f'{path} embedded resolved config has the wrong identity')
+
+    replay = payload['replay']
+    replay_metadata: dict[str, Any] = {
+        'replay_included': replay is not None,
+        'replay_size': 0,
+        'replay_capacity': replay_capacity,
+    }
+    if replay_required:
+        if not isinstance(replay, dict):
+            raise ValueError(f'{path} is not a replay-bearing recovery checkpoint')
+        if int(replay.get('version', -1)) not in {2, 3}:
+            raise ValueError(f'{path} has an unsupported replay snapshot')
+        if int(replay['capacity']) != replay_capacity:
+            raise ValueError(f'{path} replay capacity changed')
+        expected_size = min(step, replay_capacity)
+        if int(replay['size']) != expected_size:
+            raise ValueError(f'{path} replay size does not match its training step')
+        if int(replay['pointer']) != step % replay_capacity:
+            raise ValueError(f'{path} replay pointer does not match its training step')
+        data = replay.get('data', {})
+        required_replay_fields = {
+            'obs',
+            'action',
+            'cost',
+            'next_obs',
+            'context',
+            'next_context',
+            'is_failure',
+        }
+        if not isinstance(data, dict) or not required_replay_fields.issubset(data):
+            raise ValueError(f'{path} replay snapshot is missing transition fields')
+        for field, tensor in data.items():
+            if not isinstance(tensor, torch.Tensor) or tensor.shape[0] != expected_size:
+                raise ValueError(f'{path} replay field {field!r} has the wrong resident length')
+        replay_metadata.update(
+            {
+                'replay_size': expected_size,
+                'replay_capacity': int(replay['capacity']),
+                'replay_version': int(replay['version']),
+                'observation_dimension': int(replay['obs_dim']),
+                'action_dimension': int(replay['act_dim']),
+            },
+        )
+    elif replay is not None:
+        raise ValueError(f'{path} lightweight checkpoint unexpectedly contains replay')
+
+    return {
+        'label': label,
+        'artifact': str(path),
+        'sha256': sha256_file(path),
+        'bytes': path.stat().st_size,
+        'env_steps': step,
+        **replay_metadata,
     }
 
 
@@ -289,18 +396,37 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     if manifest['p4_7_safety_aware_geometry']['enabled'] is not True:
         raise ValueError('run manifest does not identify frozen P4.7')
 
-    required_checkpoint_patterns = [
-        'training/**/checkpoints/latest_full.pt',
-        'training/**/checkpoints/final_full.pt',
-        'training/**/checkpoints/best_safe_return.pt',
-        *[f'training/**/checkpoints/milestone_{step}.pt' for step in milestones],
+    replay_capacity = int(matrix['training_invariants']['replay_size'])
+    required_checkpoint_specs = [
+        ('latest_full', 'training/**/checkpoints/latest_full.pt', {total_steps}, True),
+        ('final_full', 'training/**/checkpoints/final_full.pt', {total_steps}, True),
+        ('best_safe_return', 'training/**/checkpoints/best_safe_return.pt', set(milestones), False),
+        *[
+            (
+                f'milestone_{step}',
+                f'training/**/checkpoints/milestone_{step}.pt',
+                {step},
+                False,
+            )
+            for step in milestones
+        ],
     ]
     checkpoint_paths = []
-    for pattern in required_checkpoint_patterns:
+    checkpoint_artifacts = []
+    for label, pattern, expected_steps, replay_required in required_checkpoint_specs:
         path = newest(args.container, pattern)
-        if path.stat().st_size <= 0:
-            raise ValueError(f'checkpoint {path} is empty')
         checkpoint_paths.append(str(path))
+        checkpoint_artifacts.append(
+            validate_checkpoint_artifact(
+                path,
+                label=label,
+                environment=args.env_id,
+                seed=args.seed,
+                expected_steps=expected_steps,
+                replay_required=replay_required,
+                replay_capacity=replay_capacity,
+            ),
+        )
 
     payload = {
         'status': 'passed',
@@ -317,6 +443,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         'evaluation_rows': evaluation_rows,
         'trajectory_artifacts': trajectory_artifacts,
         'checkpoints': checkpoint_paths,
+        'checkpoint_artifacts': checkpoint_artifacts,
         'receipt': str(args.container / 'receipt.json'),
     }
     atomic_json(args.container / 'formal_validation.json', payload)
