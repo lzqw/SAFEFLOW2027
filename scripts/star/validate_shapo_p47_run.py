@@ -9,11 +9,13 @@ import hashlib
 import json
 import math
 import os
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 import torch
 import yaml
+from scripts.star.materialize_shapo_p47_config import materialize
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -32,6 +34,45 @@ def finite(label: str, value: Any) -> float:
     return numeric
 
 
+def require_close(label: str, observed: Any, expected: float) -> float:
+    """Require one finite scalar to agree with its independently recomputed value."""
+    numeric = finite(label, observed)
+    if not math.isclose(numeric, expected, rel_tol=1e-9, abs_tol=1e-9):
+        raise ValueError(f'{label} mismatch: expected {expected!r}, got {numeric!r}')
+    return numeric
+
+
+def finite_sequence(label: str, values: Any, length: int) -> list[float]:
+    """Require one fixed-length sequence of finite scalars."""
+    if not isinstance(values, list) or len(values) != length:
+        raise ValueError(f'{label} must contain exactly {length} values')
+    return [finite(f'{label}[{index}]', value) for index, value in enumerate(values)]
+
+
+def undefined(value: Any) -> bool:
+    """Return whether an optional diagnostic is explicitly absent or non-finite."""
+    if value is None:
+        return True
+    try:
+        return not math.isfinite(float(value))
+    except (TypeError, ValueError):
+        return False
+
+
+def require_nested_subset(label: str, observed: Any, expected: Any) -> None:
+    """Require every recursively nested expected config value in a runtime payload."""
+    if isinstance(expected, dict):
+        if not isinstance(observed, dict):
+            raise ValueError(f'{label} must be a mapping')
+        for key, value in expected.items():
+            if key not in observed:
+                raise ValueError(f'{label} is missing key {key!r}')
+            require_nested_subset(f'{label}.{key}', observed[key], value)
+        return
+    if observed != expected:
+        raise ValueError(f'{label} mismatch: expected {expected!r}, got {observed!r}')
+
+
 def newest(container: Path, pattern: str) -> Path:
     """Return the newest matching segment artifact."""
     matches = list(container.glob(pattern))
@@ -47,6 +88,15 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def artifact_identity(path: Path) -> dict[str, Any]:
+    """Return the immutable path, byte size, and digest of one compact artifact."""
+    return {
+        'artifact': str(path),
+        'sha256': sha256_file(path),
+        'bytes': path.stat().st_size,
+    }
 
 
 def atomic_json(path: Path, payload: dict[str, Any]) -> None:
@@ -157,6 +207,7 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     expected_steps: set[int],
     replay_required: bool,
     replay_capacity: int,
+    expected_custom_config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Deeply validate one STAR checkpoint and return its immutable compact identity."""
     if path.stat().st_size <= 0:
@@ -194,6 +245,12 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     resolved = extra.get('resolved_config', {})
     if resolved.get('env_id') != environment or int(resolved.get('seed', -1)) != seed:
         raise ValueError(f'{path} embedded resolved config has the wrong identity')
+    if expected_custom_config is not None:
+        require_nested_subset(
+            f'{path} embedded resolved config',
+            resolved,
+            expected_custom_config,
+        )
 
     replay = payload['replay']
     replay_metadata: dict[str, Any] = {
@@ -261,6 +318,10 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     args = parser.parse_args()
 
     matrix = yaml.safe_load(args.matrix.read_text(encoding='utf-8'))
+    if args.env_id not in matrix.get('environments', {}):
+        raise ValueError(f'environment {args.env_id!r} is not in the locked matrix')
+    if args.seed not in [int(seed) for seed in matrix.get('training_seeds', [])]:
+        raise ValueError(f'training seed {args.seed} is not in the locked matrix')
     environment = matrix['environments'][args.env_id]
     total_steps = int(environment['total_steps'])
     milestones = [int(step) for step in environment['milestones']]
@@ -271,9 +332,17 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     trajectory_seeds = [int(seed) for seed in matrix['evaluation']['trajectory_base_seeds']]
     episodes_per_seed = int(matrix['evaluation']['episodes_per_base_seed'])
     expected_episodes = len(base_seeds) * episodes_per_seed
+    expected_schedule = [
+        (base_seed, episode_index)
+        for base_seed in base_seeds
+        for episode_index in range(episodes_per_seed)
+    ]
 
     config_path = args.container / 'resolved_formal_config.yaml'
     config = yaml.safe_load(config_path.read_text(encoding='utf-8'))
+    expected_config = materialize(args.matrix.resolve(), args.env_id)
+    if config != expected_config:
+        raise ValueError('resolved formal config differs from the sealed materialization')
     metadata = config['shapo_four_env_metadata']
     if metadata['engineering_smoke_only'] is not False:
         raise ValueError('formal run config is labelled as an engineering smoke')
@@ -328,10 +397,109 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             raise ValueError(f'{path} has the wrong held-out base seeds')
         if int(evaluation['episodes_per_base_seed']) != episodes_per_seed:
             raise ValueError(f'{path} has the wrong episodes-per-seed count')
+        observed_schedule = list(
+            zip(
+                [int(seed) for seed in evaluation.get('seeds', [])],
+                [int(index) for index in evaluation.get('episode_indices', [])],
+            ),
+        )
+        if observed_schedule != expected_schedule:
+            raise ValueError(f'{path} has the wrong sequential fixed-seed schedule')
         if [int(seed) for seed in evaluation['trajectory_seeds']] != trajectory_seeds:
             raise ValueError(f'{path} has the wrong trajectory seed schedule')
-        for metric in ('mean_return', 'mean_cost', 'cost_cvar_20', 'training_cumulative_cost'):
-            finite(f'{args.env_id}@{milestone} {metric}', evaluation[metric])
+        returns = finite_sequence(f'{path} returns', evaluation.get('returns'), expected_episodes)
+        costs = finite_sequence(f'{path} costs', evaluation.get('costs'), expected_episodes)
+        lengths = finite_sequence(f'{path} lengths', evaluation.get('lengths'), expected_episodes)
+        if any(cost < 0.0 for cost in costs):
+            raise ValueError(f'{path} contains a negative episode cost')
+        if any(length <= 0.0 or not length.is_integer() for length in lengths):
+            raise ValueError(f'{path} contains an invalid episode length')
+        require_close(
+            f'{args.env_id}@{milestone} mean_return',
+            evaluation['mean_return'],
+            math.fsum(returns) / expected_episodes,
+        )
+        require_close(
+            f'{args.env_id}@{milestone} mean_cost',
+            evaluation['mean_cost'],
+            math.fsum(costs) / expected_episodes,
+        )
+        tail_count = max(1, math.ceil(expected_episodes * 0.2))
+        require_close(
+            f'{args.env_id}@{milestone} cost_cvar_20',
+            evaluation['cost_cvar_20'],
+            math.fsum(sorted(costs, reverse=True)[:tail_count]) / tail_count,
+        )
+        finite(
+            f'{args.env_id}@{milestone} training_cumulative_cost',
+            evaluation['training_cumulative_cost'],
+        )
+
+        failure_flags = finite_sequence(
+            f'{path} episode_failure_flags',
+            evaluation.get('episode_failure_flags'),
+            expected_episodes,
+        )
+        if any(flag not in {0.0, 1.0} for flag in failure_flags):
+            raise ValueError(f'{path} contains a non-binary episode failure flag')
+        failure_count = int(math.fsum(failure_flags))
+        if int(evaluation['failure_count']) != failure_count:
+            raise ValueError(f'{path} failure count disagrees with episode flags')
+        require_close(
+            f'{path} failure_rate',
+            evaluation['failure_rate'],
+            failure_count / expected_episodes,
+        )
+        end_reasons = evaluation.get('episode_end_reasons')
+        if not isinstance(end_reasons, list) or len(end_reasons) != expected_episodes:
+            raise ValueError(f'{path} has incomplete episode end reasons')
+        observed_reason_counts = evaluation.get('failure_reason_counts')
+        if not isinstance(observed_reason_counts, dict) or {
+            str(reason): int(count) for reason, count in observed_reason_counts.items()
+        } != dict(Counter(str(reason) for reason in end_reasons)):
+            raise ValueError(f'{path} failure reason counts disagree with episode reasons')
+        time_limit_count = sum(str(reason) == 'time_limit' for reason in end_reasons)
+        if int(evaluation['time_limit_count']) != time_limit_count:
+            raise ValueError(f'{path} time-limit count disagrees with episode reasons')
+        require_close(
+            f'{path} time_limit_rate',
+            evaluation['time_limit_rate'],
+            time_limit_count / expected_episodes,
+        )
+
+        goal_counts = finite_sequence(
+            f'{path} goal_counts',
+            evaluation.get('goal_counts'),
+            expected_episodes,
+        )
+        if any(goal < 0.0 or not goal.is_integer() for goal in goal_counts):
+            raise ValueError(f'{path} contains an invalid goal count')
+        successful_episodes = sum(goal > 0.0 for goal in goal_counts)
+        require_close(
+            f'{path} success_rate',
+            evaluation['success_rate'],
+            successful_episodes / expected_episodes,
+        )
+        path_lengths = finite_sequence(
+            f'{path} path_lengths',
+            evaluation.get('path_lengths'),
+            expected_episodes,
+        )
+        if any(value < 0.0 for value in path_lengths):
+            raise ValueError(f'{path} contains a negative path length')
+        require_close(
+            f'{path} mean_path_length',
+            evaluation['mean_path_length'],
+            math.fsum(path_lengths) / expected_episodes,
+        )
+        if successful_episodes:
+            require_close(
+                f'{path} cost_per_successful_episode',
+                evaluation['cost_per_successful_episode'],
+                math.fsum(costs) / successful_episodes,
+            )
+        elif not undefined(evaluation['cost_per_successful_episode']):
+            raise ValueError(f'{path} must leave cost per success undefined without successes')
         high_risk = evaluation['direction_geometry_high_risk_top_20_percent']
         finite(
             f'{args.env_id}@{milestone} high-risk V_N/V_T',
@@ -342,6 +510,44 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             high_risk['dangerous_outward_velocity'],
         )
         if geometry_mode == 'future_failure_probability':
+            if any(cost not in {0.0, 1.0} for cost in costs):
+                raise ValueError(f'{path} locomotion costs are not binary terminal labels')
+            if any(cost != flag for cost, flag in zip(costs, failure_flags)):
+                raise ValueError(f'{path} locomotion costs disagree with failure flags')
+            failure_times = finite_sequence(
+                f'{path} failure_times',
+                evaluation.get('failure_times'),
+                failure_count,
+            )
+            failure_steps = finite_sequence(
+                f'{path} failure_steps',
+                evaluation.get('failure_steps'),
+                failure_count,
+            )
+            failure_heights = finite_sequence(
+                f'{path} failure_heights',
+                evaluation.get('failure_heights'),
+                failure_count,
+            )
+            failure_angles = finite_sequence(
+                f'{path} failure_torso_angles',
+                evaluation.get('failure_torso_angles'),
+                failure_count,
+            )
+            for label, values, mean_key in (
+                ('failure time', failure_times, 'mean_failure_time'),
+                ('failure step', failure_steps, 'mean_failure_step'),
+                ('failure height', failure_heights, 'mean_failure_height'),
+                ('failure torso angle', failure_angles, 'mean_failure_torso_angle'),
+            ):
+                if values:
+                    require_close(
+                        f'{path} {label}',
+                        evaluation[mean_key],
+                        math.fsum(values) / len(values),
+                    )
+                elif not undefined(evaluation[mean_key]):
+                    raise ValueError(f'{path} must leave {label} undefined without failures')
             if not math.isclose(
                 float(evaluation['mean_cost']),
                 float(evaluation['failure_rate']),
@@ -356,6 +562,9 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             {
                 'milestone': milestone,
                 'artifact': str(path),
+                'artifact_sha256': sha256_file(path),
+                'artifact_bytes': path.stat().st_size,
+                'episodes': expected_episodes,
                 'mean_return': evaluation['mean_return'],
                 'mean_cost': evaluation['mean_cost'],
                 'cost_cvar_20': evaluation['cost_cvar_20'],
@@ -383,6 +592,21 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         trajectory_artifacts.append(
             validate_trajectory_artifact(trajectory_path, milestone, trajectory_seeds),
         )
+
+    cumulative_costs = [
+        finite(
+            f'{args.env_id}@{row["milestone"]} training cumulative cost',
+            row['training_cumulative_cost'],
+        )
+        for row in evaluation_rows
+    ]
+    if any(later < earlier for earlier, later in zip(cumulative_costs, cumulative_costs[1:])):
+        raise ValueError('training cumulative cost decreased between evaluation milestones')
+    require_close(
+        'final training cumulative cost',
+        cumulative_costs[-1],
+        finite('training summary cumulative cost', summary['cumulative_training_cost']),
+    )
 
     manifest_path = newest(args.container, 'training/**/artifacts/run_manifest.json')
     manifest = load_json(manifest_path)
@@ -425,6 +649,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 expected_steps=expected_steps,
                 replay_required=replay_required,
                 replay_capacity=replay_capacity,
+                expected_custom_config=config['custom_cfgs'],
             ),
         )
 
@@ -432,6 +657,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         'status': 'passed',
         'protocol_version': matrix['protocol_version'],
         'protocol_sha256': matrix['protocol_sha256'],
+        'matrix_sha256': sha256_file(args.matrix),
+        'frozen_method_canonical_sha256': matrix['frozen_method_canonical_sha256'],
         'source_commit': args.source_commit,
         'environment': args.env_id,
         'training_seed': args.seed,
@@ -445,6 +672,14 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         'checkpoints': checkpoint_paths,
         'checkpoint_artifacts': checkpoint_artifacts,
         'receipt': str(args.container / 'receipt.json'),
+        'compact_provenance_artifacts': {
+            'resolved_config': artifact_identity(config_path),
+            'receipt': artifact_identity(args.container / 'receipt.json'),
+            'training_summary': artifact_identity(
+                final_log_dir / 'artifacts/training_summary.json',
+            ),
+            'run_manifest': artifact_identity(manifest_path),
+        },
     }
     atomic_json(args.container / 'formal_validation.json', payload)
     print(json.dumps(payload, indent=2, sort_keys=True))

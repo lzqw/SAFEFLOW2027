@@ -103,6 +103,16 @@ def copy_verified(source: Path, destination: Path, expected_sha256: str) -> None
     os.replace(temporary, destination)
 
 
+def verify_artifact_identity(identity: dict[str, Any], label: str) -> Path:
+    """Require one compact or server-only artifact to retain its validated identity."""
+    source = Path(identity['artifact'])
+    if not source.is_file() or source.stat().st_size != int(identity['bytes']):
+        raise ValueError(f'{label} artifact is unavailable or changed: {source}')
+    if sha256_file(source) != str(identity['sha256']):
+        raise ValueError(f'{label} artifact identity mismatch: {source}')
+    return source
+
+
 def numeric(value: Any) -> float | None:
     """Return a finite float or None for an undefined secondary diagnostic."""
     if value is None:
@@ -147,6 +157,7 @@ def _formatted(aggregate: dict[str, Any], env_id: str, metric: str) -> str:
 
 def render_report(
     aggregate: dict[str, Any],
+    failure_reason_aggregate: dict[str, dict[str, Any]],
     source_commit: str,
     figures: list[Path],
 ) -> str:
@@ -204,6 +215,43 @@ def render_report(
     lines.extend(
         [
             '',
+            '## Locomotion failure diagnostics',
+            '',
+            (
+                '| Environment | Failure count | Failure rate | Failure time | Failure step | '
+                'Failure height | Torso angle | Time-limit rate |'
+            ),
+            '|---|---:|---:|---:|---:|---:|---:|---:|',
+        ],
+    )
+    for env_id in ('Ant-v4', 'Walker2d-v4'):
+        lines.append(
+            f'| {env_id} | {_formatted(aggregate, env_id, "failure_count")} | '
+            f'{_formatted(aggregate, env_id, "failure_rate")} | '
+            f'{_formatted(aggregate, env_id, "mean_failure_time")} | '
+            f'{_formatted(aggregate, env_id, "mean_failure_step")} | '
+            f'{_formatted(aggregate, env_id, "mean_failure_height")} | '
+            f'{_formatted(aggregate, env_id, "mean_failure_torso_angle")} | '
+            f'{_formatted(aggregate, env_id, "time_limit_rate")} |',
+        )
+    lines.extend(
+        [
+            '',
+            'Failure-reason rates are also summarized across independent training seeds:',
+            '',
+            '| Environment | End reason | Episode rate |',
+            '|---|---|---:|',
+        ],
+    )
+    for env_id in ('Ant-v4', 'Walker2d-v4'):
+        for reason, summary in sorted(failure_reason_aggregate.get(env_id, {}).items()):
+            lines.append(
+                f'| {env_id} | `{reason}` | '
+                f'{summary["mean"]:.4f} ± {summary["sample_std"]:.4f} |',
+            )
+    lines.extend(
+        [
+            '',
             '## High-risk direction diagnostics',
             '',
             '| Environment | Top-20% $V_N/V_T$ | Top-20% dangerous outward velocity |',
@@ -225,9 +273,10 @@ def render_report(
             '## Recovery evidence',
             '',
             (
-                '`shapo_p47_checkpoint_manifest.csv` records the validated SHA-256, byte size, '
-                'step, replay size, and replay dimensions for every retained checkpoint. Large '
-                'replay-bearing checkpoint payloads remain server-only.'
+                '`shapo_p47_evaluation_manifest.csv`, `shapo_p47_provenance_manifest.csv`, and '
+                '`shapo_p47_checkpoint_manifest.csv` retain validated SHA-256 identities. '
+                'Compact evaluations and run provenance are copied into this result bundle; '
+                'large replay-bearing checkpoint payloads remain server-only.'
             ),
             '',
             '## Interpretation boundary',
@@ -256,9 +305,12 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
 
     final_rows: list[dict[str, Any]] = []
     curve_rows: list[dict[str, Any]] = []
+    evaluation_sources: list[dict[str, Any]] = []
     trajectory_sources: list[dict[str, Any]] = []
     checkpoint_rows: list[dict[str, Any]] = []
+    provenance_sources: list[dict[str, Any]] = []
     source_commits = set()
+    matrix_sha256 = sha256_file(args.matrix)
     for env_id, environment in matrix['environments'].items():
         expected_milestones = [int(step) for step in environment['milestones']]
         for seed in matrix['training_seeds']:
@@ -269,16 +321,68 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 raise ValueError(f'{validation_path} is not a passing validation')
             if validation['environment'] != env_id or int(validation['training_seed']) != seed:
                 raise ValueError(f'{validation_path} identity does not match its matrix cell')
+            expected_validation_identity = {
+                'protocol_version': matrix['protocol_version'],
+                'protocol_sha256': matrix['protocol_sha256'],
+                'matrix_sha256': matrix_sha256,
+                'frozen_method_canonical_sha256': matrix['frozen_method_canonical_sha256'],
+                'training_seed_is_statistical_unit': True,
+                'total_steps': int(environment['total_steps']),
+                'formal_cost_budget': float(environment['cost_limit']),
+                'geometry_mode': str(environment['geometry_mode']),
+                'cost_normalization_scale': float(environment['cost_normalization_scale']),
+            }
+            for key, expected in expected_validation_identity.items():
+                if validation.get(key) != expected:
+                    raise ValueError(
+                        f'{validation_path} field {key!r} does not match the locked matrix',
+                    )
             source_commits.add(str(validation['source_commit']))
             evaluations = validation['evaluation_rows']
             if [int(row['milestone']) for row in evaluations] != expected_milestones:
                 raise ValueError(f'{validation_path} has incomplete learning-curve milestones')
             for evaluation in evaluations:
+                evaluation_identity = {
+                    'artifact': evaluation['artifact'],
+                    'sha256': evaluation['artifact_sha256'],
+                    'bytes': evaluation['artifact_bytes'],
+                }
+                verify_artifact_identity(
+                    evaluation_identity,
+                    f'{env_id} seed {seed} milestone {evaluation["milestone"]} evaluation',
+                )
+                evaluation_sources.append(
+                    {
+                        'environment': env_id,
+                        'training_seed': seed,
+                        'milestone': int(evaluation['milestone']),
+                        **evaluation_identity,
+                    },
+                )
                 curve_rows.append(
                     {
                         'environment': env_id,
                         'training_seed': seed,
                         **evaluation,
+                    },
+                )
+            provenance = validation.get('compact_provenance_artifacts', {})
+            expected_provenance_labels = {
+                'resolved_config',
+                'receipt',
+                'training_summary',
+                'run_manifest',
+            }
+            if set(provenance) != expected_provenance_labels:
+                raise ValueError(f'{validation_path} has incomplete compact provenance')
+            for label, identity in provenance.items():
+                verify_artifact_identity(identity, f'{env_id} seed {seed} {label}')
+                provenance_sources.append(
+                    {
+                        'environment': env_id,
+                        'training_seed': seed,
+                        'label': label,
+                        **identity,
                     },
                 )
             trajectory_artifacts = validation.get('trajectory_artifacts', [])
@@ -317,11 +421,10 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             if len(labels) != len(set(labels)) or set(labels) != expected_checkpoint_labels:
                 raise ValueError(f'{validation_path} has incomplete checkpoint identities')
             for checkpoint in checkpoint_artifacts:
-                source = Path(checkpoint['artifact'])
-                if not source.is_file() or source.stat().st_size != int(checkpoint['bytes']):
-                    raise ValueError(f'checkpoint artifact is unavailable or changed: {source}')
-                if sha256_file(source) != checkpoint['sha256']:
-                    raise ValueError(f'checkpoint artifact identity mismatch: {source}')
+                verify_artifact_identity(
+                    checkpoint,
+                    f'{env_id} seed {seed} {checkpoint["label"]} checkpoint',
+                )
                 checkpoint_rows.append(
                     {
                         'environment': env_id,
@@ -342,8 +445,13 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             )
     if len(final_rows) != 20 or len(source_commits) != 1:
         raise ValueError('formal matrix must contain 20 runs from one source commit')
-    if len(trajectory_sources) != 60 or len(checkpoint_rows) != 120:
-        raise ValueError('formal matrix has incomplete trajectory or checkpoint evidence')
+    if (
+        len(evaluation_sources) != 60
+        or len(trajectory_sources) != 60
+        or len(checkpoint_rows) != 120
+        or len(provenance_sources) != 80
+    ):
+        raise ValueError('formal matrix has incomplete evaluation or recovery evidence')
 
     aggregate: dict[str, dict[str, Any]] = {}
     aggregate_rows = []
@@ -361,7 +469,78 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             aggregate[env_id][metric] = summary
             aggregate_rows.append({'environment': env_id, 'metric': metric, **summary})
 
+    failure_reason_rows = []
+    failure_reason_aggregate: dict[str, dict[str, Any]] = {}
+    for env_id in ('Ant-v4', 'Walker2d-v4'):
+        selected = [row for row in final_rows if row['environment'] == env_id]
+        reasons = sorted(
+            {str(reason) for row in selected for reason in row.get('failure_reason_counts', {})},
+        )
+        failure_reason_aggregate[env_id] = {}
+        for reason in reasons:
+            rates = []
+            for row in selected:
+                episodes = int(row['episodes'])
+                count = int(row.get('failure_reason_counts', {}).get(reason, 0))
+                rate = count / episodes
+                rates.append(rate)
+                failure_reason_rows.append(
+                    {
+                        'environment': env_id,
+                        'training_seed': row['training_seed'],
+                        'reason': reason,
+                        'count': count,
+                        'episodes': episodes,
+                        'rate': rate,
+                    },
+                )
+            failure_reason_aggregate[env_id][reason] = seed_summary(rates)
+
     output = args.output_dir
+    evaluation_manifest_rows = []
+    for row in evaluation_sources:
+        source = Path(row['artifact'])
+        destination = (
+            output
+            / 'evaluations'
+            / SLUGS[row['environment']]
+            / f"training_seed_{row['training_seed']}"
+            / f"evaluation_step_{row['milestone']}.json"
+        )
+        copy_verified(source, destination, str(row['sha256']))
+        evaluation_manifest_rows.append(
+            {
+                'environment': row['environment'],
+                'training_seed': row['training_seed'],
+                'milestone': row['milestone'],
+                'artifact': destination.relative_to(output).as_posix(),
+                'sha256': row['sha256'],
+                'bytes': row['bytes'],
+            },
+        )
+
+    provenance_manifest_rows = []
+    for row in provenance_sources:
+        source = Path(row['artifact'])
+        destination = (
+            output
+            / 'provenance'
+            / SLUGS[row['environment']]
+            / f"training_seed_{row['training_seed']}"
+            / f"{row['label']}{source.suffix}"
+        )
+        copy_verified(source, destination, str(row['sha256']))
+        provenance_manifest_rows.append(
+            {
+                'environment': row['environment'],
+                'training_seed': row['training_seed'],
+                'label': row['label'],
+                'artifact': destination.relative_to(output).as_posix(),
+                'sha256': row['sha256'],
+                'bytes': row['bytes'],
+            },
+        )
+
     trajectory_rows = []
     for row in trajectory_sources:
         destination = (
@@ -389,6 +568,9 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     write_csv(output / 'shapo_p47_final_seed_metrics.csv', final_rows)
     write_csv(output / 'shapo_p47_learning_curves.csv', curve_rows)
     write_csv(output / 'shapo_p47_seed_level_aggregate.csv', aggregate_rows)
+    write_csv(output / 'shapo_p47_failure_reason_seed_metrics.csv', failure_reason_rows)
+    write_csv(output / 'shapo_p47_evaluation_manifest.csv', evaluation_manifest_rows)
+    write_csv(output / 'shapo_p47_provenance_manifest.csv', provenance_manifest_rows)
     write_csv(output / 'shapo_p47_trajectory_manifest.csv', trajectory_rows)
     write_csv(output / 'shapo_p47_checkpoint_manifest.csv', checkpoint_rows)
     from scripts.star.plot_shapo_p47_formal import (  # pylint: disable=import-outside-toplevel
@@ -401,12 +583,15 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         {
             'protocol_version': matrix['protocol_version'],
             'protocol_sha256': matrix['protocol_sha256'],
-            'matrix_sha256': sha256_file(args.matrix),
+            'matrix_sha256': matrix_sha256,
             'source_commit': source_commit,
             'statistical_unit': 'training_seed',
             'n_training_seeds_per_environment': 5,
             'episodes_per_training_seed': 100,
             'aggregate': aggregate,
+            'failure_reason_aggregate': failure_reason_aggregate,
+            'evaluation_artifact_count': len(evaluation_manifest_rows),
+            'provenance_artifact_count': len(provenance_manifest_rows),
             'trajectory_artifact_count': len(trajectory_rows),
             'checkpoint_artifact_count': len(checkpoint_rows),
             'figures': [path.relative_to(output).as_posix() for path in figures],
@@ -414,7 +599,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     )
     atomic_text(
         output / 'SHAPO_P47_FOUR_ENV_REPORT.md',
-        render_report(aggregate, source_commit, figures),
+        render_report(aggregate, failure_reason_aggregate, source_commit, figures),
     )
     print(
         json.dumps(

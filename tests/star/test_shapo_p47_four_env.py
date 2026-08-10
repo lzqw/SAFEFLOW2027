@@ -14,8 +14,10 @@ import pytest
 import torch
 import yaml
 from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
+from scripts.star.finalize_shapo_p47_formal import verify_artifact_identity
 from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
 from scripts.star.validate_shapo_p47_run import (
+    undefined,
     validate_checkpoint_artifact,
     validate_trajectory_artifact,
 )
@@ -124,11 +126,24 @@ def _write_checkpoint(
         'extra': {
             'environment': environment,
             'seed': seed,
-            'resolved_config': {'env_id': environment, 'seed': seed},
+            'resolved_config': {
+                'env_id': environment,
+                'seed': seed,
+                'algo_cfgs': {'directional_loss_weight': 1.0},
+            },
         },
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     torch.save(payload, path)
+
+
+def _artifact_identity(path: Path) -> dict[str, object]:
+    """Return the compact identity schema consumed by the formal finalizer."""
+    return {
+        'artifact': str(path),
+        'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+        'bytes': path.stat().st_size,
+    }
 
 
 def test_shapo_protocol_matrix_and_frozen_method_are_byte_sealed() -> None:
@@ -372,6 +387,7 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
         expected_steps={6},
         replay_required=True,
         replay_capacity=8,
+        expected_custom_config={'algo_cfgs': {'directional_loss_weight': 1.0}},
     )
     assert full_result['replay_included'] is True
     assert full_result['replay_size'] == 6
@@ -387,6 +403,36 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
     )
     assert light_result['replay_included'] is False
     assert light_result['replay_size'] == 0
+
+    with pytest.raises(ValueError, match='directional_loss_weight.*mismatch'):
+        validate_checkpoint_artifact(
+            full,
+            label='latest_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+            expected_custom_config={'algo_cfgs': {'directional_loss_weight': 0.5}},
+        )
+
+
+def test_optional_formal_diagnostics_accept_only_explicitly_undefined_values() -> None:
+    assert undefined(None)
+    assert undefined(float('nan'))
+    assert undefined(float('inf'))
+    assert not undefined(0.0)
+    assert not undefined('not-a-number-token')
+
+
+def test_finalizer_rejects_compact_artifact_identity_drift(tmp_path: Path) -> None:
+    path = tmp_path / 'evaluation.json'
+    path.write_text('{"status":"passed"}', encoding='utf-8')
+    identity = _artifact_identity(path)
+    assert verify_artifact_identity(identity, 'evaluation') == path
+    path.write_text('{"status":"changed"}', encoding='utf-8')
+    with pytest.raises(ValueError, match='unavailable or changed|identity mismatch'):
+        verify_artifact_identity(identity, 'evaluation')
 
 
 def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(
@@ -449,28 +495,46 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
             trajectories = []
             for milestone in environment['milestones']:
                 value = float(env_index + seed_index + 1)
-                evaluations.append(
+                evaluation_row = {
+                    'milestone': milestone,
+                    'episodes': 100,
+                    'mean_return': value,
+                    'mean_cost': value / 10.0,
+                    'cost_cvar_20': value / 5.0,
+                    'training_cumulative_cost': value * 100.0,
+                    'success_rate': value / 10.0,
+                    'mean_path_length': value * 2.0,
+                    'cost_per_successful_episode': value / 2.0,
+                    'failure_count': value,
+                    'failure_rate': value / 100.0,
+                    'failure_reason_counts': {
+                        'unhealthy_height': int(value),
+                        'time_limit': 100 - int(value),
+                    },
+                    'mean_failure_time': value,
+                    'mean_failure_step': value,
+                    'mean_failure_height': value,
+                    'mean_failure_torso_angle': value,
+                    'time_limit_count': 100.0 - value,
+                    'time_limit_rate': 1.0 - value / 100.0,
+                    'high_risk_vn_vt': 0.5,
+                    'high_risk_dangerous_outward_velocity': 0.1,
+                }
+                evaluation_path = (
+                    container / 'training' / 'artifacts' / f'evaluation_step_{milestone}.json'
+                )
+                evaluation_path.parent.mkdir(parents=True, exist_ok=True)
+                evaluation_path.write_text(json.dumps(evaluation_row), encoding='utf-8')
+                evaluation_row.update(
                     {
-                        'milestone': milestone,
-                        'mean_return': value,
-                        'mean_cost': value / 10.0,
-                        'cost_cvar_20': value / 5.0,
-                        'training_cumulative_cost': value * 100.0,
-                        'success_rate': value / 10.0,
-                        'mean_path_length': value * 2.0,
-                        'cost_per_successful_episode': value / 2.0,
-                        'failure_count': value,
-                        'failure_rate': value / 100.0,
-                        'mean_failure_time': value,
-                        'mean_failure_step': value,
-                        'mean_failure_height': value,
-                        'mean_failure_torso_angle': value,
-                        'time_limit_count': 100.0 - value,
-                        'time_limit_rate': 1.0 - value / 100.0,
-                        'high_risk_vn_vt': 0.5,
-                        'high_risk_dangerous_outward_velocity': 0.1,
+                        'artifact': str(evaluation_path),
+                        'artifact_sha256': hashlib.sha256(
+                            evaluation_path.read_bytes(),
+                        ).hexdigest(),
+                        'artifact_bytes': evaluation_path.stat().st_size,
                     },
                 )
+                evaluations.append(evaluation_row)
                 trajectory_path = (
                     container / 'training' / 'artifacts' / f'trajectory_step_{milestone}.csv'
                 )
@@ -512,16 +576,40 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'replay_capacity': 400_000,
                     },
                 )
+            provenance = {}
+            for label, suffix in (
+                ('resolved_config', '.yaml'),
+                ('receipt', '.json'),
+                ('training_summary', '.json'),
+                ('run_manifest', '.json'),
+            ):
+                provenance_path = container / 'provenance-fixtures' / f'{label}{suffix}'
+                provenance_path.parent.mkdir(parents=True, exist_ok=True)
+                provenance_path.write_text(
+                    json.dumps({'environment': env_id, 'seed': seed, 'label': label}),
+                    encoding='utf-8',
+                )
+                provenance[label] = _artifact_identity(provenance_path)
             (container / 'formal_validation.json').write_text(
                 json.dumps(
                     {
                         'status': 'passed',
+                        'protocol_version': matrix['protocol_version'],
+                        'protocol_sha256': matrix['protocol_sha256'],
+                        'matrix_sha256': hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+                        'frozen_method_canonical_sha256': matrix['frozen_method_canonical_sha256'],
                         'source_commit': 'a' * 40,
                         'environment': env_id,
                         'training_seed': seed,
+                        'training_seed_is_statistical_unit': True,
+                        'total_steps': environment['total_steps'],
+                        'formal_cost_budget': environment['cost_limit'],
+                        'geometry_mode': environment['geometry_mode'],
+                        'cost_normalization_scale': environment['cost_normalization_scale'],
                         'evaluation_rows': evaluations,
                         'trajectory_artifacts': trajectories,
                         'checkpoint_artifacts': checkpoint_artifacts,
+                        'compact_provenance_artifacts': provenance,
                     },
                 ),
                 encoding='utf-8',
@@ -549,10 +637,27 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
     assert summary['statistical_unit'] == 'training_seed'
     assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
+    assert (
+        summary['failure_reason_aggregate']['Ant-v4']['unhealthy_height']['n_training_seeds'] == 5
+    )
+    assert summary['evaluation_artifact_count'] == 60
+    assert summary['provenance_artifact_count'] == 80
     assert summary['trajectory_artifact_count'] == 60
     assert summary['checkpoint_artifact_count'] == 120
     assert len(summary['figures']) == 6
     assert all((output / path).is_file() for path in summary['figures'])
+    with (output / 'shapo_p47_evaluation_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        evaluation_rows = list(csv.DictReader(stream))
+    assert len(evaluation_rows) == 60
+    with (output / 'shapo_p47_provenance_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        provenance_rows = list(csv.DictReader(stream))
+    assert len(provenance_rows) == 80
     with (output / 'shapo_p47_trajectory_manifest.csv').open(
         encoding='utf-8',
         newline='',
@@ -568,6 +673,8 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     assert {row['server_only'] for row in checkpoint_rows} == {'True'}
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
+    assert 'Locomotion failure diagnostics' in report
+    assert 'Failure-reason rates' in report
     assert 'High-risk direction diagnostics' in report
     assert 'shapo_p47_ant_trajectory_risk.png' in report
-    assert 'Large replay-bearing checkpoint payloads remain server-only' in report
+    assert 'large replay-bearing checkpoint payloads remain server-only' in report
