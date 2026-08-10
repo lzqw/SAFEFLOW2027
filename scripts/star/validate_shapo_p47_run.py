@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import math
@@ -50,6 +51,98 @@ def atomic_json(path: Path, payload: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
+TRAJECTORY_REQUIRED_FIELDS = frozenset(
+    {
+        'milestone',
+        'base_seed',
+        'episode_index',
+        'step',
+        'x',
+        'y',
+        'predicted_violation_probability',
+        'predicted_cost_to_go',
+        'geometry_budget_ratio',
+        'cost_margin',
+        'cost_normal_0',
+        'cost_normal_1',
+        'cost',
+        'is_failure',
+    },
+)
+
+
+def validate_trajectory_artifact(
+    path: Path,
+    milestone: int,
+    expected_seeds: list[int],
+) -> dict[str, Any]:
+    """Validate one fixed-seed trajectory artifact and return its portable identity."""
+    with path.open(encoding='utf-8', newline='') as stream:
+        reader = csv.DictReader(stream)
+        fields = set(reader.fieldnames or [])
+        missing = TRAJECTORY_REQUIRED_FIELDS - fields
+        if missing:
+            raise ValueError(f'{path} is missing trajectory fields {sorted(missing)}')
+        rows = list(reader)
+    if not rows:
+        raise ValueError(f'{path} contains no trajectory rows')
+
+    expected = set(expected_seeds)
+    rows_per_seed = dict.fromkeys(expected_seeds, 0)
+    steps_per_seed: dict[int, list[int]] = {seed: [] for seed in expected_seeds}
+    for row_index, row in enumerate(rows):
+        row_milestone = int(float(row['milestone']))
+        base_seed = int(float(row['base_seed']))
+        episode_index = int(float(row['episode_index']))
+        step = int(float(row['step']))
+        if row_milestone != milestone:
+            raise ValueError(f'{path} row {row_index} has milestone {row_milestone}')
+        if base_seed not in expected:
+            raise ValueError(f'{path} row {row_index} has unexpected base seed {base_seed}')
+        if episode_index != 0:
+            raise ValueError(f'{path} row {row_index} is not the locked first episode')
+        for field in (
+            'x',
+            'y',
+            'predicted_violation_probability',
+            'predicted_cost_to_go',
+            'geometry_budget_ratio',
+            'cost_margin',
+            'cost_normal_0',
+            'cost_normal_1',
+            'cost',
+            'is_failure',
+        ):
+            finite(f'{path} row {row_index} {field}', row[field])
+        probability = float(row['predicted_violation_probability'])
+        if not 0.0 <= probability <= 1.0:
+            raise ValueError(f'{path} row {row_index} has invalid violation probability')
+        if float(row['cost']) < 0.0:
+            raise ValueError(f'{path} row {row_index} has negative cost')
+        if int(float(row['is_failure'])) not in {0, 1}:
+            raise ValueError(f'{path} row {row_index} has non-binary failure flag')
+        rows_per_seed[base_seed] += 1
+        steps_per_seed[base_seed].append(step)
+
+    observed = {seed for seed, count in rows_per_seed.items() if count}
+    if observed != expected:
+        raise ValueError(
+            f'{path} trajectory seed coverage mismatch: expected {sorted(expected)}, '
+            f'got {sorted(observed)}',
+        )
+    for seed, steps in steps_per_seed.items():
+        if steps != list(range(len(steps))):
+            raise ValueError(f'{path} base seed {seed} has a non-contiguous step trace')
+    return {
+        'milestone': milestone,
+        'artifact': str(path),
+        'sha256': sha256_file(path),
+        'row_count': len(rows),
+        'trajectory_seeds': sorted(expected),
+        'rows_per_seed': {str(seed): rows_per_seed[seed] for seed in sorted(expected)},
+    }
+
+
 def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     """Validate source/config identity, full horizon, evaluations, metrics, and checkpoints."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -68,6 +161,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     geometry_scale = float(environment['cost_normalization_scale'])
     formal_budget = float(environment['cost_limit'])
     base_seeds = [int(seed) for seed in matrix['evaluation']['base_seeds']]
+    trajectory_seeds = [int(seed) for seed in matrix['evaluation']['trajectory_base_seeds']]
     episodes_per_seed = int(matrix['evaluation']['episodes_per_base_seed'])
     expected_episodes = len(base_seeds) * episodes_per_seed
 
@@ -114,6 +208,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     finite('elapsed seconds', receipt['elapsed_seconds'])
 
     evaluation_rows = []
+    trajectory_artifacts = []
     for milestone in milestones:
         path = newest(
             args.container,
@@ -126,6 +221,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             raise ValueError(f'{path} has the wrong held-out base seeds')
         if int(evaluation['episodes_per_base_seed']) != episodes_per_seed:
             raise ValueError(f'{path} has the wrong episodes-per-seed count')
+        if [int(seed) for seed in evaluation['trajectory_seeds']] != trajectory_seeds:
+            raise ValueError(f'{path} has the wrong trajectory seed schedule')
         for metric in ('mean_return', 'mean_cost', 'cost_cvar_20', 'training_cumulative_cost'):
             finite(f'{args.env_id}@{milestone} {metric}', evaluation[metric])
         high_risk = evaluation['direction_geometry_high_risk_top_20_percent']
@@ -157,6 +254,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 'cost_cvar_20': evaluation['cost_cvar_20'],
                 'training_cumulative_cost': evaluation['training_cumulative_cost'],
                 'success_rate': evaluation['success_rate'],
+                'mean_path_length': evaluation['mean_path_length'],
+                'cost_per_successful_episode': evaluation['cost_per_successful_episode'],
                 'failure_count': evaluation['failure_count'],
                 'failure_rate': evaluation['failure_rate'],
                 'failure_reason_counts': evaluation['failure_reason_counts'],
@@ -169,6 +268,13 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 'high_risk_vn_vt': high_risk['normal_to_tangent_variance_ratio'],
                 'high_risk_dangerous_outward_velocity': high_risk['dangerous_outward_velocity'],
             },
+        )
+        trajectory_path = newest(
+            args.container,
+            f'training/**/artifacts/trajectory_step_{milestone}.csv',
+        )
+        trajectory_artifacts.append(
+            validate_trajectory_artifact(trajectory_path, milestone, trajectory_seeds),
         )
 
     manifest_path = newest(args.container, 'training/**/artifacts/run_manifest.json')
@@ -209,6 +315,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         'geometry_mode': geometry_mode,
         'cost_normalization_scale': geometry_scale,
         'evaluation_rows': evaluation_rows,
+        'trajectory_artifacts': trajectory_artifacts,
         'checkpoints': checkpoint_paths,
         'receipt': str(args.container / 'receipt.json'),
     }

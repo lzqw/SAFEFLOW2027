@@ -15,6 +15,7 @@ import torch
 import yaml
 from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
 from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
+from scripts.star.validate_shapo_p47_run import validate_trajectory_artifact
 from torch import nn
 
 from omnisafe.algorithms.off_policy.star import (
@@ -44,6 +45,36 @@ class AnalyticFailureCostCritic(nn.Module):
         del obs
         value = 0.2 + self.action_scale * action[..., 0]
         return torch.stack((value, value), dim=0)
+
+
+def _write_trajectory(path: Path, milestone: int, seeds: list[int]) -> None:
+    """Write a compact fixed-seed trajectory fixture accepted by the formal validator."""
+    rows = []
+    for seed in seeds:
+        for step in range(2):
+            rows.append(
+                {
+                    'milestone': milestone,
+                    'base_seed': seed,
+                    'episode_index': 0,
+                    'step': step,
+                    'x': float(step),
+                    'y': float(seed % 10),
+                    'predicted_violation_probability': 0.1 * (step + 1),
+                    'predicted_cost_to_go': 0.2,
+                    'geometry_budget_ratio': 0.5,
+                    'cost_margin': -0.3,
+                    'cost_normal_0': 1.0,
+                    'cost_normal_1': 0.0,
+                    'cost': 0.0,
+                    'is_failure': 0,
+                },
+            )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('w', encoding='utf-8', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def test_shapo_protocol_matrix_and_frozen_method_are_byte_sealed() -> None:
@@ -252,6 +283,28 @@ def test_launchers_enforce_clean_source_smoke_gate_and_no_scientific_early_stop(
     assert 'for seed in 2027 2028 2029 2030 2031' in formal
 
 
+def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / 'trajectory_step_100.csv'
+    seeds = [32027, 32029, 32031]
+    _write_trajectory(path, 100, seeds)
+    result = validate_trajectory_artifact(path, 100, seeds)
+    assert result['row_count'] == 6
+    assert result['trajectory_seeds'] == seeds
+    assert result['rows_per_seed'] == {str(seed): 2 for seed in seeds}
+
+    _write_trajectory(path, 100, seeds[:-1])
+    with pytest.raises(ValueError, match='seed coverage mismatch'):
+        validate_trajectory_artifact(path, 100, seeds)
+
+    _write_trajectory(path, 100, seeds)
+    text = path.read_text(encoding='utf-8').replace('0.1,0.2', 'nan,0.2', 1)
+    path.write_text(text, encoding='utf-8')
+    with pytest.raises(ValueError, match='not finite'):
+        validate_trajectory_artifact(path, 100, seeds)
+
+
 def test_finalizer_aggregates_twenty_runs_by_training_seed(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -269,7 +322,10 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     }
     for env_index, (env_id, environment) in enumerate(matrix['environments'].items()):
         for seed_index, seed in enumerate(matrix['training_seeds']):
+            container = run_root / 'runs' / f'{slugs[env_id]}-{seed}'
+            container.mkdir(parents=True)
             evaluations = []
+            trajectories = []
             for milestone in environment['milestones']:
                 value = float(env_index + seed_index + 1)
                 evaluations.append(
@@ -280,6 +336,8 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'cost_cvar_20': value / 5.0,
                         'training_cumulative_cost': value * 100.0,
                         'success_rate': value / 10.0,
+                        'mean_path_length': value * 2.0,
+                        'cost_per_successful_episode': value / 2.0,
                         'failure_count': value,
                         'failure_rate': value / 100.0,
                         'mean_failure_time': value,
@@ -292,8 +350,21 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'high_risk_dangerous_outward_velocity': 0.1,
                     },
                 )
-            container = run_root / 'runs' / f'{slugs[env_id]}-{seed}'
-            container.mkdir(parents=True)
+                trajectory_path = (
+                    container / 'training' / 'artifacts' / f'trajectory_step_{milestone}.csv'
+                )
+                _write_trajectory(
+                    trajectory_path,
+                    milestone,
+                    matrix['evaluation']['trajectory_base_seeds'],
+                )
+                trajectories.append(
+                    validate_trajectory_artifact(
+                        trajectory_path,
+                        milestone,
+                        matrix['evaluation']['trajectory_base_seeds'],
+                    ),
+                )
             (container / 'formal_validation.json').write_text(
                 json.dumps(
                     {
@@ -302,6 +373,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'environment': env_id,
                         'training_seed': seed,
                         'evaluation_rows': evaluations,
+                        'trajectory_artifacts': trajectories,
                     },
                 ),
                 encoding='utf-8',
@@ -329,5 +401,16 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
     assert summary['statistical_unit'] == 'training_seed'
     assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
+    assert summary['trajectory_artifact_count'] == 60
+    assert len(summary['figures']) == 6
+    assert all((output / path).is_file() for path in summary['figures'])
+    with (output / 'shapo_p47_trajectory_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        trajectory_rows = list(csv.DictReader(stream))
+    assert len(trajectory_rows) == 60
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
+    assert 'High-risk direction diagnostics' in report
+    assert 'shapo_p47_ant_trajectory_risk.png' in report

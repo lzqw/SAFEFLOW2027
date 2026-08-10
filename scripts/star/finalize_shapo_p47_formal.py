@@ -28,6 +28,8 @@ METRICS = (
     'cost_cvar_20',
     'training_cumulative_cost',
     'success_rate',
+    'mean_path_length',
+    'cost_per_successful_episode',
     'failure_count',
     'failure_rate',
     'mean_failure_time',
@@ -46,6 +48,7 @@ REQUIRED_FIVE_SEED_METRICS = frozenset(
         'cost_cvar_20',
         'training_cumulative_cost',
         'success_rate',
+        'mean_path_length',
         'failure_count',
         'failure_rate',
         'time_limit_count',
@@ -90,6 +93,16 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     os.replace(temporary, path)
 
 
+def copy_verified(source: Path, destination: Path, expected_sha256: str) -> None:
+    """Copy one compact artifact atomically after checking its immutable identity."""
+    if sha256_file(source) != expected_sha256:
+        raise ValueError(f'trajectory artifact changed after validation: {source}')
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f'.{destination.name}.{os.getpid()}.tmp')
+    temporary.write_bytes(source.read_bytes())
+    os.replace(temporary, destination)
+
+
 def numeric(value: Any) -> float | None:
     """Return a finite float or None for an undefined secondary diagnostic."""
     if value is None:
@@ -124,7 +137,19 @@ def seed_summary(values: list[float]) -> dict[str, float | int]:
     }
 
 
-def render_report(aggregate: dict[str, Any], source_commit: str) -> str:
+def _formatted(aggregate: dict[str, Any], env_id: str, metric: str) -> str:
+    """Format one training-seed summary or an explicit undefined marker."""
+    summary = aggregate[env_id].get(metric)
+    if summary is None:
+        return '—'
+    return f"{summary['mean']:.4f} ± {summary['sample_std']:.4f}"
+
+
+def render_report(
+    aggregate: dict[str, Any],
+    source_commit: str,
+    figures: list[Path],
+) -> str:
     """Render the compact frozen-method result report."""
     lines = [
         '# Frozen P4.7 SHAPO Four-Environment Report',
@@ -159,6 +184,44 @@ def render_report(aggregate: dict[str, Any], source_commit: str) -> str:
                 'Episode-level observations are not treated as independent replicates.'
             ),
             '',
+            '## Task outcomes',
+            '',
+            (
+                '| Environment | Success rate | Mean path length | Cost / successful episode | '
+                'Failure rate | Mean failure time |'
+            ),
+            '|---|---:|---:|---:|---:|---:|',
+        ],
+    )
+    for env_id in aggregate:
+        lines.append(
+            f'| {env_id} | {_formatted(aggregate, env_id, "success_rate")} | '
+            f'{_formatted(aggregate, env_id, "mean_path_length")} | '
+            f'{_formatted(aggregate, env_id, "cost_per_successful_episode")} | '
+            f'{_formatted(aggregate, env_id, "failure_rate")} | '
+            f'{_formatted(aggregate, env_id, "mean_failure_time")} |',
+        )
+    lines.extend(
+        [
+            '',
+            '## High-risk direction diagnostics',
+            '',
+            '| Environment | Top-20% $V_N/V_T$ | Top-20% dangerous outward velocity |',
+            '|---|---:|---:|',
+        ],
+    )
+    for env_id in aggregate:
+        lines.append(
+            f'| {env_id} | {_formatted(aggregate, env_id, "high_risk_vn_vt")} | '
+            f'{_formatted(aggregate, env_id, "high_risk_dangerous_outward_velocity")} |',
+        )
+    lines.extend(
+        [
+            '',
+            '## Figures',
+            '',
+            *[f'- [`{path.name}`](figures/{path.name})' for path in figures],
+            '',
             '## Interpretation boundary',
             '',
             (
@@ -185,6 +248,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
 
     final_rows: list[dict[str, Any]] = []
     curve_rows: list[dict[str, Any]] = []
+    trajectory_sources: list[dict[str, Any]] = []
     source_commits = set()
     for env_id, environment in matrix['environments'].items():
         expected_milestones = [int(step) for step in environment['milestones']]
@@ -206,6 +270,31 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                         'environment': env_id,
                         'training_seed': seed,
                         **evaluation,
+                    },
+                )
+            trajectory_artifacts = validation.get('trajectory_artifacts', [])
+            if [int(row['milestone']) for row in trajectory_artifacts] != expected_milestones:
+                raise ValueError(f'{validation_path} has incomplete trajectory milestones')
+            expected_trajectory_seeds = sorted(
+                int(value) for value in matrix['evaluation']['trajectory_base_seeds']
+            )
+            for trajectory in trajectory_artifacts:
+                if sorted(int(value) for value in trajectory['trajectory_seeds']) != (
+                    expected_trajectory_seeds
+                ):
+                    raise ValueError(f'{validation_path} has changed trajectory seeds')
+                source = Path(trajectory['artifact'])
+                if not source.is_file():
+                    raise FileNotFoundError(f'trajectory artifact is unavailable: {source}')
+                if int(trajectory['row_count']) <= 0:
+                    raise ValueError(f'trajectory artifact is empty: {source}')
+                if sha256_file(source) != trajectory['sha256']:
+                    raise ValueError(f'trajectory artifact identity mismatch: {source}')
+                trajectory_sources.append(
+                    {
+                        'environment': env_id,
+                        'training_seed': seed,
+                        **trajectory,
                     },
                 )
             final_rows.append(
@@ -237,11 +326,40 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             aggregate[env_id][metric] = summary
             aggregate_rows.append({'environment': env_id, 'metric': metric, **summary})
 
-    source_commit = next(iter(source_commits))
     output = args.output_dir
+    trajectory_rows = []
+    for row in trajectory_sources:
+        destination = (
+            output
+            / 'trajectories'
+            / SLUGS[row['environment']]
+            / f"training_seed_{row['training_seed']}"
+            / f"trajectory_step_{row['milestone']}.csv"
+        )
+        copy_verified(Path(row['artifact']), destination, str(row['sha256']))
+        trajectory_rows.append(
+            {
+                'environment': row['environment'],
+                'training_seed': row['training_seed'],
+                'milestone': row['milestone'],
+                'artifact': destination.relative_to(output).as_posix(),
+                'sha256': row['sha256'],
+                'row_count': row['row_count'],
+                'trajectory_seeds_json': json.dumps(row['trajectory_seeds']),
+                'rows_per_seed_json': json.dumps(row['rows_per_seed'], sort_keys=True),
+            },
+        )
+
+    source_commit = next(iter(source_commits))
     write_csv(output / 'shapo_p47_final_seed_metrics.csv', final_rows)
     write_csv(output / 'shapo_p47_learning_curves.csv', curve_rows)
     write_csv(output / 'shapo_p47_seed_level_aggregate.csv', aggregate_rows)
+    write_csv(output / 'shapo_p47_trajectory_manifest.csv', trajectory_rows)
+    from scripts.star.plot_shapo_p47_formal import (  # pylint: disable=import-outside-toplevel
+        plot_all,
+    )
+
+    figures = plot_all(output, output / 'figures')
     write_json(
         output / 'shapo_p47_final_summary.json',
         {
@@ -253,11 +371,13 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'n_training_seeds_per_environment': 5,
             'episodes_per_training_seed': 100,
             'aggregate': aggregate,
+            'trajectory_artifact_count': len(trajectory_rows),
+            'figures': [path.relative_to(output).as_posix() for path in figures],
         },
     )
     atomic_text(
         output / 'SHAPO_P47_FOUR_ENV_REPORT.md',
-        render_report(aggregate, source_commit),
+        render_report(aggregate, source_commit, figures),
     )
     print(
         json.dumps(
