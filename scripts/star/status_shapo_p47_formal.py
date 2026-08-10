@@ -64,8 +64,9 @@ def newest_full_checkpoint(container: Path) -> dict[str, Any]:
     }
 
 
-def active_worker_containers(proc_root: Path = Path('/proc')) -> set[str]:
+def active_worker_containers(proc_root: Path | None = None) -> set[str]:
     """Discover formal run containers from live ``train_star.py --config`` commands."""
+    proc_root = Path('/proc') if proc_root is None else proc_root
     containers = set()
     for path in proc_root.glob('[0-9]*/cmdline'):
         try:
