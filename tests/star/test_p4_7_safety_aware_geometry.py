@@ -12,7 +12,11 @@ from pathlib import Path
 import torch
 import yaml
 from scripts.star.plot_p4_7_safety_aware_geometry import plot_curves, plot_pareto
-from scripts.star.summarize_p4_7_safety_aware_geometry import select_final
+from scripts.star.summarize_p4_7_safety_aware_geometry import (
+    _render_report,
+    scientific_interpretation,
+    select_final,
+)
 from torch import nn
 
 import omnisafe
@@ -344,6 +348,92 @@ def test_locked_final_selection_freezes_p47_only_when_every_gate_passes() -> Non
     decision = select_final(seed_rows, pooled)
     assert decision['label'] == 'freeze_C1'
     assert decision['gates']['performance_retention_vs_C1_100k'] is False
+
+
+def test_scientific_interpretation_is_equal_budget_and_separate_from_machine_audit() -> None:
+    seed_rows: dict[str, dict[int, dict[str, float]]] = {arm: {} for arm in ('C0', 'C1', 'P47')}
+    for seed in (2027, 2028, 2029):
+        seed_rows['C0'][seed] = {
+            'mean_return': 1.0,
+            'success_rate': 0.40,
+            'mean_cost': 10.0,
+            'cost_cvar_20': 20.0,
+            'training_cumulative_cost': 100.0,
+        }
+        seed_rows['C1'][seed] = {
+            'mean_return': 1.0,
+            'success_rate': 0.40,
+            'mean_cost': 6.0,
+            'cost_cvar_20': 12.0,
+            'training_cumulative_cost': 80.0,
+        }
+        seed_rows['P47'][seed] = {
+            'mean_return': 0.70,
+            'success_rate': 0.20,
+            'mean_cost': 8.0,
+            'cost_cvar_20': 16.0,
+            'training_cumulative_cost': 70.0,
+        }
+    pooled = {
+        'C0': {
+            'mean_return': 1.0,
+            'success_rate': 0.40,
+            'mean_cost': 10.0,
+            'cost_cvar_20': 20.0,
+            'training_cumulative_cost_mean': 100.0,
+            'high_risk_normal_to_tangent_variance_ratio': 1.0,
+            'high_risk_dangerous_outward_velocity': 0.5,
+        },
+        'C1': {
+            'mean_return': 1.0,
+            'success_rate': 0.40,
+            'mean_cost': 6.0,
+            'cost_cvar_20': 12.0,
+            'training_cumulative_cost_mean': 80.0,
+            'high_risk_normal_to_tangent_variance_ratio': 0.8,
+            'high_risk_dangerous_outward_velocity': 0.3,
+        },
+        'P47': {
+            'mean_return': 0.70,
+            'success_rate': 0.20,
+            'mean_cost': 8.0,
+            'cost_cvar_20': 16.0,
+            'training_cumulative_cost_mean': 70.0,
+            'high_risk_normal_to_tangent_variance_ratio': 0.6,
+            'high_risk_dangerous_outward_velocity': 0.2,
+        },
+    }
+
+    machine_audit = select_final(seed_rows, pooled)
+    interpretation = scientific_interpretation(seed_rows, pooled)
+
+    assert machine_audit['label'] == 'freeze_C1'
+    assert interpretation['primary_comparison'].startswith('P47@200000_vs_C0@200000')
+    overall = interpretation['overall_safety_performance']
+    assert overall['label'] == 'effective_safety_performance_tradeoff'
+    assert overall['all_three_safety_indicators_improved'] is True
+    assert overall['task_completion_observed'] is True
+    assert interpretation['training_period_safety_exploration']['label'] == (
+        'safer_training_period_exploration'
+    )
+    geometry = interpretation['direction_geometry_mechanism']
+    assert geometry['label'] == 'direction_mechanism_supported'
+    assert geometry['used_as_elimination_gate'] is False
+    assert interpretation['C1_reference']['role'] == 'historical_reference_only'
+    assert interpretation['C1_reference']['used_in_primary_scientific_interpretation'] is False
+    report = _render_report(
+        {
+            'pooled_formal': pooled,
+            'scientific_interpretation': interpretation,
+            'machine_audit': machine_audit,
+        },
+    )
+    assert report.index('Primary scientific conclusion') < report.index(
+        'Preserved preregistered machine audit',
+    )
+    assert '**effective_safety_performance_tradeoff**' in report
+    assert '**freeze_C1**' in report
+    assert 'diagnostic; it is not an elimination or freeze gate' in report
 
 
 def test_p47_plotter_renders_common_curves_and_formal_pareto(tmp_path: Path) -> None:

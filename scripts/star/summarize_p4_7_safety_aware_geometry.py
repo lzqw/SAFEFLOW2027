@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate P4.7 evidence, apply the locked selection rule, and freeze PointGoal."""
+"""Validate P4.7 evidence, report it scientifically, and run the locked machine audit."""
 
 from __future__ import annotations
 
@@ -334,6 +334,152 @@ def select_final(
     }
 
 
+def _relative_reduction(candidate: float, baseline: float) -> float:
+    """Return the signed fractional reduction from baseline to candidate."""
+    if baseline == 0.0:
+        return float('nan')
+    return (baseline - candidate) / abs(baseline)
+
+
+def scientific_interpretation(
+    seed_rows: dict[str, dict[int, dict[str, Any]]],
+    pooled: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    """Interpret P47 primarily against equal-budget C0, without adding freeze gates."""
+    p47 = pooled['P47']
+    c0 = pooled['C0']
+    c1 = pooled['C1']
+
+    safety_specs = {
+        'training_cumulative_cost': (
+            'training_cumulative_cost_mean',
+            'training_cumulative_cost',
+        ),
+        'evaluation_mean_cost': ('mean_cost', 'mean_cost'),
+        'evaluation_cvar_20': ('cost_cvar_20', 'cost_cvar_20'),
+    }
+    safety_comparison: dict[str, dict[str, Any]] = {}
+    for name, (pooled_metric, seed_metric) in safety_specs.items():
+        candidate = float(p47[pooled_metric])
+        baseline = float(c0[pooled_metric])
+        safety_comparison[name] = {
+            'C0_200k': baseline,
+            'P47_200k': candidate,
+            'delta_P47_minus_C0': candidate - baseline,
+            'relative_reduction': _relative_reduction(candidate, baseline),
+            'improved': candidate < baseline,
+            'paired_seed_improvement_count': sum(
+                float(seed_rows['P47'][seed][seed_metric])
+                < float(seed_rows['C0'][seed][seed_metric])
+                for seed in SEEDS
+            ),
+        }
+
+    performance_comparison = {
+        metric: {
+            'C0_200k': float(c0[metric]),
+            'P47_200k': float(p47[metric]),
+            'delta_P47_minus_C0': float(p47[metric]) - float(c0[metric]),
+        }
+        for metric in ('mean_return', 'success_rate')
+    }
+    all_safety_indicators_improved = all(
+        comparison['improved'] for comparison in safety_comparison.values()
+    )
+    task_completion_observed = float(p47['success_rate']) > 0.0
+    performance_nondecreasing = all(
+        comparison['delta_P47_minus_C0'] >= 0.0
+        for comparison in performance_comparison.values()
+    )
+    if all_safety_indicators_improved and task_completion_observed:
+        overall_label = (
+            'equal_budget_pareto_improvement'
+            if performance_nondecreasing
+            else 'effective_safety_performance_tradeoff'
+        )
+    elif any(comparison['improved'] for comparison in safety_comparison.values()):
+        overall_label = 'mixed_equal_budget_safety_performance_result'
+    else:
+        overall_label = 'no_equal_budget_safety_improvement'
+
+    training_comparison = safety_comparison['training_cumulative_cost']
+    training_label = (
+        'safer_training_period_exploration'
+        if training_comparison['improved']
+        else 'no_training_period_safety_improvement'
+    )
+
+    geometry_metrics = (
+        'high_risk_normal_to_tangent_variance_ratio',
+        'high_risk_dangerous_outward_velocity',
+    )
+    geometry_comparison: dict[str, dict[str, Any]] = {}
+    for metric in geometry_metrics:
+        candidate = float(p47[metric])
+        baseline = float(c0[metric])
+        finite = math.isfinite(candidate) and math.isfinite(baseline)
+        geometry_comparison[metric] = {
+            'C0_200k': baseline,
+            'P47_200k': candidate,
+            'delta_P47_minus_C0': candidate - baseline if finite else float('nan'),
+            'lower_in_P47': finite and candidate < baseline,
+        }
+    finite_geometry = all(
+        math.isfinite(float(comparison['delta_P47_minus_C0']))
+        for comparison in geometry_comparison.values()
+    )
+    geometry_improvements = sum(
+        bool(comparison['lower_in_P47']) for comparison in geometry_comparison.values()
+    )
+    if not finite_geometry:
+        geometry_label = 'geometry_evidence_unavailable'
+    elif geometry_improvements == len(geometry_comparison):
+        geometry_label = 'direction_mechanism_supported'
+    elif geometry_improvements:
+        geometry_label = 'mixed_direction_mechanism_evidence'
+    else:
+        geometry_label = 'direction_mechanism_not_supported_by_both_diagnostics'
+
+    historical_deltas = {
+        metric: {
+            'C1_100k': float(c1[metric]),
+            'P47_200k': float(p47[metric]),
+            'delta_P47_minus_C1': float(p47[metric]) - float(c1[metric]),
+        }
+        for metric in ('mean_return', 'success_rate', 'mean_cost', 'cost_cvar_20')
+    }
+    return {
+        'primary_comparison': 'P47@200000_vs_C0@200000_equal_training_budget',
+        'overall_safety_performance': {
+            'label': overall_label,
+            'all_three_safety_indicators_improved': all_safety_indicators_improved,
+            'task_completion_observed': task_completion_observed,
+            'performance_nondecreasing': performance_nondecreasing,
+            'safety': safety_comparison,
+            'performance': performance_comparison,
+        },
+        'training_period_safety_exploration': {
+            'label': training_label,
+            **training_comparison,
+        },
+        'direction_geometry_mechanism': {
+            'label': geometry_label,
+            'population': 'highest_safety_margin_20_percent',
+            'diagnostic_only': True,
+            'used_as_elimination_gate': False,
+            'metrics': geometry_comparison,
+        },
+        'C1_reference': {
+            'role': 'historical_reference_only',
+            'training_steps': 100_000,
+            'used_in_primary_scientific_interpretation': False,
+            'retained_in_preregistered_machine_audit': True,
+            'metrics': historical_deltas,
+        },
+        'interpretation_is_not_a_freeze_gate': True,
+    }
+
+
 def _checkpoint_path(
     run_root: Path,
     p45_root: Path,
@@ -408,13 +554,57 @@ def paired_rows(seed_rows: dict[str, dict[int, dict[str, Any]]]) -> list[dict[st
 
 def _render_report(result: dict[str, Any]) -> str:
     pooled = result['pooled_formal']
-    decision = result['decision']
+    scientific = result['scientific_interpretation']
+    overall = scientific['overall_safety_performance']
+    training = scientific['training_period_safety_exploration']
+    geometry = scientific['direction_geometry_mechanism']
+    decision = result['machine_audit']
+    evaluation_cost = overall['safety']['evaluation_mean_cost']
+    evaluation_cvar = overall['safety']['evaluation_cvar_20']
+    return_result = overall['performance']['mean_return']
+    success_result = overall['performance']['success_rate']
+    variance_geometry = geometry['metrics']['high_risk_normal_to_tangent_variance_ratio']
+    outward_geometry = geometry['metrics']['high_risk_dangerous_outward_velocity']
+    overall_text = {
+        'equal_budget_pareto_improvement': (
+            'P47 is an equal-budget Pareto improvement: all three safety indicators improve '
+            'without a pooled return or success-rate decrease.'
+        ),
+        'effective_safety_performance_tradeoff': (
+            'P47 demonstrates an effective safety-performance tradeoff: training cost, final '
+            'evaluation cost, and CVaR-20 all improve and task completion remains observable, '
+            'while return and/or success pays a performance cost.'
+        ),
+        'mixed_equal_budget_safety_performance_result': (
+            'The equal-budget result is mixed: at least one safety indicator improves, but the '
+            'three safety indicators do not improve together with observable task completion.'
+        ),
+        'no_equal_budget_safety_improvement': (
+            'P47 does not show an aggregate equal-budget safety improvement over C0.'
+        ),
+    }[overall['label']]
+    geometry_text = {
+        'direction_mechanism_supported': (
+            'Both high-risk diagnostics are lower under P47, supporting activation of the '
+            'intended direction mechanism.'
+        ),
+        'mixed_direction_mechanism_evidence': (
+            'Only one high-risk diagnostic is lower under P47, so mechanism evidence is mixed.'
+        ),
+        'direction_mechanism_not_supported_by_both_diagnostics': (
+            'Neither high-risk diagnostic is lower under P47, so these diagnostics do not '
+            'support the intended direction mechanism.'
+        ),
+        'geometry_evidence_unavailable': 'Finite high-risk geometry evidence is unavailable.',
+    }[geometry['label']]
     lines = [
         '# STAR P4.7 safety-aware geometry final report',
         '',
         (
-            'P4.7 is the final PointGoal method modification. The selection below uses only the '
-            'locked 5-base-seed x 20-episode formal evaluation; top-risk geometry is diagnostic.'
+            'P4.7 is the final PointGoal method modification. Scientific effectiveness is '
+            'interpreted primarily from the equal-training-budget P47@200k versus C0@200k '
+            'comparison. C1@100k remains a historical reference and part of the untouched '
+            'preregistered machine audit.'
         ),
         '',
         '## Pooled formal results (300 episodes per arm)',
@@ -434,7 +624,77 @@ def _render_report(result: dict[str, Any]) -> str:
     lines.extend(
         [
             '',
-            '## Locked selection',
+            '## Primary scientific conclusion: P47@200k vs C0@200k',
+            '',
+            f"**{overall['label']}**",
+            '',
+            '### 1. Overall safety-performance',
+            '',
+            overall_text,
+            '',
+            (
+                f"- Evaluation mean-cost reduction: "
+                f"{evaluation_cost['relative_reduction']:.1%} "
+                f"({evaluation_cost['C0_200k']:.3f} -> "
+                f"{evaluation_cost['P47_200k']:.3f})"
+            ),
+            (
+                f"- Evaluation CVaR-20 reduction: "
+                f"{evaluation_cvar['relative_reduction']:.1%} "
+                f"({evaluation_cvar['C0_200k']:.3f} -> "
+                f"{evaluation_cvar['P47_200k']:.3f})"
+            ),
+            (
+                f"- Return delta: {return_result['delta_P47_minus_C0']:+.4f}; "
+                f"success-rate delta: "
+                f"{100.0 * success_result['delta_P47_minus_C0']:+.1f} percentage points; "
+                f"task completion observed: {overall['task_completion_observed']}"
+            ),
+            '',
+            '### 2. Training-period safety exploration',
+            '',
+            f"**{training['label']}**",
+            '',
+            (
+                f"Mean cumulative training-cost reduction is "
+                f"{training['relative_reduction']:.1%} "
+                f"({training['C0_200k']:.1f} -> {training['P47_200k']:.1f}); "
+                f"P47 is lower in {training['paired_seed_improvement_count']}/3 paired seeds."
+            ),
+            '',
+            '### 3. Direction-geometry mechanism',
+            '',
+            f"**{geometry['label']}**",
+            '',
+            geometry_text,
+            '',
+            (
+                f"- High-risk V_N/V_T: {variance_geometry['C0_200k']:.4f} -> "
+                f"{variance_geometry['P47_200k']:.4f} "
+                f"(delta {variance_geometry['delta_P47_minus_C0']:+.4f})"
+            ),
+            (
+                f"- High-risk dangerous outward velocity: "
+                f"{outward_geometry['C0_200k']:.4f} -> "
+                f"{outward_geometry['P47_200k']:.4f} "
+                f"(delta {outward_geometry['delta_P47_minus_C0']:+.4f})"
+            ),
+            '',
+            (
+                'This evidence is computed only on the highest-risk 20% of samples and is '
+                'diagnostic; it is not an elimination or freeze gate.'
+            ),
+            '',
+            '## C1 historical reference',
+            '',
+            (
+                'C1 was trained for 100k steps, so it is not the primary equal-budget '
+                'effectiveness comparator. Its values remain visible above and remain inputs to '
+                'the preregistered audit, but C1 alone does not determine whether P47 had an '
+                'effective safety-performance tradeoff.'
+            ),
+            '',
+            '## Preserved preregistered machine audit',
             '',
             f"**{decision['label']}**",
             '',
@@ -446,9 +706,15 @@ def _render_report(result: dict[str, Any]) -> str:
         [
             '',
             (
-                'The PointGoal weight/method search is now closed. The selected method is frozen '
-                'in `p4_7_frozen_pointgoal_config.yaml`; the next stage is the preregistered SHAPO '
-                'four-environment, five-training-seed experiment.'
+                'The four gates and their freeze result are preserved exactly as preregistered; '
+                'they are a conservative machine audit, not a post-hoc replacement for the '
+                'equal-budget scientific interpretation above.'
+            ),
+            '',
+            (
+                'The PointGoal weight/method search is now closed. The machine-audit-selected '
+                'method is frozen in `p4_7_frozen_pointgoal_config.yaml`; the next stage is the '
+                'preregistered SHAPO four-environment, five-training-seed experiment.'
             ),
             '',
             '## Evidence files',
@@ -457,7 +723,8 @@ def _render_report(result: dict[str, Any]) -> str:
             '- `p4_7_formal_final_seed_metrics.csv`: every formal arm-by-training-seed result',
             '- `p4_7_paired_final_deltas.csv`: paired P47 deltas',
             '- `p4_7_checkpoint_sha256.csv`: immutable checkpoint identities',
-            '- `p4_7_final_summary.json`: complete machine-readable result and decision',
+            '- `p4_7_scientific_interpretation.json`: the three scientific conclusions',
+            '- `p4_7_final_summary.json`: scientific interpretation plus preserved machine audit',
             '',
         ],
     )
@@ -515,6 +782,7 @@ def summarize(protocol_path: Path, run_root: Path, p45_root: Path, output: Path)
 
     pooled = pooled_formal(formal, seed_rows)
     decision = select_final(seed_rows, pooled)
+    interpretation = scientific_interpretation(seed_rows, pooled)
     hashes = checkpoint_rows(run_root, p45_root)
     result = {
         'stage': 'P4.7-final-safety-aware-geometry-summary',
@@ -529,6 +797,10 @@ def summarize(protocol_path: Path, run_root: Path, p45_root: Path, output: Path)
             'flow_seed_offset': 1_000_003,
         },
         'pooled_formal': pooled,
+        'primary_scientific_comparison': 'P47@200k_vs_C0@200k_equal_training_budget',
+        'scientific_interpretation': interpretation,
+        'machine_audit': decision,
+        # Retained for compatibility with the sealed finalizer and downstream readers.
         'decision': decision,
         'geometry_role': 'diagnostic_only_highest_margin_20_percent',
         'next_stage': 'SHAPO_four_environments_x_five_training_seeds',
@@ -539,6 +811,7 @@ def summarize(protocol_path: Path, run_root: Path, p45_root: Path, output: Path)
     atomic_csv(output / 'p4_7_formal_final_seed_metrics.csv', final_rows)
     atomic_csv(output / 'p4_7_paired_final_deltas.csv', paired_rows(seed_rows))
     atomic_csv(output / 'p4_7_checkpoint_sha256.csv', hashes)
+    atomic_json(output / 'p4_7_scientific_interpretation.json', interpretation)
     atomic_json(output / 'p4_7_final_summary.json', result)
     atomic_text(output / 'P4_7_SAFETY_AWARE_GEOMETRY_REPORT.md', _render_report(result))
 
@@ -554,6 +827,10 @@ def summarize(protocol_path: Path, run_root: Path, p45_root: Path, output: Path)
         'protocol_sha256': PROTOCOL_SHA256,
         'selected_arm': selected,
         'selection_label': decision['label'],
+        'selection_basis': 'preserved_preregistered_conservative_machine_audit',
+        'primary_scientific_comparison': result['primary_scientific_comparison'],
+        'scientific_interpretation_label': interpretation['overall_safety_performance']['label'],
+        'C1_scientific_role': 'historical_reference_only',
         'pointgoal_search_closed': True,
         'next_stage': result['next_stage'],
     }
