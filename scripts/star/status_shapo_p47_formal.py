@@ -64,12 +64,35 @@ def newest_full_checkpoint(container: Path) -> dict[str, Any]:
     }
 
 
+def active_worker_containers(proc_root: Path = Path('/proc')) -> set[str]:
+    """Discover formal run containers from live ``train_star.py --config`` commands."""
+    containers = set()
+    for path in proc_root.glob('[0-9]*/cmdline'):
+        try:
+            arguments = [
+                value.decode('utf-8', errors='replace')
+                for value in path.read_bytes().split(b'\0')
+                if value
+            ]
+        except (FileNotFoundError, PermissionError, ProcessLookupError):
+            continue
+        if not any(value.endswith('scripts/star/train_star.py') for value in arguments):
+            continue
+        try:
+            config = Path(arguments[arguments.index('--config') + 1])
+        except (ValueError, IndexError):
+            continue
+        containers.add(str(config.parent))
+    return containers
+
+
 def run_state(
     container: Path,
     total_steps: int,
     *,
     now: float | None = None,
     stale_after_seconds: float = 1800.0,
+    worker_alive: bool | None = None,
 ) -> dict[str, Any]:
     """Classify one seed run from its immutable receipts and append-only segments."""
     snapshot_time = time.time() if now is None else now
@@ -82,6 +105,7 @@ def run_state(
                 'state': 'completed',
                 'env_steps': total_steps,
                 'fraction': 1.0,
+                'worker_alive': bool(worker_alive),
                 **checkpoint,
             }
     progress = latest_progress(container)
@@ -93,10 +117,11 @@ def run_state(
     activity_age = None
     if activity_mtimes:
         activity_age = max(0.0, snapshot_time - max(activity_mtimes))
-    if progress or configs:
+    if progress or configs or worker_alive:
         state = 'running_or_recoverable'
         if (
-            stale_after_seconds > 0.0
+            not worker_alive
+            and stale_after_seconds > 0.0
             and activity_age is not None
             and activity_age > stale_after_seconds
         ):
@@ -109,6 +134,7 @@ def run_state(
         'state': state,
         'env_steps': steps,
         'fraction': steps / total_steps,
+        'worker_alive': bool(worker_alive),
         'activity_age_seconds': activity_age,
         **checkpoint,
         **{key: value for key, value in progress.items() if key != 'env_steps'},
@@ -129,6 +155,7 @@ def main() -> None:
     parser.add_argument('--json-only', action='store_true')
     args = parser.parse_args()
     matrix = yaml.safe_load(args.matrix.read_text(encoding='utf-8'))
+    active_containers = active_worker_containers()
     rows = []
     for seed in matrix['training_seeds']:
         for env_id, environment in matrix['environments'].items():
@@ -143,6 +170,7 @@ def main() -> None:
                         container,
                         total_steps,
                         stale_after_seconds=args.stale_after_seconds,
+                        worker_alive=str(container) in active_containers,
                     ),
                 },
             )

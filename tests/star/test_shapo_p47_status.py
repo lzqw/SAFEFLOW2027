@@ -8,7 +8,11 @@ import json
 import os
 from pathlib import Path
 
-from scripts.star.status_shapo_p47_formal import latest_progress, run_state
+from scripts.star.status_shapo_p47_formal import (
+    active_worker_containers,
+    latest_progress,
+    run_state,
+)
 
 
 def _progress(path: Path, steps: int, modified: float) -> None:
@@ -49,6 +53,7 @@ def test_run_state_marks_stale_progress_and_exposes_full_checkpoint(tmp_path: Pa
         10_000_000,
         now=2000.0,
         stale_after_seconds=1800.0,
+        worker_alive=False,
     )
     assert state['state'] == 'stale_recoverable'
     assert state['env_steps'] == 50_000
@@ -65,6 +70,37 @@ def test_run_state_keeps_fresh_or_explicit_exit_states_authoritative(tmp_path: P
     (tmp_path / 'exit_code.txt').write_text('137\n', encoding='utf-8')
     failed = run_state(tmp_path, 100_000, now=5000.0, stale_after_seconds=1800.0)
     assert failed['state'] == 'engineering_failure'
+
+
+def test_live_worker_prevents_false_stale_during_long_evaluation(tmp_path: Path) -> None:
+    progress = tmp_path / 'training/segment/progress.csv'
+    _progress(progress, 500_000, 100.0)
+    state = run_state(
+        tmp_path,
+        5_000_000,
+        now=10_000.0,
+        stale_after_seconds=1800.0,
+        worker_alive=True,
+    )
+    assert state['state'] == 'running_or_recoverable'
+    assert state['worker_alive'] is True
+
+
+def test_active_worker_containers_parses_train_config_from_proc(tmp_path: Path) -> None:
+    proc = tmp_path / 'proc'
+    worker = proc / '123/cmdline'
+    unrelated = proc / '456/cmdline'
+    worker.parent.mkdir(parents=True)
+    unrelated.parent.mkdir(parents=True)
+    config = tmp_path / 'formal/runs/ant-2027/resolved_formal_config.yaml'
+    worker.write_bytes(
+        b'python\0scripts/star/train_star.py\0--config\0'
+        + str(config).encode('utf-8')
+        + b'\0--seed\0'
+        + b'2027\0',
+    )
+    unrelated.write_bytes(b'python\0other.py\0')
+    assert active_worker_containers(proc) == {str(config.parent)}
 
 
 def test_completed_validation_overrides_old_activity(tmp_path: Path) -> None:
