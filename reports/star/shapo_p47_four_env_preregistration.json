@@ -1,0 +1,198 @@
+{
+  "status": "locked_before_any_shapo_p47_formal_training",
+  "protocol_version": "shapo-p47-four-env-v1",
+  "date_locked": "2026-08-10",
+  "implementation_base_commit": "5fe3e0d9d8ff9d2c9e8b4a6abd90accc5711fe77",
+  "scope": {
+    "stage": "frozen_P47_SHAPO_four_environment_main_runs",
+    "pointgoal_method_search_closed": true,
+    "new_weight_scans": false,
+    "new_critics": false,
+    "new_second_order_terms": false,
+    "new_binary_gates": false,
+    "new_candidate_action_mechanisms": false,
+    "scientific_early_stop": false
+  },
+  "frozen_method": {
+    "selected_arm": "P47",
+    "source_config": "reports/star/p4_7_safety_aware_geometry_artifacts/final/summary/p4_7_frozen_pointgoal_config.yaml",
+    "source_config_sha256": "17a99888036e5521be295ef69742577576d365fad906ac0acf387921a5474565",
+    "canonical_method_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+    "directional_loss_weight": 1.0,
+    "cost_geometry_bandwidth": 0.1,
+    "one_sided_safety_weight": "sigmoid(cost_margin/cost_geometry_bandwidth)",
+    "directional_loss_denominator": "stop_gradient(mean(squared_raw_velocity_norm))",
+    "flow_reference_variance": 0.04,
+    "flow_normal_variance_ratio": 0.1,
+    "distributional_cost_critic_unchanged": true,
+    "violation_probability_critic_unchanged_and_diagnostic_only_for_policy_geometry": true,
+    "selected_P47_training_invariants": {
+      "vector_env_nums": 1,
+      "batch_size": 256,
+      "replay_size": 400000,
+      "steps_per_epoch": 5000,
+      "utd_ratio": 1.0,
+      "random_steps": 2000,
+      "terminal_utility_steps": 8000,
+      "geometry_min_steps": 12000
+    }
+  },
+  "environment_cost_contracts": {
+    "SafetyPointGoal1-v0": {
+      "formal_cost_budget": 10.0,
+      "geometry_mode": "remaining_cost_budget",
+      "cost_normalization_scale": 10.0,
+      "geometry_budget_ratio": "remaining_budget_ratio"
+    },
+    "SafetyPointButton1-v0": {
+      "formal_cost_budget": 10.0,
+      "geometry_mode": "remaining_cost_budget",
+      "cost_normalization_scale": 10.0,
+      "geometry_budget_ratio": "remaining_budget_ratio"
+    },
+    "Ant-v4": {
+      "formal_cost_budget": 0.0,
+      "geometry_mode": "future_failure_probability",
+      "cost_normalization_scale": 1.0,
+      "geometry_budget_ratio": 0.0,
+      "cost_definition": "one_only_on_unhealthy_termination_zero_on_time_limit"
+    },
+    "Walker2d-v4": {
+      "formal_cost_budget": 0.0,
+      "geometry_mode": "future_failure_probability",
+      "cost_normalization_scale": 1.0,
+      "geometry_budget_ratio": 0.0,
+      "cost_definition": "one_only_on_unhealthy_termination_zero_on_time_limit"
+    }
+  },
+  "engineering_gate": {
+    "required_before_formal_launch": true,
+    "one_short_run_per_environment": true,
+    "scientific_evidence": false,
+    "excluded_from_formal_aggregation": true,
+    "pass_conditions": [
+      "process_exit_zero",
+      "requested_steps_completed",
+      "finite_training_summary",
+      "finite_direction_geometry",
+      "expected_environment_cost_contract_in_manifest",
+      "checkpoint_and_evaluation_artifacts_parse"
+    ]
+  },
+  "formal_training": {
+    "training_seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "vector_env_nums": 1,
+    "SafetyPointGoal1-v0": {
+      "steps": 10000000,
+      "evaluation_and_checkpoint_milestones": [
+        1000000,
+        4000000,
+        10000000
+      ]
+    },
+    "SafetyPointButton1-v0": {
+      "steps": 10000000,
+      "evaluation_and_checkpoint_milestones": [
+        1000000,
+        4000000,
+        10000000
+      ]
+    },
+    "Ant-v4": {
+      "steps": 5000000,
+      "evaluation_and_checkpoint_milestones": [
+        500000,
+        2000000,
+        5000000
+      ]
+    },
+    "Walker2d-v4": {
+      "steps": 5000000,
+      "evaluation_and_checkpoint_milestones": [
+        500000,
+        2000000,
+        5000000
+      ]
+    },
+    "total_environment_steps": 150000000,
+    "scientific_early_stop": false,
+    "engineering_stops_only": [
+      "nan_or_inf",
+      "gross_q_overflow",
+      "oom",
+      "process_or_host_failure"
+    ]
+  },
+  "formal_evaluation": {
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "episodes_per_base_seed": 20,
+    "episodes_per_training_seed": 100,
+    "seed_once_then_sequential_resets": true,
+    "common_random_evaluation_schedule_across_environments_and_training_seeds": true,
+    "trajectory_base_seeds": [
+      32027,
+      32029,
+      32031
+    ],
+    "statistical_unit": "training_seed",
+    "episode_count_is_not_the_independent_sample_size": true
+  },
+  "checkpoint_protocol": {
+    "retain": [
+      "latest_full_recovery",
+      "best_safe_return_lightweight",
+      "10_percent_lightweight",
+      "40_percent_lightweight",
+      "final_lightweight",
+      "final_full_recovery"
+    ],
+    "latest_full_frequency_steps": 50000,
+    "best_safe_return_order": "constraint_satisfied_first_then_maximum_mean_return_then_minimum_mean_cost_then_earliest_milestone",
+    "pre_feasibility_fallback": "minimum_mean_cost_then_maximum_mean_return_then_earliest_milestone",
+    "best_safe_return_selection_is_not_a_method_selection": true
+  },
+  "outcomes": {
+    "primary": [
+      "evaluation_mean_return",
+      "evaluation_mean_cost",
+      "evaluation_cost_cvar_20",
+      "training_cumulative_cost"
+    ],
+    "point_task_secondary": [
+      "success_rate",
+      "path_length",
+      "cost_per_successful_episode"
+    ],
+    "locomotion_secondary": [
+      "failure_count",
+      "failure_rate",
+      "failure_time",
+      "failure_reason",
+      "health_height",
+      "torso_angle"
+    ],
+    "diagnostic_only": [
+      "high_risk_top_20_percent_normal_to_tangent_variance_ratio",
+      "high_risk_top_20_percent_dangerous_outward_velocity",
+      "trajectory_risk_geometry"
+    ],
+    "inference": "aggregate_per_training_seed_metrics_across_five_seeds"
+  },
+  "post_run_rule": {
+    "stop_pointgoal_weight_search": true,
+    "freeze_P47_for_main_comparisons": true,
+    "no_post_hoc_environment_specific_tuning": true
+  }
+}

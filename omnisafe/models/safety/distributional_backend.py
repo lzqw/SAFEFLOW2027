@@ -179,7 +179,7 @@ def compute_cost_stochastic_reference(
     *,
     anisotropy_enabled: bool,
     safety_aware_geometry: bool = False,
-    cost_limit: float,
+    cost_normalization_scale: float,
     boundary_bandwidth: float = 0.1,
     reference_variance: float = 0.04,
     normal_variance_ratio: float = 0.1,
@@ -187,9 +187,14 @@ def compute_cost_stochastic_reference(
     ensemble_scale: float = 0.05,
     epsilon: float = 1e-8,
 ) -> FlowReference:
-    """Build a Q-cost-normal stochastic reference without probability-critic policy access."""
-    if cost_limit <= 0.0:
-        raise ValueError('cost geometry requires a positive cost limit')
+    """Build a normalized-Q-cost reference without probability-critic policy access.
+
+    ``cost_normalization_scale`` is the episode budget for budgeted Point tasks and one for
+    binary terminal-failure tasks.  Keeping this scale explicit prevents a formal zero failure
+    budget from being mistaken for a divisor while leaving the learned cost critic unchanged.
+    """
+    if cost_normalization_scale <= 0.0:
+        raise ValueError('cost geometry requires a positive normalization scale')
     if min(boundary_bandwidth, gradient_scale, ensemble_scale, epsilon) <= 0.0:
         raise ValueError('cost-geometry scales must be positive')
     if remaining_budget_ratio.shape != action.shape[:-1]:
@@ -218,7 +223,7 @@ def compute_cost_stochastic_reference(
                 local_action = action.detach().requires_grad_(True)
                 head_cost = critic.expected_cost(augmented_obs.detach(), local_action)
                 mean_cost = head_cost.mean(dim=0)
-                cost_score_graph = mean_cost / cost_limit
+                cost_score_graph = mean_cost / cost_normalization_scale
                 gradient = torch.autograd.grad(cost_score_graph.sum(), local_action)[0]
         finally:
             for parameter, flag in zip(critic.parameters(), parameter_flags):
@@ -235,7 +240,9 @@ def compute_cost_stochastic_reference(
                 -0.5 * (margin / boundary_bandwidth).square(),
             )
         gradient_reliability = gradient_norm / (gradient_norm + gradient_scale)
-        normalized_disagreement = head_cost.std(dim=0, unbiased=False).detach() / cost_limit
+        normalized_disagreement = (
+            head_cost.std(dim=0, unbiased=False).detach() / cost_normalization_scale
+        )
         ensemble_reliability = torch.exp(-normalized_disagreement / ensemble_scale)
 
     reliability = (safety_band_weight * gradient_reliability * ensemble_reliability).clamp(0.0, 1.0)

@@ -157,7 +157,7 @@ def test_reference_uses_identical_continuous_reliability_for_diffusion_and_loss(
         torch.tensor([1.0, 0.5, 0.0]),
         anisotropy_enabled=True,
         safety_aware_geometry=True,
-        cost_limit=10.0,
+        cost_normalization_scale=10.0,
         boundary_bandwidth=0.1,
     )
     torch.testing.assert_close(reference.margin, torch.tensor([-0.5, 0.0, 0.5]))

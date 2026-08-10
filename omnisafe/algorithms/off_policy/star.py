@@ -33,7 +33,7 @@ import torch
 from torch import nn
 from torch.nn.utils import clip_grad_norm_
 
-from omnisafe.adapter.star_adapter import STARAdapter, STARContext
+from omnisafe.adapter.star_adapter import FAILURE_COST_ENVS, POINT_PREFIX, STARAdapter, STARContext
 from omnisafe.algorithms import registry
 from omnisafe.algorithms.base_algo import BaseAlgo
 from omnisafe.algorithms.off_policy.star_warmup import STARWarmup
@@ -101,6 +101,8 @@ LOG_KEYS = (
     'Evaluation/Return',
     'Evaluation/Cost',
     'Evaluation/CostCVaR',
+    'Evaluation/FailureCount',
+    'Evaluation/FailureRate',
     'Evaluation/ViolationRatio',
     'Evaluation/CalibrationError',
     'Evaluation/BrierScore',
@@ -246,6 +248,61 @@ LOG_KEYS = (
     'Time/FPS',
     'Time/Total',
 )
+
+
+def cost_geometry_contract(env_id: str, cost_limit: float) -> tuple[str, float]:
+    """Return the frozen geometry interpretation and its strictly positive score scale.
+
+    Point tasks use cumulative cost divided by their episode budget.  The two SHAPO
+    locomotion tasks have the prescribed formal budget ``d=0`` and a single binary cost on an
+    unhealthy terminal transition, so their expected cost-to-go is the future-failure
+    probability and is already on a unit scale.
+    """
+    if env_id.startswith(POINT_PREFIX) and cost_limit > 0.0:
+        return 'remaining_cost_budget', float(cost_limit)
+    if env_id in FAILURE_COST_ENVS and math.isclose(cost_limit, 0.0, abs_tol=1e-12):
+        return 'future_failure_probability', 1.0
+    raise ValueError(
+        'unified cost geometry requires a positive Point-task budget or a zero-budget '
+        'binary-failure Ant/Walker task',
+    )
+
+
+def best_safe_checkpoint_candidate_is_better(
+    candidate: dict[str, Any],
+    incumbent: dict[str, Any] | None,
+) -> bool:
+    """Apply the preregistered feasible-return checkpoint ordering deterministically."""
+    if incumbent is None:
+        return True
+    candidate_safe = bool(candidate['constraint_satisfied'])
+    incumbent_safe = bool(incumbent['constraint_satisfied'])
+    if candidate_safe != incumbent_safe:
+        return candidate_safe
+    if candidate_safe:
+        candidate_rank = (
+            -float(candidate['mean_return']),
+            float(candidate['mean_cost']),
+            int(candidate['milestone']),
+        )
+        incumbent_rank = (
+            -float(incumbent['mean_return']),
+            float(incumbent['mean_cost']),
+            int(incumbent['milestone']),
+        )
+    else:
+        candidate_rank = (
+            float(candidate['mean_cost']),
+            -float(candidate['mean_return']),
+            int(candidate['milestone']),
+        )
+        incumbent_rank = (
+            float(incumbent['mean_cost']),
+            -float(incumbent['mean_return']),
+            int(incumbent['milestone']),
+        )
+    return candidate_rank < incumbent_rank
+
 
 MAX_LOG_KEYS = frozenset(
     {
@@ -540,6 +597,7 @@ class STAR(BaseAlgo):
     _reward_td_diagnostics: list[float]
     _hard_stop_reason: str | None
     _pending_probe_metrics: dict[str, torch.Tensor] | None
+    _best_safe_checkpoint_selection: dict[str, Any] | None
 
     def _init_env(self) -> None:
         """Create isolated STAR train/evaluation adapters."""
@@ -655,6 +713,7 @@ class STAR(BaseAlgo):
         self._reward_td_diagnostics: list[float] = []
         self._hard_stop_reason = None
         self._pending_probe_metrics: dict[str, torch.Tensor] | None = None
+        self._best_safe_checkpoint_selection = None
         self._last_update_order: tuple[str, ...] = ()
         self._training_seconds = 0.0
         self._run_env_steps = 0
@@ -802,11 +861,10 @@ class STAR(BaseAlgo):
             1.0,
         ):
             raise ValueError('P4.7 safety-aware direction weight is fixed at 1.0')
-        if self._unified_cost_geometry_enabled() and (
-            float(algo.cost_geometry_bandwidth) <= 0.0
-            or float(self._cfgs.lagrange_cfgs.cost_limit) <= 0.0
-        ):
-            raise ValueError('Q-cost geometry requires positive budget scales')
+        if self._unified_cost_geometry_enabled():
+            if float(algo.cost_geometry_bandwidth) <= 0.0:
+                raise ValueError('Q-cost geometry requires a positive boundary bandwidth')
+            self._cost_geometry_contract()
         if self._stochastic_flow_enabled() and (
             self._candidate_probing_enabled()
             or self._dynamic_geometry_gate_enabled()
@@ -884,6 +942,11 @@ class STAR(BaseAlgo):
         self._checkpoint_dir = Path(self._logger.log_dir) / 'checkpoints'
         self._artifact_dir.mkdir(parents=True, exist_ok=True)
         self._checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        geometry_mode, geometry_scale = (
+            self._cost_geometry_contract()
+            if self._unified_cost_geometry_enabled()
+            else ('disabled', None)
+        )
         _atomic_json(
             self._artifact_dir / 'run_manifest.json',
             {
@@ -905,6 +968,17 @@ class STAR(BaseAlgo):
                     ),
                     'seed_once_then_sequential_resets': True,
                     'flow_seed_offset': 1_000_003,
+                },
+                'checkpoint_protocol': {
+                    'latest_full_recovery': bool(self._cfgs.algo_cfgs.checkpoint_replay),
+                    'best_safe_return': (
+                        'feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone'
+                    ),
+                    'best_safe_return_pre_feasibility_fallback': (
+                        'minimum_mean_cost;maximum_mean_return;earliest_milestone'
+                    ),
+                    'formal_cost_budget': float(self._cfgs.lagrange_cfgs.cost_limit),
+                    'milestones': self._checkpoint_milestones,
                 },
                 'p4_2_backbone_ablation': {
                     'reward_flow_enabled': True,
@@ -1036,8 +1110,21 @@ class STAR(BaseAlgo):
                         getattr(self._cfgs.algo_cfgs, 'safety_protocol_sha256', ''),
                     ),
                     'enabled': self._unified_cost_geometry_enabled(),
-                    'cost_score': 'mean_heads(mean_quantiles(Q_C))/cost_limit',
-                    'local_margin': 'cost_score-remaining_budget_ratio',
+                    'geometry_mode': geometry_mode,
+                    'formal_cost_budget': float(self._cfgs.lagrange_cfgs.cost_limit),
+                    'cost_normalization_scale': geometry_scale,
+                    'cost_score': 'mean_heads(mean_quantiles(Q_C))/cost_normalization_scale',
+                    'local_margin': 'cost_score-geometry_budget_ratio',
+                    'geometry_budget_ratio': (
+                        'zero'
+                        if geometry_mode == 'future_failure_probability'
+                        else 'remaining_budget_ratio'
+                    ),
+                    'terminal_failure_cost': (
+                        'one_on_unhealthy_termination;zero_on_time_limit'
+                        if geometry_mode == 'future_failure_probability'
+                        else 'not_applicable'
+                    ),
                     'cost_geometry_bandwidth': float(
                         getattr(self._cfgs.algo_cfgs, 'cost_geometry_bandwidth', 0.0),
                     ),
@@ -1066,6 +1153,8 @@ class STAR(BaseAlgo):
                         getattr(self._cfgs.algo_cfgs, 'safety_protocol_sha256', ''),
                     ),
                     'enabled': self._safety_aware_cost_geometry_enabled(),
+                    'geometry_mode': geometry_mode,
+                    'cost_normalization_scale': geometry_scale,
                     'one_sided_safety_weight': 'sigmoid(cost_margin/cost_geometry_bandwidth)',
                     'directional_loss_numerator': (
                         'mean(reliability*positive_part(normal^T*raw_velocity)^2)'
@@ -1196,6 +1285,25 @@ class STAR(BaseAlgo):
             getattr(self._cfgs.algo_cfgs, 'safety_aware_cost_geometry_enabled', False),
         )
 
+    def _cost_geometry_contract(self) -> tuple[str, float]:
+        """Return the environment-specific interpretation of the frozen cost geometry."""
+        return cost_geometry_contract(
+            self._env_id,
+            float(self._cfgs.lagrange_cfgs.cost_limit),
+        )
+
+    def _cost_geometry_scale(self) -> float:
+        """Return the positive divisor used only to normalize the cost-critic score."""
+        return self._cost_geometry_contract()[1]
+
+    def _cost_geometry_budget_ratio(self, augmented_obs: torch.Tensor) -> torch.Tensor:
+        """Return the local boundary target for budgeted-cost or terminal-failure geometry."""
+        mode, _ = self._cost_geometry_contract()
+        context_budget = augmented_obs[..., -self._actor_critic.context_dim]
+        if mode == 'future_failure_probability':
+            return torch.zeros_like(context_budget)
+        return context_budget
+
     def _complete_heldout_evidence_enabled(self) -> bool:
         """Return whether balanced complete held-out evidence is mandatory for geometry."""
         return bool(getattr(self._cfgs.algo_cfgs, 'complete_heldout_evidence', False))
@@ -1246,7 +1354,8 @@ class STAR(BaseAlgo):
             cost_critic = (
                 self._actor_critic.target_cost_critic if target else self._actor_critic.cost_critic
             )
-            budget_ratio = augmented_obs[..., -self._actor_critic.context_dim]
+            budget_ratio = self._cost_geometry_budget_ratio(augmented_obs)
+            cost_scale = self._cost_geometry_scale()
 
             def cost_reference(action: torch.Tensor) -> Any:
                 return compute_cost_stochastic_reference(
@@ -1256,7 +1365,7 @@ class STAR(BaseAlgo):
                     budget_ratio,
                     anisotropy_enabled=anisotropy,
                     safety_aware_geometry=self._safety_aware_cost_geometry_enabled(),
-                    cost_limit=float(self._cfgs.lagrange_cfgs.cost_limit),
+                    cost_normalization_scale=cost_scale,
                     boundary_bandwidth=float(algo.cost_geometry_bandwidth),
                     reference_variance=float(algo.flow_reference_variance),
                     normal_variance_ratio=float(algo.flow_normal_variance_ratio),
@@ -1554,8 +1663,8 @@ class STAR(BaseAlgo):
         augmented = self._augment(obs, context)
         if self._unified_cost_geometry_enabled():
             head_cost = self._actor_critic.cost_critic.expected_cost(augmented, action)
-            score = head_cost.mean(dim=0) / float(self._cfgs.lagrange_cfgs.cost_limit)
-            margin = score - context[..., 0]
+            score = head_cost.mean(dim=0) / self._cost_geometry_scale()
+            margin = score - self._cost_geometry_budget_ratio(augmented)
             return torch.exp(
                 -0.5 * (margin / float(algo.cost_geometry_bandwidth)).square(),
             )
@@ -2129,6 +2238,7 @@ class STAR(BaseAlgo):
         }
         if self._unified_cost_geometry_enabled():
             bandwidth = float(self._cfgs.algo_cfgs.cost_geometry_bandwidth)
+            cost_scale = self._cost_geometry_scale()
             metrics.update(
                 {
                     'Reference/SafetyBandSampleRatio': float(
@@ -2137,9 +2247,7 @@ class STAR(BaseAlgo):
                     'Reference/CostScore': float(reference.risk_ucb.mean().item()),
                     'Reference/CostMargin': float(reference.margins.mean().item()),
                     'Numerics/CostActionGradientNorm': float(
-                        (reference.gradient_norm * float(self._cfgs.lagrange_cfgs.cost_limit))
-                        .mean()
-                        .item(),
+                        (reference.gradient_norm * cost_scale).mean().item(),
                     ),
                 },
             )
@@ -2153,13 +2261,9 @@ class STAR(BaseAlgo):
                         augmented_obs,
                         flow.action,
                     ).mean(dim=0)
-                    budget_ratio = augmented_obs[..., -self._actor_critic.context_dim]
-                    start_margin = (
-                        start_cost / float(self._cfgs.lagrange_cfgs.cost_limit) - budget_ratio
-                    )
-                    end_margin = (
-                        end_cost / float(self._cfgs.lagrange_cfgs.cost_limit) - budget_ratio
-                    )
+                    budget_ratio = self._cost_geometry_budget_ratio(augmented_obs)
+                    start_margin = start_cost / cost_scale - budget_ratio
+                    end_margin = end_cost / cost_scale - budget_ratio
                 metrics['Reference/CrossingRate'] = float(
                     ((start_margin <= 0.0) & (end_margin > 0.0)).float().mean().item(),
                 )
@@ -2744,6 +2848,13 @@ class STAR(BaseAlgo):
                 'mean_return': 0.0,
                 'mean_cost': 0.0,
                 'cost_cvar_20': 0.0,
+                'failure_count': 0,
+                'failure_rate': 0.0,
+                'failure_reason_counts': {},
+                'failure_times': [],
+                'mean_failure_time': float('nan'),
+                'time_limit_count': 0,
+                'time_limit_rate': 0.0,
                 'violation_ratio': 0.0,
                 'calibration_error': float('nan'),
                 'brier_score': float('nan'),
@@ -2785,6 +2896,12 @@ class STAR(BaseAlgo):
         stall_flags: list[bool] = []
         episode_step_stall_ratios: list[float] = []
         all_action_norms: list[float] = []
+        episode_failure_flags: list[bool] = []
+        episode_end_reasons: list[str] = []
+        failure_times: list[float] = []
+        failure_steps: list[int] = []
+        failure_heights: list[float] = []
+        failure_torso_angles: list[float] = []
         trajectory: list[dict[str, Any]] = []
         trajectory_seeds = {
             int(seed) for seed in getattr(self._cfgs.algo_cfgs, 'trajectory_eval_seeds', [])
@@ -2799,6 +2916,9 @@ class STAR(BaseAlgo):
             'reliability': [],
             'safety_weight': [],
         }
+        cost_geometry_scale = (
+            self._cost_geometry_scale() if self._unified_cost_geometry_enabled() else 1.0
+        )
 
         def accumulate_geometry(name: str, values: torch.Tensor) -> None:
             finite = values.detach().flatten()
@@ -2836,6 +2956,12 @@ class STAR(BaseAlgo):
                 episode_return = 0.0
                 episode_cost = 0.0
                 episode_goals = 0
+                episode_failed = False
+                episode_end_reason = 'max_episode_steps'
+                episode_failure_time = float('nan')
+                episode_failure_step = -1
+                episode_failure_height = float('nan')
+                episode_failure_torso_angle = float('nan')
                 step_costs: list[float] = []
                 step_predictions: list[float] = []
                 step_predicted_costs: list[float] = []
@@ -2872,6 +2998,11 @@ class STAR(BaseAlgo):
                         )
                     context, threshold = context_state.values()
                     augmented = self._augment(obs, context)
+                    geometry_budget_ratio = (
+                        self._cost_geometry_budget_ratio(augmented)
+                        if self._unified_cost_geometry_enabled()
+                        else context[..., 0]
+                    )
                     base_action = torch.empty(
                         (1, self._act_dim),
                         dtype=augmented.dtype,
@@ -2949,7 +3080,7 @@ class STAR(BaseAlgo):
                             )
                         accumulate_geometry(
                             'action_gradient_norm',
-                            reference.gradient_norm * float(self._cfgs.lagrange_cfgs.cost_limit),
+                            reference.gradient_norm * cost_geometry_scale,
                         )
                         point_count = flow.points.shape[-2]
                         path_obs = (
@@ -2967,13 +3098,10 @@ class STAR(BaseAlgo):
                                 path_obs,
                                 path_actions,
                             ).mean(dim=0)
-                        path_margin = (
-                            path_cost.reshape(1, point_count)
-                            / float(
-                                self._cfgs.lagrange_cfgs.cost_limit,
-                            )
-                            - context[:, :1]
-                        )
+                        path_margin = path_cost.reshape(
+                            1,
+                            point_count,
+                        ) / cost_geometry_scale - geometry_budget_ratio.unsqueeze(-1)
                         accumulate_geometry(
                             'crossing_rate',
                             ((path_margin[:, :-1] <= 0.0) & (path_margin[:, 1:] > 0.0)).float(),
@@ -3020,13 +3148,13 @@ class STAR(BaseAlgo):
                             'predicted_violation_probability': float(risk.item()),
                             'predicted_cost_to_go': float(quantiles.mean().item()),
                             'remaining_budget_ratio': float(context[0, 0].item()),
+                            'geometry_budget_ratio': float(geometry_budget_ratio[0].item()),
                             'cost_score': float(
-                                quantiles.mean().item()
-                                / float(self._cfgs.lagrange_cfgs.cost_limit),
+                                quantiles.mean().item() / cost_geometry_scale,
                             ),
                             'cost_margin': float(
-                                quantiles.mean().item() / float(self._cfgs.lagrange_cfgs.cost_limit)
-                                - context[0, 0].item(),
+                                quantiles.mean().item() / cost_geometry_scale
+                                - geometry_budget_ratio[0].item(),
                             ),
                             'cost_normal_0': float(trajectory_normal[0].item()),
                             'cost_normal_1': (
@@ -3045,13 +3173,74 @@ class STAR(BaseAlgo):
                     next_obs, reward, cost, terminated, truncated, info = evaluation_env.step(
                         action,
                     )
+                    final_info = info.get('final_info')
+                    diagnostic_info = final_info if isinstance(final_info, dict) else info
                     original_reward = float(
-                        torch.as_tensor(info.get('original_reward', reward)).reshape(-1)[0].item(),
+                        torch.as_tensor(
+                            info.get(
+                                'original_reward',
+                                diagnostic_info.get('original_reward', reward),
+                            ),
+                        )
+                        .reshape(-1)[0]
+                        .item(),
                     )
                     original_cost = float(
-                        torch.as_tensor(info.get('original_cost', cost)).reshape(-1)[0].item(),
+                        torch.as_tensor(
+                            info.get(
+                                'original_cost',
+                                diagnostic_info.get('original_cost', cost),
+                            ),
+                        )
+                        .reshape(-1)[0]
+                        .item(),
                     )
-                    goal_met = int(_truthy(info.get('goal_met', False)))
+                    goal_met = int(
+                        _truthy(info.get('goal_met', diagnostic_info.get('goal_met', False))),
+                    )
+                    is_failure = _truthy(
+                        diagnostic_info.get(
+                            'is_failure',
+                            original_cost > 0.0 and _truthy(terminated),
+                        ),
+                    )
+                    if is_failure:
+                        episode_failed = True
+                        episode_failure_time = float(
+                            torch.as_tensor(
+                                diagnostic_info.get('episode_time', step + 1),
+                            )
+                            .reshape(-1)[0]
+                            .item(),
+                        )
+                        episode_failure_step = int(
+                            torch.as_tensor(
+                                diagnostic_info.get('episode_step', step + 1),
+                            )
+                            .reshape(-1)[0]
+                            .item(),
+                        )
+                        episode_failure_height = float(
+                            torch.as_tensor(
+                                diagnostic_info.get('health_height', float('nan')),
+                            )
+                            .reshape(-1)[0]
+                            .item(),
+                        )
+                        episode_failure_torso_angle = float(
+                            torch.as_tensor(
+                                diagnostic_info.get('torso_angle', float('nan')),
+                            )
+                            .reshape(-1)[0]
+                            .item(),
+                        )
+                    if _truthy(terminated) or _truthy(truncated):
+                        episode_end_reason = str(
+                            diagnostic_info.get(
+                                'failure_reason',
+                                'terminated' if _truthy(terminated) else 'time_limit',
+                            ),
+                        )
                     episode_goals += goal_met
                     if trajectory_row is not None:
                         trajectory_row.update(
@@ -3061,6 +3250,17 @@ class STAR(BaseAlgo):
                                 'goal_met': goal_met,
                                 'terminated': int(_truthy(terminated)),
                                 'truncated': int(_truthy(truncated)),
+                                'is_failure': int(is_failure),
+                                'failure_reason': str(
+                                    diagnostic_info.get('failure_reason', 'none'),
+                                ),
+                                'is_healthy': int(
+                                    _truthy(diagnostic_info.get('is_healthy', True)),
+                                ),
+                                'health_height': diagnostic_info.get('health_height'),
+                                'torso_angle': diagnostic_info.get('torso_angle'),
+                                'torso_upright': diagnostic_info.get('torso_upright'),
+                                'episode_time': diagnostic_info.get('episode_time'),
                             },
                         )
                         trajectory.append(trajectory_row)
@@ -3094,6 +3294,13 @@ class STAR(BaseAlgo):
                 returns.append(episode_return)
                 costs.append(episode_cost)
                 lengths.append(len(step_costs))
+                episode_failure_flags.append(episode_failed)
+                episode_end_reasons.append(episode_end_reason)
+                if episode_failed:
+                    failure_times.append(episode_failure_time)
+                    failure_steps.append(episode_failure_step)
+                    failure_heights.append(episode_failure_height)
+                    failure_torso_angles.append(episode_failure_torso_angle)
                 goal_counts.append(episode_goals)
                 displacement = (
                     math.dist(start_position, last_position)
@@ -3134,6 +3341,16 @@ class STAR(BaseAlgo):
             )
         successful_episodes = sum(count > 0 for count in goal_counts)
         total_path_length = sum(path_lengths)
+        failure_count = sum(episode_failure_flags)
+        failure_reason_counts: dict[str, int] = {}
+        for reason in episode_end_reasons:
+            failure_reason_counts[reason] = failure_reason_counts.get(reason, 0) + 1
+        time_limit_count = failure_reason_counts.get('time_limit', 0)
+
+        def finite_mean(values: list[float]) -> float:
+            finite_values = [value for value in values if math.isfinite(value)]
+            return sum(finite_values) / len(finite_values) if finite_values else float('nan')
+
         return {
             'milestone': milestone,
             'probability_split': 'external_isolated_environment',
@@ -3148,6 +3365,21 @@ class STAR(BaseAlgo):
             'mean_return': sum(returns) / len(returns),
             'mean_cost': sum(costs) / len(costs),
             'cost_cvar_20': _tail_mean(costs),
+            'failure_count': failure_count,
+            'failure_rate': failure_count / len(returns),
+            'episode_failure_flags': episode_failure_flags,
+            'episode_end_reasons': episode_end_reasons,
+            'failure_reason_counts': failure_reason_counts,
+            'failure_times': failure_times,
+            'failure_steps': failure_steps,
+            'failure_heights': failure_heights,
+            'failure_torso_angles': failure_torso_angles,
+            'mean_failure_time': finite_mean(failure_times),
+            'mean_failure_step': finite_mean([float(value) for value in failure_steps]),
+            'mean_failure_height': finite_mean(failure_heights),
+            'mean_failure_torso_angle': finite_mean(failure_torso_angles),
+            'time_limit_count': time_limit_count,
+            'time_limit_rate': time_limit_count / len(returns),
             'violation_ratio': violations / max(transitions, 1),
             'calibration_error': float((predicted_tensor - empirical_risk).abs().mean().item()),
             'brier_score': binary_brier_score(predicted_tensor, empirical_risk),
@@ -3485,6 +3717,7 @@ class STAR(BaseAlgo):
                 'last_heldout_evidence': dict(self._last_heldout_evidence),
                 'last_heldout_evidence_status': self._last_heldout_evidence_status,
                 'reward_td_diagnostics': list(self._reward_td_diagnostics),
+                'best_safe_checkpoint_selection': self._best_safe_checkpoint_selection,
             },
         )
 
@@ -3535,6 +3768,10 @@ class STAR(BaseAlgo):
         self._reward_td_diagnostics = [
             float(value) for value in metadata['extra'].get('reward_td_diagnostics', [])
         ]
+        restored_selection = metadata['extra'].get('best_safe_checkpoint_selection')
+        self._best_safe_checkpoint_selection = (
+            dict(restored_selection) if isinstance(restored_selection, dict) else None
+        )
         self._buf.reset_pending_episodes()
         if not metadata['has_replay'] and self._env_steps < int(self._cfgs.train_cfgs.total_steps):
             raise ValueError('training resume requires a full STAR checkpoint with replay')
@@ -3542,6 +3779,54 @@ class STAR(BaseAlgo):
         self._next_log_step = (self._env_steps // log_interval + 1) * log_interval
         self._last_log_step = self._env_steps
         self._last_log_time = time.monotonic()
+
+    def _update_best_safe_return_checkpoint(
+        self,
+        milestone: int,
+        result: dict[str, Any],
+    ) -> None:
+        """Retain the highest-return feasible checkpoint, with a safety-first fallback."""
+        if int(result['episodes']) <= 0:
+            return
+        cost_budget = float(self._cfgs.lagrange_cfgs.cost_limit)
+        mean_cost = float(result['mean_cost'])
+        candidate = {
+            'milestone': int(milestone),
+            'mean_return': float(result['mean_return']),
+            'mean_cost': mean_cost,
+            'cost_cvar_20': float(result['cost_cvar_20']),
+            'failure_rate': float(result['failure_rate']),
+            'formal_cost_budget': cost_budget,
+            'constraint_satisfied': mean_cost <= cost_budget + 1e-12,
+            'selection_status': (
+                'best_safe_return'
+                if mean_cost <= cost_budget + 1e-12
+                else 'provisional_minimum_cost_until_a_safe_checkpoint_exists'
+            ),
+        }
+        updated = best_safe_checkpoint_candidate_is_better(
+            candidate,
+            self._best_safe_checkpoint_selection,
+        )
+        if updated:
+            self._best_safe_checkpoint_selection = candidate
+            if bool(self._cfgs.algo_cfgs.milestone_checkpoints):
+                self._save_checkpoint(
+                    self._checkpoint_dir / 'best_safe_return.pt',
+                    include_replay=False,
+                )
+        _atomic_json(
+            self._artifact_dir / 'best_safe_return_selection.json',
+            {
+                'selection_rule': (
+                    'feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone;'
+                    'before_feasibility_minimum_mean_cost_then_maximum_mean_return'
+                ),
+                'last_candidate': candidate,
+                'last_candidate_selected': updated,
+                'selected': self._best_safe_checkpoint_selection,
+            },
+        )
 
     def _evaluate_milestone(self, milestone: int) -> None:
         """Save fixed evaluation, same-state counterfactual, and lightweight model state."""
@@ -3561,6 +3846,11 @@ class STAR(BaseAlgo):
                 'mean_return': result['mean_return'],
                 'mean_cost': result['mean_cost'],
                 'cost_cvar_20': result['cost_cvar_20'],
+                'failure_count': result['failure_count'],
+                'failure_rate': result['failure_rate'],
+                'mean_failure_time': result['mean_failure_time'],
+                'time_limit_count': result['time_limit_count'],
+                'time_limit_rate': result['time_limit_rate'],
                 'violation_ratio': result['violation_ratio'],
                 'calibration_error': result['calibration_error'],
                 'brier_score': result['brier_score'],
@@ -3601,10 +3891,13 @@ class STAR(BaseAlgo):
                 ),
             },
         )
+        self._update_best_safe_return_checkpoint(milestone, result)
         for key, value in {
             'Evaluation/Return': result['mean_return'],
             'Evaluation/Cost': result['mean_cost'],
             'Evaluation/CostCVaR': result['cost_cvar_20'],
+            'Evaluation/FailureCount': result['failure_count'],
+            'Evaluation/FailureRate': result['failure_rate'],
             'Evaluation/ViolationRatio': result['violation_ratio'],
             'Evaluation/CalibrationError': result['calibration_error'],
             'Evaluation/BrierScore': result['brier_score'],
@@ -3701,7 +3994,9 @@ class STAR(BaseAlgo):
                 'status': (
                     'hard_stopped'
                     if self._hard_stop_reason is not None
-                    else 'completed' if self._env_steps >= total_steps else 'interrupted'
+                    else 'completed'
+                    if self._env_steps >= total_steps
+                    else 'interrupted'
                 ),
                 'environment': self._env_id,
                 'seed': self._seed,
@@ -3735,6 +4030,15 @@ class STAR(BaseAlgo):
                     self._safety_outward_rectification_enabled()
                 ),
                 'unified_cost_geometry_enabled': self._unified_cost_geometry_enabled(),
+                'cost_geometry_mode': (
+                    self._cost_geometry_contract()[0]
+                    if self._unified_cost_geometry_enabled()
+                    else 'disabled'
+                ),
+                'cost_geometry_normalization_scale': (
+                    self._cost_geometry_scale() if self._unified_cost_geometry_enabled() else None
+                ),
+                'formal_cost_budget': float(self._cfgs.lagrange_cfgs.cost_limit),
                 'directional_loss_enabled': self._directional_loss_enabled(),
                 'safety_aware_cost_geometry_enabled': (self._safety_aware_cost_geometry_enabled()),
                 'directional_loss_weight': float(
@@ -3794,6 +4098,7 @@ class STAR(BaseAlgo):
                 'completed_checkpoint_milestones': sorted(
                     self._completed_checkpoint_milestones,
                 ),
+                'best_safe_checkpoint_selection': self._best_safe_checkpoint_selection,
                 'last_update_order': list(self._last_update_order),
             }
             _atomic_json(self._artifact_dir / 'training_summary.json', summary)

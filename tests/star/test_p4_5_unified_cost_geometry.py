@@ -50,6 +50,7 @@ class BombProbabilityCritic(nn.Module):
 
 def _algorithm_shell() -> STAR:
     algorithm = object.__new__(STAR)
+    algorithm._env_id = 'SafetyPointGoal1-v0'  # pylint: disable=protected-access
     cost_critic = AnalyticCostCritic()
     algorithm._actor_critic = SimpleNamespace(  # pylint: disable=protected-access
         context_dim=3,
@@ -126,7 +127,7 @@ def test_q_cost_reference_has_known_normal_margin_weight_and_fixed_trace() -> No
         action,
         torch.full((4,), 0.5),
         anisotropy_enabled=True,
-        cost_limit=10.0,
+        cost_normalization_scale=10.0,
     )
     torch.testing.assert_close(reference.normal, torch.tensor([[1.0, 0.0]]).expand(4, -1))
     torch.testing.assert_close(reference.risk_ucb, torch.full((4,), 0.5))

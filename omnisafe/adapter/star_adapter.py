@@ -26,6 +26,7 @@ from omnisafe.utils.config import Config
 
 
 POINT_PREFIX = 'SafetyPoint'
+FAILURE_COST_ENVS = frozenset({'Ant-v4', 'Walker2d-v4'})
 
 
 @dataclass
