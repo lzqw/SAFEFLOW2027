@@ -388,8 +388,7 @@ def scientific_interpretation(
     )
     task_completion_observed = float(p47['success_rate']) > 0.0
     performance_nondecreasing = all(
-        comparison['delta_P47_minus_C0'] >= 0.0
-        for comparison in performance_comparison.values()
+        comparison['delta_P47_minus_C0'] >= 0.0 for comparison in performance_comparison.values()
     )
     if all_safety_indicators_improved and task_completion_observed:
         overall_label = (
@@ -633,20 +632,20 @@ def _render_report(result: dict[str, Any]) -> str:
             overall_text,
             '',
             (
-                f"- Evaluation mean-cost reduction: "
+                f'- Evaluation mean-cost reduction: '
                 f"{evaluation_cost['relative_reduction']:.1%} "
                 f"({evaluation_cost['C0_200k']:.3f} -> "
                 f"{evaluation_cost['P47_200k']:.3f})"
             ),
             (
-                f"- Evaluation CVaR-20 reduction: "
+                f'- Evaluation CVaR-20 reduction: '
                 f"{evaluation_cvar['relative_reduction']:.1%} "
                 f"({evaluation_cvar['C0_200k']:.3f} -> "
                 f"{evaluation_cvar['P47_200k']:.3f})"
             ),
             (
                 f"- Return delta: {return_result['delta_P47_minus_C0']:+.4f}; "
-                f"success-rate delta: "
+                f'success-rate delta: '
                 f"{100.0 * success_result['delta_P47_minus_C0']:+.1f} percentage points; "
                 f"task completion observed: {overall['task_completion_observed']}"
             ),
@@ -656,7 +655,7 @@ def _render_report(result: dict[str, Any]) -> str:
             f"**{training['label']}**",
             '',
             (
-                f"Mean cumulative training-cost reduction is "
+                f'Mean cumulative training-cost reduction is '
                 f"{training['relative_reduction']:.1%} "
                 f"({training['C0_200k']:.1f} -> {training['P47_200k']:.1f}); "
                 f"P47 is lower in {training['paired_seed_improvement_count']}/3 paired seeds."
@@ -674,7 +673,7 @@ def _render_report(result: dict[str, Any]) -> str:
                 f"(delta {variance_geometry['delta_P47_minus_C0']:+.4f})"
             ),
             (
-                f"- High-risk dangerous outward velocity: "
+                f'- High-risk dangerous outward velocity: '
                 f"{outward_geometry['C0_200k']:.4f} -> "
                 f"{outward_geometry['P47_200k']:.4f} "
                 f"(delta {outward_geometry['delta_P47_minus_C0']:+.4f})"

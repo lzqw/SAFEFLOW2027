@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import importlib
 import json
 import statistics
 from pathlib import Path
@@ -14,7 +15,7 @@ import matplotlib
 
 
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt  # pylint: disable=wrong-import-position
+plt = importlib.import_module('matplotlib.pyplot')
 
 
 ARMS = ('C0', 'C1', 'P47')
