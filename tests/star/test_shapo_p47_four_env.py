@@ -19,6 +19,7 @@ from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, m
 from scripts.star.validate_shapo_p47_run import (
     undefined,
     validate_checkpoint_artifact,
+    validate_high_risk_geometry,
     validate_trajectory_artifact,
 )
 from torch import nn
@@ -433,6 +434,21 @@ def test_finalizer_rejects_compact_artifact_identity_drift(tmp_path: Path) -> No
     path.write_text('{"status":"changed"}', encoding='utf-8')
     with pytest.raises(ValueError, match='unavailable or changed|identity mismatch'):
         verify_artifact_identity(identity, 'evaluation')
+
+
+def test_formal_validator_requires_exact_top_twenty_percent_geometry_contract() -> None:
+    payload = {
+        'fraction': 0.2,
+        'population_samples': 101,
+        'selected_samples': 21,
+        'ranking': 'descending_local_cost_margin_stable_ties',
+        'normal_to_tangent_variance_ratio': 0.8,
+        'dangerous_outward_velocity': 0.1,
+    }
+    assert validate_high_risk_geometry('evaluation', payload) == (0.8, 0.1)
+    payload['selected_samples'] = 20
+    with pytest.raises(ValueError, match='locked top 20 percent'):
+        validate_high_risk_geometry('evaluation', payload)
 
 
 def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(

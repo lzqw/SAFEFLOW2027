@@ -99,6 +99,29 @@ def artifact_identity(path: Path) -> dict[str, Any]:
     }
 
 
+def validate_high_risk_geometry(label: str, payload: Any) -> tuple[float, float]:
+    """Require the preregistered top-20% margin selection and its two diagnostics."""
+    if not isinstance(payload, dict):
+        raise ValueError(f'{label} high-risk geometry must be a mapping')
+    require_close(f'{label} high-risk fraction', payload.get('fraction'), 0.2)
+    population = int(payload.get('population_samples', 0))
+    selected = int(payload.get('selected_samples', 0))
+    if population <= 0 or selected != max(1, math.ceil(population * 0.2)):
+        raise ValueError(f'{label} high-risk sample count is not the locked top 20 percent')
+    if payload.get('ranking') != 'descending_local_cost_margin_stable_ties':
+        raise ValueError(f'{label} high-risk ranking rule changed')
+    return (
+        finite(
+            f'{label} high-risk V_N/V_T',
+            payload.get('normal_to_tangent_variance_ratio'),
+        ),
+        finite(
+            f'{label} high-risk outward velocity',
+            payload.get('dangerous_outward_velocity'),
+        ),
+    )
+
+
 def atomic_json(path: Path, payload: dict[str, Any]) -> None:
     """Atomically write the validated compact result."""
     temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
@@ -501,13 +524,9 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         elif not undefined(evaluation['cost_per_successful_episode']):
             raise ValueError(f'{path} must leave cost per success undefined without successes')
         high_risk = evaluation['direction_geometry_high_risk_top_20_percent']
-        finite(
-            f'{args.env_id}@{milestone} high-risk V_N/V_T',
-            high_risk['normal_to_tangent_variance_ratio'],
-        )
-        finite(
-            f'{args.env_id}@{milestone} high-risk outward velocity',
-            high_risk['dangerous_outward_velocity'],
+        high_risk_vn_vt, high_risk_outward_velocity = validate_high_risk_geometry(
+            f'{args.env_id}@{milestone}',
+            high_risk,
         )
         if geometry_mode == 'future_failure_probability':
             if any(cost not in {0.0, 1.0} for cost in costs):
@@ -581,8 +600,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 'mean_failure_torso_angle': evaluation['mean_failure_torso_angle'],
                 'time_limit_count': evaluation['time_limit_count'],
                 'time_limit_rate': evaluation['time_limit_rate'],
-                'high_risk_vn_vt': high_risk['normal_to_tangent_variance_ratio'],
-                'high_risk_dangerous_outward_velocity': high_risk['dangerous_outward_velocity'],
+                'high_risk_vn_vt': high_risk_vn_vt,
+                'high_risk_dangerous_outward_velocity': high_risk_outward_velocity,
             },
         )
         trajectory_path = newest(
