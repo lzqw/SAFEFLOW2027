@@ -11,10 +11,7 @@ from types import SimpleNamespace
 import pytest
 import torch
 import yaml
-from scripts.star.materialize_shapo_p47_config import (
-    canonical_method_sha256,
-    materialize,
-)
+from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
 from torch import nn
 
 from omnisafe.algorithms.off_policy.star import (

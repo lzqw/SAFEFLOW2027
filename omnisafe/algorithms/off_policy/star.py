@@ -2238,7 +2238,6 @@ class STAR(BaseAlgo):
         }
         if self._unified_cost_geometry_enabled():
             bandwidth = float(self._cfgs.algo_cfgs.cost_geometry_bandwidth)
-            cost_scale = self._cost_geometry_scale()
             metrics.update(
                 {
                     'Reference/SafetyBandSampleRatio': float(
@@ -2247,7 +2246,7 @@ class STAR(BaseAlgo):
                     'Reference/CostScore': float(reference.risk_ucb.mean().item()),
                     'Reference/CostMargin': float(reference.margins.mean().item()),
                     'Numerics/CostActionGradientNorm': float(
-                        (reference.gradient_norm * cost_scale).mean().item(),
+                        (reference.gradient_norm * self._cost_geometry_scale()).mean().item(),
                     ),
                 },
             )
@@ -2262,8 +2261,8 @@ class STAR(BaseAlgo):
                         flow.action,
                     ).mean(dim=0)
                     budget_ratio = self._cost_geometry_budget_ratio(augmented_obs)
-                    start_margin = start_cost / cost_scale - budget_ratio
-                    end_margin = end_cost / cost_scale - budget_ratio
+                    start_margin = start_cost / self._cost_geometry_scale() - budget_ratio
+                    end_margin = end_cost / self._cost_geometry_scale() - budget_ratio
                 metrics['Reference/CrossingRate'] = float(
                     ((start_margin <= 0.0) & (end_margin > 0.0)).float().mean().item(),
                 )
@@ -3994,9 +3993,7 @@ class STAR(BaseAlgo):
                 'status': (
                     'hard_stopped'
                     if self._hard_stop_reason is not None
-                    else 'completed'
-                    if self._env_steps >= total_steps
-                    else 'interrupted'
+                    else 'completed' if self._env_steps >= total_steps else 'interrupted'
                 ),
                 'environment': self._env_id,
                 'seed': self._seed,
