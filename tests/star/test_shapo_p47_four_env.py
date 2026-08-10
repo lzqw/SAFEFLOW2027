@@ -3,14 +3,17 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 import torch
 import yaml
+from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
 from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
 from torch import nn
 
@@ -247,3 +250,84 @@ def test_launchers_enforce_clean_source_smoke_gate_and_no_scientific_early_stop(
     assert '--batch-size 256' in formal
     assert 'scientific_early_stop=false' in formal
     assert 'for seed in 2027 2028 2029 2030 2031' in formal
+
+
+def test_finalizer_aggregates_twenty_runs_by_training_seed(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
+    run_root = tmp_path / 'formal'
+    output = tmp_path / 'summary'
+    run_root.mkdir()
+    (run_root / 'formal_matrix_complete').touch()
+    slugs = {
+        'SafetyPointGoal1-v0': 'point-goal',
+        'SafetyPointButton1-v0': 'point-button',
+        'Ant-v4': 'ant',
+        'Walker2d-v4': 'walker2d',
+    }
+    for env_index, (env_id, environment) in enumerate(matrix['environments'].items()):
+        for seed_index, seed in enumerate(matrix['training_seeds']):
+            evaluations = []
+            for milestone in environment['milestones']:
+                value = float(env_index + seed_index + 1)
+                evaluations.append(
+                    {
+                        'milestone': milestone,
+                        'mean_return': value,
+                        'mean_cost': value / 10.0,
+                        'cost_cvar_20': value / 5.0,
+                        'training_cumulative_cost': value * 100.0,
+                        'success_rate': value / 10.0,
+                        'failure_count': value,
+                        'failure_rate': value / 100.0,
+                        'mean_failure_time': value,
+                        'mean_failure_step': value,
+                        'mean_failure_height': value,
+                        'mean_failure_torso_angle': value,
+                        'time_limit_count': 100.0 - value,
+                        'time_limit_rate': 1.0 - value / 100.0,
+                        'high_risk_vn_vt': 0.5,
+                        'high_risk_dangerous_outward_velocity': 0.1,
+                    },
+                )
+            container = run_root / 'runs' / f'{slugs[env_id]}-{seed}'
+            container.mkdir(parents=True)
+            (container / 'formal_validation.json').write_text(
+                json.dumps(
+                    {
+                        'status': 'passed',
+                        'source_commit': 'a' * 40,
+                        'environment': env_id,
+                        'training_seed': seed,
+                        'evaluation_rows': evaluations,
+                    },
+                ),
+                encoding='utf-8',
+            )
+    monkeypatch.setattr(
+        sys,
+        'argv',
+        [
+            'finalize_shapo_p47_formal.py',
+            '--run-root',
+            str(run_root),
+            '--matrix',
+            str(MATRIX),
+            '--output-dir',
+            str(output),
+        ],
+    )
+    finalize_formal()
+    with (output / 'shapo_p47_final_seed_metrics.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        rows = list(csv.DictReader(stream))
+    assert len(rows) == 20
+    summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
+    assert summary['statistical_unit'] == 'training_seed'
+    assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
+    report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
+    assert 'Episode-level observations are not treated as independent replicates' in report
