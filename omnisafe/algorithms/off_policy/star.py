@@ -71,6 +71,7 @@ from omnisafe.models.safety.distributional_backend import (
     compute_stochastic_reference,
     gaussian_directional_entropies,
     normalized_directional_loss,
+    safety_aware_directional_loss,
 )
 from omnisafe.utils.star_validation import spearman as tie_correct_spearman
 
@@ -356,6 +357,55 @@ def _tail_mean(values: list[float], fraction: float = 0.2) -> float:
     return sum(sorted(values, reverse=True)[:count]) / count
 
 
+def high_risk_geometry_summary(
+    margin: torch.Tensor,
+    metrics: dict[str, torch.Tensor],
+    fraction: float = 0.2,
+) -> dict[str, Any]:
+    """Average geometry on the highest-margin fraction with stable tie handling."""
+    if not 0.0 < fraction <= 1.0:
+        raise ValueError('high-risk geometry fraction must lie in (0, 1]')
+    flattened_margin = margin.detach().flatten().cpu()
+    flattened_metrics = {name: value.detach().flatten().cpu() for name, value in metrics.items()}
+    for name, value in flattened_metrics.items():
+        if value.numel() != flattened_margin.numel():
+            raise ValueError(f'high-risk geometry metric {name!r} has incompatible size')
+    finite_margin = torch.isfinite(flattened_margin)
+    population_indices = torch.nonzero(finite_margin, as_tuple=False).flatten()
+    if population_indices.numel() == 0:
+        return {
+            'fraction': fraction,
+            'population_samples': 0,
+            'selected_samples': 0,
+            'ranking': 'descending_local_cost_margin_stable_ties',
+            'minimum_selected_margin': float('nan'),
+            'mean_selected_margin': float('nan'),
+            'maximum_selected_margin': float('nan'),
+            **{name: float('nan') for name in sorted(flattened_metrics)},
+        }
+    population_margin = flattened_margin[population_indices]
+    count = max(1, math.ceil(int(population_indices.numel()) * fraction))
+    relative_order = torch.argsort(population_margin, descending=True, stable=True)
+    selected = population_indices[relative_order[:count]]
+    selected_margin = flattened_margin[selected]
+    result: dict[str, Any] = {
+        'fraction': fraction,
+        'population_samples': int(population_indices.numel()),
+        'selected_samples': int(selected.numel()),
+        'ranking': 'descending_local_cost_margin_stable_ties',
+        'minimum_selected_margin': float(selected_margin.min().item()),
+        'mean_selected_margin': float(selected_margin.mean().item()),
+        'maximum_selected_margin': float(selected_margin.max().item()),
+    }
+    for name, values in sorted(flattened_metrics.items()):
+        selected_values = values[selected]
+        selected_values = selected_values[torch.isfinite(selected_values)]
+        result[name] = (
+            float(selected_values.mean().item()) if selected_values.numel() else float('nan')
+        )
+    return result
+
+
 def equal_count_risk_bins(
     predicted: torch.Tensor,
     empirical: torch.Tensor,
@@ -610,7 +660,10 @@ class STAR(BaseAlgo):
         self._run_env_steps = 0
         total_steps = int(self._cfgs.train_cfgs.total_steps)
         configured_milestones = [int(step) for step in algo.eval_milestones]
-        self._milestones = sorted({0, total_steps, *configured_milestones})
+        required_milestones = {total_steps}
+        if bool(getattr(algo, 'evaluate_initial_policy', True)):
+            required_milestones.add(0)
+        self._milestones = sorted({*required_milestones, *configured_milestones})
         self._milestones = [step for step in self._milestones if 0 <= step <= total_steps]
         self._completed_milestones: set[int] = set()
         configured_checkpoints = [int(step) for step in getattr(algo, 'checkpoint_milestones', [])]
@@ -629,6 +682,20 @@ class STAR(BaseAlgo):
         self._next_log_step = int(algo.steps_per_epoch)
         self._last_log_step = 0
         self._last_log_time = time.monotonic()
+
+        eval_episodes_per_seed = int(getattr(algo, 'eval_episodes_per_seed', 1))
+        if eval_episodes_per_seed <= 0 or eval_episodes_per_seed != float(
+            getattr(algo, 'eval_episodes_per_seed', 1),
+        ):
+            raise ValueError('eval_episodes_per_seed must be a positive integer')
+        if eval_episodes_per_seed > 1:
+            configured_eval_seeds = [int(seed) for seed in algo.eval_seeds]
+            expected_eval_episodes = len(configured_eval_seeds) * eval_episodes_per_seed
+            if int(self._cfgs.train_cfgs.eval_episodes) != expected_eval_episodes:
+                raise ValueError(
+                    'multi-episode evaluation requires eval_episodes equal to '
+                    'len(eval_seeds) * eval_episodes_per_seed',
+                )
 
         actor_update_interval = int(algo.actor_update_interval)
         if actor_update_interval <= 0 or actor_update_interval != float(
@@ -722,6 +789,19 @@ class STAR(BaseAlgo):
             raise ValueError('direction loss weight must be positive when enabled')
         if float(algo.directional_loss_epsilon) <= 0.0:
             raise ValueError('direction loss epsilon must be positive')
+        if self._safety_aware_cost_geometry_enabled() and not (
+            self._unified_cost_geometry_enabled()
+            and self._directional_loss_enabled()
+            and self._safety_anisotropy_enabled()
+        ):
+            raise ValueError(
+                'safety-aware cost geometry requires unified anisotropy and direction loss',
+            )
+        if self._safety_aware_cost_geometry_enabled() and not math.isclose(
+            float(algo.directional_loss_weight),
+            1.0,
+        ):
+            raise ValueError('P4.7 safety-aware direction weight is fixed at 1.0')
         if self._unified_cost_geometry_enabled() and (
             float(algo.cost_geometry_bandwidth) <= 0.0
             or float(self._cfgs.lagrange_cfgs.cost_limit) <= 0.0
@@ -818,6 +898,14 @@ class STAR(BaseAlgo):
                 'update_order': list(UPDATE_ORDER),
                 'eval_milestones': self._milestones,
                 'checkpoint_milestones': self._checkpoint_milestones,
+                'evaluation_protocol': {
+                    'base_seeds': [int(seed) for seed in self._cfgs.algo_cfgs.eval_seeds],
+                    'episodes_per_base_seed': int(
+                        getattr(self._cfgs.algo_cfgs, 'eval_episodes_per_seed', 1),
+                    ),
+                    'seed_once_then_sequential_resets': True,
+                    'flow_seed_offset': 1_000_003,
+                },
                 'p4_2_backbone_ablation': {
                     'reward_flow_enabled': True,
                     'global_safety_constraint_enabled': self._global_safety_enabled(),
@@ -970,6 +1058,25 @@ class STAR(BaseAlgo):
                     ),
                     'cost_per_unit_path_length': 'sum_environment_cost/sum_xy_path_length',
                 },
+                'p4_7_safety_aware_geometry': {
+                    'protocol_version': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_version', ''),
+                    ),
+                    'protocol_sha256': str(
+                        getattr(self._cfgs.algo_cfgs, 'safety_protocol_sha256', ''),
+                    ),
+                    'enabled': self._safety_aware_cost_geometry_enabled(),
+                    'one_sided_safety_weight': 'sigmoid(cost_margin/cost_geometry_bandwidth)',
+                    'directional_loss_numerator': (
+                        'mean(reliability*positive_part(normal^T*raw_velocity)^2)'
+                    ),
+                    'directional_loss_denominator': (
+                        'stop_gradient(mean(squared_raw_velocity_norm))'
+                    ),
+                    'shared_direction_and_diffusion_reliability': True,
+                    'high_risk_geometry_fraction': 0.2,
+                    'high_risk_geometry_selection_gate': False,
+                },
                 'p4_1_correctness': {
                     'context': (
                         '[observation, remaining_budget_ratio, remaining_horizon_ratio, '
@@ -1083,6 +1190,12 @@ class STAR(BaseAlgo):
         """Return whether the normalized Q-cost outward-direction loss affects the actor."""
         return bool(getattr(self._cfgs.algo_cfgs, 'directional_loss_enabled', False))
 
+    def _safety_aware_cost_geometry_enabled(self) -> bool:
+        """Return whether one-sided reliability and stop-gradient normalization are active."""
+        return bool(
+            getattr(self._cfgs.algo_cfgs, 'safety_aware_cost_geometry_enabled', False),
+        )
+
     def _complete_heldout_evidence_enabled(self) -> bool:
         """Return whether balanced complete held-out evidence is mandatory for geometry."""
         return bool(getattr(self._cfgs.algo_cfgs, 'complete_heldout_evidence', False))
@@ -1142,6 +1255,7 @@ class STAR(BaseAlgo):
                     action,
                     budget_ratio,
                     anisotropy_enabled=anisotropy,
+                    safety_aware_geometry=self._safety_aware_cost_geometry_enabled(),
                     cost_limit=float(self._cfgs.lagrange_cfgs.cost_limit),
                     boundary_bandwidth=float(algo.cost_geometry_bandwidth),
                     reference_variance=float(algo.flow_reference_variance),
@@ -2078,11 +2192,12 @@ class STAR(BaseAlgo):
         if self._unified_cost_geometry_enabled():
             if flow.reference is None:
                 raise RuntimeError('unified Q-cost geometry requires a retained reference trace')
-            (
-                direction_loss,
-                direction_numerator,
-                direction_denominator,
-            ) = normalized_directional_loss(
+            directional_loss_function = (
+                safety_aware_directional_loss
+                if self._safety_aware_cost_geometry_enabled()
+                else normalized_directional_loss
+            )
+            direction_loss, direction_numerator, direction_denominator = directional_loss_function(
                 flow.raw_velocities,
                 flow.reference.normals,
                 flow.reference.reliability,
@@ -2609,12 +2724,23 @@ class STAR(BaseAlgo):
     ) -> dict[str, Any]:
         """Evaluate fixed seeds and fixed stochastic flow bases without touching training state."""
         requested = int(self._cfgs.train_cfgs.eval_episodes)
-        seeds = [int(seed) for seed in self._cfgs.algo_cfgs.eval_seeds][:requested]
-        if not seeds:
+        configured_seeds = [int(seed) for seed in self._cfgs.algo_cfgs.eval_seeds]
+        episodes_per_seed = int(
+            getattr(self._cfgs.algo_cfgs, 'eval_episodes_per_seed', 1),
+        )
+        base_seeds = configured_seeds[:requested] if episodes_per_seed == 1 else configured_seeds
+        evaluation_schedule = [
+            (base_seed, episode_index)
+            for base_seed in base_seeds
+            for episode_index in range(episodes_per_seed)
+        ]
+        if not evaluation_schedule:
             return {
                 'milestone': milestone,
                 'probability_split': 'external_isolated_environment',
                 'episodes': 0,
+                'base_seeds': [],
+                'episodes_per_base_seed': episodes_per_seed,
                 'mean_return': 0.0,
                 'mean_cost': 0.0,
                 'cost_cvar_20': 0.0,
@@ -2640,6 +2766,7 @@ class STAR(BaseAlgo):
                 'cost_to_go_mae': float('nan'),
                 'cost_risk_bins': [],
                 'direction_geometry': {},
+                'direction_geometry_high_risk_top_20_percent': {},
                 'trajectory': [],
             }
         evaluation_env = self._env.evaluation_env
@@ -2664,6 +2791,14 @@ class STAR(BaseAlgo):
         }
         geometry_sums: dict[str, float] = {}
         geometry_counts: dict[str, int] = {}
+        high_risk_margin_chunks: list[torch.Tensor] = []
+        high_risk_metric_chunks: dict[str, list[torch.Tensor]] = {
+            'dangerous_outward_velocity': [],
+            'normal_to_tangent_variance_ratio': [],
+            'outward_velocity_ratio': [],
+            'reliability': [],
+            'safety_weight': [],
+        }
 
         def accumulate_geometry(name: str, values: torch.Tensor) -> None:
             finite = values.detach().flatten()
@@ -2679,8 +2814,17 @@ class STAR(BaseAlgo):
         actor_was_training = self._actor_critic.training
         self._actor_critic.eval()
         try:
-            for seed in seeds:
-                obs, _ = evaluation_env.reset(seed=seed)
+            flow_generators: dict[int, torch.Generator] = {}
+            stream_observations: dict[int, torch.Tensor] = {}
+            for seed, episode_index in evaluation_schedule:
+                if episode_index == 0:
+                    obs, _ = evaluation_env.reset(seed=seed)
+                    generator = torch.Generator(device='cpu')
+                    generator.manual_seed(1_000_003 + seed)
+                    flow_generators[seed] = generator
+                else:
+                    obs = stream_observations[seed]
+                    generator = flow_generators[seed]
                 context_state = STARContext(
                     self._env_id,
                     1,
@@ -2704,8 +2848,6 @@ class STAR(BaseAlgo):
                 measured_movements = 0
                 stalled_movements = 0
                 path_length = 0.0
-                generator = torch.Generator(device='cpu')
-                generator.manual_seed(1_000_003 + seed)
                 for step in range(int(self._cfgs.algo_cfgs.max_episode_steps)):
                     position = self._env.evaluation_position()
                     position_source = 'simulator_xy'
@@ -2786,6 +2928,25 @@ class STAR(BaseAlgo):
                                 <= float(self._cfgs.algo_cfgs.cost_geometry_bandwidth)
                             ).float(),
                         )
+                        accumulate_geometry('safety_weight', reference.boundary_reliability)
+                        accumulate_geometry(
+                            'danger_side_sample_ratio',
+                            (reference.margins >= 0.0).float(),
+                        )
+                        high_risk_margin_chunks.append(reference.margins.detach().flatten().cpu())
+                        high_risk_values = {
+                            'dangerous_outward_velocity': raw_normal_velocity.clamp_min(0.0),
+                            'normal_to_tangent_variance_ratio': (
+                                reference.normal_variance / reference.tangent_variance
+                            ),
+                            'outward_velocity_ratio': (raw_normal_velocity > 0.0).float(),
+                            'reliability': reference.reliability,
+                            'safety_weight': reference.boundary_reliability,
+                        }
+                        for name, values in high_risk_values.items():
+                            high_risk_metric_chunks[name].append(
+                                values.detach().flatten().cpu(),
+                            )
                         accumulate_geometry(
                             'action_gradient_norm',
                             reference.gradient_norm * float(self._cfgs.lagrange_cfgs.cost_limit),
@@ -2830,7 +2991,7 @@ class STAR(BaseAlgo):
                     action_norms.append(action_norm)
                     all_action_norms.append(action_norm)
                     trajectory_row: dict[str, Any] | None = None
-                    if seed in trajectory_seeds:
+                    if seed in trajectory_seeds and episode_index == 0:
                         tangent_x = (
                             -float(trajectory_normal[1].item()) if self._act_dim >= 2 else 0.0
                         )
@@ -2840,6 +3001,8 @@ class STAR(BaseAlgo):
                         trajectory_row = {
                             'milestone': milestone,
                             'seed': seed,
+                            'base_seed': seed,
+                            'episode_index': episode_index,
                             'step': step,
                             'x': position[0],
                             'y': position[1],
@@ -2917,6 +3080,7 @@ class STAR(BaseAlgo):
                     obs = next_obs
                     if bool(terminated[0].item()) or bool(truncated[0].item()):
                         break
+                stream_observations[seed] = obs
                 future_cost = 0.0
                 episode_empirical = []
                 for value in reversed(step_costs):
@@ -2961,13 +3125,23 @@ class STAR(BaseAlgo):
             name: geometry_sums[name] / max(geometry_counts[name], 1)
             for name in sorted(geometry_sums)
         }
+        high_risk_geometry = {}
+        if high_risk_margin_chunks:
+            high_risk_geometry = high_risk_geometry_summary(
+                torch.cat(high_risk_margin_chunks),
+                {name: torch.cat(chunks) for name, chunks in high_risk_metric_chunks.items()},
+                fraction=0.2,
+            )
         successful_episodes = sum(count > 0 for count in goal_counts)
         total_path_length = sum(path_lengths)
         return {
             'milestone': milestone,
             'probability_split': 'external_isolated_environment',
             'episodes': len(returns),
-            'seeds': seeds,
+            'base_seeds': base_seeds,
+            'episodes_per_base_seed': episodes_per_seed,
+            'seeds': [seed for seed, _ in evaluation_schedule],
+            'episode_indices': [index for _, index in evaluation_schedule],
             'returns': returns,
             'costs': costs,
             'lengths': lengths,
@@ -3013,6 +3187,7 @@ class STAR(BaseAlgo):
             'training_cumulative_cost': self._cumulative_training_cost,
             'training_violation_ratio': self._violation_count / max(self._env_steps, 1),
             'direction_geometry': geometry,
+            'direction_geometry_high_risk_top_20_percent': high_risk_geometry,
             'flow_mode': (
                 'fixed-random-base-and-wiener-flow'
                 if self._stochastic_flow_enabled()
@@ -3561,8 +3736,12 @@ class STAR(BaseAlgo):
                 ),
                 'unified_cost_geometry_enabled': self._unified_cost_geometry_enabled(),
                 'directional_loss_enabled': self._directional_loss_enabled(),
+                'safety_aware_cost_geometry_enabled': (self._safety_aware_cost_geometry_enabled()),
                 'directional_loss_weight': float(
                     self._cfgs.algo_cfgs.directional_loss_weight,
+                ),
+                'directional_loss_denominator_stop_gradient': (
+                    self._safety_aware_cost_geometry_enabled()
                 ),
                 'complete_heldout_evidence': self._complete_heldout_evidence_enabled(),
                 'heldout_evidence_status': self._last_heldout_evidence_status,

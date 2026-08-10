@@ -73,6 +73,7 @@ defaults:
     safety_outward_rectification_enabled: False
     unified_cost_geometry_enabled: False
     directional_loss_enabled: False
+    safety_aware_cost_geometry_enabled: False
     directional_loss_weight: 1.0
     directional_loss_epsilon: 0.00000001
     cost_geometry_bandwidth: 0.10
@@ -119,6 +120,8 @@ defaults:
     replay_boundary_fraction: 0.40
     replay_importance_beta: 0.40
     eval_seeds: [12027, 12028, 12029, 12030, 12031]
+    eval_episodes_per_seed: 1
+    evaluate_initial_policy: True
     trajectory_eval_seeds: [12027, 12036, 12046]
     eval_milestones: [0, 50000, 100000, 200000, 300000]
     checkpoint_milestones: []

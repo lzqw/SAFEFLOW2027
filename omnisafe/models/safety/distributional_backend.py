@@ -66,6 +66,13 @@ def boundary_gate(risk: torch.Tensor, boundary: float, bandwidth: float) -> torc
     return torch.exp(-0.5 * ((risk - boundary) / bandwidth).square())
 
 
+def one_sided_safety_weight(margin: torch.Tensor, temperature: float) -> torch.Tensor:
+    """Return a continuous weight that rises from the safe side through danger."""
+    if temperature <= 0:
+        raise ValueError('one-sided safety temperature must be positive')
+    return torch.sigmoid(margin / temperature)
+
+
 def calibration_reliability(
     auroc: float | None,
     brier_score: float | None,
@@ -144,6 +151,25 @@ def normalized_directional_loss(
     return numerator / (denominator + epsilon), numerator, denominator
 
 
+def safety_aware_directional_loss(
+    velocity: torch.Tensor,
+    normal: torch.Tensor,
+    reliability: torch.Tensor,
+    epsilon: float = 1e-8,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Return the prevalence-aware outward loss with stop-gradient speed normalization."""
+    if velocity.shape != normal.shape or reliability.shape != velocity.shape[:-1]:
+        raise ValueError('safety-aware directional loss tensors have incompatible shapes')
+    if epsilon <= 0:
+        raise ValueError('safety-aware directional loss epsilon must be positive')
+    detached_normal = normal.detach()
+    detached_reliability = reliability.detach().clamp_min(0.0)
+    outward = (velocity * detached_normal).sum(dim=-1).clamp_min(0.0)
+    numerator = (detached_reliability * outward.square()).mean()
+    denominator = velocity.square().sum(dim=-1).mean().detach()
+    return numerator / (denominator + epsilon), numerator, denominator
+
+
 # pylint: disable-next=too-many-arguments,too-many-locals
 def compute_cost_stochastic_reference(
     critic: DistributionalCostCritic | None,
@@ -152,6 +178,7 @@ def compute_cost_stochastic_reference(
     remaining_budget_ratio: torch.Tensor,
     *,
     anisotropy_enabled: bool,
+    safety_aware_geometry: bool = False,
     cost_limit: float,
     boundary_bandwidth: float = 0.1,
     reference_variance: float = 0.04,
@@ -201,9 +228,12 @@ def compute_cost_stochastic_reference(
         gradient = gradient.detach()
         gradient_norm = gradient.norm(dim=-1)
         normal = gradient / gradient_norm.unsqueeze(-1).clamp_min(epsilon)
-        safety_band_weight = torch.exp(
-            -0.5 * (margin / boundary_bandwidth).square(),
-        )
+        if safety_aware_geometry:
+            safety_band_weight = one_sided_safety_weight(margin, boundary_bandwidth)
+        else:
+            safety_band_weight = torch.exp(
+                -0.5 * (margin / boundary_bandwidth).square(),
+            )
         gradient_reliability = gradient_norm / (gradient_norm + gradient_scale)
         normalized_disagreement = head_cost.std(dim=0, unbiased=False).detach() / cost_limit
         ensemble_reliability = torch.exp(-normalized_disagreement / ensemble_scale)

@@ -1,0 +1,6 @@
+protocol_version=p4.7-safety-aware-geometry-v1
+protocol_sha256=3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed
+source_commit=8130e49ea3e23e7ee5511f04197193a2f525a2e4
+source_dir=/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.7-0f3f8a2
+schedule=dynamic-4x1:P47-2027,P47-2028,P47-2029,C0-2027,C0-2028,C0-2029
+scientific_early_stop=false

@@ -26,3 +26,6 @@ reports/star/p4_6_direction_weight_pareto_artifacts/final/**/*.csv binary -eol
 
 # Preserve sealed STAR P4.6 runtime logs verbatim; generated logs may contain trailing spaces.
 reports/star/p4_6_direction_weight_pareto_artifacts/final/**/*.log binary -eol
+
+# Archive sealed STAR P4.7 CSVs byte-for-byte without line-ending conversion.
+reports/star/p4_7_safety_aware_geometry_artifacts/final/**/*.csv binary -eol
