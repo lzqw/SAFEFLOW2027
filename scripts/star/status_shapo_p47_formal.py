@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import time
 from pathlib import Path
 from typing import Any
 
@@ -20,10 +21,12 @@ SLUGS = {
 }
 
 
-def latest_progress(container: Path) -> dict[str, float]:
+def latest_progress(container: Path) -> dict[str, Any]:
     """Return the greatest total-step row across all recovery segments."""
-    best: dict[str, float] = {}
+    best: dict[str, Any] = {}
+    best_identity = (-1.0, -1.0)
     for path in container.glob('training/**/progress.csv'):
+        modified = path.stat().st_mtime
         with path.open(encoding='utf-8', newline='') as stream:
             rows = list(csv.DictReader(stream))
         for row in rows[-1:]:
@@ -31,29 +34,73 @@ def latest_progress(container: Path) -> dict[str, float]:
                 steps = float(row['TotalEnvSteps'])
             except (KeyError, TypeError, ValueError):
                 continue
-            if steps > best.get('env_steps', -1.0):
+            identity = (steps, modified)
+            if identity > best_identity:
+                best_identity = identity
                 best = {
                     'env_steps': steps,
                     'updates': float(row.get('TotalUpdates', 0.0)),
                     'fps': float(row.get('Time/FPS', 0.0)),
                     'cumulative_cost': float(row.get('Train/CumulativeCost', 0.0)),
                     'wall_seconds': float(row.get('Time/Total', 0.0)),
+                    'progress_mtime_unix': modified,
+                    'progress_path': str(path),
                 }
     return best
 
 
-def run_state(container: Path, total_steps: int) -> dict[str, Any]:
+def newest_full_checkpoint(container: Path) -> dict[str, Any]:
+    """Return lightweight identity fields for the newest resumable full checkpoint."""
+    matches = list(container.glob('training/**/checkpoints/latest_full.pt'))
+    if not matches:
+        return {'has_full_checkpoint': False}
+    path = max(matches, key=lambda candidate: candidate.stat().st_mtime_ns)
+    stat = path.stat()
+    return {
+        'has_full_checkpoint': True,
+        'latest_full_checkpoint': str(path),
+        'latest_full_checkpoint_bytes': stat.st_size,
+        'latest_full_checkpoint_mtime_unix': stat.st_mtime,
+    }
+
+
+def run_state(
+    container: Path,
+    total_steps: int,
+    *,
+    now: float | None = None,
+    stale_after_seconds: float = 1800.0,
+) -> dict[str, Any]:
     """Classify one seed run from its immutable receipts and append-only segments."""
+    snapshot_time = time.time() if now is None else now
+    checkpoint = newest_full_checkpoint(container)
     validation = container / 'formal_validation.json'
     if validation.is_file():
         payload = json.loads(validation.read_text(encoding='utf-8'))
         if payload.get('status') == 'passed':
-            return {'state': 'completed', 'env_steps': total_steps, 'fraction': 1.0}
+            return {
+                'state': 'completed',
+                'env_steps': total_steps,
+                'fraction': 1.0,
+                **checkpoint,
+            }
     progress = latest_progress(container)
     exit_path = container / 'exit_code.txt'
+    configs = list(container.glob('training/**/config.json'))
     state = 'pending'
-    if progress or any(container.glob('training/**/config.json')):
+    activity_mtimes = [float(progress['progress_mtime_unix'])] if progress else []
+    activity_mtimes.extend(path.stat().st_mtime for path in configs)
+    activity_age = None
+    if activity_mtimes:
+        activity_age = max(0.0, snapshot_time - max(activity_mtimes))
+    if progress or configs:
         state = 'running_or_recoverable'
+        if (
+            stale_after_seconds > 0.0
+            and activity_age is not None
+            and activity_age > stale_after_seconds
+        ):
+            state = 'stale_recoverable'
     if exit_path.is_file():
         exit_code = int(exit_path.read_text(encoding='utf-8').strip())
         state = 'completed_unvalidated' if exit_code == 0 else 'engineering_failure'
@@ -62,6 +109,8 @@ def run_state(container: Path, total_steps: int) -> dict[str, Any]:
         'state': state,
         'env_steps': steps,
         'fraction': steps / total_steps,
+        'activity_age_seconds': activity_age,
+        **checkpoint,
         **{key: value for key, value in progress.items() if key != 'env_steps'},
     }
 
@@ -71,6 +120,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-root', type=Path, required=True)
     parser.add_argument('--matrix', type=Path, required=True)
+    parser.add_argument(
+        '--stale-after-seconds',
+        type=float,
+        default=1800.0,
+        help='mark active-looking runs stale after this inactivity window; <=0 disables',
+    )
     parser.add_argument('--json-only', action='store_true')
     args = parser.parse_args()
     matrix = yaml.safe_load(args.matrix.read_text(encoding='utf-8'))
@@ -84,13 +139,19 @@ def main() -> None:
                     'environment': env_id,
                     'training_seed': int(seed),
                     'total_steps': total_steps,
-                    **run_state(container, total_steps),
+                    **run_state(
+                        container,
+                        total_steps,
+                        stale_after_seconds=args.stale_after_seconds,
+                    ),
                 },
             )
     payload = {
         'formal_matrix_complete': (args.run_root / 'formal_matrix_complete').is_file(),
         'completed_runs': sum(row['state'] == 'completed' for row in rows),
         'failed_runs': sum(row['state'] == 'engineering_failure' for row in rows),
+        'stale_runs': sum(row['state'] == 'stale_recoverable' for row in rows),
+        'full_checkpoint_runs': sum(bool(row['has_full_checkpoint']) for row in rows),
         'total_runs': len(rows),
         'completed_environment_steps': sum(int(row['env_steps']) for row in rows),
         'planned_environment_steps': sum(int(row['total_steps']) for row in rows),
