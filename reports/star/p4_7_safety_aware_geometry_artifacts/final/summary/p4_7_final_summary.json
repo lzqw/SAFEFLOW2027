@@ -1,0 +1,207 @@
+{
+  "decision": {
+    "all_gates_pass": true,
+    "gates": {
+      "performance_retention_vs_C1_100k": true,
+      "safety_efficacy_vs_C0_200k": true,
+      "safety_retention_vs_C1_100k": true,
+      "training_safety_vs_C0_200k": true
+    },
+    "geometry_used_as_gate": false,
+    "label": "freeze_P47",
+    "paired_safety_improvement_counts_vs_C0": {
+      "cost_cvar_20": 3,
+      "mean_cost": 3
+    },
+    "paired_training_cost_improvement_count_vs_C0": 3,
+    "pointgoal_search_closed": true,
+    "selected_arm": "P47"
+  },
+  "formal_evaluation": {
+    "base_seeds": [
+      22027,
+      22028,
+      22029,
+      22030,
+      22031
+    ],
+    "episodes_per_base_seed": 20,
+    "episodes_per_training_seed": 100,
+    "flow_seed_offset": 1000003,
+    "pooled_episodes_per_arm": 300
+  },
+  "geometry_role": "diagnostic_only_highest_margin_20_percent",
+  "machine_audit": {
+    "all_gates_pass": true,
+    "gates": {
+      "performance_retention_vs_C1_100k": true,
+      "safety_efficacy_vs_C0_200k": true,
+      "safety_retention_vs_C1_100k": true,
+      "training_safety_vs_C0_200k": true
+    },
+    "geometry_used_as_gate": false,
+    "label": "freeze_P47",
+    "paired_safety_improvement_counts_vs_C0": {
+      "cost_cvar_20": 3,
+      "mean_cost": 3
+    },
+    "paired_training_cost_improvement_count_vs_C0": 3,
+    "pointgoal_search_closed": true,
+    "selected_arm": "P47"
+  },
+  "next_stage": "SHAPO_four_environments_x_five_training_seeds",
+  "pooled_formal": {
+    "C0": {
+      "cost_cvar_20": 67.75,
+      "episodes": 300,
+      "high_risk_dangerous_outward_velocity": 0.22085284690062204,
+      "high_risk_normal_to_tangent_variance_ratio": 0.9981648524602255,
+      "high_risk_outward_velocity_ratio": 0.4322499930858612,
+      "high_risk_reliability": 0.0011898997472599149,
+      "high_risk_safety_weight": 0.011491495495041212,
+      "mean_cost": 13.566666666666666,
+      "mean_return": 0.462061892988033,
+      "success_rate": 0.22666666666666666,
+      "training_cumulative_cost_mean": 7305.333333333333,
+      "training_cumulative_cost_sum": 21916.0
+    },
+    "C1": {
+      "cost_cvar_20": 75.75,
+      "episodes": 300,
+      "high_risk_dangerous_outward_velocity": 0.2143444319566091,
+      "high_risk_normal_to_tangent_variance_ratio": 0.9971619447072347,
+      "high_risk_outward_velocity_ratio": 0.43092916409174603,
+      "high_risk_reliability": 0.002013042846144527,
+      "high_risk_safety_weight": 0.012120788753575992,
+      "mean_cost": 15.55,
+      "mean_return": -0.07771761721958141,
+      "success_rate": 0.21,
+      "training_cumulative_cost_mean": 3324.0,
+      "training_cumulative_cost_sum": 9972.0
+    },
+    "P47": {
+      "cost_cvar_20": 46.8,
+      "episodes": 300,
+      "high_risk_dangerous_outward_velocity": 0.18344075977802277,
+      "high_risk_normal_to_tangent_variance_ratio": 0.8744491140047709,
+      "high_risk_outward_velocity_ratio": 0.4202333390712738,
+      "high_risk_reliability": 0.09547576308250427,
+      "high_risk_safety_weight": 0.6388458708922068,
+      "mean_cost": 9.433333333333334,
+      "mean_return": 0.6544966828142326,
+      "success_rate": 0.25333333333333335,
+      "training_cumulative_cost_mean": 5582.333333333333,
+      "training_cumulative_cost_sum": 16747.0
+    }
+  },
+  "primary_scientific_comparison": "P47@200k_vs_C0@200k_equal_training_budget",
+  "protocol_sha256": "3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed",
+  "protocol_version": "p4.7-safety-aware-geometry-v1",
+  "scientific_interpretation": {
+    "C1_reference": {
+      "metrics": {
+        "cost_cvar_20": {
+          "C1_100k": 75.75,
+          "P47_200k": 46.8,
+          "delta_P47_minus_C1": -28.950000000000003
+        },
+        "mean_cost": {
+          "C1_100k": 15.55,
+          "P47_200k": 9.433333333333334,
+          "delta_P47_minus_C1": -6.116666666666667
+        },
+        "mean_return": {
+          "C1_100k": -0.07771761721958141,
+          "P47_200k": 0.6544966828142326,
+          "delta_P47_minus_C1": 0.7322143000338139
+        },
+        "success_rate": {
+          "C1_100k": 0.21,
+          "P47_200k": 0.25333333333333335,
+          "delta_P47_minus_C1": 0.04333333333333336
+        }
+      },
+      "retained_in_preregistered_machine_audit": true,
+      "role": "historical_reference_only",
+      "training_steps": 100000,
+      "used_in_primary_scientific_interpretation": false
+    },
+    "direction_geometry_mechanism": {
+      "diagnostic_only": true,
+      "label": "direction_mechanism_supported",
+      "metrics": {
+        "high_risk_dangerous_outward_velocity": {
+          "C0_200k": 0.22085284690062204,
+          "P47_200k": 0.18344075977802277,
+          "delta_P47_minus_C0": -0.037412087122599275,
+          "lower_in_P47": true
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "C0_200k": 0.9981648524602255,
+          "P47_200k": 0.8744491140047709,
+          "delta_P47_minus_C0": -0.12371573845545458,
+          "lower_in_P47": true
+        }
+      },
+      "population": "highest_safety_margin_20_percent",
+      "used_as_elimination_gate": false
+    },
+    "interpretation_is_not_a_freeze_gate": true,
+    "overall_safety_performance": {
+      "all_three_safety_indicators_improved": true,
+      "label": "equal_budget_pareto_improvement",
+      "performance": {
+        "mean_return": {
+          "C0_200k": 0.462061892988033,
+          "P47_200k": 0.6544966828142326,
+          "delta_P47_minus_C0": 0.19243478982619955
+        },
+        "success_rate": {
+          "C0_200k": 0.22666666666666666,
+          "P47_200k": 0.25333333333333335,
+          "delta_P47_minus_C0": 0.0266666666666667
+        }
+      },
+      "performance_nondecreasing": true,
+      "safety": {
+        "evaluation_cvar_20": {
+          "C0_200k": 67.75,
+          "P47_200k": 46.8,
+          "delta_P47_minus_C0": -20.950000000000003,
+          "improved": true,
+          "paired_seed_improvement_count": 3,
+          "relative_reduction": 0.30922509225092254
+        },
+        "evaluation_mean_cost": {
+          "C0_200k": 13.566666666666666,
+          "P47_200k": 9.433333333333334,
+          "delta_P47_minus_C0": -4.133333333333333,
+          "improved": true,
+          "paired_seed_improvement_count": 3,
+          "relative_reduction": 0.30466830466830463
+        },
+        "training_cumulative_cost": {
+          "C0_200k": 7305.333333333333,
+          "P47_200k": 5582.333333333333,
+          "delta_P47_minus_C0": -1723.0,
+          "improved": true,
+          "paired_seed_improvement_count": 3,
+          "relative_reduction": 0.23585508304435118
+        }
+      },
+      "task_completion_observed": true
+    },
+    "primary_comparison": "P47@200000_vs_C0@200000_equal_training_budget",
+    "training_period_safety_exploration": {
+      "C0_200k": 7305.333333333333,
+      "P47_200k": 5582.333333333333,
+      "delta_P47_minus_C0": -1723.0,
+      "improved": true,
+      "label": "safer_training_period_exploration",
+      "paired_seed_improvement_count": 3,
+      "relative_reduction": 0.23585508304435118
+    }
+  },
+  "stage": "P4.7-final-safety-aware-geometry-summary",
+  "training_source_commit": "8130e49ea3e23e7ee5511f04197193a2f525a2e4"
+}

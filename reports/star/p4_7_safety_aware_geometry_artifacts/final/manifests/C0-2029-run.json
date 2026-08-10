@@ -1,0 +1,161 @@
+{
+  "algorithm": "STAR",
+  "amp": false,
+  "checkpoint_milestones": [
+    0,
+    50000,
+    100000,
+    150000,
+    200000
+  ],
+  "environment": "SafetyPointGoal1-v0",
+  "eval_milestones": [
+    50000,
+    100000,
+    150000,
+    200000
+  ],
+  "evaluation_protocol": {
+    "base_seeds": [
+      22027,
+      22028,
+      22029,
+      22030,
+      22031
+    ],
+    "episodes_per_base_seed": 4,
+    "flow_seed_offset": 1000003,
+    "seed_once_then_sequential_resets": true
+  },
+  "latent_flow": false,
+  "p4_1_correctness": {
+    "actor_objective": "(alpha_E*E-Q_R+lambda*Q_C)/(1+lambda)",
+    "boundary_score": "gaussian_centered_at_probability_0.5",
+    "context": "[observation, remaining_budget_ratio, remaining_horizon_ratio, violation_so_far]",
+    "cost_done": "terminated_or_truncated",
+    "geometry_risk_source": "independent_violation_probability_ensemble",
+    "reward_done": "terminated"
+  },
+  "p4_2_backbone_ablation": {
+    "global_safety_constraint_enabled": true,
+    "local_safety_geometry_enabled": false,
+    "reward_flow_enabled": true
+  },
+  "p4_2_candidate_probing": {
+    "candidate_count": 16,
+    "enabled": false,
+    "risk_selection": "closest_trusted_safe_boundary_then_reward_q",
+    "tangent_requires_geometry_enabled": true
+  },
+  "p4_2_dynamic_geometry": {
+    "disable_after_consecutive_failures": 2,
+    "enable_after_consecutive_passes": 3,
+    "enabled": false,
+    "gate_evidence_split": "heldout_episode"
+  },
+  "p4_2_probability_critic": {
+    "bellman_probability_enabled": true,
+    "episode_split": {
+      "complete_episode_reader": true,
+      "global_dual_access_to_heldout": false,
+      "heldout_period": 5,
+      "observation_normalizer_access_to_heldout": false,
+      "optimizer_access_to_heldout": false,
+      "recent_complete_episodes": 20,
+      "transition_limit": 20000
+    },
+    "mc_auxiliary_weight": 0.1,
+    "probability_target_polyak": 0.005,
+    "remaining_budget_clipped": false,
+    "target_actor": true,
+    "target_probability_critic": true,
+    "violation_so_far_context": true
+  },
+  "p4_2_reward_backbone_repair": {
+    "actor_update_interval": 2,
+    "reward_critic_updates_per_update": 2,
+    "reward_replay_recent_fraction": 0.5,
+    "reward_replay_recent_window": 10000,
+    "reward_target_samples": 4,
+    "separate_reward_replay": true,
+    "target_flow_actor_for_reward_backup": true
+  },
+  "p4_2_reward_target_timescale": {
+    "actor_target_polyak": 0.005,
+    "cost_target_polyak": 0.005,
+    "reward_target_polyak": 0.001
+  },
+  "p4_3_stochastic_safety_reference": {
+    "actor_energy": "0.5*integral(u_theta^T*D_C^-1*u_theta)",
+    "candidate_probing_enabled": false,
+    "fixed_trace_budget": 0.08,
+    "inward_drift_excluded_from_actor_energy": true,
+    "normal_variance_ratio": 0.1,
+    "protocol_sha256": "3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed",
+    "protocol_version": "p4.7-safety-aware-geometry-v1",
+    "reference_variance": 0.04,
+    "reliability": "g_B*r_grad*r_ens*r_cal_continuous",
+    "risk_tolerance_delta_c": 0.2,
+    "safety_anisotropy_enabled": true,
+    "safety_inward_drift_enabled": false,
+    "stochastic_flow_enabled": true
+  },
+  "p4_4_outward_rectification": {
+    "actor_energy": "executed_u_rect",
+    "complete_heldout_evidence": true,
+    "minimum_negative_labels": 256,
+    "minimum_positive_labels": 256,
+    "numerical_hard_stops_enabled": false,
+    "outward_rectification_enabled": false,
+    "protocol_sha256": "3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed",
+    "protocol_version": "p4.7-safety-aware-geometry-v1",
+    "rectification": "u_theta-q_C*max(0,n^T*u_theta)*n",
+    "reward_q_absolute_hard_stop": 10.0,
+    "reward_td_absolute_hard_stop": 0.02
+  },
+  "p4_5_unified_cost_geometry": {
+    "cost_geometry_bandwidth": 0.1,
+    "cost_per_successful_episode": "sum_environment_cost/divide_by_goal_met_episode_count; undefined_if_zero",
+    "cost_per_unit_path_length": "sum_environment_cost/sum_xy_path_length",
+    "cost_score": "mean_heads(mean_quantiles(Q_C))/cost_limit",
+    "directional_loss_enabled": false,
+    "directional_loss_velocity": "raw_learned_midpoint_velocity",
+    "directional_loss_weight": 1.0,
+    "enabled": true,
+    "engineering_hard_stops_enabled": true,
+    "inward_drift_enabled": false,
+    "local_margin": "cost_score-remaining_budget_ratio",
+    "outward_rectification_enabled": false,
+    "probability_critic_policy_access": false,
+    "protocol_sha256": "3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed",
+    "protocol_version": "p4.7-safety-aware-geometry-v1",
+    "q_absolute_overflow_threshold": 1000000.0
+  },
+  "p4_7_safety_aware_geometry": {
+    "directional_loss_denominator": "stop_gradient(mean(squared_raw_velocity_norm))",
+    "directional_loss_numerator": "mean(reliability*positive_part(normal^T*raw_velocity)^2)",
+    "enabled": false,
+    "high_risk_geometry_fraction": 0.2,
+    "high_risk_geometry_selection_gate": false,
+    "one_sided_safety_weight": "sigmoid(cost_margin/cost_geometry_bandwidth)",
+    "protocol_sha256": "3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed",
+    "protocol_version": "p4.7-safety-aware-geometry-v1",
+    "shared_direction_and_diffusion_reliability": true
+  },
+  "route": "A",
+  "second_order": false,
+  "seed": 2029,
+  "torch_compile": false,
+  "update_order": [
+    "distributional_cost_critic",
+    "violation_probability_ensemble",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ]
+}

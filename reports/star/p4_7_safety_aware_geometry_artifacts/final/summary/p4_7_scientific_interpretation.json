@@ -1,0 +1,105 @@
+{
+  "C1_reference": {
+    "metrics": {
+      "cost_cvar_20": {
+        "C1_100k": 75.75,
+        "P47_200k": 46.8,
+        "delta_P47_minus_C1": -28.950000000000003
+      },
+      "mean_cost": {
+        "C1_100k": 15.55,
+        "P47_200k": 9.433333333333334,
+        "delta_P47_minus_C1": -6.116666666666667
+      },
+      "mean_return": {
+        "C1_100k": -0.07771761721958141,
+        "P47_200k": 0.6544966828142326,
+        "delta_P47_minus_C1": 0.7322143000338139
+      },
+      "success_rate": {
+        "C1_100k": 0.21,
+        "P47_200k": 0.25333333333333335,
+        "delta_P47_minus_C1": 0.04333333333333336
+      }
+    },
+    "retained_in_preregistered_machine_audit": true,
+    "role": "historical_reference_only",
+    "training_steps": 100000,
+    "used_in_primary_scientific_interpretation": false
+  },
+  "direction_geometry_mechanism": {
+    "diagnostic_only": true,
+    "label": "direction_mechanism_supported",
+    "metrics": {
+      "high_risk_dangerous_outward_velocity": {
+        "C0_200k": 0.22085284690062204,
+        "P47_200k": 0.18344075977802277,
+        "delta_P47_minus_C0": -0.037412087122599275,
+        "lower_in_P47": true
+      },
+      "high_risk_normal_to_tangent_variance_ratio": {
+        "C0_200k": 0.9981648524602255,
+        "P47_200k": 0.8744491140047709,
+        "delta_P47_minus_C0": -0.12371573845545458,
+        "lower_in_P47": true
+      }
+    },
+    "population": "highest_safety_margin_20_percent",
+    "used_as_elimination_gate": false
+  },
+  "interpretation_is_not_a_freeze_gate": true,
+  "overall_safety_performance": {
+    "all_three_safety_indicators_improved": true,
+    "label": "equal_budget_pareto_improvement",
+    "performance": {
+      "mean_return": {
+        "C0_200k": 0.462061892988033,
+        "P47_200k": 0.6544966828142326,
+        "delta_P47_minus_C0": 0.19243478982619955
+      },
+      "success_rate": {
+        "C0_200k": 0.22666666666666666,
+        "P47_200k": 0.25333333333333335,
+        "delta_P47_minus_C0": 0.0266666666666667
+      }
+    },
+    "performance_nondecreasing": true,
+    "safety": {
+      "evaluation_cvar_20": {
+        "C0_200k": 67.75,
+        "P47_200k": 46.8,
+        "delta_P47_minus_C0": -20.950000000000003,
+        "improved": true,
+        "paired_seed_improvement_count": 3,
+        "relative_reduction": 0.30922509225092254
+      },
+      "evaluation_mean_cost": {
+        "C0_200k": 13.566666666666666,
+        "P47_200k": 9.433333333333334,
+        "delta_P47_minus_C0": -4.133333333333333,
+        "improved": true,
+        "paired_seed_improvement_count": 3,
+        "relative_reduction": 0.30466830466830463
+      },
+      "training_cumulative_cost": {
+        "C0_200k": 7305.333333333333,
+        "P47_200k": 5582.333333333333,
+        "delta_P47_minus_C0": -1723.0,
+        "improved": true,
+        "paired_seed_improvement_count": 3,
+        "relative_reduction": 0.23585508304435118
+      }
+    },
+    "task_completion_observed": true
+  },
+  "primary_comparison": "P47@200000_vs_C0@200000_equal_training_budget",
+  "training_period_safety_exploration": {
+    "C0_200k": 7305.333333333333,
+    "P47_200k": 5582.333333333333,
+    "delta_P47_minus_C0": -1723.0,
+    "improved": true,
+    "label": "safer_training_period_exploration",
+    "paired_seed_improvement_count": 3,
+    "relative_reduction": 0.23585508304435118
+  }
+}
