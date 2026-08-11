@@ -91,6 +91,7 @@ def _write_checkpoint(
     step: int = 6,
     capacity: int = 8,
     include_replay: bool = True,
+    resume_from: str | None = None,
 ) -> None:
     """Write a tiny structurally complete STAR checkpoint fixture."""
     replay = None
@@ -130,7 +131,10 @@ def _write_checkpoint(
             'resolved_config': {
                 'env_id': environment,
                 'seed': seed,
-                'algo_cfgs': {'directional_loss_weight': 1.0},
+                'algo_cfgs': {
+                    'directional_loss_weight': 1.0,
+                    **({'resume_from': resume_from} if resume_from is not None else {}),
+                },
             },
         },
     }
@@ -405,7 +409,7 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
     assert light_result['replay_included'] is False
     assert light_result['replay_size'] == 0
 
-    with pytest.raises(ValueError, match='directional_loss_weight.*mismatch'):
+    with pytest.raises(ValueError, match=r'directional_loss_weight.*mismatch'):
         validate_checkpoint_artifact(
             full,
             label='latest_full',
@@ -415,6 +419,45 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
             replay_required=True,
             replay_capacity=8,
             expected_custom_config={'algo_cfgs': {'directional_loss_weight': 0.5}},
+        )
+
+
+def test_checkpoint_validator_allows_only_audited_same_run_resume_path(
+    tmp_path: Path,
+) -> None:
+    resume = tmp_path / 'training' / 'old-segment' / 'checkpoints' / 'latest_full.pt'
+    recovered = tmp_path / 'training' / 'new-segment' / 'checkpoints' / 'final_full.pt'
+    _write_checkpoint(resume)
+    _write_checkpoint(recovered, resume_from=str(resume))
+    expected = {
+        'algo_cfgs': {
+            'directional_loss_weight': 1.0,
+            'resume_from': '',
+        },
+    }
+    result = validate_checkpoint_artifact(
+        recovered,
+        label='final_full',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={6},
+        replay_required=True,
+        replay_capacity=8,
+        expected_custom_config=expected,
+        allowed_resume_checkpoints={resume},
+    )
+    assert result['resume_from'] == str(resume)
+
+    with pytest.raises(ValueError, match='not an approved same-run'):
+        validate_checkpoint_artifact(
+            recovered,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+            expected_custom_config=expected,
         )
 
 
@@ -432,7 +475,7 @@ def test_finalizer_rejects_compact_artifact_identity_drift(tmp_path: Path) -> No
     identity = _artifact_identity(path)
     assert verify_artifact_identity(identity, 'evaluation') == path
     path.write_text('{"status":"changed"}', encoding='utf-8')
-    with pytest.raises(ValueError, match='unavailable or changed|identity mismatch'):
+    with pytest.raises(ValueError, match=r'unavailable or changed|identity mismatch'):
         verify_artifact_identity(identity, 'evaluation')
 
 

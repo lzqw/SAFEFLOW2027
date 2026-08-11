@@ -73,6 +73,54 @@ def require_nested_subset(label: str, observed: Any, expected: Any) -> None:
         raise ValueError(f'{label} mismatch: expected {expected!r}, got {observed!r}')
 
 
+def validate_checkpoint_resolved_config(
+    label: str,
+    observed: Any,
+    expected: dict[str, Any],
+    allowed_resume_checkpoints: set[Path] | None,
+) -> str | None:
+    """Validate a checkpoint config while admitting one audited recovery-path override."""
+    if not isinstance(observed, dict):
+        raise ValueError(f'{label} must be a mapping')
+    expected_algo = expected.get('algo_cfgs')
+    observed_algo = observed.get('algo_cfgs')
+    if not isinstance(expected_algo, dict) or 'resume_from' not in expected_algo:
+        require_nested_subset(label, observed, expected)
+        return None
+    if not isinstance(observed_algo, dict) or 'resume_from' not in observed_algo:
+        raise ValueError(f"{label}.algo_cfgs is missing key 'resume_from'")
+
+    expected_resume = expected_algo['resume_from']
+    observed_resume = observed_algo['resume_from']
+    adjusted_expected = expected
+    if observed_resume != expected_resume:
+        if expected_resume != '' or not isinstance(observed_resume, str) or not observed_resume:
+            raise ValueError(
+                f'{label}.algo_cfgs.resume_from mismatch: expected {expected_resume!r}, '
+                f'got {observed_resume!r}',
+            )
+        allowed = {
+            path.resolve()
+            for path in (allowed_resume_checkpoints or set())
+            if path.is_file() and path.name == 'latest_full.pt'
+        }
+        runtime_resume = Path(observed_resume)
+        if not runtime_resume.is_file() or runtime_resume.resolve() not in allowed:
+            raise ValueError(
+                f'{label}.algo_cfgs.resume_from is not an approved same-run '
+                f'latest_full.pt checkpoint: {observed_resume!r}',
+            )
+        adjusted_expected = {
+            **expected,
+            'algo_cfgs': {
+                **expected_algo,
+                'resume_from': observed_resume,
+            },
+        }
+    require_nested_subset(label, observed, adjusted_expected)
+    return str(observed_resume) or None
+
+
 def newest(container: Path, pattern: str) -> Path:
     """Return the newest matching segment artifact."""
     matches = list(container.glob(pattern))
@@ -231,6 +279,7 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     replay_required: bool,
     replay_capacity: int,
     expected_custom_config: dict[str, Any] | None = None,
+    allowed_resume_checkpoints: set[Path] | None = None,
 ) -> dict[str, Any]:
     """Deeply validate one STAR checkpoint and return its immutable compact identity."""
     if path.stat().st_size <= 0:
@@ -268,11 +317,13 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     resolved = extra.get('resolved_config', {})
     if resolved.get('env_id') != environment or int(resolved.get('seed', -1)) != seed:
         raise ValueError(f'{path} embedded resolved config has the wrong identity')
+    resume_from = None
     if expected_custom_config is not None:
-        require_nested_subset(
+        resume_from = validate_checkpoint_resolved_config(
             f'{path} embedded resolved config',
             resolved,
             expected_custom_config,
+            allowed_resume_checkpoints,
         )
 
     replay = payload['replay']
@@ -326,6 +377,7 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
         'sha256': sha256_file(path),
         'bytes': path.stat().st_size,
         'env_steps': step,
+        'resume_from': resume_from,
         **replay_metadata,
     }
 
@@ -656,6 +708,9 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     ]
     checkpoint_paths = []
     checkpoint_artifacts = []
+    allowed_resume_checkpoints = set(
+        args.container.glob('training/**/checkpoints/latest_full.pt'),
+    )
     for label, pattern, expected_steps, replay_required in required_checkpoint_specs:
         path = newest(args.container, pattern)
         checkpoint_paths.append(str(path))
@@ -669,6 +724,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 replay_required=replay_required,
                 replay_capacity=replay_capacity,
                 expected_custom_config=config['custom_cfgs'],
+                allowed_resume_checkpoints=allowed_resume_checkpoints,
             ),
         )
 
