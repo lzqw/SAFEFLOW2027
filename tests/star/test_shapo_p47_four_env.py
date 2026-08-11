@@ -633,6 +633,11 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                         'replay_included': replay_included,
                         'replay_size': 400_000 if replay_included else 0,
                         'replay_capacity': 400_000,
+                        'resume_from': (
+                            f'/server/{env_id}/{seed}/checkpoints/latest_full.pt'
+                            if seed == matrix['training_seeds'][0]
+                            else None
+                        ),
                     },
                 )
             provenance = {}
@@ -703,6 +708,8 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     assert summary['provenance_artifact_count'] == 80
     assert summary['trajectory_artifact_count'] == 60
     assert summary['checkpoint_artifact_count'] == 120
+    assert summary['checkpoint_recovery']['recovered_training_run_count'] == 4
+    assert len(summary['checkpoint_recovery']['recovered_training_runs']) == 4
     assert len(summary['figures']) == 6
     assert all((output / path).is_file() for path in summary['figures'])
     with (output / 'shapo_p47_evaluation_manifest.csv').open(
@@ -730,10 +737,12 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
         checkpoint_rows = list(csv.DictReader(stream))
     assert len(checkpoint_rows) == 120
     assert {row['server_only'] for row in checkpoint_rows} == {'True'}
+    assert sum(bool(row['resume_from']) for row in checkpoint_rows) == 24
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
     assert 'Locomotion failure diagnostics' in report
     assert 'Failure-reason rates' in report
     assert 'High-risk direction diagnostics' in report
+    assert 'Audited recovered training runs: `4/20`' in report
     assert 'shapo_p47_ant_trajectory_risk.png' in report
     assert 'large replay-bearing checkpoint payloads remain server-only' in report

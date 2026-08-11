@@ -147,6 +147,31 @@ def seed_summary(values: list[float]) -> dict[str, float | int]:
     }
 
 
+def summarize_checkpoint_recovery(
+    checkpoint_rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Summarize audited resume sources by independent environment/seed run."""
+    sources: dict[tuple[str, int], set[str]] = {}
+    for row in checkpoint_rows:
+        resume_from = str(row.get('resume_from') or '')
+        if not resume_from:
+            continue
+        identity = (str(row['environment']), int(row['training_seed']))
+        sources.setdefault(identity, set()).add(resume_from)
+    recovered_runs = [
+        {
+            'environment': environment,
+            'training_seed': seed,
+            'resume_checkpoints': sorted(paths),
+        }
+        for (environment, seed), paths in sorted(sources.items())
+    ]
+    return {
+        'recovered_training_run_count': len(recovered_runs),
+        'recovered_training_runs': recovered_runs,
+    }
+
+
 def _formatted(aggregate: dict[str, Any], env_id: str, metric: str) -> str:
     """Format one training-seed summary or an explicit undefined marker."""
     summary = aggregate[env_id].get(metric)
@@ -158,6 +183,7 @@ def _formatted(aggregate: dict[str, Any], env_id: str, metric: str) -> str:
 def render_report(
     aggregate: dict[str, Any],
     failure_reason_aggregate: dict[str, dict[str, Any]],
+    recovery: dict[str, Any],
     source_commit: str,
     figures: list[Path],
 ) -> str:
@@ -271,6 +297,11 @@ def render_report(
             *[f'- [`{path.name}`](figures/{path.name})' for path in figures],
             '',
             '## Recovery evidence',
+            '',
+            (
+                'Audited recovered training runs: '
+                f'`{recovery["recovered_training_run_count"]}/20`.'
+            ),
             '',
             (
                 '`shapo_p47_evaluation_manifest.csv`, `shapo_p47_provenance_manifest.csv`, and '
@@ -452,6 +483,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
         or len(provenance_sources) != 80
     ):
         raise ValueError('formal matrix has incomplete evaluation or recovery evidence')
+    recovery = summarize_checkpoint_recovery(checkpoint_rows)
 
     aggregate: dict[str, dict[str, Any]] = {}
     aggregate_rows = []
@@ -594,12 +626,13 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'provenance_artifact_count': len(provenance_manifest_rows),
             'trajectory_artifact_count': len(trajectory_rows),
             'checkpoint_artifact_count': len(checkpoint_rows),
+            'checkpoint_recovery': recovery,
             'figures': [path.relative_to(output).as_posix() for path in figures],
         },
     )
     atomic_text(
         output / 'SHAPO_P47_FOUR_ENV_REPORT.md',
-        render_report(aggregate, failure_reason_aggregate, source_commit, figures),
+        render_report(aggregate, failure_reason_aggregate, recovery, source_commit, figures),
     )
     print(
         json.dumps(
