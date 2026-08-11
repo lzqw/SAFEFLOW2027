@@ -310,7 +310,10 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     step = int(counters['env_steps'])
     if step not in expected_steps:
         raise ValueError(f'{path} has unexpected checkpoint step {step}')
-    finite(f'{path} cumulative training cost', counters['cumulative_training_cost'])
+    cumulative_training_cost = finite(
+        f'{path} cumulative training cost',
+        counters['cumulative_training_cost'],
+    )
     extra = payload['extra']
     if extra.get('environment') != environment or int(extra.get('seed', -1)) != seed:
         raise ValueError(f'{path} checkpoint identity does not match its matrix cell')
@@ -377,9 +380,38 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
         'sha256': sha256_file(path),
         'bytes': path.stat().st_size,
         'env_steps': step,
+        'cumulative_training_cost': cumulative_training_cost,
         'resume_from': resume_from,
         **replay_metadata,
     }
+
+
+def validate_checkpoint_training_costs(
+    evaluation_rows: list[dict[str, Any]],
+    checkpoint_artifacts: list[dict[str, Any]],
+) -> None:
+    """Bind every retained checkpoint counter to its same-step evaluation cost."""
+    evaluation_costs: dict[int, float] = {}
+    for row in evaluation_rows:
+        step = int(row['milestone'])
+        if step in evaluation_costs:
+            raise ValueError(f'duplicate evaluation milestone {step}')
+        evaluation_costs[step] = finite(
+            f'evaluation milestone {step} training cumulative cost',
+            row['training_cumulative_cost'],
+        )
+    for checkpoint in checkpoint_artifacts:
+        label = str(checkpoint['label'])
+        step = int(checkpoint['env_steps'])
+        if step not in evaluation_costs:
+            raise ValueError(
+                f'checkpoint {label!r} at step {step} has no matching evaluation milestone',
+            )
+        require_close(
+            f'checkpoint {label!r} cumulative training cost',
+            checkpoint['cumulative_training_cost'],
+            evaluation_costs[step],
+        )
 
 
 def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
@@ -466,6 +498,8 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             f'training/**/artifacts/evaluation_step_{milestone}.json',
         )
         evaluation = load_json(path)
+        if int(evaluation.get('milestone', -1)) != milestone:
+            raise ValueError(f'{path} has the wrong internal milestone identity')
         if int(evaluation['episodes']) != expected_episodes:
             raise ValueError(f'{path} has the wrong episode count')
         if evaluation['base_seeds'] != base_seeds:
@@ -727,6 +761,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 allowed_resume_checkpoints=allowed_resume_checkpoints,
             ),
         )
+    validate_checkpoint_training_costs(evaluation_rows, checkpoint_artifacts)
 
     payload = {
         'status': 'passed',

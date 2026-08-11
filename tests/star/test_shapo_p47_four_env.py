@@ -19,6 +19,7 @@ from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, m
 from scripts.star.validate_shapo_p47_run import (
     undefined,
     validate_checkpoint_artifact,
+    validate_checkpoint_training_costs,
     validate_high_risk_geometry,
     validate_trajectory_artifact,
 )
@@ -398,6 +399,7 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
     assert full_result['replay_included'] is True
     assert full_result['replay_size'] == 6
     assert full_result['observation_dimension'] == 3
+    assert full_result['cumulative_training_cost'] == 2.0
     light_result = validate_checkpoint_artifact(
         lightweight,
         label='milestone_4',
@@ -409,6 +411,7 @@ def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: 
     )
     assert light_result['replay_included'] is False
     assert light_result['replay_size'] == 0
+    assert light_result['cumulative_training_cost'] == 2.0
 
     with pytest.raises(ValueError, match=r'directional_loss_weight.*mismatch'):
         validate_checkpoint_artifact(
@@ -530,6 +533,40 @@ def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(
             replay_required=False,
             replay_capacity=8,
         )
+
+
+def test_checkpoint_training_costs_are_bound_to_same_step_evaluations() -> None:
+    evaluations = [
+        {'milestone': 4, 'training_cumulative_cost': 2.0},
+        {'milestone': 6, 'training_cumulative_cost': 3.0},
+    ]
+    checkpoints = [
+        {
+            'label': 'milestone_4',
+            'env_steps': 4,
+            'cumulative_training_cost': 2.0,
+        },
+        {
+            'label': 'best_safe_return',
+            'env_steps': 4,
+            'cumulative_training_cost': 2.0,
+        },
+        {
+            'label': 'latest_full',
+            'env_steps': 6,
+            'cumulative_training_cost': 3.0,
+        },
+    ]
+    validate_checkpoint_training_costs(evaluations, checkpoints)
+
+    checkpoints[-1]['cumulative_training_cost'] = 2.5
+    with pytest.raises(ValueError, match=r'latest_full.*cumulative training cost.*mismatch'):
+        validate_checkpoint_training_costs(evaluations, checkpoints)
+
+    checkpoints[-1]['cumulative_training_cost'] = 3.0
+    checkpoints[-1]['env_steps'] = 5
+    with pytest.raises(ValueError, match='no matching evaluation milestone'):
+        validate_checkpoint_training_costs(evaluations, checkpoints)
 
 
 def test_finalizer_aggregates_twenty_runs_by_training_seed(
