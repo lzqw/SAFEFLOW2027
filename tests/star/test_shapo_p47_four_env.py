@@ -20,6 +20,7 @@ from scripts.star.validate_shapo_p47_run import (
     undefined,
     validate_checkpoint_artifact,
     validate_checkpoint_training_costs,
+    validate_evaluation_artifact,
     validate_high_risk_geometry,
     validate_trajectory_artifact,
 )
@@ -83,6 +84,61 @@ def _write_trajectory(path: Path, milestone: int, seeds: list[int]) -> None:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _write_formal_evaluation(path: Path, milestone: int) -> dict[str, object]:
+    """Write a small binary-failure evaluation with independently checkable metrics."""
+    payload: dict[str, object] = {
+        'milestone': milestone,
+        'episodes': 4,
+        'base_seeds': [11, 12],
+        'episodes_per_base_seed': 2,
+        'seeds': [11, 11, 12, 12],
+        'episode_indices': [0, 1, 0, 1],
+        'trajectory_seeds': [101, 103, 105],
+        'returns': [1.0, 2.0, 3.0, 4.0],
+        'costs': [0.0, 1.0, 0.0, 1.0],
+        'lengths': [5, 5, 5, 5],
+        'mean_return': 2.5,
+        'mean_cost': 0.5,
+        'cost_cvar_20': 1.0,
+        'training_cumulative_cost': 7.0,
+        'episode_failure_flags': [0, 1, 0, 1],
+        'failure_count': 2,
+        'failure_rate': 0.5,
+        'episode_end_reasons': [
+            'time_limit',
+            'unhealthy_height',
+            'time_limit',
+            'unhealthy_height',
+        ],
+        'failure_reason_counts': {'time_limit': 2, 'unhealthy_height': 2},
+        'time_limit_count': 2,
+        'time_limit_rate': 0.5,
+        'goal_counts': [0, 1, 0, 1],
+        'success_rate': 0.5,
+        'path_lengths': [1.0, 2.0, 3.0, 4.0],
+        'mean_path_length': 2.5,
+        'cost_per_successful_episode': 1.0,
+        'direction_geometry_high_risk_top_20_percent': {
+            'fraction': 0.2,
+            'population_samples': 10,
+            'selected_samples': 2,
+            'ranking': 'descending_local_cost_margin_stable_ties',
+            'normal_to_tangent_variance_ratio': 0.75,
+            'dangerous_outward_velocity': 0.125,
+        },
+        'failure_times': [1.0, 3.0],
+        'failure_steps': [10.0, 30.0],
+        'failure_heights': [0.1, 0.3],
+        'failure_torso_angles': [-0.2, 0.2],
+        'mean_failure_time': 2.0,
+        'mean_failure_step': 20.0,
+        'mean_failure_height': 0.2,
+        'mean_failure_torso_angle': 0.0,
+    }
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    return payload
 
 
 def _write_checkpoint(
@@ -400,6 +456,25 @@ def test_host_sync_wrapper_is_capacity_gated_and_checksum_verified() -> None:
         assert fragment in script
 
 
+def test_milestone_auditor_reuses_strict_evaluation_and_keeps_checkpoints_server_only() -> None:
+    script = (ROOT / 'scripts/star/audit_shapo_p47_milestone.py').read_text(encoding='utf-8')
+    required_fragments = (
+        'validate_evaluation_artifact',
+        'validate_trajectory_artifact',
+        'validate_checkpoint_artifact',
+        'validate_checkpoint_training_costs',
+        "'training_seed_is_statistical_unit': True",
+        "'server_only': True",
+        "'diagnostic_only': True",
+        "'used_for_checkpoint_or_configuration_selection': False",
+        'checksums.sha256',
+        'milestone_audit_complete',
+        'refusing to overwrite milestone audit',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
 def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
     tmp_path: Path,
 ) -> None:
@@ -537,6 +612,52 @@ def test_formal_validator_requires_exact_top_twenty_percent_geometry_contract() 
     payload['selected_samples'] = 20
     with pytest.raises(ValueError, match='locked top 20 percent'):
         validate_high_risk_geometry('evaluation', payload)
+
+
+def test_formal_evaluation_validator_recomputes_fixed_schedule_metrics(tmp_path: Path) -> None:
+    path = tmp_path / 'evaluation_step_100.json'
+    payload = _write_formal_evaluation(path, 100)
+    result = validate_evaluation_artifact(
+        path,
+        environment='Ant-v4',
+        milestone=100,
+        base_seeds=[11, 12],
+        trajectory_seeds=[101, 103, 105],
+        episodes_per_seed=2,
+        geometry_mode='future_failure_probability',
+    )
+    assert result['episodes'] == 4
+    assert result['mean_return'] == 2.5
+    assert result['cost_cvar_20'] == 1.0
+    assert result['high_risk_vn_vt'] == 0.75
+    assert result['high_risk_dangerous_outward_velocity'] == 0.125
+
+    payload['mean_return'] = 9.0
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    with pytest.raises(ValueError, match='mean_return mismatch'):
+        validate_evaluation_artifact(
+            path,
+            environment='Ant-v4',
+            milestone=100,
+            base_seeds=[11, 12],
+            trajectory_seeds=[101, 103, 105],
+            episodes_per_seed=2,
+            geometry_mode='future_failure_probability',
+        )
+
+    payload['mean_return'] = 2.5
+    payload['milestone'] = 99
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    with pytest.raises(ValueError, match='wrong internal milestone identity'):
+        validate_evaluation_artifact(
+            path,
+            environment='Ant-v4',
+            milestone=100,
+            base_seeds=[11, 12],
+            trajectory_seeds=[101, 103, 105],
+            episodes_per_seed=2,
+            geometry_mode='future_failure_probability',
+        )
 
 
 def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(

@@ -170,6 +170,216 @@ def validate_high_risk_geometry(label: str, payload: Any) -> tuple[float, float]
     )
 
 
+def validate_evaluation_artifact(  # pylint: disable=too-many-locals,too-many-statements
+    path: Path,
+    *,
+    environment: str,
+    milestone: int,
+    base_seeds: list[int],
+    trajectory_seeds: list[int],
+    episodes_per_seed: int,
+    geometry_mode: str,
+) -> dict[str, Any]:
+    """Deeply validate one fixed-schedule milestone evaluation and recompute its metrics."""
+    expected_episodes = len(base_seeds) * episodes_per_seed
+    expected_schedule = [
+        (base_seed, episode_index)
+        for base_seed in base_seeds
+        for episode_index in range(episodes_per_seed)
+    ]
+    evaluation = load_json(path)
+    if int(evaluation.get('milestone', -1)) != milestone:
+        raise ValueError(f'{path} has the wrong internal milestone identity')
+    if int(evaluation['episodes']) != expected_episodes:
+        raise ValueError(f'{path} has the wrong episode count')
+    if evaluation['base_seeds'] != base_seeds:
+        raise ValueError(f'{path} has the wrong held-out base seeds')
+    if int(evaluation['episodes_per_base_seed']) != episodes_per_seed:
+        raise ValueError(f'{path} has the wrong episodes-per-seed count')
+    observed_schedule = list(
+        zip(
+            [int(seed) for seed in evaluation.get('seeds', [])],
+            [int(index) for index in evaluation.get('episode_indices', [])],
+        ),
+    )
+    if observed_schedule != expected_schedule:
+        raise ValueError(f'{path} has the wrong sequential fixed-seed schedule')
+    if [int(seed) for seed in evaluation['trajectory_seeds']] != trajectory_seeds:
+        raise ValueError(f'{path} has the wrong trajectory seed schedule')
+    returns = finite_sequence(f'{path} returns', evaluation.get('returns'), expected_episodes)
+    costs = finite_sequence(f'{path} costs', evaluation.get('costs'), expected_episodes)
+    lengths = finite_sequence(f'{path} lengths', evaluation.get('lengths'), expected_episodes)
+    if any(cost < 0.0 for cost in costs):
+        raise ValueError(f'{path} contains a negative episode cost')
+    if any(length <= 0.0 or not length.is_integer() for length in lengths):
+        raise ValueError(f'{path} contains an invalid episode length')
+    require_close(
+        f'{environment}@{milestone} mean_return',
+        evaluation['mean_return'],
+        math.fsum(returns) / expected_episodes,
+    )
+    require_close(
+        f'{environment}@{milestone} mean_cost',
+        evaluation['mean_cost'],
+        math.fsum(costs) / expected_episodes,
+    )
+    tail_count = max(1, math.ceil(expected_episodes * 0.2))
+    require_close(
+        f'{environment}@{milestone} cost_cvar_20',
+        evaluation['cost_cvar_20'],
+        math.fsum(sorted(costs, reverse=True)[:tail_count]) / tail_count,
+    )
+    finite(
+        f'{environment}@{milestone} training_cumulative_cost',
+        evaluation['training_cumulative_cost'],
+    )
+
+    failure_flags = finite_sequence(
+        f'{path} episode_failure_flags',
+        evaluation.get('episode_failure_flags'),
+        expected_episodes,
+    )
+    if any(flag not in {0.0, 1.0} for flag in failure_flags):
+        raise ValueError(f'{path} contains a non-binary episode failure flag')
+    failure_count = int(math.fsum(failure_flags))
+    if int(evaluation['failure_count']) != failure_count:
+        raise ValueError(f'{path} failure count disagrees with episode flags')
+    require_close(
+        f'{path} failure_rate',
+        evaluation['failure_rate'],
+        failure_count / expected_episodes,
+    )
+    end_reasons = evaluation.get('episode_end_reasons')
+    if not isinstance(end_reasons, list) or len(end_reasons) != expected_episodes:
+        raise ValueError(f'{path} has incomplete episode end reasons')
+    observed_reason_counts = evaluation.get('failure_reason_counts')
+    if not isinstance(observed_reason_counts, dict) or {
+        str(reason): int(count) for reason, count in observed_reason_counts.items()
+    } != dict(Counter(str(reason) for reason in end_reasons)):
+        raise ValueError(f'{path} failure reason counts disagree with episode reasons')
+    time_limit_count = sum(str(reason) == 'time_limit' for reason in end_reasons)
+    if int(evaluation['time_limit_count']) != time_limit_count:
+        raise ValueError(f'{path} time-limit count disagrees with episode reasons')
+    require_close(
+        f'{path} time_limit_rate',
+        evaluation['time_limit_rate'],
+        time_limit_count / expected_episodes,
+    )
+
+    goal_counts = finite_sequence(
+        f'{path} goal_counts',
+        evaluation.get('goal_counts'),
+        expected_episodes,
+    )
+    if any(goal < 0.0 or not goal.is_integer() for goal in goal_counts):
+        raise ValueError(f'{path} contains an invalid goal count')
+    successful_episodes = sum(goal > 0.0 for goal in goal_counts)
+    require_close(
+        f'{path} success_rate',
+        evaluation['success_rate'],
+        successful_episodes / expected_episodes,
+    )
+    path_lengths = finite_sequence(
+        f'{path} path_lengths',
+        evaluation.get('path_lengths'),
+        expected_episodes,
+    )
+    if any(value < 0.0 for value in path_lengths):
+        raise ValueError(f'{path} contains a negative path length')
+    require_close(
+        f'{path} mean_path_length',
+        evaluation['mean_path_length'],
+        math.fsum(path_lengths) / expected_episodes,
+    )
+    if successful_episodes:
+        require_close(
+            f'{path} cost_per_successful_episode',
+            evaluation['cost_per_successful_episode'],
+            math.fsum(costs) / successful_episodes,
+        )
+    elif not undefined(evaluation['cost_per_successful_episode']):
+        raise ValueError(f'{path} must leave cost per success undefined without successes')
+    high_risk = evaluation['direction_geometry_high_risk_top_20_percent']
+    high_risk_vn_vt, high_risk_outward_velocity = validate_high_risk_geometry(
+        f'{environment}@{milestone}',
+        high_risk,
+    )
+    if geometry_mode == 'future_failure_probability':
+        if any(cost not in {0.0, 1.0} for cost in costs):
+            raise ValueError(f'{path} locomotion costs are not binary terminal labels')
+        if any(cost != flag for cost, flag in zip(costs, failure_flags)):
+            raise ValueError(f'{path} locomotion costs disagree with failure flags')
+        failure_times = finite_sequence(
+            f'{path} failure_times',
+            evaluation.get('failure_times'),
+            failure_count,
+        )
+        failure_steps = finite_sequence(
+            f'{path} failure_steps',
+            evaluation.get('failure_steps'),
+            failure_count,
+        )
+        failure_heights = finite_sequence(
+            f'{path} failure_heights',
+            evaluation.get('failure_heights'),
+            failure_count,
+        )
+        failure_angles = finite_sequence(
+            f'{path} failure_torso_angles',
+            evaluation.get('failure_torso_angles'),
+            failure_count,
+        )
+        for label, values, mean_key in (
+            ('failure time', failure_times, 'mean_failure_time'),
+            ('failure step', failure_steps, 'mean_failure_step'),
+            ('failure height', failure_heights, 'mean_failure_height'),
+            ('failure torso angle', failure_angles, 'mean_failure_torso_angle'),
+        ):
+            if values:
+                require_close(
+                    f'{path} {label}',
+                    evaluation[mean_key],
+                    math.fsum(values) / len(values),
+                )
+            elif not undefined(evaluation[mean_key]):
+                raise ValueError(f'{path} must leave {label} undefined without failures')
+        if not math.isclose(
+            float(evaluation['mean_cost']),
+            float(evaluation['failure_rate']),
+            abs_tol=1e-12,
+        ):
+            raise ValueError(f'{path} violates binary-terminal-cost semantics')
+        if int(evaluation['failure_count']) != round(
+            float(evaluation['failure_rate']) * expected_episodes,
+        ):
+            raise ValueError(f'{path} failure count and rate disagree')
+    return {
+        'milestone': milestone,
+        'artifact': str(path),
+        'artifact_sha256': sha256_file(path),
+        'artifact_bytes': path.stat().st_size,
+        'episodes': expected_episodes,
+        'mean_return': evaluation['mean_return'],
+        'mean_cost': evaluation['mean_cost'],
+        'cost_cvar_20': evaluation['cost_cvar_20'],
+        'training_cumulative_cost': evaluation['training_cumulative_cost'],
+        'success_rate': evaluation['success_rate'],
+        'mean_path_length': evaluation['mean_path_length'],
+        'cost_per_successful_episode': evaluation['cost_per_successful_episode'],
+        'failure_count': evaluation['failure_count'],
+        'failure_rate': evaluation['failure_rate'],
+        'failure_reason_counts': evaluation['failure_reason_counts'],
+        'mean_failure_time': evaluation['mean_failure_time'],
+        'mean_failure_step': evaluation['mean_failure_step'],
+        'mean_failure_height': evaluation['mean_failure_height'],
+        'mean_failure_torso_angle': evaluation['mean_failure_torso_angle'],
+        'time_limit_count': evaluation['time_limit_count'],
+        'time_limit_rate': evaluation['time_limit_rate'],
+        'high_risk_vn_vt': high_risk_vn_vt,
+        'high_risk_dangerous_outward_velocity': high_risk_outward_velocity,
+    }
+
+
 def atomic_json(path: Path, payload: dict[str, Any]) -> None:
     """Atomically write the validated compact result."""
     temporary = path.with_name(f'.{path.name}.{os.getpid()}.tmp')
@@ -438,12 +648,6 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     base_seeds = [int(seed) for seed in matrix['evaluation']['base_seeds']]
     trajectory_seeds = [int(seed) for seed in matrix['evaluation']['trajectory_base_seeds']]
     episodes_per_seed = int(matrix['evaluation']['episodes_per_base_seed'])
-    expected_episodes = len(base_seeds) * episodes_per_seed
-    expected_schedule = [
-        (base_seed, episode_index)
-        for base_seed in base_seeds
-        for episode_index in range(episodes_per_seed)
-    ]
 
     config_path = args.container / 'resolved_formal_config.yaml'
     config = yaml.safe_load(config_path.read_text(encoding='utf-8'))
@@ -497,198 +701,16 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             args.container,
             f'training/**/artifacts/evaluation_step_{milestone}.json',
         )
-        evaluation = load_json(path)
-        if int(evaluation.get('milestone', -1)) != milestone:
-            raise ValueError(f'{path} has the wrong internal milestone identity')
-        if int(evaluation['episodes']) != expected_episodes:
-            raise ValueError(f'{path} has the wrong episode count')
-        if evaluation['base_seeds'] != base_seeds:
-            raise ValueError(f'{path} has the wrong held-out base seeds')
-        if int(evaluation['episodes_per_base_seed']) != episodes_per_seed:
-            raise ValueError(f'{path} has the wrong episodes-per-seed count')
-        observed_schedule = list(
-            zip(
-                [int(seed) for seed in evaluation.get('seeds', [])],
-                [int(index) for index in evaluation.get('episode_indices', [])],
-            ),
-        )
-        if observed_schedule != expected_schedule:
-            raise ValueError(f'{path} has the wrong sequential fixed-seed schedule')
-        if [int(seed) for seed in evaluation['trajectory_seeds']] != trajectory_seeds:
-            raise ValueError(f'{path} has the wrong trajectory seed schedule')
-        returns = finite_sequence(f'{path} returns', evaluation.get('returns'), expected_episodes)
-        costs = finite_sequence(f'{path} costs', evaluation.get('costs'), expected_episodes)
-        lengths = finite_sequence(f'{path} lengths', evaluation.get('lengths'), expected_episodes)
-        if any(cost < 0.0 for cost in costs):
-            raise ValueError(f'{path} contains a negative episode cost')
-        if any(length <= 0.0 or not length.is_integer() for length in lengths):
-            raise ValueError(f'{path} contains an invalid episode length')
-        require_close(
-            f'{args.env_id}@{milestone} mean_return',
-            evaluation['mean_return'],
-            math.fsum(returns) / expected_episodes,
-        )
-        require_close(
-            f'{args.env_id}@{milestone} mean_cost',
-            evaluation['mean_cost'],
-            math.fsum(costs) / expected_episodes,
-        )
-        tail_count = max(1, math.ceil(expected_episodes * 0.2))
-        require_close(
-            f'{args.env_id}@{milestone} cost_cvar_20',
-            evaluation['cost_cvar_20'],
-            math.fsum(sorted(costs, reverse=True)[:tail_count]) / tail_count,
-        )
-        finite(
-            f'{args.env_id}@{milestone} training_cumulative_cost',
-            evaluation['training_cumulative_cost'],
-        )
-
-        failure_flags = finite_sequence(
-            f'{path} episode_failure_flags',
-            evaluation.get('episode_failure_flags'),
-            expected_episodes,
-        )
-        if any(flag not in {0.0, 1.0} for flag in failure_flags):
-            raise ValueError(f'{path} contains a non-binary episode failure flag')
-        failure_count = int(math.fsum(failure_flags))
-        if int(evaluation['failure_count']) != failure_count:
-            raise ValueError(f'{path} failure count disagrees with episode flags')
-        require_close(
-            f'{path} failure_rate',
-            evaluation['failure_rate'],
-            failure_count / expected_episodes,
-        )
-        end_reasons = evaluation.get('episode_end_reasons')
-        if not isinstance(end_reasons, list) or len(end_reasons) != expected_episodes:
-            raise ValueError(f'{path} has incomplete episode end reasons')
-        observed_reason_counts = evaluation.get('failure_reason_counts')
-        if not isinstance(observed_reason_counts, dict) or {
-            str(reason): int(count) for reason, count in observed_reason_counts.items()
-        } != dict(Counter(str(reason) for reason in end_reasons)):
-            raise ValueError(f'{path} failure reason counts disagree with episode reasons')
-        time_limit_count = sum(str(reason) == 'time_limit' for reason in end_reasons)
-        if int(evaluation['time_limit_count']) != time_limit_count:
-            raise ValueError(f'{path} time-limit count disagrees with episode reasons')
-        require_close(
-            f'{path} time_limit_rate',
-            evaluation['time_limit_rate'],
-            time_limit_count / expected_episodes,
-        )
-
-        goal_counts = finite_sequence(
-            f'{path} goal_counts',
-            evaluation.get('goal_counts'),
-            expected_episodes,
-        )
-        if any(goal < 0.0 or not goal.is_integer() for goal in goal_counts):
-            raise ValueError(f'{path} contains an invalid goal count')
-        successful_episodes = sum(goal > 0.0 for goal in goal_counts)
-        require_close(
-            f'{path} success_rate',
-            evaluation['success_rate'],
-            successful_episodes / expected_episodes,
-        )
-        path_lengths = finite_sequence(
-            f'{path} path_lengths',
-            evaluation.get('path_lengths'),
-            expected_episodes,
-        )
-        if any(value < 0.0 for value in path_lengths):
-            raise ValueError(f'{path} contains a negative path length')
-        require_close(
-            f'{path} mean_path_length',
-            evaluation['mean_path_length'],
-            math.fsum(path_lengths) / expected_episodes,
-        )
-        if successful_episodes:
-            require_close(
-                f'{path} cost_per_successful_episode',
-                evaluation['cost_per_successful_episode'],
-                math.fsum(costs) / successful_episodes,
-            )
-        elif not undefined(evaluation['cost_per_successful_episode']):
-            raise ValueError(f'{path} must leave cost per success undefined without successes')
-        high_risk = evaluation['direction_geometry_high_risk_top_20_percent']
-        high_risk_vn_vt, high_risk_outward_velocity = validate_high_risk_geometry(
-            f'{args.env_id}@{milestone}',
-            high_risk,
-        )
-        if geometry_mode == 'future_failure_probability':
-            if any(cost not in {0.0, 1.0} for cost in costs):
-                raise ValueError(f'{path} locomotion costs are not binary terminal labels')
-            if any(cost != flag for cost, flag in zip(costs, failure_flags)):
-                raise ValueError(f'{path} locomotion costs disagree with failure flags')
-            failure_times = finite_sequence(
-                f'{path} failure_times',
-                evaluation.get('failure_times'),
-                failure_count,
-            )
-            failure_steps = finite_sequence(
-                f'{path} failure_steps',
-                evaluation.get('failure_steps'),
-                failure_count,
-            )
-            failure_heights = finite_sequence(
-                f'{path} failure_heights',
-                evaluation.get('failure_heights'),
-                failure_count,
-            )
-            failure_angles = finite_sequence(
-                f'{path} failure_torso_angles',
-                evaluation.get('failure_torso_angles'),
-                failure_count,
-            )
-            for label, values, mean_key in (
-                ('failure time', failure_times, 'mean_failure_time'),
-                ('failure step', failure_steps, 'mean_failure_step'),
-                ('failure height', failure_heights, 'mean_failure_height'),
-                ('failure torso angle', failure_angles, 'mean_failure_torso_angle'),
-            ):
-                if values:
-                    require_close(
-                        f'{path} {label}',
-                        evaluation[mean_key],
-                        math.fsum(values) / len(values),
-                    )
-                elif not undefined(evaluation[mean_key]):
-                    raise ValueError(f'{path} must leave {label} undefined without failures')
-            if not math.isclose(
-                float(evaluation['mean_cost']),
-                float(evaluation['failure_rate']),
-                abs_tol=1e-12,
-            ):
-                raise ValueError(f'{path} violates binary-terminal-cost semantics')
-            if int(evaluation['failure_count']) != round(
-                float(evaluation['failure_rate']) * expected_episodes,
-            ):
-                raise ValueError(f'{path} failure count and rate disagree')
         evaluation_rows.append(
-            {
-                'milestone': milestone,
-                'artifact': str(path),
-                'artifact_sha256': sha256_file(path),
-                'artifact_bytes': path.stat().st_size,
-                'episodes': expected_episodes,
-                'mean_return': evaluation['mean_return'],
-                'mean_cost': evaluation['mean_cost'],
-                'cost_cvar_20': evaluation['cost_cvar_20'],
-                'training_cumulative_cost': evaluation['training_cumulative_cost'],
-                'success_rate': evaluation['success_rate'],
-                'mean_path_length': evaluation['mean_path_length'],
-                'cost_per_successful_episode': evaluation['cost_per_successful_episode'],
-                'failure_count': evaluation['failure_count'],
-                'failure_rate': evaluation['failure_rate'],
-                'failure_reason_counts': evaluation['failure_reason_counts'],
-                'mean_failure_time': evaluation['mean_failure_time'],
-                'mean_failure_step': evaluation['mean_failure_step'],
-                'mean_failure_height': evaluation['mean_failure_height'],
-                'mean_failure_torso_angle': evaluation['mean_failure_torso_angle'],
-                'time_limit_count': evaluation['time_limit_count'],
-                'time_limit_rate': evaluation['time_limit_rate'],
-                'high_risk_vn_vt': high_risk_vn_vt,
-                'high_risk_dangerous_outward_velocity': high_risk_outward_velocity,
-            },
+            validate_evaluation_artifact(
+                path,
+                environment=args.env_id,
+                milestone=milestone,
+                base_seeds=base_seeds,
+                trajectory_seeds=trajectory_seeds,
+                episodes_per_seed=episodes_per_seed,
+                geometry_mode=geometry_mode,
+            ),
         )
         trajectory_path = newest(
             args.container,
