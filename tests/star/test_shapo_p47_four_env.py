@@ -359,6 +359,27 @@ def test_launchers_enforce_clean_source_smoke_gate_and_no_scientific_early_stop(
     assert 'for seed in 2027 2028 2029 2030 2031' in formal
 
 
+def test_formal_finalization_wrapper_revalidates_and_atomically_seals_output() -> None:
+    script = (ROOT / 'scripts/star/finalize_shapo_p47_formal.sh').read_text(encoding='utf-8')
+    required_fragments = (
+        'formal_matrix_complete',
+        'matrix_failure_count.txt',
+        'merge-base --is-ancestor',
+        'validate_shapo_p47_run.py',
+        'finalize_shapo_p47_formal.py',
+        'shapo_p47_strict_validation_manifest.csv',
+        'strict_validations/$slug-$seed.json',
+        'training_seed_is_statistical_unit',
+        'Refusing to overwrite final artifacts',
+        'mktemp -d',
+        'checksums.sha256',
+        'sha256sum -c',
+        'finalization_complete',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
 def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
     tmp_path: Path,
 ) -> None:
