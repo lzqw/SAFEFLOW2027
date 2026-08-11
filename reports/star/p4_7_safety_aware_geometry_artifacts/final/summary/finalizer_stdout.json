@@ -146,20 +146,28 @@
       "population": "highest_safety_margin_20_percent",
       "used_as_elimination_gate": false
     },
+    "episode_count_is_not_the_independent_sample_size": true,
     "interpretation_is_not_a_freeze_gate": true,
+    "n_training_seeds_per_arm": 3,
     "overall_safety_performance": {
+      "aggregate_claim_only": true,
+      "all_seed_pareto_claim": false,
       "all_three_safety_indicators_improved": true,
       "label": "equal_budget_pareto_improvement",
       "performance": {
         "mean_return": {
           "C0_200k": 0.462061892988033,
           "P47_200k": 0.6544966828142326,
-          "delta_P47_minus_C0": 0.19243478982619955
+          "delta_P47_minus_C0": 0.19243478982619955,
+          "paired_seed_improvement_count": 2,
+          "paired_seed_nondecrease_count": 2
         },
         "success_rate": {
           "C0_200k": 0.22666666666666666,
           "P47_200k": 0.25333333333333335,
-          "delta_P47_minus_C0": 0.0266666666666667
+          "delta_P47_minus_C0": 0.0266666666666667,
+          "paired_seed_improvement_count": 1,
+          "paired_seed_nondecrease_count": 1
         }
       },
       "performance_nondecreasing": true,
@@ -191,7 +199,9 @@
       },
       "task_completion_observed": true
     },
+    "pooled_evaluation_episodes_per_arm": 300,
     "primary_comparison": "P47@200000_vs_C0@200000_equal_training_budget",
+    "statistical_unit": "training_seed",
     "training_period_safety_exploration": {
       "C0_200k": 7305.333333333333,
       "P47_200k": 5582.333333333333,

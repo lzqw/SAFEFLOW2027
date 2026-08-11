@@ -413,6 +413,12 @@ def test_scientific_interpretation_is_equal_budget_and_separate_from_machine_aud
     assert overall['label'] == 'effective_safety_performance_tradeoff'
     assert overall['all_three_safety_indicators_improved'] is True
     assert overall['task_completion_observed'] is True
+    assert overall['aggregate_claim_only'] is True
+    assert overall['all_seed_pareto_claim'] is False
+    assert overall['performance']['mean_return']['paired_seed_improvement_count'] == 0
+    assert overall['performance']['success_rate']['paired_seed_improvement_count'] == 0
+    assert interpretation['statistical_unit'] == 'training_seed'
+    assert interpretation['episode_count_is_not_the_independent_sample_size'] is True
     assert interpretation['training_period_safety_exploration']['label'] == (
         'safer_training_period_exploration'
     )
@@ -433,6 +439,35 @@ def test_scientific_interpretation_is_equal_budget_and_separate_from_machine_aud
     )
     assert '**effective_safety_performance_tradeoff**' in report
     assert '**freeze_C1**' in report
+    assert 'The independent statistical unit is the training seed' in report
+    assert report.index('safety_efficacy_vs_C0_200k') < report.index(
+        'training_safety_vs_C0_200k',
+    )
+    assert report.index('training_safety_vs_C0_200k') < report.index(
+        'safety_retention_vs_C1_100k',
+    )
+    assert report.index('safety_retention_vs_C1_100k') < report.index(
+        'performance_retention_vs_C1_100k',
+    )
+
+
+def test_frozen_p47_report_qualifies_aggregate_claim_and_seed_heterogeneity() -> None:
+    summary = ROOT / 'reports/star/p4_7_safety_aware_geometry_artifacts/final/summary'
+    report = (summary / 'P4_7_SAFETY_AWARE_GEOMETRY_REPORT.md').read_text(encoding='utf-8')
+    interpretation = json.loads(
+        (summary / 'p4_7_scientific_interpretation.json').read_text(encoding='utf-8'),
+    )
+    assert (
+        'P47 achieves an aggregate Pareto improvement under an equal training budget on '
+        'SafetyPointGoal1-v0'
+    ) in report
+    assert 'The aggregate Pareto claim is not an all-seed Pareto claim.' in report
+    assert 'The independent statistical unit is the training seed (`n=3` per arm).' in report
+    overall = interpretation['overall_safety_performance']
+    assert overall['aggregate_claim_only'] is True
+    assert overall['all_seed_pareto_claim'] is False
+    assert overall['performance']['mean_return']['paired_seed_improvement_count'] == 2
+    assert overall['performance']['success_rate']['paired_seed_improvement_count'] == 1
     assert 'diagnostic; it is not an elimination or freeze gate' in report
 
 

@@ -375,14 +375,25 @@ def scientific_interpretation(
             ),
         }
 
-    performance_comparison = {
-        metric: {
-            'C0_200k': float(c0[metric]),
-            'P47_200k': float(p47[metric]),
-            'delta_P47_minus_C0': float(p47[metric]) - float(c0[metric]),
+    performance_comparison: dict[str, dict[str, Any]] = {}
+    for metric in ('mean_return', 'success_rate'):
+        candidate = float(p47[metric])
+        baseline = float(c0[metric])
+        performance_comparison[metric] = {
+            'C0_200k': baseline,
+            'P47_200k': candidate,
+            'delta_P47_minus_C0': candidate - baseline,
+            'paired_seed_improvement_count': sum(
+                float(seed_rows['P47'][seed][metric])
+                > float(seed_rows['C0'][seed][metric])
+                for seed in SEEDS
+            ),
+            'paired_seed_nondecrease_count': sum(
+                float(seed_rows['P47'][seed][metric])
+                >= float(seed_rows['C0'][seed][metric])
+                for seed in SEEDS
+            ),
         }
-        for metric in ('mean_return', 'success_rate')
-    }
     all_safety_indicators_improved = all(
         comparison['improved'] for comparison in safety_comparison.values()
     )
@@ -449,8 +460,14 @@ def scientific_interpretation(
     }
     return {
         'primary_comparison': 'P47@200000_vs_C0@200000_equal_training_budget',
+        'statistical_unit': 'training_seed',
+        'n_training_seeds_per_arm': len(SEEDS),
+        'pooled_evaluation_episodes_per_arm': 300,
+        'episode_count_is_not_the_independent_sample_size': True,
         'overall_safety_performance': {
             'label': overall_label,
+            'aggregate_claim_only': True,
+            'all_seed_pareto_claim': False,
             'all_three_safety_indicators_improved': all_safety_indicators_improved,
             'task_completion_observed': task_completion_observed,
             'performance_nondecreasing': performance_nondecreasing,
@@ -566,8 +583,9 @@ def _render_report(result: dict[str, Any]) -> str:
     outward_geometry = geometry['metrics']['high_risk_dangerous_outward_velocity']
     overall_text = {
         'equal_budget_pareto_improvement': (
-            'P47 is an equal-budget Pareto improvement: all three safety indicators improve '
-            'without a pooled return or success-rate decrease.'
+            'P47 achieves an aggregate Pareto improvement under an equal training budget on '
+            'SafetyPointGoal1-v0: all three aggregate safety indicators improve without an '
+            'aggregate return or success-rate decrease.'
         ),
         'effective_safety_performance_tradeoff': (
             'P47 demonstrates an effective safety-performance tradeoff: training cost, final '
@@ -606,7 +624,13 @@ def _render_report(result: dict[str, Any]) -> str:
             'preregistered machine audit.'
         ),
         '',
-        '## Pooled formal results (300 episodes per arm)',
+        '## Aggregate formal results (3 training seeds; 300 evaluation episodes per arm)',
+        '',
+        (
+            'The independent statistical unit is the training seed (`n=3` per arm). The 300 '
+            'evaluation episodes per arm are pooled observations and are not independent '
+            'training repetitions.'
+        ),
         '',
         '| Arm | Step | Return | Success | Cost | CVaR-20 | Train cost | High-risk V_N/V_T | High-risk outward |',
         '|---|---:|---:|---:|---:|---:|---:|---:|---:|',
@@ -648,6 +672,12 @@ def _render_report(result: dict[str, Any]) -> str:
                 f'success-rate delta: '
                 f"{100.0 * success_result['delta_P47_minus_C0']:+.1f} percentage points; "
                 f"task completion observed: {overall['task_completion_observed']}"
+            ),
+            (
+                f"- Paired training-seed improvements: return "
+                f"{return_result['paired_seed_improvement_count']}/3; success "
+                f"{success_result['paired_seed_improvement_count']}/3. The aggregate Pareto "
+                'claim is not an all-seed Pareto claim.'
             ),
             '',
             '### 2. Training-period safety exploration',
@@ -699,7 +729,14 @@ def _render_report(result: dict[str, Any]) -> str:
             '',
         ],
     )
-    for name, passed in decision['gates'].items():
+    locked_gate_order = (
+        'safety_efficacy_vs_C0_200k',
+        'training_safety_vs_C0_200k',
+        'safety_retention_vs_C1_100k',
+        'performance_retention_vs_C1_100k',
+    )
+    for name in locked_gate_order:
+        passed = decision['gates'][name]
         lines.append(f"- `{name}`: {'PASS' if passed else 'FAIL'}")
     lines.extend(
         [

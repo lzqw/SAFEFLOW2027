@@ -2,7 +2,9 @@
 
 P4.7 is the final PointGoal method modification. Scientific effectiveness is interpreted primarily from the equal-training-budget P47@200k versus C0@200k comparison. C1@100k remains a historical reference and part of the untouched preregistered machine audit.
 
-## Pooled formal results (300 episodes per arm)
+## Aggregate formal results (3 training seeds; 300 evaluation episodes per arm)
+
+The independent statistical unit is the training seed (`n=3` per arm). The 300 evaluation episodes per arm are pooled observations and are not independent training repetitions.
 
 | Arm | Step | Return | Success | Cost | CVaR-20 | Train cost | High-risk V_N/V_T | High-risk outward |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -16,11 +18,12 @@ P4.7 is the final PointGoal method modification. Scientific effectiveness is int
 
 ### 1. Overall safety-performance
 
-P47 is an equal-budget Pareto improvement: all three safety indicators improve without a pooled return or success-rate decrease.
+P47 achieves an aggregate Pareto improvement under an equal training budget on SafetyPointGoal1-v0: all three aggregate safety indicators improve without an aggregate return or success-rate decrease.
 
 - Evaluation mean-cost reduction: 30.5% (13.567 -> 9.433)
 - Evaluation CVaR-20 reduction: 30.9% (67.750 -> 46.800)
 - Return delta: +0.1924; success-rate delta: +2.7 percentage points; task completion observed: True
+- Paired training-seed improvements: return 2/3; success 1/3. The aggregate Pareto claim is not an all-seed Pareto claim.
 
 ### 2. Training-period safety exploration
 
