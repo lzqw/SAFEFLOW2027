@@ -730,6 +730,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
 
     payload = {
         'status': 'passed',
+        'validator_sha256': sha256_file(Path(__file__).resolve()),
         'protocol_version': matrix['protocol_version'],
         'protocol_sha256': matrix['protocol_sha256'],
         'matrix_sha256': sha256_file(args.matrix),

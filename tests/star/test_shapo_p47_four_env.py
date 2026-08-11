@@ -38,6 +38,7 @@ PROTOCOL_SHA256 = '007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa
 MATRIX = ROOT / 'configs/star/shapo_p47_four_env.yaml'
 MATRIX_SHA256 = 'f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f'
 METHOD_SHA256 = 'cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d'
+STRICT_VALIDATOR = ROOT / 'scripts/star/validate_shapo_p47_run.py'
 
 
 class AnalyticFailureCostCritic(nn.Module):
@@ -536,6 +537,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
+    validator_sha256 = hashlib.sha256(STRICT_VALIDATOR.read_bytes()).hexdigest()
     run_root = tmp_path / 'formal'
     output = tmp_path / 'summary'
     run_root.mkdir()
@@ -658,6 +660,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                 json.dumps(
                     {
                         'status': 'passed',
+                        'validator_sha256': validator_sha256,
                         'protocol_version': matrix['protocol_version'],
                         'protocol_sha256': matrix['protocol_sha256'],
                         'matrix_sha256': hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
@@ -678,6 +681,10 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                 ),
                 encoding='utf-8',
             )
+    first_validation = run_root / 'runs/point-goal-2027/formal_validation.json'
+    corrupted_validation = json.loads(first_validation.read_text(encoding='utf-8'))
+    corrupted_validation['validator_sha256'] = '0' * 64
+    first_validation.write_text(json.dumps(corrupted_validation), encoding='utf-8')
     monkeypatch.setattr(
         sys,
         'argv',
@@ -691,6 +698,10 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
             str(output),
         ],
     )
+    with pytest.raises(ValueError, match="field 'validator_sha256' does not match"):
+        finalize_formal()
+    corrupted_validation['validator_sha256'] = validator_sha256
+    first_validation.write_text(json.dumps(corrupted_validation), encoding='utf-8')
     finalize_formal()
     with (output / 'shapo_p47_final_seed_metrics.csv').open(
         encoding='utf-8',
@@ -700,6 +711,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     assert len(rows) == 20
     summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
     assert summary['statistical_unit'] == 'training_seed'
+    assert summary['validator_sha256'] == validator_sha256
     assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
     assert (
         summary['failure_reason_aggregate']['Ant-v4']['unhealthy_height']['n_training_seeds'] == 5
@@ -740,6 +752,7 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     assert sum(bool(row['resume_from']) for row in checkpoint_rows) == 24
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
+    assert f'Strict validator SHA-256: `{validator_sha256}`' in report
     assert 'Locomotion failure diagnostics' in report
     assert 'Failure-reason rates' in report
     assert 'High-risk direction diagnostics' in report

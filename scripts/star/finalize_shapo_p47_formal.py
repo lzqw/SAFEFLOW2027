@@ -22,6 +22,7 @@ SLUGS = {
     'Ant-v4': 'ant',
     'Walker2d-v4': 'walker2d',
 }
+STRICT_VALIDATOR = Path(__file__).resolve().with_name('validate_shapo_p47_run.py')
 METRICS = (
     'mean_return',
     'mean_cost',
@@ -185,6 +186,7 @@ def render_report(
     failure_reason_aggregate: dict[str, dict[str, Any]],
     recovery: dict[str, Any],
     source_commit: str,
+    validator_sha256: str,
     figures: list[Path],
 ) -> str:
     """Render the compact frozen-method result report."""
@@ -192,6 +194,7 @@ def render_report(
         '# Frozen P4.7 SHAPO Four-Environment Report',
         '',
         f'- Formal source commit: `{source_commit}`',
+        f'- Strict validator SHA-256: `{validator_sha256}`',
         '- Independent statistical unit: training seed (`n=5` per environment)',
         '- Evaluation: 5 fixed base seeds by 20 sequential episodes = 100 episodes per training seed',
         '- Point tasks: 10M environment steps; locomotion tasks: 5M environment steps',
@@ -342,6 +345,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     provenance_sources: list[dict[str, Any]] = []
     source_commits = set()
     matrix_sha256 = sha256_file(args.matrix)
+    validator_sha256 = sha256_file(STRICT_VALIDATOR)
     for env_id, environment in matrix['environments'].items():
         expected_milestones = [int(step) for step in environment['milestones']]
         for seed in matrix['training_seeds']:
@@ -353,6 +357,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             if validation['environment'] != env_id or int(validation['training_seed']) != seed:
                 raise ValueError(f'{validation_path} identity does not match its matrix cell')
             expected_validation_identity = {
+                'validator_sha256': validator_sha256,
                 'protocol_version': matrix['protocol_version'],
                 'protocol_sha256': matrix['protocol_sha256'],
                 'matrix_sha256': matrix_sha256,
@@ -617,6 +622,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'protocol_sha256': matrix['protocol_sha256'],
             'matrix_sha256': matrix_sha256,
             'source_commit': source_commit,
+            'validator_sha256': validator_sha256,
             'statistical_unit': 'training_seed',
             'n_training_seeds_per_environment': 5,
             'episodes_per_training_seed': 100,
@@ -632,7 +638,14 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     )
     atomic_text(
         output / 'SHAPO_P47_FOUR_ENV_REPORT.md',
-        render_report(aggregate, failure_reason_aggregate, recovery, source_commit, figures),
+        render_report(
+            aggregate,
+            failure_reason_aggregate,
+            recovery,
+            source_commit,
+            validator_sha256,
+            figures,
+        ),
     )
     print(
         json.dumps(
