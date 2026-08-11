@@ -380,6 +380,26 @@ def test_formal_finalization_wrapper_revalidates_and_atomically_seals_output() -
         assert fragment in script
 
 
+def test_host_sync_wrapper_is_capacity_gated_and_checksum_verified() -> None:
+    script = (ROOT / 'scripts/star/sync_shapo_p47_final_to_host.sh').read_text(encoding='utf-8')
+    required_fragments = (
+        'BatchMode=yes',
+        'finalization_complete',
+        'sha256sum -c checksums.sha256',
+        'completion_health.json',
+        'health_journal.jsonl',
+        'RESERVE_BYTES=${4:-536870912}',
+        'Insufficient host space',
+        'Refusing to overwrite host artifacts',
+        'mktemp -d',
+        'runtime_health_manifest.csv',
+        'transfer_checksums.sha256',
+        'transfer_complete',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
 def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
     tmp_path: Path,
 ) -> None:
