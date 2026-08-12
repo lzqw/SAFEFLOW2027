@@ -439,12 +439,14 @@ def main() -> None:  # pylint: disable=too-many-locals
         parser.error('--repo is not a Git worktree')
     if not matrix_path.is_file() or not audit_script.is_file():
         parser.error('matrix or milestone audit script is unavailable')
-    if local_branch(repo) != args.branch:
-        parser.error('--branch is not currently checked out')
-    if git(repo, 'rev-parse', 'HEAD').stdout.strip() != args.expected_head:
-        parser.error('--expected-head is not the current repository HEAD')
-    initial_remote = remote_branch_oid(repo, args.remote, args.branch)
-    require_ancestor(repo, initial_remote, args.expected_head)
+    initial_repository = validate_repository_ancestry(
+        repo,
+        args.remote,
+        args.branch,
+        args.expected_head,
+        args.commit_message,
+    )
+    initial_remote = initial_repository['remote_head']
     state_dir.mkdir(parents=True, exist_ok=True)
     immutable_paths = {
         'github_publish_watcher': Path(__file__).resolve(),
@@ -465,6 +467,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         'branch': args.branch,
         'remote': args.remote,
         'initial_remote_commit': initial_remote,
+        'initial_repository_state': initial_repository['state'],
         'scientific_protocol_changed': False,
         'training_state_changed': False,
         'used_for_checkpoint_or_configuration_selection': False,

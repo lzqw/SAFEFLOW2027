@@ -15,6 +15,7 @@ from scripts.star.watch_shapo_p47_github_publish import (
     publish_once,
     status_entries,
     validate_prepublication_tree,
+    validate_repository_ancestry,
 )
 
 
@@ -154,6 +155,23 @@ def test_commit_rejects_nonpublication_local_commit(tmp_path: Path) -> None:
             expected_head=expected,
             commit_message='publish evidence',
         )
+
+
+def test_startup_ancestry_accepts_exact_recoverable_commit(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    _write_publish_artifacts(repo)
+    expected = _git(repo, 'rev-parse', 'HEAD')
+    _git(repo, 'add', *PUBLISH_PATHS)
+    _git(repo, 'commit', '-m', 'publish evidence')
+    result = validate_repository_ancestry(
+        repo,
+        'origin',
+        'main',
+        expected,
+        'publish evidence',
+    )
+    assert result['state'] == 'committed'
+    assert result['remote_head'] == expected
 
 
 def test_publish_once_waits_without_validating_or_mutating(
