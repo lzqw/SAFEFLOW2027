@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from scripts.star.watch_shapo_p47_github_publish import (
+    MAX_GITHUB_FILE_BYTES,
     PUBLISH_PATHS,
     commit_and_push,
     host_evidence_readiness,
@@ -86,6 +87,11 @@ def test_repository_identity_rejects_changed_push_url(tmp_path: Path) -> None:
             _git(repo, 'rev-parse', 'HEAD'),
             expected_remote_url='git@github.com:lzqw/SAFEFLOW2027.git',
         )
+
+
+def test_github_file_limit_is_conservative() -> None:
+    assert MAX_GITHUB_FILE_BYTES == 95 * 1024 * 1024
+    assert MAX_GITHUB_FILE_BYTES < 100 * 1024 * 1024
 
 
 def test_commit_and_push_exact_paths_once(tmp_path: Path) -> None:

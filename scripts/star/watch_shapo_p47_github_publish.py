@@ -37,6 +37,7 @@ PUBLISH_PATHS = (
     'reports/star/shapo_p47_four_env_artifacts/milestones',
     'reports/star/shapo_p47_four_env_artifacts/final',
 )
+MAX_GITHUB_FILE_BYTES = 95 * 1024 * 1024
 
 
 def sha256_file(path: Path) -> str:
@@ -223,7 +224,23 @@ def validate_host_evidence(  # pylint: disable=too-many-arguments
     )
     if repo not in milestone_root.parents or repo not in final_root.parents:
         raise ValueError('host evidence is outside the publication repository')
-    return {'milestone_jobs': len(jobs), 'final': final}
+    publish_files = [
+        path for root in (milestone_root, final_root) for path in root.rglob('*') if path.is_file()
+    ]
+    oversized = [
+        (str(path.relative_to(repo)), path.stat().st_size)
+        for path in publish_files
+        if path.stat().st_size > MAX_GITHUB_FILE_BYTES
+    ]
+    if oversized:
+        raise ValueError(f'host evidence exceeds the GitHub file-size safety limit: {oversized}')
+    return {
+        'milestone_jobs': len(jobs),
+        'final': final,
+        'publish_file_count': len(publish_files),
+        'largest_publish_file_bytes': max(path.stat().st_size for path in publish_files),
+        'maximum_github_file_bytes': MAX_GITHUB_FILE_BYTES,
+    }
 
 
 def host_evidence_readiness(
