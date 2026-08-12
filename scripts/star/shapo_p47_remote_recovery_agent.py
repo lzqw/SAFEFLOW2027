@@ -352,9 +352,12 @@ def is_within(path: Path, parent: Path) -> bool:
     return True
 
 
-def formal_worker_pids(run_root: Path, proc_root: Path = Path('/proc')) -> list[int]:
-    """Find only train workers whose explicit config belongs to the formal root."""
-    workers = []
+def formal_worker_processes(
+    run_root: Path,
+    proc_root: Path = Path('/proc'),
+) -> dict[str, int]:
+    """Map formal run containers to their exact live training worker."""
+    workers: dict[str, int] = {}
     configs_root = run_root / 'runs'
     for pid in proc_pids(proc_root):
         argv = process_argv(pid, proc_root) or []
@@ -365,8 +368,19 @@ def formal_worker_pids(run_root: Path, proc_root: Path = Path('/proc')) -> list[
         except (ValueError, IndexError):
             continue
         if config.is_absolute() and is_within(config, configs_root):
-            workers.append(pid)
+            container = config.parent.name
+            if container in workers:
+                raise RuntimeError(
+                    f'ambiguous formal workers for run {container!r}: '
+                    f'{workers[container]} and {pid}',
+                )
+            workers[container] = pid
     return workers
+
+
+def formal_worker_pids(run_root: Path, proc_root: Path = Path('/proc')) -> list[int]:
+    """Find only train workers whose explicit config belongs to the formal root."""
+    return sorted(formal_worker_processes(run_root, proc_root).values())
 
 
 def process_specs(payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -525,8 +539,12 @@ def formal_failure_artifacts(run_root: Path) -> list[str]:
     return failures
 
 
-def recoverable_checkpoints(run_root: Path) -> dict[str, dict[str, Any]]:
-    """Require a nonempty full checkpoint for every run that has progress evidence."""
+def recoverable_checkpoints(
+    run_root: Path,
+    *,
+    require_started: bool = False,
+) -> dict[str, dict[str, Any]]:
+    """Inventory full checkpoints, optionally requiring one for every started run."""
     result = {}
     runs_root = run_root / 'runs'
     if not runs_root.is_dir():
@@ -534,7 +552,7 @@ def recoverable_checkpoints(run_root: Path) -> dict[str, dict[str, Any]]:
     for container in sorted(path for path in runs_root.iterdir() if path.is_dir()):
         progress = list(container.glob('training/**/progress.csv'))
         checkpoints = list(container.glob('training/**/checkpoints/latest_full.pt'))
-        if progress and not checkpoints:
+        if require_started and progress and not checkpoints:
             raise RuntimeError(f'started run lacks latest_full recovery: {container.name}')
         if checkpoints:
             newest = max(checkpoints, key=lambda path: path.stat().st_mtime_ns)
@@ -755,6 +773,79 @@ def last_training_attempt(path: Path) -> dict[str, Any] | None:
     return result
 
 
+def startup_grace_active(
+    previous: dict[str, Any] | None,
+    *,
+    observed_at: datetime,
+    grace_seconds: float = 900.0,
+) -> bool:
+    """Return whether a recorded supervisor restart is still in its bounded startup grace."""
+    if previous is None or previous.get('formal_training_process_restart_planned') is not True:
+        return False
+    try:
+        started = datetime.fromisoformat(str(previous['observed_at_utc']))
+    except (KeyError, TypeError, ValueError) as error:
+        raise RuntimeError('previous supervisor recovery timestamp is invalid') from error
+    if started.tzinfo is None:
+        raise RuntimeError('previous supervisor recovery timestamp lacks a timezone')
+    age = (observed_at - started.astimezone(timezone.utc)).total_seconds()
+    if age < 0.0:
+        raise RuntimeError('previous supervisor recovery timestamp is in the future')
+    return age <= grace_seconds
+
+
+def completed_checkpoint_runs(
+    run_root: Path,
+    checkpoint_runs: set[str],
+) -> set[str]:
+    """Identify checkpoint-bearing runs already sealed by strict formal validation."""
+    completed = set()
+    for name in checkpoint_runs:
+        path = run_root / 'runs' / name / 'formal_validation.json'
+        if not path.is_file():
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding='utf-8'))
+        except json.JSONDecodeError as error:
+            raise RuntimeError(f'formal validation receipt is invalid: {path}') from error
+        if not isinstance(payload, dict):
+            raise RuntimeError(f'formal validation receipt is not an object: {path}')
+        if payload.get('status') == 'passed':
+            exit_path = path.parent / 'exit_code.txt'
+            try:
+                exit_code = int(exit_path.read_text(encoding='utf-8').strip())
+            except (FileNotFoundError, ValueError) as error:
+                raise RuntimeError(
+                    f'completed formal validation lacks a valid exit seal: {path.parent}',
+                ) from error
+            if exit_code != 0:
+                raise RuntimeError(
+                    f'completed formal validation has a nonzero exit seal: {path.parent}',
+                )
+            completed.add(name)
+    return completed
+
+
+def watchdog_startup_readiness(
+    run_root: Path,
+    checkpoints: dict[str, dict[str, Any]],
+    workers: dict[str, int],
+) -> dict[str, Any]:
+    """Require every unfinished resumable run to have reattached before watchdog launch."""
+    checkpoint_runs = set(checkpoints)
+    completed = completed_checkpoint_runs(run_root, checkpoint_runs)
+    required = checkpoint_runs - completed
+    active = set(workers)
+    return {
+        'ready': required <= active,
+        'checkpoint_runs': sorted(checkpoint_runs),
+        'completed_checkpoint_runs': sorted(completed),
+        'required_worker_runs': sorted(required),
+        'active_worker_runs': sorted(active),
+        'missing_worker_runs': sorted(required - active),
+    }
+
+
 def require_new_recovery_state(
     checkpoints: dict[str, dict[str, Any]],
     previous: dict[str, Any] | None,
@@ -846,7 +937,8 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
         if state['adopted_pid']:
             adopted.append(name)
 
-    worker_pids = formal_worker_pids(run_root)
+    worker_processes = formal_worker_processes(run_root)
+    worker_pids = sorted(worker_processes.values())
     matrix_complete = (run_root / 'formal_matrix_complete').is_file()
     watchdog_complete = (Path(payload['monitor_output']) / 'completion_health.json').is_file()
     milestone_complete = (Path(payload['milestone_output']) / 'milestone_watch_complete').is_file()
@@ -854,15 +946,28 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
     completion_complete = (
         Path(payload['completion_state']) / 'completion_watch_complete.json'
     ).is_file()
-    checkpoints = recoverable_checkpoints(run_root)
+    supervisor_restart_required = not matrix_complete and not processes['supervisor']['alive']
+    checkpoints = recoverable_checkpoints(
+        run_root,
+        require_started=supervisor_restart_required,
+    )
     restart_environment = None
 
     if not processes['supervisor']['alive'] and worker_pids:
         raise RuntimeError(
             f'formal workers are alive without the recorded exact supervisor: {worker_pids}',
         )
+    if (
+        not matrix_complete
+        and not processes['supervisor']['alive']
+        and processes['watchdog']['alive']
+    ):
+        raise RuntimeError('formal watchdog is alive without the exact supervisor')
 
-    if not matrix_complete and not processes['supervisor']['alive']:
+    previous_training_attempt = last_training_attempt(
+        recovery_root / 'recovery_attempts.jsonl',
+    )
+    if supervisor_restart_required:
         restart_environment = validate_restart_environment(payload)
         validate_checkpoint_payloads(
             run_root,
@@ -871,11 +976,11 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
         )
         require_new_recovery_state(
             checkpoints,
-            last_training_attempt(recovery_root / 'recovery_attempts.jsonl'),
+            previous_training_attempt,
         )
 
     needed = []
-    if not matrix_complete and not processes['supervisor']['alive']:
+    if supervisor_restart_required:
         needed.append('supervisor')
     if not watchdog_complete and not processes['watchdog']['alive']:
         needed.append('watchdog')
@@ -884,18 +989,47 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
     if not completion_complete and not processes['completion']['alive']:
         needed.append('completion')
 
+    launch_now = list(needed)
+    deferred = []
+    watchdog_readiness = None
+    if payload['allow_recovery'] and 'watchdog' in launch_now and not matrix_complete:
+        if 'supervisor' in launch_now:
+            launch_now.remove('watchdog')
+            deferred.append('watchdog')
+            watchdog_readiness = {
+                'ready': False,
+                'reason': 'supervisor_launch_transaction',
+            }
+        else:
+            watchdog_readiness = watchdog_startup_readiness(
+                run_root,
+                checkpoints,
+                worker_processes,
+            )
+            if not watchdog_readiness['ready']:
+                if not startup_grace_active(
+                    previous_training_attempt,
+                    observed_at=datetime.fromisoformat(observed_at),
+                ):
+                    raise RuntimeError(
+                        'formal workers did not reattach during the bounded startup grace: '
+                        f'{watchdog_readiness["missing_worker_runs"]}',
+                    )
+                launch_now.remove('watchdog')
+                deferred.append('watchdog')
+
     launched: dict[str, int] = {}
     attempt = None
-    if needed and payload['allow_recovery']:
+    if launch_now and payload['allow_recovery']:
         attempt = record_recovery_attempt(
             recovery_root=recovery_root,
             observed_at=observed_at,
-            needed=needed,
+            needed=launch_now,
             checkpoints=checkpoints,
             payload=payload,
         )
         for name in ('supervisor', 'watchdog', 'milestone', 'completion'):
-            if name in needed:
+            if name in launch_now:
                 launch = launch_exact(name, specs[name])
                 launched[name] = int(launch['pid'])
                 processes[name] = {
@@ -911,18 +1045,22 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
         state = 'recovery_required'
     elif launched:
         state = 'recovered'
+    elif deferred:
+        state = 'recovery_deferred'
     result = {
         'version': VERSION,
         'observed_at_utc': observed_at,
         'state': state,
         'allow_recovery': payload['allow_recovery'],
         'needed_processes': needed,
+        'deferred_processes': deferred,
         'launched_processes': launched,
         'adopted_pid_files': adopted,
         'processes': {
             name: {'alive': row['alive'], 'pid': row['pid']} for name, row in processes.items()
         },
         'formal_worker_pids': worker_pids,
+        'formal_worker_processes': worker_processes,
         'formal_matrix_complete': matrix_complete,
         'watchdog_complete': watchdog_complete,
         'milestone_complete': milestone_complete,
@@ -931,6 +1069,7 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
         'matrix_failure_count': failure_count,
         'formal_failure_artifacts': failure_artifacts,
         'restart_environment': restart_environment,
+        'watchdog_startup_readiness': watchdog_readiness,
         'recoverable_checkpoint_runs': len(checkpoints),
         'recoverable_checkpoints': checkpoints,
         'scientific_protocol_changed': False,

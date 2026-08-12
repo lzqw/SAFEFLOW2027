@@ -211,6 +211,7 @@ def invoke_remote(
     if result.get('state') not in {
         'running',
         'recovered',
+        'recovery_deferred',
         'recovery_required',
         'complete',
         'busy',
@@ -240,6 +241,7 @@ def compact_record(result: dict[str, Any], identities: dict[str, Any]) -> dict[s
         'formal_worker_count': len(result.get('formal_worker_pids', [])),
         'recoverable_checkpoint_runs': result.get('recoverable_checkpoint_runs'),
         'needed_processes': result.get('needed_processes', []),
+        'deferred_processes': result.get('deferred_processes', []),
         'launched_processes': sorted(result.get('launched_processes', {})),
         'adopted_pid_files': result.get('adopted_pid_files', []),
         'scientific_protocol_changed': False,

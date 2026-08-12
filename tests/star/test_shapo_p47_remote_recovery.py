@@ -8,6 +8,7 @@ import csv
 import json
 import os
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -16,10 +17,14 @@ import yaml
 
 from scripts.star.shapo_p47_remote_recovery_agent import (
     _run_locked,
+    formal_worker_processes,
     formal_worker_pids,
     process_argv,
+    recoverable_checkpoints,
     resolve_exact_process,
+    startup_grace_active,
     validate_checkpoint_payloads,
+    watchdog_startup_readiness,
 )
 from scripts.star.watch_shapo_p47_remote_recovery import (
     RemoteRecoveryError,
@@ -171,6 +176,16 @@ def test_formal_worker_scan_is_scoped_to_explicit_config_root(tmp_path: Path) ->
     assert formal_worker_pids(run_root, proc) == [30]
 
 
+def test_formal_worker_scan_rejects_duplicate_run_workers(tmp_path: Path) -> None:
+    proc = tmp_path / 'proc'
+    proc.mkdir()
+    exact = ['/python', 'scripts/star/train_star.py', '--config', '/formal/runs/ant/config.yaml']
+    _cmdline(proc, 33, exact)
+    _cmdline(proc, 34, exact)
+    with pytest.raises(RuntimeError, match='ambiguous formal workers'):
+        formal_worker_processes(Path('/formal'), proc)
+
+
 def test_payload_is_fully_locked_and_rejects_duplicate_files(tmp_path: Path) -> None:
     args = _arguments(tmp_path)
     payload = build_payload(args, allow_recovery=True)
@@ -302,11 +317,23 @@ def _remote_payload(tmp_path: Path) -> dict:
     }
 
 
+def test_checkpoint_inventory_only_requires_started_runs_during_restart(
+    tmp_path: Path,
+) -> None:
+    run_root = tmp_path / 'formal'
+    progress = run_root / 'runs/ant-2027/training/segment/progress.csv'
+    progress.parent.mkdir(parents=True)
+    progress.write_text('TotalEnvSteps\n5000\n', encoding='utf-8')
+    assert recoverable_checkpoints(run_root) == {}
+    with pytest.raises(RuntimeError, match='lacks latest_full recovery'):
+        recoverable_checkpoints(run_root, require_started=True)
+
+
 def _patch_transaction(
     monkeypatch: pytest.MonkeyPatch,
     *,
     alive: dict[str, bool],
-    workers: list[int] | None = None,
+    workers: dict[str, int] | None = None,
 ) -> tuple[list[str], list[str]]:
     launches = []
     checkpoint_validations = []
@@ -337,12 +364,12 @@ def _patch_transaction(
         resolve,
     )
     monkeypatch.setattr(
-        'scripts.star.shapo_p47_remote_recovery_agent.formal_worker_pids',
-        lambda _root: list(workers or []),
+        'scripts.star.shapo_p47_remote_recovery_agent.formal_worker_processes',
+        lambda _root: dict(workers or {}),
     )
     monkeypatch.setattr(
         'scripts.star.shapo_p47_remote_recovery_agent.recoverable_checkpoints',
-        lambda _root: {'ant-2027': {'path': '/checkpoint', 'bytes': 1}},
+        lambda _root, **_kwargs: {'ant-2027': {'path': '/checkpoint', 'bytes': 1}},
     )
     monkeypatch.setattr(
         'scripts.star.shapo_p47_remote_recovery_agent.validate_checkpoint_payloads',
@@ -380,7 +407,7 @@ def test_recovery_transaction_is_noop_while_exact_graph_is_alive(
     launches, validations = _patch_transaction(
         monkeypatch,
         alive=dict.fromkeys(('supervisor', 'watchdog', 'milestone', 'completion'), True),
-        workers=[11, 12, 13, 14],
+        workers={f'run-{pid}': pid for pid in (11, 12, 13, 14)},
     )
     result = _run_locked(payload, Path(payload['recovery_root']))
     assert result['state'] == 'running'
@@ -395,7 +422,11 @@ def test_recovery_transaction_rejects_orphan_workers(
 ) -> None:
     payload = _remote_payload(tmp_path)
     alive = dict.fromkeys(('supervisor', 'watchdog', 'milestone', 'completion'), False)
-    launches, validations = _patch_transaction(monkeypatch, alive=alive, workers=[77])
+    launches, validations = _patch_transaction(
+        monkeypatch,
+        alive=alive,
+        workers={'ant-2027': 77},
+    )
     with pytest.raises(RuntimeError, match='workers are alive without'):
         _run_locked(payload, Path(payload['recovery_root']))
     assert launches == []
@@ -412,9 +443,121 @@ def test_recovery_transaction_validates_checkpoints_then_restores_full_graph(
     result = _run_locked(payload, Path(payload['recovery_root']))
     assert result['state'] == 'recovered'
     assert validations == ['validated']
-    assert launches == ['supervisor', 'watchdog', 'milestone', 'completion']
+    assert launches == ['supervisor', 'milestone', 'completion']
+    assert result['deferred_processes'] == ['watchdog']
     assert sorted(result['launched_processes']) == sorted(launches)
     assert result['formal_training_process_restarted'] is True
+
+
+def test_followup_recovery_launches_watchdog_after_workers_reattach(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = _remote_payload(tmp_path)
+    alive = {
+        'supervisor': True,
+        'watchdog': False,
+        'milestone': True,
+        'completion': True,
+    }
+    launches, validations = _patch_transaction(
+        monkeypatch,
+        alive=alive,
+        workers={'ant-2027': 77},
+    )
+    result = _run_locked(payload, Path(payload['recovery_root']))
+    assert launches == ['watchdog']
+    assert validations == []
+    assert result['deferred_processes'] == []
+    assert result['watchdog_startup_readiness']['ready'] is True
+
+
+def test_watchdog_waits_only_during_bounded_supervisor_startup(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = _remote_payload(tmp_path)
+    recovery_root = Path(payload['recovery_root'])
+    attempt = {
+        'observed_at_utc': '2026-08-12T13:00:00+00:00',
+        'formal_training_process_restart_planned': True,
+        'recoverable_checkpoints': {},
+    }
+    (recovery_root / 'recovery_attempts.jsonl').write_text(
+        json.dumps(attempt) + '\n',
+        encoding='utf-8',
+    )
+    alive = {
+        'supervisor': True,
+        'watchdog': False,
+        'milestone': True,
+        'completion': True,
+    }
+    _patch_transaction(monkeypatch, alive=alive)
+    monkeypatch.setattr(
+        'scripts.star.shapo_p47_remote_recovery_agent.datetime',
+        _FixedDatetime,
+    )
+    result = _run_locked(payload, recovery_root)
+    assert result['state'] == 'recovery_deferred'
+    assert result['launched_processes'] == {}
+    assert result['deferred_processes'] == ['watchdog']
+    assert result['watchdog_startup_readiness']['missing_worker_runs'] == ['ant-2027']
+
+
+def test_startup_grace_is_timezone_aware_and_bounded() -> None:
+    attempt = {
+        'observed_at_utc': '2026-08-12T13:00:00+00:00',
+        'formal_training_process_restart_planned': True,
+    }
+    assert startup_grace_active(
+        attempt,
+        observed_at=datetime.fromisoformat('2026-08-12T13:15:00+00:00'),
+    )
+    assert not startup_grace_active(
+        attempt,
+        observed_at=datetime.fromisoformat('2026-08-12T13:15:00.001+00:00'),
+    )
+    assert not startup_grace_active(
+        {'formal_training_process_restart_planned': False},
+        observed_at=datetime.now(timezone.utc),
+    )
+
+
+def test_watchdog_readiness_excludes_only_durably_completed_runs(tmp_path: Path) -> None:
+    run_root = tmp_path / 'formal'
+    completed = run_root / 'runs/ant-2027'
+    completed.mkdir(parents=True)
+    (completed / 'formal_validation.json').write_text(
+        json.dumps({'status': 'passed'}),
+        encoding='utf-8',
+    )
+    checkpoints = {
+        'ant-2027': {'path': '/ant-checkpoint'},
+        'walker2d-2027': {'path': '/walker-checkpoint'},
+    }
+    with pytest.raises(RuntimeError, match='exit seal'):
+        watchdog_startup_readiness(run_root, checkpoints, {})
+    (completed / 'exit_code.txt').write_text('0\n', encoding='utf-8')
+    readiness = watchdog_startup_readiness(
+        run_root,
+        checkpoints,
+        {'walker2d-2027': 77},
+    )
+    assert readiness['ready'] is True
+    assert readiness['completed_checkpoint_runs'] == ['ant-2027']
+
+
+class _FixedDatetime:
+    """Minimal datetime facade for deterministic startup-grace tests."""
+
+    @staticmethod
+    def now(_timezone):
+        return datetime.fromisoformat('2026-08-12T13:05:00+00:00')
+
+    @staticmethod
+    def fromisoformat(value):
+        return datetime.fromisoformat(value)
 
 
 def test_finalization_window_restores_only_completion_watcher(
