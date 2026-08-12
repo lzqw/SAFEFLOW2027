@@ -120,6 +120,42 @@ def test_commit_refuses_remote_divergence(tmp_path: Path) -> None:
         )
 
 
+def test_commit_recovers_exact_local_publication_transaction(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    _write_publish_artifacts(repo)
+    expected = _git(repo, 'rev-parse', 'HEAD')
+    _git(repo, 'add', *PUBLISH_PATHS)
+    _git(repo, 'commit', '-m', 'publish evidence')
+    committed = _git(repo, 'rev-parse', 'HEAD')
+    result = commit_and_push(
+        repo=repo,
+        remote='origin',
+        branch='main',
+        expected_head=expected,
+        commit_message='publish evidence',
+    )
+    assert result['commit'] == committed
+    assert result['remote_after'] == committed
+    assert result['recovered_existing_commit'] is True
+
+
+def test_commit_rejects_nonpublication_local_commit(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    _write_publish_artifacts(repo)
+    expected = _git(repo, 'rev-parse', 'HEAD')
+    (repo / 'unrelated.txt').write_text('unrelated\n', encoding='utf-8')
+    _git(repo, 'add', 'unrelated.txt')
+    _git(repo, 'commit', '-m', 'publish evidence')
+    with pytest.raises(ValueError, match='exact recoverable publication transaction'):
+        commit_and_push(
+            repo=repo,
+            remote='origin',
+            branch='main',
+            expected_head=expected,
+            commit_message='publish evidence',
+        )
+
+
 def test_publish_once_waits_without_validating_or_mutating(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

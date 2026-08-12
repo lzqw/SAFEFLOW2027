@@ -147,16 +147,46 @@ def validate_repository_ancestry(
     remote: str,
     branch: str,
     expected_head: str,
+    commit_message: str | None = None,
 ) -> dict[str, str]:
-    """Require the locked local branch to remain a fast-forward of GitHub."""
+    """Require the locked HEAD or one exact locally committed publication transaction."""
     if local_branch(repo) != branch:
         raise ValueError(f'checked-out branch changed from {branch!r}')
     head = git(repo, 'rev-parse', 'HEAD').stdout.strip()
-    if head != expected_head:
-        raise ValueError('local HEAD changed after publication watcher launch')
     remote_head = remote_branch_oid(repo, remote, branch)
-    require_ancestor(repo, remote_head, head)
-    return {'local_head': head, 'remote_head': remote_head}
+    if head == expected_head:
+        require_ancestor(repo, remote_head, head)
+        return {'local_head': head, 'remote_head': remote_head, 'state': 'precommit'}
+    if commit_message is None:
+        raise ValueError('local HEAD changed after publication watcher launch')
+    parents = git(repo, 'show', '-s', '--format=%P', head).stdout.strip().split()
+    subject = git(repo, 'show', '-s', '--format=%s', head).stdout.rstrip('\n')
+    changed = [
+        path
+        for path in git(
+            repo,
+            'diff-tree',
+            '--no-commit-id',
+            '--name-only',
+            '-r',
+            '-z',
+            head,
+        ).stdout.split('\0')
+        if path
+    ]
+    if (
+        parents != [expected_head]
+        or subject != commit_message
+        or not changed
+        or any(
+            not any(path == root or path.startswith(f'{root}/') for root in PUBLISH_PATHS)
+            for path in changed
+        )
+    ):
+        raise ValueError('local HEAD is not the exact recoverable publication transaction')
+    if remote_head not in {expected_head, head}:
+        raise ValueError('remote branch changed outside the recoverable publication transaction')
+    return {'local_head': head, 'remote_head': remote_head, 'state': 'committed'}
 
 
 def validate_host_evidence(  # pylint: disable=too-many-arguments
@@ -251,30 +281,50 @@ def commit_and_push(  # pylint: disable=too-many-locals
     commit_message: str,
 ) -> dict[str, Any]:
     """Stage exact report roots, commit once, and push without force or implicit refs."""
-    ancestry = validate_repository_ancestry(repo, remote, branch, expected_head)
+    ancestry = validate_repository_ancestry(
+        repo,
+        remote,
+        branch,
+        expected_head,
+        commit_message,
+    )
     head_before = ancestry['local_head']
     remote_before = ancestry['remote_head']
     scope = validate_prepublication_tree(repo)
-    git(repo, 'add', '--', *PUBLISH_PATHS)
-    staged = git(repo, 'diff', '--cached', '--name-only', '-z').stdout.split('\0')
-    staged = [path for path in staged if path]
-    if not staged:
-        raise ValueError('verified SHAPO evidence produced no staged publication changes')
-    if any(
-        not any(path == root or path.startswith(f'{root}/') for root in PUBLISH_PATHS)
-        for path in staged
-    ):
-        raise ValueError('Git index contains a path outside the exact publication roots')
-    git(repo, 'diff', '--cached', '--check')
-    git(repo, 'commit', '-m', commit_message, '--', *PUBLISH_PATHS)
-    commit = git(repo, 'rev-parse', 'HEAD').stdout.strip()
-    if commit == head_before or not FULL_COMMIT.fullmatch(commit):
-        raise ValueError('publication commit was not created')
-    require_ancestor(repo, head_before, commit)
+    if ancestry['state'] == 'precommit':
+        git(repo, 'add', '--', *PUBLISH_PATHS)
+        staged = git(repo, 'diff', '--cached', '--name-only', '-z').stdout.split('\0')
+        staged = [path for path in staged if path]
+        if not staged:
+            raise ValueError('verified SHAPO evidence produced no staged publication changes')
+        if any(
+            not any(path == root or path.startswith(f'{root}/') for root in PUBLISH_PATHS)
+            for path in staged
+        ):
+            raise ValueError('Git index contains a path outside the exact publication roots')
+        git(repo, 'diff', '--cached', '--check')
+        git(repo, 'commit', '-m', commit_message, '--', *PUBLISH_PATHS)
+        commit = git(repo, 'rev-parse', 'HEAD').stdout.strip()
+        if commit == head_before or not FULL_COMMIT.fullmatch(commit):
+            raise ValueError('publication commit was not created')
+        require_ancestor(repo, head_before, commit)
+    else:
+        commit = head_before
+        staged = [
+            path
+            for path in git(repo, 'show', '--format=', '--name-only', '-z', commit).stdout.split(
+                '\0',
+            )
+            if path
+        ]
     remote_recheck = remote_branch_oid(repo, remote, branch)
-    if remote_recheck != remote_before:
+    if remote_recheck not in {remote_before, commit}:
         raise RuntimeError('remote branch changed before push; refusing non-reviewed integration')
-    push = git(repo, 'push', '--porcelain', remote, f'{commit}:refs/heads/{branch}')
+    if remote_recheck == commit:
+        push_stdout = 'remote already identifies publication commit'
+    else:
+        push = git(repo, 'push', '--porcelain', remote, f'{commit}:refs/heads/{branch}')
+        push_stdout = push.stdout.strip()
     remote_after = remote_branch_oid(repo, remote, branch)
     if remote_after != commit:
         raise RuntimeError('remote branch does not identify the publication commit after push')
@@ -288,7 +338,8 @@ def commit_and_push(  # pylint: disable=too-many-locals
         'remote_after': remote_after,
         'staged_file_count': len(staged),
         'preserved_user_entries': len(remaining),
-        'push_stdout': push.stdout.strip(),
+        'push_stdout': push_stdout,
+        'recovered_existing_commit': ancestry['state'] == 'committed',
         'prepublication_scope': scope,
     }
 
