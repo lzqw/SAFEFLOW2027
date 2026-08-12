@@ -433,6 +433,24 @@ def test_recovery_transaction_rejects_orphan_workers(
     assert validations == []
 
 
+def test_recovery_transaction_rejects_orphan_watchdog(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = _remote_payload(tmp_path)
+    alive = {
+        'supervisor': False,
+        'watchdog': True,
+        'milestone': False,
+        'completion': False,
+    }
+    launches, validations = _patch_transaction(monkeypatch, alive=alive)
+    with pytest.raises(RuntimeError, match='watchdog is alive without'):
+        _run_locked(payload, Path(payload['recovery_root']))
+    assert launches == []
+    assert validations == []
+
+
 def test_recovery_transaction_validates_checkpoints_then_restores_full_graph(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -503,6 +521,37 @@ def test_watchdog_waits_only_during_bounded_supervisor_startup(
     assert result['launched_processes'] == {}
     assert result['deferred_processes'] == ['watchdog']
     assert result['watchdog_startup_readiness']['missing_worker_runs'] == ['ant-2027']
+
+
+def test_watchdog_startup_timeout_fails_closed(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = _remote_payload(tmp_path)
+    recovery_root = Path(payload['recovery_root'])
+    attempt = {
+        'observed_at_utc': '2026-08-12T12:00:00+00:00',
+        'formal_training_process_restart_planned': True,
+        'recoverable_checkpoints': {},
+    }
+    (recovery_root / 'recovery_attempts.jsonl').write_text(
+        json.dumps(attempt) + '\n',
+        encoding='utf-8',
+    )
+    alive = {
+        'supervisor': True,
+        'watchdog': False,
+        'milestone': True,
+        'completion': True,
+    }
+    launches, _validations = _patch_transaction(monkeypatch, alive=alive)
+    monkeypatch.setattr(
+        'scripts.star.shapo_p47_remote_recovery_agent.datetime',
+        _FixedDatetime,
+    )
+    with pytest.raises(RuntimeError, match='bounded startup grace'):
+        _run_locked(payload, recovery_root)
+    assert launches == []
 
 
 def test_startup_grace_is_timezone_aware_and_bounded() -> None:
