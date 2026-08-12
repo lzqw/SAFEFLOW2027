@@ -147,7 +147,7 @@ def validate_repository_ancestry(
     remote: str,
     branch: str,
     expected_head: str,
-    commit_message: str | None = None,
+    commit_message: str = '',
 ) -> dict[str, str]:
     """Require the locked HEAD or one exact locally committed publication transaction."""
     if local_branch(repo) != branch:
@@ -157,7 +157,7 @@ def validate_repository_ancestry(
     if head == expected_head:
         require_ancestor(repo, remote_head, head)
         return {'local_head': head, 'remote_head': remote_head, 'state': 'precommit'}
-    if commit_message is None:
+    if not commit_message:
         raise ValueError('local HEAD changed after publication watcher launch')
     parents = git(repo, 'show', '-s', '--format=%P', head).stdout.strip().split()
     subject = git(repo, 'show', '-s', '--format=%s', head).stdout.rstrip('\n')
