@@ -239,6 +239,58 @@ def test_publish_once_waits_without_validating_or_mutating(
     assert _git(repo, 'status', '--porcelain') == ''
 
 
+def test_publish_once_ready_validates_then_publishes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo, _remote = _repository(tmp_path)
+    matrix = repo / 'matrix.yaml'
+    matrix.write_text('{}\n', encoding='utf-8')
+    _git(repo, 'add', 'matrix.yaml')
+    _git(repo, 'commit', '-m', 'add matrix')
+    _git(repo, 'push', 'origin', 'main')
+    calls: list[str] = []
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.host_evidence_readiness',
+        lambda *_args: {'ready': True},
+    )
+
+    def fake_validate(**_kwargs: object) -> dict[str, object]:
+        calls.append('validate')
+        return {'milestone_jobs': 60, 'status': 'passed'}
+
+    def fake_publish(**_kwargs: object) -> dict[str, object]:
+        calls.append('publish')
+        return {'commit': 'b' * 40}
+
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.validate_host_evidence',
+        fake_validate,
+    )
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.commit_and_push',
+        fake_publish,
+    )
+    result = publish_once(
+        repo=repo,
+        matrix_path=matrix,
+        source_commit=SOURCE,
+        audit_script=repo / 'audit.py',
+        milestone_root=repo / PUBLISH_PATHS[0],
+        final_root=repo / PUBLISH_PATHS[1],
+        remote_host='seeta-nmb2',
+        remote_run_root='/remote/formal',
+        remote='origin',
+        branch='main',
+        expected_head=_git(repo, 'rev-parse', 'HEAD'),
+        commit_message='publish evidence',
+    )
+    assert result['state'] == 'complete'
+    assert result['evidence']['milestone_jobs'] == 60
+    assert result['publication']['commit'] == 'b' * 40
+    assert calls == ['validate', 'publish']
+
+
 def test_waiting_state_rejects_unrelated_worktree_change(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
