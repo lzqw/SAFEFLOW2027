@@ -1,0 +1,149 @@
+{
+  "audit_script_sha256": "e8b5bff31bfe8650cd460c5ae6ba45cb21883490d3ada40a89ec2f24c7814f96",
+  "audit_version": "shapo-p47-milestone-v1",
+  "best_safe_return_selection": {
+    "last_candidate": {
+      "constraint_satisfied": true,
+      "cost_cvar_20": 17.55,
+      "failure_rate": 0.0,
+      "formal_cost_budget": 10.0,
+      "mean_cost": 3.51,
+      "mean_return": -0.038242015352310116,
+      "milestone": 1000000,
+      "selection_status": "best_safe_return"
+    },
+    "last_candidate_selected": true,
+    "selected": {
+      "constraint_satisfied": true,
+      "cost_cvar_20": 17.55,
+      "failure_rate": 0.0,
+      "formal_cost_budget": 10.0,
+      "mean_cost": 3.51,
+      "mean_return": -0.038242015352310116,
+      "milestone": 1000000,
+      "selection_status": "best_safe_return"
+    },
+    "selection_rule": "feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone;before_feasibility_minimum_mean_cost_then_maximum_mean_return"
+  },
+  "compact_artifacts": {
+    "best_safe_return_selection": {
+      "artifact": "artifacts/best_safe_return_selection.json",
+      "bytes": 747,
+      "sha256": "5dceb15ca7e710c23e33b0cd7361c3811e181d0ad9ff37f3f443f7422148e74f",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/best_safe_return_selection.json"
+    },
+    "counterfactual": {
+      "artifact": "artifacts/counterfactual_step_1000000.json",
+      "bytes": 1546,
+      "sha256": "ea22456ad9f45cc08c3049fee930f6b13248046cf57d1ba1045addae3edac0b6",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/counterfactual_step_1000000.json"
+    },
+    "evaluation": {
+      "artifact": "artifacts/evaluation_step_1000000.json",
+      "bytes": 23991,
+      "sha256": "28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/evaluation_step_1000000.json"
+    },
+    "evaluation_curve": {
+      "artifact": "artifacts/evaluation.csv",
+      "bytes": 1133,
+      "sha256": "5615600bf05882c93f2f7c61f6ba86909076d5ae9778531837717599853ec683",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/evaluation.csv"
+    },
+    "materialization_receipt": {
+      "artifact": "provenance/materialize.json",
+      "bytes": 487,
+      "sha256": "6546795c967ac0df08f37a38ada89c7910579190b9c18544a941b3206bfb43b4",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/materialize.json"
+    },
+    "resolved_config": {
+      "artifact": "provenance/resolved_formal_config.yaml",
+      "bytes": 4110,
+      "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/resolved_formal_config.yaml"
+    },
+    "run_manifest": {
+      "artifact": "artifacts/run_manifest.json",
+      "bytes": 6295,
+      "sha256": "33d2864ebe4cb6f628bee379c93a411c763c08c905b9c44ec096dcf9624125ec",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/run_manifest.json"
+    },
+    "source_commit": {
+      "artifact": "provenance/source_commit.txt",
+      "bytes": 41,
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/source_commit.txt"
+    },
+    "trajectory": {
+      "artifact": "artifacts/trajectory_step_1000000.csv",
+      "bytes": 1384900,
+      "sha256": "94a0affa12cf88e427e7ad1330c2e4ea05caf327737ca9c1356146fc8d35d891",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/trajectory_step_1000000.csv"
+    },
+    "warmup_status": {
+      "artifact": "artifacts/warmup_status.json",
+      "bytes": 2315,
+      "sha256": "4c9c87ee8b4c4b9086d5866311999b6e750dcb7c97ffcaddeaabea9218051dde",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/warmup_status.json"
+    }
+  },
+  "cost_normalization_scale": 10.0,
+  "diagnostic_only": true,
+  "environment": "SafetyPointGoal1-v0",
+  "evaluation": {
+    "cost_cvar_20": 17.55,
+    "episodes": 100,
+    "failure_count": 0,
+    "failure_rate": 0.0,
+    "high_risk_dangerous_outward_velocity": 0.21232138574123383,
+    "high_risk_vn_vt": 0.9714672565460205,
+    "mean_cost": 3.51,
+    "mean_return": -0.038242015352310116,
+    "success_rate": 0.06,
+    "time_limit_count": 100,
+    "time_limit_rate": 1.0,
+    "training_cumulative_cost": 15721.0
+  },
+  "formal_cost_budget": 10.0,
+  "frozen_method_canonical_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+  "geometry_mode": "remaining_cost_budget",
+  "matrix_sha256": "f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f",
+  "milestone": 1000000,
+  "protocol_sha256": "007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337",
+  "protocol_version": "shapo-p47-four-env-v1",
+  "server_only_checkpoint": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/checkpoints/milestone_1000000.pt",
+    "bytes": 9600375,
+    "cumulative_training_cost": 15721.0,
+    "env_steps": 1000000,
+    "label": "milestone_1000000",
+    "replay_capacity": 400000,
+    "replay_included": false,
+    "replay_size": 0,
+    "resume_from": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-10-19-30-03/checkpoints/latest_full.pt",
+    "server_only": true,
+    "sha256": "dd6d7e7b989b8967b68f51191c1ae9ed96664dc8b3957c7ce6927b655b535d8c"
+  },
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "status": "passed",
+  "strict_evaluation_validator_sha256": "f7224d575e494317f436f0daf5c9b0aa4a8d4eb5ed4616e5cf2266f18be8494f",
+  "training_seed": 2027,
+  "training_seed_is_statistical_unit": true,
+  "trajectory": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-11-14-46-15/artifacts/trajectory_step_1000000.csv",
+    "milestone": 1000000,
+    "row_count": 3000,
+    "rows_per_seed": {
+      "32027": 1000,
+      "32029": 1000,
+      "32031": 1000
+    },
+    "sha256": "94a0affa12cf88e427e7ad1330c2e4ea05caf327737ca9c1356146fc8d35d891",
+    "trajectory_seeds": [
+      32027,
+      32029,
+      32031
+    ]
+  },
+  "used_for_checkpoint_or_configuration_selection": false
+}
