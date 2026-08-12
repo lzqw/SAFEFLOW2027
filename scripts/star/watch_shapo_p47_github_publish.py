@@ -148,8 +148,13 @@ def validate_repository_ancestry(
     branch: str,
     expected_head: str,
     commit_message: str = '',
+    expected_remote_url: str = '',
 ) -> dict[str, str]:
     """Require the locked HEAD or one exact locally committed publication transaction."""
+    if expected_remote_url:
+        push_url = git(repo, 'remote', 'get-url', '--push', remote).stdout.strip()
+        if push_url != expected_remote_url:
+            raise ValueError(f'Git push URL changed for remote {remote!r}')
     if local_branch(repo) != branch:
         raise ValueError(f'checked-out branch changed from {branch!r}')
     head = git(repo, 'rev-parse', 'HEAD').stdout.strip()
@@ -279,6 +284,7 @@ def commit_and_push(  # pylint: disable=too-many-locals
     branch: str,
     expected_head: str,
     commit_message: str,
+    expected_remote_url: str = '',
 ) -> dict[str, Any]:
     """Stage exact report roots, commit once, and push without force or implicit refs."""
     ancestry = validate_repository_ancestry(
@@ -287,6 +293,7 @@ def commit_and_push(  # pylint: disable=too-many-locals
         branch,
         expected_head,
         commit_message,
+        expected_remote_url,
     )
     head_before = ancestry['local_head']
     remote_before = ancestry['remote_head']
@@ -358,11 +365,18 @@ def publish_once(  # pylint: disable=too-many-arguments
     branch: str,
     expected_head: str,
     commit_message: str,
+    expected_remote_url: str = '',
 ) -> dict[str, Any]:
     """Wait for complete host evidence or publish it after independent validation."""
     readiness = host_evidence_readiness(matrix_path, milestone_root, final_root)
     if not readiness['ready']:
-        ancestry = validate_repository_ancestry(repo, remote, branch, expected_head)
+        ancestry = validate_repository_ancestry(
+            repo,
+            remote,
+            branch,
+            expected_head,
+            expected_remote_url=expected_remote_url,
+        )
         scope = validate_prepublication_tree(repo)
         return {
             'state': 'waiting',
@@ -390,6 +404,7 @@ def publish_once(  # pylint: disable=too-many-arguments
         branch=branch,
         expected_head=expected_head,
         commit_message=commit_message,
+        expected_remote_url=expected_remote_url,
     )
     return {
         'state': 'complete',
@@ -413,6 +428,7 @@ def main() -> None:  # pylint: disable=too-many-locals
     parser.add_argument('--remote-host', required=True)
     parser.add_argument('--remote-run-root', required=True)
     parser.add_argument('--remote', default='origin')
+    parser.add_argument('--expected-remote-url', required=True)
     parser.add_argument('--branch', required=True)
     parser.add_argument('--expected-head', required=True)
     parser.add_argument('--commit-message', default='publish final SHAPO four-environment evidence')
@@ -445,6 +461,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         args.branch,
         args.expected_head,
         args.commit_message,
+        args.expected_remote_url,
     )
     initial_remote = initial_repository['remote_head']
     state_dir.mkdir(parents=True, exist_ok=True)
@@ -466,6 +483,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         'expected_head': args.expected_head,
         'branch': args.branch,
         'remote': args.remote,
+        'expected_remote_url': args.expected_remote_url,
         'initial_remote_commit': initial_remote,
         'initial_repository_state': initial_repository['state'],
         'scientific_protocol_changed': False,
@@ -497,6 +515,7 @@ def main() -> None:  # pylint: disable=too-many-locals
                     branch=args.branch,
                     expected_head=args.expected_head,
                     commit_message=args.commit_message,
+                    expected_remote_url=args.expected_remote_url,
                 )
                 snapshot.update({'observed_at_utc': observed_at, **identities})
             except Exception as error:

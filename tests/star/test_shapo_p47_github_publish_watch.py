@@ -76,6 +76,18 @@ def test_scope_rejects_unrelated_change(tmp_path: Path) -> None:
         validate_prepublication_tree(repo)
 
 
+def test_repository_identity_rejects_changed_push_url(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    with pytest.raises(ValueError, match='push URL changed'):
+        validate_repository_ancestry(
+            repo,
+            'origin',
+            'main',
+            _git(repo, 'rev-parse', 'HEAD'),
+            expected_remote_url='git@github.com:lzqw/SAFEFLOW2027.git',
+        )
+
+
 def test_commit_and_push_exact_paths_once(tmp_path: Path) -> None:
     repo, remote = _repository(tmp_path)
     _write_publish_artifacts(repo)
