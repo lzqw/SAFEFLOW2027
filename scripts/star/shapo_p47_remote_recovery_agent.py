@@ -830,16 +830,45 @@ def watchdog_startup_readiness(
     run_root: Path,
     checkpoints: dict[str, dict[str, Any]],
     workers: dict[str, int],
+    matrix_path: Path,
 ) -> dict[str, Any]:
-    """Require every unfinished resumable run to have reattached before watchdog launch."""
+    """Require the first unfinished seed wave to reattach before watchdog launch."""
     checkpoint_runs = set(checkpoints)
-    completed = completed_checkpoint_runs(run_root, checkpoint_runs)
-    required = checkpoint_runs - completed
+    try:
+        import yaml  # pylint: disable=import-outside-toplevel
+
+        matrix = yaml.safe_load(matrix_path.read_text(encoding='utf-8'))
+        seeds = [int(seed) for seed in matrix['training_seeds']]
+        environments = list(matrix['environments'])
+    except Exception as error:
+        raise RuntimeError('locked formal matrix cannot define startup readiness') from error
+    slugs = {
+        'SafetyPointGoal1-v0': 'point-goal',
+        'SafetyPointButton1-v0': 'point-button',
+        'Ant-v4': 'ant',
+        'Walker2d-v4': 'walker2d',
+    }
+    if set(environments) != set(slugs) or len(seeds) != 5 or len(set(seeds)) != 5:
+        raise RuntimeError('locked formal matrix wave identity changed')
+    expected_by_seed = {
+        seed: {f'{slugs[environment]}-{seed}' for environment in environments} for seed in seeds
+    }
+    completed_runs = set()
+    for seed_runs in expected_by_seed.values():
+        completed_runs.update(completed_checkpoint_runs(run_root, seed_runs))
+    pending_wave_seed = next(
+        (seed for seed in seeds if expected_by_seed[seed] - completed_runs),
+        None,
+    )
+    required = (
+        set() if pending_wave_seed is None else expected_by_seed[pending_wave_seed] - completed_runs
+    )
     active = set(workers)
     return {
         'ready': required <= active,
         'checkpoint_runs': sorted(checkpoint_runs),
-        'completed_checkpoint_runs': sorted(completed),
+        'completed_checkpoint_runs': sorted(completed_runs),
+        'pending_wave_seed': pending_wave_seed,
         'required_worker_runs': sorted(required),
         'active_worker_runs': sorted(active),
         'missing_worker_runs': sorted(required - active),
@@ -1005,6 +1034,7 @@ def _run_locked(payload: dict[str, Any], recovery_root: Path) -> dict[str, Any]:
                 run_root,
                 checkpoints,
                 worker_processes,
+                Path(payload['formal_source']) / 'configs/star/shapo_p47_four_env.yaml',
             )
             if not watchdog_readiness['ready']:
                 if not startup_grace_active(

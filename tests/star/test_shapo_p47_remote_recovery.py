@@ -317,6 +317,25 @@ def _remote_payload(tmp_path: Path) -> dict:
     }
 
 
+def _write_matrix(path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        yaml.safe_dump(
+            {
+                'training_seeds': [2027, 2028, 2029, 2030, 2031],
+                'environments': {
+                    'SafetyPointGoal1-v0': {},
+                    'SafetyPointButton1-v0': {},
+                    'Ant-v4': {},
+                    'Walker2d-v4': {},
+                },
+            },
+        ),
+        encoding='utf-8',
+    )
+    return path
+
+
 def test_checkpoint_inventory_only_requires_started_runs_during_restart(
     tmp_path: Path,
 ) -> None:
@@ -378,6 +397,18 @@ def _patch_transaction(
     monkeypatch.setattr(
         'scripts.star.shapo_p47_remote_recovery_agent.validate_restart_environment',
         lambda _payload: {'status': 'passed'},
+    )
+    monkeypatch.setattr(
+        'scripts.star.shapo_p47_remote_recovery_agent.watchdog_startup_readiness',
+        lambda _root, checkpoints, workers, _matrix: {
+            'ready': set(checkpoints) <= set(workers),
+            'checkpoint_runs': sorted(checkpoints),
+            'completed_checkpoint_runs': [],
+            'pending_wave_seed': 2027,
+            'required_worker_runs': sorted(checkpoints),
+            'active_worker_runs': sorted(workers),
+            'missing_worker_runs': sorted(set(checkpoints) - set(workers)),
+        },
     )
 
     def launch(name, _spec):
@@ -585,16 +616,55 @@ def test_watchdog_readiness_excludes_only_durably_completed_runs(tmp_path: Path)
         'ant-2027': {'path': '/ant-checkpoint'},
         'walker2d-2027': {'path': '/walker-checkpoint'},
     }
+    matrix = _write_matrix(tmp_path / 'matrix.yaml')
     with pytest.raises(RuntimeError, match='exit seal'):
-        watchdog_startup_readiness(run_root, checkpoints, {})
+        watchdog_startup_readiness(run_root, checkpoints, {}, matrix)
     (completed / 'exit_code.txt').write_text('0\n', encoding='utf-8')
+    for slug in ('point-goal', 'point-button'):
+        other = run_root / f'runs/{slug}-2027'
+        other.mkdir(parents=True)
+        (other / 'formal_validation.json').write_text(
+            json.dumps({'status': 'passed'}),
+            encoding='utf-8',
+        )
+        (other / 'exit_code.txt').write_text('0\n', encoding='utf-8')
     readiness = watchdog_startup_readiness(
         run_root,
         checkpoints,
         {'walker2d-2027': 77},
+        matrix,
     )
     assert readiness['ready'] is True
-    assert readiness['completed_checkpoint_runs'] == ['ant-2027']
+    assert readiness['completed_checkpoint_runs'] == [
+        'ant-2027',
+        'point-button-2027',
+        'point-goal-2027',
+    ]
+    assert readiness['pending_wave_seed'] == 2027
+
+
+def test_watchdog_readiness_requires_entire_next_seed_wave(tmp_path: Path) -> None:
+    run_root = tmp_path / 'formal'
+    matrix = _write_matrix(tmp_path / 'matrix.yaml')
+    for slug in ('point-goal', 'point-button', 'ant', 'walker2d'):
+        completed = run_root / f'runs/{slug}-2027'
+        completed.mkdir(parents=True)
+        (completed / 'formal_validation.json').write_text(
+            json.dumps({'status': 'passed'}),
+            encoding='utf-8',
+        )
+        (completed / 'exit_code.txt').write_text('0\n', encoding='utf-8')
+    workers = {
+        'point-goal-2028': 81,
+        'point-button-2028': 82,
+        'ant-2028': 83,
+    }
+    readiness = watchdog_startup_readiness(run_root, {}, workers, matrix)
+    assert readiness['ready'] is False
+    assert readiness['pending_wave_seed'] == 2028
+    assert readiness['missing_worker_runs'] == ['walker2d-2028']
+    workers['walker2d-2028'] = 84
+    assert watchdog_startup_readiness(run_root, {}, workers, matrix)['ready'] is True
 
 
 class _FixedDatetime:
