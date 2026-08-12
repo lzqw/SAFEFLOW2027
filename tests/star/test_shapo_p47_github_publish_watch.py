@@ -77,6 +77,16 @@ def test_scope_rejects_unrelated_change(tmp_path: Path) -> None:
         validate_prepublication_tree(repo)
 
 
+def test_ready_transaction_accepts_only_staged_publish_paths(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    _write_publish_artifacts(repo)
+    _git(repo, 'add', *PUBLISH_PATHS)
+    result = validate_prepublication_tree(repo, allow_staged_publish_paths=True)
+    assert result['publish_entries'] == 2
+    with pytest.raises(ValueError, match='unexpected worktree changes'):
+        validate_prepublication_tree(repo)
+
+
 def test_repository_identity_rejects_changed_push_url(tmp_path: Path) -> None:
     repo, _remote = _repository(tmp_path)
     with pytest.raises(ValueError, match='push URL changed'):
@@ -116,6 +126,23 @@ def test_commit_and_push_exact_paths_once(tmp_path: Path) -> None:
     ]
     assert (repo / 'PAPER/draft.md').is_file()
     assert 'PAPER/draft.md' not in _git(remote, 'ls-tree', '-r', '--name-only', 'main')
+
+
+def test_commit_and_push_recovers_preexisting_exact_index(tmp_path: Path) -> None:
+    repo, _remote = _repository(tmp_path)
+    _write_publish_artifacts(repo)
+    expected = _git(repo, 'rev-parse', 'HEAD')
+    _git(repo, 'add', *PUBLISH_PATHS)
+    result = commit_and_push(
+        repo=repo,
+        remote='origin',
+        branch='main',
+        expected_head=expected,
+        commit_message='publish evidence',
+    )
+    assert result['commit'] != expected
+    assert result['remote_after'] == result['commit']
+    assert result['staged_file_count'] == 2
 
 
 def test_commit_refuses_remote_divergence(tmp_path: Path) -> None:

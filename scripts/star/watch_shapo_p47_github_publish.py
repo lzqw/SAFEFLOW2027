@@ -115,17 +115,24 @@ def allowed_untracked(path: str) -> bool:
     return any(path.startswith(prefix) for prefix in ALLOWED_UNTRACKED)
 
 
-def validate_prepublication_tree(repo: Path) -> dict[str, Any]:
+def validate_prepublication_tree(
+    repo: Path,
+    *,
+    allow_staged_publish_paths: bool = False,
+) -> dict[str, Any]:
     """Require only verified SHAPO artifacts plus known user-owned untracked files."""
     entries = status_entries(repo)
     unexpected = [
         (status, path)
         for status, path in entries
         if not (
-            status == '??'
-            and (
-                allowed_untracked(path)
-                or any(path.startswith(f'{root}/') for root in PUBLISH_PATHS)
+            (status == '??' and allowed_untracked(path))
+            or (
+                any(path.startswith(f'{root}/') for root in PUBLISH_PATHS)
+                and (
+                    status == '??'
+                    or (allow_staged_publish_paths and status[0] != ' ' and status[1] == ' ')
+                )
             )
         )
     ]
@@ -216,6 +223,14 @@ def validate_host_evidence(  # pylint: disable=too-many-arguments
         raise ValueError('frozen matrix does not expand to 60 milestone jobs')
     for job in jobs:
         validate_sealed_output(job, expected_identity=identity)
+    expected_milestone_files = {
+        path.resolve() for job in jobs for path in job.output.rglob('*') if path.is_file()
+    }
+    actual_milestone_files = {
+        path.resolve() for path in milestone_root.rglob('*') if path.is_file()
+    }
+    if actual_milestone_files != expected_milestone_files:
+        raise ValueError('milestone publication root contains files outside the 60 sealed jobs')
     final = validate_local_output(
         final_root,
         remote_host=remote_host,
@@ -314,7 +329,7 @@ def commit_and_push(  # pylint: disable=too-many-locals
     )
     head_before = ancestry['local_head']
     remote_before = ancestry['remote_head']
-    scope = validate_prepublication_tree(repo)
+    scope = validate_prepublication_tree(repo, allow_staged_publish_paths=True)
     if ancestry['state'] == 'precommit':
         git(repo, 'add', '--', *PUBLISH_PATHS)
         staged = git(repo, 'diff', '--cached', '--name-only', '-z').stdout.split('\0')
