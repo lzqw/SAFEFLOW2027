@@ -384,13 +384,11 @@ def scientific_interpretation(
             'P47_200k': candidate,
             'delta_P47_minus_C0': candidate - baseline,
             'paired_seed_improvement_count': sum(
-                float(seed_rows['P47'][seed][metric])
-                > float(seed_rows['C0'][seed][metric])
+                float(seed_rows['P47'][seed][metric]) > float(seed_rows['C0'][seed][metric])
                 for seed in SEEDS
             ),
             'paired_seed_nondecrease_count': sum(
-                float(seed_rows['P47'][seed][metric])
-                >= float(seed_rows['C0'][seed][metric])
+                float(seed_rows['P47'][seed][metric]) >= float(seed_rows['C0'][seed][metric])
                 for seed in SEEDS
             ),
         }
@@ -674,7 +672,7 @@ def _render_report(result: dict[str, Any]) -> str:
                 f"task completion observed: {overall['task_completion_observed']}"
             ),
             (
-                f"- Paired training-seed improvements: return "
+                f'- Paired training-seed improvements: return '
                 f"{return_result['paired_seed_improvement_count']}/3; success "
                 f"{success_result['paired_seed_improvement_count']}/3. The aggregate Pareto "
                 'claim is not an all-seed Pareto claim.'

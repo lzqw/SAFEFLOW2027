@@ -14,11 +14,10 @@ from pathlib import Path
 import pytest
 import torch
 import yaml
-
 from scripts.star.shapo_p47_remote_recovery_agent import (
     _run_locked,
-    formal_worker_processes,
     formal_worker_pids,
+    formal_worker_processes,
     process_argv,
     recoverable_checkpoints,
     resolve_exact_process,

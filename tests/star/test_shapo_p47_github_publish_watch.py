@@ -7,7 +7,6 @@ import subprocess
 from pathlib import Path
 
 import pytest
-
 from scripts.star.watch_shapo_p47_github_publish import (
     MAX_GITHUB_FILE_BYTES,
     PUBLISH_PATHS,

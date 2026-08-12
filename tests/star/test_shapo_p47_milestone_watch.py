@@ -11,7 +11,6 @@ from types import SimpleNamespace
 
 import pytest
 import yaml
-
 from scripts.star.watch_shapo_p47_milestones import (
     DIRECT_SOURCES,
     GLOB_SOURCES,

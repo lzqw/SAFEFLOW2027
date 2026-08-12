@@ -10,7 +10,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 from scripts.star.watch_shapo_p47_final_sync import (
     REMOTE_HEALTH_FILES,
     REMOTE_PROBE,
@@ -310,9 +309,11 @@ def test_local_transfer_rejects_server_checkpoint_payload(tmp_path: Path) -> Non
     lines = transfer_manifest.read_text(encoding='utf-8').splitlines()
     transfer_manifest.write_text(
         '\n'.join(
-            f'public_checksum_manifest_sha256\t{public_sha}'
-            if line.startswith('public_checksum_manifest_sha256\t')
-            else line
+            (
+                f'public_checksum_manifest_sha256\t{public_sha}'
+                if line.startswith('public_checksum_manifest_sha256\t')
+                else line
+            )
             for line in lines
         )
         + '\n',

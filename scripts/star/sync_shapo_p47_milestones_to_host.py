@@ -368,10 +368,7 @@ def scan_once(  # pylint: disable=too-many-arguments
     expected_identity: dict[str, Any],
 ) -> dict[str, Any]:
     """Mirror every new server seal and revalidate every existing host seal."""
-    relative_jobs = {
-        job.output.relative_to(output_root).as_posix(): job
-        for job in jobs
-    }
+    relative_jobs = {job.output.relative_to(output_root).as_posix(): job for job in jobs}
     records = scan_remote(host, remote_root, list(relative_jobs), remote_python)
     rows = []
     for relative, job in relative_jobs.items():
@@ -424,9 +421,13 @@ def main() -> None:  # pylint: disable=too-many-locals
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--output-root', type=Path, required=True)
     parser.add_argument('--state-dir', type=Path)
-    parser.add_argument('--audit-script', type=Path, default=Path(__file__).with_name(
-        'audit_shapo_p47_milestone.py',
-    ))
+    parser.add_argument(
+        '--audit-script',
+        type=Path,
+        default=Path(__file__).with_name(
+            'audit_shapo_p47_milestone.py',
+        ),
+    )
     parser.add_argument('--reserve-bytes', type=int, default=2 * 1024**3)
     parser.add_argument('--poll-seconds', type=float, default=600.0)
     parser.add_argument('--once', action='store_true')

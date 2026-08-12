@@ -15,7 +15,6 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-
 from scripts.star.status_shapo_p47_formal import SLUGS
 from scripts.star.watch_shapo_p47_milestones import (
     locked_jobs,

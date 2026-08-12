@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from scripts.star.sync_shapo_p47_milestones_to_host import (
     RemoteSeal,
     ensure_capacity,
@@ -98,7 +97,10 @@ def test_remote_records_are_exact_unique_expected_seals() -> None:
         parse_remote_records(line, {'step_500000/walker2d-2027'})
 
 
-def test_capacity_gate_preserves_requested_reserve(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_capacity_gate_preserves_requested_reserve(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr(
         'scripts.star.sync_shapo_p47_milestones_to_host.shutil.disk_usage',
         lambda _path: type('Usage', (), {'free': 1_000})(),

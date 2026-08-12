@@ -9,7 +9,6 @@ from pathlib import Path
 
 import pytest
 import yaml
-
 from scripts.star.watch_shapo_p47_completion import (
     complete_once,
     completion_gates,

@@ -31,6 +31,7 @@ from typing import Any
 FULL_SHA256 = re.compile(r'^[0-9a-f]{64}$')
 FULL_COMMIT = re.compile(r'^[0-9a-f]{40}$')
 VERSION = 'shapo-p47-remote-recovery-v1'
+DEFAULT_PROC_ROOT = Path('/proc')
 EXPECTED_WORKTREE_KEYS = {
     'formal_source',
     'monitor_source',
@@ -253,7 +254,7 @@ def validate_restart_environment(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def process_argv(pid: int, proc_root: Path = Path('/proc')) -> list[str] | None:
+def process_argv(pid: int, proc_root: Path = DEFAULT_PROC_ROOT) -> list[str] | None:
     """Read one live process argument vector, or return ``None`` if it vanished."""
     try:
         data = (proc_root / str(pid) / 'cmdline').read_bytes()
@@ -262,7 +263,7 @@ def process_argv(pid: int, proc_root: Path = Path('/proc')) -> list[str] | None:
     return [part.decode('utf-8', errors='replace') for part in data.split(b'\0') if part]
 
 
-def process_ppid(pid: int, proc_root: Path = Path('/proc')) -> int | None:
+def process_ppid(pid: int, proc_root: Path = DEFAULT_PROC_ROOT) -> int | None:
     """Read one process's parent PID from procfs."""
     try:
         for line in (proc_root / str(pid) / 'status').read_text(encoding='utf-8').splitlines():
@@ -273,7 +274,7 @@ def process_ppid(pid: int, proc_root: Path = Path('/proc')) -> int | None:
     return None
 
 
-def process_cwd(pid: int, proc_root: Path = Path('/proc')) -> Path | None:
+def process_cwd(pid: int, proc_root: Path = DEFAULT_PROC_ROOT) -> Path | None:
     """Resolve one process working directory from procfs."""
     try:
         return (proc_root / str(pid) / 'cwd').resolve(strict=True)
@@ -281,14 +282,14 @@ def process_cwd(pid: int, proc_root: Path = Path('/proc')) -> Path | None:
         return None
 
 
-def proc_pids(proc_root: Path = Path('/proc')) -> list[int]:
+def proc_pids(proc_root: Path = DEFAULT_PROC_ROOT) -> list[int]:
     """Return the numeric process identifiers visible in procfs."""
     return sorted(int(path.name) for path in proc_root.iterdir() if path.name.isdigit())
 
 
 def matching_pids(
     expected: list[str],
-    proc_root: Path = Path('/proc'),
+    proc_root: Path = DEFAULT_PROC_ROOT,
     *,
     expected_cwd: Path | None = None,
 ) -> list[int]:
@@ -318,7 +319,7 @@ def resolve_exact_process(
     pid_file: Path,
     supervisor: bool = False,
     repair_pid_file: bool = True,
-    proc_root: Path = Path('/proc'),
+    proc_root: Path = DEFAULT_PROC_ROOT,
 ) -> dict[str, Any]:
     """Resolve one exact singleton process, adopting an unambiguous stale PID file."""
     matches = matching_pids(expected, proc_root, expected_cwd=expected_cwd)
@@ -354,7 +355,7 @@ def is_within(path: Path, parent: Path) -> bool:
 
 def formal_worker_processes(
     run_root: Path,
-    proc_root: Path = Path('/proc'),
+    proc_root: Path = DEFAULT_PROC_ROOT,
 ) -> dict[str, int]:
     """Map formal run containers to their exact live training worker."""
     workers: dict[str, int] = {}
@@ -378,7 +379,7 @@ def formal_worker_processes(
     return workers
 
 
-def formal_worker_pids(run_root: Path, proc_root: Path = Path('/proc')) -> list[int]:
+def formal_worker_pids(run_root: Path, proc_root: Path = DEFAULT_PROC_ROOT) -> list[int]:
     """Find only train workers whose explicit config belongs to the formal root."""
     return sorted(formal_worker_processes(run_root, proc_root).values())
 
@@ -1151,7 +1152,7 @@ def decode_payload(value: str) -> dict[str, Any]:
     try:
         raw = base64.urlsafe_b64decode(value.encode('ascii'))
         payload = json.loads(raw.decode('utf-8'))
-    except (ValueError, UnicodeError, json.JSONDecodeError) as error:
+    except ValueError as error:
         raise ValueError('invalid encoded remote recovery payload') from error
     if not isinstance(payload, dict):
         raise ValueError('remote recovery payload must be a JSON object')
