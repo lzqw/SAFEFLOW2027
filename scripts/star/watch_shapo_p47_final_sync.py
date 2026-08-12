@@ -47,21 +47,23 @@ public = run_root / 'public_artifacts'
 if not public.exists():
     print(json.dumps({'state': 'waiting'}))
     raise SystemExit(0)
-required = [
-    public / 'finalization_complete',
-    public / 'checksums.sha256',
-    completion_root / 'completion_watch_complete.json',
-]
+required = [public / 'finalization_complete', public / 'checksums.sha256']
 missing = [str(path) for path in required if not path.is_file()]
 if missing:
     print(json.dumps({'state': 'alert', 'error': f'incomplete final output: {missing}'}))
+    raise SystemExit(0)
+completion_path = completion_root / 'completion_watch_complete.json'
+if not completion_path.is_file():
+    # The completion watcher atomically publishes this receipt immediately after the
+    # finalizer's own atomic public-artifact seal.  Treat that tiny interval as waiting.
+    print(json.dumps({'state': 'waiting'}))
     raise SystemExit(0)
 watchdogs = sorted(path for path in run_root.glob('watchdog-*') if path.is_dir())
 if len(watchdogs) != 1 or not (watchdogs[0] / 'completion_health.json').is_file():
     print(json.dumps({'state': 'alert', 'error': 'watchdog completion health is unavailable'}))
     raise SystemExit(0)
 completion = json.loads(
-    (completion_root / 'completion_watch_complete.json').read_text(encoding='utf-8'),
+    completion_path.read_text(encoding='utf-8'),
 )
 expected_completion = {
     'state': 'complete',

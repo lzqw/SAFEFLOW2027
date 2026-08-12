@@ -197,6 +197,14 @@ def test_remote_probe_requires_complete_statistical_receipt(tmp_path: Path) -> N
     assert 'statistical_unit' in str(result['error'])
 
 
+def test_remote_probe_waits_during_atomic_completion_receipt_handoff(tmp_path: Path) -> None:
+    run_root = tmp_path / 'formal'
+    completion_root = tmp_path / 'completion'
+    _write_remote_completion(run_root, completion_root)
+    (completion_root / 'completion_watch_complete.json').unlink()
+    assert _run_remote_probe(run_root, completion_root) == {'state': 'waiting'}
+
+
 def test_waiting_remote_does_not_create_local_output(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
