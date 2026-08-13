@@ -273,9 +273,16 @@ After a gate passes, sync source and compact evidence back to the host. Do not c
 caches, videos, or full run directories into the repository. Long formal SHAPO runs are the one
 exception for disaster recovery: keep exactly one newest, semantically validated, replay-bearing
 `latest_full.pt` per run in an owner-private host directory. Refresh it hourly with
-`backup_shapo_p47_checkpoints_to_host.py`; this engineering backup must not inspect scientific
-metrics or participate in checkpoint/configuration selection.
+`backup_shapo_p47_checkpoints_to_host.py`. Independently mirror the frozen retention contract with
+`backup_shapo_p47_retained_checkpoints_to_host.py`: each immutable milestone checkpoint and the
+monotonically updated `best_safe_return.pt` stays byte-exact, while `final_full.pt` is stored as a
+byte-exactly verified, size-capped Zstandard patch against that run's deeply validated final
+`latest_full.pt`.
+Restore the latter to a new path with `restore_shapo_p47_final_checkpoint.py`; the restore refuses
+to overwrite files and verifies base, patch, and reconstructed SHA-256 identities. Both services
+are engineering retention only: checkpoint counters are checked for integrity but values are not
+reported or used for scientific stopping, model selection, or configuration selection.
 
 Commit and push source plus compact reports from the host branch to the private
-`lzqw/SAFEFLOW2027` repository. Never add replay-bearing checkpoint payloads or the private backup
-tree to Git.
+`lzqw/SAFEFLOW2027` repository. Never add any checkpoint payload, final-checkpoint patch, or private
+backup tree to Git.
