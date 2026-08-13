@@ -357,7 +357,7 @@ def main() -> None:  # pylint: disable=too-many-locals
                     raise
                 time.sleep(args.poll_seconds)
                 continue
-            except Exception as error:
+            except Exception as error:  # noqa: BLE001,RUF100 - persist fail-closed alerts
                 details = error.payload if isinstance(error, RemoteRecoveryError) else {}
                 alert = {
                     'observed_at_utc': observed_at,
