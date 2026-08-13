@@ -290,6 +290,23 @@ def test_host_key_fingerprint_requires_exact_endpoint_record(
     assert calls[0][2] == '[server.example]:11281'
 
 
+def test_effective_client_requires_one_user_host_key_source() -> None:
+    settings = watcher.parse_ssh_g(
+        'userknownhostsfile /safe/known_hosts\nglobalknownhostsfile /dev/null\n',
+    )
+    assert watcher.known_hosts_paths(settings) == [Path('/safe/known_hosts')]
+    settings = watcher.parse_ssh_g(
+        'userknownhostsfile /safe/known_hosts /safe/second\nglobalknownhostsfile /dev/null\n',
+    )
+    with pytest.raises(ValueError, match='exactly one'):
+        watcher.known_hosts_paths(settings)
+    settings = watcher.parse_ssh_g(
+        'userknownhostsfile /safe/known_hosts\nglobalknownhostsfile /etc/ssh/known_hosts\n',
+    )
+    with pytest.raises(ValueError, match='disable global'):
+        watcher.known_hosts_paths(settings)
+
+
 def test_remote_invocation_uses_argument_vector_and_validates_response(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

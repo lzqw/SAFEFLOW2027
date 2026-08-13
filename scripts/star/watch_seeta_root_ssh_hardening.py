@@ -244,6 +244,22 @@ def one_setting(settings: dict[str, list[str]], key: str) -> str:
     return values[0]
 
 
+def known_hosts_paths(settings: dict[str, list[str]]) -> list[Path]:
+    """Return the sole user host-key source while rejecting global fallback sources."""
+    user_tokens = [
+        token for value in settings.get('userknownhostsfile', []) for token in shlex.split(value)
+    ]
+    paths = [Path(os.path.expanduser(value)) for value in user_tokens]
+    if len(paths) != 1:
+        raise ValueError('saved SSH alias must have exactly one known-hosts file')
+    global_tokens = [
+        token for value in settings.get('globalknownhostsfile', []) for token in shlex.split(value)
+    ]
+    if global_tokens != ['/dev/null']:
+        raise ValueError('saved SSH alias must disable global known-hosts files')
+    return paths
+
+
 def host_key_fingerprints(hostname: str, port: int, known_hosts: Path) -> list[str]:
     """Return sorted host-key fingerprints bound to the saved endpoint."""
     lookup = f'[{hostname}]:{port}' if port != 22 else hostname
@@ -335,12 +351,7 @@ def effective_client_config(
     identity_path = Path(os.path.expanduser(identities[0]))
     if not identity_path.is_absolute() or '..' in identity_path.parts:
         raise ValueError('saved SSH identity path is unsafe')
-    known_host_tokens = [
-        token for value in settings.get('userknownhostsfile', []) for token in shlex.split(value)
-    ]
-    known_hosts = [Path(os.path.expanduser(value)) for value in known_host_tokens]
-    if not known_hosts:
-        raise ValueError('saved SSH alias has no known-hosts file')
+    known_hosts = known_hosts_paths(settings)
     if not known_hosts[0].is_absolute() or '..' in known_hosts[0].parts:
         raise ValueError('local known-hosts path is unsafe')
     known_hosts_metadata = known_hosts[0].lstat()
@@ -368,6 +379,7 @@ def effective_client_config(
         'user': user,
         'identity_file': identity_path,
         'known_hosts_file': known_hosts[0],
+        'global_known_hosts_file': '/dev/null',
         'host_key_fingerprint': fingerprints[0],
         'endpoint_sha256': endpoint_sha256,
         'config_sha256': sha256_file(config_path),
