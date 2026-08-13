@@ -62,12 +62,9 @@ SCIENTIFIC_BOUNDARY = {
 class RemoteHardeningError(RuntimeError):
     """Represent one machine-readable fail-closed response from the remote agent."""
 
-    def __init__(self, payload: dict[str, Any], stderr: str = '') -> None:
+    def __init__(self, payload: dict[str, Any]) -> None:
         self.payload = payload
-        self.stderr = stderr
         message = f"remote hardening alert: {payload.get('error', 'unknown error')}"
-        if stderr:
-            message = f'{message}; stderr={stderr}'
         super().__init__(message)
 
 
@@ -310,7 +307,7 @@ def effective_client_config(
         check=False,
     )
     if completed.returncode != 0:
-        raise ValueError(f'effective SSH client query failed: {completed.stderr.strip()}')
+        raise ValueError(f'effective SSH client query failed with exit {completed.returncode}')
     settings = parse_ssh_g(completed.stdout)
     hostname = one_setting(settings, 'hostname')
     user = one_setting(settings, 'user')
@@ -539,7 +536,7 @@ def invoke_remote(
     if not isinstance(result, dict) or result.get('version') != payload['version']:
         raise RuntimeError('remote SSH hardening response identity changed')
     if completed.returncode != 0 or result.get('state') == 'alert':
-        raise RemoteHardeningError(result, completed.stderr.strip())
+        raise RemoteHardeningError(result)
     allowed_states = {'compliant', 'reloaded', 'repaired', 'repair_required'}
     if result.get('state') not in allowed_states:
         raise RuntimeError(f'remote SSH hardening returned invalid state: {result.get("state")!r}')

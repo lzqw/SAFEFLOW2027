@@ -329,6 +329,41 @@ def test_remote_invocation_uses_argument_vector_and_validates_response(
     assert 'shell' not in seen
 
 
+def test_remote_agent_alert_never_persists_transport_stderr(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = watcher.build_payload(
+        expected_fingerprint=FINGERPRINT,
+        expected_dropin_sha256=DIGEST,
+        allow_repair=True,
+        force_listener_reload=False,
+    )
+    response = {
+        'version': watcher.REMOTE_VERSION,
+        'state': 'alert',
+        'error': 'fixed policy drift',
+    }
+    monkeypatch.setattr(
+        subprocess,
+        'run',
+        lambda *_args, **_kwargs: _completed(
+            json.dumps(response),
+            returncode=2,
+            stderr='transport endpoint must not be persisted',
+        ),
+    )
+    with pytest.raises(watcher.RemoteHardeningError) as error:
+        watcher.invoke_remote(
+            alias='seeta-nmb2',
+            config_path=Path('/safe/config'),
+            remote_python='/root/miniconda3/bin/python3',
+            payload=payload,
+            agent_source='print()\n',
+        )
+    assert 'transport endpoint' not in str(error.value)
+    assert not hasattr(error.value, 'stderr')
+
+
 def test_local_key_validation_does_not_persist_private_key_digest(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
