@@ -283,6 +283,17 @@ to overwrite files and verifies base, patch, and reconstructed SHA-256 identitie
 are engineering retention only: checkpoint counters are checked for integrity but values are not
 reported or used for scientific stopping, model selection, or configuration selection.
 
+The saved `seeta-nmb2` login is an owner-private local OpenSSH alias backed by one protected
+ED25519 key and strict host-key checking. The root daemon must accept only that public key; never
+store or automate the shared server password. `watch_seeta_root_ssh_hardening.py` independently
+checks the local alias, client key, pinned server host key, remote authorized-key fingerprint,
+fixed root-only daemon policy, a fresh key connection, and a password-only rejection every five
+minutes. It may atomically restore only the compiled `/etc/ssh/sshd_config.d` policy and safely
+reload the validated listener. It never changes `authorized_keys`, falls back to a password, or
+reads training metrics. A key, endpoint, host-key, or broader daemon-policy drift is a fail-closed
+alert rather than an automatic repair. This is an engineering access control and does not alter
+training state, scientific configuration, stopping, or model selection.
+
 Commit and push source plus compact reports from the host branch to the private
 `lzqw/SAFEFLOW2027` repository. Never add any checkpoint payload, final-checkpoint patch, or private
 backup tree to Git.
