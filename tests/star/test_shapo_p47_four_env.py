@@ -16,6 +16,7 @@ import yaml
 from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
 from scripts.star.finalize_shapo_p47_formal import verify_artifact_identity
 from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
+from scripts.star.plot_shapo_p47_formal import trajectory_coordinate_contract
 from scripts.star.validate_shapo_p47_run import (
     undefined,
     validate_checkpoint_artifact,
@@ -56,7 +57,12 @@ class AnalyticFailureCostCritic(nn.Module):
         return torch.stack((value, value), dim=0)
 
 
-def _write_trajectory(path: Path, milestone: int, seeds: list[int]) -> None:
+def _write_trajectory(
+    path: Path,
+    milestone: int,
+    seeds: list[int],
+    position_source: str = 'simulator_xy',
+) -> None:
     """Write a compact fixed-seed trajectory fixture accepted by the formal validator."""
     rows = []
     for seed in seeds:
@@ -69,6 +75,7 @@ def _write_trajectory(path: Path, milestone: int, seeds: list[int]) -> None:
                     'step': step,
                     'x': float(step),
                     'y': float(seed % 10),
+                    'position_source': position_source,
                     'predicted_violation_probability': 0.1 * (step + 1),
                     'predicted_cost_to_go': 0.2,
                     'geometry_budget_ratio': 0.5,
@@ -423,6 +430,7 @@ def test_formal_finalization_wrapper_revalidates_and_atomically_seals_output() -
         'merge-base --is-ancestor',
         'validate_shapo_p47_run.py',
         'finalize_shapo_p47_formal.py',
+        'plot_shapo_p47_formal.py',
         'shapo_p47_strict_validation_manifest.csv',
         'strict_validations/$slug-$seed.json',
         'training_seed_is_statistical_unit',
@@ -495,6 +503,24 @@ def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
     path.write_text(text, encoding='utf-8')
     with pytest.raises(ValueError, match='not finite'):
         validate_trajectory_artifact(path, 100, seeds)
+
+
+def test_trajectory_coordinate_contract_distinguishes_spatial_and_projected_traces() -> None:
+    point = trajectory_coordinate_contract(
+        'SafetyPointGoal1-v0',
+        [{'position_source': 'simulator_xy'}],
+    )
+    locomotion = trajectory_coordinate_contract(
+        'Ant-v4',
+        [{'position_source': 'observation_projection'}],
+    )
+    assert point['x_label'] == 'Simulator x position'
+    assert 'not physical XY trajectories' in locomotion['title_kind']
+    with pytest.raises(ValueError, match='coordinate source mismatch'):
+        trajectory_coordinate_contract(
+            'Walker2d-v4',
+            [{'position_source': 'simulator_xy'}],
+        )
 
 
 def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: Path) -> None:
@@ -802,6 +828,11 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
                     trajectory_path,
                     milestone,
                     matrix['evaluation']['trajectory_base_seeds'],
+                    (
+                        'simulator_xy'
+                        if env_id.startswith('SafetyPoint')
+                        else 'observation_projection'
+                    ),
                 )
                 trajectories.append(
                     validate_trajectory_artifact(
@@ -911,6 +942,10 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
     assert summary['statistical_unit'] == 'training_seed'
     assert summary['validator_sha256'] == validator_sha256
+    plotter_sha256 = hashlib.sha256(
+        (ROOT / 'scripts/star/plot_shapo_p47_formal.py').read_bytes(),
+    ).hexdigest()
+    assert summary['plotter_sha256'] == plotter_sha256
     assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
     assert (
         summary['failure_reason_aggregate']['Ant-v4']['unhealthy_height']['n_training_seeds'] == 5
@@ -952,6 +987,8 @@ def test_finalizer_aggregates_twenty_runs_by_training_seed(
     report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
     assert 'Episode-level observations are not treated as independent replicates' in report
     assert f'Strict validator SHA-256: `{validator_sha256}`' in report
+    assert f'Plotter SHA-256: `{plotter_sha256}`' in report
+    assert 'not physical XY trajectories' in report
     assert 'Locomotion failure diagnostics' in report
     assert 'Failure-reason rates' in report
     assert 'High-risk direction diagnostics' in report

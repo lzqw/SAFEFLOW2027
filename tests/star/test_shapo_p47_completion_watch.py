@@ -18,6 +18,9 @@ from scripts.star.watch_shapo_p47_completion import (
 from scripts.star.watch_shapo_p47_milestones import locked_jobs, milestone_audit_identity
 
 
+PLOTTER_SHA256 = 'b' * 64
+
+
 def _matrix() -> dict[str, object]:
     return {
         'protocol_version': 'completion-test-v1',
@@ -154,6 +157,7 @@ def _fixture(tmp_path: Path, *, complete: bool) -> dict[str, object]:
         'milestone_root': milestone_root,
         'watchdog_root': watchdog_root,
         'output_root': output_root,
+        'plotter_sha256': PLOTTER_SHA256,
     }
 
 
@@ -161,10 +165,12 @@ def _write_final_output(
     output: Path,
     matrix: dict[str, object],
     source_commit: str,
+    plotter_sha256: str = PLOTTER_SHA256,
 ) -> None:
     counts = expected_counts(matrix)
     summary = {
         'source_commit': source_commit,
+        'plotter_sha256': plotter_sha256,
         'statistical_unit': 'training_seed',
         'n_training_seeds_per_environment': 1,
         **{
@@ -288,15 +294,18 @@ def test_final_output_rejects_statistical_or_checksum_drift(tmp_path: Path) -> N
     matrix = _matrix()
     output = tmp_path / 'public_artifacts'
     _write_final_output(output, matrix, 'a' * 40)
-    result = validate_final_output(output, matrix, 'a' * 40)
+    result = validate_final_output(output, matrix, 'a' * 40, PLOTTER_SHA256)
     assert result['strict_validation_count'] == 1
+
+    with pytest.raises(ValueError, match="field 'plotter_sha256' changed"):
+        validate_final_output(output, matrix, 'a' * 40, 'c' * 64)
 
     summary = output / 'shapo_p47_final_summary.json'
     payload = json.loads(summary.read_text(encoding='utf-8'))
     payload['statistical_unit'] = 'episode'
     summary.write_text(json.dumps(payload) + '\n', encoding='utf-8')
     with pytest.raises(ValueError, match='checksum mismatch'):
-        validate_final_output(output, matrix, 'a' * 40)
+        validate_final_output(output, matrix, 'a' * 40, PLOTTER_SHA256)
 
     checksum_path = output / 'checksums.sha256'
     lines = []
@@ -306,7 +315,7 @@ def test_final_output_rejects_statistical_or_checksum_drift(tmp_path: Path) -> N
         lines.append(f'{hashlib.sha256(path.read_bytes()).hexdigest()}  {relative}')
     checksum_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     with pytest.raises(ValueError, match="field 'statistical_unit' changed"):
-        validate_final_output(output, matrix, 'a' * 40)
+        validate_final_output(output, matrix, 'a' * 40, PLOTTER_SHA256)
 
 
 def test_engineering_alerts_fail_closed(tmp_path: Path) -> None:

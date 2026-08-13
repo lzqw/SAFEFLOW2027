@@ -42,6 +42,7 @@ PROTOCOL_FILE=$VALIDATION_SOURCE_DIR/reports/star/shapo_p47_four_env_preregistra
 FROZEN_CONFIG_FILE=$VALIDATION_SOURCE_DIR/reports/star/p4_7_safety_aware_geometry_artifacts/final/summary/p4_7_frozen_pointgoal_config.yaml
 VALIDATOR_FILE=$VALIDATION_SOURCE_DIR/scripts/star/validate_shapo_p47_run.py
 FINALIZER_FILE=$VALIDATION_SOURCE_DIR/scripts/star/finalize_shapo_p47_formal.py
+PLOTTER_FILE=$VALIDATION_SOURCE_DIR/scripts/star/plot_shapo_p47_formal.py
 verify_sha256 "$PROTOCOL_FILE" "$PROTOCOL_SHA256"
 verify_sha256 "$MATRIX_FILE" "$MATRIX_SHA256"
 verify_sha256 "$FROZEN_CONFIG_FILE" "$FROZEN_CONFIG_SHA256"
@@ -63,6 +64,7 @@ git -C "$VALIDATION_SOURCE_DIR" merge-base --is-ancestor \
     "$FORMAL_SOURCE_COMMIT" "$VALIDATION_COMMIT" || \
     fail "Validation commit is not descended from the frozen formal source"
 VALIDATOR_SHA256=$(sha256sum "$VALIDATOR_FILE" | cut -d' ' -f1)
+PLOTTER_SHA256=$(sha256sum "$PLOTTER_FILE" | cut -d' ' -f1)
 
 OUTPUT_PARENT=$(dirname "$OUTPUT_ROOT")
 OUTPUT_NAME=$(basename "$OUTPUT_ROOT")
@@ -159,16 +161,25 @@ cp -- "$PROTOCOL_FILE" "$STAGING_ROOT/protocol/shapo_p47_four_env_preregistratio
 cp -- "$FROZEN_CONFIG_FILE" "$STAGING_ROOT/protocol/p4_7_frozen_pointgoal_config.yaml"
 cp -- "$VALIDATOR_FILE" "$STAGING_ROOT/protocol/validate_shapo_p47_run.py"
 cp -- "$FINALIZER_FILE" "$STAGING_ROOT/protocol/finalize_shapo_p47_formal.py"
+cp -- "$PLOTTER_FILE" "$STAGING_ROOT/protocol/plot_shapo_p47_formal.py"
 
 "$PYTHON_BIN" - \
     "$STAGING_ROOT/shapo_p47_final_summary.json" \
     "$STAGING_ROOT/finalization_metadata.json" \
-    "$FORMAL_SOURCE_COMMIT" "$VALIDATION_COMMIT" "$VALIDATOR_SHA256" <<'PY'
+    "$FORMAL_SOURCE_COMMIT" "$VALIDATION_COMMIT" "$VALIDATOR_SHA256" \
+    "$PLOTTER_SHA256" <<'PY'
 from datetime import datetime, timezone
 import json
 import sys
 
-summary_path, metadata_path, formal_commit, validation_commit, validator_sha256 = sys.argv[1:]
+(
+    summary_path,
+    metadata_path,
+    formal_commit,
+    validation_commit,
+    validator_sha256,
+    plotter_sha256,
+) = sys.argv[1:]
 summary = json.load(open(summary_path, encoding='utf-8'))
 expected_counts = {
     'evaluation_artifact_count': 60,
@@ -180,6 +191,8 @@ if summary.get('source_commit') != formal_commit:
     raise SystemExit('final summary formal source commit mismatch')
 if summary.get('validator_sha256') != validator_sha256:
     raise SystemExit('final summary strict validator mismatch')
+if summary.get('plotter_sha256') != plotter_sha256:
+    raise SystemExit('final summary plotter mismatch')
 if summary.get('statistical_unit') != 'training_seed':
     raise SystemExit('final summary changed the statistical unit')
 if int(summary.get('n_training_seeds_per_environment', -1)) != 5:
@@ -192,6 +205,7 @@ metadata = {
     'formal_source_commit': formal_commit,
     'validation_commit': validation_commit,
     'validator_sha256': validator_sha256,
+    'plotter_sha256': plotter_sha256,
     'formal_runs': 20,
     'statistical_unit': 'training_seed',
     'n_training_seeds_per_environment': 5,

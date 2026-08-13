@@ -278,6 +278,7 @@ def validate_final_output(
     output_root: Path,
     matrix: dict[str, Any],
     source_commit: str,
+    plotter_sha256: str,
 ) -> dict[str, Any]:
     """Revalidate the complete portable final bundle and its statistical identity."""
     if not output_root.is_dir() or not (output_root / 'finalization_complete').is_file():
@@ -301,6 +302,7 @@ def validate_final_output(
     summary = load_json(output_root / 'shapo_p47_final_summary.json')
     expected_summary = {
         'source_commit': source_commit,
+        'plotter_sha256': plotter_sha256,
         'statistical_unit': 'training_seed',
         'n_training_seeds_per_environment': len(matrix['training_seeds']),
         **{
@@ -407,10 +409,11 @@ def complete_once(  # pylint: disable=too-many-arguments
     python_bin: Path,
     output_root: Path,
     finalizer_script: Path,
+    plotter_sha256: str,
 ) -> dict[str, Any]:
     """Wait without mutation, or finalize and verify exactly once when ready."""
     if output_root.exists():
-        final = validate_final_output(output_root, matrix, source_commit)
+        final = validate_final_output(output_root, matrix, source_commit, plotter_sha256)
         return {'state': 'complete', 'finalization': 'already_present', 'final': final}
     gates = completion_gates(
         run_root=run_root,
@@ -430,7 +433,7 @@ def complete_once(  # pylint: disable=too-many-arguments
         output_root,
         finalizer_script,
     )
-    final = validate_final_output(output_root, matrix, source_commit)
+    final = validate_final_output(output_root, matrix, source_commit, plotter_sha256)
     return {
         'state': 'complete',
         'finalization': 'invoked',
@@ -519,6 +522,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         'strict_validator': audit_script.with_name('validate_shapo_p47_run.py'),
         'finalizer_script': finalizer_script,
         'finalizer_module': finalizer_script.with_name('finalize_shapo_p47_formal.py'),
+        'plotter_module': finalizer_script.with_name('plot_shapo_p47_formal.py'),
     }
     immutable_hashes = {name: sha256_file(path) for name, path in immutable_paths.items()}
     identities = {
@@ -554,6 +558,7 @@ def main() -> None:  # pylint: disable=too-many-locals
                     python_bin=args.python_bin.resolve(),
                     output_root=output_root,
                     finalizer_script=finalizer_script,
+                    plotter_sha256=immutable_hashes['plotter_module'],
                 )
                 snapshot.update({'observed_at_utc': observed_at, **identities})
             except Exception as error:

@@ -23,6 +23,7 @@ SLUGS = {
     'Walker2d-v4': 'walker2d',
 }
 STRICT_VALIDATOR = Path(__file__).resolve().with_name('validate_shapo_p47_run.py')
+PLOTTER = Path(__file__).resolve().with_name('plot_shapo_p47_formal.py')
 METRICS = (
     'mean_return',
     'mean_cost',
@@ -187,6 +188,7 @@ def render_report(
     recovery: dict[str, Any],
     source_commit: str,
     validator_sha256: str,
+    plotter_sha256: str,
     figures: list[Path],
 ) -> str:
     """Render the compact frozen-method result report."""
@@ -195,6 +197,7 @@ def render_report(
         '',
         f'- Formal source commit: `{source_commit}`',
         f'- Strict validator SHA-256: `{validator_sha256}`',
+        f'- Plotter SHA-256: `{plotter_sha256}`',
         '- Independent statistical unit: training seed (`n=5` per environment)',
         '- Evaluation: 5 fixed base seeds by 20 sequential episodes = 100 episodes per training seed',
         '- Point tasks: 10M environment steps; locomotion tasks: 5M environment steps',
@@ -297,6 +300,12 @@ def render_report(
             '',
             '## Figures',
             '',
+            (
+                'Point-task risk figures use simulator x/y coordinates. Ant and Walker2d '
+                'figures use observation dimensions 0/1 and are explicitly projections, '
+                'not physical XY trajectories.'
+            ),
+            '',
             *[f'- [`{path.name}`](figures/{path.name})' for path in figures],
             '',
             '## Recovery evidence',
@@ -346,6 +355,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     source_commits = set()
     matrix_sha256 = sha256_file(args.matrix)
     validator_sha256 = sha256_file(STRICT_VALIDATOR)
+    plotter_sha256 = sha256_file(PLOTTER)
     for env_id, environment in matrix['environments'].items():
         expected_milestones = [int(step) for step in environment['milestones']]
         for seed in matrix['training_seeds']:
@@ -610,11 +620,12 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     write_csv(output / 'shapo_p47_provenance_manifest.csv', provenance_manifest_rows)
     write_csv(output / 'shapo_p47_trajectory_manifest.csv', trajectory_rows)
     write_csv(output / 'shapo_p47_checkpoint_manifest.csv', checkpoint_rows)
-    from scripts.star.plot_shapo_p47_formal import (  # pylint: disable=import-outside-toplevel
-        plot_all,
-    )
+    from scripts.star import plot_shapo_p47_formal  # pylint: disable=import-outside-toplevel
 
-    figures = plot_all(output, output / 'figures')
+    imported_plotter = Path(plot_shapo_p47_formal.__file__).resolve()
+    if imported_plotter != PLOTTER or sha256_file(imported_plotter) != plotter_sha256:
+        raise ValueError('formal plotter import does not match the locked plotter module')
+    figures = plot_shapo_p47_formal.plot_all(output, output / 'figures')
     write_json(
         output / 'shapo_p47_final_summary.json',
         {
@@ -623,6 +634,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'matrix_sha256': matrix_sha256,
             'source_commit': source_commit,
             'validator_sha256': validator_sha256,
+            'plotter_sha256': plotter_sha256,
             'statistical_unit': 'training_seed',
             'n_training_seeds_per_environment': 5,
             'episodes_per_training_seed': 100,
@@ -644,6 +656,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             recovery,
             source_commit,
             validator_sha256,
+            plotter_sha256,
             figures,
         ),
     )

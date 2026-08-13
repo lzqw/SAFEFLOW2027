@@ -143,6 +143,34 @@ def _trajectory_groups(path: Path) -> dict[int, list[dict[str, str]]]:
     return grouped
 
 
+def trajectory_coordinate_contract(
+    env_id: str,
+    rows: list[dict[str, str]],
+) -> dict[str, Any]:
+    """Identify and validate the coordinate system used by a risk trace."""
+    point_task = env_id.startswith('SafetyPoint')
+    expected_source = 'simulator_xy' if point_task else 'observation_projection'
+    observed_sources = {row.get('position_source', '') for row in rows}
+    if observed_sources != {expected_source}:
+        raise ValueError(
+            f'{env_id} trajectory coordinate source mismatch: expected '
+            f'{expected_source!r}, observed {sorted(observed_sources)!r}',
+        )
+    if point_task:
+        return {
+            'point_task': True,
+            'x_label': 'Simulator x position',
+            'y_label': 'Simulator y position',
+            'title_kind': 'simulator-XY trajectories',
+        }
+    return {
+        'point_task': False,
+        'x_label': 'Observation dimension 0',
+        'y_label': 'Observation dimension 1',
+        'title_kind': 'observation-space projections (not physical XY trajectories)',
+    }
+
+
 def _draw_point_layout(axis: Any, rows: list[dict[str, str]]) -> None:
     first = rows[0]
     hazards = json.loads(first.get('hazards_json') or '[]')
@@ -209,7 +237,7 @@ def _draw_trajectory(axis: Any, rows: list[dict[str, str]], point_task: bool) ->
 
 
 def plot_trajectory_risk(summary_dir: Path, output_dir: Path) -> list[Path]:
-    """Render final-milestone fixed-seed risk trajectories for every environment."""
+    """Render final fixed-seed risk traces with explicit coordinate semantics."""
     manifest = read_csv(summary_dir / 'shapo_p47_trajectory_manifest.csv')
     outputs: list[Path] = []
     for env_id in ENVIRONMENTS:
@@ -226,6 +254,16 @@ def plot_trajectory_risk(summary_dir: Path, output_dir: Path) -> list[Path]:
             seed: _trajectory_groups(summary_dir / final_by_training_seed[seed]['artifact'])
             for seed in training_seeds
         }
+        coordinate_contracts = [
+            trajectory_coordinate_contract(env_id, trace)
+            for groups in grouped.values()
+            for trace in groups.values()
+        ]
+        if not coordinate_contracts:
+            raise ValueError(f'{env_id} has no final trajectory traces')
+        coordinate_contract = coordinate_contracts[0]
+        if any(contract != coordinate_contract for contract in coordinate_contracts[1:]):
+            raise ValueError(f'{env_id} trajectory coordinate contracts are inconsistent')
         evaluation_seeds = sorted({seed for groups in grouped.values() for seed in groups})
         figure, axes = plt.subplots(
             len(training_seeds),
@@ -243,13 +281,19 @@ def plot_trajectory_risk(summary_dir: Path, output_dir: Path) -> list[Path]:
                         f'{env_id} training seed {training_seed} lacks trajectory '
                         f'{evaluation_seed}',
                     )
-                scatter = _draw_trajectory(axis, trace, env_id.startswith('SafetyPoint'))
+                scatter = _draw_trajectory(
+                    axis,
+                    trace,
+                    bool(coordinate_contract['point_task']),
+                )
                 if row_index == 0:
                     axis.set_title(f'Evaluation seed {evaluation_seed}')
                 if column == 0:
-                    axis.set_ylabel(f'Training seed {training_seed}\ny')
+                    axis.set_ylabel(
+                        f'Training seed {training_seed}\n{coordinate_contract["y_label"]}',
+                    )
                 if row_index == len(training_seeds) - 1:
-                    axis.set_xlabel('x')
+                    axis.set_xlabel(str(coordinate_contract['x_label']))
         if scatter is not None:
             figure.colorbar(
                 scatter,
@@ -259,7 +303,8 @@ def plot_trajectory_risk(summary_dir: Path, output_dir: Path) -> list[Path]:
                 label='Predicted violation probability',
             )
         figure.suptitle(
-            f'{env_id}: final fixed-seed trajectories (red x = cost/failure; star = endpoint)',
+            f'{env_id}: final fixed-seed {coordinate_contract["title_kind"]} '
+            '(red x = cost/failure; star = endpoint)',
         )
         figure.subplots_adjust(top=0.95, right=0.91, hspace=0.28, wspace=0.22)
         path = output_dir / f'shapo_p47_{SLUGS[env_id]}_trajectory_risk.png'
