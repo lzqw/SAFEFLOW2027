@@ -42,6 +42,9 @@ PUBLISH_PATHS = (
 )
 MAX_GITHUB_FILE_BYTES = 95 * 1024 * 1024
 MAX_ALERT_BYTES = 1024 * 1024
+GIT_REMOTE_READ_TIMEOUT_SECONDS = 120
+GIT_PUSH_TIMEOUT_SECONDS = 3600
+GIT_LOCAL_TIMEOUT_SECONDS = 600
 
 
 def sha256_file(path: Path) -> str:
@@ -133,13 +136,22 @@ def archive_resolved_alert(state_dir: Path, resolved_at: str) -> dict[str, str] 
 def git(repo: Path, *arguments: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     """Run Git without invoking a shell or an interactive credential prompt."""
     environment = {**os.environ, 'GIT_TERMINAL_PROMPT': '0'}
-    completed = subprocess.run(
-        ['git', '-C', str(repo), *arguments],
-        capture_output=True,
-        text=True,
-        check=False,
-        env=environment,
-    )
+    operation = arguments[0] if arguments else ''
+    timeout = {
+        'ls-remote': GIT_REMOTE_READ_TIMEOUT_SECONDS,
+        'push': GIT_PUSH_TIMEOUT_SECONDS,
+    }.get(operation, GIT_LOCAL_TIMEOUT_SECONDS)
+    try:
+        completed = subprocess.run(
+            ['git', '-C', str(repo), *arguments],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=environment,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise RuntimeError(f'git {operation or "command"} exceeded {timeout} seconds') from error
     if check and completed.returncode != 0:
         raise RuntimeError(
             f'git {arguments[0]} failed with exit {completed.returncode}: '

@@ -9,10 +9,16 @@ from pathlib import Path
 
 import pytest
 from scripts.star.watch_shapo_p47_github_publish import (
+    GIT_LOCAL_TIMEOUT_SECONDS,
+    GIT_PUSH_TIMEOUT_SECONDS,
+    GIT_REMOTE_READ_TIMEOUT_SECONDS,
     MAX_GITHUB_FILE_BYTES,
     PUBLISH_PATHS,
     archive_resolved_alert,
     commit_and_push,
+)
+from scripts.star.watch_shapo_p47_github_publish import git as publication_git
+from scripts.star.watch_shapo_p47_github_publish import (
     host_evidence_readiness,
     publish_once,
     status_entries,
@@ -129,6 +135,46 @@ def test_repository_identity_accepts_credential_free_https_and_rejects_userinfo(
 def test_github_file_limit_is_conservative() -> None:
     assert MAX_GITHUB_FILE_BYTES == 95 * 1024 * 1024
     assert MAX_GITHUB_FILE_BYTES < 100 * 1024 * 1024
+
+
+def test_git_commands_have_bounded_operation_specific_timeouts(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed: list[tuple[str, int]] = []
+
+    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        observed.append((command[3], int(kwargs['timeout'])))
+        return subprocess.CompletedProcess(command, 0, '', '')
+
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.subprocess.run',
+        fake_run,
+    )
+    publication_git(tmp_path, 'ls-remote', 'origin')
+    publication_git(tmp_path, 'push', 'origin', 'HEAD')
+    publication_git(tmp_path, 'status', '--short')
+    assert observed == [
+        ('ls-remote', GIT_REMOTE_READ_TIMEOUT_SECONDS),
+        ('push', GIT_PUSH_TIMEOUT_SECONDS),
+        ('status', GIT_LOCAL_TIMEOUT_SECONDS),
+    ]
+
+
+def test_git_timeout_is_fail_closed_without_leaking_command_output(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def timeout(*_args: object, **_kwargs: object) -> None:
+        raise subprocess.TimeoutExpired(['git', 'ls-remote', 'secret'], 120)
+
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.subprocess.run',
+        timeout,
+    )
+    with pytest.raises(RuntimeError, match='git ls-remote exceeded 120 seconds') as error:
+        publication_git(tmp_path, 'ls-remote', 'origin')
+    assert 'secret' not in str(error.value)
 
 
 def test_successful_poll_archives_active_alert_without_changing_evidence(tmp_path: Path) -> None:

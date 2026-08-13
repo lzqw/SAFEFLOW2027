@@ -334,12 +334,15 @@ Commit and push source plus compact reports from the host branch to the private
 `lzqw/SAFEFLOW2027` repository. Never add any checkpoint payload, final-checkpoint patch, or private
 backup tree to Git.
 
-The unattended publisher must use authentication that survives logout and desktop-agent loss. On
-the dedicated host delivery clone, pin the private repository's HTTPS URL and a repository-local
-credential helper backed by the authenticated GitHub CLI keyring; never embed a token in the URL,
-Git config, systemd unit, or log. Pin the same credential-free HTTPS URL with
-`--expected-remote-url`, and verify both `git ls-remote` and `git push --dry-run` from a transient
-user-systemd unit before starting the watcher. A successful poll automatically moves any prior
-active alert byte-for-byte into `resolved-alerts/`; the latest snapshot records its SHA-256 and
-resolution time, so transient access failures remain auditable without leaving a stale active
-alarm.
+The unattended publisher must use authentication that survives logout and desktop-agent loss. Use
+one protected ED25519 deploy key scoped only to the private `lzqw/SAFEFLOW2027` repository, with
+write access solely for the final evidence transaction. On the dedicated host delivery clone,
+pin that identity through repository-local `core.sshCommand`: disable the SSH agent, unrelated
+identities, password fallback, and interactive prompts; require strict host-key checking and keep
+the canonical credential-free SSH URL. Never embed a token or private key in the URL, repository,
+systemd unit, or log. Verify both `git ls-remote` and `git push --dry-run` from a transient
+user-systemd unit before starting the watcher. Remote reads, final push, and local Git operations
+have explicit hard timeouts so a half-open transport fails into the restart/recovery path instead
+of blocking publication forever. A successful poll automatically moves any prior active alert
+byte-for-byte into `resolved-alerts/`; the latest snapshot records its SHA-256 and resolution time,
+so transient access failures remain auditable without leaving a stale active alarm.
