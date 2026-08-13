@@ -11,8 +11,8 @@ import pytest
 import torch
 import yaml
 from scripts.star.backup_shapo_p47_checkpoints_to_host import (
-    BackupJob,
     DEFAULT_POLL_SECONDS,
+    BackupJob,
     RemoteCheckpoint,
     backup_once,
     ensure_capacity,
