@@ -12,6 +12,7 @@ import torch
 import yaml
 from scripts.star.backup_shapo_p47_checkpoints_to_host import (
     BackupJob,
+    DEFAULT_POLL_SECONDS,
     RemoteCheckpoint,
     backup_once,
     ensure_capacity,
@@ -433,3 +434,7 @@ def test_backup_once_waits_for_unstarted_jobs_without_metrics(
 def test_matrix_fixture_remains_yaml_mapping() -> None:
     matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
     assert matrix['checkpoint']['latest_full_frequency_steps'] == 50_000
+
+
+def test_default_poll_interval_limits_host_backup_delay_to_one_hour() -> None:
+    assert DEFAULT_POLL_SECONDS == 3600.0

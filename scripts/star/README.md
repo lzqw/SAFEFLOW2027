@@ -269,6 +269,13 @@ Port 6008 is reserved for read-only monitoring and is never a training dependenc
 be detached from the SSH connection with the server's available process supervisor (the validated
 server used `nohup` with separate PID and console-log files).
 
-After a gate passes, sync only source and small reports back to the host. Do not copy environments,
-caches, replay, checkpoints, videos, or full run directories. Commit and push from the host branch
-`codex/star-p4.1-correctness` to the private `lzqw/SAFEFLOW2027` repository.
+After a gate passes, sync source and compact evidence back to the host. Do not copy environments,
+caches, videos, or full run directories into the repository. Long formal SHAPO runs are the one
+exception for disaster recovery: keep exactly one newest, semantically validated, replay-bearing
+`latest_full.pt` per run in an owner-private host directory. Refresh it hourly with
+`backup_shapo_p47_checkpoints_to_host.py`; this engineering backup must not inspect scientific
+metrics or participate in checkpoint/configuration selection.
+
+Commit and push source plus compact reports from the host branch to the private
+`lzqw/SAFEFLOW2027` repository. Never add replay-bearing checkpoint payloads or the private backup
+tree to Git.

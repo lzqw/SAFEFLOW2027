@@ -34,6 +34,7 @@ from scripts.star.validate_shapo_p47_checkpoint_backup import (  # noqa: E402
 SAFE_HOST = re.compile(r'^[A-Za-z0-9_.@-]+$')
 SAFE_REMOTE_ROOT = re.compile(r'^/[A-Za-z0-9_./-]+$')
 FULL_SHA256 = re.compile(r'^[0-9a-f]{64}$')
+DEFAULT_POLL_SECONDS = 3600.0
 SLUGS = {
     'SafetyPointGoal1-v0': 'point-goal',
     'SafetyPointButton1-v0': 'point-button',
@@ -622,7 +623,7 @@ def main() -> None:  # pylint: disable=too-many-locals
     parser.add_argument('--output-root', type=Path, required=True)
     parser.add_argument('--state-dir', type=Path, required=True)
     parser.add_argument('--reserve-bytes', type=int, default=2 * 1024**3)
-    parser.add_argument('--poll-seconds', type=float, default=21600.0)
+    parser.add_argument('--poll-seconds', type=float, default=DEFAULT_POLL_SECONDS)
     parser.add_argument('--once', action='store_true')
     args = parser.parse_args()
     if args.reserve_bytes < 0 or args.poll_seconds <= 0.0:
