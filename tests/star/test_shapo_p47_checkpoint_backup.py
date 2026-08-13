@@ -28,6 +28,8 @@ from scripts.star.validate_shapo_p47_checkpoint_backup import validate_checkpoin
 
 SOURCE_COMMIT = 'a' * 40
 REMOTE_ROOT = Path('/root/autodl-tmp/SAFE/shapo_p47_four_env/formal')
+REPO_ROOT = Path(__file__).resolve().parents[2]
+MATRIX = REPO_ROOT / 'configs/star/shapo_p47_four_env.yaml'
 
 
 def _checkpoint_payload(matrix: Path, environment: str, seed: int, steps: int) -> dict:
@@ -151,7 +153,7 @@ def _record(job: str, checkpoint: Path) -> RemoteCheckpoint:
 
 
 def test_expected_jobs_expand_frozen_four_by_five_matrix() -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     jobs = expected_jobs(matrix)
     assert len(jobs) == 20
     assert jobs[0] == BackupJob('SafetyPointGoal1-v0', 2027, 'point-goal-2027')
@@ -194,7 +196,7 @@ def test_remote_arguments_and_records_are_strict() -> None:
 def test_checkpoint_validator_accepts_recovery_state_and_rejects_identity(
     tmp_path: Path,
 ) -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     checkpoint = tmp_path / 'latest_full.pt'
     _write_checkpoint(checkpoint, matrix)
     receipt = validate_checkpoint_backup(
@@ -227,7 +229,7 @@ def test_checkpoint_validator_accepts_recovery_state_and_rejects_identity(
 
 
 def test_checkpoint_validator_rejects_replay_and_resume_escape(tmp_path: Path) -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     checkpoint = tmp_path / 'latest_full.pt'
     payload = _checkpoint_payload(matrix, 'Ant-v4', 2027, 50_000)
     payload['replay']['capacity'] = 1
@@ -277,7 +279,7 @@ def test_transfer_is_validated_atomic_idempotent_and_monotonic(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     output_root = tmp_path / 'host-backups'
     remote_checkpoint = tmp_path / 'remote/latest_full.pt'
     _write_checkpoint(remote_checkpoint, matrix, steps=50_000)
@@ -350,7 +352,7 @@ def test_transfer_is_validated_atomic_idempotent_and_monotonic(
 
 
 def test_interrupted_swap_restores_previous_valid_backup(tmp_path: Path) -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     output_root = tmp_path / 'backups'
     output_root.mkdir()
     job = BackupJob('Ant-v4', 2027, 'ant-2027')
@@ -391,7 +393,7 @@ def test_backup_once_waits_for_unstarted_jobs_without_metrics(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    matrix = Path('configs/star/shapo_p47_four_env.yaml').resolve()
+    matrix = MATRIX
     all_jobs = expected_jobs(matrix)
     job = next(item for item in all_jobs if item.job == 'ant-2027')
     checkpoint = tmp_path / 'remote/latest_full.pt'
@@ -429,5 +431,5 @@ def test_backup_once_waits_for_unstarted_jobs_without_metrics(
 
 
 def test_matrix_fixture_remains_yaml_mapping() -> None:
-    matrix = yaml.safe_load(Path('configs/star/shapo_p47_four_env.yaml').read_text())
+    matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
     assert matrix['checkpoint']['latest_full_frequency_steps'] == 50_000
