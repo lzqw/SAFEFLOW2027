@@ -802,6 +802,7 @@ def validate_existing_final_patch(
         raise ValueError(f'final-full receipt lacks completion evidence for {job.job}')
     evidence_root = output / 'completion_evidence'
     total_evidence_bytes = 0
+    evidence_identities = {}
     for label, expected_name in COMPLETION_EVIDENCE_NAMES.items():
         identity = evidence_manifest[label]
         path = evidence_root / expected_name
@@ -815,10 +816,24 @@ def validate_existing_final_patch(
             raise ValueError(f'final-full completion path changed for {job.job}/{label}')
         validate_completion_evidence_relative(job.job, label, remote_relative)
         total_evidence_bytes += byte_count
+        evidence_identities[label] = FileIdentity(
+            relative=remote_relative.as_posix(),
+            bytes=byte_count,
+            mtime_ns=0,
+            sha256=checksum,
+        )
     if total_evidence_bytes != int(receipt.get('completion_evidence_bytes', -1)):
         raise ValueError(f'final-full completion evidence size changed for {job.job}')
     if total_evidence_bytes > MAX_COMPLETION_EVIDENCE_BYTES:
         raise ValueError(f'final-full completion evidence exceeds its cap for {job.job}')
+    _validate_completion_evidence_payloads(
+        job,
+        evidence_root,
+        evidence_identities,
+        matrix_sha256=sha256_file(matrix_path),
+        source_commit=source_commit,
+        remote_run_root=Path(str(receipt.get('remote_run_root', ''))),
+    )
     base = recovery_root / job.job / 'latest_full.pt'
     base_bytes, base_sha = stable_local_identity(base)
     if (

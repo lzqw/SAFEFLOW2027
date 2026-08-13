@@ -655,8 +655,23 @@ def test_final_patch_retains_and_revalidates_exact_completion_capsule(
         zstd_bin=zstd,
     )
     assert repeated['state'] == 'already_current'
-    (capsule / 'exit_code.txt').write_text('1\n', encoding='utf-8')
-    with pytest.raises(ValueError, match='completion evidence changed'):
+    completed_receipt = capsule / 'receipt.json'
+    payload = json.loads(completed_receipt.read_text(encoding='utf-8'))
+    payload['run_steps'] = 0
+    completed_receipt.write_text(json.dumps(payload), encoding='utf-8')
+    host_receipt_path = output_root / 'ant-2027/final_full/backup_receipt.json'
+    host_receipt = json.loads(host_receipt_path.read_text(encoding='utf-8'))
+    host_receipt['completion_evidence']['receipt'].update(
+        {
+            'bytes': completed_receipt.stat().st_size,
+            'sha256': hashlib.sha256(completed_receipt.read_bytes()).hexdigest(),
+        },
+    )
+    host_receipt['completion_evidence_bytes'] = sum(
+        path.stat().st_size for path in capsule.iterdir()
+    )
+    host_receipt_path.write_text(json.dumps(host_receipt), encoding='utf-8')
+    with pytest.raises(ValueError, match='no executed steps'):
         transfer_final_patch(
             job,
             record,
