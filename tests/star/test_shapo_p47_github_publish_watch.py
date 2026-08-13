@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import signal
 import subprocess
+import time
 from pathlib import Path
 
 import pytest
 from scripts.star.watch_shapo_p47_github_publish import (
+    GIT_KILL_GRACE_SECONDS,
     GIT_LOCAL_TIMEOUT_SECONDS,
     GIT_PUSH_TIMEOUT_SECONDS,
     GIT_REMOTE_READ_TIMEOUT_SECONDS,
@@ -141,23 +145,33 @@ def test_git_commands_have_bounded_operation_specific_timeouts(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    observed: list[tuple[str, int]] = []
+    observed: list[tuple[str, bool, int]] = []
 
-    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
-        observed.append((command[3], int(kwargs['timeout'])))
-        return subprocess.CompletedProcess(command, 0, '', '')
+    class FakeProcess:
+        returncode = 0
+        pid = 123
+
+        def __init__(self, command: list[str], **kwargs: object) -> None:
+            self.operation = command[3]
+            self.start_new_session = bool(kwargs['start_new_session'])
+            self.stdout = None
+            self.stderr = None
+
+        def communicate(self, timeout: int) -> tuple[str, str]:
+            observed.append((self.operation, self.start_new_session, timeout))
+            return '', ''
 
     monkeypatch.setattr(
-        'scripts.star.watch_shapo_p47_github_publish.subprocess.run',
-        fake_run,
+        'scripts.star.watch_shapo_p47_github_publish.subprocess.Popen',
+        FakeProcess,
     )
     publication_git(tmp_path, 'ls-remote', 'origin')
     publication_git(tmp_path, 'push', 'origin', 'HEAD')
     publication_git(tmp_path, 'status', '--short')
     assert observed == [
-        ('ls-remote', GIT_REMOTE_READ_TIMEOUT_SECONDS),
-        ('push', GIT_PUSH_TIMEOUT_SECONDS),
-        ('status', GIT_LOCAL_TIMEOUT_SECONDS),
+        ('ls-remote', True, GIT_REMOTE_READ_TIMEOUT_SECONDS),
+        ('push', True, GIT_PUSH_TIMEOUT_SECONDS),
+        ('status', True, GIT_LOCAL_TIMEOUT_SECONDS),
     ]
 
 
@@ -165,16 +179,76 @@ def test_git_timeout_is_fail_closed_without_leaking_command_output(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    def timeout(*_args: object, **_kwargs: object) -> None:
-        raise subprocess.TimeoutExpired(['git', 'ls-remote', 'secret'], 120)
+    signals: list[tuple[int, signal.Signals]] = []
+
+    class TimeoutProcess:
+        returncode = None
+        pid = 4242
+        stdout = None
+        stderr = None
+
+        def __init__(self, _command: list[str], **kwargs: object) -> None:
+            assert kwargs['start_new_session'] is True
+            self.calls = 0
+
+        def communicate(self, timeout: int) -> tuple[str, str]:
+            self.calls += 1
+            if self.calls == 1:
+                raise subprocess.TimeoutExpired(['git', 'ls-remote', 'secret'], timeout)
+            assert timeout == GIT_KILL_GRACE_SECONDS
+            self.returncode = -signal.SIGKILL
+            return '', ''
 
     monkeypatch.setattr(
-        'scripts.star.watch_shapo_p47_github_publish.subprocess.run',
-        timeout,
+        'scripts.star.watch_shapo_p47_github_publish.subprocess.Popen',
+        TimeoutProcess,
+    )
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.os.killpg',
+        lambda pid, sent: signals.append((pid, sent)),
     )
     with pytest.raises(RuntimeError, match='git ls-remote exceeded 120 seconds') as error:
         publication_git(tmp_path, 'ls-remote', 'origin')
     assert 'secret' not in str(error.value)
+    assert signals == [(4242, signal.SIGKILL)]
+
+
+def test_git_timeout_kills_real_child_process_group(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake_git = tmp_path / 'git'
+    child_pid_path = tmp_path / 'child.pid'
+    fake_git.write_text(
+        '#!/bin/sh\n'
+        '/bin/sleep 30 &\n'
+        'child=$!\n'
+        'printf "%s\\n" "$child" > "$FAKE_GIT_CHILD_PID"\n'
+        'wait "$child"\n',
+        encoding='utf-8',
+    )
+    fake_git.chmod(0o700)
+    monkeypatch.setenv('PATH', str(tmp_path))
+    monkeypatch.setenv('FAKE_GIT_CHILD_PID', str(child_pid_path))
+    monkeypatch.setattr(
+        'scripts.star.watch_shapo_p47_github_publish.GIT_LOCAL_TIMEOUT_SECONDS',
+        1,
+    )
+
+    with pytest.raises(RuntimeError, match='git status exceeded 1 seconds'):
+        publication_git(tmp_path, 'status')
+
+    child_pid = int(child_pid_path.read_text(encoding='utf-8'))
+    deadline = time.monotonic() + 3.0
+    while time.monotonic() < deadline:
+        try:
+            os.kill(child_pid, 0)
+        except ProcessLookupError:
+            break
+        time.sleep(0.05)
+    else:
+        os.kill(child_pid, signal.SIGKILL)
+        pytest.fail('timed-out Git child survived its isolated process-group kill')
 
 
 def test_successful_poll_archives_active_alert_without_changing_evidence(tmp_path: Path) -> None:

@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import fcntl
 import hashlib
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -45,6 +47,7 @@ MAX_ALERT_BYTES = 1024 * 1024
 GIT_REMOTE_READ_TIMEOUT_SECONDS = 120
 GIT_PUSH_TIMEOUT_SECONDS = 3600
 GIT_LOCAL_TIMEOUT_SECONDS = 600
+GIT_KILL_GRACE_SECONDS = 30
 
 
 def sha256_file(path: Path) -> str:
@@ -136,22 +139,43 @@ def archive_resolved_alert(state_dir: Path, resolved_at: str) -> dict[str, str] 
 def git(repo: Path, *arguments: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     """Run Git without invoking a shell or an interactive credential prompt."""
     environment = {**os.environ, 'GIT_TERMINAL_PROMPT': '0'}
+    command = ['git', '-C', str(repo), *arguments]
     operation = arguments[0] if arguments else ''
     timeout = {
         'ls-remote': GIT_REMOTE_READ_TIMEOUT_SECONDS,
         'push': GIT_PUSH_TIMEOUT_SECONDS,
     }.get(operation, GIT_LOCAL_TIMEOUT_SECONDS)
+    process = subprocess.Popen(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env=environment,
+        start_new_session=True,
+    )
     try:
-        completed = subprocess.run(
-            ['git', '-C', str(repo), *arguments],
-            capture_output=True,
-            text=True,
-            check=False,
-            env=environment,
-            timeout=timeout,
-        )
+        stdout, stderr = process.communicate(timeout=timeout)
     except subprocess.TimeoutExpired as error:
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(process.pid, signal.SIGKILL)
+        try:
+            process.communicate(timeout=GIT_KILL_GRACE_SECONDS)
+        except subprocess.TimeoutExpired as reap_error:
+            for stream in (process.stdout, process.stderr):
+                if stream is not None:
+                    stream.close()
+            try:
+                process.kill()
+                process.wait(timeout=GIT_KILL_GRACE_SECONDS)
+            except (ProcessLookupError, subprocess.TimeoutExpired) as kill_error:
+                raise RuntimeError(
+                    f'git {operation or "command"} timed out and could not be reaped',
+                ) from kill_error
+            raise RuntimeError(
+                f'git {operation or "command"} timed out with inherited pipes still open',
+            ) from reap_error
         raise RuntimeError(f'git {operation or "command"} exceeded {timeout} seconds') from error
+    completed = subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
     if check and completed.returncode != 0:
         raise RuntimeError(
             f'git {arguments[0]} failed with exit {completed.returncode}: '
