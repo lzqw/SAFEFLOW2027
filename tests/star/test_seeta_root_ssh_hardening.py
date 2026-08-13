@@ -349,3 +349,20 @@ def test_local_key_validation_does_not_persist_private_key_digest(
     assert identity['key_fingerprint'] == fingerprint
     assert all(key != 'private_key_sha256' for key in identity)
     assert hashlib.sha256(private.read_bytes()).hexdigest() not in json.dumps(identity)
+
+
+def test_repaired_result_already_accounts_for_listener_change() -> None:
+    assert not watcher.listener_reload_needed(
+        100,
+        {
+            'listener_pid': 200,
+            'listener_reload_performed': True,
+        },
+    )
+    assert watcher.listener_reload_needed(
+        100,
+        {
+            'listener_pid': 200,
+            'listener_reload_performed': False,
+        },
+    )

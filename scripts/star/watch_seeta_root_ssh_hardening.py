@@ -562,6 +562,17 @@ def load_last_listener(path: Path) -> int | None:
     return value if isinstance(value, int) and value > 1 else None
 
 
+def listener_reload_needed(previous_listener: int | None, result: dict[str, Any]) -> bool:
+    """Return whether a newly replaced listener still needs the fixed policy reloaded."""
+    listener = result.get('listener_pid')
+    return (
+        previous_listener is not None
+        and isinstance(listener, int)
+        and listener != previous_listener
+        and not result.get('listener_reload_performed', False)
+    )
+
+
 def compact_record(result: dict[str, Any], identities: dict[str, Any]) -> dict[str, Any]:
     """Build a bounded append-only monitoring record without endpoint data."""
     return {
@@ -701,7 +712,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 listener = result.get('listener_pid')
                 if not isinstance(listener, int) or listener <= 1:
                     raise RuntimeError('remote SSH listener identity is unavailable')
-                if previous_listener is not None and listener != previous_listener:
+                if listener_reload_needed(previous_listener, result):
                     reload_payload = build_payload(
                         expected_fingerprint=args.expected_key_fingerprint,
                         expected_dropin_sha256=expected_dropin,
