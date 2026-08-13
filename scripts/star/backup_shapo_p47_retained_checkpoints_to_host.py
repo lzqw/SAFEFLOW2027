@@ -147,7 +147,7 @@ class RetainedJob:
     def expected_steps(self, label: str) -> set[int]:
         """Return the permitted counter steps for one retained label."""
         if label.startswith('milestone_'):
-            return {int(label.removeprefix('milestone_'))}
+            return {int(label[len('milestone_') :])}
         if label == 'best_safe_return':
             return set(self.milestones)
         if label == 'final_full':
