@@ -333,3 +333,13 @@ training state, scientific configuration, stopping, or model selection.
 Commit and push source plus compact reports from the host branch to the private
 `lzqw/SAFEFLOW2027` repository. Never add any checkpoint payload, final-checkpoint patch, or private
 backup tree to Git.
+
+The unattended publisher must use authentication that survives logout and desktop-agent loss. On
+the dedicated host delivery clone, pin the private repository's HTTPS URL and a repository-local
+credential helper backed by the authenticated GitHub CLI keyring; never embed a token in the URL,
+Git config, systemd unit, or log. Pin the same credential-free HTTPS URL with
+`--expected-remote-url`, and verify both `git ls-remote` and `git push --dry-run` from a transient
+user-systemd unit before starting the watcher. A successful poll automatically moves any prior
+active alert byte-for-byte into `resolved-alerts/`; the latest snapshot records its SHA-256 and
+resolution time, so transient access failures remain auditable without leaving a stale active
+alarm.

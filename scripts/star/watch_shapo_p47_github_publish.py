@@ -32,12 +32,16 @@ from scripts.star.watch_shapo_p47_milestones import (  # noqa: E402
 FULL_COMMIT = re.compile(r'^[0-9a-f]{40}$')
 SAFE_REMOTE = re.compile(r'^[A-Za-z0-9_.-]+$')
 SAFE_BRANCH = re.compile(r'^(?!/)(?!.*\.\.)(?!.*//)[A-Za-z0-9._/-]+(?<!/)$')
+SAFE_GITHUB_REMOTE = re.compile(
+    r'^(?:https://github\.com/|git@github\.com:)[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\.git$',
+)
 ALLOWED_UNTRACKED = ('METHOD/', 'PAPER/', 'REF-PAPER/')
 PUBLISH_PATHS = (
     'reports/star/shapo_p47_four_env_artifacts/milestones',
     'reports/star/shapo_p47_four_env_artifacts/final',
 )
 MAX_GITHUB_FILE_BYTES = 95 * 1024 * 1024
+MAX_ALERT_BYTES = 1024 * 1024
 
 
 def sha256_file(path: Path) -> str:
@@ -67,6 +71,63 @@ def append_jsonl(path: Path, payload: Any) -> None:
         stream.write(json.dumps(payload, sort_keys=True, separators=(',', ':')) + '\n')
         stream.flush()
         os.fsync(stream.fileno())
+
+
+def archive_resolved_alert(state_dir: Path, resolved_at: str) -> dict[str, str] | None:
+    """Atomically archive one prior active alert after a successful poll."""
+    active = state_dir / 'github_publish_watch_alert.json'
+    if not os.path.lexists(active):
+        return None
+    if active.is_symlink() or not active.is_file():
+        raise ValueError('active GitHub publication alert is not a regular file')
+    raw = active.read_bytes()
+    if not raw or len(raw) > MAX_ALERT_BYTES:
+        raise ValueError('active GitHub publication alert has an invalid size')
+    try:
+        alert = json.loads(raw.decode('utf-8'))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError('active GitHub publication alert is not strict UTF-8 JSON') from error
+    if not isinstance(alert, dict) or alert.get('state') != 'alert':
+        raise ValueError('active GitHub publication alert has an invalid state')
+    observed_at = alert.get('observed_at_utc')
+    if not isinstance(observed_at, str):
+        raise ValueError('active GitHub publication alert lacks its observation time')
+    try:
+        observed = datetime.fromisoformat(observed_at.replace('Z', '+00:00'))
+        resolved = datetime.fromisoformat(resolved_at.replace('Z', '+00:00'))
+    except ValueError as error:
+        raise ValueError('GitHub publication alert timestamps are invalid') from error
+    if observed.tzinfo is None or resolved.tzinfo is None:
+        raise ValueError('GitHub publication alert timestamps must be timezone-aware')
+    if resolved < observed:
+        raise ValueError('GitHub publication alert cannot resolve before it was observed')
+
+    digest = hashlib.sha256(raw).hexdigest()
+    resolved_dir = state_dir / 'resolved-alerts'
+    if os.path.lexists(resolved_dir):
+        if resolved_dir.is_symlink() or not resolved_dir.is_dir():
+            raise ValueError('resolved GitHub publication alert path is not a directory')
+    else:
+        resolved_dir.mkdir(mode=0o700)
+    os.chmod(resolved_dir, 0o700)
+    stamp = observed.astimezone(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    destination = resolved_dir / f'github_publish_watch_alert-{stamp}-{digest[:12]}.json'
+    if os.path.lexists(destination):
+        if destination.is_symlink() or not destination.is_file():
+            raise ValueError('resolved GitHub publication alert is not a regular file')
+        if destination.read_bytes() != raw:
+            raise ValueError('resolved GitHub publication alert identity collision')
+        os.chmod(destination, 0o600)
+        active.unlink()
+    else:
+        os.chmod(active, 0o600)
+        os.replace(active, destination)
+    return {
+        'alert_observed_at_utc': observed_at,
+        'resolved_at_utc': resolved_at,
+        'archive_path': str(destination.relative_to(state_dir)),
+        'archive_sha256': digest,
+    }
 
 
 def git(repo: Path, *arguments: str, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -160,6 +221,8 @@ def validate_repository_ancestry(
 ) -> dict[str, str]:
     """Require the locked HEAD or one exact locally committed publication transaction."""
     if expected_remote_url:
+        if not SAFE_GITHUB_REMOTE.fullmatch(expected_remote_url):
+            raise ValueError('expected GitHub remote URL is unsafe or contains credentials')
         push_url = git(repo, 'remote', 'get-url', '--push', remote).stdout.strip()
         if push_url != expected_remote_url:
             raise ValueError(f'Git push URL changed for remote {remote!r}')
@@ -497,6 +560,7 @@ def main() -> None:  # pylint: disable=too-many-locals
     )
     initial_remote = initial_repository['remote_head']
     state_dir.mkdir(parents=True, exist_ok=True)
+    os.chmod(state_dir, 0o700)
     immutable_paths = {
         'github_publish_watcher': Path(__file__).resolve(),
         'matrix': matrix_path,
@@ -560,12 +624,16 @@ def main() -> None:  # pylint: disable=too-many-locals
                 }
                 atomic_json(state_dir / 'github_publish_watch_alert.json', alert)
                 raise
+            resolved_alert = archive_resolved_alert(state_dir, observed_at)
+            if resolved_alert is not None:
+                snapshot['resolved_alert'] = resolved_alert
             atomic_json(state_dir / 'github_publish_watch_latest.json', snapshot)
             append_jsonl(
                 state_dir / 'github_publish_watch_journal.jsonl',
                 {
                     'observed_at_utc': observed_at,
                     'state': snapshot['state'],
+                    'resolved_alert': resolved_alert is not None,
                     'scientific_protocol_changed': False,
                     'training_state_changed': False,
                     'used_for_checkpoint_or_configuration_selection': False,

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import subprocess
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import pytest
 from scripts.star.watch_shapo_p47_github_publish import (
     MAX_GITHUB_FILE_BYTES,
     PUBLISH_PATHS,
+    archive_resolved_alert,
     commit_and_push,
     host_evidence_readiness,
     publish_once,
@@ -98,9 +100,92 @@ def test_repository_identity_rejects_changed_push_url(tmp_path: Path) -> None:
         )
 
 
+def test_repository_identity_accepts_credential_free_https_and_rejects_userinfo(
+    tmp_path: Path,
+) -> None:
+    repo, remote = _repository(tmp_path)
+    expected = _git(repo, 'rev-parse', 'HEAD')
+    https_url = 'https://github.com/lzqw/SAFEFLOW2027.git'
+    _git(repo, 'remote', 'set-url', '--push', 'origin', https_url)
+    result = validate_repository_ancestry(
+        repo,
+        'origin',
+        'main',
+        expected,
+        expected_remote_url=https_url,
+    )
+    assert result['state'] == 'precommit'
+    assert result['remote_head'] == expected
+    with pytest.raises(ValueError, match='unsafe or contains credentials'):
+        validate_repository_ancestry(
+            repo,
+            'origin',
+            'main',
+            expected,
+            expected_remote_url='https://token@github.com/lzqw/SAFEFLOW2027.git',
+        )
+
+
 def test_github_file_limit_is_conservative() -> None:
     assert MAX_GITHUB_FILE_BYTES == 95 * 1024 * 1024
     assert MAX_GITHUB_FILE_BYTES < 100 * 1024 * 1024
+
+
+def test_successful_poll_archives_active_alert_without_changing_evidence(tmp_path: Path) -> None:
+    state_dir = tmp_path / 'state'
+    state_dir.mkdir()
+    active = state_dir / 'github_publish_watch_alert.json'
+    raw = (
+        b'{\n'
+        b'  "observed_at_utc": "2026-08-13T14:38:56.584897+00:00",\n'
+        b'  "state": "alert",\n'
+        b'  "error": "temporary authentication failure"\n'
+        b'}\n'
+    )
+    active.write_bytes(raw)
+
+    result = archive_resolved_alert(state_dir, '2026-08-13T14:43:32.107887+00:00')
+
+    assert result is not None
+    assert result['alert_observed_at_utc'] == '2026-08-13T14:38:56.584897+00:00'
+    assert result['resolved_at_utc'] == '2026-08-13T14:43:32.107887+00:00'
+    archived = state_dir / result['archive_path']
+    assert archived.read_bytes() == raw
+    assert result['archive_sha256'] == hashlib.sha256(raw).hexdigest()
+    assert not active.exists()
+    assert archived.stat().st_mode & 0o777 == 0o600
+
+
+def test_resolved_alert_archive_is_idempotent_and_rejects_symlink(tmp_path: Path) -> None:
+    state_dir = tmp_path / 'state'
+    state_dir.mkdir()
+    active = state_dir / 'github_publish_watch_alert.json'
+    raw = b'{"observed_at_utc":"2026-08-13T14:38:56+00:00","state":"alert"}\n'
+    active.write_bytes(raw)
+    first = archive_resolved_alert(state_dir, '2026-08-13T14:43:32+00:00')
+    active.write_bytes(raw)
+    second = archive_resolved_alert(state_dir, '2026-08-13T14:44:32+00:00')
+    assert first is not None and second is not None
+    assert first['archive_path'] == second['archive_path']
+    assert not active.exists()
+    assert (state_dir / second['archive_path']).stat().st_mode & 0o777 == 0o600
+
+    target = state_dir / 'outside.json'
+    target.write_bytes(raw)
+    active.symlink_to(target)
+    with pytest.raises(ValueError, match='not a regular file'):
+        archive_resolved_alert(state_dir, '2026-08-13T14:45:32+00:00')
+
+
+def test_resolved_alert_rejects_time_reversal(tmp_path: Path) -> None:
+    state_dir = tmp_path / 'state'
+    state_dir.mkdir()
+    (state_dir / 'github_publish_watch_alert.json').write_text(
+        '{"observed_at_utc":"2026-08-13T14:43:33+00:00","state":"alert"}\n',
+        encoding='utf-8',
+    )
+    with pytest.raises(ValueError, match='cannot resolve before'):
+        archive_resolved_alert(state_dir, '2026-08-13T14:43:32+00:00')
 
 
 def test_commit_and_push_exact_paths_once(tmp_path: Path) -> None:
