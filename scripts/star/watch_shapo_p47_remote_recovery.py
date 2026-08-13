@@ -126,6 +126,7 @@ def build_payload(args: argparse.Namespace, *, allow_recovery: bool) -> dict[str
         f'{args.validation_source}/scripts/star/watch_shapo_p47_completion.py',
         f'{args.validation_source}/scripts/star/finalize_shapo_p47_formal.sh',
         f'{args.validation_source}/scripts/star/finalize_shapo_p47_formal.py',
+        f'{args.validation_source}/scripts/star/plot_shapo_p47_formal.py',
         f'{args.validation_source}/configs/star/shapo_p47_four_env.yaml',
         f'{args.validation_source}/scripts/star/audit_shapo_p47_milestone.py',
         f'{args.validation_source}/scripts/star/validate_shapo_p47_run.py',
@@ -356,7 +357,7 @@ def main() -> None:  # pylint: disable=too-many-locals
                     raise
                 time.sleep(args.poll_seconds)
                 continue
-            except Exception as error:  # noqa: BLE001 - persist fail-closed recovery alerts
+            except Exception as error:
                 details = error.payload if isinstance(error, RemoteRecoveryError) else {}
                 alert = {
                     'observed_at_utc': observed_at,

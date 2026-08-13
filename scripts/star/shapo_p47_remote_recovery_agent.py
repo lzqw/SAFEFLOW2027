@@ -144,12 +144,13 @@ def validate_payload(payload: dict[str, Any]) -> dict[str, Any]:
         f'{validation}/scripts/star/watch_shapo_p47_completion.py',
         f'{validation}/scripts/star/finalize_shapo_p47_formal.sh',
         f'{validation}/scripts/star/finalize_shapo_p47_formal.py',
+        f'{validation}/scripts/star/plot_shapo_p47_formal.py',
         f'{validation}/configs/star/shapo_p47_four_env.yaml',
         f'{validation}/scripts/star/audit_shapo_p47_milestone.py',
         f'{validation}/scripts/star/validate_shapo_p47_run.py',
     }
     if not isinstance(hashes, dict) or set(hashes) != expected_files:
-        raise ValueError('exactly fifteen expected file SHA-256 locks are required')
+        raise ValueError('exactly sixteen expected file SHA-256 locks are required')
     for path, digest in hashes.items():
         require_absolute(str(path), 'locked file')
         if not FULL_SHA256.fullmatch(str(digest)):
@@ -732,6 +733,13 @@ def launch_exact(name: str, spec: dict[str, Any]) -> dict[str, Any]:
     pid_file = Path(spec['pid_file'])
     if not cwd.is_dir():
         raise RuntimeError(f'{name} working directory is unavailable: {cwd}')
+    environment = os.environ.copy()
+    inherited_pythonpath = environment.get('PYTHONPATH')
+    environment['PYTHONPATH'] = (
+        f'{cwd.resolve()}{os.pathsep}{inherited_pythonpath}'
+        if inherited_pythonpath
+        else str(cwd.resolve())
+    )
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open('ab', buffering=0) as log:
         process = subprocess.Popen(
@@ -742,6 +750,7 @@ def launch_exact(name: str, spec: dict[str, Any]) -> dict[str, Any]:
             stderr=subprocess.STDOUT,
             start_new_session=True,
             close_fds=True,
+            env=environment,
         )
     atomic_text(pid_file, f'{process.pid}\n')
     time.sleep(1.0)

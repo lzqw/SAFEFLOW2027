@@ -18,6 +18,7 @@ from scripts.star.shapo_p47_remote_recovery_agent import (
     _run_locked,
     formal_worker_pids,
     formal_worker_processes,
+    launch_exact,
     process_argv,
     recoverable_checkpoints,
     resolve_exact_process,
@@ -95,6 +96,7 @@ def _arguments(tmp_path: Path) -> argparse.Namespace:
         f'{args.validation_source}/scripts/star/watch_shapo_p47_completion.py',
         f'{args.validation_source}/scripts/star/finalize_shapo_p47_formal.sh',
         f'{args.validation_source}/scripts/star/finalize_shapo_p47_formal.py',
+        f'{args.validation_source}/scripts/star/plot_shapo_p47_formal.py',
         f'{args.validation_source}/configs/star/shapo_p47_four_env.yaml',
         f'{args.validation_source}/scripts/star/audit_shapo_p47_milestone.py',
         f'{args.validation_source}/scripts/star/validate_shapo_p47_run.py',
@@ -208,6 +210,49 @@ def test_payload_rejects_unsafe_path_and_invalid_identity(tmp_path: Path) -> Non
     args.formal_source_commit = 'short'
     with pytest.raises(ValueError, match='worktree commits'):
         build_payload(args, allow_recovery=False)
+
+
+def test_launch_exact_prepends_locked_worktree_to_pythonpath(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    worktree = tmp_path / 'validation-source'
+    worktree.mkdir()
+    seen = {}
+
+    class FakeProcess:
+        pid = 4321
+
+        @staticmethod
+        def poll() -> None:
+            return None
+
+    def fake_popen(argv, **kwargs):
+        seen['argv'] = argv
+        seen.update(kwargs)
+        return FakeProcess()
+
+    spec = {
+        'argv': ['/python', 'scripts/star/watch.py'],
+        'cwd': str(worktree),
+        'pid_file': str(tmp_path / 'watch.pid'),
+        'log': str(tmp_path / 'watch.log'),
+    }
+    monkeypatch.setenv('PYTHONPATH', '/inherited')
+    monkeypatch.setattr(subprocess, 'Popen', fake_popen)
+    monkeypatch.setattr(
+        'scripts.star.shapo_p47_remote_recovery_agent.process_argv',
+        lambda _pid: spec['argv'],
+    )
+    monkeypatch.setattr(
+        'scripts.star.shapo_p47_remote_recovery_agent.process_cwd',
+        lambda _pid: worktree.resolve(),
+    )
+    monkeypatch.setattr('scripts.star.shapo_p47_remote_recovery_agent.time.sleep', lambda _: None)
+    result = launch_exact('completion', spec)
+    assert result == {'pid': 4321, 'alive': True, 'completed': False}
+    assert seen['argv'] == spec['argv']
+    assert seen['env']['PYTHONPATH'] == f'{worktree.resolve()}{os.pathsep}/inherited'
 
 
 def _completed(
