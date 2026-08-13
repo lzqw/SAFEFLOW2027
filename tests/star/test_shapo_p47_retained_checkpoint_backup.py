@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 import torch
+from scripts.star import backup_shapo_p47_retained_checkpoints_to_host as retained_backup
 from scripts.star.backup_shapo_p47_retained_checkpoints_to_host import (
     DEFAULT_MAX_FINAL_PATCH_BYTES,
     FileIdentity,
@@ -194,6 +195,32 @@ def test_expected_jobs_expand_exact_retention_contract() -> None:
 
 def test_inventory_parser_requires_same_segment_final_patch_base() -> None:
     job = _job()
+    evidence = {
+        'receipt': {
+            'relative': 'runs/ant-2027/receipt.json',
+            'bytes': 10,
+            'mtime_ns': 202,
+            'sha256': 'd' * 64,
+        },
+        'training_summary': {
+            'relative': 'runs/ant-2027/training/segment/artifacts/training_summary.json',
+            'bytes': 11,
+            'mtime_ns': 203,
+            'sha256': 'e' * 64,
+        },
+        'formal_validation': {
+            'relative': 'runs/ant-2027/formal_validation.json',
+            'bytes': 12,
+            'mtime_ns': 204,
+            'sha256': 'f' * 64,
+        },
+        'exit_code': {
+            'relative': 'runs/ant-2027/exit_code.txt',
+            'bytes': 2,
+            'mtime_ns': 205,
+            'sha256': '0' * 64,
+        },
+    }
     payload = {
         'job': job.job,
         'label': 'final_full',
@@ -207,9 +234,21 @@ def test_inventory_parser_requires_same_segment_final_patch_base() -> None:
             'mtime_ns': 201,
             'sha256': 'c' * 64,
         },
+        'completion_evidence': evidence,
     }
     records = parse_remote_inventory(json.dumps(payload), {job.job: job}, str(REMOTE_ROOT))
     assert records[(job.job, 'final_full')].base is not None
+    assert records[(job.job, 'final_full')].completion_evidence is not None
+    without_evidence = dict(payload)
+    without_evidence.pop('completion_evidence')
+    with pytest.raises(ValueError, match='lacks exact completion evidence'):
+        parse_remote_inventory(json.dumps(without_evidence), {job.job: job}, str(REMOTE_ROOT))
+    wrong_path = json.loads(json.dumps(payload))
+    wrong_path['completion_evidence']['receipt'][
+        'relative'
+    ] = 'runs/ant-2027/training/segment/receipt.json'
+    with pytest.raises(ValueError, match='completion evidence path changed'):
+        parse_remote_inventory(json.dumps(wrong_path), {job.job: job}, str(REMOTE_ROOT))
     payload['base']['relative'] = 'runs/ant-2027/training/other/checkpoints/latest_full.pt'
     with pytest.raises(ValueError, match='does not share'):
         parse_remote_inventory(json.dumps(payload), {job.job: job}, str(REMOTE_ROOT))
@@ -469,6 +508,169 @@ def test_final_patch_waits_for_exact_recovery_base(
         zstd_bin=Path('/home/lzqw/anaconda3/bin/zstd'),
     )
     assert result['state'] == 'waiting_for_matching_latest_full_backup'
+
+
+def test_final_patch_retains_and_revalidates_exact_completion_capsule(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    zstd = Path('/home/lzqw/anaconda3/bin/zstd')
+    if not zstd.is_file():
+        pytest.skip('zstd unavailable')
+    job = _job()
+    remote = tmp_path / 'remote'
+    base = remote / 'latest_full.pt'
+    final = remote / 'final_full.pt'
+    _write_checkpoint(base, steps=5_000_000, replay=True, rng_marker=0)
+    _write_checkpoint(final, steps=5_000_000, replay=True, rng_marker=1)
+    log_dir = REMOTE_ROOT / 'runs/ant-2027/training/segment'
+    evidence_sources = {
+        'receipt': remote / 'receipt.json',
+        'training_summary': remote / 'training_summary.json',
+        'formal_validation': remote / 'formal_validation.json',
+        'exit_code': remote / 'exit_code.txt',
+    }
+    evidence_sources['receipt'].write_text(
+        json.dumps(
+            {
+                'status': 'passed',
+                'environment': 'Ant-v4',
+                'seed': 2027,
+                'steps': 5_000_000,
+                'run_steps': 5_000_000,
+                'source_commit': SOURCE_COMMIT,
+                'source_dirty': False,
+                'log_dir': str(log_dir),
+            },
+        ),
+        encoding='utf-8',
+    )
+    evidence_sources['training_summary'].write_text(
+        json.dumps(
+            {
+                'status': 'completed',
+                'environment': 'Ant-v4',
+                'seed': 2027,
+                'env_steps': 5_000_000,
+                'run_env_steps': 5_000_000,
+                'engineering_hard_stop_reason': None,
+            },
+        ),
+        encoding='utf-8',
+    )
+    evidence_sources['formal_validation'].write_text(
+        json.dumps(
+            {
+                'status': 'passed',
+                'environment': 'Ant-v4',
+                'training_seed': 2027,
+                'total_steps': 5_000_000,
+                'source_commit': SOURCE_COMMIT,
+                'matrix_sha256': hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+                'training_seed_is_statistical_unit': True,
+            },
+        ),
+        encoding='utf-8',
+    )
+    evidence_sources['exit_code'].write_text('0\n', encoding='utf-8')
+    relatives = {
+        'receipt': 'runs/ant-2027/receipt.json',
+        'training_summary': ('runs/ant-2027/training/segment/artifacts/training_summary.json'),
+        'formal_validation': 'runs/ant-2027/formal_validation.json',
+        'exit_code': 'runs/ant-2027/exit_code.txt',
+    }
+    evidence = {
+        label: _identity(source, relatives[label]) for label, source in evidence_sources.items()
+    }
+    record = RemoteArtifact(
+        job.job,
+        'final_full',
+        _identity(final, 'runs/ant-2027/training/segment/checkpoints/final_full.pt'),
+        _identity(base, 'runs/ant-2027/training/segment/checkpoints/latest_full.pt'),
+        evidence,
+    )
+    by_relative = {
+        record.file.relative: final,
+        **{identity.relative: evidence_sources[label] for label, identity in evidence.items()},
+    }
+
+    def fake_copy(
+        _host: str,
+        _root: str,
+        identity: FileIdentity,
+        destination: Path,
+    ) -> None:
+        destination.write_bytes(by_relative[identity.relative].read_bytes())
+
+    monkeypatch.setattr(retained_backup, 'copy_remote_file', fake_copy)
+    monkeypatch.setattr(retained_backup, 'matching_recovery_base', lambda *_a, **_k: (base, {}))
+    monkeypatch.setattr(
+        retained_backup,
+        'scan_remote',
+        lambda *_a, **_k: {(job.job, 'final_full'): record},
+    )
+    monkeypatch.setattr(
+        retained_backup.shutil,
+        'disk_usage',
+        lambda _path: type('Usage', (), {'free': 2_000_000_000})(),
+    )
+    output_root = tmp_path / 'retained'
+    recovery_base = tmp_path / 'recovery/ant-2027/latest_full.pt'
+    recovery_base.parent.mkdir(parents=True)
+    recovery_base.write_bytes(base.read_bytes())
+    result = transfer_final_patch(
+        job,
+        record,
+        host='seeta-nmb2',
+        remote_run_root=str(REMOTE_ROOT),
+        remote_python='/root/safe/env/bin/python',
+        output_root=output_root,
+        recovery_root=tmp_path / 'recovery',
+        matrix_path=MATRIX,
+        source_commit=SOURCE_COMMIT,
+        reserve_bytes=0,
+        matrix_sha256=hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+        zstd_bin=zstd,
+    )
+    assert result['state'] == 'transferred'
+    capsule = output_root / 'ant-2027/final_full/completion_evidence'
+    assert {path.name for path in capsule.iterdir()} == {
+        'receipt.json',
+        'training_summary.json',
+        'formal_validation.json',
+        'exit_code.txt',
+    }
+    repeated = transfer_final_patch(
+        job,
+        record,
+        host='seeta-nmb2',
+        remote_run_root=str(REMOTE_ROOT),
+        remote_python='/root/safe/env/bin/python',
+        output_root=output_root,
+        recovery_root=tmp_path / 'recovery',
+        matrix_path=MATRIX,
+        source_commit=SOURCE_COMMIT,
+        reserve_bytes=0,
+        matrix_sha256=hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+        zstd_bin=zstd,
+    )
+    assert repeated['state'] == 'already_current'
+    (capsule / 'exit_code.txt').write_text('1\n', encoding='utf-8')
+    with pytest.raises(ValueError, match='completion evidence changed'):
+        transfer_final_patch(
+            job,
+            record,
+            host='seeta-nmb2',
+            remote_run_root=str(REMOTE_ROOT),
+            remote_python='/root/safe/env/bin/python',
+            output_root=output_root,
+            recovery_root=tmp_path / 'recovery',
+            matrix_path=MATRIX,
+            source_commit=SOURCE_COMMIT,
+            reserve_bytes=0,
+            matrix_sha256=hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+            zstd_bin=zstd,
+        )
 
 
 def test_backup_once_waits_without_reading_scientific_metrics(

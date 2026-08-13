@@ -282,6 +282,42 @@ Restore the latter to a new path with `restore_shapo_p47_final_checkpoint.py`; t
 to overwrite files and verifies base, patch, and reconstructed SHA-256 identities. Both services
 are engineering retention only: checkpoint counters are checked for integrity but values are not
 reported or used for scientific stopping, model selection, or configuration selection.
+The final patch slot also retains a checksum-bound completion capsule (`receipt.json`,
+`training_summary.json`, `formal_validation.json`, and `exit_code.txt`). This preserves the exact
+positive-run-step proof required by strict validation if a completed seed is lost before the full
+matrix finishes; a zero-step synthetic rerun is never substituted for it.
+
+Ordinary process recovery assumes the server data volume still exists. If the entire data volume
+is lost, use `build_shapo_p47_volume_recovery_bundle.py` on the host. Its `plan` mode revalidates
+the latest replay-bearing checkpoints, all completed compact milestone seals, matching lightweight
+milestone checkpoints, and the current best-safe checkpoint without copying anything. Its `build`
+mode atomically creates an owner-private, exact-layout bundle; `verify` independently re-hashes the
+bundle before and after transfer. The bundle also restores each immutable embedded `resume_from`
+path with the current validated recovery payload, explicitly as a path-provenance anchor rather
+than a claim that an overwritten historical payload was reproduced.
+
+Install such a bundle only on a new, empty volume at the manifest's exact
+`target_remote_run_root`, after recreating and verifying the locked source worktrees, Python
+environment, smoke evidence, and recovery-service contract. Never merge it into a live run root.
+After installation, run `verify` in place and let the existing sealed launcher choose the newest
+`latest_full.pt`; do not invoke a checkpoint path or edit its embedded state manually. This is an
+engineering disaster-recovery operation and never a scientific early-stop or selection mechanism.
+For example, a host-side read-only rehearsal is:
+
+```bash
+python scripts/star/build_shapo_p47_volume_recovery_bundle.py plan \
+  --checkpoint-root PRIVATE_LATEST_FULL_ROOT \
+  --retained-root PRIVATE_RETAINED_ROOT \
+  --milestone-root reports/star/shapo_p47_four_env_artifacts/milestones \
+  --matrix configs/star/shapo_p47_four_env.yaml \
+  --source-commit FORMAL_SOURCE_COMMIT \
+  --remote-run-root /root/autodl-tmp/SAFE/shapo_p47_four_env/formal \
+  --zstd-bin /ABSOLUTE/PATH/TO/zstd
+```
+
+Replace `plan` with `build --output-root NEW_PRIVATE_BUNDLE_PATH` only when a materialized transfer
+bundle is needed. The destination must not already exist. No bundle, manifest, checkpoint, or patch
+belongs in Git.
 
 The saved `seeta-nmb2` login is an owner-private local OpenSSH alias backed by one protected
 ED25519 key and strict host-key checking. The root daemon must accept only that public key; never

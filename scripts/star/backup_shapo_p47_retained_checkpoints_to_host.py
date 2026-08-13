@@ -39,6 +39,13 @@ SAFE_REMOTE_ROOT = re.compile(r'^/[A-Za-z0-9_./-]+$')
 FULL_SHA256 = re.compile(r'^[0-9a-f]{64}$')
 DEFAULT_POLL_SECONDS = 3600.0
 DEFAULT_MAX_FINAL_PATCH_BYTES = 4 * 1024**2
+MAX_COMPLETION_EVIDENCE_BYTES = 8 * 1024**2
+COMPLETION_EVIDENCE_NAMES = {
+    'receipt': 'receipt.json',
+    'training_summary': 'training_summary.json',
+    'formal_validation': 'formal_validation.json',
+    'exit_code': 'exit_code.txt',
+}
 SLUGS = {
     'SafetyPointGoal1-v0': 'point-goal',
     'SafetyPointButton1-v0': 'point-button',
@@ -85,6 +92,66 @@ def stable_identity(path, run_root):
     }
 
 
+def completion_evidence(container, spec, run_root):
+    receipt = container / 'receipt.json'
+    validation = container / 'formal_validation.json'
+    exit_code = container / 'exit_code.txt'
+    if not receipt.is_file() or not validation.is_file() or not exit_code.is_file():
+        return None
+    try:
+        receipt_payload = json.loads(receipt.read_text(encoding='utf-8'))
+        validation_payload = json.loads(validation.read_text(encoding='utf-8'))
+        log_dir = Path(receipt_payload['log_dir']).resolve()
+        log_dir.relative_to((container / 'training').resolve())
+        summary = log_dir / 'artifacts/training_summary.json'
+        summary_payload = json.loads(summary.read_text(encoding='utf-8'))
+    except (KeyError, OSError, ValueError, json.JSONDecodeError) as error:
+        raise SystemExit(f'completed-run evidence is invalid: {container}: {error}') from error
+    expected_receipt = {
+        'status': 'passed',
+        'environment': spec['environment'],
+        'seed': spec['seed'],
+        'steps': spec['total_steps'],
+        'source_commit': expected_source_commit,
+        'source_dirty': False,
+    }
+    expected_summary = {
+        'status': 'completed',
+        'environment': spec['environment'],
+        'seed': spec['seed'],
+        'env_steps': spec['total_steps'],
+        'engineering_hard_stop_reason': None,
+    }
+    expected_validation = {
+        'status': 'passed',
+        'environment': spec['environment'],
+        'training_seed': spec['seed'],
+        'total_steps': spec['total_steps'],
+        'source_commit': expected_source_commit,
+        'matrix_sha256': expected_matrix_sha256,
+        'training_seed_is_statistical_unit': True,
+    }
+    for payload, expected in (
+        (receipt_payload, expected_receipt),
+        (summary_payload, expected_summary),
+        (validation_payload, expected_validation),
+    ):
+        if any(payload.get(key) != value for key, value in expected.items()):
+            raise SystemExit(f'completed-run evidence identity changed: {container}')
+    if int(receipt_payload.get('run_steps', 0)) <= 0 or int(
+        summary_payload.get('run_env_steps', 0),
+    ) <= 0:
+        raise SystemExit(f'completed-run evidence has no executed steps: {container}')
+    if exit_code.read_text(encoding='utf-8').strip() != '0':
+        raise SystemExit(f'completed-run evidence has a nonzero exit: {container}')
+    return {
+        'receipt': stable_identity(receipt, run_root),
+        'training_summary': stable_identity(summary, run_root),
+        'formal_validation': stable_identity(validation, run_root),
+        'exit_code': stable_identity(exit_code, run_root),
+    }
+
+
 run_root = Path(sys.argv[1]).resolve()
 jobs = json.loads(sys.argv[2])
 expected_source_commit = sys.argv[3]
@@ -120,7 +187,11 @@ for spec in jobs:
             base = newest.with_name('latest_full.pt')
             if not base.is_file():
                 raise SystemExit(f'final checkpoint lacks its same-segment latest-full base: {newest}')
+            evidence = completion_evidence(container, spec, run_root)
+            if evidence is None:
+                continue
             record['base'] = stable_identity(base, run_root)
+            record['completion_evidence'] = evidence
         print(json.dumps(record, sort_keys=True))
 """
 
@@ -173,6 +244,7 @@ class RemoteArtifact:
     label: str
     file: FileIdentity
     base: FileIdentity | None = None
+    completion_evidence: dict[str, FileIdentity] | None = None
 
 
 def utc_now() -> str:
@@ -289,6 +361,35 @@ def _parse_file_identity(payload: Any, *, label: str, remote_run_root: str) -> F
     return FileIdentity(relative, byte_count, mtime_ns, checksum)
 
 
+def validate_completion_evidence_relative(
+    job: str,
+    label: str,
+    relative: Path,
+) -> None:
+    """Bind each final-run evidence file to its one exact same-job location."""
+    job_root = Path('runs') / job
+    direct = {
+        'receipt': job_root / 'receipt.json',
+        'formal_validation': job_root / 'formal_validation.json',
+        'exit_code': job_root / 'exit_code.txt',
+    }
+    if label in direct:
+        if relative != direct[label]:
+            raise ValueError(f'completion evidence path changed for {job}/{label}: {relative}')
+        return
+    if label != 'training_summary':
+        raise ValueError(f'unknown completion evidence label for {job}: {label}')
+    try:
+        remainder = relative.relative_to(job_root / 'training')
+    except ValueError as error:
+        raise ValueError(f'completion evidence escaped its job: {relative}') from error
+    if len(remainder.parts) < 3 or remainder.parts[-2:] != (
+        'artifacts',
+        'training_summary.json',
+    ):
+        raise ValueError(f'completion evidence path changed for {job}/{label}: {relative}')
+
+
 def parse_remote_inventory(
     text: str,
     jobs: dict[str, RetainedJob],
@@ -333,6 +434,7 @@ def parse_remote_inventory(
                 f'retained artifact has the wrong filename: {file_identity.relative!r}',
             )
         base = None
+        completion_evidence = None
         if artifact_label == 'final_full':
             base = _parse_file_identity(
                 payload.get('base'),
@@ -344,9 +446,40 @@ def parse_remote_inventory(
                 raise ValueError(
                     f'final-full base does not share its checkpoint directory: {job_name}',
                 )
+            raw_evidence = payload.get('completion_evidence')
+            if not isinstance(raw_evidence, dict) or set(raw_evidence) != set(
+                COMPLETION_EVIDENCE_NAMES,
+            ):
+                raise ValueError(f'final-full lacks exact completion evidence: {job_name}')
+            completion_evidence = {}
+            for evidence_label, expected_name in COMPLETION_EVIDENCE_NAMES.items():
+                identity = _parse_file_identity(
+                    raw_evidence[evidence_label],
+                    label=f'{job_name}/final_full {evidence_label}',
+                    remote_run_root=remote_run_root,
+                )
+                evidence_relative = Path(identity.relative)
+                if evidence_relative.name != expected_name:
+                    raise ValueError(
+                        f'completion evidence has the wrong filename: {identity.relative!r}',
+                    )
+                validate_completion_evidence_relative(
+                    job_name,
+                    evidence_label,
+                    evidence_relative,
+                )
+                completion_evidence[evidence_label] = identity
         elif 'base' in payload:
             raise ValueError(f'non-final artifact unexpectedly has a patch base: {key}')
-        records[key] = RemoteArtifact(job_name, artifact_label, file_identity, base)
+        elif 'completion_evidence' in payload:
+            raise ValueError(f'non-final artifact unexpectedly has completion evidence: {key}')
+        records[key] = RemoteArtifact(
+            job_name,
+            artifact_label,
+            file_identity,
+            base,
+            completion_evidence,
+        )
     return records
 
 
@@ -364,6 +497,8 @@ def scan_remote(
     specifications = [
         {
             'job': job.job,
+            'environment': job.environment,
+            'seed': job.seed,
             'milestones': list(job.milestones),
             'total_steps': job.total_steps,
         }
@@ -660,6 +795,30 @@ def validate_existing_final_patch(
         receipt.get('checkpoint_bytes', -1),
     ) != int(receipt.get('final_checkpoint_bytes', -2)):
         raise ValueError(f'final-full receipt checkpoint identities disagree for {job.job}')
+    evidence_manifest = receipt.get('completion_evidence')
+    if not isinstance(evidence_manifest, dict) or set(evidence_manifest) != set(
+        COMPLETION_EVIDENCE_NAMES,
+    ):
+        raise ValueError(f'final-full receipt lacks completion evidence for {job.job}')
+    evidence_root = output / 'completion_evidence'
+    total_evidence_bytes = 0
+    for label, expected_name in COMPLETION_EVIDENCE_NAMES.items():
+        identity = evidence_manifest[label]
+        path = evidence_root / expected_name
+        if not isinstance(identity, dict):
+            raise ValueError(f'final-full completion evidence is invalid for {job.job}/{label}')
+        byte_count, checksum = stable_local_identity(path)
+        if byte_count != int(identity.get('bytes', -1)) or checksum != identity.get('sha256'):
+            raise ValueError(f'final-full completion evidence changed for {job.job}/{label}')
+        remote_relative = Path(str(identity.get('remote_relative_path', '')))
+        if remote_relative.is_absolute() or '..' in remote_relative.parts:
+            raise ValueError(f'final-full completion path changed for {job.job}/{label}')
+        validate_completion_evidence_relative(job.job, label, remote_relative)
+        total_evidence_bytes += byte_count
+    if total_evidence_bytes != int(receipt.get('completion_evidence_bytes', -1)):
+        raise ValueError(f'final-full completion evidence size changed for {job.job}')
+    if total_evidence_bytes > MAX_COMPLETION_EVIDENCE_BYTES:
+        raise ValueError(f'final-full completion evidence exceeds its cap for {job.job}')
     base = recovery_root / job.job / 'latest_full.pt'
     base_bytes, base_sha = stable_local_identity(base)
     if (
@@ -677,6 +836,16 @@ def validate_existing_final_patch(
             or base_bytes != record.base.bytes
         ):
             raise ValueError(f'host/server final-full patch identity changed for {job.job}')
+        if record.completion_evidence is None:
+            raise ValueError(f'current final-full lacks completion evidence: {job.job}')
+        for label, remote in record.completion_evidence.items():
+            local = evidence_manifest[label]
+            if (
+                local.get('remote_relative_path') != remote.relative
+                or int(local.get('bytes', -1)) != remote.bytes
+                or local.get('sha256') != remote.sha256
+            ):
+                raise ValueError(f'host/server completion evidence changed: {job.job}/{label}')
     return receipt
 
 
@@ -703,6 +872,75 @@ def _second_scan_matches(
         raise ValueError(
             f'remote retained checkpoint changed during transfer: {job.job}/{record.label}',
         )
+
+
+def _validate_completion_evidence_payloads(
+    job: RetainedJob,
+    evidence_root: Path,
+    identities: dict[str, FileIdentity],
+    *,
+    matrix_sha256: str,
+    source_commit: str,
+    remote_run_root: Path,
+) -> None:
+    """Validate the small final-run capsule without selecting or reporting metrics."""
+    receipt = json.loads(
+        (evidence_root / COMPLETION_EVIDENCE_NAMES['receipt']).read_text(encoding='utf-8'),
+    )
+    summary = json.loads(
+        (evidence_root / COMPLETION_EVIDENCE_NAMES['training_summary']).read_text(
+            encoding='utf-8',
+        ),
+    )
+    validation = json.loads(
+        (evidence_root / COMPLETION_EVIDENCE_NAMES['formal_validation']).read_text(
+            encoding='utf-8',
+        ),
+    )
+    exit_code = (evidence_root / COMPLETION_EVIDENCE_NAMES['exit_code']).read_text(encoding='utf-8')
+    expected_receipt = {
+        'status': 'passed',
+        'environment': job.environment,
+        'seed': job.seed,
+        'steps': job.total_steps,
+        'source_commit': source_commit,
+        'source_dirty': False,
+    }
+    expected_summary = {
+        'status': 'completed',
+        'environment': job.environment,
+        'seed': job.seed,
+        'env_steps': job.total_steps,
+        'engineering_hard_stop_reason': None,
+    }
+    expected_validation = {
+        'status': 'passed',
+        'environment': job.environment,
+        'training_seed': job.seed,
+        'total_steps': job.total_steps,
+        'source_commit': source_commit,
+        'matrix_sha256': matrix_sha256,
+        'training_seed_is_statistical_unit': True,
+    }
+    if any(receipt.get(key) != value for key, value in expected_receipt.items()):
+        raise ValueError(f'completed receipt identity changed: {job.job}')
+    if any(summary.get(key) != value for key, value in expected_summary.items()):
+        raise ValueError(f'completed training summary identity changed: {job.job}')
+    if any(validation.get(key) != value for key, value in expected_validation.items()):
+        raise ValueError(f'formal validation identity changed: {job.job}')
+    if int(receipt.get('run_steps', 0)) <= 0 or int(summary.get('run_env_steps', 0)) <= 0:
+        raise ValueError(f'completed evidence has no executed steps: {job.job}')
+    if exit_code.strip() != '0':
+        raise ValueError(f'completed evidence has a nonzero exit: {job.job}')
+    receipt_log_dir = Path(str(receipt.get('log_dir', '')))
+    expected_log_dir = (
+        remote_run_root
+        / Path(
+            identities['training_summary'].relative,
+        ).parent.parent
+    )
+    if receipt_log_dir != expected_log_dir:
+        raise ValueError(f'completed receipt log directory changed: {job.job}')
 
 
 def transfer_lightweight(  # pylint: disable=too-many-arguments,too-many-locals
@@ -935,10 +1173,17 @@ def transfer_final_patch(  # pylint: disable=too-many-arguments,too-many-locals
             'state': 'waiting_for_matching_latest_full_backup',
         }
     base, _base_receipt = base_match
+    if record.completion_evidence is None:
+        raise ValueError(f'final-full lacks exact completion evidence: {job.job}')
+    completion_evidence_bytes = sum(
+        identity.bytes for identity in record.completion_evidence.values()
+    )
+    if completion_evidence_bytes > MAX_COMPLETION_EVIDENCE_BYTES:
+        raise ValueError(f'final-full completion evidence exceeds its cap for {job.job}')
     # Staging can briefly contain source, reconstruction, and a worst-case encoded patch.
     available_before = ensure_capacity(
         output_root,
-        3 * record.file.bytes + max_final_patch_bytes,
+        3 * record.file.bytes + max_final_patch_bytes + completion_evidence_bytes,
         reserve_bytes,
     )
     job_root = output_root / job.job
@@ -978,6 +1223,29 @@ def transfer_final_patch(  # pylint: disable=too-many-arguments,too-many-locals
             zstd_bin=zstd_bin,
             max_patch_bytes=max_final_patch_bytes,
         )
+        evidence_root = staging / 'completion_evidence'
+        evidence_root.mkdir(mode=0o700)
+        evidence_receipt = {}
+        for label, identity in record.completion_evidence.items():
+            destination = evidence_root / COMPLETION_EVIDENCE_NAMES[label]
+            copy_remote_file(host, remote_run_root, identity, destination)
+            os.chmod(destination, 0o600)
+            byte_count, checksum = stable_local_identity(destination)
+            if byte_count != identity.bytes or checksum != identity.sha256:
+                raise ValueError(f'completion evidence changed in transit: {job.job}/{label}')
+            evidence_receipt[label] = {
+                'remote_relative_path': identity.relative,
+                'bytes': byte_count,
+                'sha256': checksum,
+            }
+        _validate_completion_evidence_payloads(
+            job,
+            evidence_root,
+            record.completion_evidence,
+            matrix_sha256=matrix_sha256,
+            source_commit=source_commit,
+            remote_run_root=Path(remote_run_root),
+        )
         _second_scan_matches(
             job,
             record,
@@ -1008,6 +1276,8 @@ def transfer_final_patch(  # pylint: disable=too-many-arguments,too-many-locals
             'zstd_binary': str(zstd_bin),
             'host_available_bytes_before_transfer': available_before,
             'storage_representation': 'zstd_patch_from_validated_latest_full',
+            'completion_evidence': evidence_receipt,
+            'completion_evidence_bytes': completion_evidence_bytes,
         }
         atomic_json(staging / 'backup_receipt.json', receipt)
         (staging / 'backup_complete').touch()
