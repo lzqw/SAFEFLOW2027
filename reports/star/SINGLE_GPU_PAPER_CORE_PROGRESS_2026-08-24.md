@@ -41,7 +41,7 @@ PointGoal 的 P4.7 正式实验已经完成，并在相同 `200k` 训练预算�
 
 服务器已连接，RTX 3090 正常可用。重启后的检查确认 v3 控制器、自动后处理器和 PointCircle 条件队列均仍在线；没有发生 P4.7 重跑，也没有误恢复旧的 `150M` 长矩阵。
 
-截至 `2026-08-24 23:18`（Asia/Shanghai），PointGoal 正式补充基线进度如下：
+截至 `2026-08-24 23:23`（Asia/Shanghai），重启后的 `8` 个训练、条件队列与后处理控制器均在线，三个后处理状态仍为正常的 `waiting_for_training`，未发现工程错误。PointGoal 正式补充基线进度如下：
 
 | 方法 | Seed | 预算 | 状态 | 说明 |
 |---|---:|---:|---|---|
@@ -98,5 +98,6 @@ PointCircle seed 2027 的筛选规则已经预注册：Ours 的 return 相对 FL
 - PointCircle 四方法评测与 prior 队列 commit：`799dd954fb3df5648b01886f4487663e68ab1125`
 - PointCircle 机制与参数控制 commit：`35128da13767520ced9c7d15f879fc94eda52763`
 - checkpoint-only Point 鲁棒性协议与队列 commit：`6143356f734231a68aaaff6b8006219ea3be4d4d`
+- 便携结果收集器 commit：`c786ffcf22b5e46dccf1b5984e058183fda9d598`；只在流水线达到终态后同步 JSON/CSV/Markdown，不上传 checkpoint、训练目录或日志
 - 当前开发分支：`codex/star-single-gpu-paper-core`
 - 当前汇总与执行 PR：[PR #12](https://github.com/lzqw/SAFEFLOW2027/pull/12)
