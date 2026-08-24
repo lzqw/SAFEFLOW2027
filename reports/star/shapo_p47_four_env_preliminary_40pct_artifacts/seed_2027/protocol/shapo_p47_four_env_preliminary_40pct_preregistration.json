@@ -1,0 +1,56 @@
+{
+  "artifact_role": "preliminary_non_formal_snapshot_preregistration",
+  "created_at_utc": "2026-08-18T14:07:28Z",
+  "evaluation": {
+    "episodes_per_base_seed": 20,
+    "fixed_base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "total_episodes_per_policy": 100
+  },
+  "formal_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "formal_study_continues_unchanged": true,
+  "frozen_method_canonical_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+  "interpretation_boundary": {
+    "formal_result": false,
+    "independent_statistical_unit": "training_seed",
+    "n_training_seeds_per_environment": 1,
+    "no_cross_environment_metric_averaging": true,
+    "no_significance_or_generalization_claims": true,
+    "training_seed": 2027
+  },
+  "matrix_sha256": "f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f",
+  "preliminary_protocol_version": "shapo-p47-four-env-40pct-seed2027-preliminary-v1",
+  "protocol_sha256": "007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337",
+  "selection_policy": {
+    "checkpoint_or_configuration_selection": false,
+    "scientific_early_stopping": false,
+    "target_fraction_chosen_before_target_results_available": true
+  },
+  "targets": [
+    {
+      "environment": "SafetyPointGoal1-v0",
+      "milestone": 4000000,
+      "training_budget_fraction": 0.4
+    },
+    {
+      "environment": "SafetyPointButton1-v0",
+      "milestone": 4000000,
+      "training_budget_fraction": 0.4
+    },
+    {
+      "environment": "Ant-v4",
+      "milestone": 2000000,
+      "training_budget_fraction": 0.4
+    },
+    {
+      "environment": "Walker2d-v4",
+      "milestone": 2000000,
+      "training_budget_fraction": 0.4
+    }
+  ]
+}

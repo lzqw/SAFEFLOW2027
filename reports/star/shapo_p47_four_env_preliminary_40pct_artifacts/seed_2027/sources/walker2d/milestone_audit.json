@@ -1,0 +1,149 @@
+{
+  "audit_script_sha256": "e8b5bff31bfe8650cd460c5ae6ba45cb21883490d3ada40a89ec2f24c7814f96",
+  "audit_version": "shapo-p47-milestone-v1",
+  "best_safe_return_selection": {
+    "last_candidate": {
+      "constraint_satisfied": false,
+      "cost_cvar_20": 0.05,
+      "failure_rate": 0.01,
+      "formal_cost_budget": 0.0,
+      "mean_cost": 0.01,
+      "mean_return": 5810.754651839165,
+      "milestone": 2000000,
+      "selection_status": "provisional_minimum_cost_until_a_safe_checkpoint_exists"
+    },
+    "last_candidate_selected": false,
+    "selected": {
+      "constraint_satisfied": true,
+      "cost_cvar_20": 0.0,
+      "failure_rate": 0.0,
+      "formal_cost_budget": 0.0,
+      "mean_cost": 0.0,
+      "mean_return": 5354.547766656643,
+      "milestone": 500000,
+      "selection_status": "best_safe_return"
+    },
+    "selection_rule": "feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone;before_feasibility_minimum_mean_cost_then_maximum_mean_return"
+  },
+  "compact_artifacts": {
+    "best_safe_return_selection": {
+      "artifact": "artifacts/best_safe_return_selection.json",
+      "bytes": 774,
+      "sha256": "01e6def1f6f5e5ad89a767bcda0b5861eaf165c8575447eac1a15d89db8f5729",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/best_safe_return_selection.json"
+    },
+    "counterfactual": {
+      "artifact": "artifacts/counterfactual_step_2000000.json",
+      "bytes": 1557,
+      "sha256": "52f8759c1fe802c9d56ef78d29682658712e07f7c6bfe72642e64f4382078968",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/counterfactual_step_2000000.json"
+    },
+    "evaluation": {
+      "artifact": "artifacts/evaluation_step_2000000.json",
+      "bytes": 22548,
+      "sha256": "b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/evaluation_step_2000000.json"
+    },
+    "evaluation_curve": {
+      "artifact": "artifacts/evaluation.csv",
+      "bytes": 1190,
+      "sha256": "656c0ad2c639492a1079ed8e81d95ecde9db836ea46cb738a63cac8f4957fe8f",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/evaluation.csv"
+    },
+    "materialization_receipt": {
+      "artifact": "provenance/materialize.json",
+      "bytes": 477,
+      "sha256": "c0c935c0a6a05d685889b20f3a64ab953d314c30d0f269827f3697a5f323d8c0",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/materialize.json"
+    },
+    "resolved_config": {
+      "artifact": "provenance/resolved_formal_config.yaml",
+      "bytes": 4099,
+      "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/resolved_formal_config.yaml"
+    },
+    "run_manifest": {
+      "artifact": "artifacts/run_manifest.json",
+      "bytes": 6302,
+      "sha256": "75776b7b4bc08585fdb381b67f43bff6678b22a6ee9e7740c7dc5bafb1af66d5",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/run_manifest.json"
+    },
+    "source_commit": {
+      "artifact": "provenance/source_commit.txt",
+      "bytes": 41,
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/source_commit.txt"
+    },
+    "trajectory": {
+      "artifact": "artifacts/trajectory_step_2000000.csv",
+      "bytes": 1418182,
+      "sha256": "73bb17b3334c9db6db3713a6a09c9fdaef60851d3d92463d9ee70a3ea217c5dd",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/trajectory_step_2000000.csv"
+    },
+    "warmup_status": {
+      "artifact": "artifacts/warmup_status.json",
+      "bytes": 2321,
+      "sha256": "f46f9c56414b12d1b0a25aad74e608ebbcc12a50adf9f6d02c489856f7902251",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/warmup_status.json"
+    }
+  },
+  "cost_normalization_scale": 1.0,
+  "diagnostic_only": true,
+  "environment": "Walker2d-v4",
+  "evaluation": {
+    "cost_cvar_20": 0.05,
+    "episodes": 100,
+    "failure_count": 1,
+    "failure_rate": 0.01,
+    "high_risk_dangerous_outward_velocity": 0.21863071620464325,
+    "high_risk_vn_vt": 0.7184643149375916,
+    "mean_cost": 0.01,
+    "mean_return": 5810.754651839165,
+    "success_rate": 0.0,
+    "time_limit_count": 99,
+    "time_limit_rate": 0.99,
+    "training_cumulative_cost": 2312.0
+  },
+  "formal_cost_budget": 0.0,
+  "frozen_method_canonical_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+  "geometry_mode": "future_failure_probability",
+  "matrix_sha256": "f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f",
+  "milestone": 2000000,
+  "protocol_sha256": "007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337",
+  "protocol_version": "shapo-p47-four-env-v1",
+  "server_only_checkpoint": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/checkpoints/milestone_2000000.pt",
+    "bytes": 8497527,
+    "cumulative_training_cost": 2312.0,
+    "env_steps": 2000000,
+    "label": "milestone_2000000",
+    "replay_capacity": 400000,
+    "replay_included": false,
+    "replay_size": 0,
+    "resume_from": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-11-14-46-08/checkpoints/latest_full.pt",
+    "server_only": true,
+    "sha256": "939c2ae1160abffaf6c1313a79c848811bd78339e2fb0e40d91a41e81837b1d3"
+  },
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "status": "passed",
+  "strict_evaluation_validator_sha256": "f7224d575e494317f436f0daf5c9b0aa4a8d4eb5ed4616e5cf2266f18be8494f",
+  "training_seed": 2027,
+  "training_seed_is_statistical_unit": true,
+  "trajectory": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-08-14-23-27-40/artifacts/trajectory_step_2000000.csv",
+    "milestone": 2000000,
+    "row_count": 3000,
+    "rows_per_seed": {
+      "32027": 1000,
+      "32029": 1000,
+      "32031": 1000
+    },
+    "sha256": "73bb17b3334c9db6db3713a6a09c9fdaef60851d3d92463d9ee70a3ea217c5dd",
+    "trajectory_seeds": [
+      32027,
+      32029,
+      32031
+    ]
+  },
+  "used_for_checkpoint_or_configuration_selection": false
+}
