@@ -103,7 +103,7 @@ def unique_checkpoint(star_root: Path, arm: str, seed: int) -> Path:
     """Resolve exactly one lightweight final STAR checkpoint."""
     matches = sorted(
         (star_root / 'formal' / f'{arm}-{seed}').glob(
-            f'training/STAR-{{{ENVIRONMENT}}}/seed-*/checkpoints/step_{FINAL_STEPS}.pt'
+            f'training/STAR-{{{ENVIRONMENT}}}/seed-*/checkpoints/milestone_{FINAL_STEPS}.pt'
         )
     )
     if len(matches) != 1:

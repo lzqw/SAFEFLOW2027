@@ -12,7 +12,11 @@ import yaml
 
 from scripts.star.decide_pointcircle_screen import screen_decision
 from scripts.star.evaluate_pointcircle_checkpoints import validate_arm
+from scripts.star.evaluate_point_robustness import conditions
 from scripts.star.evaluate_pointgoal_prior_baselines import load_receipt
+from scripts.star.run_point_robustness_queue import unique_checkpoint as robustness_checkpoint
+from scripts.star.run_pointcircle_control_postprocessing import checkpoint as control_checkpoint
+from scripts.star.run_pointcircle_postprocessing import unique_checkpoint as final_checkpoint
 from scripts.star.run_single_gpu_pointcircle_queue import (
     FORMAL_STEPS,
     REPLAY_SIZE,
@@ -264,3 +268,65 @@ def test_pointcircle_mechanism_and_parameter_configs_are_single_controls() -> No
     )
     assert iso_low['flow_reference_variance'] == 0.004
     assert iso_low['flow_normal_variance_ratio'] == 1.0
+
+
+def test_postprocessors_resolve_actual_milestone_checkpoint_names(tmp_path: Path) -> None:
+    formal = (
+        tmp_path
+        / 'formal/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-run/checkpoints'
+    )
+    formal.mkdir(parents=True)
+    circle_final = formal / 'milestone_500000.pt'
+    circle_final.write_bytes(b'circle-final')
+    assert final_checkpoint(tmp_path, 'C0', 2027) == circle_final
+
+    screen = (
+        tmp_path
+        / 'screen/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-run/checkpoints'
+    )
+    screen.mkdir(parents=True)
+    circle_screen = screen / 'milestone_300000.pt'
+    circle_screen.write_bytes(b'circle-screen')
+    control_args = argparse.Namespace(star_root=tmp_path, control_root=tmp_path / 'controls')
+    assert control_checkpoint(control_args, 'Iso-High') == circle_screen
+
+    pointgoal_root = tmp_path / 'pointgoal'
+    pointgoal = (
+        pointgoal_root
+        / 'P47-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-run/checkpoints'
+    )
+    pointgoal.mkdir(parents=True)
+    goal_final = pointgoal / 'milestone_200000.pt'
+    goal_final.write_bytes(b'goal-final')
+    robustness_args = argparse.Namespace(
+        pointgoal_root=pointgoal_root,
+        pointcircle_root=tmp_path,
+    )
+    assert robustness_checkpoint(
+        robustness_args,
+        'SafetyPointGoal1-v0',
+        'P47',
+        2028,
+    ) == goal_final
+
+
+def test_robustness_conditions_match_the_locked_minimal_matrix() -> None:
+    circle = conditions('SafetyPointCircle1-v0')
+    goal = conditions('SafetyPointGoal1-v0')
+
+    assert [item.value for item in circle] == [0.8, 0.9, 1.0, 1.1, 1.2]
+    assert [item.value for item in circle if item.selected_final] == [0.8, 1.2]
+    assert [item.name for item in goal] == [
+        'nominal',
+        'hazard_radius_medium',
+        'hazard_radius_strong',
+        'hazard_position_offset_medium',
+        'hazard_position_offset_strong',
+        'action_noise_medium',
+        'action_noise_strong',
+    ]
+    assert [item.name for item in goal if item.selected_final] == [
+        'hazard_radius_strong',
+        'hazard_position_offset_strong',
+        'action_noise_strong',
+    ]

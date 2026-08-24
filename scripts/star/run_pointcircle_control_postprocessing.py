@@ -101,7 +101,7 @@ def checkpoint(args: argparse.Namespace, variant: str) -> Path:
         container = args.control_root / 'parameter/Safety-Aniso-0.25-2027'
     matches = sorted(
         container.glob(
-            f'training/STAR-{{{ENVIRONMENT}}}/seed-*/checkpoints/step_300000.pt'
+            f'training/STAR-{{{ENVIRONMENT}}}/seed-*/checkpoints/milestone_300000.pt'
         )
     )
     if len(matches) != 1:

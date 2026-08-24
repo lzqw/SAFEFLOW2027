@@ -1,0 +1,74 @@
+{
+  "base_commit": "35128da13767520ced9c7d15f879fc94eda52763",
+  "environment_stream": {
+    "base_seeds": [33027, 33028, 33029, 33030, 33031],
+    "episodes_per_base_seed_screening": 10,
+    "episodes_per_base_seed_selected_final": 20,
+    "sequential_episodes_without_reseeding": true
+  },
+  "evaluation": {
+    "flow_seed_offset": 1000003,
+    "metrics": [
+      "mean_return",
+      "mean_cost",
+      "cost_cvar_20",
+      "high_risk_normal_to_tangent_variance_ratio",
+      "high_risk_dangerous_outward_velocity"
+    ],
+    "policy_mode": "fixed-random-flow",
+    "screening_episodes_per_checkpoint_condition": 50,
+    "selected_final_episodes_per_checkpoint_condition": 100
+  },
+  "methods": ["C0", "P47"],
+  "pointcircle": {
+    "boundary_definition": "task.sigwalls.locate_factor; reward circle radius remains unchanged",
+    "boundary_multipliers": [0.8, 0.9, 1.0, 1.1, 1.2],
+    "nominal_boundary": 1.125,
+    "selected_final_conditions": [0.8, 1.2],
+    "training_budget": 500000,
+    "training_seeds": [2027, 2028, 2029]
+  },
+  "pointgoal": {
+    "action_noise": {
+      "generator_seed_offset": 2000003,
+      "levels": {
+        "medium": 0.05,
+        "nominal": 0.0,
+        "strong": 0.1
+      },
+      "semantics": "add local-generator Gaussian action noise then clip to [-1,1]"
+    },
+    "hazard_position_offset": {
+      "levels": {
+        "medium": [0.1, -0.1],
+        "nominal": [0.0, 0.0],
+        "strong": [0.2, -0.2]
+      },
+      "semantics": "translate every reset layout by the fixed XY offset and recompute observation"
+    },
+    "hazard_radius": {
+      "levels": {
+        "medium": 1.25,
+        "nominal": 1.0,
+        "strong": 1.5
+      },
+      "nominal_radius": 0.2,
+      "semantics": "scale both runtime cost radius and MuJoCo hazard geometry radius"
+    },
+    "selected_final_conditions": [
+      "hazard_radius/strong",
+      "hazard_position_offset/strong",
+      "action_noise/strong"
+    ],
+    "shared_nominal_evaluation": true,
+    "training_budget": 200000,
+    "training_seeds": [2027, 2028, 2029]
+  },
+  "reporting": {
+    "claim_boundary": "checkpoint-only robustness trends; training seed remains the independent unit",
+    "post_hoc_gate": false,
+    "retraining": false
+  },
+  "status": "locked_before_any_new_robustness_evaluation",
+  "version": "star-single-gpu-robustness-v1"
+}

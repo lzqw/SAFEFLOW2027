@@ -11,7 +11,7 @@ import os
 import statistics
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 import torch
 
@@ -28,6 +28,8 @@ from omnisafe.utils.star_validation import checkpoint_reconstruction_config
 
 
 FlowMode = Literal['fixed-random-flow', 'center-flow-diagnostic']
+EpisodeStartTransform = Callable[[Any, torch.Tensor, int, int], torch.Tensor]
+ActionTransform = Callable[[torch.Tensor, int, int, int], torch.Tensor]
 DEVELOPMENT_EPISODES = 20
 FORMAL_EPISODES = 50
 DEFAULT_EVAL_SEED_START = 12_027
@@ -281,6 +283,8 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     flow_seed_offset: int = DEFAULT_FLOW_SEED_OFFSET,
     stall_displacement_threshold: float = 0.25,
     step_stall_threshold: float = 1e-3,
+    episode_start_transform: EpisodeStartTransform | None = None,
+    action_transform: ActionTransform | None = None,
 ) -> dict[str, Any]:
     """Evaluate one flow mode without mutating training state or global RNG state."""
     if episodes_per_seed <= 0:
@@ -341,6 +345,8 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
             else:
                 obs = stream_observations[seed]
                 generator = flow_generators[seed]
+            if episode_start_transform is not None:
+                obs = episode_start_transform(algorithm, obs, seed, episode_index)
             context_state = STARContext(
                 algorithm._env_id,  # pylint: disable=protected-access
                 1,
@@ -497,7 +503,19 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                         'hazard_radius': layout.get('hazard_radius'),
                     }
 
-                next_obs, reward, cost, terminated, truncated, info = evaluation_env.step(action)
+                executed_action = (
+                    action_transform(action, seed, episode_index, step)
+                    if action_transform is not None
+                    else action
+                )
+                if executed_action.shape != action.shape:
+                    raise ValueError('robustness action transform changed the action shape')
+                if trajectory_row is not None:
+                    trajectory_row['executed_action_0'] = float(executed_action[0, 0].item())
+                    trajectory_row['executed_action_1'] = float(executed_action[0, 1].item())
+                next_obs, reward, cost, terminated, truncated, info = evaluation_env.step(
+                    executed_action,
+                )
                 original_reward = float(
                     torch.as_tensor(info.get('original_reward', reward)).reshape(-1)[0].item(),
                 )
