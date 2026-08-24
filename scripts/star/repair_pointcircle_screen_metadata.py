@@ -168,7 +168,7 @@ def repair_one(
     milestone: int,
     state: dict[str, Any],
     state_path: Path,
-) -> None:
+) -> bool:
     """Add only the missing environment field with crash-safe audit evidence."""
     payload = read_json(path)
     validate_payload(payload, arm, milestone)
@@ -186,7 +186,7 @@ def repair_one(
                 raise ValueError(f'{key} lost its repaired environment label')
             if existing.get('repaired_sha256') != current_sha256:
                 raise ValueError(f'{key} bytes changed after repair')
-            return
+            return False
         if existing.get('status') != 'repairing':
             raise ValueError(f'{key} has an unexpected repair status')
         if payload.get('environment') is None:
@@ -215,7 +215,7 @@ def repair_one(
             'completed_at_utc': utc_now(),
         }
         atomic_json(state_path, state)
-        return
+        return True
 
     if existing is None:
         state['artifacts'][key] = {
@@ -252,6 +252,7 @@ def repair_one(
         },
     )
     atomic_json(state_path, state)
+    return True
 
 
 def repair_available(
@@ -263,28 +264,36 @@ def repair_available(
     """Repair all currently available exact artifacts and return the audit state."""
     screen_root = screen_root.resolve()
     state_path = state_path.resolve()
+    state_existed = state_path.is_file()
     state = load_state(
         state_path,
         screen_root,
         training_source_commit,
         repair_source_commit,
     )
+    changed = False
     for arm in ARMS:
         for milestone in MILESTONES:
             path = artifact_path(screen_root, arm, milestone)
             if path is not None:
-                repair_one(path, arm, milestone, state, state_path)
+                changed = repair_one(path, arm, milestone, state, state_path) or changed
     required = {f'{arm}:{milestone}' for arm in ARMS for milestone in MILESTONES}
     completed = {
         key
         for key, entry in state['artifacts'].items()
         if isinstance(entry, dict) and entry.get('status') == 'complete'
     }
-    state['status'] = 'complete' if completed == required else 'watching'
-    state['last_checked_at_utc'] = utc_now()
-    if state['status'] == 'complete':
+    status = 'complete' if completed == required else 'watching'
+    if state.get('status') != status:
+        state['status'] = status
+        changed = True
+    if changed or not state_existed:
+        state['last_changed_at_utc'] = utc_now()
+    if status == 'complete' and 'completed_at_utc' not in state:
         state['completed_at_utc'] = utc_now()
-    atomic_json(state_path, state)
+        changed = True
+    if changed or not state_existed:
+        atomic_json(state_path, state)
     return state
 
 
@@ -309,6 +318,7 @@ def main() -> None:
     if args.poll_seconds <= 0.0:
         raise ValueError('poll interval must be positive')
     repair_source_commit = git_commit(args.repair_source)
+    last_observation: tuple[str, tuple[str, ...]] | None = None
     while True:
         state = repair_available(
             args.screen_root,
@@ -316,7 +326,24 @@ def main() -> None:
             args.training_source_commit,
             repair_source_commit,
         )
-        print(json.dumps(state, sort_keys=True, allow_nan=False), flush=True)
+        completed = tuple(
+            sorted(
+                key
+                for key, entry in state['artifacts'].items()
+                if isinstance(entry, dict) and entry.get('status') == 'complete'
+            ),
+        )
+        observation = (str(state['status']), completed)
+        if observation != last_observation:
+            print(
+                json.dumps(
+                    {'status': state['status'], 'completed_artifacts': list(completed)},
+                    sort_keys=True,
+                    allow_nan=False,
+                ),
+                flush=True,
+            )
+            last_observation = observation
         if args.once or state['status'] == 'complete':
             return
         time.sleep(args.poll_seconds)
