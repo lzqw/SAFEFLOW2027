@@ -1,0 +1,149 @@
+{
+  "audit_script_sha256": "e8b5bff31bfe8650cd460c5ae6ba45cb21883490d3ada40a89ec2f24c7814f96",
+  "audit_version": "shapo-p47-milestone-v1",
+  "best_safe_return_selection": {
+    "last_candidate": {
+      "constraint_satisfied": false,
+      "cost_cvar_20": 52.25,
+      "failure_rate": 0.0,
+      "formal_cost_budget": 10.0,
+      "mean_cost": 15.97,
+      "mean_return": -1.7276865113582318,
+      "milestone": 4000000,
+      "selection_status": "provisional_minimum_cost_until_a_safe_checkpoint_exists"
+    },
+    "last_candidate_selected": true,
+    "selected": {
+      "constraint_satisfied": false,
+      "cost_cvar_20": 52.25,
+      "failure_rate": 0.0,
+      "formal_cost_budget": 10.0,
+      "mean_cost": 15.97,
+      "mean_return": -1.7276865113582318,
+      "milestone": 4000000,
+      "selection_status": "provisional_minimum_cost_until_a_safe_checkpoint_exists"
+    },
+    "selection_rule": "feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone;before_feasibility_minimum_mean_cost_then_maximum_mean_return"
+  },
+  "compact_artifacts": {
+    "best_safe_return_selection": {
+      "artifact": "artifacts/best_safe_return_selection.json",
+      "bytes": 825,
+      "sha256": "bce4be8e61619fc00c880efcedee259409f46ffb3b01d350aa6e7700c4cd7e79",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/best_safe_return_selection.json"
+    },
+    "counterfactual": {
+      "artifact": "artifacts/counterfactual_step_4000000.json",
+      "bytes": 1545,
+      "sha256": "2c2be7511f57bb58a8639893af3ab8fded2f1522262e896d727544ab7a81fc65",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/counterfactual_step_4000000.json"
+    },
+    "evaluation": {
+      "artifact": "artifacts/evaluation_step_4000000.json",
+      "bytes": 23712,
+      "sha256": "cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/evaluation_step_4000000.json"
+    },
+    "evaluation_curve": {
+      "artifact": "artifacts/evaluation.csv",
+      "bytes": 1148,
+      "sha256": "a543cba182c53b0c451f50f32da6977f11b25077eac275a05a1f6a982771a97b",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/evaluation.csv"
+    },
+    "materialization_receipt": {
+      "artifact": "provenance/materialize.json",
+      "bytes": 491,
+      "sha256": "2099b5bef11a88fd15f6b3f6549cb948ec4a0d86f9bc4ad1cb62b3732e8286e9",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/materialize.json"
+    },
+    "resolved_config": {
+      "artifact": "provenance/resolved_formal_config.yaml",
+      "bytes": 4112,
+      "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/resolved_formal_config.yaml"
+    },
+    "run_manifest": {
+      "artifact": "artifacts/run_manifest.json",
+      "bytes": 6297,
+      "sha256": "469921698daa49f307cad82e83c2834f29a80ebbb98315155a4dcdd802be0b99",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/run_manifest.json"
+    },
+    "source_commit": {
+      "artifact": "provenance/source_commit.txt",
+      "bytes": 41,
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/source_commit.txt"
+    },
+    "trajectory": {
+      "artifact": "artifacts/trajectory_step_4000000.csv",
+      "bytes": 1248184,
+      "sha256": "2103dee650553f158b3eecbdecd42a88b2d93fb0631ce82e4fa804e89ae04521",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/trajectory_step_4000000.csv"
+    },
+    "warmup_status": {
+      "artifact": "artifacts/warmup_status.json",
+      "bytes": 2319,
+      "sha256": "8155b9c5b4af76ef5290c447ef3bd9a05efaaee2c29b939279f95eedcf222f0c",
+      "source_artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/warmup_status.json"
+    }
+  },
+  "cost_normalization_scale": 10.0,
+  "diagnostic_only": true,
+  "environment": "SafetyPointButton1-v0",
+  "evaluation": {
+    "cost_cvar_20": 52.25,
+    "episodes": 100,
+    "failure_count": 0,
+    "failure_rate": 0.0,
+    "high_risk_dangerous_outward_velocity": 0.04952843487262726,
+    "high_risk_vn_vt": 0.9825083017349243,
+    "mean_cost": 15.97,
+    "mean_return": -1.7276865113582318,
+    "success_rate": 0.03,
+    "time_limit_count": 100,
+    "time_limit_rate": 1.0,
+    "training_cumulative_cost": 95762.0
+  },
+  "formal_cost_budget": 10.0,
+  "frozen_method_canonical_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+  "geometry_mode": "remaining_cost_budget",
+  "matrix_sha256": "f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f",
+  "milestone": 4000000,
+  "protocol_sha256": "007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337",
+  "protocol_version": "shapo-p47-four-env-v1",
+  "server_only_checkpoint": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/checkpoints/milestone_4000000.pt",
+    "bytes": 10059511,
+    "cumulative_training_cost": 95762.0,
+    "env_steps": 4000000,
+    "label": "milestone_4000000",
+    "replay_capacity": 400000,
+    "replay_included": false,
+    "replay_size": 0,
+    "resume_from": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-17-00-57-08/checkpoints/latest_full.pt",
+    "server_only": true,
+    "sha256": "e73ccb00858d7aad4cbad804b638d6c25f351cf71bd33290c013c35bba01497b"
+  },
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "status": "passed",
+  "strict_evaluation_validator_sha256": "f7224d575e494317f436f0daf5c9b0aa4a8d4eb5ed4616e5cf2266f18be8494f",
+  "training_seed": 2027,
+  "training_seed_is_statistical_unit": true,
+  "trajectory": {
+    "artifact": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-08-18-13-15-57/artifacts/trajectory_step_4000000.csv",
+    "milestone": 4000000,
+    "row_count": 3000,
+    "rows_per_seed": {
+      "32027": 1000,
+      "32029": 1000,
+      "32031": 1000
+    },
+    "sha256": "2103dee650553f158b3eecbdecd42a88b2d93fb0631ce82e4fa804e89ae04521",
+    "trajectory_seeds": [
+      32027,
+      32029,
+      32031
+    ]
+  },
+  "used_for_checkpoint_or_configuration_selection": false
+}

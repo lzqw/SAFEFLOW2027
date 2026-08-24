@@ -1,0 +1,383 @@
+{
+  "copied_artifacts": [
+    {
+      "artifact": "sources/point-goal/milestone_audit.json",
+      "bytes": 7177,
+      "environment": "SafetyPointGoal1-v0",
+      "sha256": "140a222e70eec8743f798ef6df26f3f4b9d9803c8a9a64d7b293846f017dbfe0"
+    },
+    {
+      "artifact": "sources/point-goal/artifacts/evaluation.csv",
+      "bytes": 1138,
+      "environment": "SafetyPointGoal1-v0",
+      "sha256": "88efd91b257e7badedc6aac30414028a9cb9de94d1c153b8e95daa7dcd5eea60"
+    },
+    {
+      "artifact": "sources/point-goal/provenance/resolved_formal_config.yaml",
+      "bytes": 4110,
+      "environment": "SafetyPointGoal1-v0",
+      "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+    },
+    {
+      "artifact": "sources/point-goal/provenance/source_commit.txt",
+      "bytes": 41,
+      "environment": "SafetyPointGoal1-v0",
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+    },
+    {
+      "artifact": "sources/point-goal/artifacts/evaluation_step_4000000.json",
+      "bytes": 23960,
+      "environment": "SafetyPointGoal1-v0",
+      "sha256": "0adb6cf6bdc48ed9055abe999d1a3bd242a88623d2da62b6eae393e36411adf7"
+    },
+    {
+      "artifact": "sources/point-button/milestone_audit.json",
+      "bytes": 7265,
+      "environment": "SafetyPointButton1-v0",
+      "sha256": "c87bf94dc5df8d5ac73d108f28095bcb539b44eb9682cc7e27b5472663a83a1a"
+    },
+    {
+      "artifact": "sources/point-button/artifacts/evaluation.csv",
+      "bytes": 1148,
+      "environment": "SafetyPointButton1-v0",
+      "sha256": "a543cba182c53b0c451f50f32da6977f11b25077eac275a05a1f6a982771a97b"
+    },
+    {
+      "artifact": "sources/point-button/provenance/resolved_formal_config.yaml",
+      "bytes": 4112,
+      "environment": "SafetyPointButton1-v0",
+      "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+    },
+    {
+      "artifact": "sources/point-button/provenance/source_commit.txt",
+      "bytes": 41,
+      "environment": "SafetyPointButton1-v0",
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+    },
+    {
+      "artifact": "sources/point-button/artifacts/evaluation_step_4000000.json",
+      "bytes": 23712,
+      "environment": "SafetyPointButton1-v0",
+      "sha256": "cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0"
+    },
+    {
+      "artifact": "sources/ant/milestone_audit.json",
+      "bytes": 6968,
+      "environment": "Ant-v4",
+      "sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14"
+    },
+    {
+      "artifact": "sources/ant/artifacts/evaluation.csv",
+      "bytes": 1185,
+      "environment": "Ant-v4",
+      "sha256": "63f62ad613db3c6a98cf37fa1ca63ceb7eb176e6a821b789a270d22b62c73e94"
+    },
+    {
+      "artifact": "sources/ant/provenance/resolved_formal_config.yaml",
+      "bytes": 4094,
+      "environment": "Ant-v4",
+      "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+    },
+    {
+      "artifact": "sources/ant/provenance/source_commit.txt",
+      "bytes": 41,
+      "environment": "Ant-v4",
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+    },
+    {
+      "artifact": "sources/ant/artifacts/evaluation_step_2000000.json",
+      "bytes": 23294,
+      "environment": "Ant-v4",
+      "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24"
+    },
+    {
+      "artifact": "sources/walker2d/milestone_audit.json",
+      "bytes": 7048,
+      "environment": "Walker2d-v4",
+      "sha256": "6e504644ac792bdb2b645d0ac3e82b150d8527bccb2e7810ae5869208c5498d8"
+    },
+    {
+      "artifact": "sources/walker2d/artifacts/evaluation.csv",
+      "bytes": 1190,
+      "environment": "Walker2d-v4",
+      "sha256": "656c0ad2c639492a1079ed8e81d95ecde9db836ea46cb738a63cac8f4957fe8f"
+    },
+    {
+      "artifact": "sources/walker2d/provenance/resolved_formal_config.yaml",
+      "bytes": 4099,
+      "environment": "Walker2d-v4",
+      "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+    },
+    {
+      "artifact": "sources/walker2d/provenance/source_commit.txt",
+      "bytes": 41,
+      "environment": "Walker2d-v4",
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+    },
+    {
+      "artifact": "sources/walker2d/artifacts/evaluation_step_2000000.json",
+      "bytes": 22548,
+      "environment": "Walker2d-v4",
+      "sha256": "b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd"
+    }
+  ],
+  "preliminary_protocol": {
+    "artifact": "protocol/shapo_p47_four_env_preliminary_40pct_preregistration.json",
+    "bytes": 1759,
+    "sha256": "3e48cc7425ebf2900b610f1f62ab17dca19fd4720aa9be0d025e2069e493cf12"
+  },
+  "source_milestone_bundles": [
+    {
+      "artifacts": [
+        {
+          "artifact": "artifacts/best_safe_return_selection.json",
+          "bytes": 787,
+          "sha256": "61024c49ac156d976dfc3b43deb74c77a9ce8caa3d49dd153819fc8ea7d9db2b"
+        },
+        {
+          "artifact": "artifacts/counterfactual_step_4000000.json",
+          "bytes": 1546,
+          "sha256": "5a9c523849e7bb678e5356ebb0929792e3a417040876fa7dfaccbdc6f691d4ac"
+        },
+        {
+          "artifact": "artifacts/evaluation.csv",
+          "bytes": 1138,
+          "sha256": "88efd91b257e7badedc6aac30414028a9cb9de94d1c153b8e95daa7dcd5eea60"
+        },
+        {
+          "artifact": "artifacts/evaluation_step_4000000.json",
+          "bytes": 23960,
+          "sha256": "0adb6cf6bdc48ed9055abe999d1a3bd242a88623d2da62b6eae393e36411adf7"
+        },
+        {
+          "artifact": "artifacts/run_manifest.json",
+          "bytes": 6295,
+          "sha256": "33d2864ebe4cb6f628bee379c93a411c763c08c905b9c44ec096dcf9624125ec"
+        },
+        {
+          "artifact": "artifacts/trajectory_step_4000000.csv",
+          "bytes": 1384521,
+          "sha256": "095ee715df13e843fb3a8ff075a371dfc7f34f99c69f3cde67b78d9780822187"
+        },
+        {
+          "artifact": "artifacts/warmup_status.json",
+          "bytes": 2316,
+          "sha256": "78f872b073f325e0db8be2ad598f57402a880c46a7fd59cddc7d221de0f82d24"
+        },
+        {
+          "artifact": "milestone_audit.json",
+          "bytes": 7177,
+          "sha256": "140a222e70eec8743f798ef6df26f3f4b9d9803c8a9a64d7b293846f017dbfe0"
+        },
+        {
+          "artifact": "provenance/materialize.json",
+          "bytes": 487,
+          "sha256": "6546795c967ac0df08f37a38ada89c7910579190b9c18544a941b3206bfb43b4"
+        },
+        {
+          "artifact": "provenance/resolved_formal_config.yaml",
+          "bytes": 4110,
+          "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+        },
+        {
+          "artifact": "provenance/source_commit.txt",
+          "bytes": 41,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "environment": "SafetyPointGoal1-v0",
+      "milestone": 4000000,
+      "source_bundle": "step_4000000/point-goal-2027",
+      "training_seed": 2027
+    },
+    {
+      "artifacts": [
+        {
+          "artifact": "artifacts/best_safe_return_selection.json",
+          "bytes": 825,
+          "sha256": "bce4be8e61619fc00c880efcedee259409f46ffb3b01d350aa6e7700c4cd7e79"
+        },
+        {
+          "artifact": "artifacts/counterfactual_step_4000000.json",
+          "bytes": 1545,
+          "sha256": "2c2be7511f57bb58a8639893af3ab8fded2f1522262e896d727544ab7a81fc65"
+        },
+        {
+          "artifact": "artifacts/evaluation.csv",
+          "bytes": 1148,
+          "sha256": "a543cba182c53b0c451f50f32da6977f11b25077eac275a05a1f6a982771a97b"
+        },
+        {
+          "artifact": "artifacts/evaluation_step_4000000.json",
+          "bytes": 23712,
+          "sha256": "cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0"
+        },
+        {
+          "artifact": "artifacts/run_manifest.json",
+          "bytes": 6297,
+          "sha256": "469921698daa49f307cad82e83c2834f29a80ebbb98315155a4dcdd802be0b99"
+        },
+        {
+          "artifact": "artifacts/trajectory_step_4000000.csv",
+          "bytes": 1248184,
+          "sha256": "2103dee650553f158b3eecbdecd42a88b2d93fb0631ce82e4fa804e89ae04521"
+        },
+        {
+          "artifact": "artifacts/warmup_status.json",
+          "bytes": 2319,
+          "sha256": "8155b9c5b4af76ef5290c447ef3bd9a05efaaee2c29b939279f95eedcf222f0c"
+        },
+        {
+          "artifact": "milestone_audit.json",
+          "bytes": 7265,
+          "sha256": "c87bf94dc5df8d5ac73d108f28095bcb539b44eb9682cc7e27b5472663a83a1a"
+        },
+        {
+          "artifact": "provenance/materialize.json",
+          "bytes": 491,
+          "sha256": "2099b5bef11a88fd15f6b3f6549cb948ec4a0d86f9bc4ad1cb62b3732e8286e9"
+        },
+        {
+          "artifact": "provenance/resolved_formal_config.yaml",
+          "bytes": 4112,
+          "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+        },
+        {
+          "artifact": "provenance/source_commit.txt",
+          "bytes": 41,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "environment": "SafetyPointButton1-v0",
+      "milestone": 4000000,
+      "source_bundle": "step_4000000/point-button-2027",
+      "training_seed": 2027
+    },
+    {
+      "artifacts": [
+        {
+          "artifact": "artifacts/best_safe_return_selection.json",
+          "bytes": 817,
+          "sha256": "2ace5276b4938af0d5a4e4c57ed8ced31f5ab78f20105bf9c21a89f48c369bfd"
+        },
+        {
+          "artifact": "artifacts/counterfactual_step_2000000.json",
+          "bytes": 1554,
+          "sha256": "6e7bfc495fc97901095acb0130f7a1077c7f26096e3e57d177908ce2ce2ab4e4"
+        },
+        {
+          "artifact": "artifacts/evaluation.csv",
+          "bytes": 1185,
+          "sha256": "63f62ad613db3c6a98cf37fa1ca63ceb7eb176e6a821b789a270d22b62c73e94"
+        },
+        {
+          "artifact": "artifacts/evaluation_step_2000000.json",
+          "bytes": 23294,
+          "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24"
+        },
+        {
+          "artifact": "artifacts/run_manifest.json",
+          "bytes": 6297,
+          "sha256": "e838f72fe95931b6087ee49aedcf68dae9397adafc922d8c240e21429ed7764d"
+        },
+        {
+          "artifact": "artifacts/trajectory_step_2000000.csv",
+          "bytes": 1438465,
+          "sha256": "501f556e846b0398baa8267606e343d2d4595cfe8b386d1a5d53dfbfb82bf2de"
+        },
+        {
+          "artifact": "artifacts/warmup_status.json",
+          "bytes": 2320,
+          "sha256": "7ce0e84a81771fd94af4fd9b5eba178d3189829e9f8b4ade0b315f8a28a17172"
+        },
+        {
+          "artifact": "milestone_audit.json",
+          "bytes": 6968,
+          "sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14"
+        },
+        {
+          "artifact": "provenance/materialize.json",
+          "bytes": 467,
+          "sha256": "14d8a6eb9dc245a58eb25978f7767e4203ef830a10b98ca223bce462154f45c5"
+        },
+        {
+          "artifact": "provenance/resolved_formal_config.yaml",
+          "bytes": 4094,
+          "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+        },
+        {
+          "artifact": "provenance/source_commit.txt",
+          "bytes": 41,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "environment": "Ant-v4",
+      "milestone": 2000000,
+      "source_bundle": "step_2000000/ant-2027",
+      "training_seed": 2027
+    },
+    {
+      "artifacts": [
+        {
+          "artifact": "artifacts/best_safe_return_selection.json",
+          "bytes": 774,
+          "sha256": "01e6def1f6f5e5ad89a767bcda0b5861eaf165c8575447eac1a15d89db8f5729"
+        },
+        {
+          "artifact": "artifacts/counterfactual_step_2000000.json",
+          "bytes": 1557,
+          "sha256": "52f8759c1fe802c9d56ef78d29682658712e07f7c6bfe72642e64f4382078968"
+        },
+        {
+          "artifact": "artifacts/evaluation.csv",
+          "bytes": 1190,
+          "sha256": "656c0ad2c639492a1079ed8e81d95ecde9db836ea46cb738a63cac8f4957fe8f"
+        },
+        {
+          "artifact": "artifacts/evaluation_step_2000000.json",
+          "bytes": 22548,
+          "sha256": "b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd"
+        },
+        {
+          "artifact": "artifacts/run_manifest.json",
+          "bytes": 6302,
+          "sha256": "75776b7b4bc08585fdb381b67f43bff6678b22a6ee9e7740c7dc5bafb1af66d5"
+        },
+        {
+          "artifact": "artifacts/trajectory_step_2000000.csv",
+          "bytes": 1418182,
+          "sha256": "73bb17b3334c9db6db3713a6a09c9fdaef60851d3d92463d9ee70a3ea217c5dd"
+        },
+        {
+          "artifact": "artifacts/warmup_status.json",
+          "bytes": 2321,
+          "sha256": "f46f9c56414b12d1b0a25aad74e608ebbcc12a50adf9f6d02c489856f7902251"
+        },
+        {
+          "artifact": "milestone_audit.json",
+          "bytes": 7048,
+          "sha256": "6e504644ac792bdb2b645d0ac3e82b150d8527bccb2e7810ae5869208c5498d8"
+        },
+        {
+          "artifact": "provenance/materialize.json",
+          "bytes": 477,
+          "sha256": "c0c935c0a6a05d685889b20f3a64ab953d314c30d0f269827f3697a5f323d8c0"
+        },
+        {
+          "artifact": "provenance/resolved_formal_config.yaml",
+          "bytes": 4099,
+          "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+        },
+        {
+          "artifact": "provenance/source_commit.txt",
+          "bytes": 41,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "environment": "Walker2d-v4",
+      "milestone": 2000000,
+      "source_bundle": "step_2000000/walker2d-2027",
+      "training_seed": 2027
+    }
+  ]
+}
