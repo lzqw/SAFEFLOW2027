@@ -1,0 +1,56 @@
+{
+  "artifacts": {
+    "C0:150000": {
+      "action": "added_missing_environment",
+      "arm": "C0",
+      "completed_at_utc": "2026-08-24T22:49:17.514964+00:00",
+      "milestone": 150000,
+      "original_sha256": "3a7be5d2577a5a660148dfd17ccaf8486dba1268a9f6c0bec789c81352d457e8",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_150000.json",
+      "repair_source_commits": [
+        "3a48c26dbd5d933efa4ccd5ee6d9fdb867bdde89"
+      ],
+      "repaired_sha256": "bb8d68b78309adb6805c017bc6390ac5cffe95ee01c844dc8de237cd4d53ab81",
+      "scientific_metrics_changed": false,
+      "scientific_payload_sha256": "dcc9922943e3127492b069515a865ccded53bd28e1a292e53e89cf0d98d3fb3d",
+      "started_at_utc": "2026-08-24T22:49:17.513699+00:00",
+      "status": "complete"
+    },
+    "P47:150000": {
+      "action": "added_missing_environment",
+      "arm": "P47",
+      "completed_at_utc": "2026-08-24T22:49:17.516918+00:00",
+      "milestone": 150000,
+      "original_sha256": "954c7d714ce8e5eb5d596486e778152fc24e7aa422579b02788328da40f6de26",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/P47-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_150000.json",
+      "repair_source_commits": [
+        "3a48c26dbd5d933efa4ccd5ee6d9fdb867bdde89"
+      ],
+      "repaired_sha256": "dc662d30d2675b361bc947f6719e902daf07331925f00b4b0046802c1b87e69e",
+      "scientific_metrics_changed": false,
+      "scientific_payload_sha256": "9f02b3c9910967e5f0ff1fd6f1287738ad0493e4fc2ed40ea4584226015edc1f",
+      "started_at_utc": "2026-08-24T22:49:17.515768+00:00",
+      "status": "complete"
+    }
+  },
+  "environment": "SafetyPointCircle1-v0",
+  "last_changed_at_utc": "2026-08-24T22:51:47.984969+00:00",
+  "last_checked_at_utc": "2026-08-24T22:49:43.740910+00:00",
+  "repair_source_commit": "3a48c26dbd5d933efa4ccd5ee6d9fdb867bdde89",
+  "required_arms": [
+    "C0",
+    "P47"
+  ],
+  "required_milestones": [
+    150000,
+    300000
+  ],
+  "scientific_metrics_changed": false,
+  "screen_root": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen",
+  "status": "watching",
+  "training_source_commit": "ac334bfbcbedf6641aa3b454ac59497c38f8ce0b",
+  "watcher_source_commits": [
+    "3a48c26dbd5d933efa4ccd5ee6d9fdb867bdde89",
+    "7b708b8dbb5e741eb5882ba1e2ce6d0e02ad77ca"
+  ]
+}
