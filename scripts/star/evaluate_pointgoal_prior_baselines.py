@@ -182,7 +182,17 @@ class SACLagBackend:
         checkpoint = Path(receipt['checkpoint']).resolve()
         save_dir = checkpoint.parent.parent
         evaluator = omnisafe.Evaluator(render_mode='rgb_array')
-        evaluator.load_saved(str(save_dir), checkpoint.name, render_mode='rgb_array')
+        original_torch_load = torch.load
+
+        def load_on_cpu(*load_args: Any, **load_kwargs: Any) -> Any:
+            load_kwargs.setdefault('map_location', torch.device('cpu'))
+            return original_torch_load(*load_args, **load_kwargs)
+
+        torch.load = load_on_cpu
+        try:
+            evaluator.load_saved(str(save_dir), checkpoint.name, render_mode='rgb_array')
+        finally:
+            torch.load = original_torch_load
         if evaluator._cfgs.algo != 'SACLag':  # pylint: disable=protected-access
             raise ValueError('loaded OmniSafe checkpoint is not SACLag')
         if evaluator._cfgs.env_id != ENVIRONMENT:  # pylint: disable=protected-access
