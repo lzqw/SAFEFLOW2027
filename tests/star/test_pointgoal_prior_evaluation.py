@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import argparse
+import json
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -11,6 +14,11 @@ from scripts.star.evaluate_pointgoal_prior_baselines import (
     evaluate_backend,
     parse_base_seeds,
     tail_mean,
+)
+from scripts.star.run_pointgoal_prior_postprocessing import (
+    evaluation_command,
+    formal_receipts,
+    wait_for_training,
 )
 
 
@@ -104,3 +112,40 @@ def test_seed_parser_and_empirical_cvar_are_strict() -> None:
         parse_base_seeds('22027,22027')
     with pytest.raises(ValueError, match='at least one'):
         tail_mean([])
+
+
+def test_postprocessor_uses_exact_three_seed_method_receipts(tmp_path: Path) -> None:
+    args = argparse.Namespace(
+        source=Path('/immutable/source'),
+        official_shapo_source=Path('/immutable/SHAPO'),
+        output_root=tmp_path / 'postprocess',
+        python_bin=Path('/venv/bin/python'),
+        training_root=tmp_path / 'training',
+    )
+
+    command, output = evaluation_command(args, 'saclag', 'a' * 64)
+
+    expected = formal_receipts(args.training_root, 'saclag')
+    receipt_start = command.index('--receipts') + 1
+    assert command[receipt_start : receipt_start + 3] == [str(path) for path in expected]
+    assert [path.parent.name for path in expected] == ['seed-2027', 'seed-2028', 'seed-2029']
+    assert output == args.output_root / 'evaluations' / 'saclag'
+
+
+def test_postprocessor_accepts_only_authenticated_formal_completion(tmp_path: Path) -> None:
+    protocol_sha = 'b' * 64
+    (tmp_path / 'queue_state.json').write_text(
+        json.dumps(
+            {
+                'state': 'complete',
+                'mode': 'formal',
+                'protocol_sha256': protocol_sha,
+            },
+        ),
+        encoding='utf-8',
+    )
+
+    wait_for_training(tmp_path, protocol_sha, poll_seconds=1, timeout_seconds=1)
+
+    with pytest.raises(ValueError, match='invalid'):
+        wait_for_training(tmp_path, 'c' * 64, poll_seconds=1, timeout_seconds=1)
