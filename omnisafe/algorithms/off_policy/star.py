@@ -3858,6 +3858,7 @@ class STAR(BaseAlgo):
     def _evaluate_milestone(self, milestone: int) -> None:
         """Save fixed evaluation, same-state counterfactual, and lightweight model state."""
         result = self._evaluate(milestone)
+        result['environment'] = self._env_id
         trajectory = result.pop('trajectory')
         self._write_trajectory(milestone, trajectory)
         counterfactual = self._counterfactual(milestone)

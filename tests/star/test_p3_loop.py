@@ -80,6 +80,7 @@ def test_star_micro_loop_has_fixed_utd_order_and_artifacts(tmp_path: Path) -> No
     evaluation = json.loads(
         (log_dir / 'artifacts/evaluation_step_24.json').read_text(encoding='utf-8'),
     )
+    assert evaluation['environment'] == 'SafetyPointGoal1-v0'
     assert evaluation['spearman'] is None
 
     summary = json.loads((log_dir / 'artifacts/training_summary.json').read_text(encoding='utf-8'))
