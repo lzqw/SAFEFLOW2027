@@ -818,6 +818,20 @@ class STAR(BaseAlgo):
             raise ValueError('candidate_tangent_scale cannot be negative')
         if self._safety_anisotropy_enabled() and not self._stochastic_flow_enabled():
             raise ValueError('safety anisotropy requires stochastic flow')
+        random_anisotropy_seed = int(algo.random_anisotropy_seed)
+        if random_anisotropy_seed < 0 or random_anisotropy_seed != float(
+            algo.random_anisotropy_seed,
+        ):
+            raise ValueError('random anisotropy seed must be a non-negative integer')
+        if self._random_anisotropy_enabled() and not (
+            self._stochastic_flow_enabled()
+            and self._safety_anisotropy_enabled()
+            and self._unified_cost_geometry_enabled()
+            and self._safety_aware_cost_geometry_enabled()
+        ):
+            raise ValueError(
+                'random anisotropy control requires the complete safety-aware Q-cost geometry',
+            )
         if self._safety_inward_drift_enabled() and not self._safety_anisotropy_enabled():
             raise ValueError('inward safety drift requires safety anisotropy')
         if self._safety_outward_rectification_enabled() and not (
@@ -1165,6 +1179,11 @@ class STAR(BaseAlgo):
                     'shared_direction_and_diffusion_reliability': True,
                     'high_risk_geometry_fraction': 0.2,
                     'high_risk_geometry_selection_gate': False,
+                    'random_anisotropy_control_enabled': self._random_anisotropy_enabled(),
+                    'random_anisotropy_seed': int(self._cfgs.algo_cfgs.random_anisotropy_seed),
+                    'random_control_semantics': (
+                        'deterministic_pseudorandom_covariance_axis_with_safety_normal_retained'
+                    ),
                 },
                 'p4_1_correctness': {
                     'context': (
@@ -1260,6 +1279,10 @@ class STAR(BaseAlgo):
     def _safety_anisotropy_enabled(self) -> bool:
         """Return whether continuous risk reliability shapes the flow covariance."""
         return bool(getattr(self._cfgs.algo_cfgs, 'safety_anisotropy_enabled', False))
+
+    def _random_anisotropy_enabled(self) -> bool:
+        """Return whether the mechanism control rotates covariance away from safety normals."""
+        return bool(getattr(self._cfgs.algo_cfgs, 'random_anisotropy_enabled', False))
 
     def _safety_inward_drift_enabled(self) -> bool:
         """Return whether the stochastic reference also carries an inward drift."""
@@ -1371,6 +1394,11 @@ class STAR(BaseAlgo):
                     normal_variance_ratio=float(algo.flow_normal_variance_ratio),
                     gradient_scale=float(algo.safety_gradient_scale),
                     ensemble_scale=float(algo.safety_ensemble_scale),
+                    random_anisotropy_seed=(
+                        int(algo.random_anisotropy_seed)
+                        if self._random_anisotropy_enabled()
+                        else None
+                    ),
                 )
 
             return cost_reference
@@ -4022,6 +4050,8 @@ class STAR(BaseAlgo):
                 'candidate_probing_enabled': self._candidate_probing_enabled(),
                 'stochastic_flow_enabled': self._stochastic_flow_enabled(),
                 'safety_anisotropy_enabled': self._safety_anisotropy_enabled(),
+                'random_anisotropy_enabled': self._random_anisotropy_enabled(),
+                'random_anisotropy_seed': int(self._cfgs.algo_cfgs.random_anisotropy_seed),
                 'safety_inward_drift_enabled': self._safety_inward_drift_enabled(),
                 'safety_outward_rectification_enabled': (
                     self._safety_outward_rectification_enabled()

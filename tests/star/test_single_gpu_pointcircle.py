@@ -230,3 +230,37 @@ def test_pointcircle_final_evaluator_rejects_mislabeled_arm() -> None:
     validate_arm(payload, 'P47', Path('/checkpoint.pt'))
     with pytest.raises(ValueError, match='arm switches'):
         validate_arm(payload, 'C0', Path('/checkpoint.pt'))
+
+
+def test_pointcircle_mechanism_and_parameter_configs_are_single_controls() -> None:
+    c0 = config('single_gpu_pointcircle_c0.yaml')['custom_cfgs']['algo_cfgs']
+    ours = config('single_gpu_pointcircle_p47.yaml')['custom_cfgs']['algo_cfgs']
+    iso_low = config('single_gpu_pointcircle_iso_low.yaml')['custom_cfgs']['algo_cfgs']
+    random_aniso = config('single_gpu_pointcircle_random_aniso.yaml')['custom_cfgs']['algo_cfgs']
+    ratio_025 = config('single_gpu_pointcircle_ratio_025.yaml')['custom_cfgs']['algo_cfgs']
+    schedule = {'eval_milestones', 'checkpoint_milestones', 'full_checkpoint_freq'}
+
+    def without(mapping: dict, fields: set[str]) -> dict:
+        return {key: value for key, value in mapping.items() if key not in fields}
+
+    random_fields = {'random_anisotropy_enabled', 'random_anisotropy_seed'}
+    assert without(random_aniso, schedule | random_fields) == without(ours, schedule)
+    assert random_aniso['random_anisotropy_enabled'] is True
+    assert random_aniso['random_anisotropy_seed'] == 130027
+
+    assert without(ratio_025, schedule | random_fields | {'flow_normal_variance_ratio'}) == without(
+        ours,
+        schedule | {'flow_normal_variance_ratio'},
+    )
+    assert ratio_025['flow_normal_variance_ratio'] == 0.25
+
+    iso_changes = {
+        'flow_reference_variance',
+        'flow_normal_variance_ratio',
+    }
+    assert without(iso_low, schedule | random_fields | iso_changes) == without(
+        c0,
+        schedule | iso_changes,
+    )
+    assert iso_low['flow_reference_variance'] == 0.004
+    assert iso_low['flow_normal_variance_ratio'] == 1.0

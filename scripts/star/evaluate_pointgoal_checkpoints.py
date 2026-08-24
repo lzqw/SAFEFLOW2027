@@ -309,10 +309,12 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
     high_risk_margin_chunks: list[torch.Tensor] = []
     high_risk_metric_chunks: dict[str, list[torch.Tensor]] = {
         'dangerous_outward_velocity': [],
+        'normal_variance': [],
         'normal_to_tangent_variance_ratio': [],
         'outward_velocity_ratio': [],
         'reliability': [],
         'safety_weight': [],
+        'tangent_variance': [],
     }
     all_action_norms: list[float] = []
     total_stalled_movements = 0
@@ -439,12 +441,14 @@ def evaluate_rollouts(  # pylint: disable=too-many-locals,too-many-statements
                     high_risk_margin_chunks.append(reference.margins.detach().flatten().cpu())
                     high_risk_values = {
                         'dangerous_outward_velocity': raw_normal_velocity.clamp_min(0.0),
+                        'normal_variance': reference.normal_variance,
                         'normal_to_tangent_variance_ratio': (
                             reference.normal_variance / reference.tangent_variance
                         ),
                         'outward_velocity_ratio': (raw_normal_velocity > 0.0).float(),
                         'reliability': reference.reliability,
                         'safety_weight': reference.boundary_reliability,
+                        'tangent_variance': reference.tangent_variance,
                     }
                     for name, values in high_risk_values.items():
                         high_risk_metric_chunks[name].append(values.detach().flatten().cpu())

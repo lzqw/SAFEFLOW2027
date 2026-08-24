@@ -118,6 +118,36 @@ def fixed_trace_variances(
     return normal, tangent
 
 
+def deterministic_random_normal(action: torch.Tensor, seed: int) -> torch.Tensor:
+    """Return a reproducible pseudo-random unit field independent of critic gradients.
+
+    This is a mechanism-control direction, not policy randomness.  It is a deterministic
+    function of the detached action and a preregistered seed, so checkpoint evaluation does
+    not depend on an uncheckpointed generator state.
+    """
+    if action.shape[-1] < 2:
+        raise ValueError('random anisotropy requires at least two action dimensions')
+    if seed < 0:
+        raise ValueError('random anisotropy seed must be non-negative')
+    detached = action.detach()
+    index = torch.arange(
+        1,
+        detached.shape[-1] + 1,
+        device=detached.device,
+        dtype=detached.dtype,
+    )
+    weights = torch.sin(index * float(seed + 1) * 0.017453292519943295)
+    phase = (detached * weights).sum(dim=-1)
+    phase = 2.0 * torch.pi * torch.frac(
+        torch.sin(phase + float(seed + 1) * 0.123456789) * 43_758.5453,
+    )
+    if detached.shape[-1] == 2:
+        return torch.stack((torch.cos(phase), torch.sin(phase)), dim=-1)
+    offsets = index * (2.0 * torch.pi / detached.shape[-1])
+    normal = torch.sin(phase.unsqueeze(-1) + offsets)
+    return normal / normal.norm(dim=-1, keepdim=True).clamp_min(1e-8)
+
+
 def gaussian_directional_entropies(
     normal_variance: torch.Tensor,
     tangent_variance: torch.Tensor,
@@ -185,6 +215,7 @@ def compute_cost_stochastic_reference(
     normal_variance_ratio: float = 0.1,
     gradient_scale: float = 0.005,
     ensemble_scale: float = 0.05,
+    random_anisotropy_seed: int | None = None,
     epsilon: float = 1e-8,
 ) -> FlowReference:
     """Build a normalized-Q-cost reference without probability-critic policy access.
@@ -262,12 +293,29 @@ def compute_cost_stochastic_reference(
         action_dim,
         action_dim,
     )
-    normal_projection = normal.unsqueeze(-1) * normal.unsqueeze(-2)
+    covariance_normal = normal
+    if anisotropy_enabled and random_anisotropy_seed is not None:
+        covariance_normal = deterministic_random_normal(action, random_anisotropy_seed)
+    normal_projection = covariance_normal.unsqueeze(-1) * covariance_normal.unsqueeze(-2)
     tangent_projection = identity - normal_projection
     noise_transform = (
         tangent_variance.sqrt().unsqueeze(-1).unsqueeze(-1) * tangent_projection
         + normal_variance.sqrt().unsqueeze(-1).unsqueeze(-1) * normal_projection
     )
+    reported_normal_variance = normal_variance
+    reported_tangent_variance = tangent_variance
+    if anisotropy_enabled and random_anisotropy_seed is not None:
+        covariance = noise_transform @ noise_transform.transpose(-1, -2)
+        reported_normal_variance = torch.einsum(
+            '...i,...ij,...j->...',
+            normal,
+            covariance,
+            normal,
+        )
+        trace = covariance.diagonal(dim1=-2, dim2=-1).sum(dim=-1)
+        reported_tangent_variance = (
+            trace - reported_normal_variance
+        ) / (action_dim - 1)
     return FlowReference(
         drift=torch.zeros_like(action),
         noise_transform=noise_transform.detach(),
@@ -280,8 +328,8 @@ def compute_cost_stochastic_reference(
         gradient_norm=gradient_norm.detach(),
         ensemble_reliability=ensemble_reliability.detach(),
         calibration_reliability=ones,
-        normal_variance=normal_variance.detach(),
-        tangent_variance=tangent_variance.detach(),
+        normal_variance=reported_normal_variance.detach(),
+        tangent_variance=reported_tangent_variance.detach(),
     )
 
 

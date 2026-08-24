@@ -69,6 +69,8 @@ defaults:
     candidate_tangent_scale: 0.05
     stochastic_flow_enabled: False
     safety_anisotropy_enabled: False
+    random_anisotropy_enabled: False
+    random_anisotropy_seed: 0
     safety_inward_drift_enabled: False
     safety_outward_rectification_enabled: False
     unified_cost_geometry_enabled: False
