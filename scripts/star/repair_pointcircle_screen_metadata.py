@@ -128,6 +128,7 @@ def initial_state(
         'screen_root': str(screen_root),
         'training_source_commit': training_source_commit,
         'repair_source_commit': repair_source_commit,
+        'watcher_source_commits': [repair_source_commit],
         'scientific_metrics_changed': False,
         'required_arms': list(ARMS),
         'required_milestones': list(MILESTONES),
@@ -140,16 +141,15 @@ def load_state(
     screen_root: Path,
     training_source_commit: str,
     repair_source_commit: str,
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], bool]:
     """Load a restartable state while enforcing its source identities."""
     if not state_path.is_file():
-        return initial_state(screen_root, training_source_commit, repair_source_commit)
+        return initial_state(screen_root, training_source_commit, repair_source_commit), False
     state = read_json(state_path)
     expected = {
         'environment': ENVIRONMENT,
         'screen_root': str(screen_root),
         'training_source_commit': training_source_commit,
-        'repair_source_commit': repair_source_commit,
         'scientific_metrics_changed': False,
         'required_arms': list(ARMS),
         'required_milestones': list(MILESTONES),
@@ -159,7 +159,25 @@ def load_state(
             raise ValueError(f'repair state identity mismatch for {key}')
     if not isinstance(state.get('artifacts'), dict):
         raise ValueError('repair state has no artifact mapping')
-    return state
+    initial_commit = state.get('repair_source_commit')
+    if not isinstance(initial_commit, str) or len(initial_commit) != 40:
+        raise ValueError('repair state has no valid initial repair source commit')
+    changed = False
+    watcher_commits = state.get('watcher_source_commits')
+    if watcher_commits is None:
+        watcher_commits = [initial_commit]
+        state['watcher_source_commits'] = watcher_commits
+        changed = True
+    if not isinstance(watcher_commits, list) or watcher_commits[0] != initial_commit:
+        raise ValueError('repair state has invalid watcher source history')
+    if repair_source_commit not in watcher_commits:
+        watcher_commits.append(repair_source_commit)
+        changed = True
+    for entry in state['artifacts'].values():
+        if isinstance(entry, dict) and 'repair_source_commits' not in entry:
+            entry['repair_source_commits'] = [initial_commit]
+            changed = True
+    return state, changed
 
 
 def repair_one(
@@ -168,6 +186,7 @@ def repair_one(
     milestone: int,
     state: dict[str, Any],
     state_path: Path,
+    repair_source_commit: str,
 ) -> bool:
     """Add only the missing environment field with crash-safe audit evidence."""
     payload = read_json(path)
@@ -189,6 +208,12 @@ def repair_one(
             return False
         if existing.get('status') != 'repairing':
             raise ValueError(f'{key} has an unexpected repair status')
+        source_commits = existing.get('repair_source_commits')
+        if not isinstance(source_commits, list):
+            raise ValueError(f'{key} has no repair source history')
+        if repair_source_commit not in source_commits:
+            source_commits.append(repair_source_commit)
+            atomic_json(state_path, state)
         if payload.get('environment') is None:
             if existing.get('original_sha256') != current_sha256:
                 raise ValueError(f'{key} changed before its pending repair')
@@ -212,6 +237,9 @@ def repair_one(
             'repaired_sha256': current_sha256,
             'scientific_payload_sha256': content_sha256,
             'scientific_metrics_changed': False,
+            'repair_source_commits': (
+                existing['repair_source_commits'] if existing is not None else [repair_source_commit]
+            ),
             'completed_at_utc': utc_now(),
         }
         atomic_json(state_path, state)
@@ -227,6 +255,7 @@ def repair_one(
             'original_sha256': current_sha256,
             'scientific_payload_sha256': content_sha256,
             'scientific_metrics_changed': False,
+            'repair_source_commits': [repair_source_commit],
             'started_at_utc': utc_now(),
         }
         atomic_json(state_path, state)
@@ -265,18 +294,28 @@ def repair_available(
     screen_root = screen_root.resolve()
     state_path = state_path.resolve()
     state_existed = state_path.is_file()
-    state = load_state(
+    state, state_identity_changed = load_state(
         state_path,
         screen_root,
         training_source_commit,
         repair_source_commit,
     )
-    changed = False
+    changed = state_identity_changed
     for arm in ARMS:
         for milestone in MILESTONES:
             path = artifact_path(screen_root, arm, milestone)
             if path is not None:
-                changed = repair_one(path, arm, milestone, state, state_path) or changed
+                changed = (
+                    repair_one(
+                        path,
+                        arm,
+                        milestone,
+                        state,
+                        state_path,
+                        repair_source_commit,
+                    )
+                    or changed
+                )
     required = {f'{arm}:{milestone}' for arm in ARMS for milestone in MILESTONES}
     completed = {
         key
