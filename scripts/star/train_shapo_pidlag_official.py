@@ -23,6 +23,7 @@ from typing import Any
 
 
 EXPECTED_SHAPO_COMMIT = '1bb770437bbbe40a89938661343744243e164bf9'
+SUPPORTED_ENVIRONMENTS = ('SafetyPointGoal1-v0', 'SafetyPointCircle1-v0')
 CUDA_DIAGNOSTIC_KEYS = frozenset(
     {
         'Misc/CosineSimilarity',
@@ -116,13 +117,14 @@ def main() -> None:  # pylint: disable=too-many-locals
         'device_id': 0,
         'num_envs': 1,
         'perturbation_target_kl': 0.00001,
-        'task': 'SafetyPointGoal1-v0',
         'use_eval': False,
         'use_shapo_actor': True,
     }
     observed = {key: getattr(args, key) for key in required}
     if observed != required:
         raise RuntimeError(f'official SHAPO arguments do not match the frozen protocol: {observed}')
+    if args.task not in SUPPORTED_ENVIRONMENTS:
+        raise RuntimeError(f'unsupported frozen Point-task environment: {args.task}')
     if args.total_steps <= 0 or args.total_steps % args.steps_per_epoch:
         raise RuntimeError('SHAPO total steps must be positive and divisible by steps per epoch')
 

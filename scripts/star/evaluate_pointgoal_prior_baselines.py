@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate PointGoal SACLag and official SHAPO-PIDLag final checkpoints.
+"""Evaluate Point-task SACLag and official SHAPO-PIDLag final checkpoints.
 
 The evaluator uses the same five base environment seeds and sequential 20-episode
 streams as the frozen P4.7 final evaluation.  Each baseline keeps its native
@@ -24,7 +24,8 @@ from typing import Any, Protocol
 import torch
 
 
-ENVIRONMENT = 'SafetyPointGoal1-v0'
+DEFAULT_ENVIRONMENT = 'SafetyPointGoal1-v0'
+SUPPORTED_ENVIRONMENTS = ('SafetyPointGoal1-v0', 'SafetyPointCircle1-v0')
 EXPECTED_SHAPO_COMMIT = '1bb770437bbbe40a89938661343744243e164bf9'
 DEFAULT_BASE_SEEDS = (22_027, 22_028, 22_029, 22_030, 22_031)
 DEFAULT_EPISODES_PER_BASE_SEED = 20
@@ -136,7 +137,12 @@ def git_identity(source: Path, *, include_untracked: bool = True) -> tuple[str, 
     return commit, status
 
 
-def load_receipt(path: Path, expected_protocol_sha256: str | None) -> dict[str, Any]:
+def load_receipt(
+    path: Path,
+    expected_protocol_sha256: str | None,
+    environment: str = DEFAULT_ENVIRONMENT,
+    expected_steps: int = 200_000,
+) -> dict[str, Any]:
     """Load and validate one completed formal-training receipt."""
     payload = json.loads(path.read_text(encoding='utf-8'))
     algorithm = payload.get('algorithm')
@@ -144,10 +150,12 @@ def load_receipt(path: Path, expected_protocol_sha256: str | None) -> dict[str, 
         raise ValueError(f'{path} has unsupported algorithm {algorithm!r}')
     if payload.get('status') != 'complete' or payload.get('phase') != 'formal':
         raise ValueError(f'{path} is not a completed formal receipt')
-    if payload.get('environment') != ENVIRONMENT:
-        raise ValueError(f'{path} does not belong to {ENVIRONMENT}')
-    if int(payload.get('steps', -1)) != 200_000:
-        raise ValueError(f'{path} is not a 200k equal-budget checkpoint')
+    if environment not in SUPPORTED_ENVIRONMENTS:
+        raise ValueError(f'unsupported Point-task environment {environment!r}')
+    if payload.get('environment') != environment:
+        raise ValueError(f'{path} does not belong to {environment}')
+    if int(payload.get('steps', -1)) != expected_steps:
+        raise ValueError(f'{path} is not an equal-budget {expected_steps}-step checkpoint')
     if int(payload.get('seed', -1)) not in (2027, 2028, 2029):
         raise ValueError(f'{path} has an unexpected training seed')
     protocol_sha = str(payload.get('protocol_sha256', ''))
@@ -176,7 +184,7 @@ class SACLagBackend:
 
     auto_resets = False
 
-    def __init__(self, receipt: dict[str, Any]) -> None:
+    def __init__(self, receipt: dict[str, Any], environment: str = DEFAULT_ENVIRONMENT) -> None:
         import omnisafe  # pylint: disable=import-outside-toplevel
 
         checkpoint = Path(receipt['checkpoint']).resolve()
@@ -195,7 +203,7 @@ class SACLagBackend:
             torch.load = original_torch_load
         if evaluator._cfgs.algo != 'SACLag':  # pylint: disable=protected-access
             raise ValueError('loaded OmniSafe checkpoint is not SACLag')
-        if evaluator._cfgs.env_id != ENVIRONMENT:  # pylint: disable=protected-access
+        if evaluator._cfgs.env_id != environment:  # pylint: disable=protected-access
             raise ValueError('loaded OmniSafe checkpoint belongs to another environment')
         if evaluator._cfgs.algo_cfgs.obs_normalize:  # pylint: disable=protected-access
             raise ValueError('frozen SACLag baseline unexpectedly normalizes observations')
@@ -227,7 +235,12 @@ class SHAPOPIDLagBackend:
 
     auto_resets = True
 
-    def __init__(self, receipt: dict[str, Any], official_source: Path) -> None:
+    def __init__(
+        self,
+        receipt: dict[str, Any],
+        official_source: Path,
+        environment: str = DEFAULT_ENVIRONMENT,
+    ) -> None:
         official_source = official_source.resolve()
         commit, status = git_identity(official_source)
         if commit != EXPECTED_SHAPO_COMMIT:
@@ -247,7 +260,7 @@ class SHAPOPIDLagBackend:
         env, observation_space, action_space = make_sa_safetygym_env(
             arguments,
             num_envs=1,
-            env_id=ENVIRONMENT,
+            env_id=environment,
             seed=None,
         )
         policy = ActorVCritic(
@@ -405,6 +418,7 @@ def reusable_result(
     base_seeds: list[int],
     episodes_per_base_seed: int,
     policy_seed_offset: int,
+    environment: str = DEFAULT_ENVIRONMENT,
 ) -> dict[str, Any] | None:
     """Return an exact completed result, or refuse an incompatible existing artifact."""
     if not path.exists():
@@ -416,6 +430,7 @@ def reusable_result(
         and payload.get('base_seeds') == base_seeds
         and payload.get('episodes_per_base_seed') == episodes_per_base_seed
         and payload.get('policy_seed_offset') == policy_seed_offset
+        and payload.get('environment') == environment
     )
     if not exact:
         raise FileExistsError(f'refusing to overwrite incompatible evaluation {path}')
@@ -430,6 +445,7 @@ def evaluate_receipt(  # pylint: disable=too-many-arguments
     episodes_per_base_seed: int,
     policy_seed_offset: int,
     evaluation_source_commit: str,
+    environment: str = DEFAULT_ENVIRONMENT,
 ) -> dict[str, Any]:
     """Evaluate one receipt or reuse its exact completed artifact."""
     output = result_path(output_dir, receipt)
@@ -439,14 +455,15 @@ def evaluate_receipt(  # pylint: disable=too-many-arguments
         base_seeds,
         episodes_per_base_seed,
         policy_seed_offset,
+        environment,
     )
     if existing is not None:
         return existing
     if receipt['algorithm'] == 'SACLag':
-        backend: RolloutBackend = SACLagBackend(receipt)
+        backend: RolloutBackend = SACLagBackend(receipt, environment)
         normalizer_policy = 'disabled_by_frozen_training_config'
     else:
-        backend = SHAPOPIDLagBackend(receipt, official_source)
+        backend = SHAPOPIDLagBackend(receipt, official_source, environment)
         normalizer_policy = 'frozen_training_running_mean_and_variance'
     try:
         records, summary = evaluate_backend(
@@ -462,7 +479,7 @@ def evaluate_receipt(  # pylint: disable=too-many-arguments
     payload = {
         'status': 'complete',
         'algorithm': receipt['algorithm'],
-        'environment': ENVIRONMENT,
+        'environment': environment,
         'training_seed': int(receipt['seed']),
         'training_steps': int(receipt['steps']),
         'training_cumulative_cost': float(receipt['training_cumulative_cost']),
@@ -477,7 +494,8 @@ def evaluate_receipt(  # pylint: disable=too-many-arguments
         'evaluation_mode': 'fixed-native-stochastic-policy-stream',
         'evaluation_role': 'primary',
         'environment_stream_policy': (
-            'reset once with each base seed, then advance 20 sequential episode RNG streams'
+            f'reset once with each base seed, then advance {episodes_per_base_seed} sequential '
+            'episode RNG streams'
         ),
         'policy_stream_policy': (
             'native stochastic action sampling from one CPU Torch RNG stream per base seed'
@@ -518,6 +536,12 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument('--policy-seed-offset', type=int, default=DEFAULT_POLICY_SEED_OFFSET)
     result.add_argument('--expected-protocol-sha256')
+    result.add_argument(
+        '--environment',
+        choices=SUPPORTED_ENVIRONMENTS,
+        default=DEFAULT_ENVIRONMENT,
+    )
+    result.add_argument('--expected-steps', type=int)
     return result
 
 
@@ -531,8 +555,19 @@ def main() -> None:
     base_seeds = parse_base_seeds(args.base_seeds)
     if args.episodes_per_base_seed <= 0:
         raise ValueError('episodes-per-base-seed must be positive')
+    expected_steps = args.expected_steps
+    if expected_steps is None:
+        expected_steps = 200_000 if args.environment == DEFAULT_ENVIRONMENT else 500_000
+    if expected_steps <= 0:
+        raise ValueError('expected training steps must be positive')
     receipts = [
-        load_receipt(path.resolve(), args.expected_protocol_sha256) for path in args.receipts
+        load_receipt(
+            path.resolve(),
+            args.expected_protocol_sha256,
+            args.environment,
+            expected_steps,
+        )
+        for path in args.receipts
     ]
     identities = [(payload['algorithm'], int(payload['seed'])) for payload in receipts]
     if len(identities) != len(set(identities)):
@@ -547,6 +582,7 @@ def main() -> None:
             args.episodes_per_base_seed,
             args.policy_seed_offset,
             evaluation_source_commit,
+            args.environment,
         )
         for receipt in receipts
     ]
@@ -559,11 +595,14 @@ def main() -> None:
             row['episode_index'],
         ),
     )
-    atomic_csv(args.output_dir / 'pointgoal_prior_episode_records.csv', episode_rows)
+    task_slug = 'pointgoal' if args.environment == DEFAULT_ENVIRONMENT else 'pointcircle'
+    atomic_csv(args.output_dir / f'{task_slug}_prior_episode_records.csv', episode_rows)
     manifest = {
         'status': 'complete',
         'evaluation_source_commit': evaluation_source_commit,
         'protocol_sha256': args.expected_protocol_sha256,
+        'environment': args.environment,
+        'training_steps': expected_steps,
         'base_seeds': base_seeds,
         'episodes_per_base_seed': args.episodes_per_base_seed,
         'episodes_per_policy': len(base_seeds) * args.episodes_per_base_seed,

@@ -4,17 +4,26 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
 import yaml
 
 from scripts.star.decide_pointcircle_screen import screen_decision
+from scripts.star.evaluate_pointcircle_checkpoints import validate_arm
+from scripts.star.evaluate_pointgoal_prior_baselines import load_receipt
 from scripts.star.run_single_gpu_pointcircle_queue import (
     FORMAL_STEPS,
     REPLAY_SIZE,
     SCREEN_STEPS,
     training_command,
+)
+from scripts.star.run_single_gpu_pointcircle_prior_queue import (
+    FORMAL_STEPS as PRIOR_FORMAL_STEPS,
+    REPLAY_SIZE as PRIOR_REPLAY_SIZE,
+    command_for as prior_command_for,
+    wait_for_pointcircle,
 )
 
 
@@ -139,3 +148,85 @@ def test_return_screen_handles_negative_baseline_without_sign_inversion() -> Non
     assert within['return_ok'] is True
     assert within['return_relative_degradation'] == pytest.approx(0.1)
     assert outside['return_ok'] is False
+
+
+def test_pointcircle_prior_commands_lock_task_budget_and_two_single_env_learners(
+    tmp_path: Path,
+) -> None:
+    args = argparse.Namespace(
+        source=ROOT,
+        official_shapo_source=Path('/official/SHAPO'),
+        run_root=tmp_path,
+        python_bin=Path('/venv/bin/python'),
+    )
+    identities = {
+        'source_commit': 'a' * 40,
+        'official_source_commit': 'b' * 40,
+        'protocol_sha256': 'c' * 64,
+    }
+
+    saclag, _, _ = prior_command_for(args, identities, 'SACLag', 2027)
+    shapo, _, _ = prior_command_for(args, identities, 'SHAPO-PIDLag', 2027)
+
+    assert saclag[saclag.index('--environment') + 1] == 'SafetyPointCircle1-v0'
+    assert saclag[saclag.index('--steps') + 1] == str(PRIOR_FORMAL_STEPS)
+    assert saclag[saclag.index('--replay-size') + 1] == str(PRIOR_REPLAY_SIZE)
+    assert shapo[shapo.index('--task') + 1] == 'SafetyPointCircle1-v0'
+    assert shapo[shapo.index('--num-envs') + 1] == '1'
+    assert shapo[shapo.index('--total-steps') + 1] == str(PRIOR_FORMAL_STEPS)
+
+
+def test_pointcircle_prior_gate_and_receipt_environment_are_exact(tmp_path: Path) -> None:
+    state = tmp_path / 'queue_state.json'
+    state.write_text(
+        json.dumps(
+            {
+                'state': 'complete',
+                'protocol_sha256': (
+                    '0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8'
+                ),
+            }
+        ),
+        encoding='utf-8',
+    )
+    assert wait_for_pointcircle(state, 1) is True
+
+    checkpoint = tmp_path / 'checkpoint.pt'
+    checkpoint.write_bytes(b'checkpoint')
+    receipt = tmp_path / 'receipt.json'
+    receipt.write_text(
+        json.dumps(
+            {
+                'algorithm': 'SACLag',
+                'status': 'complete',
+                'phase': 'formal',
+                'environment': 'SafetyPointCircle1-v0',
+                'steps': 500000,
+                'seed': 2027,
+                'protocol_sha256': 'd' * 64,
+                'checkpoint': str(checkpoint),
+                'checkpoint_sha256': hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+            }
+        ),
+        encoding='utf-8',
+    )
+    loaded = load_receipt(receipt, 'd' * 64, 'SafetyPointCircle1-v0', 500000)
+    assert loaded['environment'] == 'SafetyPointCircle1-v0'
+    with pytest.raises(ValueError, match='does not belong'):
+        load_receipt(receipt, 'd' * 64, 'SafetyPointGoal1-v0', 500000)
+
+
+def test_pointcircle_final_evaluator_rejects_mislabeled_arm() -> None:
+    payload = {
+        'extra': {
+            'resolved_config': {
+                'algo_cfgs': {
+                    'directional_loss_enabled': True,
+                    'safety_aware_cost_geometry_enabled': True,
+                }
+            }
+        }
+    }
+    validate_arm(payload, 'P47', Path('/checkpoint.pt'))
+    with pytest.raises(ValueError, match='arm switches'):
+        validate_arm(payload, 'C0', Path('/checkpoint.pt'))

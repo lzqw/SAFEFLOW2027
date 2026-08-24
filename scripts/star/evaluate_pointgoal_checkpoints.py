@@ -173,14 +173,17 @@ def sample_flow_noise(
     return torch.randn(shape, generator=generator, dtype=dtype).to(device=device)
 
 
-def checkpoint_payload(path: Path) -> dict[str, Any]:
+def checkpoint_payload(
+    path: Path,
+    environment: str = 'SafetyPointGoal1-v0',
+) -> dict[str, Any]:
     """Load and validate one self-describing STAR checkpoint."""
     payload = torch.load(path, map_location='cpu', weights_only=False)
     if payload.get('format') != 'star-checkpoint' or payload.get('version') != 1:
         raise ValueError(f'{path} is not a STAR checkpoint')
     extra = payload.get('extra', {})
-    if extra.get('environment') != 'SafetyPointGoal1-v0':
-        raise ValueError(f'{path} is not a SafetyPointGoal1-v0 checkpoint')
+    if extra.get('environment') != environment:
+        raise ValueError(f'{path} is not a {environment} checkpoint')
     return payload
 
 
@@ -191,6 +194,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
     work_dir: Path,
     *,
     episodes_per_seed: int = 1,
+    environment: str = 'SafetyPointGoal1-v0',
 ) -> Any:
     """Reconstruct the exact legacy actor, critics, adapter, and normalizer."""
     step = int(payload['counters']['env_steps'])
@@ -230,7 +234,7 @@ def build_algorithm(  # pylint: disable=too-many-locals
         'use_tensorboard': False,
         'use_wandb': False,
     }
-    wrapper = omnisafe.Agent('STAR', 'SafetyPointGoal1-v0', custom_cfgs=custom)
+    wrapper = omnisafe.Agent('STAR', environment, custom_cfgs=custom)
     algorithm: Any = wrapper.agent
     load_star_model_state(
         algorithm._actor_critic,  # pylint: disable=protected-access

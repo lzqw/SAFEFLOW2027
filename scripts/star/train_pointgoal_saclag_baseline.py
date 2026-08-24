@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Train one frozen OmniSafe SACLag PointGoal baseline run."""
+"""Train one frozen OmniSafe SACLag Point-task baseline run."""
 
 from __future__ import annotations
 
@@ -12,6 +12,9 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+
+SUPPORTED_ENVIRONMENTS = ('SafetyPointGoal1-v0', 'SafetyPointCircle1-v0')
 
 
 def sha256_file(path: Path) -> str:
@@ -43,6 +46,11 @@ def last_progress_row(log_dir: Path) -> dict[str, str]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--environment',
+        choices=SUPPORTED_ENVIRONMENTS,
+        default='SafetyPointGoal1-v0',
+    )
     parser.add_argument('--seed', type=int, required=True)
     parser.add_argument('--steps', type=int, required=True)
     parser.add_argument('--device', default='cuda:0')
@@ -107,7 +115,7 @@ def main() -> None:
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     started = time.monotonic()
-    wrapper = omnisafe.Agent('SACLag', 'SafetyPointGoal1-v0', custom_cfgs=custom_cfgs)
+    wrapper = omnisafe.Agent('SACLag', args.environment, custom_cfgs=custom_cfgs)
     algorithm = wrapper.agent
     ep_ret, ep_cost, ep_len = wrapper.learn()
     elapsed = time.monotonic() - started
@@ -129,7 +137,7 @@ def main() -> None:
         'checkpoint_sha256': sha256_file(checkpoint),
         'elapsed_seconds': elapsed,
         'end_to_end_fps': args.steps / elapsed,
-        'environment': 'SafetyPointGoal1-v0',
+        'environment': args.environment,
         'final_training_episode_cost': float(ep_cost),
         'final_training_episode_length': float(ep_len),
         'final_training_episode_return': float(ep_ret),
