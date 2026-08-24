@@ -41,13 +41,14 @@ PointGoal 的 P4.7 正式实验已经完成，并在相同 `200k` 训练预算�
 
 服务器已连接，RTX 3090 正常可用。重启后的检查确认 v3 控制器、自动后处理器和 PointCircle 条件队列均仍在线；没有发生 P4.7 重跑，也没有误恢复旧的 `150M` 长矩阵。
 
-截至 `2026-08-24 22:39`（Asia/Shanghai），PointGoal 正式补充基线进度如下：
+截至 `2026-08-24 23:18`（Asia/Shanghai），PointGoal 正式补充基线进度如下：
 
 | 方法 | Seed | 预算 | 状态 | 说明 |
 |---|---:|---:|---|---|
 | SHAPO-PIDLag | 2027 | `200k` | **训练完成** | 用时 `979.5 s`；正式 receipt 已落盘 |
-| SACLag | 2027 | `200k` | **训练中** | 同一配对 wave 正常运行 |
-| 两种方法 | 2028–2029 | `200k` / seed | 排队中 | seed 2027 配对完成后自动顺序启动 |
+| SACLag | 2027 | `200k` | **训练完成** | 用时约 `57.5 min`；正式 receipt 已落盘 |
+| 两种方法 | 2028 | `200k` / seed | **训练中** | 第二个配对 wave 正常运行 |
+| 两种方法 | 2029 | `200k` / seed | 排队中 | seed 2028 配对完成后自动启动 |
 
 这里的“完成”只表示训练工程状态。为避免中途选择结果，目前没有读取 SHAPO seed 2027 的 return、cost 或其他科学指标；只有全部 `3` 个训练 seeds 完成固定评测后，才生成四方法正式主表。
 
@@ -73,6 +74,8 @@ PointGoal 的 P4.7 正式实验已经完成，并在相同 `200k` 训练预算�
 
 训练结束后的工作也已自动化：后处理器会使用 `5` 个固定评测 seeds、每个 `20` 个连续 episodes（每个训练 seed 合计 `100` episodes）评测 SACLag 与 SHAPO-PIDLag，再与封存的 C0/P4.7 原始 episode 证据合并。PointCircle 队列已经部署，但只会在 PointGoal 四方法表完整生成后启动 seed 2027 的 C0/P4.7 `300k` 配对筛选。
 
+PointCircle 后续流水线现已完整部署为条件队列：筛选通过后才运行 C0/P4.7 三 seed `500k`、SACLag/SHAPO-PIDLag 三 seed `500k`、两个单 seed 机制控制、一个 `0.25` 方差比参数点以及 checkpoint-only 鲁棒性评测。所有阶段均最多使用两个 learner；机制与参数阶段没有新增权重搜索，鲁棒性阶段明确禁止重训练。若预注册的 PointCircle 筛选不通过，所有下游科学训练都会记录 `screen_not_passed` 并停止。
+
 ## 后续固定顺序与预计时间
 
 1. PointGoal prior baselines：补齐 SACLag、SHAPO-PIDLag；训练实测预计 `2–4` 小时，含最终评测与汇总按 `1` 天内规划。
@@ -92,5 +95,8 @@ PointCircle seed 2027 的筛选规则已经预注册：Ours 的 return 相对 FL
 - 日志兼容修复后的训练源 commit：`061787a2b393041cd54b8ccd38beab9316af46f8`
 - PointGoal 固定评测与四方法汇总 commit：`7c63ac6dff81ae0135456a474d967c8d7dbbccff`
 - PointCircle 条件队列 commit：`ac334bfbcbedf6641aa3b454ac59497c38f8ce0b`
+- PointCircle 四方法评测与 prior 队列 commit：`799dd954fb3df5648b01886f4487663e68ab1125`
+- PointCircle 机制与参数控制 commit：`35128da13767520ced9c7d15f879fc94eda52763`
+- checkpoint-only Point 鲁棒性协议与队列 commit：`6143356f734231a68aaaff6b8006219ea3be4d4d`
 - 当前开发分支：`codex/star-single-gpu-paper-core`
 - 当前汇总与执行 PR：[PR #12](https://github.com/lzqw/SAFEFLOW2027/pull/12)
