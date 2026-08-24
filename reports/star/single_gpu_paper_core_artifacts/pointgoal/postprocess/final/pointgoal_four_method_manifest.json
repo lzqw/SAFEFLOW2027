@@ -1,0 +1,156 @@
+{
+  "aggregate_rows": [
+    {
+      "cost_cvar_20": 67.75,
+      "high_risk_dangerous_outward_velocity": 0.22085284690062204,
+      "high_risk_vn_vt": 0.9981648524602255,
+      "mean_cost": 13.566666666666666,
+      "mean_return": 0.462061892988033,
+      "method": "C0 / isotropic FLAC",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 34.36311006491312,
+      "seed_std_mean_cost": 7.298604889520553,
+      "seed_std_mean_return": 0.3591830230615698,
+      "seed_std_success_rate": 0.12662279942148388,
+      "seed_std_training_cumulative_cost": 1214.3958717540725,
+      "success_rate": 0.22666666666666666,
+      "training_cumulative_cost_mean": 7305.333333333333,
+      "training_seeds": 3,
+      "training_steps_per_seed": 200000
+    },
+    {
+      "cost_cvar_20": 108.93333333333334,
+      "high_risk_dangerous_outward_velocity": null,
+      "high_risk_vn_vt": null,
+      "mean_cost": 53.19,
+      "mean_return": 25.219209813215365,
+      "method": "SACLag",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 12.782246803020715,
+      "seed_std_mean_cost": 5.413492403245801,
+      "seed_std_mean_return": 1.696814460886159,
+      "seed_std_success_rate": 0.0,
+      "seed_std_training_cumulative_cost": 366.12748235188974,
+      "success_rate": 1.0,
+      "training_cumulative_cost_mean": 12874.333333333334,
+      "training_seeds": 3,
+      "training_steps_per_seed": 200000
+    },
+    {
+      "cost_cvar_20": 108.38333333333334,
+      "high_risk_dangerous_outward_velocity": null,
+      "high_risk_vn_vt": null,
+      "mean_cost": 24.02,
+      "mean_return": 1.504023312063821,
+      "method": "SHAPO-PIDLag",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 25.34449315597638,
+      "seed_std_mean_cost": 6.630392145265618,
+      "seed_std_mean_return": 1.21445049742591,
+      "seed_std_success_rate": 0.2236813209307682,
+      "seed_std_training_cumulative_cost": 2836.940015374547,
+      "success_rate": 0.5133333333333333,
+      "training_cumulative_cost_mean": 9655.516666666668,
+      "training_seeds": 3,
+      "training_steps_per_seed": 200000
+    },
+    {
+      "cost_cvar_20": 46.8,
+      "high_risk_dangerous_outward_velocity": 0.18344075977802277,
+      "high_risk_vn_vt": 0.8744491140047709,
+      "mean_cost": 9.433333333333334,
+      "mean_return": 0.6544966828142326,
+      "method": "P4.7 / Ours",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 2.2152877916875715,
+      "seed_std_mean_cost": 0.7390759997005273,
+      "seed_std_mean_return": 0.2871632599254014,
+      "seed_std_success_rate": 0.09073771725877465,
+      "seed_std_training_cumulative_cost": 192.105006007999,
+      "success_rate": 0.25333333333333335,
+      "training_cumulative_cost_mean": 5582.333333333333,
+      "training_seeds": 3,
+      "training_steps_per_seed": 200000
+    }
+  ],
+  "evaluation_episodes_per_training_seed": 100,
+  "evidence": [
+    {
+      "method": "C0 / isotropic FLAC",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/C0/evaluation_seed_2027_step_200000.json",
+      "sha256": "e4c0c41d7766ad9afd7ecc07855a976a532c4ee01a47538114b92cba3fd92af2",
+      "training_seed": 2027
+    },
+    {
+      "method": "C0 / isotropic FLAC",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/C0/evaluation_seed_2028_step_200000.json",
+      "sha256": "40da4849fe47a5c7c1da271fee5e942826c64f5e493ae706df39f12d39d8ba26",
+      "training_seed": 2028
+    },
+    {
+      "method": "C0 / isotropic FLAC",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/C0/evaluation_seed_2029_step_200000.json",
+      "sha256": "45b14b68a8ba433a81591886d1c7a1eebef7a0e1082af46f229497c914bb8675",
+      "training_seed": 2029
+    },
+    {
+      "method": "SACLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2027_step_200000.json",
+      "sha256": "5c4d6f4f315904aa5c8c4bfbdd222e1a637e9079ca0662c0e954655d927f2c0a",
+      "training_seed": 2027
+    },
+    {
+      "method": "SACLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2028_step_200000.json",
+      "sha256": "937d9053e5a57a1d53cd28b22809086d22b3bf4b228ebe22d1df17d451f6d853",
+      "training_seed": 2028
+    },
+    {
+      "method": "SACLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2029_step_200000.json",
+      "sha256": "188e60b3150eb401e5760b16fe2d1174140a573216de0f4c94c8bce27406f1bf",
+      "training_seed": 2029
+    },
+    {
+      "method": "SHAPO-PIDLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/shapo_pidlag/shapo_pidlag_seed_2027_step_200000.json",
+      "sha256": "1153a222d4fef9b23b90e080afbf159c2c9672a7c13f5937a05349caae40d1ea",
+      "training_seed": 2027
+    },
+    {
+      "method": "SHAPO-PIDLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/shapo_pidlag/shapo_pidlag_seed_2028_step_200000.json",
+      "sha256": "327ac5765067af0413cab2cb3d1a9719ccb9fc4ba6ae353b869b4fee378e2d98",
+      "training_seed": 2028
+    },
+    {
+      "method": "SHAPO-PIDLag",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/shapo_pidlag/shapo_pidlag_seed_2029_step_200000.json",
+      "sha256": "5f72942f71931536b457877d7f6c656726e4fa7c8cccc84816c4c3df80699865",
+      "training_seed": 2029
+    },
+    {
+      "method": "P4.7 / Ours",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/P47/evaluation_seed_2027_step_200000.json",
+      "sha256": "21b6c0104cf8ac75d65791e3034e979b32dba5b86910f5a2254d180276413e8e",
+      "training_seed": 2027
+    },
+    {
+      "method": "P4.7 / Ours",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/P47/evaluation_seed_2028_step_200000.json",
+      "sha256": "50710e60f885b34991c3f51afb4a8587673ccf3ed8f4e1fa9907fa66a239a93b",
+      "training_seed": 2028
+    },
+    {
+      "method": "P4.7 / Ours",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-evaluator-7c63ac6/reports/star/p4_7_safety_aware_geometry_artifacts/final/formal_evaluations/P47/evaluation_seed_2029_step_200000.json",
+      "sha256": "822963639779b74f1f6def19911f2699f22598af2fdab17b2494e12bb5b7b8cc",
+      "training_seed": 2029
+    }
+  ],
+  "finalizer_source_commit": "7c63ac6dff81ae0135456a474d967c8d7dbbccff",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "statistical_unit": "training_seed",
+  "status": "complete",
+  "training_seeds_per_method": 3
+}

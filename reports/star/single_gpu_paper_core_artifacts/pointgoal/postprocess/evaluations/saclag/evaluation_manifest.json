@@ -1,0 +1,20 @@
+{
+  "base_seeds": [
+    22027,
+    22028,
+    22029,
+    22030,
+    22031
+  ],
+  "episodes_per_base_seed": 20,
+  "episodes_per_policy": 100,
+  "evaluation_source_commit": "7c63ac6dff81ae0135456a474d967c8d7dbbccff",
+  "policy_seed_offset": 1000003,
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "results": [
+    "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2027_step_200000.json",
+    "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2028_step_200000.json",
+    "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/postprocess/evaluations/saclag/saclag_seed_2029_step_200000.json"
+  ],
+  "status": "complete"
+}

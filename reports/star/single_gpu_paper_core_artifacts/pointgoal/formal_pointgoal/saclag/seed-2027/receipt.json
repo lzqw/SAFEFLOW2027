@@ -1,0 +1,78 @@
+{
+  "algorithm": "SACLag",
+  "checkpoint": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/formal_pointgoal/saclag/seed-2027/training/SACLag-{SafetyPointGoal1-v0}/seed-2027-2026-08-24-22-10-39/torch_save/epoch-100.pt",
+  "checkpoint_sha256": "42df42954748c9a24e331232ea94c9beb706dad510ec0afd66f7c770cb0bfe10",
+  "elapsed_seconds": 3457.7685160934925,
+  "end_to_end_fps": 57.8407718935319,
+  "environment": "SafetyPointGoal1-v0",
+  "final_training_episode_cost": 52.900001525878906,
+  "final_training_episode_length": 1000.0,
+  "final_training_episode_return": 23.522947311401367,
+  "finished_at_utc": "2026-08-24T15:08:10.404063+00:00",
+  "last_progress_row": {
+    "Loss/Loss_cost_critic": "0.34186115860939026",
+    "Loss/Loss_cost_critic/Delta": "0.0024254322052001953",
+    "Loss/Loss_pi": "-1.1476680040359497",
+    "Loss/Loss_pi/Delta": "-0.0010197162628173828",
+    "Loss/Loss_reward_critic": "0.001934984466060996",
+    "Loss/Loss_reward_critic/Delta": "5.592824891209602e-06",
+    "Metrics/EpCost": "52.900001525878906",
+    "Metrics/EpLen": "1000.0",
+    "Metrics/EpRet": "23.522947311401367",
+    "Metrics/LagrangeMultiplier": "0.0",
+    "Time/Epoch": "36.03023910522461",
+    "Time/Evaluate": "9.298324584960938e-06",
+    "Time/FPS": "55.50893020629883",
+    "Time/Rollout": "7.585789680480957",
+    "Time/Total": "3450.572265625",
+    "Time/Update": "28.435157775878906",
+    "TotalEnvSteps": "200000.0",
+    "Train/Epoch": "99.0",
+    "Train/LR": "4.999999873689376e-06",
+    "Value/alpha": "1.0000003385357559e-05",
+    "Value/cost_critic": "6.904349327087402",
+    "Value/reward_critic": "1.157528281211853"
+  },
+  "learner_vector_envs": 1,
+  "off_policy_utd_ratio": 1.0,
+  "peak_cuda_memory_mib": 220.54833984375,
+  "phase": "formal",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "replay_transitions": 200000,
+  "seed": 2027,
+  "source_commit": "061787a2b393041cd54b8ccd38beab9316af46f8",
+  "status": "complete",
+  "steps": 200000,
+  "training_configuration": {
+    "algo_cfgs": {
+      "batch_size": 256,
+      "cost_normalize": false,
+      "obs_normalize": false,
+      "reward_normalize": false,
+      "size": 400000,
+      "start_learning_steps": 10000,
+      "steps_per_epoch": 2000,
+      "update_cycle": 1,
+      "update_iters": 1
+    },
+    "lagrange_cfgs": {
+      "cost_limit": 10.0
+    },
+    "logger_cfgs": {
+      "log_dir": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/formal_pointgoal/saclag/seed-2027/training",
+      "save_model_freq": 100,
+      "use_tensorboard": false,
+      "use_wandb": false
+    },
+    "seed": 2027,
+    "train_cfgs": {
+      "device": "cuda:0",
+      "eval_episodes": 0,
+      "parallel": 1,
+      "torch_threads": 1,
+      "total_steps": 200000,
+      "vector_env_nums": 1
+    }
+  },
+  "training_cumulative_cost": 12655.0
+}
