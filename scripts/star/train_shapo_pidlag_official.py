@@ -2,8 +2,9 @@
 """Run pinned official SHAPO-PIDLag while capturing evaluation-critical state.
 
 The official optimizer and environment path are used unchanged.  This wrapper only
-locks resource arguments, runs W&B offline, and preserves the observation running
-statistics that the upstream script otherwise omits from its final checkpoint.
+locks resource arguments, runs W&B offline, keeps CUDA diagnostics loggable, and
+preserves the observation running statistics that the upstream script otherwise
+omits from its final checkpoint.
 """
 
 from __future__ import annotations
@@ -22,6 +23,13 @@ from typing import Any
 
 
 EXPECTED_SHAPO_COMMIT = '1bb770437bbbe40a89938661343744243e164bf9'
+CUDA_DIAGNOSTIC_KEYS = frozenset(
+    {
+        'Misc/CosineSimilarity',
+        'Misc/EffectiveRho',
+        'Misc/ScaleAlongGrad',
+    },
+)
 
 
 def sha256_file(path: Path) -> str:
@@ -148,6 +156,22 @@ def main() -> None:  # pylint: disable=too-many-locals
         original_set_num_threads(1)
 
     trpo_pid.torch.set_num_threads = keep_one_torch_thread
+
+    # Upstream passes three scalar CUDA tensors directly to NumPy's logger,
+    # which raises before the first epoch can be written.  Detaching only these
+    # diagnostic copies fixes serialization; the tensors used by the optimizer
+    # and the environment remain untouched.
+    original_logger_store = trpo_pid.EpochLogger.store
+
+    def store_cuda_diagnostics(logger: Any, add_value: bool = False, **values: Any) -> None:
+        for key in CUDA_DIAGNOSTIC_KEYS.intersection(values):
+            value = values[key]
+            if torch.is_tensor(value):
+                host_value = value.detach().cpu()
+                values[key] = host_value.item() if host_value.numel() == 1 else host_value.numpy()
+        original_logger_store(logger, add_value=add_value, **values)
+
+    trpo_pid.EpochLogger.store = store_cuda_diagnostics
     run = wandb.init(
         project='safeflow2027-shapo-pidlag',
         name=f'{wrapper_args.phase}-seed-{args.seed}',
@@ -196,6 +220,7 @@ def main() -> None:  # pylint: disable=too-many-locals
         'environment': args.task,
         'finished_at_utc': datetime.now(timezone.utc).isoformat(),
         'instrumentation': {
+            'cuda_diagnostic_logging_compatibility': sorted(CUDA_DIAGNOSTIC_KEYS),
             'observation_normalizer_preserved': True,
             'optimizer_or_environment_semantics_changed': False,
             'torch_threads_locked': 1
