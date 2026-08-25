@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 13:29（Asia/Shanghai）
+更新时间：2026-08-25 13:32（Asia/Shanghai）
 
 ## 当前结论
 
@@ -39,6 +39,11 @@ Ant 剩余矩阵已在任何新 Ant 训练前锁定：新增 P4.7 seeds `2028/20
 - [Ant 单 GPU 补充预注册](single_gpu_ant_preregistration.json)
 - [Ant P4.7 配置](../../configs/star/single_gpu_ant_p47.yaml)
 - [Ant C0 配置](../../configs/star/single_gpu_ant_c0.yaml)
+
+Walker2d 按协议只保留为 seed `2027` 的附录案例，不新增训练。其已有 `2M`、`100` episodes 结果也已同步：return `5810.7547`、mean cost `0.01`、CVaR-20 `0.05`、训练累计 cost `2312`、高风险 `V_N/V_T=0.7185`、危险外向速度 `0.2186`。由于正式 cost budget 为 `0` 且该 checkpoint 的 100 episodes 中出现 `1` 次 failure，它只能作为单 seed 方向机制与学习曲线证据，不能表述为多 seed 正式安全结论。
+
+- [Walker2d/P4.7 seed 2027 的 2M 审计](shapo_p47_four_env_artifacts/milestones/step_2000000/walker2d-2027/milestone_audit.json)
+- [Walker2d/P4.7 seed 2027 的 2M 评测](shapo_p47_four_env_artifacts/milestones/step_2000000/walker2d-2027/artifacts/evaluation_step_2000000.json)
 
 ## 正式证据
 
