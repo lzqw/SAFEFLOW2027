@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.star.decide_pointcircle_geometry_enhancement import ADDENDUM_SHA256
 
 ENVIRONMENT = 'SafetyPointCircle1-v0'
 SEED = 2027
@@ -20,10 +21,19 @@ STEPS = 300_000
 REPLAY_SIZE = 1_000_000
 EXPECTED_PROTOCOL_SHA256 = '0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8'
 PROTOCOL_RELATIVE = Path('reports/star/single_gpu_paper_core_preregistration.json')
-CONFIGS = {
+ORIGINAL_CONFIGS = {
     'Iso-Low': Path('configs/star/single_gpu_pointcircle_iso_low.yaml'),
     'Random-Aniso': Path('configs/star/single_gpu_pointcircle_random_aniso.yaml'),
     'Safety-Aniso-0.25': Path('configs/star/single_gpu_pointcircle_ratio_025.yaml'),
+}
+ENHANCED_CONFIGS = {
+    'Iso-Low': Path('configs/star/single_gpu_pointcircle_iso_low_geometry_enhanced.yaml'),
+    'Random-Aniso': Path(
+        'configs/star/single_gpu_pointcircle_random_aniso_geometry_enhanced.yaml',
+    ),
+    'Safety-Aniso-0.25': Path(
+        'configs/star/single_gpu_pointcircle_ratio_025_geometry_enhanced.yaml',
+    ),
 }
 
 
@@ -70,7 +80,7 @@ def git_output(source: Path, *arguments: str) -> str:
     ).stdout.strip()
 
 
-def validate_source(source: Path) -> dict[str, Any]:
+def validate_source(source: Path, configs: dict[str, Path]) -> dict[str, Any]:
     """Require clean source, frozen protocol, and exact control configs."""
     if git_output(source, 'status', '--porcelain'):
         raise ValueError('PointCircle control source must be clean')
@@ -80,11 +90,15 @@ def validate_source(source: Path) -> dict[str, Any]:
     return {
         'source_commit': git_output(source, 'rev-parse', 'HEAD'),
         'protocol_sha256': protocol_sha,
-        'config_sha256': {label: sha256_file(source / path) for label, path in CONFIGS.items()},
+        'config_sha256': {label: sha256_file(source / path) for label, path in configs.items()},
     }
 
 
-def wait_for_prerequisite(path: Path, poll_seconds: int) -> bool:
+def wait_for_prerequisite(
+    path: Path,
+    poll_seconds: int,
+    expected_enhancement_sha256: str | None,
+) -> bool:
     """Wait for the four-method PointCircle result or its registered screen failure."""
     while True:
         if path.is_file():
@@ -94,8 +108,15 @@ def wait_for_prerequisite(path: Path, poll_seconds: int) -> bool:
             state = payload.get('state')
             if state == 'complete':
                 manifest = Path(payload['final_manifest'])
-                if read_json(manifest).get('status') != 'complete':
+                manifest_payload = read_json(manifest)
+                if manifest_payload.get('status') != 'complete':
                     raise ValueError('control prerequisite final manifest is invalid')
+                if (
+                    expected_enhancement_sha256 is not None
+                    and manifest_payload.get('enhancement_preregistration_sha256')
+                    != expected_enhancement_sha256
+                ):
+                    raise ValueError('control prerequisite does not use the enhanced method')
                 return True
             if state == 'screen_not_passed':
                 return False
@@ -141,13 +162,13 @@ def command_for(
     target = run_directory(args.run_root, label)
     receipt = target / 'receipt.json'
     log = target / 'training.log'
-    if identities['config_sha256'][label] != sha256_file(args.source / CONFIGS[label]):
+    if identities['config_sha256'][label] != sha256_file(args.source / args.configs[label]):
         raise ValueError(f'{label} config changed after queue validation')
     command = [
         str(args.python_bin),
         str(args.source / 'scripts/star/train_star.py'),
         '--config',
-        str(args.source / CONFIGS[label]),
+        str(args.source / args.configs[label]),
         '--seed',
         str(SEED),
         '--steps',
@@ -253,6 +274,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--run-root', type=Path, required=True)
     result.add_argument('--python-bin', type=Path, required=True)
     result.add_argument('--prerequisite-state', type=Path, required=True)
+    result.add_argument('--geometry-enhanced', action='store_true')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
 
@@ -264,7 +286,8 @@ def main() -> None:
         setattr(args, field, getattr(args, field).resolve())
     if args.poll_seconds <= 0:
         raise ValueError('poll interval must be positive')
-    identities = validate_source(args.source)
+    args.configs = ENHANCED_CONFIGS if args.geometry_enhanced else ORIGINAL_CONFIGS
+    identities = validate_source(args.source, args.configs)
     args.run_root.mkdir(parents=True, exist_ok=True)
     atomic_json(
         args.run_root / 'queue_identity.json',
@@ -276,9 +299,17 @@ def main() -> None:
             'mechanism_arms': ['Iso-Low', 'Random-Aniso'],
             'parameter_arm': 'Safety-Aniso-0.25',
             'maximum_concurrent_learners': 2,
+            'geometry_enhanced': args.geometry_enhanced,
+            'enhancement_preregistration_sha256': (
+                ADDENDUM_SHA256 if args.geometry_enhanced else None
+            ),
         },
     )
-    if not wait_for_prerequisite(args.prerequisite_state, args.poll_seconds):
+    if not wait_for_prerequisite(
+        args.prerequisite_state,
+        args.poll_seconds,
+        ADDENDUM_SHA256 if args.geometry_enhanced else None,
+    ):
         atomic_json(
             args.run_root / 'queue_state.json',
             {
@@ -297,7 +328,8 @@ def main() -> None:
             'state': 'complete',
             'finished_at_utc': utc_now(),
             'protocol_sha256': identities['protocol_sha256'],
-            'completed_controls': list(CONFIGS),
+            'completed_controls': list(args.configs),
+            'geometry_enhanced': args.geometry_enhanced,
         },
     )
 

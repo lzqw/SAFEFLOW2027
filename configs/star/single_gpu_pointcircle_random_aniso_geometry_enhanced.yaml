@@ -1,0 +1,68 @@
+# PointCircle enhanced-method control: pseudo-random covariance axes.
+env_id: SafetyPointCircle1-v0
+custom_cfgs:
+  train_cfgs:
+    total_steps: 300000
+    eval_episodes: 20
+  algo_cfgs:
+    enable_global_safety_constraint: true
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    reward_target_samples: 4
+    reward_critic_updates_per_update: 2
+    separate_reward_replay: true
+    reward_replay_recent_fraction: 0.5
+    reward_replay_recent_window: 10000
+    reward_target_polyak: 0.001
+    bellman_probability_enabled: true
+    probability_mc_aux_weight: 0.10
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 20000
+    complete_heldout_evidence: true
+    heldout_min_positive_labels: 256
+    heldout_min_negative_labels: 256
+    dynamic_geometry_gate: false
+    candidate_probing_enabled: false
+    stochastic_flow_enabled: true
+    safety_anisotropy_enabled: true
+    random_anisotropy_enabled: true
+    random_anisotropy_seed: 130027
+    safety_inward_drift_enabled: false
+    safety_outward_rectification_enabled: false
+    unified_cost_geometry_enabled: true
+    directional_loss_enabled: true
+    safety_aware_cost_geometry_enabled: true
+    directional_loss_weight: 1.0
+    directional_loss_epsilon: 0.00000001
+    cost_geometry_bandwidth: 0.10
+    safety_protocol_version: single-gpu-pointcircle-geometry-enhancement-v1
+    safety_protocol_sha256: fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02
+    risk_boundary: 0.20
+    boundary_bandwidth: 0.10
+    risk_ucb_beta: 0.50
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.10
+    safety_gradient_scale: 0.001
+    safety_ensemble_scale: 0.10
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_score_scale: 0.25
+    safety_drift_strength: 0.20
+    safety_drift_temperature: 0.05
+    numerical_hard_stops_enabled: false
+    engineering_hard_stops_enabled: true
+    q_absolute_overflow_threshold: 1000000.0
+    eval_seeds: [22027, 22028, 22029, 22030, 22031]
+    eval_episodes_per_seed: 4
+    evaluate_initial_policy: false
+    trajectory_eval_seeds: [22027, 22029, 22031]
+    eval_milestones: [300000]
+    checkpoint_milestones: [300000]
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 300000
+  dual_cfgs:
+    energy_initial: 0.004
+    target_energy_per_action: 12.5
