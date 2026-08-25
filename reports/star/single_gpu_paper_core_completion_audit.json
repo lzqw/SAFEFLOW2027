@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-25T14:17:22+08:00",
+  "updated_at": "2026-08-25T14:25:14+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -318,7 +318,10 @@
     "host_terminal_evidence_staging": {
       "status": "monitoring",
       "service_state": "active",
+      "service_substate": "running",
+      "unit_file_state": "enabled",
       "service_restart_count": 0,
+      "persistent_unit": "/home/lzqw/.config/systemd/user/safeflow-evidence-stager.service",
       "staging_root": "/home/lzqw/SAFEFLOW2027_single_gpu/evidence-staging",
       "policy": "Stage only terminal lightweight evidence; never stage checkpoints, logs, or server worktrees."
     },
