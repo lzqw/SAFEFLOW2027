@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 12:25（Asia/Shanghai）
+更新时间：2026-08-25 13:10（Asia/Shanghai）
 
 ## 当前结论
 
@@ -19,6 +19,14 @@ PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed
 2. P4.7 是四种方法中 mean cost、CVaR-20 和训练累计 cost 最低的方法，也是唯一平均评测成本低于预注册 cost limit `10` 的方法。
 3. SACLag 取得最高 return 和 success，但 mean cost 为 `53.19`、CVaR-20 为 `108.93`；SHAPO-PIDLag 的任务性能也高于 P4.7，但 mean cost 和 CVaR-20 分别为 `24.02` 和 `108.38`。因此 P4.7 的优势是安全侧，而不是对所有方法的无条件性能支配。
 4. 结论边界不变：P4.7 对 C0 是跨三个训练 seed 的聚合 Pareto 改进，不宣称每个 seed 都 Pareto。SACLag 与 SHAPO-PIDLag 的正式结果没有参与 P4.7 的选择或修改。
+
+## 当前运行状态
+
+PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 13:08`，增强版 P4.7 已完成 `20k/300k` 环境步（`6.7%`），累计吞吐为 `7.92 FPS`，未出现 NaN 或 OOM。按当前累计吞吐估算，剩余训练约 `9.8` 小时；计入 `150k/300k` 两次固定评测后，预计在当日 `23:00–23:30`（Asia/Shanghai）形成冻结的 `300k` 筛选结论。
+
+训练日志在 `20k` 的参考批次上记录到 `Reference/VNVT=0.8743`、危险外向速度 `0.0342`。这些数值仅用于运行监控，不是高风险样本上的正式 checkpoint 评测，不能提前替代 `300k` 冻结门槛。当前没有科学提前停止，也没有根据该临时数值改变配置。
+
+后续正式矩阵、prior baseline、机制控制和 checkpoint-only 鲁棒性均已部署为条件队列，但仍处于等待状态，没有启动任何下游科学训练：只有增强版在 `300k` 通过原封不动的门槛，才会进入 PointCircle 三 seed `500k` 正式阶段；若未通过，队列会记录 `screen_not_passed` 并停止 PointCircle 方法修改与权重搜索。
 
 ## 正式证据
 
