@@ -37,7 +37,8 @@
 > [单 GPU 论文核心报告](reports/star/SINGLE_GPU_PAPER_CORE_PROGRESS_2026-08-25.md)，逐项完成
 > 状态与 SHA-256 见
 > [机器可读审计](reports/star/single_gpu_paper_core_completion_audit.json)，复现命令见
-> [STAR 运行说明](scripts/star/README.md)。
+> [STAR 运行说明](scripts/star/README.md)。PointCircle 原始配置与唯一预注册增强均未通过
+> `300k` 冻结门槛，相关方法搜索已经停止；Ant 二级扩展正在按冻结矩阵运行。
 
 OmniSafe is an infrastructural framework designed to accelerate safe reinforcement learning (RL) research.
 It provides a comprehensive and reliable benchmark for safe RL algorithms, and also an out-of-box modular toolkit for researchers.

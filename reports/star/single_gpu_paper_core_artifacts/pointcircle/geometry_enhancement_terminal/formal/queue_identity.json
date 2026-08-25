@@ -1,0 +1,25 @@
+{
+  "arms": [
+    "C0",
+    "P47"
+  ],
+  "config_sha256": {
+    "C0": "5e8cda373b7c5f68ed34aa25d08179aa06597ee1899e694601d9e34575227f43",
+    "P47": "d0252cb0bc22c783153bae45874322e99364d9a1458048591e3301c56111a6c3"
+  },
+  "enhancement_preregistration_sha256": "fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02",
+  "environment": "SafetyPointCircle1-v0",
+  "matrix_sha256": "0c4fe4b21cd086bde6e703c486022716056c844b5c3b0d79a05a062b784aac88",
+  "maximum_concurrent_learners": 2,
+  "original_screen_decision_sha256": "62873e89e8584fbb6663a183f71dcca84d33ef7b63296308bb47e88af1221d86",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "source_commit": "b86c6011080aed60e54386f69598561ef9c12493",
+  "steps_per_run": 500000,
+  "utd_ratio": 1.0,
+  "vector_env_nums": 1
+}

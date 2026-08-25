@@ -1,10 +1,10 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 18:05（Asia/Shanghai）
+更新时间：2026-08-26 00:10（Asia/Shanghai）
 
 ## 当前结论
 
-PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed 筛选也已完成并按冻结规则判定为未通过。PointGoal 所有方法使用训练 seeds `2027–2029`、每 seed `200k` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。独立统计单位是训练 seed（`n=3`），不是合并后的 episodes。
+PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议唯一允许的几何增强都已完成 `300k` 单 seed 筛选，并按完全相同的冻结规则判定为未通过；PointCircle 方法修改与权重搜索已经停止。PointGoal 所有方法使用训练 seeds `2027–2029`、每 seed `200k` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。独立统计单位是训练 seed（`n=3`），不是合并后的 episodes。
 
 | 方法 | Return | Success | Mean Cost | CVaR-20 | 训练累计 Cost | 高风险 V_N/V_T |
 |---|---:|---:|---:|---:|---:|---:|
@@ -22,13 +22,13 @@ PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed
 
 ## 当前运行状态
 
-PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 18:00`，增强版 P4.7 已完成固定的 `150k/300k` checkpoint 评测，随后训练日志到达 `155k/300k`（`51.7%`）；累计吞吐约 `7.97 FPS`，队列保持 `training`，controller 与 learner 均存活。按当前累计吞吐估算，训练主体剩余约 `5.1` 小时；计入最终 `300k` 评测与冻结决策后，预计仍在当日 `23:00–23:30`（Asia/Shanghai）形成结论。当前只有这一条科学训练占用 GPU。
+PointCircle 唯一一次几何增强已于 `2026-08-25 23:14` 完成全部 `300k` 环境步和固定 `20` episodes 终点评测，端到端吞吐为 `7.808 FPS`。增强版 return 为 `16.5585`，高于冻结 C0 的 `11.3807`；两者 mean cost/CVaR-20 都是 `0/0`。增强版危险外向速度从 C0 的 `0.10258` 降至 `0.09538`，但高风险 `V_N/V_T=0.999997`，未达到 `<=0.9`。因此冻结决定为 `return_ok=true`、`safety_ok=false`、`geometry_ok=false`、`screen_pass=false`。
 
-`150k` 固定评测首次确认增强配置在高风险样本上形成明显各向异性：`V_N/V_T=0.7598`。该节点的 return 为 `16.2763`、mean cost 为 `8.45`、CVaR-20 为 `27.25`、训练累计 cost 为 `7208`，但危险外向速度 `0.1427` 高于冻结 C0 在同一节点的 `0.0965`。这些数值是预先指定的学习曲线里程碑，不是最终筛选结论；训练不提前停止，也不据此修改配置。
+`150k` 固定评测曾确认增强配置在高风险样本上形成明显各向异性：`V_N/V_T=0.7598`。该节点的 return 为 `16.2763`、mean cost 为 `8.45`、CVaR-20 为 `27.25`、训练累计 cost 为 `7208`，但危险外向速度 `0.1427` 高于冻结 C0 在同一节点的 `0.0965`。因此增强的几何作用是暂时激活而非终点稳定激活；学习曲线证据保留，但不能覆盖 `300k` 冻结决定。
 
-后续正式矩阵、prior baseline、机制控制和 checkpoint-only 鲁棒性均已部署为条件队列，但仍处于等待状态，没有启动任何下游科学训练：只有增强版在 `300k` 通过原封不动的门槛，才会进入 PointCircle 三 seed `500k` 正式阶段；若未通过，队列会记录 `screen_not_passed` 并停止 PointCircle 方法修改与权重搜索。
+PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控制后处理及原组合鲁棒性队列都已传播 `screen_not_passed` 终态，`scientific_training_launched=false`，没有消耗任何下游 PointCircle 训练预算。PointCircle 鲁棒性因此取消，但现有三 seed PointGoal checkpoint 的 checkpoint-only 鲁棒性仍在原协议范围内，保持待执行且不会重新训练策略。Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动，当前使用两个 learner 执行剩余三 seed、每 seed `2M` 的冻结矩阵。
 
-主机终态证据搬运器已固化为启用状态的用户 `systemd` 服务，主机重启后会自动恢复。它每 `60` 秒只读取队列终态，只同步 JSON、CSV、Markdown、YAML 和校验文本，并为每个文件生成 SHA-256 receipt；不会同步 checkpoint、训练日志或服务器工作目录，也不会直接修改 Git 工作树。
+主机终态证据搬运器已将增强筛选及全部 PointCircle 条件队列的终态轻量证据同步到主机，并为每个文件生成 SHA-256 receipt。导入 GitHub 的证据包约 `1.7 MiB`，不包含 checkpoint、训练日志或服务器工作目录。该服务继续监控 Ant 终态，主机重启后会自动恢复，也不会直接修改 Git 工作树。
 
 ## Ant 二级扩展的已复用证据
 
@@ -96,7 +96,7 @@ safety_gradient_scale: 0.005 -> 0.001
 safety_ensemble_scale: 0.05 -> 0.10
 ```
 
-增强实验固定为 seed `2027`、`300k`，复用哈希锁定的原始 C0 `300k` 评测，不重跑基线、不增加第二个候选、不做科学提前停止，且使用完全相同的筛选门槛。如果未通过，停止 PointCircle 方法修改和权重搜索；如果通过，才冻结增强配置并进入三 seed `500k` 正式矩阵。
+增强实验固定为 seed `2027`、`300k`，复用哈希锁定的原始 C0 `300k` 评测，没有重跑基线、增加第二个候选或科学提前停止，并使用完全相同的筛选门槛。最终 `screen_pass=false`，因此 PointCircle 方法修改和权重搜索已经按协议停止。
 
 `150k` 开发里程碑结果如下。增强版相对冻结 C0 的 return 提高 `372.4%`，mean cost 降低 `50.3%`，CVaR-20 降低 `67.9%`，训练累计 cost 降低 `19.1%`，高风险 `V_N/V_T` 从 `0.9991` 降至 `0.7598`。由于增强版危险外向速度在该节点更高，几何分支不能单独据此判定通过；安全分支在这个中间节点满足门槛。正式决定仍只使用 `300k` 终点。
 
@@ -106,9 +106,28 @@ safety_ensemble_scale: 0.05 -> 0.10
 | 150k | 原始 P4.7 | **28.7077** | **0.0** | **0.0** | **6068** | 1.00000 | 0.01738 |
 | 150k | 几何增强 P4.7 | 16.2763 | 8.45 | 27.25 | 7208 | **0.75976** | 0.14266 |
 
+冻结终点结果如下：
+
+| 里程碑 | 配置 | Return | Mean Cost | CVaR-20 | 训练累计 Cost | 高风险 V_N/V_T | 危险外向速度 |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 300k | C0 / isotropic FLAC | 11.3807 | 0.0 | 0.0 | **9788** | 1.00000 | 0.10258 |
+| 300k | 原始 P4.7 | 13.9828 | 0.0 | 0.0 | 11076 | 1.00000 | **0.03673** |
+| 300k | 几何增强 P4.7 | **16.5585** | 0.0 | 0.0 | 10796 | 1.00000 | 0.09538 |
+
+增强版相对 C0 的 return 提高约 `45.5%`，危险外向速度降低约 `7.0%`；但安全相对改善为 `0`，高风险 `V_N/V_T` 也未达阈值。最终门槛逐项为：
+
+| 条件 | 结果 |
+|---|---|
+| Return 下降不超过 10% | 通过 |
+| Mean cost 或 CVaR-20 改善至少 10% | 未通过 |
+| `V_N/V_T <= 0.9` 且 outward 更低 | 未通过 |
+| 总门槛 | **未通过** |
+
 - [增强预注册](single_gpu_pointcircle_geometry_enhancement_preregistration.json)
 - [增强配置](../../configs/star/single_gpu_pointcircle_p47_geometry_enhanced.yaml)
 - [增强版 150k 数值证据](single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_development_evidence/P47/evaluation_step_150000.json)
+- [增强版 300k 冻结报告](single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/POINTCIRCLE_GEOMETRY_ENHANCEMENT_300K_REPORT.md)
+- [增强版机器可读冻结决定](single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/enhancement/screen_decision.json)
 
 ## PointCircle 元数据修复
 

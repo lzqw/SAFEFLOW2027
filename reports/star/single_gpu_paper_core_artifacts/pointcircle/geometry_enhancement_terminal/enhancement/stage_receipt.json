@@ -1,0 +1,125 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "pointcircle_geometry_enhancement",
+  "logs_copied": false,
+  "portable_bytes": 1573650,
+  "portable_file_count": 20,
+  "portable_files": [
+    {
+      "bytes": 5499,
+      "path": "P47-geometry-enhanced-2027/receipt.json",
+      "sha256": "bffc5f61b85adb84f9cad6cb887666d726756460f20acd2c4279a793177a5f02"
+    },
+    {
+      "bytes": 731,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/best_safe_return_selection.json",
+      "sha256": "871dd6184667af559e3c72d03c72ad17fc9e7a748b2117d0bc9e8c036c2073f6"
+    },
+    {
+      "bytes": 1539,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/counterfactual_step_150000.json",
+      "sha256": "06253c70da2116d855cf4d2db412fd9aa826ea872ba89e9becca127a0c07f836"
+    },
+    {
+      "bytes": 1545,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/counterfactual_step_300000.json",
+      "sha256": "36f6be15c2697322cf37290d26f8c776d41a8276952779e2be53ed0cb07d46c6"
+    },
+    {
+      "bytes": 131263,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/diagnostics.csv",
+      "sha256": "e63bb3bcd16440f6545d4009bd0563ecb31425aaa9f28b7baf87b209640951a5"
+    },
+    {
+      "bytes": 1525,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/evaluation.csv",
+      "sha256": "4f1424a326ed3a4902791487b40ce25c2dab1aae127d065cb20828faa562edcb"
+    },
+    {
+      "bytes": 8064,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/evaluation_step_150000.json",
+      "sha256": "2b3e51cb6c53193b09437331b0958295c1d3fe57d0f54ec8b5d516402f21e7fd"
+    },
+    {
+      "bytes": 7917,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/evaluation_step_300000.json",
+      "sha256": "38776b7d0a685ea830066360b847de48b7301f14a8a281993314fba55d50973b"
+    },
+    {
+      "bytes": 15508,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/heldout_probability.csv",
+      "sha256": "9a7754c666cd601ae54191cc5b191a74a5c075580a4dad5e8a43186916a3db0f"
+    },
+    {
+      "bytes": 748,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/heldout_probability_latest.json",
+      "sha256": "8debfd47ddda96b4bdea281a06877dfbee1cf76d3a439bdb139f1d25026e8a2c"
+    },
+    {
+      "bytes": 6533,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/run_manifest.json",
+      "sha256": "4c26ffbef145446b5c22bb596753a6e476a80e02238ee8b4d1541bef96cf314d"
+    },
+    {
+      "bytes": 4152,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/training_summary.json",
+      "sha256": "f361765beceea7614e5e24835ccfd640250beed677e0bfc4e7f09ef88b6797ca"
+    },
+    {
+      "bytes": 606814,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/trajectory_step_150000.csv",
+      "sha256": "fcc1bbee459e73333ffcb94c20eb3c100446530e1ff4d83db99b64f7b7a3237d"
+    },
+    {
+      "bytes": 624941,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/trajectory_step_300000.csv",
+      "sha256": "13260b9c9ff9b637701ccce6002f13fe6dc723427b1ecc847280e11bdda11f3b"
+    },
+    {
+      "bytes": 2316,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/artifacts/warmup_status.json",
+      "sha256": "a16fb4d8ddfba31ff8a7f94a40174af732f0810bb72b0b69c26bb58c3ba16500"
+    },
+    {
+      "bytes": 10095,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/config.json",
+      "sha256": "15029962892babbc0c97133852551a4e21fb3c26a749de028584fe1889bf24e4"
+    },
+    {
+      "bytes": 135987,
+      "path": "P47-geometry-enhanced-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-12-34-18/progress.csv",
+      "sha256": "30dfe19abf6060c830d434e6bcd902916310b821dc1daa7b7377fb9ed2b35f11"
+    },
+    {
+      "bytes": 836,
+      "path": "queue_identity.json",
+      "sha256": "751e714d9a68568052fef30f9ed653e08445745d895561f5e4872bc64fb50c9f"
+    },
+    {
+      "bytes": 488,
+      "path": "queue_state.json",
+      "sha256": "7ffc88add691e6df69d4bb791dc7b2ad99d06584ce2ba86073518881c7a088f4"
+    },
+    {
+      "bytes": 7149,
+      "path": "screen_decision.json",
+      "sha256": "cd6a780d58f8e90711760e834346c9fb3fb60ac6cd9d45ba9f2e9246037e90e5"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-geometry-enhancement-v1",
+  "remote_state_payload": {
+    "attempt": 1,
+    "attempt_limit": 1,
+    "finished_at_utc": "2026-08-25T15:14:39.613121+00:00",
+    "no_further_pointcircle_method_changes_allowed": true,
+    "receipt": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-geometry-enhancement-v1/P47-geometry-enhanced-2027/receipt.json",
+    "scientific_training_launched": true,
+    "screen_decision": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-geometry-enhancement-v1/screen_decision.json",
+    "state": "screen_not_passed"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-08-25T15:14:59.370206+00:00",
+  "status": "complete",
+  "terminal_state": "screen_not_passed"
+}

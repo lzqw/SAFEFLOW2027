@@ -1,0 +1,27 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "pointcircle_postprocess",
+  "logs_copied": false,
+  "portable_bytes": 316,
+  "portable_file_count": 1,
+  "portable_files": [
+    {
+      "bytes": 316,
+      "path": "postprocessing_state.json",
+      "sha256": "27520cd63407980156a2e05b20c7f6eb07ecd2d49af69c425adfdd89a6b0ea7f"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-enhanced-postprocess-v1",
+  "remote_state_payload": {
+    "finished_at_utc": "2026-08-25T15:15:24.678661+00:00",
+    "official_source_commit": "1bb770437bbbe40a89938661343744243e164bf9",
+    "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "source_commit": "3140c200df46fa2403a7822b5c1930f76238e733",
+    "state": "screen_not_passed"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-08-25T15:16:00.714144+00:00",
+  "status": "complete",
+  "terminal_state": "screen_not_passed"
+}

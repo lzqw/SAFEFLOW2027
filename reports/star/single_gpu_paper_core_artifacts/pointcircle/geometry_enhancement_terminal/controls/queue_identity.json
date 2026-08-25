@@ -1,0 +1,20 @@
+{
+  "config_sha256": {
+    "Iso-Low": "e6ec6aff3e736a3ed93f9e26c0d0e9a6e67b6c4e5429c32d3f08b93b5c50274e",
+    "Random-Aniso": "15ba1fd325023bbc743cd8780f0ede2e1463f831a0dc03d3839d7b5e57d5197a",
+    "Safety-Aniso-0.25": "0fad76cfadb8688666a29395bf8482fd1d61d4f868e6b703bc11d25885a87efe"
+  },
+  "enhancement_preregistration_sha256": "fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02",
+  "environment": "SafetyPointCircle1-v0",
+  "geometry_enhanced": true,
+  "maximum_concurrent_learners": 2,
+  "mechanism_arms": [
+    "Iso-Low",
+    "Random-Aniso"
+  ],
+  "parameter_arm": "Safety-Aniso-0.25",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "seed": 2027,
+  "source_commit": "552f529e85d30649f32735ca4a1a310d00806e5d",
+  "steps_per_run": 300000
+}
