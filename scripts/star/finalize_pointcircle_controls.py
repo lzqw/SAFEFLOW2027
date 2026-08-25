@@ -13,6 +13,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from scripts.star.decide_pointcircle_geometry_enhancement import ADDENDUM_SHA256
 
 ENVIRONMENT = 'SafetyPointCircle1-v0'
 SEED = 2027
@@ -20,12 +21,23 @@ STEPS = 300_000
 BASE_SEEDS = (22_027, 22_028, 22_029, 22_030, 22_031)
 EPISODES = 100
 VARIANT_ORDER = ('Iso-High', 'Iso-Low', 'Random-Aniso', 'Safety-Aniso', 'Safety-Aniso-0.25')
-CONFIGS = {
+ORIGINAL_CONFIGS = {
     'Iso-High': Path('configs/star/single_gpu_pointcircle_c0.yaml'),
     'Safety-Aniso': Path('configs/star/single_gpu_pointcircle_p47.yaml'),
     'Iso-Low': Path('configs/star/single_gpu_pointcircle_iso_low.yaml'),
     'Random-Aniso': Path('configs/star/single_gpu_pointcircle_random_aniso.yaml'),
     'Safety-Aniso-0.25': Path('configs/star/single_gpu_pointcircle_ratio_025.yaml'),
+}
+ENHANCED_CONFIGS = {
+    'Iso-High': Path('configs/star/single_gpu_pointcircle_c0.yaml'),
+    'Safety-Aniso': Path('configs/star/single_gpu_pointcircle_p47_geometry_enhanced.yaml'),
+    'Iso-Low': Path('configs/star/single_gpu_pointcircle_iso_low_geometry_enhanced.yaml'),
+    'Random-Aniso': Path(
+        'configs/star/single_gpu_pointcircle_random_aniso_geometry_enhanced.yaml',
+    ),
+    'Safety-Aniso-0.25': Path(
+        'configs/star/single_gpu_pointcircle_ratio_025_geometry_enhanced.yaml',
+    ),
 }
 
 
@@ -167,7 +179,7 @@ def load_variant(
     }
 
 
-def markdown(rows: list[dict[str, Any]]) -> str:
+def markdown(rows: list[dict[str, Any]], geometry_enhanced: bool = False) -> str:
     """Render mechanism facts without introducing a new selection gate."""
     by_variant = {row['variant']: row for row in rows}
     safety = by_variant['Safety-Aniso']
@@ -179,9 +191,21 @@ def markdown(rows: list[dict[str, Any]]) -> str:
         'All rows use training seed `2027`, exactly `300k` steps, and 100 fixed-stream final '
         'episodes. This is a mechanism diagnostic (`n=1`), not a multi-seed main result.',
         '',
-        '| Variant | Return | Mean cost | CVaR-20 | Train cost | V_N | V_T | V_N/V_T | Outward |',
-        '|---|---:|---:|---:|---:|---:|---:|---:|---:|',
     ]
+    if geometry_enhanced:
+        lines.extend(
+            [
+                'Safety-Aniso, Random-Aniso, and the 0.25 ratio point share the single locked '
+                f'geometry enhancement (`{ADDENDUM_SHA256}`).',
+                '',
+            ],
+        )
+    lines.extend(
+        [
+            '| Variant | Return | Mean cost | CVaR-20 | Train cost | V_N | V_T | V_N/V_T | Outward |',
+            '|---|---:|---:|---:|---:|---:|---:|---:|---:|',
+        ],
+    )
     for variant in VARIANT_ORDER:
         row = by_variant[variant]
         lines.append(
@@ -235,10 +259,12 @@ def parser() -> argparse.ArgumentParser:
     """Build finalization arguments."""
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument('--star-screen-root', type=Path, required=True)
+    result.add_argument('--safety-aniso-container', type=Path)
     result.add_argument('--control-root', type=Path, required=True)
     result.add_argument('--evaluation-root', type=Path, required=True)
     result.add_argument('--protocol', type=Path, required=True)
     result.add_argument('--expected-protocol-sha256', required=True)
+    result.add_argument('--geometry-enhanced', action='store_true')
     result.add_argument('--output-dir', type=Path, required=True)
     return result
 
@@ -250,9 +276,15 @@ def main() -> None:
     source_commit = git_commit(source)
     if sha256_file(args.protocol) != args.expected_protocol_sha256:
         raise ValueError('single-GPU protocol SHA-256 mismatch')
+    configs = ENHANCED_CONFIGS if args.geometry_enhanced else ORIGINAL_CONFIGS
+    safety_aniso_container = (
+        args.safety_aniso_container.resolve()
+        if args.safety_aniso_container is not None
+        else args.star_screen_root / 'P47-2027'
+    )
     receipts = {
         'Iso-High': args.star_screen_root / 'C0-2027/receipt.json',
-        'Safety-Aniso': args.star_screen_root / 'P47-2027/receipt.json',
+        'Safety-Aniso': safety_aniso_container / 'receipt.json',
         'Iso-Low': args.control_root / 'mechanism/Iso-Low-2027/receipt.json',
         'Random-Aniso': args.control_root / 'mechanism/Random-Aniso-2027/receipt.json',
         'Safety-Aniso-0.25': args.control_root / 'parameter/Safety-Aniso-0.25-2027/receipt.json',
@@ -262,7 +294,7 @@ def main() -> None:
             variant,
             args.evaluation_root / f'{variant.lower().replace("-", "_")}.json',
             receipts[variant],
-            sha256_file(source / CONFIGS[variant]),
+            sha256_file(source / configs[variant]),
         )
         for variant in VARIANT_ORDER
     ]
@@ -272,7 +304,10 @@ def main() -> None:
         for row in rows
     ]
     atomic_csv(args.output_dir / 'pointcircle_control_metrics.csv', public)
-    atomic_text(args.output_dir / 'POINTCIRCLE_CONTROL_REPORT.md', markdown(rows))
+    atomic_text(
+        args.output_dir / 'POINTCIRCLE_CONTROL_REPORT.md',
+        markdown(rows, args.geometry_enhanced),
+    )
     manifest = {
         'status': 'complete',
         'environment': ENVIRONMENT,
@@ -280,6 +315,13 @@ def main() -> None:
         'training_steps': STEPS,
         'evaluation_episodes_per_variant': EPISODES,
         'protocol_sha256': args.expected_protocol_sha256,
+        'geometry_enhanced': args.geometry_enhanced,
+        'enhancement_preregistration_sha256': (
+            ADDENDUM_SHA256 if args.geometry_enhanced else None
+        ),
+        'config_sha256': {
+            variant: sha256_file(source / configs[variant]) for variant in VARIANT_ORDER
+        },
         'finalizer_source_commit': source_commit,
         'rows': public,
         'evidence': [

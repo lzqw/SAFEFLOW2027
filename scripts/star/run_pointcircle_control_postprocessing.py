@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.star.decide_pointcircle_geometry_enhancement import ADDENDUM_SHA256
 
 ENVIRONMENT = 'SafetyPointCircle1-v0'
 EXPECTED_PROTOCOL_SHA256 = '0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8'
@@ -94,7 +95,9 @@ def checkpoint(args: argparse.Namespace, variant: str) -> Path:
     if variant == 'Iso-High':
         container = args.star_root / 'screen/C0-2027'
     elif variant == 'Safety-Aniso':
-        container = args.star_root / 'screen/P47-2027'
+        container = getattr(args, 'safety_aniso_container', None) or (
+            args.star_root / 'screen/P47-2027'
+        )
     elif variant in ('Iso-Low', 'Random-Aniso'):
         container = args.control_root / 'mechanism' / f'{variant}-2027'
     else:
@@ -179,6 +182,8 @@ def finalize(args: argparse.Namespace, protocol_sha: str) -> Path:
         str(args.source / 'scripts/star/finalize_pointcircle_controls.py'),
         '--star-screen-root',
         str(args.star_root / 'screen'),
+        '--safety-aniso-container',
+        str(args.safety_aniso_container),
         '--control-root',
         str(args.control_root),
         '--evaluation-root',
@@ -190,6 +195,8 @@ def finalize(args: argparse.Namespace, protocol_sha: str) -> Path:
         '--output-dir',
         str(output),
     ]
+    if args.geometry_enhanced:
+        command.append('--geometry-enhanced')
     log = args.output_root / 'logs/finalize.log'
     process, stream = start(command, log, args.source)
     return_code = process.wait()
@@ -210,6 +217,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--control-root', type=Path, required=True)
     result.add_argument('--output-root', type=Path, required=True)
     result.add_argument('--python-bin', type=Path, required=True)
+    result.add_argument('--safety-aniso-container', type=Path)
+    result.add_argument('--geometry-enhanced', action='store_true')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
 
@@ -219,13 +228,26 @@ def main() -> None:
     args = parser().parse_args()
     for field in ('source', 'star_root', 'control_root', 'output_root', 'python_bin'):
         setattr(args, field, getattr(args, field).resolve())
+    args.safety_aniso_container = (
+        args.safety_aniso_container.resolve()
+        if args.safety_aniso_container is not None
+        else args.star_root / 'screen/P47-2027'
+    )
     if args.poll_seconds <= 0:
         raise ValueError('poll interval must be positive')
     identities = validate_source(args.source)
     args.output_root.mkdir(parents=True, exist_ok=True)
     atomic_json(
         args.output_root / 'postprocessing_state.json',
-        {'state': 'waiting_for_training', 'started_at_utc': utc_now(), **identities},
+        {
+            'state': 'waiting_for_training',
+            'started_at_utc': utc_now(),
+            'geometry_enhanced': args.geometry_enhanced,
+            'enhancement_preregistration_sha256': (
+                ADDENDUM_SHA256 if args.geometry_enhanced else None
+            ),
+            **identities,
+        },
     )
     state = wait_state(args.control_root / 'queue_state.json', args.poll_seconds)
     if state == 'screen_not_passed':
