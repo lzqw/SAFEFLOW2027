@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 ENVIRONMENT = 'SafetyPointCircle1-v0'
 ARMS = ('C0', 'P47')
 METHOD_SLUGS = ('saclag', 'shapo_pidlag')
@@ -237,12 +236,21 @@ def finalize(args: argparse.Namespace, protocol_sha: str) -> Path:
         '--prior-evaluations',
         *[str(path) for path in prior_results],
         '--screen-decision',
-        str(args.star_root / 'screen_decision.json'),
+        str(args.screen_decision),
         '--expected-protocol-sha256',
         protocol_sha,
+        '--p47-config',
+        str(args.p47_config),
         '--output-dir',
         str(output),
     ]
+    if args.expected_enhancement_preregistration_sha256 is not None:
+        command.extend(
+            [
+                '--expected-enhancement-preregistration-sha256',
+                args.expected_enhancement_preregistration_sha256,
+            ],
+        )
     log = args.output_root / 'logs' / 'finalize.log'
     process, stream = start(command, log, args.source)
     return_code = process.wait()
@@ -264,6 +272,9 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--prior-root', type=Path, required=True)
     result.add_argument('--output-root', type=Path, required=True)
     result.add_argument('--python-bin', type=Path, required=True)
+    result.add_argument('--screen-decision', type=Path)
+    result.add_argument('--p47-config', type=Path)
+    result.add_argument('--expected-enhancement-preregistration-sha256')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
 
@@ -273,6 +284,16 @@ def main() -> None:
     args = parser().parse_args()
     for field in ('source', 'official_shapo_source', 'star_root', 'prior_root', 'output_root', 'python_bin'):
         setattr(args, field, getattr(args, field).resolve())
+    args.screen_decision = (
+        args.screen_decision.resolve()
+        if args.screen_decision is not None
+        else args.star_root / 'screen_decision.json'
+    )
+    args.p47_config = (
+        args.p47_config.resolve()
+        if args.p47_config is not None
+        else args.source / 'configs/star/single_gpu_pointcircle_p47.yaml'
+    )
     if args.poll_seconds <= 0:
         raise ValueError('poll interval must be positive')
     identities = validate_sources(args.source, args.official_shapo_source)

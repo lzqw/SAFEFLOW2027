@@ -14,7 +14,6 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-
 ENVIRONMENT = 'SafetyPointCircle1-v0'
 TRAINING_SEEDS = (2027, 2028, 2029)
 BASE_SEEDS = (22_027, 22_028, 22_029, 22_030, 22_031)
@@ -24,7 +23,7 @@ TRAINING_STEPS = 500_000
 METHOD_ORDER = ('C0 / isotropic FLAC', 'SACLag', 'SHAPO-PIDLag', 'P4.7 / Ours')
 ARM_METHODS = {'C0': METHOD_ORDER[0], 'P47': METHOD_ORDER[3]}
 PRIOR_METHODS = ('SACLag', 'SHAPO-PIDLag')
-ARM_CONFIGS = {
+DEFAULT_ARM_CONFIGS = {
     'C0': Path('configs/star/single_gpu_pointcircle_c0.yaml'),
     'P47': Path('configs/star/single_gpu_pointcircle_p47.yaml'),
 }
@@ -316,7 +315,10 @@ def optional(value: Any, digits: int = 4) -> str:
     return 'n/a' if value is None else f'{float(value):.{digits}f}'
 
 
-def markdown_report(aggregates: list[dict[str, Any]]) -> str:
+def markdown_report(
+    aggregates: list[dict[str, Any]],
+    enhancement_preregistration_sha256: str | None = None,
+) -> str:
     """Render the final PointCircle comparison without an every-seed claim."""
     rows = {row['method']: row for row in aggregates}
     ours = rows['P4.7 / Ours']
@@ -328,9 +330,21 @@ def markdown_report(aggregates: list[dict[str, Any]]) -> str:
         '100 fixed-stream final episodes per checkpoint. The independent statistical unit is '
         'the training seed (`n=3`).',
         '',
-        '| Method | Return | Mean cost | CVaR-20 | Train cost | High-risk V_N/V_T | Outward velocity |',
-        '|---|---:|---:|---:|---:|---:|---:|',
     ]
+    if enhancement_preregistration_sha256 is not None:
+        lines.extend(
+            [
+                'The P4.7 row uses the single preregistered PointCircle geometry enhancement; '
+                f'addendum SHA-256: `{enhancement_preregistration_sha256}`.',
+                '',
+            ],
+        )
+    lines.extend(
+        [
+            '| Method | Return | Mean cost | CVaR-20 | Train cost | High-risk V_N/V_T | Outward velocity |',
+            '|---|---:|---:|---:|---:|---:|---:|',
+        ],
+    )
     for method in METHOD_ORDER:
         row = rows[method]
         lines.append(
@@ -375,6 +389,31 @@ def git_commit(source: Path) -> str:
     ).stdout.strip()
 
 
+def validate_screen_decision(
+    decision: dict[str, Any],
+    expected_protocol_sha256: str,
+    expected_enhancement_sha256: str | None,
+) -> None:
+    """Require a passing original or explicitly authenticated enhanced screen."""
+    protocol_sha = decision.get('protocol_sha256', decision.get('parent_protocol_sha256'))
+    valid = (
+        decision.get('status') == 'complete'
+        and decision.get('environment') == ENVIRONMENT
+        and bool(decision.get('decision', {}).get('screen_pass'))
+        and protocol_sha == expected_protocol_sha256
+    )
+    if expected_enhancement_sha256 is not None:
+        valid = (
+            valid
+            and decision.get('enhancement_preregistration_sha256')
+            == expected_enhancement_sha256
+            and int(decision.get('attempt', -1)) == 1
+            and int(decision.get('attempt_limit', -1)) == 1
+        )
+    if not valid:
+        raise ValueError('formal PointCircle matrix lacks an authenticated passing screen')
+
+
 def parser() -> argparse.ArgumentParser:
     """Build finalization arguments."""
     root = Path(__file__).resolve().parents[2]
@@ -385,6 +424,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--screen-decision', type=Path, required=True)
     result.add_argument('--protocol', type=Path, default=root / 'reports/star/single_gpu_paper_core_preregistration.json')
     result.add_argument('--expected-protocol-sha256', required=True)
+    result.add_argument('--p47-config', type=Path)
+    result.add_argument('--expected-enhancement-preregistration-sha256')
     result.add_argument('--output-dir', type=Path, required=True)
     return result
 
@@ -397,14 +438,20 @@ def main() -> None:  # pylint: disable=too-many-locals
     if sha256_file(args.protocol) != args.expected_protocol_sha256:
         raise ValueError('single-GPU protocol SHA-256 mismatch')
     decision = json.loads(args.screen_decision.read_text(encoding='utf-8'))
-    if (
-        decision.get('status') != 'complete'
-        or decision.get('environment') != ENVIRONMENT
-        or not bool(decision.get('decision', {}).get('screen_pass'))
-        or decision.get('protocol_sha256') != args.expected_protocol_sha256
-    ):
-        raise ValueError('formal PointCircle matrix lacks an authenticated passing screen')
-    config_hashes = {arm: sha256_file(source / path) for arm, path in ARM_CONFIGS.items()}
+    validate_screen_decision(
+        decision,
+        args.expected_protocol_sha256,
+        args.expected_enhancement_preregistration_sha256,
+    )
+    arm_configs = {
+        'C0': source / DEFAULT_ARM_CONFIGS['C0'],
+        'P47': (
+            args.p47_config.resolve()
+            if args.p47_config is not None
+            else source / DEFAULT_ARM_CONFIGS['P47']
+        ),
+    }
+    config_hashes = {arm: sha256_file(path) for arm, path in arm_configs.items()}
     seed_rows: list[dict[str, Any]] = []
     episode_records: list[dict[str, Any]] = []
     for arm in ARM_METHODS:
@@ -447,7 +494,10 @@ def main() -> None:  # pylint: disable=too-many-locals
     atomic_csv(args.output_dir / 'pointcircle_four_method_seed_metrics.csv', public_rows)
     atomic_csv(args.output_dir / 'pointcircle_four_method_summary.csv', aggregates)
     atomic_csv(args.output_dir / 'pointcircle_four_method_episode_records.csv', episode_records)
-    atomic_text(args.output_dir / 'POINTCIRCLE_FOUR_METHOD_REPORT.md', markdown_report(aggregates))
+    atomic_text(
+        args.output_dir / 'POINTCIRCLE_FOUR_METHOD_REPORT.md',
+        markdown_report(aggregates, args.expected_enhancement_preregistration_sha256),
+    )
     evidence: list[dict[str, Any]] = []
     for row in seed_rows:
         evidence.append(
@@ -479,6 +529,13 @@ def main() -> None:  # pylint: disable=too-many-locals
         'aggregate_rows': aggregates,
         'screen_decision': str(args.screen_decision.resolve()),
         'screen_decision_sha256': sha256_file(args.screen_decision),
+        'arm_configs': {
+            arm: {'path': str(path.resolve()), 'sha256': config_hashes[arm]}
+            for arm, path in arm_configs.items()
+        },
+        'enhancement_preregistration_sha256': (
+            args.expected_enhancement_preregistration_sha256
+        ),
         'evidence': evidence,
     }
     atomic_json(args.output_dir / 'pointcircle_four_method_manifest.json', manifest)
