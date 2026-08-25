@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-25T13:50:29+08:00",
+  "updated_at": "2026-08-25T13:51:49+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -38,6 +38,21 @@
         "path": "reports/star/single_gpu_paper_core_artifacts/pointgoal/throughput_decision.json",
         "sha256": "c8b234ab8a9497b07ce29f57b8be2209a95ad1e27bc3d76cb0056e8cce245349"
       }
+    },
+    "legacy_150m_four_environment_matrix": {
+      "status": "archived_incomplete",
+      "github_pull_request": {
+        "number": 10,
+        "state": "CLOSED",
+        "draft": true,
+        "url": "https://github.com/lzqw/SAFEFLOW2027/pull/10"
+      },
+      "scientific_training_active": false,
+      "preserved_server_root": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs",
+      "preserved_checkpoint_files_observed": 32,
+      "preserved_tree_size_observed": "3.9G",
+      "observed_at": "2026-08-25T13:51:49+08:00",
+      "disposition": "Retain all existing checkpoints and evidence; do not resume PointGoal or PointButton toward the former 10M x 5-seed targets."
     },
     "pointgoal_four_method_main_result": {
       "status": "complete",
