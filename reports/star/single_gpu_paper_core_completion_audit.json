@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-26T00:10:00+08:00",
+  "updated_at": "2026-08-26T00:18:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -319,9 +319,20 @@
       "condition": "Evaluate frozen PointGoal and eligible PointCircle checkpoints only after mechanism/control evidence reaches a terminal state.",
       "scope_disposition": {
         "pointgoal": {
-          "status": "pending_checkpoint_only_evaluation",
+          "status": "waiting_for_ant_resource",
           "eligible_checkpoints": true,
-          "retraining": false
+          "retraining": false,
+          "queue_state": "waiting_for_resource",
+          "queue_root": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1",
+          "evaluation_source_commit": "d3f882b47aa5f74596c01162b9c1a348b23b9ed9",
+          "started_at": "2026-08-26T00:15:19+08:00",
+          "resource_prerequisite": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/queue_state.json",
+          "maximum_concurrent_evaluators": 2,
+          "initial_engineering_import_failure": {
+            "scientific_steps_consumed": 0,
+            "evaluators_launched": 0,
+            "corrected": true
+          }
         },
         "pointcircle": {
           "status": "not_run_screen_not_passed",
@@ -401,8 +412,9 @@
       "repository": "lzqw/SAFEFLOW2027",
       "branch": "codex/star-single-gpu-paper-core",
       "pull_request": 12,
-      "latest_published_commit_before_this_update": "54e135b",
-      "remaining": "Commit and push the imported PointCircle terminal evidence, then import Ant terminal evidence after its frozen matrix finishes."
+      "pointcircle_terminal_evidence_commit": "8cc4d8b",
+      "pointgoal_robustness_scope_commit": "d3f882b",
+      "remaining": "After Ant releases the single GPU, import and publish the frozen Ant and PointGoal robustness terminal evidence."
     }
   }
 }
