@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 13:27（Asia/Shanghai）
+更新时间：2026-08-25 13:29（Asia/Shanghai）
 
 ## 当前结论
 
@@ -22,7 +22,7 @@ PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed
 
 ## 当前运行状态
 
-PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 13:08`，增强版 P4.7 已完成 `20k/300k` 环境步（`6.7%`），累计吞吐为 `7.92 FPS`，未出现 NaN 或 OOM。按当前累计吞吐估算，剩余训练约 `9.8` 小时；计入 `150k/300k` 两次固定评测后，预计在当日 `23:00–23:30`（Asia/Shanghai）形成冻结的 `300k` 筛选结论。
+PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 13:29`，增强版 P4.7 已完成 `25k/300k` 环境步（`8.3%`），累计吞吐为 `7.80 FPS`，未出现 NaN 或 OOM。按当前累计吞吐估算，剩余训练约 `9.8` 小时；计入 `150k/300k` 两次固定评测后，预计在当日 `23:00–23:30`（Asia/Shanghai）形成冻结的 `300k` 筛选结论。
 
 训练日志在 `20k` 的参考批次上记录到 `Reference/VNVT=0.8743`、危险外向速度 `0.0342`。这些数值仅用于运行监控，不是高风险样本上的正式 checkpoint 评测，不能提前替代 `300k` 冻结门槛。当前没有科学提前停止，也没有根据该临时数值改变配置。
 
@@ -32,7 +32,7 @@ PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `202
 
 服务器上已有的 Ant/P4.7 seed `2027`、`2M` checkpoint 及其 `100` episodes 评测已经完成身份核对并同步到主机，因此后续不会重复训练该任务。该单 seed 结果为：return `5823.8252`、mean cost `0.11`、CVaR-20 `0.55`、训练累计 cost `509`、高风险 `V_N/V_T=0.7006`、高风险危险外向速度 `0.3270`。它支持高维环境中方向各向异性确实激活，但当前只是一个训练 seed，不能替代后续三 seed 的 Ours/C0 正式比较。
 
-Ant 剩余矩阵已在任何新 Ant 训练前锁定：新增 P4.7 seeds `2028/2029` 和 C0 seeds `2027–2029`，每条 `2M`，共 `10M` 新步数；最多两个 learner、`vector_env_nums=1`、`UTD=1`。新训练将使用与已复用 seed 2027 完全相同的历史训练代码 commit `62ca7399357c10645a955dcbead7ed2153a82c69`。P4.7 的科学参数保持不变，C0 仅关闭 `directional_loss_enabled` 和 `safety_aware_cost_geometry_enabled`。该队列只会在 Point 核心达到 `complete` 或预注册的 `screen_not_passed` 终态后启动，目前不占用 GPU。
+Ant 剩余矩阵已在任何新 Ant 训练前锁定：新增 P4.7 seeds `2028/2029` 和 C0 seeds `2027–2029`，每条 `2M`，共 `10M` 新步数；最多两个 learner、`vector_env_nums=1`、`UTD=1`。新训练将使用与已复用 seed 2027 完全相同的历史训练代码 commit `62ca7399357c10645a955dcbead7ed2153a82c69`。P4.7 的科学参数保持不变，C0 仅关闭 `directional_loss_enabled` 和 `safety_aware_cost_geometry_enabled`。条件控制器已经部署到服务器，当前状态为 `waiting_for_point_core`、`scientific_training_launched=false`；只有 Point 核心达到 `complete` 或预注册的 `screen_not_passed` 终态后才会启动，因此目前不占用 GPU。
 
 - [Ant/P4.7 seed 2027 的 2M 审计](shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json)
 - [Ant/P4.7 seed 2027 的 2M 评测](shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/artifacts/evaluation_step_2000000.json)
