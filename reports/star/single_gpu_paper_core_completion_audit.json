@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-25T14:25:14+08:00",
+  "updated_at": "2026-08-25T18:05:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -141,10 +141,23 @@
       "attempt_limit": 1,
       "training_seed": 2027,
       "target_steps": 300000,
-      "latest_observed_steps": 50000,
-      "latest_observed_at": "2026-08-25T14:17:22+08:00",
-      "latest_cumulative_fps": 7.983008861541748,
-      "estimated_training_hours_remaining": 8.7,
+      "latest_observed_steps": 155000,
+      "latest_observed_at": "2026-08-25T18:00:00+08:00",
+      "latest_cumulative_fps": 7.971,
+      "estimated_training_hours_remaining": 5.1,
+      "latest_completed_evaluation_milestone": 150000,
+      "milestone_150000": {
+        "episodes": 20,
+        "return": 16.27627077399071,
+        "mean_cost": 8.45,
+        "cvar_20": 27.25,
+        "training_cumulative_cost": 7208.0,
+        "high_risk_vn_vt": 0.7597588300704956,
+        "high_risk_dangerous_outward_velocity": 0.14265677332878113,
+        "evaluation_sha256": "2b3e51cb6c53193b09437331b0958295c1d3fe57d0f54ec8b5d516402f21e7fd",
+        "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_development_evidence/P47/evaluation_step_150000.json",
+        "interpretation": "Development milestone only. It satisfies the return and safety branches against the frozen C0 150k checkpoint and activates high-risk anisotropy, but outward velocity is higher; the unchanged formal decision remains at 300k."
+      },
       "server_queue_state": "training",
       "scientific_training_launched": true,
       "scientific_changes": {
