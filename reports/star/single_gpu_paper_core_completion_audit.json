@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-25T13:51:49+08:00",
+  "updated_at": "2026-08-25T14:17:22+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -141,8 +141,10 @@
       "attempt_limit": 1,
       "training_seed": 2027,
       "target_steps": 300000,
-      "latest_observed_steps": 35000,
-      "latest_observed_at": "2026-08-25T13:44:22+08:00",
+      "latest_observed_steps": 50000,
+      "latest_observed_at": "2026-08-25T14:17:22+08:00",
+      "latest_cumulative_fps": 7.983008861541748,
+      "estimated_training_hours_remaining": 8.7,
       "server_queue_state": "training",
       "scientific_training_launched": true,
       "scientific_changes": {
