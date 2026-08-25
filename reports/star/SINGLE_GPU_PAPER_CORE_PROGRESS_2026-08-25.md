@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 13:32（Asia/Shanghai）
+更新时间：2026-08-25 13:45（Asia/Shanghai）
 
 ## 当前结论
 
@@ -22,7 +22,7 @@ PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed
 
 ## 当前运行状态
 
-PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 13:29`，增强版 P4.7 已完成 `25k/300k` 环境步（`8.3%`），累计吞吐为 `7.80 FPS`，未出现 NaN 或 OOM。按当前累计吞吐估算，剩余训练约 `9.8` 小时；计入 `150k/300k` 两次固定评测后，预计在当日 `23:00–23:30`（Asia/Shanghai）形成冻结的 `300k` 筛选结论。
+PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `2026-08-25 13:44`，增强版 P4.7 已完成 `35k/300k` 环境步（`11.7%`），累计吞吐为 `7.92 FPS`，未出现 NaN 或 OOM。按当前累计吞吐估算，剩余训练约 `9.3` 小时；计入 `150k/300k` 两次固定评测后，预计在当日 `23:00–23:30`（Asia/Shanghai）形成冻结的 `300k` 筛选结论。服务器重启后的复查确认 learner 与全部条件控制器均在位，当前只有这一条科学训练占用 GPU。
 
 训练日志在 `20k` 的参考批次上记录到 `Reference/VNVT=0.8743`、危险外向速度 `0.0342`。这些数值仅用于运行监控，不是高风险样本上的正式 checkpoint 评测，不能提前替代 `300k` 冻结门槛。当前没有科学提前停止，也没有根据该临时数值改变配置。
 
@@ -52,6 +52,7 @@ Walker2d 按协议只保留为 seed `2027` 的附录案例，不新增训练。�
 - [逐训练 seed 指标](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_seed_metrics.csv)
 - [完整 episode 记录](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_episode_records.csv)
 - [终态 manifest 与证据哈希](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_manifest.json)
+- [全实验完成状态审计](single_gpu_paper_core_completion_audit.json)
 
 主机同步目录只包含 JSON、CSV 和 Markdown。checkpoint、训练目录、工作目录和日志均未纳入 GitHub 证据包。
 
