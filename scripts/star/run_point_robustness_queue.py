@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.star.decide_pointcircle_geometry_enhancement import ADDENDUM_SHA256
 
 ENVIRONMENTS = ('SafetyPointGoal1-v0', 'SafetyPointCircle1-v0')
 ARMS = ('C0', 'P47')
@@ -87,7 +88,11 @@ def validate_source(source: Path) -> dict[str, str]:
     }
 
 
-def wait_for_prerequisite(path: Path, poll_seconds: int) -> bool:
+def wait_for_prerequisite(
+    path: Path,
+    poll_seconds: int,
+    expected_enhancement_sha256: str | None,
+) -> bool:
     """Wait for completed controls or propagate the preregistered screen failure."""
     while True:
         if path.is_file():
@@ -97,8 +102,15 @@ def wait_for_prerequisite(path: Path, poll_seconds: int) -> bool:
             state = payload.get('state')
             if state == 'complete':
                 manifest = Path(payload['final_manifest'])
-                if read_json(manifest).get('status') != 'complete':
+                manifest_payload = read_json(manifest)
+                if manifest_payload.get('status') != 'complete':
                     raise ValueError('robustness prerequisite final manifest is invalid')
+                if (
+                    expected_enhancement_sha256 is not None
+                    and manifest_payload.get('enhancement_preregistration_sha256')
+                    != expected_enhancement_sha256
+                ):
+                    raise ValueError('robustness prerequisite does not use the enhanced method')
                 return True
             if state == 'screen_not_passed':
                 return False
@@ -286,6 +298,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--run-root', type=Path, required=True)
     result.add_argument('--python-bin', type=Path, required=True)
     result.add_argument('--prerequisite-state', type=Path, required=True)
+    result.add_argument('--geometry-enhanced', action='store_true')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
 
@@ -315,9 +328,17 @@ def main() -> None:
             'training_seeds': list(SEEDS),
             'retraining': False,
             'maximum_concurrent_evaluators': 2,
+            'geometry_enhanced': args.geometry_enhanced,
+            'enhancement_preregistration_sha256': (
+                ADDENDUM_SHA256 if args.geometry_enhanced else None
+            ),
         },
     )
-    if not wait_for_prerequisite(args.prerequisite_state, args.poll_seconds):
+    if not wait_for_prerequisite(
+        args.prerequisite_state,
+        args.poll_seconds,
+        ADDENDUM_SHA256 if args.geometry_enhanced else None,
+    ):
         atomic_json(
             args.run_root / 'queue_state.json',
             {
@@ -342,6 +363,10 @@ def main() -> None:
             'robustness_protocol_sha256': identities['robustness_protocol_sha256'],
             'final_manifest': str(manifest),
             'final_manifest_sha256': sha256_file(manifest),
+            'geometry_enhanced': args.geometry_enhanced,
+            'enhancement_preregistration_sha256': (
+                ADDENDUM_SHA256 if args.geometry_enhanced else None
+            ),
         },
     )
 
