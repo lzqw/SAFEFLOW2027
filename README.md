@@ -30,12 +30,14 @@
 
 --------------------------------------------------------------------------------
 
-> **SAFEFLOW2027 / STAR:** 本仓库以固定的 OmniSafe 基线开发安全关键参考熵方法。
-> RTX 3090 服务器上的 P0/P1 环境、语义测试、吞吐标定和复现命令见
-> [scripts/star/README.md](scripts/star/README.md)。P4.1 正确性修复、旧模型长度审计和
-> PointGoal 100k 最低机制测试的完整结论见
-> [reports/star/P4_1_REPORT.md](reports/star/P4_1_REPORT.md)。100k 未获继续训练资格，且不被
-> 误报为最终 P4 结论。
+> **SAFEFLOW2027 / STAR paper core:** 当前单 GPU 协议复用并补齐了 PointGoal 的三训练
+> seed、四方法、等预算正式比较。P4.7 相对 C0 的聚合结果同时提高 return，并降低 mean
+> cost、CVaR-20、训练累计 cost、高风险 `V_N/V_T` 和危险外向速度；该结论不扩展为每个
+> seed 都 Pareto。最新冻结结果、PointCircle 门控状态和证据链接见
+> [单 GPU 论文核心报告](reports/star/SINGLE_GPU_PAPER_CORE_PROGRESS_2026-08-25.md)，逐项完成
+> 状态与 SHA-256 见
+> [机器可读审计](reports/star/single_gpu_paper_core_completion_audit.json)，复现命令见
+> [STAR 运行说明](scripts/star/README.md)。
 
 OmniSafe is an infrastructural framework designed to accelerate safe reinforcement learning (RL) research.
 It provides a comprehensive and reliable benchmark for safe RL algorithms, and also an out-of-box modular toolkit for researchers.
