@@ -332,13 +332,20 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--results', nargs='+', type=Path, required=True)
     result.add_argument('--protocol', type=Path, required=True)
     result.add_argument('--expected-protocol-sha256', required=True)
+    result.add_argument(
+        '--environments',
+        nargs='+',
+        choices=ENVIRONMENTS,
+        default=list(ENVIRONMENTS),
+    )
     result.add_argument('--output-dir', type=Path, required=True)
     return result
 
 
 def main() -> None:
-    """Validate the exact 2-task by 2-arm by 3-seed evidence matrix."""
+    """Validate the exact requested-task by 2-arm by 3-seed evidence matrix."""
     args = parser().parse_args()
+    selected_environments = tuple(dict.fromkeys(args.environments))
     source = Path(__file__).resolve().parents[2]
     source_commit = git_commit(source)
     if sha256_file(args.protocol) != args.expected_protocol_sha256:
@@ -352,9 +359,14 @@ def main() -> None:
         seed_rows.extend(row for row in combined if 'episodes' in row)
         raw_rows.extend(row for row in combined if 'episode_index' in row)
     identities = {(item['environment'], item['arm'], item['training_seed']) for item in evidence}
-    expected = {(environment, arm, seed) for environment in ENVIRONMENTS for arm in ARMS for seed in TRAINING_SEEDS}
+    expected = {
+        (environment, arm, seed)
+        for environment in selected_environments
+        for arm in ARMS
+        for seed in TRAINING_SEEDS
+    }
     if identities != expected or len(evidence) != len(expected):
-        raise ValueError('robustness inputs do not form the exact 2x2x3 matrix')
+        raise ValueError('robustness inputs do not form the exact requested-task x 2 x 3 matrix')
     cells = sorted(
         {
             (row['environment'], row['arm'], row['condition'], row['tier'])
@@ -385,6 +397,7 @@ def main() -> None:
         'protocol_sha256': args.expected_protocol_sha256,
         'finalizer_source_commit': source_commit,
         'retraining': False,
+        'environments': list(selected_environments),
         'statistical_unit': 'training_seed',
         'training_seeds_per_cell': len(TRAINING_SEEDS),
         'aggregate_rows': aggregates,

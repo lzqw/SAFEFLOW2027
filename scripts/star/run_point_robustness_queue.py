@@ -117,6 +117,31 @@ def wait_for_prerequisite(
         time.sleep(poll_seconds)
 
 
+def wait_for_resource_release(path: Path, poll_seconds: int) -> str:
+    """Wait until another frozen queue releases the single GPU."""
+    while True:
+        if path.is_file():
+            payload = read_json(path)
+            if payload.get('protocol_sha256') != EXPECTED_GLOBAL_PROTOCOL_SHA256:
+                raise ValueError('resource prerequisite has the wrong global protocol')
+            state = str(payload.get('state'))
+            if state in ('complete', 'failed'):
+                return state
+        time.sleep(poll_seconds)
+
+
+def validate_environment_scope(args: argparse.Namespace) -> tuple[str, ...]:
+    """Validate and normalize the requested robustness task subset."""
+    environments = tuple(dict.fromkeys(str(item) for item in args.environments))
+    if not environments or any(item not in ENVIRONMENTS for item in environments):
+        raise ValueError('robustness environment scope is invalid')
+    if args.run_pointgoal_after_screen_failure and environments != ('SafetyPointGoal1-v0',):
+        raise ValueError(
+            '--run-pointgoal-after-screen-failure requires PointGoal as the only environment'
+        )
+    return environments
+
+
 def unique_checkpoint(args: argparse.Namespace, environment: str, arm: str, seed: int) -> Path:
     """Resolve one exact lightweight final checkpoint."""
     if environment == 'SafetyPointGoal1-v0':
@@ -260,7 +285,7 @@ def finalize(args: argparse.Namespace, identities: dict[str, str]) -> Path:
     """Build the final robustness report and return its manifest."""
     results = [
         result_path(args.run_root, environment, arm, seed)
-        for environment in ENVIRONMENTS
+        for environment in args.environments
         for arm in ARMS
         for seed in SEEDS
     ]
@@ -274,6 +299,8 @@ def finalize(args: argparse.Namespace, identities: dict[str, str]) -> Path:
         str(args.source / ROBUSTNESS_PROTOCOL_RELATIVE),
         '--expected-protocol-sha256',
         identities['robustness_protocol_sha256'],
+        '--environments',
+        *args.environments,
         '--output-dir',
         str(output),
     ]
@@ -298,6 +325,14 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--run-root', type=Path, required=True)
     result.add_argument('--python-bin', type=Path, required=True)
     result.add_argument('--prerequisite-state', type=Path, required=True)
+    result.add_argument(
+        '--environments',
+        nargs='+',
+        choices=ENVIRONMENTS,
+        default=list(ENVIRONMENTS),
+    )
+    result.add_argument('--run-pointgoal-after-screen-failure', action='store_true')
+    result.add_argument('--resource-prerequisite-state', type=Path)
     result.add_argument('--geometry-enhanced', action='store_true')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
@@ -315,15 +350,18 @@ def main() -> None:
         'prerequisite_state',
     ):
         setattr(args, field, getattr(args, field).resolve())
+    if args.resource_prerequisite_state is not None:
+        args.resource_prerequisite_state = args.resource_prerequisite_state.resolve()
     if args.poll_seconds <= 0:
         raise ValueError('poll interval must be positive')
+    args.environments = validate_environment_scope(args)
     identities = validate_source(args.source)
     args.run_root.mkdir(parents=True, exist_ok=True)
     atomic_json(
         args.run_root / 'queue_identity.json',
         {
             **identities,
-            'environments': list(ENVIRONMENTS),
+            'environments': list(args.environments),
             'arms': list(ARMS),
             'training_seeds': list(SEEDS),
             'retraining': False,
@@ -334,11 +372,12 @@ def main() -> None:
             ),
         },
     )
-    if not wait_for_prerequisite(
+    screen_passed = wait_for_prerequisite(
         args.prerequisite_state,
         args.poll_seconds,
         ADDENDUM_SHA256 if args.geometry_enhanced else None,
-    ):
+    )
+    if not screen_passed and not args.run_pointgoal_after_screen_failure:
         atomic_json(
             args.run_root / 'queue_state.json',
             {
@@ -349,7 +388,40 @@ def main() -> None:
             },
         )
         return
-    for environment in ENVIRONMENTS:
+    resource_terminal_state = None
+    if args.resource_prerequisite_state is not None:
+        atomic_json(
+            args.run_root / 'queue_state.json',
+            {
+                'state': 'waiting_for_resource',
+                'started_at_utc': utc_now(),
+                'retraining': False,
+                'protocol_sha256': identities['global_protocol_sha256'],
+                'environments': list(args.environments),
+                'pointcircle_screen_passed': screen_passed,
+                'scientific_training_launched': False,
+                'resource_prerequisite_state': str(args.resource_prerequisite_state),
+            },
+        )
+        resource_terminal_state = wait_for_resource_release(
+            args.resource_prerequisite_state,
+            args.poll_seconds,
+        )
+    atomic_json(
+        args.run_root / 'queue_state.json',
+        {
+            'state': 'evaluating',
+            'started_at_utc': utc_now(),
+            'retraining': False,
+            'protocol_sha256': identities['global_protocol_sha256'],
+            'environments': list(args.environments),
+            'pointcircle_screen_passed': screen_passed,
+            'scientific_training_launched': False,
+            'checkpoint_only_evaluation_launched': True,
+            'resource_terminal_state': resource_terminal_state,
+        },
+    )
+    for environment in args.environments:
         for seed in SEEDS:
             run_pair(args, identities, environment, seed)
     manifest = finalize(args, identities)
@@ -367,6 +439,10 @@ def main() -> None:
             'enhancement_preregistration_sha256': (
                 ADDENDUM_SHA256 if args.geometry_enhanced else None
             ),
+            'environments': list(args.environments),
+            'pointcircle_screen_passed': screen_passed,
+            'checkpoint_only_evaluation_launched': True,
+            'resource_terminal_state': resource_terminal_state,
         },
     )
 

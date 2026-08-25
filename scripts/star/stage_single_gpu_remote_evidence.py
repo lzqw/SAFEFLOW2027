@@ -43,6 +43,10 @@ JOBS = {
         'directory': 'point-robustness-enhanced-v1',
         'state_file': 'queue_state.json',
     },
+    'pointgoal_robustness': {
+        'directory': 'pointgoal-robustness-v1',
+        'state_file': 'queue_state.json',
+    },
     'ant_2m': {
         'directory': 'ant-2m-v1',
         'state_file': 'queue_state.json',
