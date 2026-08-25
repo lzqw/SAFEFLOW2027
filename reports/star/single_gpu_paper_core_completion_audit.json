@@ -1,12 +1,24 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-25T13:45:03+08:00",
+  "updated_at": "2026-08-25T13:50:29+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
     "sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
     "gpu_contract": "one_RTX_3090",
+    "maximum_concurrent_learners": 2,
+    "training_policy": {
+      "vector_env_nums": 1,
+      "utd_ratio": 1.0,
+      "screen_evaluation_episodes": 20,
+      "screen_evaluation_steps": [
+        150000,
+        300000
+      ],
+      "formal_final_evaluation_episodes": 100,
+      "full_replay_checkpoint_frequency": 250000
+    },
     "main_training_seeds": [
       2027,
       2028,
@@ -137,28 +149,131 @@
       "status": "conditional_pending",
       "server_queue_state": "waiting_for_enhancement_screen",
       "scientific_training_launched": false,
+      "methods": [
+        "C0",
+        "P47_geometry_enhanced"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 500000,
+      "final_evaluation_episodes_per_checkpoint": 100,
       "condition": "Run C0 and enhanced P47 at 3 seeds x 500k only if the enhanced 300k screen passes."
     },
     "pointcircle_prior_baselines": {
       "status": "conditional_pending",
       "scientific_training_launched": false,
+      "methods": [
+        "SACLag",
+        "official_SHAPO_PIDLag"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 500000,
+      "final_evaluation_episodes_per_checkpoint": 100,
       "condition": "Run SACLag and official SHAPO-PIDLag at 3 seeds x 500k only after the enhanced formal matrix completes."
     },
     "pointcircle_mechanism_and_ratio_controls": {
       "status": "conditional_pending",
       "scientific_training_launched": false,
+      "training_seed": 2027,
+      "steps_per_new_control": 300000,
+      "configs": {
+        "IsoLow": {
+          "path": "configs/star/single_gpu_pointcircle_iso_low_geometry_enhanced.yaml",
+          "sha256": "e6ec6aff3e736a3ed93f9e26c0d0e9a6e67b6c4e5429c32d3f08b93b5c50274e"
+        },
+        "RandomAniso": {
+          "path": "configs/star/single_gpu_pointcircle_random_aniso_geometry_enhanced.yaml",
+          "sha256": "15ba1fd325023bbc743cd8780f0ede2e1463f831a0dc03d3839d7b5e57d5197a"
+        },
+        "ratio_0_25": {
+          "path": "configs/star/single_gpu_pointcircle_ratio_025_geometry_enhanced.yaml",
+          "sha256": "0fad76cfadb8688666a29395bf8482fd1d61d4f868e6b703bc11d25885a87efe"
+        }
+      },
       "condition": "At seed 2027 only, reuse Iso-High and enhanced Safety-Aniso and add Iso-Low, Random-Aniso, and ratio 0.25 at 300k after the formal evidence is complete."
     },
     "checkpoint_only_robustness": {
       "status": "conditional_pending",
       "scientific_training_launched": false,
       "retraining": false,
+      "protocol": {
+        "path": "reports/star/single_gpu_robustness_protocol.json",
+        "sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9"
+      },
+      "methods": [
+        "C0",
+        "P47"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "screening_episodes_per_checkpoint_condition": 50,
+      "selected_final_episodes_per_checkpoint_condition": 100,
+      "pointcircle_boundary_multipliers": [
+        0.8,
+        0.9,
+        1.0,
+        1.1,
+        1.2
+      ],
+      "pointgoal_conditions": {
+        "hazard_radius_multipliers": [
+          1.0,
+          1.25,
+          1.5
+        ],
+        "hazard_position_offsets": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.1,
+            -0.1
+          ],
+          [
+            0.2,
+            -0.2
+          ]
+        ],
+        "action_noise_standard_deviations": [
+          0.0,
+          0.05,
+          0.1
+        ]
+      },
       "condition": "Evaluate frozen PointGoal and eligible PointCircle checkpoints only after mechanism/control evidence reaches a terminal state."
     },
     "ant_secondary_extension": {
       "status": "conditional_pending",
       "server_queue_state": "waiting_for_point_core",
       "scientific_training_launched": false,
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 2000000,
+      "new_training_steps": 10000000,
+      "configs": {
+        "C0": {
+          "path": "configs/star/single_gpu_ant_c0.yaml",
+          "sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9"
+        },
+        "P47": {
+          "path": "configs/star/single_gpu_ant_p47.yaml",
+          "sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+        }
+      },
       "condition": "Start the remaining C0/P47 3-seed 2M matrix only after the Point core reaches a terminal state.",
       "reused_seed_2027_p47": {
         "status": "complete",
@@ -195,7 +310,7 @@
       "repository": "lzqw/SAFEFLOW2027",
       "branch": "codex/star-single-gpu-paper-core",
       "pull_request": 12,
-      "snapshot_parent_commit": "976cf5f",
+      "audit_base_commit": "976cf5f",
       "remaining": "Inspect, import, commit, and push terminal evidence after conditional queues finish."
     }
   }
