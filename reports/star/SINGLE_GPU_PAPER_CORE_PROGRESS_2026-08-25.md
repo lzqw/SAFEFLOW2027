@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 13:10（Asia/Shanghai）
+更新时间：2026-08-25 13:14（Asia/Shanghai）
 
 ## 当前结论
 
@@ -27,6 +27,13 @@ PointCircle 唯一一次几何增强正在服务器上正常训练。截至 `202
 训练日志在 `20k` 的参考批次上记录到 `Reference/VNVT=0.8743`、危险外向速度 `0.0342`。这些数值仅用于运行监控，不是高风险样本上的正式 checkpoint 评测，不能提前替代 `300k` 冻结门槛。当前没有科学提前停止，也没有根据该临时数值改变配置。
 
 后续正式矩阵、prior baseline、机制控制和 checkpoint-only 鲁棒性均已部署为条件队列，但仍处于等待状态，没有启动任何下游科学训练：只有增强版在 `300k` 通过原封不动的门槛，才会进入 PointCircle 三 seed `500k` 正式阶段；若未通过，队列会记录 `screen_not_passed` 并停止 PointCircle 方法修改与权重搜索。
+
+## Ant 二级扩展的已复用证据
+
+服务器上已有的 Ant/P4.7 seed `2027`、`2M` checkpoint 及其 `100` episodes 评测已经完成身份核对并同步到主机，因此后续不会重复训练该任务。该单 seed 结果为：return `5823.8252`、mean cost `0.11`、CVaR-20 `0.55`、训练累计 cost `509`、高风险 `V_N/V_T=0.7006`、高风险危险外向速度 `0.3270`。它支持高维环境中方向各向异性确实激活，但当前只是一个训练 seed，不能替代后续三 seed 的 Ours/C0 正式比较。
+
+- [Ant/P4.7 seed 2027 的 2M 审计](shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json)
+- [Ant/P4.7 seed 2027 的 2M 评测](shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/artifacts/evaluation_step_2000000.json)
 
 ## 正式证据
 
