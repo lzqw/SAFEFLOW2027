@@ -1,0 +1,90 @@
+{
+  "config_sha256": {
+    "C0": "5e8cda373b7c5f68ed34aa25d08179aa06597ee1899e694601d9e34575227f43",
+    "P47": "cf4926483912bc35cfd4b7a6a34ab424e95fe437ef2e334592e05b651c96134a"
+  },
+  "decided_at_utc": "2026-08-25T04:17:47.015691+00:00",
+  "decision": {
+    "cvar_20_relative_improvement": 0.0,
+    "geometry_ok": false,
+    "logic": "return_ok AND (safety_ok OR geometry_ok)",
+    "mean_cost_relative_improvement": 0.0,
+    "return_ok": true,
+    "return_relative_degradation": 0.0,
+    "safety_ok": false,
+    "screen_pass": false,
+    "thresholds": {
+      "maximum_high_risk_vn_vt": 0.9,
+      "maximum_return_relative_degradation": 0.1,
+      "minimum_mean_cost_or_cvar_improvement": 0.1,
+      "outward_velocity_rule": "P47_strictly_lower_than_C0"
+    }
+  },
+  "development_curves": {
+    "C0": {
+      "150000": {
+        "cost_cvar_20": 85.0,
+        "high_risk_dangerous_outward_velocity": 0.0965464860200882,
+        "high_risk_vn_vt": 0.9990793466567993,
+        "mean_cost": 17.0,
+        "mean_return": 3.445297529373417
+      },
+      "300000": {
+        "cost_cvar_20": 0.0,
+        "high_risk_dangerous_outward_velocity": 0.10258445888757706,
+        "high_risk_vn_vt": 1.0,
+        "mean_cost": 0.0,
+        "mean_return": 11.380699136543862
+      }
+    },
+    "P47": {
+      "150000": {
+        "cost_cvar_20": 0.0,
+        "high_risk_dangerous_outward_velocity": 0.017384912818670273,
+        "high_risk_vn_vt": 0.9999995231628418,
+        "mean_cost": 0.0,
+        "mean_return": 28.70773492678709
+      },
+      "300000": {
+        "cost_cvar_20": 0.0,
+        "high_risk_dangerous_outward_velocity": 0.036727894097566605,
+        "high_risk_vn_vt": 0.999998927116394,
+        "mean_cost": 0.0,
+        "mean_return": 13.982770298111566
+      }
+    }
+  },
+  "environment": "SafetyPointCircle1-v0",
+  "evidence": [
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/receipt.json",
+      "sha256": "4a1692c7badee09f8d4cb121cedf789e551ddb15b25f755df50151f5d686c561"
+    },
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_150000.json",
+      "sha256": "bb8d68b78309adb6805c017bc6390ac5cffe95ee01c844dc8de237cd4d53ab81"
+    },
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_300000.json",
+      "sha256": "ac6e54f6086c6718209d415d552b0b97c5ee4e0958a858cc1aefd993091fbbcc"
+    },
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/P47-2027/receipt.json",
+      "sha256": "d7ad6a1f0e0a8d5247dc78a05c192e8eb3e40bf3d21056b8f00ad4773fffb3f1"
+    },
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/P47-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_150000.json",
+      "sha256": "dc662d30d2675b361bc947f6719e902daf07331925f00b4b0046802c1b87e69e"
+    },
+    {
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/P47-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_300000.json",
+      "sha256": "4d141267e74c579c14b4f4881e364fa5d875cdca0d481bf4ae894f4256b712e0"
+    }
+  ],
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "scientific_early_stopping": false,
+  "screen_milestone": 300000,
+  "source_commit": "ac334bfbcbedf6641aa3b454ac59497c38f8ce0b",
+  "status": "complete",
+  "training_seed": 2027
+}

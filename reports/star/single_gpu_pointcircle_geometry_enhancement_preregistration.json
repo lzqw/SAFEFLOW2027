@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "attempt_limit": 1,
+  "baseline_reuse": {
+    "arm": "C0_isotropic_FLAC",
+    "evaluation_sha256": "ac6e54f6086c6718209d415d552b0b97c5ee4e0958a858cc1aefd993091fbbcc",
+    "reason": "The completed C0 seed-2027 300k checkpoint uses the same budget and fixed evaluation stream; retraining it would add compute without changing the comparison.",
+    "training_seed": 2027
+  },
+  "candidate": {
+    "base_config": "configs/star/single_gpu_pointcircle_p47.yaml",
+    "enhanced_config": "configs/star/single_gpu_pointcircle_p47_geometry_enhanced.yaml",
+    "exact_scientific_changes": {
+      "custom_cfgs.algo_cfgs.safety_ensemble_scale": {
+        "from": 0.05,
+        "to": 0.1
+      },
+      "custom_cfgs.algo_cfgs.safety_gradient_scale": {
+        "from": 0.005,
+        "to": 0.001
+      }
+    },
+    "method_label": "P47-Geometry-Enhanced",
+    "steps": 300000,
+    "training_seed": 2027
+  },
+  "decision_rule": {
+    "and_at_least_one": [
+      "mean_cost_or_CVaR_relative_improvement_at_least_0.10",
+      "high_risk_vn_vt_at_most_0.9_and_outward_velocity_lower"
+    ],
+    "comparison": "enhanced_P47_300k_vs_frozen_original_C0_300k",
+    "return_relative_degradation_at_most": 0.1
+  },
+  "development_evaluation": {
+    "base_seeds": [
+      22027,
+      22028,
+      22029,
+      22030,
+      22031
+    ],
+    "episodes": 20,
+    "episodes_per_base_seed": 4,
+    "milestones": [
+      150000,
+      300000
+    ]
+  },
+  "downstream_rule": {
+    "if_not_passed": "No further PointCircle method changes or weight searches; retain the original and enhanced screens as negative evidence and stop the PointCircle formal matrix.",
+    "if_passed": "Freeze the enhanced configuration as the final P47 PointCircle method, then run C0 versus enhanced P47 at three training seeds and 500k steps before prior methods and controls."
+  },
+  "engineering_invariants": {
+    "checkpoint_replay": true,
+    "full_checkpoint_frequency": 250000,
+    "maximum_concurrent_learners": 1,
+    "replay_size": 1000000,
+    "utd_ratio": 1.0,
+    "vector_envs": 1
+  },
+  "environment": "SafetyPointCircle1-v0",
+  "locked_at": "2026-08-25T12:21:22+08:00",
+  "parent_protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "protocol_version": "single-gpu-pointcircle-geometry-enhancement-v1",
+  "selection_independence": {
+    "allowed_change_was_specified_before_the_original_300k_result": true,
+    "candidate_count": 1,
+    "no_additional_candidates_after_this_attempt": true,
+    "no_scientific_early_stopping": true
+  },
+  "status": "locked_after_original_screen_failure_and_before_enhancement_training",
+  "trigger": {
+    "condition": "original_P47_high_risk_vn_vt_above_0.9",
+    "observed_original_p47_high_risk_vn_vt": 0.999998927116394,
+    "original_screen_decision_sha256": "62873e89e8584fbb6663a183f71dcca84d33ef7b63296308bb47e88af1221d86",
+    "original_screen_pass": false,
+    "triggered": true
+  }
+}

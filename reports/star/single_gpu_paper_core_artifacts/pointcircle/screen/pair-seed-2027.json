@@ -1,0 +1,21 @@
+{
+  "elapsed_seconds": 39746.903556101024,
+  "finished_at_utc": "2026-08-25T04:17:46.953458+00:00",
+  "phase": "screen",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "rows": [
+    {
+      "arm": "C0",
+      "receipt": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/receipt.json",
+      "state": "completed"
+    },
+    {
+      "arm": "P47",
+      "receipt": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/P47-2027/receipt.json",
+      "state": "completed"
+    }
+  ],
+  "seed": 2027,
+  "started_at_utc": "2026-08-24T17:15:20.524618+00:00",
+  "steps_per_method": 300000
+}

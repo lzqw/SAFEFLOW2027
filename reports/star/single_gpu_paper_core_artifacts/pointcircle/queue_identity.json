@@ -1,0 +1,13 @@
+{
+  "config_sha256": {
+    "C0": "5e8cda373b7c5f68ed34aa25d08179aa06597ee1899e694601d9e34575227f43",
+    "P47": "cf4926483912bc35cfd4b7a6a34ab424e95fe437ef2e334592e05b651c96134a"
+  },
+  "environment": "SafetyPointCircle1-v0",
+  "formal_steps": 500000,
+  "matrix_sha256": "0c4fe4b21cd086bde6e703c486022716056c844b5c3b0d79a05a062b784aac88",
+  "maximum_concurrent_learners": 2,
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "screen_steps": 300000,
+  "source_commit": "ac334bfbcbedf6641aa3b454ac59497c38f8ce0b"
+}

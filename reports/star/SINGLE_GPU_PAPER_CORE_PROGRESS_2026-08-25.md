@@ -1,10 +1,10 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-25 06:53（Asia/Shanghai）
+更新时间：2026-08-25 12:25（Asia/Shanghai）
 
 ## 当前结论
 
-PointGoal 四方法正式比较已经完成。所有方法使用训练 seeds `2027–2029`、每 seed `200k` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。独立统计单位是训练 seed（`n=3`），不是合并后的 episodes。
+PointGoal 四方法正式比较已经完成；PointCircle 原始 `300k` 单 seed 筛选也已完成并按冻结规则判定为未通过。PointGoal 所有方法使用训练 seeds `2027–2029`、每 seed `200k` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。独立统计单位是训练 seed（`n=3`），不是合并后的 episodes。
 
 | 方法 | Return | Success | Mean Cost | CVaR-20 | 训练累计 Cost | 高风险 V_N/V_T |
 |---|---:|---:|---:|---:|---:|---:|
@@ -30,34 +30,55 @@ PointGoal 四方法正式比较已经完成。所有方法使用训练 seeds `20
 
 主机同步目录只包含 JSON、CSV 和 Markdown。checkpoint、训练目录、工作目录和日志均未纳入 GitHub 证据包。
 
-## 当前 PointCircle 阶段
+## PointCircle 原始 300k 筛选结果
 
-PointGoal 后处理在 `2026-08-25 01:15` 达到 `complete` 后，条件队列已自动启动 PointCircle seed 2027 的 `300k` 配对筛选。截至 `06:52`，两条 learner 均到达 `155k/300k`，训练进程正常，GPU 利用率约 `80%–93%`：
+PointCircle `SafetyPointCircle1-v0` 的 C0/P4.7 配对筛选已于 `2026-08-25 12:17` 完成。两种配置都使用训练 seed `2027`、`300k` 环境步；`150k` 和 `300k` 均使用相同的 `5 × 4 = 20` 个固定评测 episodes。该实验是开发筛选，统计单位只有一个训练 seed，不能替代三 seed 正式结果。
 
-| 配置 | Seed | 当前步数 | 最近 FPS | 当前状态 |
-|---|---:|---:|---:|---|
-| C0 / isotropic FLAC | 2027 | 155k / 300k | 7.65 | 训练中 |
-| P4.7 / Ours | 2027 | 155k / 300k | 7.53 | 训练中 |
+| 里程碑 | 配置 | Return | Mean Cost | CVaR-20 | 训练累计 Cost | 高风险 V_N/V_T | 危险外向速度 |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 150k | C0 / isotropic FLAC | 3.4453 | 17.0 | 85.0 | 8913 | 0.99908 | 0.09655 |
+| 150k | P4.7 / Ours | **28.7077** | **0.0** | **0.0** | **6068** | 1.00000 | **0.01738** |
+| 300k | C0 / isotropic FLAC | 11.3807 | 0.0 | 0.0 | **9788** | 1.00000 | 0.10258 |
+| 300k | P4.7 / Ours | **13.9828** | 0.0 | 0.0 | 11076 | 1.00000 | **0.03673** |
 
-`150k` 预注册中间评测使用相同的 `5 × 4 = 20` episodes；它是学习曲线点，不是正式终点：
+在正式筛选点 `300k`，P4.7 的 return 比 C0 高 `22.9%`，危险外向速度低 `64.2%`；但两者的 mean cost 和 CVaR-20 都已经落到 `0`，无法形成预注册要求的相对安全改善。P4.7 的高风险 `V_N/V_T=0.999999`，也未达到 `<=0.9` 的几何条件；训练累计 cost 反而高 `13.2%`。
 
-| 配置 | Return | Mean Cost | CVaR-20 | 训练累计 Cost | 高风险 V_N/V_T | 危险外向速度 |
-|---|---:|---:|---:|---:|---:|---:|
-| C0 / isotropic FLAC | 3.4453 | 17.0 | 85.0 | 8913 | 0.99908 | 0.09655 |
-| P4.7 / Ours | **28.7077** | **0.0** | **0.0** | **6068** | 1.00000 | **0.01738** |
+冻结门槛的逐项结果为：
 
-在这个单 seed 中间点上，P4.7 的 return 高约 `733%`，mean cost 与 CVaR-20 均降低 `100%`，训练累计 cost 降低 `31.9%`，危险外向速度降低约 `82.0%`。如果把冻结规则临时应用在 `150k`，它会通过 return 与 safety 分支；但正式决策只使用 `300k`，因此没有提前停止、没有修改配置，也不把该中间点表述为最终结论。高风险 `V_N/V_T` 仍接近 `1`，当前明显收益主要表现为成本、回报和外向速度，而不是强各向异性激活。
+| 条件 | 结果 | 依据 |
+|---|---|---|
+| Return 下降不超过 10% | 通过 | P4.7 return 高于 C0 |
+| Mean cost 或 CVaR-20 改善至少 10% | 未通过 | 两者均为 0，相对改善记为 0 |
+| `V_N/V_T <= 0.9` 且 outward 更低 | 未通过 | outward 更低，但 `V_N/V_T=0.999999` |
+| 总门槛 `return_ok AND (safety_ok OR geometry_ok)` | **未通过** | safety 与 geometry 分支均未满足 |
 
-预注册筛选规则保持不变：P4.7 的 return 相对 C0 下降不得超过 `10%`，并且 mean cost/CVaR 至少改善 `10%`，或高风险 `V_N/V_T <= 0.9` 且危险外向速度更低。只有筛选通过后才继续三 seed `500k` 正式结果及其后续 prior、机制、参数和 checkpoint-only 鲁棒性实验。
+因此原始 PointCircle 配置没有进入三 seed `500k` 正式矩阵，prior、机制控制和鲁棒性队列也没有启动科学训练。`150k` 的明显安全优势作为学习曲线证据保留，但不能覆盖冻结的 `300k` 终点判定。这个结果说明原始配置在该 seed 上降低了危险外向速度，却没有让各向异性指标充分激活；它不是 PointGoal 正式结果失效的证据，也不能被表述为 PointCircle 上的方法成功。
 
-按当前双 learner 的稳定吞吐，剩余 `145k` 步加最终评测与 checkpoint 预计还需约 `5.5` 小时，`300k` 正式筛选结果预计在 `2026-08-25 12:10–12:40`（Asia/Shanghai）生成。如果通过，队列会自动继续 PointCircle C0/P4.7 的三 seed `500k` 正式阶段；该两方法正式阶段预计还需约两天。
+- [PointCircle 300k 筛选报告](single_gpu_paper_core_artifacts/pointcircle/POINTCIRCLE_300K_SCREEN_REPORT.md)
+- [机器可读冻结决策](single_gpu_paper_core_artifacts/pointcircle/screen_decision.json)
+- [C0 300k 评测证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/C0/evaluation_step_300000.json)
+- [P4.7 300k 评测证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/P47/evaluation_step_300000.json)
+
+## 唯一一次几何增强
+
+原始 P4.7 在 `300k` 的高风险 `V_N/V_T > 0.9`，触发了总协议事先允许的唯一一次增强。增强已在任何新训练开始前锁定，只修改：
+
+```yaml
+safety_gradient_scale: 0.005 -> 0.001
+safety_ensemble_scale: 0.05 -> 0.10
+```
+
+增强实验固定为 seed `2027`、`300k`，复用哈希锁定的原始 C0 `300k` 评测，不重跑基线、不增加第二个候选、不做科学提前停止，且使用完全相同的筛选门槛。如果未通过，停止 PointCircle 方法修改和权重搜索；如果通过，才冻结增强配置并进入三 seed `500k` 正式矩阵。
+
+- [增强预注册](single_gpu_pointcircle_geometry_enhancement_preregistration.json)
+- [增强配置](../../configs/star/single_gpu_pointcircle_p47_geometry_enhanced.yaml)
 
 ## PointCircle 元数据修复
 
-`150k` 数值产物完整，但旧训练源生成的 evaluation JSON 漏写了 `environment` 标签，会使 `300k` 冻结门槛的任务身份校验失败。已部署最小、可审计的元数据修复：只添加 `"environment": "SafetyPointCircle1-v0"`，并分别保留修改前后文件 SHA-256 以及排除该标签后的完整内容 SHA-256。审计状态明确记录 `scientific_metrics_changed: false`。守护程序正在等待并以同样方式处理 `300k` 两个文件，不停止或修改 learner。
+旧训练源生成的四个 `150k/300k` evaluation JSON 都漏写了 `environment` 标签。元数据修复现已全部完成：只添加 `"environment": "SafetyPointCircle1-v0"`，分别保留修改前后 SHA-256 以及排除该标签后的完整科学 payload SHA-256。审计终态明确记录 `scientific_metrics_changed: false`；该修复没有停止、修改或重跑 learner。
 
-- [C0 150k 原始数值证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/C0/evaluation_step_150000.json)
-- [P4.7 150k 原始数值证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/P47/evaluation_step_150000.json)
+- [C0 150k 数值证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/C0/evaluation_step_150000.json)
+- [P4.7 150k 数值证据](single_gpu_paper_core_artifacts/pointcircle/screen_development_evidence/P47/evaluation_step_150000.json)
 - [元数据修复审计状态](single_gpu_paper_core_artifacts/pointcircle/screen_metadata_repair_state.json)
 - 修复逻辑初始 commit：`3a48c26dbd5d933efa4ccd5ee6d9fdb867bdde89`
 - 轻量守护与来源历史 commit：`7b708b8dbb5e741eb5882ba1e2ce6d0e02ad77ca`
@@ -68,6 +89,10 @@ PointGoal 后处理在 `2026-08-25 01:15` 达到 `complete` 后，条件队列�
 - PointGoal 训练源 commit：`061787a2b393041cd54b8ccd38beab9316af46f8`
 - PointGoal 评测与汇总源 commit：`7c63ac6dff81ae0135456a474d967c8d7dbbccff`
 - PointCircle 训练源 commit：`ac334bfbcbedf6641aa3b454ac59497c38f8ce0b`
+- PointCircle 原始筛选决策 SHA-256：`62873e89e8584fbb6663a183f71dcca84d33ef7b63296308bb47e88af1221d86`
+- C0 300k 评测 SHA-256：`ac6e54f6086c6718209d415d552b0b97c5ee4e0958a858cc1aefd993091fbbcc`
+- P4.7 300k 评测 SHA-256：`4d141267e74c579c14b4f4881e364fa5d875cdca0d481bf4ae894f4256b712e0`
+- 几何增强预注册 SHA-256：`fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02`
 - 官方 SHAPO commit：`1bb770437bbbe40a89938661343744243e164bf9`
 - 当前开发分支：`codex/star-single-gpu-paper-core`
 - 当前执行 PR：[PR #12](https://github.com/lzqw/SAFEFLOW2027/pull/12)
