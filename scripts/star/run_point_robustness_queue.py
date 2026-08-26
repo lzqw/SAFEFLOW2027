@@ -421,10 +421,29 @@ def main() -> None:
             'resource_terminal_state': resource_terminal_state,
         },
     )
-    for environment in args.environments:
-        for seed in SEEDS:
-            run_pair(args, identities, environment, seed)
-    manifest = finalize(args, identities)
+    try:
+        for environment in args.environments:
+            for seed in SEEDS:
+                run_pair(args, identities, environment, seed)
+        manifest = finalize(args, identities)
+    except Exception as error:
+        atomic_json(
+            args.run_root / 'queue_state.json',
+            {
+                'state': 'failed',
+                'failed_at_utc': utc_now(),
+                'retraining': False,
+                'protocol_sha256': identities['global_protocol_sha256'],
+                'environments': list(args.environments),
+                'pointcircle_screen_passed': screen_passed,
+                'scientific_training_launched': False,
+                'checkpoint_only_evaluation_launched': True,
+                'engineering_failure': True,
+                'error': str(error),
+                'resource_terminal_state': resource_terminal_state,
+            },
+        )
+        raise
     atomic_json(
         args.run_root / 'queue_state.json',
         {
