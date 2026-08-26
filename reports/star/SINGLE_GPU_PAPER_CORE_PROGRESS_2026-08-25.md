@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-26 09:05（Asia/Shanghai）
+更新时间：2026-08-26 09:10（Asia/Shanghai）
 
 ## 当前结论
 
@@ -30,7 +30,7 @@ PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控�
 
 Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动，当前使用两个 learner 执行剩余三 seed、每 seed `2M` 的冻结矩阵。`2026-08-26 09:00` 的一次性固定快照显示首轮 C0/P4.7 seed `2028` 都到达 `270k/2M`，累计吞吐分别为 `7.582` 与 `7.558 FPS`；队列仍为 `training`，GPU 上只有这两个 learner。冻结矩阵还包含下一轮 seed `2029` 配对和最后一条 C0 seed `2027`，按当前较稳定吞吐估算剩余 wall time 约 `8.7` 天；该 Ant 二级扩展不属于已经完成的 Point 核心时长。若不修改 seeds、预算或训练语义，它不能在 `1–2` 天内完成。
 
-PointGoal 鲁棒性等待控制器启动时曾因脚本路径形式导致一次 import 阶段工程退出，零 evaluator、零科学步；改为模块入口后已正常等待，该失败记录保留在服务器 controller log 中。
+PointGoal 鲁棒性等待控制器启动时曾因脚本路径形式导致一次 import 阶段工程退出，零 evaluator、零科学步；改为模块入口后已正常等待，该失败记录保留在服务器 controller log 中。等待控制器已进一步升级到来源 commit `23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac`：未来任一 evaluator 或 finalizer 的工程异常都会原子写入 `failed` 终态并由主机搬运，避免永久停留在 `evaluating`。此次替换没有启动 evaluator，也没有触碰 Ant learner。
 
 主机终态证据搬运器已将增强筛选及全部 PointCircle 条件队列的终态轻量证据同步到主机，并为每个文件生成 SHA-256 receipt。导入 GitHub 的证据包约 `1.7 MiB`，不包含 checkpoint、训练日志或服务器工作目录。该服务继续监控 Ant 终态，主机重启后会自动恢复，也不会直接修改 Git 工作树。
 

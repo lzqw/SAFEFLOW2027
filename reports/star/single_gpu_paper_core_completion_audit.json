@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-26T09:05:00+08:00",
+  "updated_at": "2026-08-26T09:10:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -352,10 +352,12 @@
           "retraining": false,
           "queue_state": "waiting_for_resource",
           "queue_root": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1",
-          "evaluation_source_commit": "d3f882b47aa5f74596c01162b9c1a348b23b9ed9",
-          "started_at": "2026-08-26T00:15:19+08:00",
+          "evaluation_source_commit": "23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac",
+          "started_at": "2026-08-26T09:09:47+08:00",
           "resource_prerequisite": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/queue_state.json",
           "maximum_concurrent_evaluators": 2,
+          "engineering_failure_terminalization": true,
+          "waiting_controller_restarts": 1,
           "initial_engineering_import_failure": {
             "scientific_steps_consumed": 0,
             "evaluators_launched": 0,
@@ -460,6 +462,7 @@
       "pull_request": 12,
       "pointcircle_terminal_evidence_commit": "8cc4d8b",
       "pointgoal_robustness_scope_commit": "d3f882b",
+      "pointgoal_robustness_hardening_commit": "23d09f8",
       "remaining": "After Ant releases the single GPU, import and publish the frozen Ant and PointGoal robustness terminal evidence."
     }
   }
