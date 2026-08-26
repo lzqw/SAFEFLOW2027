@@ -26,6 +26,34 @@
     ],
     "claim_boundary": "Aggregate n=3 conclusions only; no every-seed Pareto claim."
   },
+  "completion_gate": {
+    "achieved": false,
+    "blocked": false,
+    "outstanding_requirements": [
+      {
+        "id": "ant_three_seed_2m",
+        "required_evidence": "A complete Ant manifest covering C0/P47 training seeds 2027-2029 at exactly 2M steps, with 100-episode final evaluations and the reused P47-2027 identity preserved.",
+        "current_status": "in_progress"
+      },
+      {
+        "id": "pointgoal_checkpoint_only_robustness",
+        "required_evidence": "A complete manifest for the six frozen C0/P47 PointGoal checkpoints across the locked nominal/medium/strong conditions, using 50 screening episodes and 100 episodes for preselected strong conditions without retraining.",
+        "current_status": "waiting_for_ant_resource"
+      },
+      {
+        "id": "terminal_github_delivery",
+        "required_evidence": "SHA-receipted Ant and PointGoal robustness terminal artifacts imported into the host worktree, committed, pushed, and matched by the remote branch head.",
+        "current_status": "pending_terminal_artifacts"
+      }
+    ],
+    "conditional_dispositions_not_outstanding": [
+      "pointcircle_three_seed_formal_not_run_screen_not_passed",
+      "pointcircle_prior_baselines_not_run_screen_not_passed",
+      "pointcircle_mechanism_and_ratio_controls_not_run_screen_not_passed",
+      "pointcircle_robustness_not_run_screen_not_passed"
+    ],
+    "completion_rule": "Set achieved=true only after every outstanding requirement has authoritative terminal evidence and no required work remains."
+  },
   "requirements": {
     "resource_contract": {
       "status": "complete",
