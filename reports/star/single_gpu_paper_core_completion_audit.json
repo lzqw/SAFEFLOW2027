@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-26T09:10:00+08:00",
+  "updated_at": "2026-08-27T09:04:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -380,21 +380,22 @@
       "point_core_terminal_state": "screen_not_passed",
       "active_learners_at_start": 2,
       "latest_throughput_snapshot": {
-        "observed_at": "2026-08-26T09:00:03+08:00",
+        "observed_at": "2026-08-27T09:00:03+08:00",
         "wave": 1,
         "runs": {
           "C0-2028": {
-            "env_steps": 270000,
+            "env_steps": 890000,
             "target_steps": 2000000,
-            "cumulative_fps": 7.582461833953857
+            "cumulative_fps": 7.221740245819092
           },
           "P47-2028": {
-            "env_steps": 270000,
+            "env_steps": 885000,
             "target_steps": 2000000,
-            "cumulative_fps": 7.5584564208984375
+            "cumulative_fps": 7.248745441436768
           }
         },
-        "estimated_remaining_wall_days": 8.7,
+        "remaining_new_environment_steps": 8225000,
+        "estimated_remaining_wall_days": 8.0,
         "estimate_scope": "Five new 2M runs in two paired waves plus one single run; frozen budgets and training semantics unchanged."
       },
       "training_seeds": [

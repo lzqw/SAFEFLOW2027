@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-26 09:10（Asia/Shanghai）
+更新时间：2026-08-27 09:04（Asia/Shanghai）
 
 ## 当前结论
 
@@ -28,7 +28,7 @@ PointCircle 唯一一次几何增强已于 `2026-08-25 23:14` 完成全部 `300k
 
 PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控制后处理及原组合鲁棒性队列都已传播 `screen_not_passed` 终态，`scientific_training_launched=false`，没有消耗任何下游 PointCircle 训练预算。PointCircle 鲁棒性因此取消，但现有三 seed PointGoal checkpoint 的 checkpoint-only 鲁棒性仍在原协议范围内。PointGoal-only 控制器已经部署，当前状态为 `waiting_for_resource`、`retraining=false`；它只会在 Ant 终态释放单卡后启动两路 evaluator，不会重新训练策略或与当前 learner 竞争 GPU。
 
-Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动，当前使用两个 learner 执行剩余三 seed、每 seed `2M` 的冻结矩阵。`2026-08-26 09:00` 的一次性固定快照显示首轮 C0/P4.7 seed `2028` 都到达 `270k/2M`，累计吞吐分别为 `7.582` 与 `7.558 FPS`；队列仍为 `training`，GPU 上只有这两个 learner。冻结矩阵还包含下一轮 seed `2029` 配对和最后一条 C0 seed `2027`，按当前较稳定吞吐估算剩余 wall time 约 `8.7` 天；该 Ant 二级扩展不属于已经完成的 Point 核心时长。若不修改 seeds、预算或训练语义，它不能在 `1–2` 天内完成。
+Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动，当前使用两个 learner 执行剩余三 seed、每 seed `2M` 的冻结矩阵。`2026-08-27 09:00` 的每日固定快照显示首轮 C0 seed `2028` 到达 `890k/2M`、P4.7 seed `2028` 到达 `885k/2M`，累计吞吐分别为 `7.222` 与 `7.249 FPS`；队列仍为 `training`，GPU 上只有这两个 learner。冻结矩阵还包含下一轮 seed `2029` 配对和最后一条 C0 seed `2027`，按当前吞吐与剩余 `8.225M` 新步数估算，剩余 wall time 约 `8.0` 天。该 Ant 二级扩展不属于已经完成的 Point 核心时长；若不修改 seeds、预算或训练语义，它不能在 `1–2` 天内完成。
 
 PointGoal 鲁棒性等待控制器启动时曾因脚本路径形式导致一次 import 阶段工程退出，零 evaluator、零科学步；改为模块入口后已正常等待，该失败记录保留在服务器 controller log 中。等待控制器已进一步升级到来源 commit `23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac`：未来任一 evaluator 或 finalizer 的工程异常都会原子写入 `failed` 终态并由主机搬运，避免永久停留在 `evaluating`。此次替换没有启动 evaluator，也没有触碰 Ant learner。
 
