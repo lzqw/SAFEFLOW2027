@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-27 22:13（Asia/Shanghai）
+更新时间：2026-08-28 00:24（Asia/Shanghai）
 
 ## 当前结论
 
@@ -20,23 +20,53 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 3. SACLag 取得最高 return 和 success，但 mean cost 为 `53.19`、CVaR-20 为 `108.93`；SHAPO-PIDLag 的任务性能也高于 P4.7，但 mean cost 和 CVaR-20 分别为 `24.02` 和 `108.38`。因此 P4.7 的优势是安全侧，而不是对所有方法的无条件性能支配。
 4. 结论边界不变：P4.7 对 C0 是跨三个训练 seed 的聚合 Pareto 改进，不宣称每个 seed 都 Pareto。SACLag 与 SHAPO-PIDLag 的正式结果没有参与 P4.7 的选择或修改。
 
+## PointGoal checkpoint-only 鲁棒性结果
+
+冻结的 PointGoal 鲁棒性矩阵已经完成。它直接读取 C0/P4.7 的 `3 × 2` 个 `200k` checkpoint，没有重新训练策略。nominal 和 medium 条件各使用每 checkpoint `50` episodes；预先指定的 strong 条件最终各使用 `100` episodes。统计单位仍是训练 seed（`n=3`）。
+
+| 条件 | Episodes/checkpoint | C0 / P4.7 Return | C0 / P4.7 Mean Cost | C0 / P4.7 CVaR-20 | C0 / P4.7 V_N/V_T | C0 / P4.7 Outward |
+|---|---:|---:|---:|---:|---:|---:|
+| nominal | 50 | 0.2764 / **0.3404** | **11.300** / 18.880 | **56.233** / 92.667 | 0.9928 / **0.8426** | 0.23587 / **0.17045** |
+| action noise medium | 50 | 0.3398 / **0.3640** | 17.947 / **11.853** | 86.200 / **57.067** | 0.9979 / **0.8427** | 0.22429 / **0.17399** |
+| action noise strong | 100 | 0.3289 / **0.3979** | 16.683 / **12.143** | 79.750 / **60.050** | 0.9930 / **0.8625** | 0.24613 / **0.18534** |
+| hazard radius medium | 50 | 0.1677 / **0.2933** | **20.020** / 20.307 | 95.667 / **94.033** | 0.9994 / **0.8948** | 0.21004 / **0.17648** |
+| hazard radius strong | 100 | 0.1516 / **0.2160** | 25.237 / **24.877** | 110.933 / **108.617** | 0.9977 / **0.8522** | 0.21856 / **0.17016** |
+| hazard position medium | 50 | **0.4501** / 0.3972 | **11.720** / 17.193 | **56.667** / 84.300 | 0.9979 / **0.7752** | 0.23126 / **0.18509** |
+| hazard position strong | 100 | 0.4982 / **0.5019** | **13.287** / 19.140 | **62.017** / 93.350 | 0.9996 / **0.8076** | 0.23186 / **0.19458** |
+
+结果支持三条有边界的结论：
+
+1. 方向机制在扰动下非常稳定。P4.7 的高风险 `V_N/V_T` 和危险外向速度在全部 `7/7` 个聚合条件以及逐 seed 的 `21/21` 个配对中都低于 C0。
+2. 动作噪声下形成最清楚的鲁棒安全收益。medium 条件的 return 提高 `7.1%`、mean cost 降低 `34.0%`、CVaR 降低 `33.8%`；strong 条件分别为 `+21.0%`、`-27.2%`、`-24.7%`，且 cost/CVaR 在两个条件中均为 `3/3` seeds 更低。扩大 hazard 半径时，P4.7 return 提高 `74.9%/42.5%`，强扰动的 mean cost 与 CVaR 分别小幅降低 `1.4%/2.1%`。
+3. 安全收益不是任意分布偏移下都成立。整体平移 hazards 时，方向几何仍稳定激活，但 medium/strong 的 mean cost 分别高 `46.7%/44.1%`，CVaR 高 `48.8%/50.5%`。这说明当前 critic 学到的安全边界法向对动作噪声和半径变化较稳健，但对障碍物整体位置变化仍存在泛化缺口。
+
+鲁棒性协议中的 nominal 使用独立冻结评测 seed 集和每 checkpoint `50` episodes，只是同一扰动协议的参考点，不替代前述 `100` episodes PointGoal 正式主结果。整个矩阵是趋势分析，不是新选择门槛，也不构成每 seed Pareto 声明。
+
+- [完整鲁棒性报告](single_gpu_paper_core_artifacts/pointgoal/robustness/final/POINT_ROBUSTNESS_REPORT.md)
+- [聚合指标](single_gpu_paper_core_artifacts/pointgoal/robustness/final/point_robustness_summary.csv)
+- [逐训练 seed 指标](single_gpu_paper_core_artifacts/pointgoal/robustness/final/point_robustness_seed_metrics.csv)
+- [最终 manifest](single_gpu_paper_core_artifacts/pointgoal/robustness/final/point_robustness_manifest.json)
+- [A100 六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)
+
 ## 当前运行状态
 
 PointCircle 唯一一次几何增强已于 `2026-08-25 23:14` 完成全部 `300k` 环境步和固定 `20` episodes 终点评测，端到端吞吐为 `7.808 FPS`。增强版 return 为 `16.5585`，高于冻结 C0 的 `11.3807`；两者 mean cost/CVaR-20 都是 `0/0`。增强版危险外向速度从 C0 的 `0.10258` 降至 `0.09538`，但高风险 `V_N/V_T=0.999997`，未达到 `<=0.9`。因此冻结决定为 `return_ok=true`、`safety_ok=false`、`geometry_ok=false`、`screen_pass=false`。
 
 `150k` 固定评测曾确认增强配置在高风险样本上形成明显各向异性：`V_N/V_T=0.7598`。该节点的 return 为 `16.2763`、mean cost 为 `8.45`、CVaR-20 为 `27.25`、训练累计 cost 为 `7208`，但危险外向速度 `0.1427` 高于冻结 C0 在同一节点的 `0.0965`。因此增强的几何作用是暂时激活而非终点稳定激活；学习曲线证据保留，但不能覆盖 `300k` 冻结决定。
 
-PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控制后处理及原组合鲁棒性队列都已传播 `screen_not_passed` 终态，`scientific_training_launched=false`，没有消耗任何下游 PointCircle 训练预算。PointCircle 鲁棒性因此取消，但现有三 seed PointGoal checkpoint 的 checkpoint-only 鲁棒性仍在原协议范围内。PointGoal-only 控制器已经部署，当前状态为 `waiting_for_resource`、`retraining=false`；它只会在 Ant 终态释放单卡后启动两路 evaluator，不会重新训练策略或与当前 learner 竞争 GPU。
+PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控制后处理及原组合鲁棒性队列都已传播 `screen_not_passed` 终态，`scientific_training_launched=false`，没有消耗任何下游 PointCircle 训练预算。PointCircle 鲁棒性因此取消。现有三 seed PointGoal checkpoint 的 checkpoint-only 鲁棒性已在 A100 CPU 上完成，状态为 `complete`、`retraining=false`；六份 checkpoint 结果与最终 manifest 已经同步回主机及原 RTX 3090 run root。
 
 Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动。`2026-08-27 20:05` 的按需快照显示首轮 C0 seed `2028` 到达 `1.180M/2M`、P4.7 seed `2028` 到达 `1.175M/2M`，累计吞吐分别为 `7.309` 与 `7.243 FPS`；两个 learner 均正常，首轮训练剩余约 `32` 小时。
 
 用户随后增加了一个 `2 × NVIDIA A100 80GB PCIe` 节点。为缩短 wall-clock，`C0-2029` 与 `P47-2029` 已于 `2026-08-27 20:19–20:25` 分配到两张 A100；原 RTX 3090 当前配对保持原样，完成后只运行 `C0-2027`。原队列仅暂停控制器进程以避免重复启动，当前两个 learner 没有暂停；持久化主机协调器会在三条分布式运行完成后将 A100 结果经主机同步回原 run root，再恢复原严格 finalizer。
 
-`2026-08-27 21:48`，两条 A100 任务同时形成首个预先约定的 `20k` 稳态吞吐节点：C0 为 `3.384 FPS`，P4.7 为 `3.542 FPS`，合计 `6.926 FPS`。在服务器既有高负载作业持续不变的保守假设下，较慢任务距离 `2M` 还需约 `162.5` 小时，即 A100 配对预计于 `2026-09-03 16:20` 左右完成。由此将原启动前约 `4.5` 天的整体估计修正为当前负载下约 `6.8` 天；若既有作业提前释放 A100，实际时间会相应缩短。该节点仅是工程吞吐观测，不包含评测结果，也没有用于方法或超参数选择。后续不做高频进度校验，只检查终态 receipt。
+`2026-08-27 21:48`，两条 A100 任务同时形成首个预先约定的 `20k` 稳态吞吐节点：C0 为 `3.384 FPS`，P4.7 为 `3.542 FPS`，合计 `6.926 FPS`。在服务器既有高负载作业持续不变的保守假设下，较慢任务距离 `2M` 还需约 `162.5` 小时，即 A100 配对预计于 `2026-09-03 16:20` 左右完成。该节点仅是工程吞吐观测，不包含评测结果，也没有用于方法或超参数选择。
+
+`2026-08-28 00:24` 的轻量快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别达到 `1.300M/1.290M`，累计吞吐约 `7.45/7.47 FPS`，当前配对还需约 `26.5` 小时。A100 两条 seed `2029` 均达到 `45k`；共享节点的瞬时吞吐受既有高负载任务及刚结束的 CPU 鲁棒性评测影响，不据此重新拟合科学计划。结合已部署的 work-conserving fallback，当前完整 Ant 终态仍保守按约 `6–8` 天估计。后续不做高频进度校验，只检查终态 receipt。
 
 为避免共享 A100 持续拥堵成为单点关键路径，主机协调器在不停止任何 learner 的前提下增加了 work-conserving fallback：RTX 3090 完成 `C0-2027` 后，如果 A100 配对仍未全部形成有效 receipt，就立即恢复原冻结队列；已从 A100 验证并同步的 arm 会被原队列跳过，其余 arm 在空闲 RTX 3090 上与 A100 分支竞速，最终只接受冻结身份校验通过的 receipt。若 A100 任一任务发生工程失败，也沿用原顺序队列兜底。完整机器可读观测见 [A100 20k 运行时观测](single_gpu_ant_a100_20k_runtime_observation_2026-08-27.json)。
 
-为利用 A100 节点的 `128` 个 CPU cores，同时避免两张已满负载 GPU 上的额外计算竞争，PointGoal checkpoint-only 鲁棒性矩阵已在任何新鲁棒性 episode 产生前分配到该节点的 CPU。它只读取现有 C0/P4.7 三 seed、`200k` checkpoint，保持冻结扰动、评测 seeds、episode 数和 fixed-random-flow 语义；每个训练 seed 配对运行两个 CPU evaluator，不训练或修改策略。原 RTX 3090 上尚处于 `waiting_for_resource` 的控制器在 A100 分支启动前退出，A100 工程失败时才恢复原控制器。机器可读注册见 [PointGoal 鲁棒性 A100 运行时补充记录](single_gpu_pointgoal_robustness_a100_runtime_amendment_2026-08-27.json)。
+为利用 A100 节点的 `128` 个 CPU cores，同时避免两张已满负载 GPU 上的额外训练竞争，PointGoal checkpoint-only 鲁棒性矩阵在任何新鲁棒性 episode 产生前分配到该节点的 CPU。它只读取现有 C0/P4.7 三 seed、`200k` checkpoint，保持冻结扰动、评测 seeds、episode 数和 fixed-random-flow 语义，不训练或修改策略。原始控制器先配对运行 seed `2027`；在尚无任何完成结果时，为响应加速要求，控制器被暂停但其两个子进程继续，seeds `2028/2029` 的四个相同 evaluator 同时启动，使工程并发从 `2` 增至 `6`。所有 evaluator 使用同一 source commit、协议、CPU device、checkpoint 和输出格式；结束后原控制器恢复并逐份认证，再运行未修改的 finalizer。机器可读注册与事后并发披露分别见 [A100 运行时补充记录](single_gpu_pointgoal_robustness_a100_runtime_amendment_2026-08-27.json) 和 [六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)。
 
 A100 CPU 队列的前两次工程启动都在 evaluator 导入阶段退出，完成 robustness episodes 为 `0`，没有产生可选择的科学结果；原 RTX 3090 等待控制器均由 fallback 恢复。直接复现确认根因是队列对 venv `python-bin` 使用 `Path.resolve()`，将其符号链接解析为不含 venv site-packages 的基础 Anaconda Python。修复只将解释器路径绝对化而不解析符号链接，默认设备与既有调用保持不变，并加入针对该行为的回归测试。失败目录完整归档，不删除或伪装为科学运行。机器可读记录见 [A100 鲁棒性解释器工程修复](single_gpu_pointgoal_robustness_a100_interpreter_repair_2026-08-27.json)。
 
@@ -44,7 +74,7 @@ A100 CPU 队列的前两次工程启动都在 evaluator 导入阶段退出，完
 
 PointGoal 鲁棒性等待控制器启动时曾因脚本路径形式导致一次 import 阶段工程退出，零 evaluator、零科学步；改为模块入口后已正常等待，该失败记录保留在服务器 controller log 中。等待控制器已进一步升级到来源 commit `23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac`：未来任一 evaluator 或 finalizer 的工程异常都会原子写入 `failed` 终态并由主机搬运，避免永久停留在 `evaluating`。此次替换没有启动 evaluator，也没有触碰 Ant learner。
 
-主机终态证据搬运器已将增强筛选及全部 PointCircle 条件队列的终态轻量证据同步到主机，并为每个文件生成 SHA-256 receipt。导入 GitHub 的证据包约 `1.7 MiB`，不包含 checkpoint、训练日志或服务器工作目录。该服务继续监控 Ant 终态，主机重启后会自动恢复，也不会直接修改 Git 工作树。
+主机终态证据搬运器已将增强筛选、全部 PointCircle 条件队列以及 PointGoal 鲁棒性终态轻量证据同步到主机，并为每个文件生成 SHA-256 receipt。PointGoal 鲁棒性包包含 `30` 个 portable files、约 `1.435 MB`，不包含 checkpoint 或训练日志；六份原始 evaluation JSON、最终 CSV/Markdown、运行配置 manifest 与终态 identity 均保留。该服务继续监控 Ant 终态，主机重启后会自动恢复，也不会直接修改 Git 工作树。
 
 ## Ant 二级扩展的已复用证据
 
@@ -70,9 +100,11 @@ Walker2d 按协议只保留为 seed `2027` 的附录案例，不新增训练。�
 - [逐训练 seed 指标](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_seed_metrics.csv)
 - [完整 episode 记录](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_episode_records.csv)
 - [终态 manifest 与证据哈希](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_manifest.json)
+- [PointGoal 鲁棒性完整报告](single_gpu_paper_core_artifacts/pointgoal/robustness/final/POINT_ROBUSTNESS_REPORT.md)
+- [PointGoal 鲁棒性原始评测与 SHA receipt](single_gpu_paper_core_artifacts/pointgoal/robustness/stage_receipt.json)
 - [全实验完成状态审计](single_gpu_paper_core_completion_audit.json)
 
-主机同步目录只包含 JSON、CSV 和 Markdown。checkpoint、训练目录、工作目录和日志均未纳入 GitHub 证据包。
+主机同步目录只包含 JSON、CSV 和 Markdown。checkpoint、训练数据、日志和源代码工作树均未纳入 GitHub；仅保留轻量 evaluator 配置与 run manifest 以复核运行身份。
 
 ## PointCircle 原始 300k 筛选结果
 

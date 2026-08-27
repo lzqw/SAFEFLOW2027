@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-27T09:04:00+08:00",
+  "updated_at": "2026-08-28T00:24:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -36,14 +36,9 @@
         "current_status": "in_progress"
       },
       {
-        "id": "pointgoal_checkpoint_only_robustness",
-        "required_evidence": "A complete manifest for the six frozen C0/P47 PointGoal checkpoints across the locked nominal/medium/strong conditions, using 50 screening episodes and 100 episodes for preselected strong conditions without retraining.",
-        "current_status": "waiting_for_ant_resource"
-      },
-      {
         "id": "terminal_github_delivery",
         "required_evidence": "SHA-receipted Ant and PointGoal robustness terminal artifacts imported into the host worktree, committed, pushed, and matched by the remote branch head.",
-        "current_status": "pending_terminal_artifacts"
+        "current_status": "pointgoal_imported_to_worktree_ant_pending"
       }
     ],
     "conditional_dispositions_not_outstanding": [
@@ -292,8 +287,9 @@
       "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/controls/queue_state.json"
     },
     "checkpoint_only_robustness": {
-      "status": "pointgoal_pending_pointcircle_not_run",
-      "server_queue_state": "screen_not_passed",
+      "status": "pointgoal_complete_pointcircle_not_run",
+      "pointgoal_server_queue_state": "complete",
+      "pointcircle_server_queue_state": "screen_not_passed",
       "scientific_training_launched": false,
       "retraining": false,
       "protocol": {
@@ -345,22 +341,33 @@
         ]
       },
       "condition": "Evaluate frozen PointGoal and eligible PointCircle checkpoints only after mechanism/control evidence reaches a terminal state.",
+      "pointgoal_terminal_result": {
+        "checkpoint_results": 6,
+        "episodes_per_checkpoint": 650,
+        "total_episodes": 3900,
+        "finished_at_utc": "2026-08-27T16:16:59.100350+00:00",
+        "final_manifest": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/final/point_robustness_manifest.json",
+        "final_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+        "aggregate_conclusion": "P47 preserves lower high-risk V_N/V_T and outward velocity in all 7 aggregate conditions and all 21 paired seed-condition comparisons. Safety improves under action noise and is near-tied under hazard-radius changes, but degrades under hazard-position shifts; this is a trend analysis, not a universal robustness or every-seed Pareto claim."
+      },
       "scope_disposition": {
         "pointgoal": {
-          "status": "waiting_for_ant_resource",
+          "status": "complete",
           "eligible_checkpoints": true,
           "retraining": false,
-          "queue_state": "waiting_for_resource",
+          "queue_state": "complete",
           "queue_root": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1",
-          "evaluation_source_commit": "23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac",
-          "started_at": "2026-08-26T09:09:47+08:00",
-          "resource_prerequisite": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/queue_state.json",
-          "maximum_concurrent_evaluators": 2,
+          "evaluation_source_commit": "52ff54482b64f9816a4354cffb76f4213550124f",
+          "started_at": "2026-08-27T22:15:41+08:00",
+          "resource_prerequisite": null,
+          "queue_identity_maximum_concurrent_evaluators": 2,
+          "actual_maximum_concurrent_evaluators": 6,
+          "parallelism_disclosure": "reports/star/single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json",
           "engineering_failure_terminalization": true,
-          "waiting_controller_restarts": 1,
-          "initial_engineering_import_failure": {
+          "a100_import_failures_before_any_completed_episode": 2,
+          "initial_engineering_failures": {
             "scientific_steps_consumed": 0,
-            "evaluators_launched": 0,
+            "completed_robustness_episodes": 0,
             "corrected": true
           }
         },
@@ -370,7 +377,7 @@
           "retraining": false
         }
       },
-      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/robustness/queue_state.json"
+      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/queue_state.json"
     },
     "ant_secondary_extension": {
       "status": "in_progress",
@@ -380,23 +387,38 @@
       "point_core_terminal_state": "screen_not_passed",
       "active_learners_at_start": 2,
       "latest_throughput_snapshot": {
-        "observed_at": "2026-08-27T09:00:03+08:00",
-        "wave": 1,
-        "runs": {
+        "observed_at": "2026-08-28T00:24:00+08:00",
+        "distributed": true,
+        "seeta_rtx_3090": {
           "C0-2028": {
-            "env_steps": 890000,
+            "env_steps": 1300000,
             "target_steps": 2000000,
-            "cumulative_fps": 7.221740245819092
+            "cumulative_fps": 7.451766490936279
           },
           "P47-2028": {
-            "env_steps": 885000,
+            "env_steps": 1290000,
             "target_steps": 2000000,
-            "cumulative_fps": 7.248745441436768
+            "cumulative_fps": 7.467477321624756
           }
         },
-        "remaining_new_environment_steps": 8225000,
-        "estimated_remaining_wall_days": 8.0,
-        "estimate_scope": "Five new 2M runs in two paired waves plus one single run; frozen budgets and training semantics unchanged."
+        "shared_a100_node": {
+          "C0-2029": {
+            "env_steps": 45000,
+            "target_steps": 2000000,
+            "reported_fps": 2.4744815826416016
+          },
+          "P47-2029": {
+            "env_steps": 45000,
+            "target_steps": 2000000,
+            "reported_fps": 2.372809410095215
+          }
+        },
+        "estimated_current_rtx_pair_hours_remaining": 26.5,
+        "estimated_complete_wall_days_range": [
+          6,
+          8
+        ],
+        "estimate_scope": "A100 jobs run in parallel with the frozen RTX queue; after C0-2027, the RTX queue races any missing seed-2029 arm. Frozen budgets and training semantics are unchanged."
       },
       "training_seeds": [
         2027,
@@ -447,24 +469,33 @@
       "service_restart_count": 0,
       "persistent_unit": "/home/lzqw/.config/systemd/user/safeflow-evidence-stager.service",
       "staging_root": "/home/lzqw/SAFEFLOW2027_single_gpu/evidence-staging",
-      "policy": "Stage only terminal lightweight evidence; never stage checkpoints, logs, or server worktrees.",
+      "policy": "Stage only terminal portable evidence; never stage checkpoints, training logs, or source-code worktrees. Small evaluator configs and run manifests are retained.",
       "pointcircle_terminal_evidence": {
         "status": "imported_to_git_worktree",
         "portable_bytes": 1573650,
         "enhancement_portable_file_count": 20,
         "git_path": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal",
         "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/enhancement/stage_receipt.json"
+      },
+      "pointgoal_robustness_terminal_evidence": {
+        "status": "imported_to_git_worktree",
+        "portable_bytes": 1434969,
+        "portable_file_count": 30,
+        "git_path": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness",
+        "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/stage_receipt.json",
+        "stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d"
       }
     },
     "github_delivery": {
-      "status": "in_progress",
+      "status": "pointgoal_imported_to_worktree_ant_pending",
       "repository": "lzqw/SAFEFLOW2027",
       "branch": "codex/star-single-gpu-paper-core",
       "pull_request": 12,
       "pointcircle_terminal_evidence_commit": "8cc4d8b",
       "pointgoal_robustness_scope_commit": "d3f882b",
       "pointgoal_robustness_hardening_commit": "23d09f8",
-      "remaining": "After Ant releases the single GPU, import and publish the frozen Ant and PointGoal robustness terminal evidence."
+      "pointgoal_robustness_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+      "remaining": "Commit and push the imported PointGoal robustness package, then wait for and publish the Ant terminal package."
     }
   }
 }

@@ -1,0 +1,182 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "pointgoal_robustness",
+  "logs_copied": false,
+  "portable_bytes": 1434969,
+  "portable_file_count": 30,
+  "portable_files": [
+    {
+      "bytes": 214466,
+      "path": "evaluations/pointgoal/C0-2027.json",
+      "sha256": "2c1b798754c1c0c335cd868f3de11385ae1bc55e76c9c62fbe425909ea7d4e91"
+    },
+    {
+      "bytes": 214300,
+      "path": "evaluations/pointgoal/C0-2028.json",
+      "sha256": "b3771a8193bb2c8542aa8331e1e506d4b98e15999d5c90fa64275136613385e8"
+    },
+    {
+      "bytes": 214476,
+      "path": "evaluations/pointgoal/C0-2029.json",
+      "sha256": "8a07fdf2731595d0e862f26af941344a9c8f8ebb572f6d3af08096a661138f64"
+    },
+    {
+      "bytes": 214409,
+      "path": "evaluations/pointgoal/P47-2027.json",
+      "sha256": "11f67a7e92b79732a641a930f06faf44a1148b1223409ebd4b4cf35ffc3fc3e0"
+    },
+    {
+      "bytes": 214455,
+      "path": "evaluations/pointgoal/P47-2028.json",
+      "sha256": "14a95ff0f7dbc69ad68d37f1294e3b0ff09abd373f05c56bd793dab411b18494"
+    },
+    {
+      "bytes": 214441,
+      "path": "evaluations/pointgoal/P47-2029.json",
+      "sha256": "d573ffc60cb14fa2affd655ac9c0f546ab5badfbab42a38432701be130fbbd9d"
+    },
+    {
+      "bytes": 1982,
+      "path": "final/POINT_ROBUSTNESS_REPORT.md",
+      "sha256": "66c766a05c40fddbde57fb28aae6ea74b245910daeb0c21de4ff5db572aed85c"
+    },
+    {
+      "bytes": 14715,
+      "path": "final/point_robustness_manifest.json",
+      "sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2"
+    },
+    {
+      "bytes": 9646,
+      "path": "final/point_robustness_seed_metrics.csv",
+      "sha256": "174e1991f745e5ff5c89cab35807f1e73483e6d3bb7a6e32743ec82092396d58"
+    },
+    {
+      "bytes": 4797,
+      "path": "final/point_robustness_summary.csv",
+      "sha256": "bc72b1331414a7e78fd7fc5e12a1c3c0284a1b2fec19ab98bcda7d7c82d740e3"
+    },
+    {
+      "bytes": 573,
+      "path": "queue_identity.json",
+      "sha256": "d57511f4535625e7967178acf47c2afa9545e67a9c7d8fa5eb39a26b48a085f2"
+    },
+    {
+      "bytes": 765,
+      "path": "queue_state.json",
+      "sha256": "c96b29034805169a4d3a864d717d56f3a844adc1c9ba4cf3c48a113c8f480a16"
+    },
+    {
+      "bytes": 6505,
+      "path": "work/SafetyPointGoal1-v0/C0-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/artifacts/run_manifest.json",
+      "sha256": "49a76bd37543342837aa1e04bc51e779eacaeba96d334fc21940d2409405e58b"
+    },
+    {
+      "bytes": 12821,
+      "path": "work/SafetyPointGoal1-v0/C0-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/config.json",
+      "sha256": "bdd4383bbbcad3d53188fccc54be01d019dc8d8a867a2f2d5c0046083b96e83e"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/C0-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6505,
+      "path": "work/SafetyPointGoal1-v0/C0-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/artifacts/run_manifest.json",
+      "sha256": "2125ed74a415c28beefef994be964f89973344602edd4e23fc42f729bc524080"
+    },
+    {
+      "bytes": 12821,
+      "path": "work/SafetyPointGoal1-v0/C0-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/config.json",
+      "sha256": "d8fe820664e71738fe679d21071c7de4f4ae6c8532b2be80e540bdb37347292d"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/C0-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6505,
+      "path": "work/SafetyPointGoal1-v0/C0-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/artifacts/run_manifest.json",
+      "sha256": "6e86321ae48a03e9ff2172c186278df3c63324e88718106d4dde752678a34573"
+    },
+    {
+      "bytes": 12821,
+      "path": "work/SafetyPointGoal1-v0/C0-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/config.json",
+      "sha256": "d67a98cf822534f9bb8f54c5f492418f9b75cc12df5b9d91edfd5d10a51d0304"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/C0-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6503,
+      "path": "work/SafetyPointGoal1-v0/P47-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/artifacts/run_manifest.json",
+      "sha256": "161995749af2eb29c3b1335b74c68821292fd3f1d9580616d1c2a5b90342b964"
+    },
+    {
+      "bytes": 12819,
+      "path": "work/SafetyPointGoal1-v0/P47-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/config.json",
+      "sha256": "665c81de6c786c0f4d5aae925959e7f6d6885b5baf820ebe7b94c6da5c28c1e1"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/P47-2027/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-27-22-15-53/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6503,
+      "path": "work/SafetyPointGoal1-v0/P47-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/artifacts/run_manifest.json",
+      "sha256": "74a22eb730c34f34a6e06cc8e8a9937b0842159f7ac84fccb345c81098d6e0e1"
+    },
+    {
+      "bytes": 12819,
+      "path": "work/SafetyPointGoal1-v0/P47-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/config.json",
+      "sha256": "073be19830cb70e442564938192bf985d25d1506a6e21de676e0a86383dd395d"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/P47-2028/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-08-27-22-27-01/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6503,
+      "path": "work/SafetyPointGoal1-v0/P47-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/artifacts/run_manifest.json",
+      "sha256": "9df8b0bea1af547f8873141798e7115f0343d580c774f7f27efe3893a939afc0"
+    },
+    {
+      "bytes": 12819,
+      "path": "work/SafetyPointGoal1-v0/P47-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/config.json",
+      "sha256": "16aec55e14d94f3e5f21f850e48418f6b2fbba8e5e8a225fd92d24c0256c38b1"
+    },
+    {
+      "bytes": 0,
+      "path": "work/SafetyPointGoal1-v0/P47-2029/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-08-27-22-27-01/progress.csv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1",
+  "remote_state_payload": {
+    "checkpoint_only_evaluation_launched": true,
+    "enhancement_preregistration_sha256": null,
+    "environments": [
+      "SafetyPointGoal1-v0"
+    ],
+    "final_manifest": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1/final/point_robustness_manifest.json",
+    "final_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+    "finished_at_utc": "2026-08-27T16:16:59.100350+00:00",
+    "geometry_enhanced": false,
+    "pointcircle_screen_passed": false,
+    "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "resource_terminal_state": null,
+    "retraining": false,
+    "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+    "state": "complete"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-08-27T16:23:26.739015+00:00",
+  "status": "complete",
+  "terminal_state": "complete"
+}
