@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-27 09:04（Asia/Shanghai）
+更新时间：2026-08-27 20:31（Asia/Shanghai）
 
 ## 当前结论
 
@@ -28,7 +28,11 @@ PointCircle 唯一一次几何增强已于 `2026-08-25 23:14` 完成全部 `300k
 
 PointCircle 三 seed `500k` 正式矩阵、prior baseline、机制控制、控制后处理及原组合鲁棒性队列都已传播 `screen_not_passed` 终态，`scientific_training_launched=false`，没有消耗任何下游 PointCircle 训练预算。PointCircle 鲁棒性因此取消，但现有三 seed PointGoal checkpoint 的 checkpoint-only 鲁棒性仍在原协议范围内。PointGoal-only 控制器已经部署，当前状态为 `waiting_for_resource`、`retraining=false`；它只会在 Ant 终态释放单卡后启动两路 evaluator，不会重新训练策略或与当前 learner 竞争 GPU。
 
-Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动，当前使用两个 learner 执行剩余三 seed、每 seed `2M` 的冻结矩阵。`2026-08-27 09:00` 的每日固定快照显示首轮 C0 seed `2028` 到达 `890k/2M`、P4.7 seed `2028` 到达 `885k/2M`，累计吞吐分别为 `7.222` 与 `7.249 FPS`；队列仍为 `training`，GPU 上只有这两个 learner。冻结矩阵还包含下一轮 seed `2029` 配对和最后一条 C0 seed `2027`，按当前吞吐与剩余 `8.225M` 新步数估算，剩余 wall time 约 `8.0` 天。该 Ant 二级扩展不属于已经完成的 Point 核心时长；若不修改 seeds、预算或训练语义，它不能在 `1–2` 天内完成。
+Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自动启动。`2026-08-27 20:05` 的按需快照显示首轮 C0 seed `2028` 到达 `1.180M/2M`、P4.7 seed `2028` 到达 `1.175M/2M`，累计吞吐分别为 `7.309` 与 `7.243 FPS`；两个 learner 均正常，首轮训练剩余约 `32` 小时。
+
+用户随后增加了一个 `2 × NVIDIA A100 80GB PCIe` 节点。为缩短 wall-clock，`C0-2029` 与 `P47-2029` 已于 `2026-08-27 20:19–20:25` 分配到两张 A100；原 RTX 3090 当前配对保持原样，完成后只运行 `C0-2027`。原队列仅暂停控制器进程以避免重复启动，当前两个 learner 没有暂停；持久化主机协调器会在三条分布式运行完成后将 A100 结果经主机同步回原 run root，再恢复原严格 finalizer。若 A100 任一任务工程失败，协调器恢复原顺序队列。按 RTX 3090 已测吞吐估算，新的关键路径约为 `32` 小时当前配对加约 `77` 小时单条 C0，即约 `4.5` 天；A100 首个 `20k` 稳态节点形成后再用实测吞吐修正，不把启动阶段速度作为正式 ETA。
+
+这次变更只涉及运行时资源分流：训练 seeds、每条 `2M` 步预算、两种配置、历史训练源 commit、`vector_env_nums=1`、`UTD=1`、checkpoint 与 `100` episodes 固定评测全部不变。A100 节点因驱动约束使用 PyTorch `2.7.1+cu118`，RTX 3090 使用 `2.8.0+cu128`；该软件/硬件差异作为运行时 nuisance variable 明确披露，不隐藏为同质单机结果。分流在 A100 尚未产生首个 progress row 或任何科学评测结果时锁定。完整机器可读记录见 [Ant 分布式运行时补充记录](single_gpu_ant_distributed_runtime_amendment_2026-08-27.json)。
 
 PointGoal 鲁棒性等待控制器启动时曾因脚本路径形式导致一次 import 阶段工程退出，零 evaluator、零科学步；改为模块入口后已正常等待，该失败记录保留在服务器 controller log 中。等待控制器已进一步升级到来源 commit `23d09f8025ca98a5d94ba0e35f80f2f46e5a23ac`：未来任一 evaluator 或 finalizer 的工程异常都会原子写入 `failed` 终态并由主机搬运，避免永久停留在 `evaluating`。此次替换没有启动 evaluator，也没有触碰 Ant learner。
 

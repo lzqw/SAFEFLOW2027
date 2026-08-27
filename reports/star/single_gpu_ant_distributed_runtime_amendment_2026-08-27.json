@@ -1,0 +1,80 @@
+{
+  "allocation": {
+    "a100_pair": [
+      "C0-2029",
+      "P47-2029"
+    ],
+    "rtx3090_current_pair": [
+      "C0-2028",
+      "P47-2028"
+    ],
+    "rtx3090_followup": [
+      "C0-2027"
+    ]
+  },
+  "a100_launch": {
+    "C0-2029_started_at_local": "2026-08-27T20:25:52+08:00",
+    "P47-2029_started_at_local": "2026-08-27T20:19:06+08:00",
+    "controller_source_commit": "05c29e74862df5bb68d4f6a1917802bc39938291",
+    "first_progress_row_present_when_locked": false,
+    "training_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+  },
+  "configuration_sha256": {
+    "C0": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "P47": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+  },
+  "coordination": {
+    "artifact_route": "A100 to host staging to RTX3090 run root to strict original finalizer",
+    "duplicate_training_prevention": "pause only the original queue controller while its current learners continue",
+    "engineering_failure_fallback": "resume the original queue controller",
+    "host_bridge_persistent_across_login": true,
+    "plaintext_credentials_persisted": false
+  },
+  "reason": "A second user-authorized server was added to reduce wall-clock time without changing the frozen scientific matrix.",
+  "registered_at_local": "2026-08-27T20:31:22+08:00",
+  "runtime_environments": {
+    "a100": {
+      "concurrent_safeflow_learners": 2,
+      "cuda_runtime": "11.8",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "gpus_used": 2,
+      "python": "3.11.5",
+      "pytorch": "2.7.1+cu118"
+    },
+    "rtx3090": {
+      "concurrent_safeflow_learners": 2,
+      "cuda_runtime": "12.8",
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "gpus_used": 1,
+      "python": "3.11.15",
+      "pytorch": "2.8.0+cu128"
+    }
+  },
+  "scientific_invariants": {
+    "arms": [
+      "C0",
+      "P47"
+    ],
+    "changed": false,
+    "evaluation_episodes_per_checkpoint": 100,
+    "evaluation_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "replay_size": 400000,
+    "scientific_early_stop": false,
+    "seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "steps_per_run": 2000000,
+    "utd_ratio": 1.0,
+    "vector_env_nums": 1
+  },
+  "status": "locked_after_user_resource_extension_before_first_a100_progress_row",
+  "version": "star-ant-distributed-runtime-amendment-v1"
+}
