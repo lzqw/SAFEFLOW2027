@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 from scripts.star.run_point_robustness_queue import (
+    absolute_without_resolving,
     validate_environment_scope,
     wait_for_prerequisite,
     wait_for_resource_release,
@@ -15,6 +16,18 @@ from scripts.star.run_point_robustness_queue import (
 
 PROTOCOL_SHA = '0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8'
 ENHANCEMENT_SHA = 'b' * 64
+
+
+def test_python_entrypoint_keeps_the_virtualenv_symlink(tmp_path: Path) -> None:
+    target = tmp_path / 'base-python'
+    target.write_text('', encoding='utf-8')
+    virtualenv_python = tmp_path / 'env-python'
+    virtualenv_python.symlink_to(target)
+
+    normalized = absolute_without_resolving(virtualenv_python)
+
+    assert normalized == virtualenv_python.absolute()
+    assert normalized != target.resolve()
 
 
 def write_prerequisite(tmp_path: Path, enhancement_sha: str) -> Path:

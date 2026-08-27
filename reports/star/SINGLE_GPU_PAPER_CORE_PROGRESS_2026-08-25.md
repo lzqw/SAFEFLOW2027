@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-27 22:03（Asia/Shanghai）
+更新时间：2026-08-27 22:13（Asia/Shanghai）
 
 ## 当前结论
 
@@ -37,6 +37,8 @@ Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自�
 为避免共享 A100 持续拥堵成为单点关键路径，主机协调器在不停止任何 learner 的前提下增加了 work-conserving fallback：RTX 3090 完成 `C0-2027` 后，如果 A100 配对仍未全部形成有效 receipt，就立即恢复原冻结队列；已从 A100 验证并同步的 arm 会被原队列跳过，其余 arm 在空闲 RTX 3090 上与 A100 分支竞速，最终只接受冻结身份校验通过的 receipt。若 A100 任一任务发生工程失败，也沿用原顺序队列兜底。完整机器可读观测见 [A100 20k 运行时观测](single_gpu_ant_a100_20k_runtime_observation_2026-08-27.json)。
 
 为利用 A100 节点的 `128` 个 CPU cores，同时避免两张已满负载 GPU 上的额外计算竞争，PointGoal checkpoint-only 鲁棒性矩阵已在任何新鲁棒性 episode 产生前分配到该节点的 CPU。它只读取现有 C0/P4.7 三 seed、`200k` checkpoint，保持冻结扰动、评测 seeds、episode 数和 fixed-random-flow 语义；每个训练 seed 配对运行两个 CPU evaluator，不训练或修改策略。原 RTX 3090 上尚处于 `waiting_for_resource` 的控制器在 A100 分支启动前退出，A100 工程失败时才恢复原控制器。机器可读注册见 [PointGoal 鲁棒性 A100 运行时补充记录](single_gpu_pointgoal_robustness_a100_runtime_amendment_2026-08-27.json)。
+
+A100 CPU 队列的前两次工程启动都在 evaluator 导入阶段退出，完成 robustness episodes 为 `0`，没有产生可选择的科学结果；原 RTX 3090 等待控制器均由 fallback 恢复。直接复现确认根因是队列对 venv `python-bin` 使用 `Path.resolve()`，将其符号链接解析为不含 venv site-packages 的基础 Anaconda Python。修复只将解释器路径绝对化而不解析符号链接，默认设备与既有调用保持不变，并加入针对该行为的回归测试。失败目录完整归档，不删除或伪装为科学运行。机器可读记录见 [A100 鲁棒性解释器工程修复](single_gpu_pointgoal_robustness_a100_interpreter_repair_2026-08-27.json)。
 
 这次变更只涉及运行时资源分流：训练 seeds、每条 `2M` 步预算、两种配置、历史训练源 commit、`vector_env_nums=1`、`UTD=1`、checkpoint 与 `100` episodes 固定评测全部不变。A100 节点因驱动约束使用 PyTorch `2.7.1+cu118`，RTX 3090 使用 `2.8.0+cu128`；该软件/硬件差异作为运行时 nuisance variable 明确披露，不隐藏为同质单机结果。分流在 A100 尚未产生首个 progress row 或任何科学评测结果时锁定。完整机器可读注册见 [Ant 分布式运行时补充记录](single_gpu_ant_distributed_runtime_amendment_2026-08-27.json)。
 

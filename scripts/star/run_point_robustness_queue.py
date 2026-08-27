@@ -56,6 +56,11 @@ def read_json(path: Path) -> dict[str, Any]:
     return payload
 
 
+def absolute_without_resolving(path: Path) -> Path:
+    """Return an absolute path while preserving a virtualenv interpreter symlink."""
+    return Path(os.path.abspath(path.expanduser()))
+
+
 def git_output(source: Path, *arguments: str) -> str:
     """Run one read-only Git identity command."""
     return subprocess.run(
@@ -347,10 +352,10 @@ def main() -> None:
         'pointgoal_root',
         'pointcircle_root',
         'run_root',
-        'python_bin',
         'prerequisite_state',
     ):
         setattr(args, field, getattr(args, field).resolve())
+    args.python_bin = absolute_without_resolving(args.python_bin)
     if args.resource_prerequisite_state is not None:
         args.resource_prerequisite_state = args.resource_prerequisite_state.resolve()
     if args.poll_seconds <= 0:
