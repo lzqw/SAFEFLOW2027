@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-28T00:24:00+08:00",
+  "updated_at": "2026-08-28T00:31:00+08:00",
   "overall_status": "in_progress",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
@@ -38,7 +38,7 @@
       {
         "id": "terminal_github_delivery",
         "required_evidence": "SHA-receipted Ant and PointGoal robustness terminal artifacts imported into the host worktree, committed, pushed, and matched by the remote branch head.",
-        "current_status": "pointgoal_imported_to_worktree_ant_pending"
+        "current_status": "pointgoal_published_ant_pending"
       }
     ],
     "conditional_dispositions_not_outstanding": [
@@ -478,24 +478,26 @@
         "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/enhancement/stage_receipt.json"
       },
       "pointgoal_robustness_terminal_evidence": {
-        "status": "imported_to_git_worktree",
+        "status": "committed_and_pushed",
         "portable_bytes": 1434969,
         "portable_file_count": 30,
         "git_path": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness",
         "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/stage_receipt.json",
-        "stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d"
+        "stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d",
+        "git_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7"
       }
     },
     "github_delivery": {
-      "status": "pointgoal_imported_to_worktree_ant_pending",
+      "status": "pointgoal_published_ant_pending",
       "repository": "lzqw/SAFEFLOW2027",
       "branch": "codex/star-single-gpu-paper-core",
       "pull_request": 12,
       "pointcircle_terminal_evidence_commit": "8cc4d8b",
       "pointgoal_robustness_scope_commit": "d3f882b",
       "pointgoal_robustness_hardening_commit": "23d09f8",
+      "pointgoal_robustness_terminal_evidence_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7",
       "pointgoal_robustness_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
-      "remaining": "Commit and push the imported PointGoal robustness package, then wait for and publish the Ant terminal package."
+      "remaining": "Wait for and publish the Ant terminal package."
     }
   }
 }
