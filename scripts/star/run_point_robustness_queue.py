@@ -221,7 +221,7 @@ def command_for(
         '--work-dir',
         str(args.run_root / 'work' / environment / f'{arm}-{seed}'),
         '--device',
-        'cuda:0',
+        args.device,
     ]
     return command, output, log
 
@@ -334,6 +334,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument('--run-pointgoal-after-screen-failure', action='store_true')
     result.add_argument('--resource-prerequisite-state', type=Path)
     result.add_argument('--geometry-enhanced', action='store_true')
+    result.add_argument('--device', choices=('cpu', 'cuda:0'), default='cuda:0')
     result.add_argument('--poll-seconds', type=int, default=30)
     return result
 
@@ -366,6 +367,7 @@ def main() -> None:
             'training_seeds': list(SEEDS),
             'retraining': False,
             'maximum_concurrent_evaluators': 2,
+            'evaluation_device': args.device,
             'geometry_enhanced': args.geometry_enhanced,
             'enhancement_preregistration_sha256': (
                 ADDENDUM_SHA256 if args.geometry_enhanced else None

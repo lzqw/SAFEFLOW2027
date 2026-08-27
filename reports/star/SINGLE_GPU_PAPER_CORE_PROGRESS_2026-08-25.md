@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-27 21:49（Asia/Shanghai）
+更新时间：2026-08-27 22:03（Asia/Shanghai）
 
 ## 当前结论
 
@@ -35,6 +35,8 @@ Point 核心达到协议终态后，Ant 二级扩展于 `2026-08-25 23:16` 自�
 `2026-08-27 21:48`，两条 A100 任务同时形成首个预先约定的 `20k` 稳态吞吐节点：C0 为 `3.384 FPS`，P4.7 为 `3.542 FPS`，合计 `6.926 FPS`。在服务器既有高负载作业持续不变的保守假设下，较慢任务距离 `2M` 还需约 `162.5` 小时，即 A100 配对预计于 `2026-09-03 16:20` 左右完成。由此将原启动前约 `4.5` 天的整体估计修正为当前负载下约 `6.8` 天；若既有作业提前释放 A100，实际时间会相应缩短。该节点仅是工程吞吐观测，不包含评测结果，也没有用于方法或超参数选择。后续不做高频进度校验，只检查终态 receipt。
 
 为避免共享 A100 持续拥堵成为单点关键路径，主机协调器在不停止任何 learner 的前提下增加了 work-conserving fallback：RTX 3090 完成 `C0-2027` 后，如果 A100 配对仍未全部形成有效 receipt，就立即恢复原冻结队列；已从 A100 验证并同步的 arm 会被原队列跳过，其余 arm 在空闲 RTX 3090 上与 A100 分支竞速，最终只接受冻结身份校验通过的 receipt。若 A100 任一任务发生工程失败，也沿用原顺序队列兜底。完整机器可读观测见 [A100 20k 运行时观测](single_gpu_ant_a100_20k_runtime_observation_2026-08-27.json)。
+
+为利用 A100 节点的 `128` 个 CPU cores，同时避免两张已满负载 GPU 上的额外计算竞争，PointGoal checkpoint-only 鲁棒性矩阵已在任何新鲁棒性 episode 产生前分配到该节点的 CPU。它只读取现有 C0/P4.7 三 seed、`200k` checkpoint，保持冻结扰动、评测 seeds、episode 数和 fixed-random-flow 语义；每个训练 seed 配对运行两个 CPU evaluator，不训练或修改策略。原 RTX 3090 上尚处于 `waiting_for_resource` 的控制器在 A100 分支启动前退出，A100 工程失败时才恢复原控制器。机器可读注册见 [PointGoal 鲁棒性 A100 运行时补充记录](single_gpu_pointgoal_robustness_a100_runtime_amendment_2026-08-27.json)。
 
 这次变更只涉及运行时资源分流：训练 seeds、每条 `2M` 步预算、两种配置、历史训练源 commit、`vector_env_nums=1`、`UTD=1`、checkpoint 与 `100` episodes 固定评测全部不变。A100 节点因驱动约束使用 PyTorch `2.7.1+cu118`，RTX 3090 使用 `2.8.0+cu128`；该软件/硬件差异作为运行时 nuisance variable 明确披露，不隐藏为同质单机结果。分流在 A100 尚未产生首个 progress row 或任何科学评测结果时锁定。完整机器可读注册见 [Ant 分布式运行时补充记录](single_gpu_ant_distributed_runtime_amendment_2026-08-27.json)。
 
