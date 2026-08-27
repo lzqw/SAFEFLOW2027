@@ -1,0 +1,40 @@
+{
+  "bridge_revision": {
+    "activated_at_local": "2026-08-27T21:31:44+08:00",
+    "behavior": "After C0-2027 completes, resume the original RTX 3090 queue if either A100 arm is still incomplete; synchronize and skip any already-valid A100 arm, and race only the missing arm or arms.",
+    "scientific_configuration_changed": false,
+    "type": "work_conserving_fallback"
+  },
+  "captured_at_local": "2026-08-27T21:48:53.671912+08:00",
+  "captured_at_utc": "2026-08-27T13:48:53.671912+00:00",
+  "estimated_pair_completion_local_if_load_is_constant": "2026-09-03T16:19:55+08:00",
+  "estimated_pair_remaining_hours": 162.5173305439142,
+  "interpretation": {
+    "aggregate_fps": 6.926086902618408,
+    "external_load_caveat": "Both A100 devices were already shared with pre-existing high-utilization jobs; this is a point estimate and may improve when that load ends.",
+    "previous_pre_steady_state_estimate_days": 4.5,
+    "revised_current_load_estimate_days": 6.771555439329758,
+    "scientific_evaluation": false,
+    "used_for_method_or_hyperparameter_selection": false
+  },
+  "rows": {
+    "C0": {
+      "elapsed_seconds": 4929.97119140625,
+      "fps": 3.3842544555664062,
+      "progress_file": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/progress.csv",
+      "steps": 20000,
+      "updates": 18000
+    },
+    "P47": {
+      "elapsed_seconds": 4879.61279296875,
+      "fps": 3.541832447052002,
+      "progress_file": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/progress.csv",
+      "steps": 20000,
+      "updates": 18000
+    }
+  },
+  "snapshot_sha256": "018c0552046e35e389218c82f7f921586e8a6582ee47dd6a9d4d16d6202ec9e1",
+  "status": "complete",
+  "threshold_steps_per_run": 20000,
+  "version": "star-ant-a100-20k-runtime-observation-v1"
+}
