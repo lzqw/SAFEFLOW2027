@@ -3,7 +3,8 @@
     "This is an on-demand, read-only progress snapshot, not a preregistered selection checkpoint.",
     "The seed-2028 metrics are interim values copied from the latest progress rows and do not replace the frozen 2M checkpoint evaluation.",
     "No policy was retrained, stopped, selected, or modified as a result of this observation.",
-    "The seed-2029 evaluation fields are still zero placeholders before a formal evaluation milestone and are therefore omitted from scientific comparisons."
+    "The seed-2029 evaluation fields are still zero placeholders before a formal evaluation milestone and are therefore omitted from scientific comparisons.",
+    "The 2026-08-29 operational update records an engineering interruption and runtime progress only; it adds no checkpoint evaluation or scientific selection evidence."
   ],
   "config_sha256": {
     "C0": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
@@ -20,6 +21,61 @@
   },
   "kind": "ant_runtime_and_interim_scientific_observation",
   "observed_at": "2026-08-28T19:26:08+08:00",
+  "operational_update_2026_08_29": {
+    "a100": {
+      "capacity_observation": {
+        "cpu_load_1m": 133.23,
+        "gpu_memory_total_mib": [
+          81920,
+          81920
+        ],
+        "gpu_memory_used_mib": [
+          66207,
+          66225
+        ],
+        "gpu_utilization_percent": [
+          100,
+          100
+        ],
+        "reason_no_third_learner_was_added": "Both A100 GPUs and the shared CPU host were already saturated; another learner would risk OOM or reduce aggregate throughput."
+      },
+      "observed_at": "2026-08-29T05:00:09+08:00",
+      "runs": [
+        {
+          "arm": "C0",
+          "fps": 3.003852367401123,
+          "seed": 2029,
+          "total_env_steps": 325000
+        },
+        {
+          "arm": "P47",
+          "fps": 3.176121473312378,
+          "seed": 2029,
+          "total_env_steps": 325000
+        }
+      ],
+      "status": "running"
+    },
+    "scientific_effect": "none",
+    "seeta": {
+      "coordinator_repair": {
+        "behavior": "Wait for SSH connectivity and then require the original queue controller plus both wave-one learners before resuming coordination.",
+        "recovery_launchers_deployed_or_run": false,
+        "recovery_launchers_prepared_on_host": true,
+        "service": "safeflow-ant-a100-bridge.service",
+        "service_status": "active_waiting"
+      },
+      "first_connection_refused_observation": "2026-08-29T01:31:05+08:00",
+      "last_confirmed_progress": {
+        "C0-2028": 1930000,
+        "P47-2028": 1920000,
+        "observed_at": "2026-08-29T01:00:27+08:00"
+      },
+      "latest_full_replay_checkpoint_step": null,
+      "status": "ssh_unavailable",
+      "status_as_of": "2026-08-29T05:00:36+08:00"
+    }
+  },
   "runs": [
     {
       "arm": "C0",
