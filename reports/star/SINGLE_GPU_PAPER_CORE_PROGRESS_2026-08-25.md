@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-28 00:24（Asia/Shanghai）
+更新时间：2026-08-28 19:26（Asia/Shanghai）
 
 ## 当前结论
 
@@ -49,6 +49,17 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 - [A100 六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)
 
 ## 当前运行状态
+
+`2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
+
+seed `2028` 当前 progress row 中保留的中期评测为：
+
+| 配置 | Steps | Return | Mean Cost | CVaR-20 | 训练累计 Cost |
+|---|---:|---:|---:|---:|---:|
+| C0 / isotropic FLAC | 1.785M | 4115.4390 | 0.270 | 1.000 | 886 |
+| P4.7 / Ours | 1.780M | **5596.7417** | **0.060** | **0.300** | **570** |
+
+在这一个训练 seed、近似配对步数的中期观察中，P4.7 相对 C0 的 return 高 `36.0%`，mean cost 低 `77.8%`，CVaR-20 低 `70.0%`，训练累计 cost 低 `35.7%`。这些数值与 PointGoal 的安全收益方向一致，但它们不是冻结终点，也没有用于选择配置；Ant 正式结论仍只依据 C0/P4.7 三 seeds 的 `2M` checkpoint 与固定 `100` episodes 评测。完整机器可读观测见 [Ant 运行时与中期结果快照](single_gpu_ant_runtime_observation_2026-08-28.json)。
 
 PointCircle 唯一一次几何增强已于 `2026-08-25 23:14` 完成全部 `300k` 环境步和固定 `20` episodes 终点评测，端到端吞吐为 `7.808 FPS`。增强版 return 为 `16.5585`，高于冻结 C0 的 `11.3807`；两者 mean cost/CVaR-20 都是 `0/0`。增强版危险外向速度从 C0 的 `0.10258` 降至 `0.09538`，但高风险 `V_N/V_T=0.999997`，未达到 `<=0.9`。因此冻结决定为 `return_ok=true`、`safety_ok=false`、`geometry_ok=false`、`screen_pass=false`。
 
