@@ -73,6 +73,14 @@
         "service": "safeflow-ant-a100-bridge.service",
         "service_status": "active_waiting"
       },
+      "evidence_stager_repair": {
+        "deployed_at": "2026-08-29T06:14:50+08:00",
+        "persistent_mode_behavior": "A transient SSH subprocess failure now waits for the configured poll interval instead of exiting into a systemd restart loop.",
+        "scientific_effect": "none",
+        "service": "safeflow-evidence-stager.service",
+        "service_status": "active_waiting",
+        "single_observation_failure_semantics_preserved": true
+      },
       "first_connection_refused_observation": "2026-08-29T01:31:05+08:00",
       "last_confirmed_progress": {
         "C0-2028": 1930000,

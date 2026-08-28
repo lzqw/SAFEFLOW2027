@@ -233,7 +233,13 @@ def main() -> None:
         raise ValueError('poll interval must be positive')
     args.staging_root.mkdir(parents=True, exist_ok=True)
     while True:
-        observed = remote_states(args.ssh_host, args.remote_python, args.remote_root)
+        try:
+            observed = remote_states(args.ssh_host, args.remote_python, args.remote_root)
+        except subprocess.CalledProcessError:
+            if args.once:
+                raise
+            time.sleep(args.poll_seconds)
+            continue
         newly_staged = stage_terminal_jobs(
             args.ssh_host,
             args.remote_root,
