@@ -41,6 +41,12 @@
         "reason_no_third_learner_was_added": "Both A100 GPUs and the shared CPU host were already saturated; another learner would risk OOM or reduce aggregate throughput."
       },
       "observed_at": "2026-08-29T05:20:24+08:00",
+      "liveness_guard": {
+        "deployed_at": "2026-08-29T05:31:53+08:00",
+        "interval_seconds": 300,
+        "restart_gate": "Restart through the existing replay-aware launcher only when no valid receipt, expected tmux session, or matching learner exists and the frozen source/config identity authenticates again.",
+        "restart_triggered_at_deployment": false
+      },
       "runs": [
         {
           "arm": "C0",
