@@ -1,0 +1,118 @@
+{
+  "authentication": {
+    "host_backup": {
+      "bytes": 91379059,
+      "excluded_replay_files": [
+        "latest_full.pt",
+        "final_full.pt"
+      ],
+      "files": 63,
+      "path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/runs",
+      "purpose": "Protect completed formal evidence while the remote Ant matrix remains in progress. Replay-bearing recovery files remain on the training server and are not part of this lightweight backup."
+    },
+    "validator": "scripts/star/finalize_single_gpu_ant.py: validate_receipt, unique_evaluation, validate_evaluation, unique_checkpoint",
+    "validator_result": "passed_for_both_arms"
+  },
+  "caveats": [
+    "This is one completed training-seed pair, not the preregistered three-seed aggregate Ant result.",
+    "The pair was not used to modify the method, choose a weight, stop another scientific run, or change the frozen 2M protocol.",
+    "The current-run progress values are operational observations only. The final Ant report will be generated only after the exact C0/P4.7 by seeds 2027-2029 matrix authenticates."
+  ],
+  "continuation": {
+    "a100": {
+      "C0-2029": {
+        "status": "running_at_500k_evaluation_boundary",
+        "total_env_steps_in_latest_progress_row": 495000
+      },
+      "P47-2029": {
+        "status": "running_at_500k_evaluation_boundary",
+        "total_env_steps_in_latest_progress_row": 495000
+      }
+    },
+    "coordinator": {
+      "poll_seconds": 300,
+      "process_guard": "Receipt-aware, self-match-safe process checks restart an incomplete C0-2027 or P47-2029 only through its frozen replay-aware launcher.",
+      "script_sha256": "e6a93ed5f4f7b239ff27ead7cef869f7440255d5bc7b53c2815561301f7f6975",
+      "service": "safeflow-ant-a100-bridge.service",
+      "status": "active",
+      "strict_queue_controller": "frozen_until_all_distributed_receipts_authenticate",
+      "systemd_unit_sha256": "89a0bbd13b84c88656ff68307ac2fbb10776fe9222440b93ba730430b6ec37f6"
+    },
+    "seeta": {
+      "C0-2027": {
+        "status": "running_from_scratch",
+        "total_env_steps": 10000
+      },
+      "P47-2029": {
+        "replay_checkpoint_sha256": "d03629ed895852778a3854029c5e9c41883bfe03f94124e7dbe1069b97d296cf",
+        "replay_checkpoint_step": 250000,
+        "status": "running_replay_resumed_race",
+        "total_env_steps": 255000
+      }
+    }
+  },
+  "environment": "Ant-v4",
+  "evaluation_protocol": {
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "episodes_per_base_seed": 20,
+    "episodes_per_training_seed": 100,
+    "milestone": 2000000
+  },
+  "kind": "ant_seed_pair_formal_observation",
+  "observed_at": "2026-08-29T21:56:21+08:00",
+  "p47_relative_to_c0": {
+    "cost_cvar_20_change_fraction": -0.85,
+    "failure_rate_change_fraction": -0.896551724137931,
+    "failure_rate_change_percentage_points": -26.0,
+    "high_risk_dangerous_outward_velocity_change_fraction": -0.5070928897493503,
+    "high_risk_vn_vt_change_fraction": -0.14284457479054624,
+    "mean_cost_change_fraction": -0.896551724137931,
+    "mean_return_change_fraction": 0.3511772827549424,
+    "training_cumulative_cost_change_fraction": -0.3698347107438017
+  },
+  "runs": {
+    "C0": {
+      "arm": "C0",
+      "config_sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+      "cost_cvar_20": 1.0,
+      "evaluation_sha256": "c81a95a5fd5b76af87ec3c63d88b8ddb5df50f0979b6875b32f8a888e0b60da6",
+      "failure_rate": 0.29,
+      "high_risk_dangerous_outward_velocity": 0.5204836130142212,
+      "high_risk_vn_vt": 0.9999998807907104,
+      "mean_cost": 0.29,
+      "mean_return": 4710.206083814894,
+      "milestone_checkpoint_sha256": "e5aeb4f5beea65dd3a14d68da27e83f7a2f355e2e1c31b34708f78cf07033ae3",
+      "receipt_sha256": "42e527544b0d36013f9cd5fb36b61c1206b399d53c49fd10e6f4892c3cdbc8db",
+      "receipt_status": "passed",
+      "seed": 2028,
+      "training_cumulative_cost": 968.0
+    },
+    "P47": {
+      "arm": "P47",
+      "config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+      "cost_cvar_20": 0.15,
+      "evaluation_sha256": "d18cf2c91de8469800ce021535833fc3a23d30e0ffb01adfdb348ecb3925a126",
+      "failure_rate": 0.03,
+      "high_risk_dangerous_outward_velocity": 0.2565500736236572,
+      "high_risk_vn_vt": 0.8571553230285645,
+      "mean_cost": 0.03,
+      "mean_return": 6364.323457544807,
+      "milestone_checkpoint_sha256": "6a775d05eb8cf6c52030ac8d70e56fcc6f7e683f2feb15ce01f7900fa2f57496",
+      "receipt_sha256": "2f0c926cd37aef47736958af52b6c9c1fdf0e6e84a8371ccc9549b0c80a50945",
+      "receipt_status": "passed",
+      "seed": 2028,
+      "training_cumulative_cost": 610.0
+    }
+  },
+  "schema_version": 1,
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "status": "complete_authenticated_single_seed_pair",
+  "training_seed": 2028,
+  "training_steps": 2000000
+}
