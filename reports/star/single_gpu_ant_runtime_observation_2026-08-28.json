@@ -4,7 +4,7 @@
     "The seed-2028 metrics are interim values copied from the latest progress rows and do not replace the frozen 2M checkpoint evaluation.",
     "No policy was retrained, stopped, selected, or modified as a result of this observation.",
     "The seed-2029 evaluation fields are still zero placeholders before a formal evaluation milestone and are therefore omitted from scientific comparisons.",
-    "The 2026-08-29 operational update records an engineering interruption and runtime progress only; it adds no checkpoint evaluation or scientific selection evidence."
+    "The 2026-08-29 operational update records an engineering interruption, replay-checkpoint recovery, and runtime progress only; it adds no checkpoint evaluation or scientific selection evidence."
   ],
   "config_sha256": {
     "C0": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
@@ -40,7 +40,7 @@
         "observed_at": "2026-08-29T05:26:35+08:00",
         "reason_no_third_learner_was_added": "Both A100 GPUs and the shared CPU host were already saturated; another learner would risk OOM or reduce aggregate throughput."
       },
-      "observed_at": "2026-08-29T05:20:24+08:00",
+      "observed_at": "2026-08-29T11:12:59+08:00",
       "liveness_guard": {
         "deployed_at": "2026-08-29T05:31:53+08:00",
         "interval_seconds": 300,
@@ -50,15 +50,15 @@
       "runs": [
         {
           "arm": "C0",
-          "fps": 3.01811146736145,
+          "fps": 2.9279391765594482,
           "seed": 2029,
-          "total_env_steps": 330000
+          "total_env_steps": 395000
         },
         {
           "arm": "P47",
-          "fps": 3.176828145980835,
+          "fps": 3.0260097980499268,
           "seed": 2029,
-          "total_env_steps": 330000
+          "total_env_steps": 395000
         }
       ],
       "status": "running"
@@ -68,17 +68,18 @@
       "coordinator_repair": {
         "behavior": "Wait for SSH connectivity, require the original queue controller, and accept each wave-one arm only through either an authenticated valid receipt or its matching live learner before resuming coordination.",
         "receipt_aware_restart_repair_at": "2026-08-29T05:25:53+08:00",
-        "recovery_launchers_deployed_or_run": false,
+        "recovery_launcher_deployed_at": "2026-08-29T10:58:29+08:00",
+        "recovery_launchers_deployed_or_run": true,
         "recovery_launchers_prepared_on_host": true,
         "service": "safeflow-ant-a100-bridge.service",
-        "service_status": "active_waiting"
+        "service_status": "active_coordinating"
       },
       "evidence_stager_repair": {
         "deployed_at": "2026-08-29T06:14:50+08:00",
         "persistent_mode_behavior": "A transient SSH subprocess failure now waits for the configured poll interval instead of exiting into a systemd restart loop.",
         "scientific_effect": "none",
         "service": "safeflow-evidence-stager.service",
-        "service_status": "active_waiting",
+        "service_status": "active_monitoring",
         "single_observation_failure_semantics_preserved": true
       },
       "first_connection_refused_observation": "2026-08-29T01:31:05+08:00",
@@ -87,9 +88,36 @@
         "P47-2028": 1920000,
         "observed_at": "2026-08-29T01:00:27+08:00"
       },
-      "latest_full_replay_checkpoint_step": null,
-      "status": "ssh_unavailable",
-      "status_as_of": "2026-08-29T05:25:53+08:00"
+      "latest_full_replay_checkpoint_step": 1750000,
+      "replacement_node_recovery": {
+        "bridge_froze_controller_at": "2026-08-29T10:59:12+08:00",
+        "controller_commit": "8d8e4b9927847d2d8e8baf1e247278ca515a8e5f",
+        "first_authenticated_connection_at": "2026-08-29T10:55:48+08:00",
+        "first_resumed_progress_observed_at": "2026-08-29T11:12:59+08:00",
+        "pre_recovery_progress_present_in_clone": {
+          "C0-2028": 1935000,
+          "P47-2028": 1925000
+        },
+        "replay_checkpoint_step": 1750000,
+        "resumed_runs": [
+          {
+            "arm": "C0",
+            "fps": 6.599933624267578,
+            "seed": 2028,
+            "total_env_steps": 1755000
+          },
+          {
+            "arm": "P47",
+            "fps": 6.629420280456543,
+            "seed": 2028,
+            "total_env_steps": 1755000
+          }
+        ],
+        "resume_semantics": "Both learners resumed from the newest authenticated replay-bearing checkpoint. Progress after 1.75M that was present only in the cloned CSV was not treated as recoverable training state.",
+        "training_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "status": "running_recovered",
+      "status_as_of": "2026-08-29T11:12:59+08:00"
     }
   },
   "runs": [
