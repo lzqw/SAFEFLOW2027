@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-08-30 17:02（Asia/Shanghai）
+更新时间：2026-08-30 18:27（Asia/Shanghai）
 
 ## 当前结论
 
@@ -66,6 +66,8 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 `2026-08-29 22:55`，一次性 checkpoint 升级器检测到 A100 P4.7 seed `2029` 形成经过格式、环境、seed、回放容量及传输前后 SHA-256 校验的 `500k` 完整断点。当时 3090 分支到 `280k`，新断点净领先 `220k`，高于预先固定的 `50k` 工程切换阈值，因此旧 P4.7 learner 正常退出并从同一 seed/config/source 的 `500k` 断点恢复；C0-2027 PID 保持不变。按切换前 RTX 吞吐折算，此举名义节省约 `8.47` 小时。触发逻辑只读取 checkpoint 步数与工程身份，没有读取评测指标、选择 checkpoint 表现或改变科学预算；A100 原 P4.7 learner 继续作为兜底竞速。A100 C0 seed `2029` 随后也形成 `500k` 完整断点，两份断点均已同步到主机并通过源前后/本地三方 SHA 校验。完整机器记录见 [P4.7-2029 500k 接力补充记录](single_gpu_ant_p47_2029_checkpoint_upgrade_2026-08-29.json)。
 
 `2026-08-30 17:01`，3090 上 C0 seed `2027` 到达 `500k/2M`，同机 P4.7 seed `2029` 到达 `960k/2M`，两个 learner 均保持存活。C0 新形成的 replay-bearing 完整检查点经最小工程核对确认为 `star-checkpoint`、`Ant-v4`、seed `2027`、`500k` 环境步、replay capacity/size `400k/400k`；文件为 `146,466,543` bytes，SHA-256 为 `750a3aa54244bf7edb6e581a61a964966c5b9d388465f1d80800418a66c23ad0`。该文件已复制到主机灾备目录，主机副本 SHA 与服务器源文件一致。此次只保护恢复能力，没有读取训练或评测指标、运行中期科学评测、选择 checkpoint、修改方法/配置或改变冻结的 `2M` 预算。机器可读记录见 [C0-2027 500k 恢复检查点记录](single_gpu_ant_c0_2027_checkpoint_500k_2026-08-30.json)。
+
+`2026-08-30 18:25`，3090 上 P4.7 seed `2029` 到达 `1M/2M`，同机 C0 seed `2027` 到达 `535k/2M`，两个 learner 均保持存活。P4.7 的半程 replay-bearing 完整检查点确认为 `star-checkpoint`、`Ant-v4`、seed `2029`、`1M` 环境步、replay capacity/size `400k/400k`；文件为 `146,467,823` bytes，SHA-256 为 `e0da55fe333aa5a3a0ec1388dbc6f5c86f4371a542a2a91b7c5bfafe68ba93ce`。服务器源文件与主机灾备副本 SHA 一致。本事件同样只保护恢复能力，没有读取指标、运行中期科学评测、选择 checkpoint 或改变冻结训练语义。机器可读记录见 [P4.7-2029 1M 恢复检查点记录](single_gpu_ant_p47_2029_checkpoint_1m_2026-08-30.json)。
 
 `2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
 
