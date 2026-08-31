@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-01 01:51（Asia/Shanghai）
+更新时间：2026-09-01 03:26（Asia/Shanghai）
 
 ## 当前结论
 
@@ -72,6 +72,8 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 `2026-08-30 21:18` 起，新 3090 入口持续返回 `Connection refused`；中断前最后确认的进度为 C0 seed `2027` 到 `585k`、P4.7 seed `2029` 到 `1.05M`。为保持有效算力，`2026-08-31 00:35` 将主机上同一 source/config/seed 的 P4.7 `1M` 完整回放断点安装到 A100：该分支此前最新 progress/checkpoint 分别为 `770k/750k`，因此断点净增 `250k`（相对实时进度前移 `230k`）。原 A100 `750k` 文件以原 SHA 保留为回退副本，新文件安装 SHA 与主机灾备 SHA 一致；仅 P4.7 learner 被正常替换，C0 PID 保持不变，主机桥接服务恢复为 active。`01:15`，新 P4.7 learner 已真实写出 `1.005M` progress，C0 同时为 `775k`，两条 learner 均存活。这是按步数和冻结身份执行的无指标工程接力，没有读取评测、修改方法/配置/seed/预算或增加 GPU 任务。机器可读记录见 [A100 P4.7 1M 接力记录](single_gpu_ant_p47_2029_a100_checkpoint_upgrade_2026-08-31.json)。
 
 `2026-09-01 01:50`，A100 上 C0 seed `2029` 到达 `1M/2M`，同机 P4.7 seed `2029` 到达 `1.23M/2M`，两个 learner 均保持存活。C0 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1M` 环境步、replay capacity/size `400k/400k`；文件为 `146,463,346` bytes，SHA-256 为 `f43a6ce7ee04eff38afa7207f131d15667f80842bd56f076784148bfd68bd111`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。此次只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变方法、配置、seed 与冻结 `2M` 预算。机器可读记录见 [C0-2029 1M 恢复检查点记录](single_gpu_ant_c0_2029_checkpoint_1m_2026-09-01.json)。
+
+`2026-09-01 03:26`，A100 上 P4.7 seed `2029` 到达 `1.25M/2M`，同机 C0 seed `2029` 到达 `1.015M/2M`，两个 learner 均保持存活。P4.7 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.25M` 环境步、replay capacity/size `400k/400k`；文件为 `146,464,693` bytes，SHA-256 为 `6c049f8d5b81f2cedde74377a9962991f7d8db7d1f3a98c1f9155934eaa9dc2c`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件同样只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [P4.7-2029 1.25M 恢复检查点记录](single_gpu_ant_p47_2029_checkpoint_1250k_2026-09-01.json)。
 
 `2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
 
