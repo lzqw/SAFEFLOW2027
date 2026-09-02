@@ -1,0 +1,65 @@
+{
+  "failure_state": {
+    "bridge_main_pid_before_repair": 875,
+    "bridge_service_active_before_repair": true,
+    "old_queue_controller_present": false,
+    "queue_state": "training",
+    "root_cause": "The host bridge required the pre-restart Seeta queue-controller PID even after both wave-one receipts were valid, so it repeated the initial recovery wait and could never reach distributed receipt synchronization or strict finalization.",
+    "wave_one_receipts_valid": true
+  },
+  "identity": {
+    "c0_config_sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "p47_config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+    "training_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+  },
+  "kind": "ant_bridge_restart_recovery_repair",
+  "observed_at": "2026-09-02T19:30:54+08:00",
+  "repair": {
+    "bridge_script_after_sha256": "5c9f1192530daccd35ec18905d3ed1bfdc36ea74a0ffbd259c7f31dbecde2d7d",
+    "bridge_script_before_sha256": "8e285fce03c796ee0e36963fa042b7086a5f3c932607839c87259520b5a82293",
+    "changes": [
+      "Enter a restart-safe post-wave mode when both frozen wave-one receipts are valid, the old controller is absent, and the authenticated recovery launcher exists.",
+      "Treat the live Seeta C0-2029 handoff as occupying the second RTX learner slot, preventing an unintended third P47 learner.",
+      "After all required receipts pass, invoke the existing strict restart-safe queue launcher instead of attempting to continue a missing PID.",
+      "Retry the strict recovery launcher only while queue_state remains training and no queue controller is alive."
+    ],
+    "installed_path": "/home/lzqw/.local/libexec/safeflow-ant-a100-bridge.sh",
+    "repository_path": "scripts/star/run_distributed_ant_bridge.sh",
+    "service_restarted_at": "2026-09-02T19:29:46+08:00"
+  },
+  "schema_version": 1,
+  "scientific_effect": {
+    "configuration_changed": false,
+    "evaluation_read_or_run_for_this_event": false,
+    "method_changed": false,
+    "new_learner_started": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "passed",
+  "validation": {
+    "a100_c0_2029": {
+      "learner_pid": 302998,
+      "process_alive_after_repair": true
+    },
+    "a100_p47_2029": {
+      "learner_pid": 4125679,
+      "process_alive_after_repair": true
+    },
+    "bash_syntax_check": "passed",
+    "bridge_main_pid_after_repair": 43556,
+    "bridge_service_active_after_repair": true,
+    "entered_restart_safe_post_wave_mode": true,
+    "existing_learners_preserved": true,
+    "seeta_c0_2027": {
+      "learner_pid": 17418,
+      "process_alive_after_repair": true
+    },
+    "seeta_c0_2029": {
+      "learner_pid": 18932,
+      "process_alive_after_repair": true
+    },
+    "seeta_p47_2029_learner_started": false,
+    "strict_recovery_launcher": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/launch_ant_queue_recovery.sh"
+  }
+}
