@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-01 18:47（Asia/Shanghai）
+更新时间：2026-09-02 10:47（Asia/Shanghai）
 
 ## 当前结论
 
@@ -78,6 +78,10 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 `2026-09-01 17:56`，A100 上 C0 seed `2029` 到达 `1.25M/2M`，同机 P4.7 seed `2029` 到达 `1.48M/2M`，两个 learner 均保持存活。C0 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.25M` 环境步、replay capacity/size `400k/400k`；文件为 `146,457,074` bytes，SHA-256 为 `47737cc7178c6da567e7523e8d52670e68c9f30f085d8eac67b5908b9b91805a`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [C0-2029 1.25M 恢复检查点记录](single_gpu_ant_c0_2029_checkpoint_1250k_2026-09-01.json)。
 
 `2026-09-01 18:47`，A100 上 P4.7 seed `2029` 到达 `1.50M/2M`，同机 C0 seed `2029` 到达 `1.265M/2M`，两个 learner 均保持存活。P4.7 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.50M` 环境步、replay capacity/size `400k/400k`；文件为 `146,462,709` bytes，SHA-256 为 `fadf29df89f626487da25559b982b6f19e797e43f8d7ca20eb28edbaec48753d`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [P4.7-2029 1.50M 恢复检查点记录](single_gpu_ant_p47_2029_checkpoint_1500k_2026-09-01.json)。
+
+`2026-09-02 09:20`，A100 上 C0 seed `2029` 到达 `1.50M/2M`，同机 P4.7 seed `2029` 到达 `1.735M/2M`，两个 learner 均保持存活。C0 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.50M` 环境步、replay capacity/size `400k/400k`；文件为 `146,459,826` bytes，SHA-256 为 `c6fc86d37c11135abf78b2bea6efc23af51be72544ac486760ef8fd21bc85c0d`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [C0-2029 1.50M 恢复检查点记录](single_gpu_ant_c0_2029_checkpoint_1500k_2026-09-02.json)。
+
+`2026-09-02 10:46`，A100 上 P4.7 seed `2029` 到达 `1.75M/2M`，同机 C0 seed `2029` 到达 `1.51M/2M`，两个 learner 均保持存活。P4.7 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.75M` 环境步、replay capacity/size `400k/400k`；文件为 `146,460,085` bytes，SHA-256 为 `2bf29d1aaf8fc69953775e5dc7861f1abef50c10468511fc5ba3597dd019c99a`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [P4.7-2029 1.75M 恢复检查点记录](single_gpu_ant_p47_2029_checkpoint_1750k_2026-09-02.json)。
 
 `2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
 
