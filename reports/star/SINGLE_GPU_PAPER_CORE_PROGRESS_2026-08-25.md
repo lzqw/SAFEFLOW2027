@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-02 10:47（Asia/Shanghai）
+更新时间：2026-09-02 19:11（Asia/Shanghai）
 
 ## 当前结论
 
@@ -82,6 +82,10 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 `2026-09-02 09:20`，A100 上 C0 seed `2029` 到达 `1.50M/2M`，同机 P4.7 seed `2029` 到达 `1.735M/2M`，两个 learner 均保持存活。C0 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.50M` 环境步、replay capacity/size `400k/400k`；文件为 `146,459,826` bytes，SHA-256 为 `c6fc86d37c11135abf78b2bea6efc23af51be72544ac486760ef8fd21bc85c0d`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [C0-2029 1.50M 恢复检查点记录](single_gpu_ant_c0_2029_checkpoint_1500k_2026-09-02.json)。
 
 `2026-09-02 10:46`，A100 上 P4.7 seed `2029` 到达 `1.75M/2M`，同机 C0 seed `2029` 到达 `1.51M/2M`，两个 learner 均保持存活。P4.7 新写出的 replay-bearing 完整检查点确认为 `star-checkpoint-v1`、`Ant-v4`、seed `2029`、`1.75M` 环境步、replay capacity/size `400k/400k`；文件为 `146,460,085` bytes，SHA-256 为 `2bf29d1aaf8fc69953775e5dc7861f1abef50c10468511fc5ba3597dd019c99a`。该文件已同步到主机灾备目录，主机与 A100 源文件 SHA 一致。本事件只保护恢复能力，没有读取中期评测指标、选择 checkpoint、暂停训练或改变冻结训练语义。机器可读记录见 [P4.7-2029 1.75M 恢复检查点记录](single_gpu_ant_p47_2029_checkpoint_1750k_2026-09-02.json)。
+
+`2026-09-02 19:09`，更新入口的 RTX 3090 恢复可达。重启后的只读核对发现旧日志停在 C0 seed `2027` 的 `585k` 和 P4.7 seed `2029` 的 `1.05M`，但没有存活 learner、控制器或正式 receipt。C0 seed `2027` 因此从实际可恢复的 `500k` 完整回放断点重新启动；旧日志中高于断点的 `85k` 不被伪装成可恢复状态。冻结 training/controller commit、C0 配置 SHA、checkpoint 格式、环境、seed、回放容量及 SHA-256 均重新认证；`19:08` 新 learner 已真实写出 `505k` progress。一次优先尝试的 tmux 包装因服务器未安装 tmux 而在 learner 创建前退出，科学步数为 `0`；随后改用 nohup 启动，没有改变训练命令。
+
+同一时刻 A100 上 C0/P4.7 seed `2029` 已分别到达 `1.585M/1.825M`。为使用 3090 的第二个训练槽，主机已将 C0 seed `2029` 的同一冻结身份 `1.50M` 完整断点复制到 3090；源与目标文件均为 `146,459,826` bytes，SHA-256 均为 `c6fc86d37c11135abf78b2bea6efc23af51be72544ac486760ef8fd21bc85c0d`。C0 seed `2029` learner 随后以显式 `--resume` 启动，A100 分支保留为兜底竞速；3090 没有重复启动 P4.7。该接力只依据步数、冻结身份和资源可用性，不读取评测指标、不改变方法、配置、seed、`2M` 预算或终点评测协议。机器可读记录见 [3090 恢复与 C0-2029 接力记录](single_gpu_ant_seeta_recovery_handoff_2026-09-02.json)。
 
 `2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
 
