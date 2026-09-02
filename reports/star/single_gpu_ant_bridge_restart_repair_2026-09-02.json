@@ -51,6 +51,15 @@
     "bridge_service_active_after_repair": true,
     "entered_restart_safe_post_wave_mode": true,
     "existing_learners_preserved": true,
+    "first_post_repair_coordination_cycle": {
+      "bridge_main_pid_unchanged": true,
+      "c0_2027_progress_step": 515000,
+      "c0_2029_progress_step": 1510000,
+      "observed_at": "2026-09-02T19:36:05+08:00",
+      "seeta_learner_count": 2,
+      "seeta_p47_2029_present": false,
+      "service_active": true
+    },
     "seeta_c0_2027": {
       "learner_pid": 17418,
       "process_alive_after_repair": true

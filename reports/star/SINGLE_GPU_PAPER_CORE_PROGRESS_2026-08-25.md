@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-02 19:31（Asia/Shanghai）
+更新时间：2026-09-02 19:36（Asia/Shanghai）
 
 ## 当前结论
 
@@ -87,7 +87,7 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 
 同一时刻 A100 上 C0/P4.7 seed `2029` 已分别到达 `1.585M/1.825M`。为使用 3090 的第二个训练槽，主机已将 C0 seed `2029` 的同一冻结身份 `1.50M` 完整断点复制到 3090；源与目标文件均为 `146,459,826` bytes，SHA-256 均为 `c6fc86d37c11135abf78b2bea6efc23af51be72544ac486760ef8fd21bc85c0d`。C0 seed `2029` learner 随后以显式 `--resume` 启动，并于 `19:22` 真实写出 `1.505M` progress；此时同机 C0 seed `2027` 已继续到 `510k`，两条 learner 均存活。A100 分支保留为兜底竞速；3090 没有重复启动 P4.7。该接力只依据步数、冻结身份和资源可用性，不读取评测指标、不改变方法、配置、seed、`2M` 预算或终点评测协议。机器可读记录见 [3090 恢复与 C0-2029 接力记录](single_gpu_ant_seeta_recovery_handoff_2026-09-02.json)。
 
-`2026-09-02 19:29`，主机用户级 Ant 桥接服务完成重启恢复修复。修复前服务本身为 active，但因重启后的旧 Seeta 队列控制器 PID 已不存在，即使 wave-one 两份冻结 receipt 均有效，仍每分钟停留在初始等待分支，未来无法进入 A100 结果同步和严格终态汇总。修复后的桥接器在这类状态下进入 restart-safe post-wave 模式：保留当前 C0 seed `2027/2029` 两条 RTX learner，将 C0 seed `2029` 识别为第二槽占用，禁止额外启动第三条 P4.7；所有必需 receipt 通过后，再调用服务器已有的严格恢复启动器完成队列 finalization。服务重启后主 PID 为 `43556`，日志已确认进入新模式；Seeta learner PID `17418/18932` 与 A100 learner PID `302998/4125679` 均保持不变，3090 未出现 P4.7 learner。该修复只恢复工程编排与终态可达性，不运行中期评测、不改变科学训练语义。机器记录和已版本化脚本分别见 [桥接重启恢复修复记录](single_gpu_ant_bridge_restart_repair_2026-09-02.json) 与 [分布式 Ant 桥接器](../../scripts/star/run_distributed_ant_bridge.sh)。
+`2026-09-02 19:29`，主机用户级 Ant 桥接服务完成重启恢复修复。修复前服务本身为 active，但因重启后的旧 Seeta 队列控制器 PID 已不存在，即使 wave-one 两份冻结 receipt 均有效，仍每分钟停留在初始等待分支，未来无法进入 A100 结果同步和严格终态汇总。修复后的桥接器在这类状态下进入 restart-safe post-wave 模式：保留当前 C0 seed `2027/2029` 两条 RTX learner，将 C0 seed `2029` 识别为第二槽占用，禁止额外启动第三条 P4.7；所有必需 receipt 通过后，再调用服务器已有的严格恢复启动器完成队列 finalization。服务重启后主 PID 为 `43556`，日志已确认进入新模式；Seeta learner PID `17418/18932` 与 A100 learner PID `302998/4125679` 均保持不变，3090 未出现 P4.7 learner。`19:36` 首个完整 `300` 秒协调周期后服务仍为同一 PID，RTX learner 数严格保持为 `2`，C0 seed `2027/2029` 分别继续到 `515k/1.510M`。该修复只恢复工程编排与终态可达性，不运行中期评测、不改变科学训练语义。机器记录和已版本化脚本分别见 [桥接重启恢复修复记录](single_gpu_ant_bridge_restart_repair_2026-09-02.json) 与 [分布式 Ant 桥接器](../../scripts/star/run_distributed_ant_bridge.sh)。
 
 `2026-08-28 19:26` 的按需只读快照显示，RTX 3090 上 C0/P4.7 seed `2028` 分别到达 `1.785M/1.780M`，即 `89.25%/89.00%`；累计吞吐为 `6.76/6.82 FPS`，两条训练预计均还需约 `9` 小时。A100 上 C0/P4.7 seed `2029` 分别到达 `225k/220k`。训练、checkpoint 迁移协调器与终态证据搬运器均保持运行；没有执行新的方法修改、权重搜索或 checkpoint 评测。
 
