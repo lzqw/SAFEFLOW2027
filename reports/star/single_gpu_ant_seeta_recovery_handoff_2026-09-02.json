@@ -44,14 +44,18 @@
       "step": 1500000,
       "transfer_sha256_equal": true
     },
-    "first_new_progress": null,
+    "first_new_progress": {
+      "learner_alive": true,
+      "observed_at": "2026-09-02T19:22:05+08:00",
+      "step": 1505000
+    },
     "launched_at": "2026-09-02T19:09:18+08:00",
     "learner_pid": 18932,
     "prior_matching_learner_absent": true,
     "prior_passed_receipt_absent": true,
     "resume_argument_verified": true,
     "run_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29",
-    "status": "running_awaiting_first_progress",
+    "status": "running_verified",
     "supervisor_pid": 18922
   },
   "engineering_disclosure": {
@@ -70,7 +74,7 @@
     "training_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
   },
   "kind": "ant_seeta_recovery_and_c0_2029_checkpoint_handoff",
-  "observed_at": "2026-09-02T19:11:17+08:00",
+  "observed_at": "2026-09-02T19:22:05+08:00",
   "schema_version": 1,
   "scientific_effect": {
     "checkpoint_or_metric_selection": false,
@@ -80,5 +84,5 @@
     "seed_changed": false,
     "training_budget_changed": false
   },
-  "status": "in_progress"
+  "status": "running_verified"
 }
