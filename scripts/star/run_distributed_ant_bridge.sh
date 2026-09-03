@@ -12,6 +12,7 @@ SAFEFLOW_QUEUE_PATTERN=/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d
 SAFEFLOW_QUEUE_PGREP='[r]un_single_gpu_ant_queue.py'
 SAFEFLOW_P47_RACE_LAUNCHER=/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/launch_p47_2029_distributed.sh
 SAFEFLOW_C0_RACE_LAUNCHER=/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/launch_c0_2029_distributed.sh
+SAFEFLOW_C0_2027_A100_SESSION=safeflow-ant-c0-2027-race
 SAFEFLOW_QUEUE_RECOVERY_LAUNCHER=${SAFEFLOW_SEETA_RUN_ROOT}/launch_ant_queue_recovery.sh
 SAFEFLOW_SOURCE_COMMIT=62ca7399357c10645a955dcbead7ed2153a82c69
 SAFEFLOW_C0_CONFIG_SHA=db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9
@@ -191,6 +192,19 @@ stop_a100_duplicate() {
         "${SAFEFLOW_SSH[@]}" tjucta-a100 "tmux send-keys -t '${session}' C-c"
         log "stopped completed ${label} duplicate on A100"
     fi
+}
+
+stop_seeta_c0_2027_duplicate() {
+    local learner_pattern='[t]rain_star.py .*single_gpu_ant_c0.yaml --seed 2027'
+    local launcher_pattern='[l]aunch_c0_2027_distributed.sh'
+    if ! "${SAFEFLOW_SSH[@]}" seeta-nmb2 \
+        "pgrep -f '${learner_pattern}' >/dev/null || pgrep -f '${launcher_pattern}' >/dev/null" \
+        2>/dev/null; then
+        return 0
+    fi
+    "${SAFEFLOW_SSH[@]}" seeta-nmb2 \
+        "pkill -INT -f '${learner_pattern}' 2>/dev/null || true; for _ in \$(seq 1 30); do pgrep -f '${learner_pattern}' >/dev/null || break; sleep 1; done; pkill -TERM -f '${launcher_pattern}' 2>/dev/null || true"
+    log 'stopped the losing Seeta C0-2027 duplicate after the A100 receipt passed'
 }
 
 sync_a100_run() {
@@ -426,6 +440,12 @@ while true; do
     if receipt_ok seeta-nmb2 "${SAFEFLOW_SEETA_PYTHON}" \
         "${SAFEFLOW_SEETA_RUN_ROOT}/runs/C0-2027/receipt.json" C0 2027 "${SAFEFLOW_C0_CONFIG_SHA}"; then
         SAFEFLOW_SEETA_C0=true
+        stop_a100_duplicate "${SAFEFLOW_C0_2027_A100_SESSION}" C0-2027
+    elif receipt_ok tjucta-a100 "${SAFEFLOW_A100_PYTHON}" \
+        "${SAFEFLOW_A100_RUN_ROOT}/runs/C0-2027/receipt.json" C0 2027 "${SAFEFLOW_C0_CONFIG_SHA}"; then
+        stop_seeta_c0_2027_duplicate
+        sync_a100_run C0 2027
+        SAFEFLOW_SEETA_C0=true
     fi
     if receipt_ok seeta-nmb2 "${SAFEFLOW_SEETA_PYTHON}" \
         "${SAFEFLOW_SEETA_RUN_ROOT}/runs/P47-2029/receipt.json" P47 2029 "${SAFEFLOW_P47_CONFIG_SHA}"; then
@@ -493,6 +513,7 @@ while true; do
             log 'Ant distributed queue finalized successfully'
             stop_a100_duplicate safeflow-ant-gpu0 C0-2029
             stop_a100_duplicate safeflow-ant-gpu1 P47-2029
+            stop_a100_duplicate "${SAFEFLOW_C0_2027_A100_SESSION}" C0-2027
             exit 0
             ;;
         failed)

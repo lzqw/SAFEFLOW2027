@@ -1,0 +1,73 @@
+{
+  "a100_branch": {
+    "container": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/C0-2027",
+    "device": "NVIDIA A100 80GB PCIe",
+    "progress_file": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/progress.csv",
+    "session": "safeflow-ant-c0-2027-race"
+  },
+  "bridge_behavior": {
+    "a100_wins": "Stop the still-incomplete Seeta C0-2027 duplicate, synchronize the passed A100 run through the host to Seeta, and resume the unchanged strict finalizer.",
+    "deployed_service": "safeflow-ant-a100-bridge.service",
+    "seeta_wins": "Stop the A100 C0-2027 duplicate and retain the passed Seeta run."
+  },
+  "captured_at_local": "2026-09-03T18:18:32+08:00",
+  "checkpoint": {
+    "env_steps": 1000000,
+    "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress/C0-2027/step-1000000/latest_full.pt",
+    "replay_capacity": 400000,
+    "replay_size": 400000,
+    "sha256": "8939e31a0e7e19f054d519539c74d223736908d259cc899218da5fd8f0e19d38",
+    "transferred_bytes": 146462511
+  },
+  "decision": {
+    "keep_a100_race": true,
+    "keep_seeta_fallback": true,
+    "reason": "Two complete 5k intervals on the now-idle A100 sustained about 10.1 FPS, above the roughly 8 FPS catch-up threshold and the Seeta branch's 7.30 FPS."
+  },
+  "estimated_completion_if_rates_remain_constant": {
+    "a100_receipt_after_approximately_30_minute_terminal_evaluation_local": "2026-09-04T21:51:18+08:00",
+    "a100_remaining_training_hours": 27.051,
+    "a100_training_finish_local": "2026-09-04T21:21:18+08:00",
+    "estimated_wall_clock_gain_hours": 7.5,
+    "seeta_receipt_after_approximately_30_minute_terminal_evaluation_local": "2026-09-05T05:22:03+08:00",
+    "seeta_remaining_training_hours": 34.629,
+    "seeta_training_finish_local": "2026-09-05T04:52:03+08:00"
+  },
+  "frozen_identity": {
+    "algorithm": "STAR",
+    "arm": "C0",
+    "config_sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "environment": "Ant-v4",
+    "seed": 2027,
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "source_dirty": false,
+    "total_steps": 2000000
+  },
+  "observations": [
+    {
+      "run_elapsed_seconds": 494.342681885,
+      "steps": 1005000,
+      "time_fps": 10.114344597
+    },
+    {
+      "run_elapsed_seconds": 986.173034668,
+      "steps": 1010000,
+      "time_fps": 10.166107178
+    }
+  ],
+  "scientific_semantics": {
+    "additional_evaluation": false,
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "result_acceptance": "Only the first branch to produce a receipt passing the already-frozen identity and 2M checks is accepted.",
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "seeta_reference": {
+    "fps": 7.299573898,
+    "observed_at_local": "2026-09-03T18:14:18+08:00",
+    "steps": 1090000
+  },
+  "status": "active",
+  "version": "star-ant-c0-2027-a100-race-observation-v1"
+}
