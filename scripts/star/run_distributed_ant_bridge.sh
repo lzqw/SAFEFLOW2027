@@ -67,19 +67,20 @@ a100_launch_identity_ok() {
 
 ensure_a100_run() {
     local arm=$1
-    local config_name=$2
-    local config_sha=$3
-    local session=$4
-    local gpu_arg=$5
+    local seed=$2
+    local config_name=$3
+    local config_sha=$4
+    local session=$5
+    local gpu_arg=$6
     if receipt_ok seeta-nmb2 "${SAFEFLOW_SEETA_PYTHON}" \
-        "${SAFEFLOW_SEETA_RUN_ROOT}/runs/${arm}-2029/receipt.json" \
-        "${arm}" 2029 "${config_sha}"; then
-        stop_a100_duplicate "${session}" "${arm}-2029"
+        "${SAFEFLOW_SEETA_RUN_ROOT}/runs/${arm}-${seed}/receipt.json" \
+        "${arm}" "${seed}" "${config_sha}"; then
+        stop_a100_duplicate "${session}" "${arm}-${seed}"
         return 0
     fi
     if receipt_ok tjucta-a100 "${SAFEFLOW_A100_PYTHON}" \
-        "${SAFEFLOW_A100_RUN_ROOT}/runs/${arm}-2029/receipt.json" \
-        "${arm}" 2029 "${config_sha}"; then
+        "${SAFEFLOW_A100_RUN_ROOT}/runs/${arm}-${seed}/receipt.json" \
+        "${arm}" "${seed}" "${config_sha}"; then
         return 0
     fi
     if "${SAFEFLOW_SSH[@]}" tjucta-a100 \
@@ -87,17 +88,17 @@ ensure_a100_run() {
         return 0
     fi
     if "${SAFEFLOW_SSH[@]}" tjucta-a100 \
-        "pgrep -f '[t]rain_star.py .*${config_name} --seed 2029'" >/dev/null 2>&1; then
-        log "${arm}-2029 learner is alive without its expected tmux session; leaving it untouched"
+        "pgrep -f '[t]rain_star.py .*${config_name} --seed ${seed}'" >/dev/null 2>&1; then
+        log "${arm}-${seed} learner is alive without its expected tmux session; leaving it untouched"
         return 0
     fi
     if ! a100_launch_identity_ok "${config_name}" "${config_sha}"; then
-        log "refusing to restart ${arm}-2029 because the frozen A100 source/config identity did not authenticate"
+        log "refusing to restart ${arm}-${seed} because the frozen A100 source/config identity did not authenticate"
         return 1
     fi
     "${SAFEFLOW_SSH[@]}" tjucta-a100 \
         "tmux new-session -d -s '${session}' '${SAFEFLOW_A100_LAUNCHER}' '${gpu_arg}'"
-    log "restarted ${arm}-2029 through its replay-aware A100 launcher"
+    log "restarted ${arm}-${seed} through its replay-aware A100 launcher"
 }
 
 guard_a100_runs_if_due() {
@@ -108,10 +109,12 @@ guard_a100_runs_if_due() {
         return 0
     fi
     SAFEFLOW_LAST_A100_GUARD=${now}
-    ensure_a100_run C0 single_gpu_ant_c0.yaml "${SAFEFLOW_C0_CONFIG_SHA}" \
+    ensure_a100_run C0 2029 single_gpu_ant_c0.yaml "${SAFEFLOW_C0_CONFIG_SHA}" \
         safeflow-ant-gpu0 gpu0 || healthy=false
-    ensure_a100_run P47 single_gpu_ant_p47.yaml "${SAFEFLOW_P47_CONFIG_SHA}" \
+    ensure_a100_run P47 2029 single_gpu_ant_p47.yaml "${SAFEFLOW_P47_CONFIG_SHA}" \
         safeflow-ant-gpu1 gpu1 || healthy=false
+    ensure_a100_run C0 2027 single_gpu_ant_c0.yaml "${SAFEFLOW_C0_CONFIG_SHA}" \
+        "${SAFEFLOW_C0_2027_A100_SESSION}" gpu0-c0-2027 || healthy=false
     [[ "${healthy}" == true ]]
 }
 

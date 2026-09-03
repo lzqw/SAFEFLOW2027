@@ -6,8 +6,10 @@
     "session": "safeflow-ant-c0-2027-race"
   },
   "bridge_behavior": {
+    "automatic_recovery": "Every five minutes the host service authenticates the frozen source/config identity and restores a missing A100 race from its newest replay-bearing latest_full.pt.",
     "a100_wins": "Stop the still-incomplete Seeta C0-2027 duplicate, synchronize the passed A100 run through the host to Seeta, and resume the unchanged strict finalizer.",
     "deployed_service": "safeflow-ant-a100-bridge.service",
+    "remote_launcher": "/home/lzqw/SAFEFLOW2027_A100/launch_a100_ant.sh",
     "seeta_wins": "Stop the A100 C0-2027 duplicate and retain the passed Seeta run."
   },
   "captured_at_local": "2026-09-03T18:18:32+08:00",
