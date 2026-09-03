@@ -1,0 +1,91 @@
+{
+  "artifacts": {
+    "evaluation": {
+      "a100_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+      "bytes": 22991,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+      "sha256": "8fe4e68253533aa4b2dff492d1adac3087f032ddb26d7ba2a0f956c0c582581a"
+    },
+    "milestone_checkpoint": {
+      "a100_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/milestone_2000000.pt",
+      "bytes": 8850747,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/milestone_2000000.pt",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/milestone_2000000.pt",
+      "sha256": "6c47cf42c9022b73ad83a89388e9839e9e39fbc723d8ec9fa3aa6e0fbf9d5ab4"
+    },
+    "receipt": {
+      "a100_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/receipt.json",
+      "bytes": 5285,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/P47-2029/receipt.json",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/receipt.json",
+      "sha256": "b4735791cc09f9e0302f4f6f0c485d984882540c4fde486230a3b341eca1a37d"
+    }
+  },
+  "evaluation": {
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "cost_cvar_20": 0.35,
+    "episode_array_lengths": {
+      "costs": 100,
+      "episode_failure_flags": 100,
+      "episode_indices": 100,
+      "returns": 100,
+      "seeds": 100
+    },
+    "episodes": 100,
+    "episodes_per_base_seed": 20,
+    "failure_rate": 0.07,
+    "mean_cost": 0.07,
+    "mean_return": 6494.8487530345565,
+    "milestone": 2000000
+  },
+  "geometry": {
+    "dangerous_outward_velocity": 0.3087054491043091,
+    "normal_to_tangent_variance_ratio": 0.8286616206169128,
+    "outward_velocity_ratio": 0.4403047263622284,
+    "population_samples": 383948,
+    "selected_fraction": 0.2,
+    "selected_samples": 76790
+  },
+  "identity": {
+    "algorithm": "STAR",
+    "arm": "P47",
+    "config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+    "environment": "Ant-v4",
+    "seed": 2029,
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "source_dirty": false,
+    "steps": 2000000
+  },
+  "kind": "ant_p47_2029_formal_endpoint_observation",
+  "observed_at": "2026-09-03T10:58:40+08:00",
+  "reporting_boundary": "This is one preregistered training seed. The formal method claim remains the three-training-seed aggregate after all C0 endpoints complete.",
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_schedule_changed": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "complete",
+  "training": {
+    "cumulative_cost": 496.0,
+    "elapsed_seconds": 296387.4949615819,
+    "end_to_end_fps": 3.373961509845823
+  },
+  "transfer": {
+    "a100_to_host": "complete",
+    "bridge_marker": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/synced-P47-2029",
+    "host_to_seeta": "complete",
+    "receipt_identity_validated_on_seeta": true,
+    "three_way_sha256_equal": true
+  }
+}

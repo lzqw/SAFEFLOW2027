@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-02 19:36（Asia/Shanghai）
+更新时间：2026-09-03 10:58（Asia/Shanghai）
 
 ## 当前结论
 
@@ -49,6 +49,10 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 - [A100 六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)
 
 ## 当前运行状态
+
+`2026-09-03 10:54`，A100 上 P4.7 seed `2029` 完成冻结的 `2M` 训练预算，并生成协议要求的 `5 × 20 = 100` 回合固定流终点评测。训练 receipt 为 `passed`，source commit、配置 SHA、环境、seed 与预算均与预注册一致。该 seed 的正式结果为：return `6494.8488`、mean cost `0.070`、CVaR-20 `0.350`、failure rate `7.0%`、训练累计 cost `496`、高风险 `V_N/V_T=0.8287`、危险外向速度 `0.30871`。完整 episode 数组均为 `100` 条；未额外重复评测。
+
+桥接器随后完成 A100 → 主机 → RTX 3090 的完整终点同步，并在 3090 端重新验证 receipt 身份。receipt、100 回合 evaluation 与 `2M` milestone checkpoint 的三方 SHA-256 完全一致；轻量机器记录见 [P4.7-2029 正式终点观测](single_gpu_ant_p47_2029_formal_observation_2026-09-03.json)。这是第二个完成的 P4.7 正式训练 seed，不替代最终三 seed C0/P4.7 聚合，也没有触发配置修改或额外权重搜索。
 
 `2026-08-29 21:30`，RTX 3090 上 C0/P4.7 seed `2028` 均完成 `2M`，两份冻结身份 receipt 均为 `passed`，且各自唯一的 `2M` evaluation、`100` 条固定 episode 流和唯一 `milestone_2000000.pt` 已通过正式 finalizer 的逐项校验。该单 seed 配对结果为：
 
