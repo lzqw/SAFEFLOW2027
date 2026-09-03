@@ -70,6 +70,12 @@ ensure_a100_run() {
     local config_sha=$3
     local session=$4
     local gpu_arg=$5
+    if receipt_ok seeta-nmb2 "${SAFEFLOW_SEETA_PYTHON}" \
+        "${SAFEFLOW_SEETA_RUN_ROOT}/runs/${arm}-2029/receipt.json" \
+        "${arm}" 2029 "${config_sha}"; then
+        stop_a100_duplicate "${session}" "${arm}-2029"
+        return 0
+    fi
     if receipt_ok tjucta-a100 "${SAFEFLOW_A100_PYTHON}" \
         "${SAFEFLOW_A100_RUN_ROOT}/runs/${arm}-2029/receipt.json" \
         "${arm}" 2029 "${config_sha}"; then

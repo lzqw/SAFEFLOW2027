@@ -1,6 +1,6 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-03 14:40（Asia/Shanghai）
+更新时间：2026-09-03 15:43（Asia/Shanghai）
 
 ## 当前结论
 
@@ -49,6 +49,17 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 - [A100 六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)
 
 ## 当前运行状态
+
+`2026-09-03 15:38`，RTX 3090 上 C0 seed `2029` 完成冻结的 `2M` 训练预算和唯一一次 `5 × 20 = 100` 回合固定流终点评测。receipt 为 `passed`，source commit、C0 配置 SHA、环境、seed 与预算均通过身份核对；receipt、evaluation 和 `2M` milestone 已搬回主机，传输前后 SHA-256 一致。该 seed 与已完成 P4.7 的正式配对为：
+
+| 配置 | Return | Mean Cost | CVaR-20 | Failure Rate | 训练累计 Cost | 高风险 V_N/V_T | 危险外向速度 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| C0 | 6350.4289 | 0.130 | 0.650 | 13.0% | **466** | **0.6122** | **0.29828** |
+| P4.7 | **6494.8488** | **0.070** | **0.350** | **7.0%** | 496 | 0.8287 | 0.30871 |
+
+P4.7 在 seed `2029` 上将 return 提高 `2.27%`，mean cost 与 CVaR-20 均降低 `46.15%`，failure rate 降低 `6.0 pp`；但训练累计 cost 高 `6.44%`，高风险 `V_N/V_T` 与危险外向速度也分别高 `35.35%/3.50%`。因此这是最终评测任务性能与安全性的配对改善，不是该 seed 上所有机制指标的 Pareto 改善。机器记录见 [C0-2029 正式终点观测](single_gpu_ant_c0_2029_formal_observation_2026-09-03.json)。
+
+同身份 A100 兜底分支在 `1.825M` 时退出竞速。桥接器的存活保护已作最小修复：当 3090 上同 arm/seed 的正式 receipt 已通过时，立即停止 A100 重复任务且不再重启，而不必等全部 Ant seed 完成。`2026-09-03 15:42`，A100 learner 和对应 tmux session 均已正常退出；3090 上只保留 C0 seed `2027` 一个 learner。该修复只回收已输掉竞速的计算资源，没有改变训练、评测或结果选择语义。
 
 `2026-09-03 10:54`，A100 上 P4.7 seed `2029` 完成冻结的 `2M` 训练预算，并生成协议要求的 `5 × 20 = 100` 回合固定流终点评测。训练 receipt 为 `passed`，source commit、配置 SHA、环境、seed 与预算均与预注册一致。该 seed 的正式结果为：return `6494.8488`、mean cost `0.070`、CVaR-20 `0.350`、failure rate `7.0%`、训练累计 cost `496`、高风险 `V_N/V_T=0.8287`、危险外向速度 `0.30871`。完整 episode 数组均为 `100` 条；未额外重复评测。
 
