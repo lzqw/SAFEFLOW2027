@@ -1,0 +1,45 @@
+{
+  "calibration_error": 0.10670878738164902,
+  "checkpoint": "/root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2027-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-04-13-38-59/checkpoints/milestone_50000.pt",
+  "cost_cvar_20": 67.0,
+  "costs": [
+    0.0,
+    0.0,
+    0.0,
+    67.0,
+    0.0
+  ],
+  "empirical_risk_mean": 0.02500000037252903,
+  "environment": "SafetyPointGoal1-v0",
+  "episodes": 5,
+  "evaluation_device": "cuda:0",
+  "lengths": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ],
+  "mean_cost": 13.4,
+  "mean_return": 0.1730697395315303,
+  "milestone": 50000,
+  "predicted_risk_mean": 0.0935165211558342,
+  "returns": [
+    0.06551867553120871,
+    0.6740740601274238,
+    -0.10710075263152419,
+    0.09413084255288595,
+    0.1387258720776572
+  ],
+  "seeds": [
+    12027,
+    12028,
+    12029,
+    12030,
+    12031
+  ],
+  "spearman": 0.2244602461280946,
+  "spearman_method": "average-rank tie-correct",
+  "training_seed": 2027,
+  "violation_ratio": 0.0134
+}

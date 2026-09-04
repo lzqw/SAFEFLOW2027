@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "evaluation": {
+      "bytes": 23535,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/evaluation_step_2000000.json",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/evaluation_step_2000000.json",
+      "sha256": "5603b3a15403585cb401cf675a64a5f9c46b88a7ecac1ea07a8579327fe6b45f"
+    },
+    "milestone_checkpoint": {
+      "bytes": 8850339,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/checkpoints/milestone_2000000.pt",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/checkpoints/milestone_2000000.pt",
+      "sha256": "6a35241d8c29cc5e9cddfaf677346533356a5d8fd691c1e9ed2fd551bbf89f20"
+    },
+    "receipt": {
+      "bytes": 5362,
+      "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/staging/runs/C0-2029/receipt.json",
+      "seeta_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/receipt.json",
+      "sha256": "7f89e0d697f1ebff97f80bd67ece33ae5119aaa0b6f381b3075f150933bd023a"
+    }
+  },
+  "comparison_to_p47_same_seed": {
+    "c0": {
+      "cost_cvar_20": 0.65,
+      "dangerous_outward_velocity": 0.2982781231403351,
+      "failure_rate": 0.13,
+      "mean_cost": 0.13,
+      "mean_return": 6350.428947027267,
+      "normal_to_tangent_variance_ratio": 0.6122159957885742,
+      "training_cumulative_cost": 466.0
+    },
+    "p47": {
+      "cost_cvar_20": 0.35,
+      "dangerous_outward_velocity": 0.3087054491043091,
+      "failure_rate": 0.07,
+      "mean_cost": 0.07,
+      "mean_return": 6494.8487530345565,
+      "normal_to_tangent_variance_ratio": 0.8286616206169128,
+      "training_cumulative_cost": 496.0
+    },
+    "p47_relative_change_percent": {
+      "cost_cvar_20": -46.15384615384615,
+      "dangerous_outward_velocity": 3.4958400080411227,
+      "failure_rate": -46.15384615384615,
+      "mean_cost": -46.15384615384615,
+      "mean_return": 2.274174031580884,
+      "normal_to_tangent_variance_ratio": 35.35445436206588,
+      "training_cumulative_cost": 6.437768240343347
+    },
+    "p47_failure_rate_change_percentage_points": -6.0,
+    "summary": "P4.7 improves final evaluation return, cost, CVaR-20, and failure rate for seed 2029, but does not improve training cumulative cost or the two high-risk geometry diagnostics for this seed."
+  },
+  "evaluation": {
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "cost_cvar_20": 0.65,
+    "episode_array_lengths": {
+      "costs": 100,
+      "episode_failure_flags": 100,
+      "returns": 100,
+      "seeds": 100
+    },
+    "episodes": 100,
+    "episodes_per_base_seed": 20,
+    "failure_rate": 0.13,
+    "mean_cost": 0.13,
+    "mean_return": 6350.428947027267,
+    "milestone": 2000000
+  },
+  "geometry": {
+    "dangerous_outward_velocity": 0.2982781231403351,
+    "normal_to_tangent_variance_ratio": 0.6122159957885742,
+    "outward_velocity_ratio": 0.43780720233917236,
+    "population_samples": 365192,
+    "selected_fraction": 0.2,
+    "selected_samples": 73039
+  },
+  "identity": {
+    "algorithm": "STAR",
+    "arm": "C0",
+    "config_sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "environment": "Ant-v4",
+    "seed": 2029,
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "source_dirty": false,
+    "steps": 2000000
+  },
+  "kind": "ant_c0_2029_formal_endpoint_observation",
+  "observed_at": "2026-09-03T15:38:08+08:00",
+  "reporting_boundary": "This is one preregistered training seed. The formal method claim remains the three-training-seed aggregate after C0 seed 2027 completes.",
+  "resource_retirement": {
+    "a100_duplicate_last_progress_step": 1825000,
+    "a100_learner_exited": true,
+    "a100_tmux_session_exited": true,
+    "bridge_guard_updated_to_accept_valid_seeta_winner": true,
+    "observed_at": "2026-09-03T15:42:35+08:00",
+    "reason": "The protocol-valid Seeta endpoint won the same-identity race; continuing the slower A100 duplicate cannot change the accepted endpoint."
+  },
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_schedule_changed": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "complete",
+  "training": {
+    "cumulative_cost": 466.0,
+    "elapsed_seconds": 73731.80928399507,
+    "end_to_end_fps": 6.781333658504631,
+    "resumed_run_steps": 500000
+  },
+  "transfer": {
+    "full_replay_checkpoint_copied": false,
+    "seeta_to_host": "complete",
+    "source_and_host_sha256_equal": true,
+    "transferred_files": [
+      "receipt.json",
+      "evaluation_step_2000000.json",
+      "milestone_2000000.pt"
+    ]
+  }
+}

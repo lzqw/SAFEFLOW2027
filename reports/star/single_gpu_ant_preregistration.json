@@ -1,0 +1,111 @@
+{
+  "comparison": {
+    "arms": [
+      "C0",
+      "P47"
+    ],
+    "independent_statistical_unit": "training_seed",
+    "primary_metrics": [
+      "mean_return",
+      "mean_cost",
+      "cost_cvar_20",
+      "training_cumulative_cost",
+      "high_risk_vn_vt",
+      "high_risk_dangerous_outward_velocity"
+    ],
+    "reporting_boundary": "three-seed aggregate with seed-level uncertainty; do not claim every-seed Pareto"
+  },
+  "configuration": {
+    "C0": {
+      "canonical_method_sha256": "878363d0c40f89b88186a2071a479e921dd3942274d122641631ad94455e748b",
+      "file": "configs/star/single_gpu_ant_c0.yaml",
+      "sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+      "scientific_difference_from_P47": {
+        "directional_loss_enabled": false,
+        "safety_aware_cost_geometry_enabled": false
+      }
+    },
+    "P47": {
+      "canonical_method_sha256": "cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d",
+      "file": "configs/star/single_gpu_ant_p47.yaml",
+      "sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+    },
+    "required_pairwise_scientific_differences": [
+      "custom_cfgs.algo_cfgs.directional_loss_enabled",
+      "custom_cfgs.algo_cfgs.safety_aware_cost_geometry_enabled"
+    ]
+  },
+  "environment": "Ant-v4",
+  "evaluation": {
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "episodes_per_base_seed": 20,
+    "episodes_per_checkpoint": 100,
+    "milestones": [
+      500000,
+      2000000
+    ],
+    "trajectory_base_seeds": [
+      32027,
+      32029,
+      32031
+    ]
+  },
+  "execution": {
+    "checkpoint_replay": true,
+    "full_checkpoint_frequency_steps": 250000,
+    "maximum_concurrent_learners": 2,
+    "new_training_steps": 10000000,
+    "priority": "after_point_core_terminal_state",
+    "replay_size": 400000,
+    "scientific_early_stop": false,
+    "steps_per_epoch": 5000,
+    "training_code_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "utd_ratio": 1.0,
+    "vector_env_nums": 1,
+    "waves": [
+      [
+        "C0-2028",
+        "P47-2028"
+      ],
+      [
+        "C0-2029",
+        "P47-2029"
+      ],
+      [
+        "C0-2027"
+      ]
+    ]
+  },
+  "locked_at_utc": "2026-08-25T05:16:52Z",
+  "parent_protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "reuse": {
+    "P47-2027": {
+      "checkpoint_sha256": "39a9d7a0717402d5e3fea5694cd0724aebd0982306beb1fb39c8091135fddc35",
+      "evaluation_sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24",
+      "milestone_audit": "reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json",
+      "milestone_audit_sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14",
+      "resolved_config_sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa",
+      "training_code_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+      "training_seed": 2027,
+      "training_steps": 2000000
+    }
+  },
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "status": "locked_before_any_new_single_gpu_ant_training",
+  "total_steps_per_run": 2000000,
+  "version": "star-single-gpu-ant-v1",
+  "walker2d": {
+    "new_training": false,
+    "role": "appendix_seed_2027_only"
+  }
+}

@@ -1,0 +1,117 @@
+env_id: Ant-v4
+custom_cfgs:
+  train_cfgs:
+    total_steps: 5000000
+    eval_episodes: 100
+  algo_cfgs:
+    enable_global_safety_constraint: true
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    reward_target_samples: 4
+    reward_critic_updates_per_update: 2
+    separate_reward_replay: true
+    reward_replay_recent_fraction: 0.5
+    reward_replay_recent_window: 10000
+    reward_target_polyak: 0.001
+    bellman_probability_enabled: true
+    probability_mc_aux_weight: 0.1
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 20000
+    complete_heldout_evidence: true
+    heldout_min_positive_labels: 256
+    heldout_min_negative_labels: 256
+    dynamic_geometry_gate: false
+    candidate_probing_enabled: false
+    stochastic_flow_enabled: true
+    safety_anisotropy_enabled: true
+    safety_inward_drift_enabled: false
+    safety_outward_rectification_enabled: false
+    unified_cost_geometry_enabled: true
+    directional_loss_enabled: true
+    safety_aware_cost_geometry_enabled: true
+    directional_loss_weight: 1.0
+    directional_loss_epsilon: 1.0e-08
+    cost_geometry_bandwidth: 0.1
+    safety_protocol_version: shapo-p47-four-env-v1
+    safety_protocol_sha256: 007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337
+    risk_boundary: 0.2
+    boundary_bandwidth: 0.1
+    risk_ucb_beta: 0.5
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.1
+    safety_gradient_scale: 0.005
+    safety_ensemble_scale: 0.05
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_score_scale: 0.25
+    safety_drift_strength: 0.2
+    safety_drift_temperature: 0.05
+    numerical_hard_stops_enabled: false
+    engineering_hard_stops_enabled: true
+    q_absolute_overflow_threshold: 1000000.0
+    eval_seeds:
+    - 32027
+    - 32028
+    - 32029
+    - 32030
+    - 32031
+    eval_episodes_per_seed: 20
+    evaluate_initial_policy: false
+    trajectory_eval_seeds:
+    - 32027
+    - 32029
+    - 32031
+    eval_milestones:
+    - 500000
+    - 2000000
+    - 5000000
+    checkpoint_milestones:
+    - 500000
+    - 2000000
+    - 5000000
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 50000
+    resume_from: ''
+  dual_cfgs:
+    energy_initial: 0.004
+    target_energy_per_action: 12.5
+  lagrange_cfgs:
+    cost_limit: 0.0
+freeze_metadata:
+  protocol_version: p4.7-safety-aware-geometry-v1
+  protocol_sha256: 3310d6f229d579a877cfaa98d3df2a44b25eac9998184623d1723b82d37a03ed
+  selected_arm: P47
+  selection_label: freeze_P47
+  selection_basis: preserved_preregistered_conservative_machine_audit
+  primary_scientific_comparison: P47@200k_vs_C0@200k_equal_training_budget
+  scientific_interpretation_label: equal_budget_pareto_improvement
+  C1_scientific_role: historical_reference_only
+  pointgoal_search_closed: true
+  next_stage: SHAPO_four_environments_x_five_training_seeds
+shapo_four_env_metadata:
+  protocol_version: shapo-p47-four-env-v1
+  protocol_sha256: 007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337
+  protocol_file: reports/star/shapo_p47_four_env_preregistration.json
+  matrix_file: configs/star/shapo_p47_four_env.yaml
+  matrix_sha256: f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f
+  frozen_method_config: reports/star/p4_7_safety_aware_geometry_artifacts/final/summary/p4_7_frozen_pointgoal_config.yaml
+  frozen_method_config_sha256: 17a99888036e5521be295ef69742577576d365fad906ac0acf387921a5474565
+  frozen_method_canonical_sha256: cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d
+  geometry_mode: future_failure_probability
+  cost_normalization_scale: 1.0
+  formal_cost_budget: 0.0
+  selected_P47_training_invariants:
+    vector_env_nums: 1
+    batch_size: 256
+    replay_size: 400000
+    steps_per_epoch: 5000
+    utd_ratio: 1.0
+    random_steps: 2000
+    terminal_utility_steps: 8000
+    geometry_min_steps: 12000
+  training_seed_is_statistical_unit: true
+  scientific_early_stop: false
+  engineering_smoke_only: false

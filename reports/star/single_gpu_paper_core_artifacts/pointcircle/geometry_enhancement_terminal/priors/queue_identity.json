@@ -1,0 +1,20 @@
+{
+  "environment": "SafetyPointCircle1-v0",
+  "matrix_sha256": "0c4fe4b21cd086bde6e703c486022716056c844b5c3b0d79a05a062b784aac88",
+  "maximum_concurrent_learners": 2,
+  "methods": [
+    "SACLag",
+    "SHAPO-PIDLag"
+  ],
+  "official_source_commit": "1bb770437bbbe40a89938661343744243e164bf9",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "saclag_utd_ratio": 1.0,
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "source_commit": "b86c6011080aed60e54386f69598561ef9c12493",
+  "steps_per_run": 500000,
+  "vector_env_nums": 1
+}

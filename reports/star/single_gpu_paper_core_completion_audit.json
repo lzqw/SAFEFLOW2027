@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "audit_id": "single_gpu_paper_core_2026-08-25",
+  "updated_at": "2026-09-05T07:48:14+08:00",
+  "overall_status": "complete",
+  "protocol": {
+    "path": "reports/star/single_gpu_paper_core_preregistration.json",
+    "sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "gpu_contract": "one_RTX_3090",
+    "maximum_concurrent_learners": 2,
+    "training_policy": {
+      "vector_env_nums": 1,
+      "utd_ratio": 1.0,
+      "screen_evaluation_episodes": 20,
+      "screen_evaluation_steps": [
+        150000,
+        300000
+      ],
+      "formal_final_evaluation_episodes": 100,
+      "full_replay_checkpoint_frequency": 250000
+    },
+    "main_training_seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "claim_boundary": "Aggregate n=3 conclusions only; no every-seed Pareto claim."
+  },
+  "completion_gate": {
+    "achieved": true,
+    "blocked": false,
+    "outstanding_requirements": [],
+    "completed_requirements": [
+      {
+        "id": "ant_three_seed_2m",
+        "required_evidence": "A complete Ant manifest covering C0/P47 training seeds 2027-2029 at exactly 2M steps, with 100-episode final evaluations and the reused P47-2027 identity preserved.",
+        "current_status": "complete",
+        "evidence": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "evidence_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
+      },
+      {
+        "id": "terminal_github_delivery",
+        "required_evidence": "SHA-receipted Ant and PointGoal robustness terminal artifacts imported into the host worktree, committed, pushed, and matched by the remote branch head.",
+        "current_status": "complete",
+        "branch": "codex/star-single-gpu-paper-core",
+        "ant_stage_receipt": "reports/star/single_gpu_paper_core_artifacts/ant/stage_receipt.json"
+      }
+    ],
+    "conditional_dispositions_not_outstanding": [
+      "pointcircle_three_seed_formal_not_run_screen_not_passed",
+      "pointcircle_prior_baselines_not_run_screen_not_passed",
+      "pointcircle_mechanism_and_ratio_controls_not_run_screen_not_passed",
+      "pointcircle_robustness_not_run_screen_not_passed"
+    ],
+    "completion_rule": "Set achieved=true only after every outstanding requirement has authoritative terminal evidence and no required work remains."
+  },
+  "requirements": {
+    "resource_contract": {
+      "status": "complete",
+      "decision": "two_learners",
+      "dual_over_single_fps_ratio": 1.8978667359115995,
+      "required_ratio": 1.2,
+      "vector_env_nums": 1,
+      "utd_ratio": 1.0,
+      "evidence": {
+        "path": "reports/star/single_gpu_paper_core_artifacts/pointgoal/throughput_decision.json",
+        "sha256": "c8b234ab8a9497b07ce29f57b8be2209a95ad1e27bc3d76cb0056e8cce245349"
+      }
+    },
+    "legacy_150m_four_environment_matrix": {
+      "status": "archived_incomplete",
+      "github_pull_request": {
+        "number": 10,
+        "state": "CLOSED",
+        "draft": true,
+        "url": "https://github.com/lzqw/SAFEFLOW2027/pull/10"
+      },
+      "scientific_training_active": false,
+      "preserved_server_root": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs",
+      "preserved_checkpoint_files_observed": 32,
+      "preserved_tree_size_observed": "3.9G",
+      "observed_at": "2026-08-25T13:51:49+08:00",
+      "disposition": "Retain all existing checkpoints and evidence; do not resume PointGoal or PointButton toward the former 10M x 5-seed targets."
+    },
+    "pointgoal_four_method_main_result": {
+      "status": "complete",
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 200000,
+      "evaluation_episodes_per_checkpoint": 100,
+      "aggregate_metrics": {
+        "C0": {
+          "return": 0.4621,
+          "success_rate": 0.227,
+          "mean_cost": 13.567,
+          "cvar_20": 67.75,
+          "training_cumulative_cost": 7305.3,
+          "high_risk_vn_vt": 0.9982
+        },
+        "SACLag": {
+          "return": 25.2192,
+          "success_rate": 1.0,
+          "mean_cost": 53.19,
+          "cvar_20": 108.933,
+          "training_cumulative_cost": 12874.3
+        },
+        "SHAPO_PIDLag": {
+          "return": 1.504,
+          "success_rate": 0.513,
+          "mean_cost": 24.02,
+          "cvar_20": 108.383,
+          "training_cumulative_cost": 9655.5
+        },
+        "P47": {
+          "return": 0.6545,
+          "success_rate": 0.253,
+          "mean_cost": 9.433,
+          "cvar_20": 46.8,
+          "training_cumulative_cost": 5582.3,
+          "high_risk_vn_vt": 0.8744
+        }
+      },
+      "frozen_conclusion": "P47 is the safest aggregate method and is aggregate-Pareto-improved over the equal-budget C0 control; SACLag and SHAPO-PIDLag have higher task performance but substantially higher safety cost.",
+      "evidence": {
+        "report": "reports/star/single_gpu_paper_core_artifacts/pointgoal/postprocess/final/POINTGOAL_FOUR_METHOD_REPORT.md",
+        "manifest": "reports/star/single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_manifest.json",
+        "manifest_sha256": "1aaefab7e61d5f010027ba44433ce095452b8a605c76cb4156b75e4b4279cc2a"
+      }
+    },
+    "pointcircle_original_300k_screen": {
+      "status": "complete",
+      "outcome": "screen_not_passed",
+      "training_seed": 2027,
+      "screen_step": 300000,
+      "decision": {
+        "return_ok": true,
+        "safety_ok": false,
+        "geometry_ok": false,
+        "screen_pass": false
+      },
+      "frozen_endpoint_metrics": {
+        "C0": {
+          "return": 11.380699136543862,
+          "mean_cost": 0.0,
+          "cvar_20": 0.0,
+          "high_risk_vn_vt": 1.0,
+          "high_risk_dangerous_outward_velocity": 0.10258445888757706
+        },
+        "P47": {
+          "return": 13.982770298111566,
+          "mean_cost": 0.0,
+          "cvar_20": 0.0,
+          "high_risk_vn_vt": 0.999998927116394,
+          "high_risk_dangerous_outward_velocity": 0.036727894097566605
+        }
+      },
+      "evidence": {
+        "report": "reports/star/single_gpu_paper_core_artifacts/pointcircle/POINTCIRCLE_300K_SCREEN_REPORT.md",
+        "decision": "reports/star/single_gpu_paper_core_artifacts/pointcircle/screen_decision.json",
+        "decision_sha256": "62873e89e8584fbb6663a183f71dcca84d33ef7b63296308bb47e88af1221d86"
+      }
+    },
+    "pointcircle_single_allowed_geometry_enhancement": {
+      "status": "complete",
+      "outcome": "screen_not_passed",
+      "attempt": 1,
+      "attempt_limit": 1,
+      "training_seed": 2027,
+      "target_steps": 300000,
+      "latest_observed_steps": 300000,
+      "latest_observed_at": "2026-08-25T23:14:39+08:00",
+      "finished_at": "2026-08-25T23:14:39+08:00",
+      "end_to_end_fps": 7.80837969998307,
+      "estimated_training_hours_remaining": 0.0,
+      "latest_completed_evaluation_milestone": 300000,
+      "milestone_150000": {
+        "episodes": 20,
+        "return": 16.27627077399071,
+        "mean_cost": 8.45,
+        "cvar_20": 27.25,
+        "training_cumulative_cost": 7208.0,
+        "high_risk_vn_vt": 0.7597588300704956,
+        "high_risk_dangerous_outward_velocity": 0.14265677332878113,
+        "evaluation_sha256": "2b3e51cb6c53193b09437331b0958295c1d3fe57d0f54ec8b5d516402f21e7fd",
+        "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_development_evidence/P47/evaluation_step_150000.json",
+        "interpretation": "Development milestone only. It satisfies the return and safety branches against the frozen C0 150k checkpoint and activates high-risk anisotropy, but outward velocity is higher; the unchanged formal decision remains at 300k."
+      },
+      "milestone_300000": {
+        "episodes": 20,
+        "return": 16.55849648545075,
+        "mean_cost": 0.0,
+        "cvar_20": 0.0,
+        "training_cumulative_cost": 10796.0,
+        "high_risk_vn_vt": 0.9999970197677612,
+        "high_risk_dangerous_outward_velocity": 0.0953802540898323,
+        "evaluation_sha256": "38776b7d0a685ea830066360b847de48b7301f14a8a281993314fba55d50973b",
+        "interpretation": "The transient 150k anisotropy did not persist to the frozen 300k endpoint."
+      },
+      "frozen_decision": {
+        "return_ok": true,
+        "safety_ok": false,
+        "geometry_ok": false,
+        "screen_pass": false,
+        "decision_sha256": "cd6a780d58f8e90711760e834346c9fb3fb60ac6cd9d45ba9f2e9246037e90e5"
+      },
+      "server_queue_state": "screen_not_passed",
+      "scientific_training_launched": true,
+      "no_further_pointcircle_method_changes_allowed": true,
+      "scientific_changes": {
+        "safety_gradient_scale": {
+          "from": 0.005,
+          "to": 0.001
+        },
+        "safety_ensemble_scale": {
+          "from": 0.05,
+          "to": 0.1
+        }
+      },
+      "preregistration_sha256": "fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02",
+      "config_sha256": "d0252cb0bc22c783153bae45874322e99364d9a1458048591e3301c56111a6c3",
+      "training_source_commit": "fccd2a3941e7ebbd9b250244a3234205c01c156c",
+      "evidence": {
+        "report": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/POINTCIRCLE_GEOMETRY_ENHANCEMENT_300K_REPORT.md",
+        "decision": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/enhancement/screen_decision.json",
+        "terminal_root": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal"
+      },
+      "terminal_rule": "The only allowed enhancement failed the unchanged 300k gate; no further PointCircle method change or weight search is allowed."
+    },
+    "pointcircle_three_seed_formal": {
+      "status": "not_run_screen_not_passed",
+      "server_queue_state": "screen_not_passed",
+      "scientific_training_launched": false,
+      "methods": [
+        "C0",
+        "P47_geometry_enhanced"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 500000,
+      "final_evaluation_episodes_per_checkpoint": 100,
+      "condition": "Run C0 and enhanced P47 at 3 seeds x 500k only if the enhanced 300k screen passes.",
+      "condition_satisfied": false,
+      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/formal/queue_state.json"
+    },
+    "pointcircle_prior_baselines": {
+      "status": "not_run_screen_not_passed",
+      "server_queue_state": "screen_not_passed",
+      "scientific_training_launched": false,
+      "methods": [
+        "SACLag",
+        "official_SHAPO_PIDLag"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 500000,
+      "final_evaluation_episodes_per_checkpoint": 100,
+      "condition": "Run SACLag and official SHAPO-PIDLag at 3 seeds x 500k only after the enhanced formal matrix completes.",
+      "condition_satisfied": false,
+      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/priors/queue_state.json"
+    },
+    "pointcircle_mechanism_and_ratio_controls": {
+      "status": "not_run_screen_not_passed",
+      "server_queue_state": "screen_not_passed",
+      "scientific_training_launched": false,
+      "training_seed": 2027,
+      "steps_per_new_control": 300000,
+      "configs": {
+        "IsoLow": {
+          "path": "configs/star/single_gpu_pointcircle_iso_low_geometry_enhanced.yaml",
+          "sha256": "e6ec6aff3e736a3ed93f9e26c0d0e9a6e67b6c4e5429c32d3f08b93b5c50274e"
+        },
+        "RandomAniso": {
+          "path": "configs/star/single_gpu_pointcircle_random_aniso_geometry_enhanced.yaml",
+          "sha256": "15ba1fd325023bbc743cd8780f0ede2e1463f831a0dc03d3839d7b5e57d5197a"
+        },
+        "ratio_0_25": {
+          "path": "configs/star/single_gpu_pointcircle_ratio_025_geometry_enhanced.yaml",
+          "sha256": "0fad76cfadb8688666a29395bf8482fd1d61d4f868e6b703bc11d25885a87efe"
+        }
+      },
+      "condition": "At seed 2027 only, reuse Iso-High and enhanced Safety-Aniso and add Iso-Low, Random-Aniso, and ratio 0.25 at 300k after the formal evidence is complete.",
+      "condition_satisfied": false,
+      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/controls/queue_state.json"
+    },
+    "checkpoint_only_robustness": {
+      "status": "pointgoal_complete_pointcircle_not_run",
+      "pointgoal_server_queue_state": "complete",
+      "pointcircle_server_queue_state": "screen_not_passed",
+      "scientific_training_launched": false,
+      "retraining": false,
+      "protocol": {
+        "path": "reports/star/single_gpu_robustness_protocol.json",
+        "sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9"
+      },
+      "methods": [
+        "C0",
+        "P47"
+      ],
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "screening_episodes_per_checkpoint_condition": 50,
+      "selected_final_episodes_per_checkpoint_condition": 100,
+      "pointcircle_boundary_multipliers": [
+        0.8,
+        0.9,
+        1.0,
+        1.1,
+        1.2
+      ],
+      "pointgoal_conditions": {
+        "hazard_radius_multipliers": [
+          1.0,
+          1.25,
+          1.5
+        ],
+        "hazard_position_offsets": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.1,
+            -0.1
+          ],
+          [
+            0.2,
+            -0.2
+          ]
+        ],
+        "action_noise_standard_deviations": [
+          0.0,
+          0.05,
+          0.1
+        ]
+      },
+      "condition": "Evaluate frozen PointGoal and eligible PointCircle checkpoints only after mechanism/control evidence reaches a terminal state.",
+      "pointgoal_terminal_result": {
+        "checkpoint_results": 6,
+        "episodes_per_checkpoint": 650,
+        "total_episodes": 3900,
+        "finished_at_utc": "2026-08-27T16:16:59.100350+00:00",
+        "final_manifest": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/final/point_robustness_manifest.json",
+        "final_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+        "aggregate_conclusion": "P47 preserves lower high-risk V_N/V_T and outward velocity in all 7 aggregate conditions and all 21 paired seed-condition comparisons. Safety improves under action noise and is near-tied under hazard-radius changes, but degrades under hazard-position shifts; this is a trend analysis, not a universal robustness or every-seed Pareto claim."
+      },
+      "scope_disposition": {
+        "pointgoal": {
+          "status": "complete",
+          "eligible_checkpoints": true,
+          "retraining": false,
+          "queue_state": "complete",
+          "queue_root": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1",
+          "evaluation_source_commit": "52ff54482b64f9816a4354cffb76f4213550124f",
+          "started_at": "2026-08-27T22:15:41+08:00",
+          "resource_prerequisite": null,
+          "queue_identity_maximum_concurrent_evaluators": 2,
+          "actual_maximum_concurrent_evaluators": 6,
+          "parallelism_disclosure": "reports/star/single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json",
+          "engineering_failure_terminalization": true,
+          "a100_import_failures_before_any_completed_episode": 2,
+          "initial_engineering_failures": {
+            "scientific_steps_consumed": 0,
+            "completed_robustness_episodes": 0,
+            "corrected": true
+          }
+        },
+        "pointcircle": {
+          "status": "not_run_screen_not_passed",
+          "eligible_checkpoints": false,
+          "retraining": false
+        }
+      },
+      "evidence": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/queue_state.json"
+    },
+    "ant_secondary_extension": {
+      "status": "complete",
+      "server_queue_state": "complete",
+      "scientific_training_launched": true,
+      "started_at": "2026-08-25T23:16:17+08:00",
+      "finished_at": "2026-09-05T07:44:11+08:00",
+      "point_core_terminal_state": "screen_not_passed",
+      "active_learners_at_start": 2,
+      "historical_throughput_snapshot": {
+        "observed_at": "2026-08-28T00:24:00+08:00",
+        "distributed": true,
+        "seeta_rtx_3090": {
+          "C0-2028": {
+            "env_steps": 1300000,
+            "target_steps": 2000000,
+            "cumulative_fps": 7.451766490936279
+          },
+          "P47-2028": {
+            "env_steps": 1290000,
+            "target_steps": 2000000,
+            "cumulative_fps": 7.467477321624756
+          }
+        },
+        "shared_a100_node": {
+          "C0-2029": {
+            "env_steps": 45000,
+            "target_steps": 2000000,
+            "reported_fps": 2.4744815826416016
+          },
+          "P47-2029": {
+            "env_steps": 45000,
+            "target_steps": 2000000,
+            "reported_fps": 2.372809410095215
+          }
+        },
+        "estimated_current_rtx_pair_hours_remaining": 26.5,
+        "estimated_complete_wall_days_range": [
+          6,
+          8
+        ],
+        "estimate_scope": "A100 jobs run in parallel with the frozen RTX queue; after C0-2027, the RTX queue races any missing seed-2029 arm. Frozen budgets and training semantics are unchanged."
+      },
+      "training_seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps_per_seed": 2000000,
+      "new_training_steps": 10000000,
+      "configs": {
+        "C0": {
+          "path": "configs/star/single_gpu_ant_c0.yaml",
+          "sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9"
+        },
+        "P47": {
+          "path": "configs/star/single_gpu_ant_p47.yaml",
+          "sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+        }
+      },
+      "condition": "Start the remaining C0/P47 3-seed 2M matrix only after the Point core reaches a terminal state.",
+      "reused_seed_2027_p47": {
+        "status": "complete",
+        "return": 5823.825219,
+        "mean_cost": 0.11,
+        "cvar_20": 0.55,
+        "training_cumulative_cost": 509,
+        "high_risk_vn_vt": 0.7006186,
+        "evidence": "reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json",
+        "evidence_sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14"
+      },
+      "evaluation_episodes_per_training_seed": 100,
+      "pooled_evaluation_episodes_per_arm": 300,
+      "statistical_unit": "training_seed",
+      "aggregate_metrics": {
+        "C0": {
+          "return": 5905.978351732602,
+          "mean_cost": 0.17,
+          "cvar_20": 0.85,
+          "failure_rate": 0.17,
+          "training_cumulative_cost": 599.6666666666666,
+          "high_risk_vn_vt": 0.8707385857899984,
+          "high_risk_dangerous_outward_velocity": 0.3717911144097646
+        },
+        "P47": {
+          "return": 6227.66581001111,
+          "mean_cost": 0.07,
+          "cvar_20": 0.35,
+          "failure_rate": 0.07,
+          "training_cumulative_cost": 538.3333333333334,
+          "high_risk_vn_vt": 0.7954785227775574,
+          "high_risk_dangerous_outward_velocity": 0.2974030574162801
+        }
+      },
+      "aggregate_relative_change": {
+        "return_percent": 5.4,
+        "mean_cost_percent": -58.8,
+        "cvar_20_percent": -58.8,
+        "failure_rate_percentage_points": -10.0,
+        "training_cumulative_cost_percent": -10.2,
+        "high_risk_vn_vt_percent": -8.6,
+        "high_risk_dangerous_outward_velocity_percent": -20.0
+      },
+      "claim_boundary": "Aggregate n=3 improvement only; every_seed_pareto_claim is false.",
+      "evidence": {
+        "report": "reports/star/single_gpu_paper_core_artifacts/ant/final/ANT_2M_FORMAL_REPORT.md",
+        "summary": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_summary.csv",
+        "seed_metrics": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_seed_metrics.csv",
+        "episode_records": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_episode_records.csv",
+        "manifest": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
+      }
+    },
+    "walker2d_appendix_seed_2027": {
+      "status": "complete",
+      "new_training_required": false,
+      "return": 5810.75465,
+      "mean_cost": 0.01,
+      "cvar_20": 0.05,
+      "training_cumulative_cost": 2312,
+      "high_risk_vn_vt": 0.7184643,
+      "claim_boundary": "Single-seed appendix mechanism evidence only.",
+      "evidence": "reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/walker2d-2027/milestone_audit.json",
+      "evidence_sha256": "6e504644ac792bdb2b645d0ac3e82b150d8527bccb2e7810ae5869208c5498d8"
+    },
+    "host_terminal_evidence_staging": {
+      "status": "complete",
+      "service_state": "inactive",
+      "service_substate": "dead",
+      "service_result": "success",
+      "unit_file_state": "enabled",
+      "service_restart_count": 0,
+      "persistent_unit": "/home/lzqw/.config/systemd/user/safeflow-evidence-stager.service",
+      "staging_root": "/home/lzqw/SAFEFLOW2027_single_gpu/evidence-staging",
+      "policy": "Stage only terminal portable evidence; never stage checkpoints, training logs, or source-code worktrees. Small evaluator configs and run manifests are retained.",
+      "pointcircle_terminal_evidence": {
+        "status": "imported_to_git_worktree",
+        "portable_bytes": 1573650,
+        "enhancement_portable_file_count": 20,
+        "git_path": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal",
+        "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointcircle/geometry_enhancement_terminal/enhancement/stage_receipt.json"
+      },
+      "pointgoal_robustness_terminal_evidence": {
+        "status": "committed_and_pushed",
+        "portable_bytes": 1434969,
+        "portable_file_count": 30,
+        "git_path": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness",
+        "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/stage_receipt.json",
+        "stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d",
+        "git_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7"
+      },
+      "ant_terminal_evidence": {
+        "status": "imported_to_git_worktree",
+        "staged_at": "2026-09-05T07:48:14+08:00",
+        "portable_bytes": 22427673,
+        "portable_file_count": 157,
+        "git_path": "reports/star/single_gpu_paper_core_artifacts/ant",
+        "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/ant/stage_receipt.json",
+        "stage_receipt_sha256": "f0996d583d8b4592d9cafde6022bec18e491d12a85be437ad83588d63cb23b67",
+        "final_manifest": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "final_manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
+      }
+    },
+    "github_delivery": {
+      "status": "complete",
+      "repository": "lzqw/SAFEFLOW2027",
+      "branch": "codex/star-single-gpu-paper-core",
+      "pull_request": 12,
+      "pointcircle_terminal_evidence_commit": "8cc4d8b",
+      "pointgoal_robustness_scope_commit": "d3f882b",
+      "pointgoal_robustness_hardening_commit": "23d09f8",
+      "pointgoal_robustness_terminal_evidence_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7",
+      "pointgoal_robustness_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+      "ant_terminal_evidence_path": "reports/star/single_gpu_paper_core_artifacts/ant",
+      "ant_manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe",
+      "verification_rule": "The remote branch head must contain this audit and the byte-identical Ant terminal artifacts.",
+      "remaining": null
+    }
+  }
+}

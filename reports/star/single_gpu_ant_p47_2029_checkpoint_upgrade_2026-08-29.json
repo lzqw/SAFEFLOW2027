@@ -1,0 +1,87 @@
+{
+  "a100_identity_after_event": {
+    "config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "source_dirty": false
+  },
+  "coincident_c0_checkpoint": {
+    "bytes": 146463154,
+    "environment": "Ant-v4",
+    "format": "star-checkpoint",
+    "host_backup_status": "passed",
+    "replay_capacity": 400000,
+    "replay_size": 400000,
+    "seed": 2029,
+    "sha256": "07e55269bcf0ed91f5946ddd982bea460915c8074b501e2036bc787950208c27",
+    "step": 500000,
+    "written_at": "2026-08-29T22:56:06+08:00"
+  },
+  "event": {
+    "completed_at": "2026-08-29T22:55:48+08:00",
+    "minimum_gain_steps": 50000,
+    "nominal_wall_clock_saved_hours_at_prior_rtx_fps": 8.47,
+    "old_rtx_progress_step": 280000,
+    "reason": "Move the non-selective work-conserving race to a materially newer checkpoint from the same frozen seed, source and configuration.",
+    "source_checkpoint_step": 500000,
+    "step_gain": 220000,
+    "trigger": "source_checkpoint_step - old_rtx_progress_step >= minimum_gain_steps"
+  },
+  "host_backup": {
+    "C0-2029": {
+      "bytes": 146463154,
+      "sha256": "07e55269bcf0ed91f5946ddd982bea460915c8074b501e2036bc787950208c27",
+      "status": "passed"
+    },
+    "P47-2029": {
+      "bytes": 146459314,
+      "sha256": "6424a2b0a20eb3f3960e281903bc425f20dbaad4adff7bf90889f96d741c47b4",
+      "status": "passed"
+    },
+    "path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress",
+    "validation": "Source SHA before transfer equaled source SHA after transfer and the host-copy SHA for both checkpoints."
+  },
+  "kind": "ant_p47_2029_replay_checkpoint_upgrade_amendment",
+  "postcondition": {
+    "a100_duplicate_continues_as_fallback": true,
+    "bridge_service": "active",
+    "c0_2027_pid_after": 32584,
+    "c0_2027_pid_unchanged": true,
+    "new_p47_2029_pid": 37290,
+    "new_process_confirmed_at": "2026-08-29T22:56:32+08:00",
+    "new_process_resume_checkpoint": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/latest_full.pt",
+    "strict_queue_controller": "remains_frozen",
+    "upgrade_marker": "p47-2029-a100-checkpoint-upgrade-done"
+  },
+  "precondition": {
+    "checkpoint_environment": "Ant-v4",
+    "checkpoint_format": "star-checkpoint",
+    "checkpoint_replay_capacity": 400000,
+    "checkpoint_replay_size": 400000,
+    "checkpoint_seed": 2029,
+    "checkpoint_sha256": "6424a2b0a20eb3f3960e281903bc425f20dbaad4adff7bf90889f96d741c47b4",
+    "checkpoint_size_bytes": 146459314,
+    "checkpoint_step": 500000,
+    "checkpoint_written_at": "2026-08-29T22:51:01+08:00",
+    "remote_transfer_sha_before_equals_after": true,
+    "seeta_config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+    "seeta_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "seeta_source_dirty": false
+  },
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_read_before_decision": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "service": {
+    "bridge_script_sha256_after_liveness_guard_repair": "8e285fce03c796ee0e36963fa042b7086a5f3c932607839c87259520b5a82293",
+    "result": "success",
+    "restarts": 0,
+    "script_sha256": "4b83ab9105619e37ae5001aebe178ac08858147a019699e276983b31250c7e68",
+    "systemd_unit_sha256": "802a7675b33f7ef7be1ffa403434360aa0e13b9c703a6d103221527f2cf51962"
+  },
+  "status": "complete"
+}

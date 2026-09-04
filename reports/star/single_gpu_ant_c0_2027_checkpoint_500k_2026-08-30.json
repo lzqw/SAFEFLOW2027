@@ -1,0 +1,42 @@
+{
+  "checkpoint": {
+    "bytes": 146466543,
+    "environment": "Ant-v4",
+    "format": "star-checkpoint",
+    "remote_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/checkpoints/latest_full.pt",
+    "replay_capacity": 400000,
+    "replay_size": 400000,
+    "seed": 2027,
+    "sha256": "750a3aa54244bf7edb6e581a61a964966c5b9d388465f1d80800418a66c23ad0",
+    "step": 500000,
+    "written_at": "2026-08-30T17:00:32.062285537+08:00"
+  },
+  "event": {
+    "c0_2027_progress_step": 500000,
+    "observed_at": "2026-08-30T17:01:24+08:00",
+    "p47_2029_progress_step": 960000,
+    "seeta_learners": 2
+  },
+  "host_backup": {
+    "bytes": 146466543,
+    "path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress/C0-2027/step-500000/latest_full.pt",
+    "sha256": "750a3aa54244bf7edb6e581a61a964966c5b9d388465f1d80800418a66c23ad0",
+    "status": "passed"
+  },
+  "kind": "ant_c0_2027_recovery_checkpoint_observation",
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_read_or_run_for_this_event": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "complete",
+  "validation": {
+    "checkpoint_metadata_loaded_once": true,
+    "host_sha_equals_remote_sha": true,
+    "purpose": "Protect replay-bearing recovery state while the frozen 2M run continues."
+  }
+}

@@ -1,0 +1,3 @@
+method,arm,training_steps_per_seed,training_seeds,pooled_evaluation_episodes,mean_return,seed_std_mean_return,mean_cost,seed_std_mean_cost,cost_cvar_20,seed_std_cost_cvar_20,failure_rate,seed_std_failure_rate,training_cumulative_cost_mean,seed_std_training_cumulative_cost,high_risk_vn_vt,high_risk_dangerous_outward_velocity
+C0 / isotropic FLAC,C0,2000000,3,300,5905.978351732602,1046.8743726283324,0.17,0.10583005244258362,0.85,0.2783882181415011,0.17,0.10583005244258362,599.6666666666666,322.95871769211203,0.8707385857899984,0.3717911144097646
+P4.7 / Ours,P47,2000000,3,300,6227.66581001111,355.77328472895266,0.07,0.04,0.35,0.20000000000000004,0.07,0.04,538.3333333333334,62.40459384799595,0.7954785227775574,0.2974030574162801

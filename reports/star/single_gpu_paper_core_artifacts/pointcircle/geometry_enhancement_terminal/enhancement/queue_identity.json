@@ -1,0 +1,14 @@
+{
+  "attempt": 1,
+  "attempt_limit": 1,
+  "config_sha256": "d0252cb0bc22c783153bae45874322e99364d9a1458048591e3301c56111a6c3",
+  "enhancement_preregistration_sha256": "fcde54b52e02c00f4c8997f676f5f963fd307dbae8d053559e55e1568c9ffc02",
+  "environment": "SafetyPointCircle1-v0",
+  "frozen_c0_evaluation": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-v1/screen/C0-2027/training/STAR-{SafetyPointCircle1-v0}/seed-2027-2026-08-25-01-15-31/artifacts/evaluation_step_300000.json",
+  "frozen_c0_evaluation_sha256": "ac6e54f6086c6718209d415d552b0b97c5ee4e0958a858cc1aefd993091fbbcc",
+  "maximum_concurrent_learners": 1,
+  "original_screen_decision_sha256": "62873e89e8584fbb6663a183f71dcca84d33ef7b63296308bb47e88af1221d86",
+  "source_commit": "fccd2a3941e7ebbd9b250244a3234205c01c156c",
+  "steps": 300000,
+  "training_seed": 2027
+}

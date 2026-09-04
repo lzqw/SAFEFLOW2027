@@ -15,5 +15,10 @@
 """The abstract interfaces of Critic networks for the Actor-Critic algorithm."""
 
 from omnisafe.models.critic.critic_builder import CriticBuilder
+from omnisafe.models.critic.distributional_cost_critic import (
+    DistributionalCostCritic,
+    distributional_bellman_target,
+    quantile_huber_loss,
+)
 from omnisafe.models.critic.q_critic import QCritic
 from omnisafe.models.critic.v_critic import VCritic

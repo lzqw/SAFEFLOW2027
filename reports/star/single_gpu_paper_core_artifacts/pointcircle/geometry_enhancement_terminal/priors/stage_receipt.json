@@ -1,0 +1,31 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "pointcircle_priors",
+  "logs_copied": false,
+  "portable_bytes": 792,
+  "portable_file_count": 2,
+  "portable_files": [
+    {
+      "bytes": 570,
+      "path": "queue_identity.json",
+      "sha256": "d3706f9cdff631e1bee56a0d9066ca687334b723c42b022f2fea7bacdf024957"
+    },
+    {
+      "bytes": 222,
+      "path": "queue_state.json",
+      "sha256": "59bafbd2e118987e222b38f005df327f6382560d4495f87aca55f1be17b47a2f"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointcircle-enhanced-priors-v1",
+  "remote_state_payload": {
+    "finished_at_utc": "2026-08-25T15:15:10.318653+00:00",
+    "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "scientific_training_launched": false,
+    "state": "screen_not_passed"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-08-25T15:16:00.387210+00:00",
+  "status": "complete",
+  "terminal_state": "screen_not_passed"
+}

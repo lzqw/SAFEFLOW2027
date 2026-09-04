@@ -1,0 +1,209 @@
+{
+  "archived_long_horizon_protocol": {
+    "checkpoint_payloads_deleted": false,
+    "host_full_checkpoints": {
+      "ant-2027": 4150000,
+      "point-button-2027": 4100000,
+      "point-goal-2027": 4100000,
+      "walker2d-2027": 4150000
+    },
+    "pr": "https://github.com/lzqw/SAFEFLOW2027/pull/10",
+    "reason": "The 150M-step four-environment by five-seed queue is not resource-aligned with one RTX 3090.",
+    "state": "closed_and_archived_incomplete"
+  },
+  "global_invariants": {
+    "checkpoint_or_configuration_selection_from_final_results": false,
+    "final_evaluation": {
+      "base_seeds": [
+        22027,
+        22028,
+        22029,
+        22030,
+        22031
+      ],
+      "episodes_per_base_seed": 20,
+      "episodes_per_policy": 100
+    },
+    "learner_vector_envs": 1,
+    "maximum_concurrent_learners": 2,
+    "point_cost_limit": 10.0,
+    "scientific_early_stopping": false,
+    "statistical_unit": "training_seed",
+    "training_seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "utd_ratio_for_off_policy_methods": 1.0
+  },
+  "locked_at_utc": "2026-08-24T13:40:55Z",
+  "protocol_version": "star-single-gpu-paper-core-v1",
+  "resource_contract": {
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "learner_slots": 2,
+    "throughput_check": {
+      "dual_probe": [
+        "SACLag/seed-2027/20000-steps",
+        "SHAPO-PIDLag/seed-2027/20000-steps"
+      ],
+      "keep_two_learners_if_dual_aggregate_fps_at_least_single_ratio": 1.2,
+      "role": "one-time engineering decision; never a scientific selection gate",
+      "single_probe": "SACLag/seed-2027/20000-steps"
+    }
+  },
+  "reused_pointgoal_evidence": {
+    "arms": {
+      "C0_isotropic_FLAC": {
+        "cost_cvar_20": 67.75,
+        "high_risk_vn_vt": 0.9981648524602255,
+        "mean_cost": 13.566666666666666,
+        "mean_return": 0.462061892988033,
+        "success_rate": 0.22666666666666666,
+        "training_cumulative_cost_mean": 7305.333333333333
+      },
+      "P47_ours": {
+        "cost_cvar_20": 46.8,
+        "high_risk_vn_vt": 0.8744491140047709,
+        "mean_cost": 9.433333333333334,
+        "mean_return": 0.6544966828142326,
+        "success_rate": 0.25333333333333335,
+        "training_cumulative_cost_mean": 5582.333333333333
+      }
+    },
+    "equal_training_budget_steps": 200000,
+    "n_training_seeds_per_arm": 3,
+    "report_sha256": "d3736196b3c09ee064ad490aabd3985aa72a0786a0846c1546b487ccd6043d29",
+    "seed_level_aggregate_claim_only": true,
+    "summary_sha256": "8fc7d7b1f21c3ba7fc68ed21135bd20f654b2a034484c9a7f308121be02c7409",
+    "training_source_commit": "8130e49ea3e23e7ee5511f04197193a2f525a2e4"
+  },
+  "stages": {
+    "A_pointgoal_prior_methods": {
+      "environment": "SafetyPointGoal1-v0",
+      "methods": {
+        "SACLag": {
+          "implementation": "OmniSafe SACLag",
+          "steps": 200000
+        },
+        "SHAPO-PIDLag": {
+          "command_identity": "safepo/single_agent/trpo_pid.py --use-shapo-actor True --perturbation-target-kl 0.00001",
+          "implementation_commit": "1bb770437bbbe40a89938661343744243e164bf9",
+          "steps": 200000
+        }
+      },
+      "new_training_steps": 1200000,
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ]
+    },
+    "B_pointcircle_screen": {
+      "development_evaluation_episodes": 20,
+      "environment": "SafetyPointCircle1-v0",
+      "initial_steps": 300000,
+      "methods": [
+        "P47_ours",
+        "C0_isotropic_FLAC"
+      ],
+      "milestones": [
+        150000,
+        300000
+      ],
+      "pass_rule": {
+        "and_at_least_one": [
+          "mean_cost_or_CVaR_relative_improvement_at_least_0.10",
+          "high_risk_vn_vt_at_most_0.9_and_outward_velocity_lower"
+        ],
+        "return_relative_degradation_at_most": 0.1
+      },
+      "seed": 2027
+    },
+    "C_pointcircle_formal": {
+      "continuation_steps": 500000,
+      "environment": "SafetyPointCircle1-v0",
+      "methods": [
+        "P47_ours",
+        "C0_isotropic_FLAC"
+      ],
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ]
+    },
+    "D_pointcircle_prior_methods": {
+      "environment": "SafetyPointCircle1-v0",
+      "extension_rule": "Only a uniform all-method extension to 750k is allowed if a standard baseline has clearly not entered learning by 500k.",
+      "methods": [
+        "SACLag",
+        "SHAPO-PIDLag"
+      ],
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps": 500000
+    },
+    "E_pointcircle_mechanism": {
+      "evidence_chain": [
+        "Safety-Aniso normal variance approximately equals Iso-Low",
+        "Safety-Aniso tangent variance exceeds Iso-Low",
+        "Safety-Aniso cost is no worse than Iso-Low",
+        "Safety-Aniso return exceeds Iso-Low",
+        "Safety-Aniso exceeds Random-Aniso"
+      ],
+      "new_single_seed_arms": {
+        "Iso-Low": 300000,
+        "Random-Aniso": 300000
+      },
+      "reused_arms": [
+        "Iso-High",
+        "Safety-Aniso"
+      ],
+      "seed": 2027
+    },
+    "F_parameter_and_robustness": {
+      "normal_variance_ratios": [
+        1.0,
+        0.25,
+        0.1
+      ],
+      "only_new_parameter_run": {
+        "normal_variance_ratio": 0.25,
+        "seed": 2027,
+        "steps": 300000
+      },
+      "pointcircle_radius_multipliers": [
+        0.8,
+        0.9,
+        1.0,
+        1.1,
+        1.2
+      ],
+      "pointgoal_perturbation_families": [
+        "hazard_radius",
+        "hazard_position_offset",
+        "action_noise"
+      ],
+      "robustness_training": false
+    },
+    "G_ant_secondary_extension": {
+      "environment": "Ant-v4",
+      "methods": [
+        "P47_ours",
+        "C0_isotropic_FLAC"
+      ],
+      "priority": "after_point_core",
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "steps": 2000000,
+      "walker2d_role": "retain seed-2027 as an appendix case only"
+    }
+  },
+  "status": "locked_before_any_new_single_gpu_scientific_training"
+}

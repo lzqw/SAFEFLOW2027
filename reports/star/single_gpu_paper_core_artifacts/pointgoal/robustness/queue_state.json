@@ -1,0 +1,17 @@
+{
+  "checkpoint_only_evaluation_launched": true,
+  "enhancement_preregistration_sha256": null,
+  "environments": [
+    "SafetyPointGoal1-v0"
+  ],
+  "final_manifest": "/root/autodl-tmp/SAFE/single_gpu_paper_core/pointgoal-robustness-v1/final/point_robustness_manifest.json",
+  "final_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+  "finished_at_utc": "2026-08-27T16:16:59.100350+00:00",
+  "geometry_enhanced": false,
+  "pointcircle_screen_passed": false,
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "resource_terminal_state": null,
+  "retraining": false,
+  "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+  "state": "complete"
+}

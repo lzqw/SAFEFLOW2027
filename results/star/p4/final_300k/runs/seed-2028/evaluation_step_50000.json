@@ -1,0 +1,41 @@
+{
+  "calibration_error": 4.669122790801339e-05,
+  "cost_cvar_20": 0.0,
+  "costs": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "counterfactual_file": "counterfactual_step_50000.json",
+  "empirical_risk_mean": 0.0,
+  "episodes": 5,
+  "lengths": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ],
+  "mean_cost": 0.0,
+  "mean_return": 0.10318966341212676,
+  "milestone": 50000,
+  "predicted_risk_mean": 4.669122790801339e-05,
+  "returns": [
+    0.35475350190378685,
+    -0.8208834513811496,
+    0.11884441271683954,
+    0.13218413324466383,
+    0.7310497205764932
+  ],
+  "seeds": [
+    12027,
+    12028,
+    12029,
+    12030,
+    12031
+  ],
+  "spearman": -0.27161991596221924,
+  "violation_ratio": 0.0
+}

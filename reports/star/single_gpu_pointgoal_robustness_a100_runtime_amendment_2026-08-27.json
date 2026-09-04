@@ -1,0 +1,76 @@
+{
+  "allocation": {
+    "checkpoint_count": 6,
+    "environment": "SafetyPointGoal1-v0",
+    "evaluation_device": "cpu",
+    "maximum_concurrent_evaluators": 2,
+    "methods": [
+      "C0",
+      "P47"
+    ],
+    "training_seeds": [
+      2027,
+      2028,
+      2029
+    ]
+  },
+  "engineering_fallback": {
+    "a100_failure": "Restore the original RTX 3090 waiting controller after the Ant resource prerequisite becomes terminal.",
+    "success_route": "A100 run root to host staging to the original RTX 3090 evidence root and terminal evidence stager."
+  },
+  "evaluation_source": {
+    "commit_identity": "the Git commit containing this runtime amendment",
+    "parent_commit": "1eb323e4073224dab26e057dcd6ba5bc7d095a37",
+    "source_clean_required": true
+  },
+  "reason": "Use otherwise idle CPU capacity on the user-authorized A100 node to finish frozen checkpoint-only robustness while Ant GPU training continues.",
+  "registered_at_local": "2026-08-27T22:03:00+08:00",
+  "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+  "runtime_environment": {
+    "cpu_cores": 128,
+    "gpu_compute_used_by_robustness": false,
+    "host_alias": "tjucta-a100",
+    "python": "3.11.5",
+    "pytorch": "2.7.1+cu118"
+  },
+  "scientific_invariants": {
+    "action_noise_levels": [
+      0.0,
+      0.05,
+      0.1
+    ],
+    "base_seeds": [
+      33027,
+      33028,
+      33029,
+      33030,
+      33031
+    ],
+    "changed": false,
+    "hazard_position_offsets": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.1,
+        -0.1
+      ],
+      [
+        0.2,
+        -0.2
+      ]
+    ],
+    "hazard_radius_multipliers": [
+      1.0,
+      1.25,
+      1.5
+    ],
+    "policy_mode": "fixed-random-flow",
+    "retraining": false,
+    "screening_episodes_per_checkpoint_condition": 50,
+    "selected_final_episodes_per_checkpoint_condition": 100
+  },
+  "status": "locked_before_any_a100_robustness_evaluation",
+  "version": "star-pointgoal-robustness-a100-runtime-amendment-v1"
+}

@@ -1,0 +1,46 @@
+{
+  "algorithm": "STAR",
+  "elapsed_seconds": 21911.097065009177,
+  "end_to_end_fps": 13.691692347029194,
+  "environment": "SafetyPointGoal1-v0",
+  "estimated_cost_cny": 9.007895460059329,
+  "final_episode_cost": 0.0,
+  "final_episode_length": 1000.0,
+  "final_episode_return": 0.017978216940537094,
+  "log_dir": "/root/autodl-tmp/SAFE/runs/active/star-p4-300k-seed2027-1a4533c/runs/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-04-13-38-59",
+  "peak_cuda_memory_mib": 50.0673828125,
+  "run_steps": 300000,
+  "seed": 2027,
+  "status": "passed",
+  "steps": 300000,
+  "training_summary": {
+    "end_to_end_fps": 13.696436449859506,
+    "env_steps": 300000,
+    "environment": "SafetyPointGoal1-v0",
+    "geometry_activation_step": 29568,
+    "last_update_order": [
+      "distributional_cost_critic",
+      "twin_reward_critics",
+      "differentiable_flow",
+      "terminal_reward_cost_utility",
+      "late_path_safety_geometry",
+      "flow_actor",
+      "energy_dual",
+      "true_episode_global_dual",
+      "target_networks"
+    ],
+    "replay": {
+      "boundary": 0.00459,
+      "failure": 0.023206666666666667,
+      "normal": 0.9722033333333333
+    },
+    "run_env_steps": 300000,
+    "seed": 2027,
+    "status": "completed",
+    "training_seconds": 21903.507609315217,
+    "updates": 298000,
+    "violation_ratio": 0.023206666666666667,
+    "warmup_stage": "W3"
+  },
+  "updates": 298000
+}

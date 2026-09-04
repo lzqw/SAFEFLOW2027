@@ -1,0 +1,22 @@
+{
+  "arms": [
+    "C0",
+    "P47"
+  ],
+  "enhancement_preregistration_sha256": null,
+  "environments": [
+    "SafetyPointGoal1-v0"
+  ],
+  "evaluation_device": "cpu",
+  "geometry_enhanced": false,
+  "global_protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "maximum_concurrent_evaluators": 2,
+  "retraining": false,
+  "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+  "source_commit": "52ff54482b64f9816a4354cffb76f4213550124f",
+  "training_seeds": [
+    2027,
+    2028,
+    2029
+  ]
+}

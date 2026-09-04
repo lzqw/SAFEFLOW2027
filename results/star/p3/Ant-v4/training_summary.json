@@ -1,0 +1,29 @@
+{
+  "end_to_end_fps": 22.959666676814766,
+  "env_steps": 20000,
+  "environment": "Ant-v4",
+  "geometry_activation_step": null,
+  "last_update_order": [
+    "distributional_cost_critic",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ],
+  "replay": {
+    "boundary": 0.0,
+    "failure": 0.00255,
+    "normal": 0.99745
+  },
+  "run_env_steps": 20000,
+  "seed": 2027,
+  "status": "completed",
+  "training_seconds": 871.0927855148911,
+  "updates": 18000,
+  "violation_ratio": 0.00255,
+  "warmup_stage": "W2"
+}

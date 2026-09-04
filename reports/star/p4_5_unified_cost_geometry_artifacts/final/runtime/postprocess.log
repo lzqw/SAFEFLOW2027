@@ -1,0 +1,63 @@
+postprocess watcher starting at 2026-08-08T14:23:37Z
+audits for seed 2027 starting at 2026-08-08T21:47:07Z
+expected exactly one run for C0-2027, found 3
+expected exactly one run for C1-2027, found 3
+postprocess exit=4 at 2026-08-08T21:47:07Z
+postprocess watcher starting at 2026-08-08T21:49:17Z
+audits for seed 2027 starting at 2026-08-08T21:49:17Z
+audits for seed 2027 completed at 2026-08-08T21:49:33Z
+audits for seed 2028 starting at 2026-08-08T21:49:33Z
+audits for seed 2028 completed at 2026-08-08T21:49:49Z
+audits for seed 2029 starting at 2026-08-08T21:49:49Z
+audits for seed 2029 completed at 2026-08-08T21:50:06Z
+Traceback (most recent call last):
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 89, in finite_number
+    number = float(value)
+             ^^^^^^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 643, in <module>
+    main()
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 631, in main
+    result = summarize(args)
+             ^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 538, in summarize
+    runs = {key: _validate_run(*key, run_paths[key], audit_paths[key]) for key in sorted(run_paths)}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 538, in <dictcomp>
+    runs = {key: _validate_run(*key, run_paths[key], audit_paths[key]) for key in sorted(run_paths)}
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 309, in _validate_run
+    checkpoint_rows.append(_checkpoint_metrics(payload, arm, seed))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 178, in _checkpoint_metrics
+    'cost_spearman': finite_number(payload['spearman'], 'spearman'),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-p4.5-532d4b1/scripts/star/summarize_p4_5_unified_cost_geometry.py", line 91, in finite_number
+    raise ValueError(f'{location} is not numeric: {value!r}') from error
+ValueError: spearman is not numeric: None
+postprocess exit=1 at 2026-08-08T21:50:07Z
+postprocess watcher starting at 2026-08-08T21:54:53Z
+audits for seed 2027 starting at 2026-08-08T21:54:53Z
+audits for seed 2027 completed at 2026-08-08T21:55:09Z
+audits for seed 2028 starting at 2026-08-08T21:55:09Z
+audits for seed 2028 completed at 2026-08-08T21:55:26Z
+audits for seed 2029 starting at 2026-08-08T21:55:26Z
+audits for seed 2029 completed at 2026-08-08T21:55:42Z
+{"classification": "safety_benefit_with_performance_cost", "output_dir": "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary"}
+{
+  "plots": [
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_return_success.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_cost_cvar_training_cost.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_geometry.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_critic_scales.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12027.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12036.png",
+    "/root/autodl-tmp/SAFE/p4_5_532d4b1/summary/p4_5_trajectory_eval_seed_12046.png"
+  ]
+}
+postprocess completed at 2026-08-08T21:55:48Z
+postprocess exit=0 at 2026-08-08T21:55:48Z

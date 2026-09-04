@@ -1,0 +1,80 @@
+protocol_version: star-single-gpu-paper-core-v1
+protocol_file: reports/star/single_gpu_paper_core_preregistration.json
+
+resource:
+  expected_gpu: NVIDIA GeForce RTX 3090
+  maximum_concurrent_learners: 2
+  vector_env_nums: 1
+  off_policy_utd_ratio: 1.0
+  torch_threads_per_learner: 1
+
+throughput_gate:
+  probe_steps: 20000
+  single_method: SACLag
+  dual_methods: [SACLag, SHAPO-PIDLag]
+  keep_dual_minimum_aggregate_ratio: 1.20
+
+pointgoal_prior_methods:
+  environment: SafetyPointGoal1-v0
+  cost_limit: 10.0
+  seeds: [2027, 2028, 2029]
+  total_steps: 200000
+  online_evaluation_episodes: 0
+  final_evaluation:
+    base_seeds: [22027, 22028, 22029, 22030, 22031]
+    episodes_per_base_seed: 20
+  methods:
+    SACLag:
+      implementation: omnisafe
+      algorithm: SACLag
+      steps_per_epoch: 2000
+      replay_size: 400000
+      batch_size: 256
+      start_learning_steps: 10000
+    SHAPO-PIDLag:
+      implementation: official_shapo
+      source_commit: 1bb770437bbbe40a89938661343744243e164bf9
+      entrypoint: safepo/single_agent/trpo_pid.py
+      steps_per_epoch: 20000
+      use_shapo_actor: true
+      perturbation_target_kl: 0.00001
+
+pointcircle:
+  environment: SafetyPointCircle1-v0
+  cost_limit: 10.0
+  seeds: [2027, 2028, 2029]
+  paired_methods: [C0_isotropic_FLAC, P47_ours]
+  development_evaluation_episodes: 20
+  final_evaluation_episodes: 100
+  milestones: [150000, 300000, 500000]
+  full_replay_checkpoint_interval: 250000
+  screen:
+    seed: 2027
+    steps: 300000
+    maximum_return_relative_degradation: 0.10
+    minimum_cost_or_cvar_relative_improvement: 0.10
+    maximum_high_risk_vn_vt: 0.90
+  formal_steps: 500000
+
+mechanism:
+  seed: 2027
+  steps: 300000
+  reused_arms: [Iso-High, Safety-Aniso]
+  new_arms: [Iso-Low, Random-Aniso]
+  normal_variance_ratio_parameter_values: [1.0, 0.25, 0.1]
+  only_new_parameter_value: 0.25
+
+robustness:
+  retraining: false
+  pointcircle_radius_multipliers: [0.8, 0.9, 1.0, 1.1, 1.2]
+  pointgoal_severity_levels: [nominal, medium, strong]
+  pointgoal_families: [hazard_radius, hazard_position_offset, action_noise]
+  screening_episodes: 50
+  selected_final_episodes: 100
+
+secondary_extension:
+  environment: Ant-v4
+  methods: [C0_isotropic_FLAC, P47_ours]
+  seeds: [2027, 2028, 2029]
+  total_steps: 2000000
+  walker2d: appendix_seed_2027_only

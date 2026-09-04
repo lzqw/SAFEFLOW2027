@@ -1,0 +1,211 @@
+{
+  "analysis": {
+    "diagnostic_only": [
+      "high_risk_top_20_percent_normal_to_tangent_variance_ratio",
+      "high_risk_top_20_percent_dangerous_outward_velocity",
+      "all_intermediate_checkpoint_metrics"
+    ],
+    "final_selection": {
+      "candidate": "P47_at_200000",
+      "incumbent": "sealed_C1_at_100000",
+      "labels": [
+        "freeze_P47",
+        "freeze_C1"
+      ],
+      "performance_retention_gate": "relative to sealed C1 at 100000, pooled P47 mean return and success are each no more than 0.10 lower; neither metric is more than 0.20 lower in any paired training seed",
+      "safety_efficacy_gate": "relative to continued C0 at 200000, pooled P47 mean cost and CVaR-20 are each at least 10 percent lower and each metric is lower in at least two of three paired training seeds",
+      "safety_retention_gate": "relative to sealed C1 at 100000, pooled P47 mean cost and CVaR-20 are each no more than 10 percent higher",
+      "training_safety_gate": "relative to continued C0 at 200000, pooled P47 cumulative training cost is at least 10 percent lower and is lower in at least two of three paired training seeds",
+      "freeze_C1": "freeze the existing C1 configuration if P47 fails any locked gate",
+      "freeze_P47": "freeze P47 only if it passes every locked gate"
+    },
+    "reporting": "always report every arm-by-training-seed result, pooled formal values, complete common-protocol checkpoint curves, Pareto plots, and both high-risk geometry diagnostics",
+    "selection_evidence": "only the independent 5-base-seed by 20-episode formal evaluation at the final checkpoint enters the locked selection gates"
+  },
+  "base_commit": "ff68bab356bf7052d9e920953ec6b24e55c2d66a",
+  "checkpoints": {
+    "C0_resume_full_checkpoint_sha256": {
+      "2027": "0c8d0261d7b957f73bc72f1ce2542ddaa84a8f5061c43461c72f7a8e390a040b",
+      "2028": "bdc781c7ad152569314d128ebd65c4e838c6d9cbe6035f2b4d1cfd8c13c053da",
+      "2029": "3ae57f4eb265cf5939af152eebf82ea4cda1bede3aa99d7f12764b20a47dbf8e"
+    },
+    "C0_resume_step": 100000,
+    "C0_resume_state": "model, every optimizer, both duals, observation normalizer, counters, warmup, full replay, cumulative training cost, held-out evidence, and RNG state",
+    "full_recovery_frequency": 50000,
+    "lightweight_steps": [
+      50000,
+      100000,
+      150000,
+      200000
+    ],
+    "training_log_frequency": 5000
+  },
+  "delivery": {
+    "branch": "codex/star-p4.7-safety-aware-geometry",
+    "draft_pr_base": "codex/star-p4.6-direction-weight-pareto",
+    "github_include": [
+      "code",
+      "configs",
+      "locked_protocol",
+      "compact_run_receipts",
+      "common_checkpoint_tables",
+      "formal_final_tables",
+      "high_risk_geometry",
+      "plots",
+      "checkpoint_sha256",
+      "complete_report",
+      "frozen_final_config"
+    ],
+    "server_only": [
+      "large_checkpoints",
+      "replay_buffers",
+      "raw_work_directories"
+    ]
+  },
+  "engineering_stops": {
+    "allowed_reasons": [
+      "nan_or_inf",
+      "cuda_out_of_memory",
+      "checkpoint_corruption",
+      "environment_or_process_crash",
+      "q_value_numerical_overflow"
+    ],
+    "early_scientific_stop": false,
+    "q_absolute_overflow_threshold": 1000000.0,
+    "temporary_cost_increase": "diagnostic_only",
+    "temporary_critic_degradation": "diagnostic_only",
+    "temporary_performance_decrease": "diagnostic_only"
+  },
+  "environment": "SafetyPointGoal1-v0",
+  "evaluation": {
+    "common_randomness": "for each base seed, seed the isolated environment once, then run 20 sequential resets from that environment RNG stream; one local CPU flow generator seeded by flow_seed_offset plus the base seed continues across all 20 episodes",
+    "flow_randomness": "uniform[-1,1] base actions followed by standard-normal Wiener increments from the same local CPU generator",
+    "flow_seed_offset": 1000003,
+    "formal": {
+      "base_seeds": [
+        22027,
+        22028,
+        22029,
+        22030,
+        22031
+      ],
+      "checkpoint": 200000,
+      "episodes_per_base_seed": 20,
+      "episodes_per_training_seed": 100,
+      "role": "the only evaluation used for final selection"
+    },
+    "intermediate": {
+      "base_seeds": [
+        22027,
+        22028,
+        22029,
+        22030,
+        22031
+      ],
+      "episodes_per_base_seed": 4,
+      "episodes_per_training_seed_and_checkpoint": 20,
+      "role": "common-protocol learning-curve diagnostic only",
+      "steps": [
+        50000,
+        100000,
+        150000,
+        200000
+      ]
+    },
+    "same_randomness_across_C0_C1_and_P47": true,
+    "trajectory_base_seeds": [
+      22027,
+      22029,
+      22031
+    ]
+  },
+  "excluded": [
+    "additional_directional_loss_weights",
+    "additional_method_candidates",
+    "new_critic",
+    "second_order_terms",
+    "binary_safety_gate",
+    "candidate_action_probing",
+    "probability_critic_policy_control",
+    "inward_reference_drift",
+    "outward_execution_rectification",
+    "scientific_early_stopping",
+    "PointGoal_search_after_P47",
+    "method_paper_or_reference_paper_edits"
+  ],
+  "geometry_diagnostics": {
+    "dangerous_outward_velocity": "positive_part(n_C^T u_theta) from raw learned midpoint velocity before reference noise and action clipping",
+    "high_risk_fraction": 0.2,
+    "ranking": "descending local normalized Q-cost budget margin with a stable original-order tie break",
+    "role": "diagnostic only and never a selection gate",
+    "variance_ratio": "V_N divided by V_T on exactly the same selected midpoint samples"
+  },
+  "method": {
+    "action_normal": "n_C=grad_a(mean_heads(mean_quantiles(Q_C)))/(norm_2(grad_a(mean_heads(mean_quantiles(Q_C))))+1e-8)",
+    "cost_score": "mean_heads(mean_quantiles(Q_C))/cost_limit",
+    "directional_loss": "mean(r_C*positive_part(n_C^T u_theta)^2)/(stop_gradient(mean(norm_2(u_theta)^2))+1e-8)",
+    "directional_loss_epsilon": 1e-08,
+    "directional_loss_velocity": "raw learned midpoint velocity before stochastic reference noise and action clipping",
+    "directional_loss_weight": 1.0,
+    "ensemble_reliability": "exp(-std_heads(Q_C/cost_limit)/0.05)",
+    "fixed_reference_variance": 0.04,
+    "gradient_reliability": "norm(grad_a(Q_C/cost_limit))/(norm(grad_a(Q_C/cost_limit))+0.005)",
+    "local_margin": "m_C=cost_score-remaining_budget_ratio",
+    "normal_variance_ratio": 0.1,
+    "one_sided_safety_weight": "w_C=sigmoid(m_C/tau_C)",
+    "reliability": "r_C=w_C*r_grad*r_ens",
+    "shared_control": "the identical r_C tensor controls both directional-loss numerator and fixed-trace normal diffusion",
+    "tau_C": 0.1,
+    "tau_C_source": "reuse the sealed P4.5/P4.6 cost_geometry_bandwidth; no new tuned hyperparameter"
+  },
+  "objective": [
+    "retain the demonstrated direction-mechanism safety benefit",
+    "make rare risky samples contribute in proportion to their actual batch prevalence",
+    "remove direct gradient incentive to inflate tangent or total velocity",
+    "activate anisotropic diffusion continuously on the dangerous side",
+    "improve cross-seed safety-performance stability",
+    "freeze one final PointGoal method after this experiment"
+  ],
+  "parent": {
+    "C0_config_sha256": "7debced62250e1ee5f72daa0da4a13fcbfdd53b1e428380f7ff4315ec185425a",
+    "C1_config_sha256": "655b142b204b239604d341bc162a03d481ead7b66a070c7c07f08ab9f989aa8c",
+    "P4_6_final_evidence_commit": "ff68bab356bf7052d9e920953ec6b24e55c2d66a",
+    "P4_6_final_report_sha256": "d4e62227a1999987868fb488ef11d3f1b47f552f7b2ecc1abd5cfd5b99e6b724",
+    "P4_6_final_seed_metrics_sha256": "1e1839c22ca3332c72e488816b71974abb71b1b2250d008217940a4fa39e4d00",
+    "P4_6_final_summary_sha256": "90356fca02638c54f5648d1f278d1daa50b84fc0413c952ca33f862e4931a67f",
+    "P4_6_protocol_sha256": "c473da2ed99b31cde673a1cd038ec0477053b23ac63a130376ebccc4271ad93e",
+    "C1_is_reused_without_retraining": true,
+    "P4_5_and_P4_6_reports_immutable": true
+  },
+  "post_P47": {
+    "next_stage": "freeze the selected P47 or C1 configuration, then run the SHAPO four-environment formal experiment with five training seeds per environment",
+    "pointgoal_weight_search_stops": true
+  },
+  "protocol_version": "p4.7-safety-aware-geometry-v1",
+  "status": "locked_before_any_p4_7_training",
+  "training": {
+    "C0": {
+      "method": "sealed C0 unchanged",
+      "resume_from": 100000,
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "target_step": 200000
+    },
+    "P47": {
+      "from_scratch": true,
+      "seeds": [
+        2027,
+        2028,
+        2029
+      ],
+      "target_step": 200000
+    },
+    "concurrency": "one RTX3090 with at most four single-environment processes",
+    "new_environment_steps": 900000,
+    "new_run_segments": 6,
+    "scientific_early_stop": false
+  }
+}

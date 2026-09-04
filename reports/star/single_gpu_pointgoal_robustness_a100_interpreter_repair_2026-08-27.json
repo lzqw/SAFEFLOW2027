@@ -1,0 +1,40 @@
+{
+  "confirmed_root_cause": {
+    "base_interpreter": "/home/lzqw/anaconda3/bin/python3.11",
+    "behavior": "Path.resolve() followed the virtualenv python symlink, so evaluator children ran with the base interpreter and could not import gymnasium.",
+    "direct_reproduction": {
+      "base_interpreter_gymnasium_import": "ModuleNotFoundError",
+      "virtualenv_interpreter_gymnasium_version": "0.28.1",
+      "virtualenv_python": "/home/lzqw/SAFEFLOW2027_A100/env/bin/python"
+    }
+  },
+  "engineering_attempts_before_repair": [
+    {
+      "archived_run_root": "/home/lzqw/SAFEFLOW2027_A100/runs/engineering_failed/pointgoal-robustness-import-20260827-220827",
+      "completed_robustness_episodes": 0,
+      "failure": "ModuleNotFoundError: No module named 'gymnasium'",
+      "started_at_local": "2026-08-27T22:08:00+08:00"
+    },
+    {
+      "archived_run_root": "/home/lzqw/SAFEFLOW2027_A100/runs/engineering_failed/pointgoal-robustness-venv-resolve-20260827-221120",
+      "completed_robustness_episodes": 0,
+      "failure": "ModuleNotFoundError: No module named 'gymnasium'",
+      "started_at_local": "2026-08-27T22:11:00+08:00"
+    }
+  ],
+  "fallback": {
+    "original_rtx3090_waiting_controller_restored_after_each_failure": true,
+    "scientific_training_affected": false
+  },
+  "repair": {
+    "default_evaluation_device_changed": false,
+    "implementation": "Use os.path.abspath on python-bin while preserving the virtualenv symlink.",
+    "repair_source_identity": "the Git commit containing this record",
+    "scientific_protocol_changed": false,
+    "targeted_regression_test_added": true
+  },
+  "registered_at_local": "2026-08-27T22:13:00+08:00",
+  "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+  "status": "repair_locked_before_any_completed_a100_robustness_episode",
+  "version": "star-pointgoal-robustness-a100-interpreter-repair-v1"
+}

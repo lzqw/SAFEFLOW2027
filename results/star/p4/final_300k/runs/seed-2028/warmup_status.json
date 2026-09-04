@@ -1,0 +1,20 @@
+{
+  "boundary_samples": 4,
+  "conditions": {
+    "boundary_samples": false,
+    "calibration": false,
+    "ensemble_disagreement": true,
+    "minimum_steps": true,
+    "td_error": true,
+    "valid_gradient": true
+  },
+  "ema": {
+    "calibration_error": 0.3902863792501496,
+    "cost_td_error": 0.0665685590382091,
+    "ensemble_disagreement": 0.4858018504711646,
+    "valid_gradient_rate": 0.6103590647786337
+  },
+  "env_steps": 300000,
+  "geometry_activation_step": null,
+  "stage": "W2"
+}

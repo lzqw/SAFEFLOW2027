@@ -1,0 +1,31 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "point_robustness",
+  "logs_copied": false,
+  "portable_bytes": 837,
+  "portable_file_count": 2,
+  "portable_files": [
+    {
+      "bytes": 633,
+      "path": "queue_identity.json",
+      "sha256": "48d62c7684c7dd1a38eb0fa541d4964a8d8f7b92bb9ca9316e5be1475907119a"
+    },
+    {
+      "bytes": 204,
+      "path": "queue_state.json",
+      "sha256": "cde14522de00762fc8ea15a26a438d9390d926d81167b680d852fab653fbf5f5"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/point-robustness-enhanced-v1",
+  "remote_state_payload": {
+    "finished_at_utc": "2026-08-25T15:16:02.132497+00:00",
+    "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "retraining": false,
+    "state": "screen_not_passed"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-08-25T15:17:02.065833+00:00",
+  "status": "complete",
+  "terminal_state": "screen_not_passed"
+}

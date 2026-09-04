@@ -9,9 +9,12 @@ on:
     paths:
       - setup.py
       - pyproject.toml
+      - Makefile
+      - configs/**
+      - scripts/**
       - tests/**
       - omnisafe/**
-      - .github/workflows/tests.yml
+      - .github/workflows/test.yml
   # Allow to trigger the workflow manually
   workflow_dispatch:
 
@@ -34,13 +37,14 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: "recursive"
           fetch-depth: 1
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python-version }}
           update-environment: true
@@ -62,10 +66,3 @@ jobs:
       - name: Test with pytest
         run: |
           make test
-
-      - name: Upload coverage reports to Codecov
-        if: ${{ matrix.python-version == '3.8'}}
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -t ${CODECOV_TOKEN=634594d3-0416-4632-ab6a-3bf34a8c0af3}

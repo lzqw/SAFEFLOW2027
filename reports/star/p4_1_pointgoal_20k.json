@@ -1,0 +1,243 @@
+{
+  "captured_at_utc": "2026-08-04T15:59:23Z",
+  "estimated_training_cost_cny": 1.9442878304693434,
+  "final_p4_verdict": null,
+  "promotion_decision": "continue_to_100k_minimum_mechanism_test",
+  "scope": "PointGoal 20k checks labels, probability head, checkpoint evaluation, and mechanism rendering only",
+  "scope_verdict": "passed",
+  "schema_version": 2,
+  "seeds": [
+    {
+      "counterfactual": {
+        "dangerous_normal_velocity": 0.07079906761646271,
+        "directional_vn": 0.9942338466644287,
+        "tangent_preservation_ratio": 1,
+        "valid_gradient_rate": 0.083984375
+      },
+      "end_to_end_fps": 12.947762624341225,
+      "estimated_cost_cny": 0.6350303493180208,
+      "geometry_activation_step": null,
+      "mechanism_visualization": {
+        "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 2
+      },
+      "seed": 2027,
+      "steps": 20000,
+      "warmup_stage": "W2",
+      "replay_risk_metrics": {
+        "labeled_count": 20000,
+        "negative_labels": 16739,
+        "positive_labels": 3261,
+        "resident_boundary_count": 0,
+        "replay_auroc": 1,
+        "replay_brier_skill": 0.9998906850814819
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    },
+    {
+      "counterfactual": {
+        "dangerous_normal_velocity": 0.22799700498580933,
+        "directional_vn": 0.9466197490692139,
+        "tangent_preservation_ratio": 1,
+        "valid_gradient_rate": 0.482421875
+      },
+      "end_to_end_fps": 12.772716958955742,
+      "estimated_cost_cny": 0.6437332204764088,
+      "geometry_activation_step": null,
+      "mechanism_visualization": {
+        "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 2
+      },
+      "seed": 2028,
+      "steps": 20000,
+      "warmup_stage": "W2",
+      "replay_risk_metrics": {
+        "labeled_count": 20000,
+        "negative_labels": 14108,
+        "positive_labels": 5892,
+        "resident_boundary_count": 95,
+        "replay_auroc": 0.9999971729097481,
+        "replay_brier_skill": 0.9649352431297302
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    },
+    {
+      "counterfactual": {
+        "dangerous_normal_velocity": 0.07947327941656113,
+        "directional_vn": 0.6635370254516602,
+        "tangent_preservation_ratio": 1,
+        "valid_gradient_rate": 0.5234375
+      },
+      "end_to_end_fps": 12.354504122635586,
+      "estimated_cost_cny": 0.6655242606749138,
+      "geometry_activation_step": 12000,
+      "mechanism_visualization": {
+        "fixed_budget_strata_rows": 12,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 2
+      },
+      "seed": 2029,
+      "steps": 20000,
+      "warmup_stage": "W3",
+      "replay_risk_metrics": {
+        "labeled_count": 20000,
+        "negative_labels": 13622,
+        "positive_labels": 6378,
+        "resident_boundary_count": 11,
+        "replay_auroc": 0.965518191548092,
+        "replay_brier_skill": 0.9377163052558899
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    }
+  ],
+  "mechanism_source_commit": "267d1a189180f1ba23ad1770caf3280dd0c356ec",
+  "training_source_commit": "e71e7a1d78002203cfba430f3ba5948b3a1b1fdd",
+  "external_evaluation": {
+    "analysis_source_commit": "25ebf09dc79251030bc43b22ee6bdf9e5e9c3e10",
+    "episodes_per_checkpoint_per_seed": 20,
+    "mode": "fixed-random-flow",
+    "results": [
+      {
+        "checkpoints": [
+          {
+            "goal_met_total": 2,
+            "goals_per_episode_mean": 0.1,
+            "mean_action_norm": 0.7786159000469838,
+            "mean_cost": 77.3,
+            "mean_min_goal_distance": 1.07272796999784,
+            "mean_return": 0.03893223329509965,
+            "mean_start_end_displacement": 0.9307516416246886,
+            "milestone": 0,
+            "stall_ratio": 0,
+            "step_stall_ratio": 0.11986986986986987,
+            "external_auroc": 0.51808961671568,
+            "external_brier_score": 0.24954625964164734,
+            "external_brier_skill": -0.11704611778259277
+          },
+          {
+            "goal_met_total": 3,
+            "goals_per_episode_mean": 0.15,
+            "mean_action_norm": 0.5417287118434236,
+            "mean_cost": 87.6,
+            "mean_min_goal_distance": 1.1716357958757304,
+            "mean_return": -0.033274983258983946,
+            "mean_start_end_displacement": 1.1367025228028318,
+            "milestone": 20000,
+            "stall_ratio": 0.05,
+            "step_stall_ratio": 0.21566566566566567,
+            "external_auroc": 0.7532469328334824,
+            "external_brier_score": 0.17837895452976227,
+            "external_brier_skill": -0.1269700527191162
+          }
+        ],
+        "seed": 2027
+      },
+      {
+        "checkpoints": [
+          {
+            "goal_met_total": 3,
+            "goals_per_episode_mean": 0.15,
+            "mean_action_norm": 0.8832656748628244,
+            "mean_cost": 17.45,
+            "mean_min_goal_distance": 1.0861854034859386,
+            "mean_return": -3.310983299403398,
+            "mean_start_end_displacement": 4.402720971338905,
+            "milestone": 0,
+            "stall_ratio": 0,
+            "step_stall_ratio": 0.0012012012012012011,
+            "external_auroc": 0.5312578227213596,
+            "external_brier_score": 0.2616663873195648,
+            "external_brier_skill": -0.20033323764801025
+          },
+          {
+            "goal_met_total": 2,
+            "goals_per_episode_mean": 0.1,
+            "mean_action_norm": 0.5849940472436603,
+            "mean_cost": 36.65,
+            "mean_min_goal_distance": 1.2548047828860434,
+            "mean_return": -0.2933023802770066,
+            "mean_start_end_displacement": 1.1750188477465824,
+            "milestone": 20000,
+            "stall_ratio": 0.1,
+            "step_stall_ratio": 0.24124124124124124,
+            "external_auroc": 0.6489300913726651,
+            "external_brier_score": 0.30444005131721497,
+            "external_brier_skill": -0.705828070640564
+          }
+        ],
+        "seed": 2028
+      },
+      {
+        "checkpoints": [
+          {
+            "goal_met_total": 0,
+            "goals_per_episode_mean": 0,
+            "mean_action_norm": 0.7918745708407369,
+            "mean_cost": 39.3,
+            "mean_min_goal_distance": 1.2155991244173372,
+            "mean_return": -0.7556809977584671,
+            "mean_start_end_displacement": 1.673212888218924,
+            "milestone": 0,
+            "stall_ratio": 0.05,
+            "step_stall_ratio": 0.0509009009009009,
+            "external_auroc": 0.4888469328684622,
+            "external_brier_score": 0.25695690512657166,
+            "external_brier_skill": -0.6138652563095093
+          },
+          {
+            "goal_met_total": 4,
+            "goals_per_episode_mean": 0.2,
+            "mean_action_norm": 0.49683169448942643,
+            "mean_cost": 120.7,
+            "mean_min_goal_distance": 0.9191194861095455,
+            "mean_return": 0.368372949769331,
+            "mean_start_end_displacement": 1.2404743127438167,
+            "milestone": 20000,
+            "stall_ratio": 0.05,
+            "step_stall_ratio": 0.23648648648648649,
+            "external_auroc": 0.6045040031181903,
+            "external_brier_score": 0.29573142528533936,
+            "external_brier_skill": -0.48145556449890137
+          }
+        ],
+        "seed": 2029
+      }
+    ],
+    "tier": "development"
+  },
+  "risk_metric_namespaces": {
+    "replay": {
+      "available": true,
+      "source": "full replay checkpoint audit"
+    },
+    "held_out": {
+      "available": false,
+      "source": null,
+      "reason": "P4.1 did not implement an episode-separated held-out split"
+    },
+    "external": {
+      "available": true,
+      "source": "fixed-random-flow checkpoint evaluation"
+    }
+  }
+}

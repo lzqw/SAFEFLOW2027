@@ -1,0 +1,1280 @@
+{
+  "captured_at_utc": "2026-08-04T17:17:51.567286+00:00",
+  "continuations_not_launched": [
+    200000,
+    300000,
+    600000,
+    1000000
+  ],
+  "final_p4_verdict": null,
+  "formal_50_seed_evaluation_launched": false,
+  "four_environment_five_seed_main_experiment_launched": false,
+  "minimum_mechanism_assessment": {
+    "assessment_scope": "minimum-mechanism",
+    "criteria_by_seed": {
+      "2027": {
+        "completed_without_crash": true,
+        "cost_within_budget": true,
+        "dangerous_normal_velocity_reduced": false,
+        "external_auroc_above_065": true,
+        "external_brier_skill_positive": false,
+        "final_warmup_evidence_passed": false,
+        "mean_goal_met_positive": true,
+        "no_stall": false,
+        "replay_auroc_above_065": true,
+        "replay_brier_skill_positive": true,
+        "tangent_variance_preserved": true
+      },
+      "2028": {
+        "completed_without_crash": true,
+        "cost_within_budget": false,
+        "dangerous_normal_velocity_reduced": false,
+        "external_auroc_above_065": true,
+        "external_brier_skill_positive": false,
+        "final_warmup_evidence_passed": false,
+        "mean_goal_met_positive": false,
+        "no_stall": false,
+        "replay_auroc_above_065": true,
+        "replay_brier_skill_positive": true,
+        "tangent_variance_preserved": true
+      },
+      "2029": {
+        "completed_without_crash": true,
+        "cost_within_budget": true,
+        "dangerous_normal_velocity_reduced": false,
+        "external_auroc_above_065": false,
+        "external_brier_skill_positive": false,
+        "final_warmup_evidence_passed": false,
+        "mean_goal_met_positive": false,
+        "no_stall": false,
+        "replay_auroc_above_065": true,
+        "replay_brier_skill_positive": true,
+        "tangent_variance_preserved": true
+      }
+    },
+    "final_p4_verdict": null,
+    "observed_seed_count": 3,
+    "observed_seed_criteria_satisfied": {
+      "2027": false,
+      "2028": false,
+      "2029": false
+    },
+    "required_seed_count": 3,
+    "risk_metric_namespaces": {
+      "external": {
+        "available": true,
+        "criteria": [
+          "external_auroc_above_065",
+          "external_brier_skill_positive"
+        ],
+        "source": "fixed-random-flow checkpoint evaluation"
+      },
+      "held_out": {
+        "available": false,
+        "criteria": [],
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "source": null
+      },
+      "replay": {
+        "available": true,
+        "criteria": [
+          "replay_auroc_above_065",
+          "replay_brier_skill_positive"
+        ],
+        "source": "full replay checkpoint audit"
+      }
+    },
+    "seed_pass": null,
+    "status": "completed",
+    "target_steps": 100000,
+    "total_estimated_cost_cny": 9.655441903429395,
+    "total_training_seconds": 23438.66268698126
+  },
+  "promotion_decision": "stop_at_100k_do_not_launch_200k",
+  "provenance": {
+    "100k_evaluation_and_replay_audit_commit": "614dda284c7392628a6206139467a5c1b2366e2b",
+    "100k_mechanism_and_summary_commit": "ddc90a351d0d3a7d7e6c2401c0a7f475b6343ea8",
+    "50k_evaluation_and_20k_final_visual_invocation_commit": "267d1a189180f1ba23ad1770caf3280dd0c356ec",
+    "device": "cuda:0",
+    "evaluation_implementation_identical_across_invocation_commits": true,
+    "historical_0_20k_evaluation_invocation_commit": "25ebf09dc79251030bc43b22ee6bdf9e5e9c3e10",
+    "server_python": "/root/autodl-tmp/SAFE/envs/star-p0-p1/bin/python",
+    "training_source_commit": "e71e7a1d78002203cfba430f3ba5948b3a1b1fdd",
+    "p4_1_seal_summary_commit": "8bb5099acb1d4994960562d24599f56743a1521c"
+  },
+  "schema_version": 2,
+  "scope": "PointGoal 100k x 3 minimum mechanism test; not a final P4 conclusion",
+  "seeds": [
+    {
+      "checkpoint": {
+        "final_full": {
+          "bytes": 65268421,
+          "sha256": "2454d5ae8060701e62f35bcf3bdee27d936d12696305b306c470cdc2f6a22960"
+        },
+        "milestone_100000": {
+          "bytes": 8563572,
+          "sha256": "a3db5c43676a86ccccf5ebe39486cf841be6ec11226584f36251a7c249c95c56"
+        }
+      },
+      "counterfactual": {
+        "dangerous_normal_velocity_change": 0,
+        "directional_vn": 0.9898531436920166,
+        "directional_vt": 1,
+        "final_dangerous_normal_velocity": 0.08841372812464833,
+        "gate_boundary_mean": 0.7316624522209167,
+        "gate_interior_mean": 0.0011407312704250216,
+        "isotropic_vn": 1,
+        "isotropic_vt": 1,
+        "last_w2_dangerous_normal_velocity": 0.08841372812464833,
+        "replay_boundary_count": 0,
+        "vt_preservation_ratio": 1,
+        "warmup_stage": "W2"
+      },
+      "mechanism_visualization": {
+        "fixed_budget_strata": [
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 1.0200917017561771e-33,
+            "risk_stratum": "safe",
+            "sample_count": 40786,
+            "selected_action_0": 0.17390041053295135,
+            "selected_action_1": -0.1669340431690216,
+            "selected_predicted_risk": 2.9484463328307244e-35,
+            "selected_replay_index": 14938,
+            "selected_risk_ucb": 2.9484463328307244e-35
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": 0.9999082684516907,
+            "gradient_norm": 0.06748587638139725,
+            "normal_0": 0.18915407359600067,
+            "normal_1": -0.9819473624229431,
+            "probability_disagreement": 0.047202304005622864,
+            "risk_p95_minus_p05": 0.3460005521774292,
+            "risk_stratum": "boundary",
+            "sample_count": 212,
+            "selected_action_0": -0.023186685517430305,
+            "selected_action_1": -0.2804815471172333,
+            "selected_predicted_risk": 0.4762062430381775,
+            "selected_replay_index": 98961,
+            "selected_risk_ucb": 0.4998074769973755
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 9.284305946266613e-08,
+            "normal_0": 0.3169345259666443,
+            "normal_1": 0.9484474062919617,
+            "probability_disagreement": 5.960464477539063e-08,
+            "risk_p95_minus_p05": 7.152557373046875e-07,
+            "risk_stratum": "high_risk",
+            "sample_count": 9002,
+            "selected_action_0": -0.10990089178085327,
+            "selected_action_1": -0.30361390113830566,
+            "selected_predicted_risk": 0.9999999403953552,
+            "selected_replay_index": 0,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 4.1372416318213065e-33,
+            "risk_stratum": "safe",
+            "sample_count": 39964,
+            "selected_action_0": -0.04224718362092972,
+            "selected_action_1": 0.2696220874786377,
+            "selected_predicted_risk": 1.159340027870616e-33,
+            "selected_replay_index": 59627,
+            "selected_risk_ucb": 1.159340027870616e-33
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": 0.1836056113243103,
+            "gradient_norm": 0.8502434492111206,
+            "normal_0": -0.8684437870979309,
+            "normal_1": -0.4957875907421112,
+            "probability_disagreement": 0.0026206374168395996,
+            "risk_p95_minus_p05": 0.34932956099510193,
+            "risk_stratum": "boundary",
+            "sample_count": 308,
+            "selected_action_0": -0.9874836802482605,
+            "selected_action_1": -0.5964994430541992,
+            "selected_predicted_risk": 0.5002983808517456,
+            "selected_replay_index": 92023,
+            "selected_risk_ucb": 0.5016084313392639
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 9728,
+            "selected_action_0": 0.04115600138902664,
+            "selected_action_1": -0.6422172784805298,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 0,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 1.139133445283874e-32,
+            "risk_stratum": "safe",
+            "sample_count": 38140,
+            "selected_action_0": 0.06286828964948654,
+            "selected_action_1": 0.3083110749721527,
+            "selected_predicted_risk": 3.0191450171107404e-33,
+            "selected_replay_index": 59627,
+            "selected_risk_ucb": 3.0191450171107404e-33
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": 0.7735798358917236,
+            "gradient_norm": 0.5338894128799438,
+            "normal_0": 0.06896962225437164,
+            "normal_1": 0.9976187944412231,
+            "probability_disagreement": 0.333156555891037,
+            "risk_p95_minus_p05": 0.39839985966682434,
+            "risk_stratum": "boundary",
+            "sample_count": 953,
+            "selected_action_0": -0.17801010608673096,
+            "selected_action_1": 0.7880913019180298,
+            "selected_predicted_risk": 0.33321240544319153,
+            "selected_replay_index": 96325,
+            "selected_risk_ucb": 0.49979066848754883
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 10907,
+            "selected_action_0": -0.0038986578583717346,
+            "selected_action_1": -0.9116590023040771,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 0,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 2.248122954245643e-32,
+            "risk_stratum": "safe",
+            "sample_count": 36261,
+            "selected_action_0": 0.18227344751358032,
+            "selected_action_1": 0.3321923315525055,
+            "selected_predicted_risk": 4.6299938026646395e-33,
+            "selected_replay_index": 59627,
+            "selected_risk_ucb": 4.6299938026646395e-33
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": 0.09246939420700073,
+            "gradient_norm": 0.3305445909500122,
+            "normal_0": -0.8998116254806519,
+            "normal_1": -0.43627870082855225,
+            "probability_disagreement": 0.29868027567863464,
+            "risk_p95_minus_p05": 0.5253180265426636,
+            "risk_stratum": "boundary",
+            "sample_count": 1099,
+            "selected_action_0": 0.09920574724674225,
+            "selected_action_1": 0.5535509586334229,
+            "selected_predicted_risk": 0.3506431579589844,
+            "selected_replay_index": 8100,
+            "selected_risk_ucb": 0.4999833106994629
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 12640,
+            "selected_action_0": 0.0313575305044651,
+            "selected_action_1": -1,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 0,
+            "selected_risk_ucb": 1
+          }
+        ],
+        "fixed_budget_strata_rows": 12,
+        "populated_strata_rows": 12,
+        "representative_replay_index": 50001,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 4,
+        "undefined_normal_rows": 7
+      },
+      "reward_td_trend": {
+        "final": 0.09335055048465729,
+        "final_to_historical_min_ratio": 12.13910144019525,
+        "historical_min": 0.007690070879179984,
+        "historical_min_step": 5000,
+        "last_four_steps": [
+          85000,
+          90000,
+          95000,
+          100000
+        ],
+        "last_four_values": [
+          0.07754007973745465,
+          0.08494435245469213,
+          0.09152138519212603,
+          0.09335055048465729
+        ],
+        "mean_change_per_5k_last_three_intervals": 0.005270156915734213,
+        "strictly_rising_last_three_intervals": true
+      },
+      "seed": 2027,
+      "training": {
+        "boundary_samples": 0,
+        "end_to_end_fps": 13.14626839411389,
+        "estimated_cost_cny_all_segments": 3.136796470540265,
+        "geometry_activation_step": null,
+        "label_counts": {
+          "finalized": 100000,
+          "negative": 80602,
+          "positive": 19398
+        },
+        "run_steps": 80000,
+        "status": "completed",
+        "steps": 100000,
+        "training_seconds_all_segments": 7614.094738095999,
+        "updates": 98000,
+        "warmup_stage": "W2",
+        "replay_warmup_conditions": {
+          "boundary_samples": false,
+          "ensemble_disagreement": true,
+          "minimum_steps": true,
+          "negative_labels": true,
+          "positive_labels": true,
+          "td_error": true,
+          "valid_gradient": true,
+          "replay_auroc": true,
+          "replay_brier_skill": true,
+          "replay_calibration": true
+        }
+      },
+      "external_evaluation_100k": {
+        "cost_ci95_high": 4.43994597681008,
+        "cost_ci95_low": -1.4399459768100802,
+        "cost_cvar_20": 7.5,
+        "cost_std": 6.708203932499369,
+        "episodes": 20,
+        "goal_met_episode_rate": 0.1,
+        "goal_met_total": 2,
+        "goals_per_episode_mean": 0.1,
+        "mean_action_norm": 0.37239205493651095,
+        "mean_cost": 1.5,
+        "mean_min_goal_distance": 1.2407364345785852,
+        "mean_return": -0.2432431383134756,
+        "mean_start_end_displacement": 0.9332052616362221,
+        "return_ci95_high": 0.10760226005874096,
+        "return_ci95_low": -0.5940885366856922,
+        "return_std": 0.8005393635203689,
+        "stall_ratio": 0.25,
+        "step_stall_ratio": 0.3763763763763764,
+        "external_auroc": 0.7709425281250369,
+        "external_brier_score": 0.11435966938734055,
+        "external_brier_skill": -32.749942779541016,
+        "external_calibration_error": 0.13659371435642242,
+        "external_empirical_risk_mean": 0.0034000000450760126,
+        "external_predicted_risk_mean": 0.1376558542251587,
+        "external_predicted_cost_empirical_cost_spearman": 0.07569794014334523
+      },
+      "replay_risk_metrics": {
+        "labeled_count": 100000,
+        "negative_labels": 80602,
+        "positive_labels": 19398,
+        "resident_pool_sizes": {
+          "boundary": 0,
+          "failure": 4628,
+          "normal": 95372
+        },
+        "sample_count": 100000,
+        "sample_is_full_replay": true,
+        "replay_auroc": 0.9999993591373691,
+        "replay_brier_score": 0.00034617423079907894,
+        "replay_brier_skill": 0.9977859258651733,
+        "replay_calibration_ece": 0.0003643933400737296,
+        "replay_calibration_mae": 0.0006984875653870404,
+        "replay_predicted_cost_empirical_cost_spearman": 0.33434900314974564
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    },
+    {
+      "checkpoint": {
+        "final_full": {
+          "bytes": 65268357,
+          "sha256": "9b8e53170a2c9670e0685fa2cf454cd0af66ebafac95b42524d7aa777695fda4"
+        },
+        "milestone_100000": {
+          "bytes": 8563508,
+          "sha256": "3b7b1d31841bbcd9e0f98d9762d4240533f1306fb455324b8d787542010bb8e3"
+        }
+      },
+      "counterfactual": {
+        "dangerous_normal_velocity_change": 0,
+        "directional_vn": 0.9950627684593201,
+        "directional_vt": 1,
+        "final_dangerous_normal_velocity": 0.09797357972748577,
+        "gate_boundary_mean": 0.9728299379348755,
+        "gate_interior_mean": 0.0006550840334966779,
+        "isotropic_vn": 1,
+        "isotropic_vt": 1,
+        "last_w2_dangerous_normal_velocity": 0.09797357972748577,
+        "replay_boundary_count": 0,
+        "vt_preservation_ratio": 1,
+        "warmup_stage": "W2"
+      },
+      "mechanism_visualization": {
+        "fixed_budget_strata": [
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 3.231520936114203e-38,
+            "risk_stratum": "safe",
+            "sample_count": 41341,
+            "selected_action_0": -0.16952693462371826,
+            "selected_action_1": -0.4342094659805298,
+            "selected_predicted_risk": 1.833547192525843e-39,
+            "selected_replay_index": 51689,
+            "selected_risk_ucb": 1.833547192525843e-39
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": 0.3047691583633423,
+            "gradient_norm": 0.3193439543247223,
+            "normal_0": -0.4363180994987488,
+            "normal_1": -0.899792492389679,
+            "probability_disagreement": 0.2944430708885193,
+            "risk_p95_minus_p05": 0.689963698387146,
+            "risk_stratum": "boundary",
+            "sample_count": 239,
+            "selected_action_0": -0.3069291114807129,
+            "selected_action_1": -0.19931277632713318,
+            "selected_predicted_risk": 0.3529215455055237,
+            "selected_replay_index": 28690,
+            "selected_risk_ucb": 0.5001431703567505
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 8420,
+            "selected_action_0": -0.07985909283161163,
+            "selected_action_1": -0.5391883850097656,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 1042,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 3.27049858642417e-32,
+            "risk_stratum": "safe",
+            "sample_count": 37480,
+            "selected_action_0": -0.2368939220905304,
+            "selected_action_1": 0.09949199855327606,
+            "selected_predicted_risk": 3.316008584900224e-33,
+            "selected_replay_index": 16976,
+            "selected_risk_ucb": 3.316008584900224e-33
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": 0.24353641271591187,
+            "gradient_norm": 0.14685559272766113,
+            "normal_0": -0.8055688738822937,
+            "normal_1": -0.592502236366272,
+            "probability_disagreement": 0.33344805240631104,
+            "risk_p95_minus_p05": 0.1674690842628479,
+            "risk_stratum": "boundary",
+            "sample_count": 785,
+            "selected_action_0": 0.5848268270492554,
+            "selected_action_1": -0.3431798815727234,
+            "selected_predicted_risk": 0.33344823122024536,
+            "selected_replay_index": 30096,
+            "selected_risk_ucb": 0.5001722574234009
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 11735,
+            "selected_action_0": -0.6706406474113464,
+            "selected_action_1": -0.4288882315158844,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 1000,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 1.263214922740536e-28,
+            "risk_stratum": "safe",
+            "sample_count": 31201,
+            "selected_action_0": -0.4075298011302948,
+            "selected_action_1": 0.08927447348833084,
+            "selected_predicted_risk": 5.543756242997739e-30,
+            "selected_replay_index": 16976,
+            "selected_risk_ucb": 5.543756242997739e-30
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": 0.00012546777725219727,
+            "gradient_norm": 0.9601575136184692,
+            "normal_0": -0.7170231938362122,
+            "normal_1": -0.6970493197441101,
+            "probability_disagreement": 0.03712064027786255,
+            "risk_p95_minus_p05": 0.7586226463317871,
+            "risk_stratum": "boundary",
+            "sample_count": 1484,
+            "selected_action_0": -0.3357025682926178,
+            "selected_action_1": -0.5421772003173828,
+            "selected_predicted_risk": 0.4814857542514801,
+            "selected_replay_index": 86137,
+            "selected_risk_ucb": 0.5000458359718323
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 17315,
+            "selected_action_0": -0.3575308620929718,
+            "selected_action_1": -0.42997995018959045,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 1000,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 3.988208949563684e-26,
+            "risk_stratum": "safe",
+            "sample_count": 26454,
+            "selected_action_0": -0.4220067262649536,
+            "selected_action_1": 0.06711401045322418,
+            "selected_predicted_risk": 1.0352009229142472e-27,
+            "selected_replay_index": 16978,
+            "selected_risk_ucb": 1.0352009229142472e-27
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": 0.03921175003051758,
+            "gradient_norm": 0.4212045669555664,
+            "normal_0": 0.34249013662338257,
+            "normal_1": 0.9395214915275574,
+            "probability_disagreement": 0.08470176160335541,
+            "risk_p95_minus_p05": 0.7323146462440491,
+            "risk_stratum": "boundary",
+            "sample_count": 1574,
+            "selected_action_0": -0.8826544284820557,
+            "selected_action_1": 1,
+            "selected_predicted_risk": 0.4577580690383911,
+            "selected_replay_index": 58699,
+            "selected_risk_ucb": 0.5001089572906494
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 0,
+            "risk_stratum": "high_risk",
+            "sample_count": 21972,
+            "selected_action_0": 0.9736509323120117,
+            "selected_action_1": 1,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 112,
+            "selected_risk_ucb": 1
+          }
+        ],
+        "fixed_budget_strata_rows": 12,
+        "populated_strata_rows": 12,
+        "representative_replay_index": 50001,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 4,
+        "undefined_normal_rows": 8
+      },
+      "reward_td_trend": {
+        "final": 0.2206932524114847,
+        "final_to_historical_min_ratio": 25.08547951695775,
+        "historical_min": 0.008797649343808491,
+        "historical_min_step": 5000,
+        "last_four_steps": [
+          85000,
+          90000,
+          95000,
+          100000
+        ],
+        "last_four_values": [
+          0.17317524958103894,
+          0.18561019156724215,
+          0.20714768077880144,
+          0.2206932524114847
+        ],
+        "mean_change_per_5k_last_three_intervals": 0.01583933427681526,
+        "strictly_rising_last_three_intervals": true
+      },
+      "seed": 2028,
+      "training": {
+        "boundary_samples": 0,
+        "end_to_end_fps": 13.121377426197018,
+        "estimated_cost_cny_all_segments": 3.1502451376799905,
+        "geometry_activation_step": null,
+        "label_counts": {
+          "finalized": 100000,
+          "negative": 79067,
+          "positive": 20933
+        },
+        "run_steps": 80000,
+        "status": "completed",
+        "steps": 100000,
+        "training_seconds_all_segments": 7646.857304386795,
+        "updates": 98000,
+        "warmup_stage": "W2",
+        "replay_warmup_conditions": {
+          "boundary_samples": false,
+          "ensemble_disagreement": true,
+          "minimum_steps": true,
+          "negative_labels": true,
+          "positive_labels": true,
+          "td_error": true,
+          "valid_gradient": false,
+          "replay_auroc": true,
+          "replay_brier_skill": true,
+          "replay_calibration": true
+        }
+      },
+      "external_evaluation_100k": {
+        "cost_ci95_high": 31.238986482794715,
+        "cost_ci95_low": -7.338986482794716,
+        "cost_cvar_20": 59.75,
+        "cost_std": 44.01252812074021,
+        "episodes": 20,
+        "goal_met_episode_rate": 0,
+        "goal_met_total": 0,
+        "goals_per_episode_mean": 0,
+        "mean_action_norm": 0.35958825845755055,
+        "mean_cost": 11.95,
+        "mean_min_goal_distance": 1.301792851984756,
+        "mean_return": -0.3543359247124771,
+        "mean_start_end_displacement": 1.145359147390368,
+        "return_ci95_high": 0.03796205276475845,
+        "return_ci95_low": -0.7466339021897126,
+        "return_std": 0.8951235349160098,
+        "stall_ratio": 0.15,
+        "step_stall_ratio": 0.39369369369369367,
+        "external_auroc": 0.8597346536820221,
+        "external_brier_score": 0.1342412531375885,
+        "external_brier_skill": -2.672208786010742,
+        "external_calibration_error": 0.15155385434627533,
+        "external_empirical_risk_mean": 0.03799999877810478,
+        "external_predicted_risk_mean": 0.15683037042617798,
+        "external_predicted_cost_empirical_cost_spearman": 0.17765917088478322
+      },
+      "replay_risk_metrics": {
+        "labeled_count": 100000,
+        "negative_labels": 79067,
+        "positive_labels": 20933,
+        "resident_pool_sizes": {
+          "boundary": 0,
+          "failure": 5885,
+          "normal": 94115
+        },
+        "sample_count": 100000,
+        "sample_is_full_replay": true,
+        "replay_auroc": 0.9999999993958104,
+        "replay_brier_score": 1.595909270690754e-05,
+        "replay_brier_skill": 0.9999035596847534,
+        "replay_calibration_ece": 6.28581655384187e-05,
+        "replay_calibration_mae": 6.888635834911838e-05,
+        "replay_predicted_cost_empirical_cost_spearman": 0.4247797172816446
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    },
+    {
+      "checkpoint": {
+        "final_full": {
+          "bytes": 65268421,
+          "sha256": "0c591459cb5970f10e781a0d07fef5921127780a4cf10848c302c338b5469e51"
+        },
+        "milestone_100000": {
+          "bytes": 8563572,
+          "sha256": "bf142b3848c9fbcabadbc24310188f0c3b29f3625a9fadadda7bdacc36fb93a1"
+        }
+      },
+      "counterfactual": {
+        "dangerous_normal_velocity_change": 0.07580964242492814,
+        "directional_vn": 0.9333223104476929,
+        "directional_vt": 1,
+        "final_dangerous_normal_velocity": 0.11658085528239608,
+        "gate_boundary_mean": null,
+        "gate_interior_mean": 0.015448713675141335,
+        "isotropic_vn": 1,
+        "isotropic_vt": 1,
+        "last_w2_dangerous_normal_velocity": 0.04077121285746793,
+        "replay_boundary_count": 5,
+        "vt_preservation_ratio": 1,
+        "warmup_stage": "W3"
+      },
+      "mechanism_visualization": {
+        "fixed_budget_strata": [
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 6.483745598763743e-23,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 1.2967491197527487e-22,
+            "risk_p95_minus_p05": 1.9483940445066797e-22,
+            "risk_stratum": "safe",
+            "sample_count": 40150,
+            "selected_action_0": -0.23654790222644806,
+            "selected_action_1": 0.26042601466178894,
+            "selected_predicted_risk": 1.3785151205587583e-22,
+            "selected_replay_index": 1964,
+            "selected_risk_ucb": 2.0268896173262602e-22
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": 0.004443347454071045,
+            "gradient_norm": 0.7380751967430115,
+            "normal_0": -0.8171924948692322,
+            "normal_1": 0.5763648152351379,
+            "probability_disagreement": 0.07005156576633453,
+            "risk_p95_minus_p05": 0.7662155032157898,
+            "risk_stratum": "boundary",
+            "sample_count": 83,
+            "selected_action_0": -0.41885820031166077,
+            "selected_action_1": 0.026247819885611534,
+            "selected_predicted_risk": 0.46339869499206543,
+            "selected_replay_index": 93939,
+            "selected_risk_ucb": 0.49842458963394165
+          },
+          {
+            "budget_ratio": 1,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 9.5367431640625e-07,
+            "risk_stratum": "high_risk",
+            "sample_count": 9767,
+            "selected_action_0": -0.6845254898071289,
+            "selected_action_1": -0.1494414210319519,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 2016,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 1.1230175883983287e-22,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 1.4973568266036865e-22,
+            "risk_p95_minus_p05": 2.9126461182089517e-22,
+            "risk_stratum": "safe",
+            "sample_count": 40364,
+            "selected_action_0": -0.25658056139945984,
+            "selected_action_1": 0.27459263801574707,
+            "selected_predicted_risk": 1.6615062854234404e-22,
+            "selected_replay_index": 1964,
+            "selected_risk_ucb": 2.410184635616411e-22
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": 0.10459882020950317,
+            "gradient_norm": 0.5263919830322266,
+            "normal_0": -0.5330857038497925,
+            "normal_1": 0.8460611701011658,
+            "probability_disagreement": 0.26922672986984253,
+            "risk_p95_minus_p05": 0.7072876691818237,
+            "risk_stratum": "boundary",
+            "sample_count": 75,
+            "selected_action_0": 0.5266190767288208,
+            "selected_action_1": -0.5701541900634766,
+            "selected_predicted_risk": 0.3674306869506836,
+            "selected_replay_index": 48186,
+            "selected_risk_ucb": 0.5020439624786377
+          },
+          {
+            "budget_ratio": 0.5,
+            "ensemble_disagreement": null,
+            "gradient_norm": 2.506522207568196e-07,
+            "normal_0": -0.7115548849105835,
+            "normal_1": 0.7026305794715881,
+            "probability_disagreement": 5.960464477539063e-08,
+            "risk_p95_minus_p05": 5.9604644775390625e-06,
+            "risk_stratum": "high_risk",
+            "sample_count": 9561,
+            "selected_action_0": -0.7298232316970825,
+            "selected_action_1": -0.23264001309871674,
+            "selected_predicted_risk": 0.9999999403953552,
+            "selected_replay_index": 2016,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 1.2415427403392098e-22,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 1.2967491197527487e-22,
+            "risk_p95_minus_p05": 2.8268013909785873e-22,
+            "risk_stratum": "safe",
+            "sample_count": 40376,
+            "selected_action_0": -0.29479479789733887,
+            "selected_action_1": 0.24418357014656067,
+            "selected_predicted_risk": 1.5747511495995785e-22,
+            "selected_replay_index": 1964,
+            "selected_risk_ucb": 2.2231256463670805e-22
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": 0.10709774494171143,
+            "gradient_norm": 0.4822601079940796,
+            "normal_0": -0.8516013622283936,
+            "normal_1": 0.5241899490356445,
+            "probability_disagreement": 0.20301690697669983,
+            "risk_p95_minus_p05": 0.8045865297317505,
+            "risk_stratum": "boundary",
+            "sample_count": 115,
+            "selected_action_0": 0.4701601564884186,
+            "selected_action_1": 0.22921434044837952,
+            "selected_predicted_risk": 0.3990049958229065,
+            "selected_replay_index": 93281,
+            "selected_risk_ucb": 0.5005133152008057
+          },
+          {
+            "budget_ratio": 0.2,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 2.086162567138672e-06,
+            "risk_stratum": "high_risk",
+            "sample_count": 9509,
+            "selected_action_0": -0.4292541742324829,
+            "selected_action_1": -0.3386858403682709,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 2046,
+            "selected_risk_ucb": 1
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 1.9451236165202506e-22,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 9.169400462483332e-23,
+            "risk_p95_minus_p05": 2.9067416521055534e-22,
+            "risk_stratum": "safe",
+            "sample_count": 40360,
+            "selected_action_0": -0.4829135537147522,
+            "selected_action_1": -0.597698450088501,
+            "selected_predicted_risk": 8.833750244731378e-23,
+            "selected_replay_index": 19988,
+            "selected_risk_ucb": 1.3418450791517406e-22
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": 0.3413137197494507,
+            "gradient_norm": 0.23585064709186554,
+            "normal_0": 0.5804956555366516,
+            "normal_1": -0.8142633438110352,
+            "probability_disagreement": 0.2171907275915146,
+            "risk_p95_minus_p05": 0.20853888988494873,
+            "risk_stratum": "boundary",
+            "sample_count": 202,
+            "selected_action_0": 1,
+            "selected_action_1": -1,
+            "selected_predicted_risk": 0.39095813035964966,
+            "selected_replay_index": 77573,
+            "selected_risk_ucb": 0.49955353140830994
+          },
+          {
+            "budget_ratio": 0,
+            "ensemble_disagreement": null,
+            "gradient_norm": 0,
+            "normal_0": null,
+            "normal_1": null,
+            "probability_disagreement": 0,
+            "risk_p95_minus_p05": 3.933906555175781e-06,
+            "risk_stratum": "high_risk",
+            "sample_count": 9438,
+            "selected_action_0": -0.45184364914894104,
+            "selected_action_1": -0.5211039781570435,
+            "selected_predicted_risk": 1,
+            "selected_replay_index": 2046,
+            "selected_risk_ucb": 1
+          }
+        ],
+        "fixed_budget_strata_rows": 12,
+        "populated_strata_rows": 12,
+        "representative_replay_index": 50001,
+        "representative_selection": "deterministic_time_stratified_midpoint_independent_of_predicted_risk",
+        "trajectory_files": 4,
+        "undefined_normal_rows": 7
+      },
+      "reward_td_trend": {
+        "final": 0.04279443640373647,
+        "final_to_historical_min_ratio": 6.045574014212902,
+        "historical_min": 0.007078639067709446,
+        "historical_min_step": 5000,
+        "last_four_steps": [
+          85000,
+          90000,
+          95000,
+          100000
+        ],
+        "last_four_values": [
+          0.02749841365404427,
+          0.032997321964427825,
+          0.03576164515167475,
+          0.04279443640373647
+        ],
+        "mean_change_per_5k_last_three_intervals": 0.0050986742498974015,
+        "strictly_rising_last_three_intervals": true
+      },
+      "seed": 2029,
+      "training": {
+        "boundary_samples": 5,
+        "end_to_end_fps": 12.168108514290955,
+        "estimated_cost_cny_all_segments": 3.3684002952091396,
+        "geometry_activation_step": 12000,
+        "label_counts": {
+          "finalized": 100000,
+          "negative": 81846,
+          "positive": 18154
+        },
+        "run_steps": 80000,
+        "status": "completed",
+        "steps": 100000,
+        "training_seconds_all_segments": 8177.710644498467,
+        "updates": 98000,
+        "warmup_stage": "W3",
+        "replay_warmup_conditions": {
+          "boundary_samples": false,
+          "ensemble_disagreement": true,
+          "minimum_steps": true,
+          "negative_labels": true,
+          "positive_labels": true,
+          "td_error": true,
+          "valid_gradient": true,
+          "replay_auroc": true,
+          "replay_brier_skill": true,
+          "replay_calibration": true
+        }
+      },
+      "external_evaluation_100k": {
+        "cost_ci95_high": 19.071620475012836,
+        "cost_ci95_low": -3.7716204750128366,
+        "cost_cvar_20": 38.25,
+        "cost_std": 26.061213365944095,
+        "episodes": 20,
+        "goal_met_episode_rate": 0,
+        "goal_met_total": 0,
+        "goals_per_episode_mean": 0,
+        "mean_action_norm": 0.41490121681174497,
+        "mean_cost": 7.65,
+        "mean_min_goal_distance": 1.2174076170130563,
+        "mean_return": -0.17456989274531204,
+        "mean_start_end_displacement": 0.8132893450186234,
+        "return_ci95_high": 0.13828665120670003,
+        "return_ci95_low": -0.4874264366973241,
+        "return_std": 0.7138585249529654,
+        "stall_ratio": 0.1,
+        "step_stall_ratio": 0.4241741741741742,
+        "external_auroc": 0.5556200746873032,
+        "external_brier_score": 0.22772619128227234,
+        "external_brier_skill": -2.0835514068603516,
+        "external_calibration_error": 0.2738340198993683,
+        "external_empirical_risk_mean": 0.08030000329017639,
+        "external_predicted_risk_mean": 0.24110141396522522,
+        "external_predicted_cost_empirical_cost_spearman": -0.07156159538904147
+      },
+      "replay_risk_metrics": {
+        "labeled_count": 100000,
+        "negative_labels": 81846,
+        "positive_labels": 18154,
+        "resident_pool_sizes": {
+          "boundary": 5,
+          "failure": 2629,
+          "normal": 97366
+        },
+        "sample_count": 100000,
+        "sample_is_full_replay": true,
+        "replay_auroc": 0.9991189537243895,
+        "replay_brier_score": 0.008890312165021896,
+        "replay_brier_skill": 0.9401661157608032,
+        "replay_calibration_ece": 0.008981027041903154,
+        "replay_calibration_mae": 0.00936236884444952,
+        "replay_predicted_cost_empirical_cost_spearman": 0.22387290181714567
+      },
+      "held_out_risk_metrics": {
+        "available": false,
+        "reason": "P4.1 did not implement an episode-separated held-out split",
+        "held_out_auroc": null,
+        "held_out_brier_score": null,
+        "held_out_brier_skill": null
+      }
+    }
+  ],
+  "server_artifacts": {
+    "combined_evaluation": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k/evaluation-combined",
+    "diagnostic_figures": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k/figures-100k",
+    "mechanism_visualizations": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k/mechanism-100k",
+    "replay_audits": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k/audit-100k",
+    "root": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k",
+    "scoped_summary": "/root/autodl-tmp/SAFE/artifacts/p4.1/promotion-e71e7a1/pointgoal-100k/summary-100k"
+  },
+  "status": "completed",
+  "stop_reasons": [
+    "only seed 2029 entered W3; seeds 2027 and 2028 remained in W2",
+    "resident boundary support ended at 0/0/5 versus the W3 threshold of 128",
+    "100k goal completions fell to 2/60 from 10/60 at 50k",
+    "all seeds had nonzero stall and two seeds completed zero goals at 100k",
+    "all external fixed-random-flow Brier skill scores were negative",
+    "external fixed-random-flow AUROC was below 0.65 for seed 2029",
+    "reward TD rose strictly across 85k/90k/95k/100k for every seed",
+    "dangerous normal velocity did not decrease from the final W2 reference for any seed",
+    "seed 2028 mean external cost remained above the budget of 10"
+  ],
+  "validation": {
+    "four_environment_5k_gate": "passed",
+    "new_test_functions_since_baaad93": 37,
+    "pointgoal_100k_artifact_integrity": "passed",
+    "pointgoal_20k_scope_gate": "passed",
+    "server_star_tests_passed": 78
+  },
+  "external_evaluation": {
+    "center_flow_diagnostic_retained": true,
+    "episodes_per_checkpoint_per_seed": 20,
+    "fixed_eval_seeds": [
+      12027,
+      12028,
+      12029,
+      12030,
+      12031,
+      12032,
+      12033,
+      12034,
+      12035,
+      12036,
+      12037,
+      12038,
+      12039,
+      12040,
+      12041,
+      12042,
+      12043,
+      12044,
+      12045,
+      12046
+    ],
+    "mode": "fixed-random-flow",
+    "pooled_by_milestone": [
+      {
+        "cost": {
+          "ci95_high": 67.2829232625064,
+          "ci95_low": 22.083743404160263,
+          "mean": 44.68333333333333,
+          "std": 89.31575898048388
+        },
+        "cost_cvar_20": 182.25,
+        "episodes": 60,
+        "goal_met_episode_rate": 0.08333333333333333,
+        "goal_met_total": 5,
+        "goals_per_episode_mean": 0.08333333333333333,
+        "mean_action_norm": 0.8179187152501817,
+        "mean_min_goal_distance": 1.124837499300372,
+        "mean_start_end_displacement": 2.3355618337275055,
+        "milestone": 0,
+        "return": {
+          "ci95_high": -0.8465845130200647,
+          "ci95_low": -1.8385701962244454,
+          "mean": -1.342577354622255,
+          "std": 1.9602115452281357
+        },
+        "stall_ratio": 0.016666666666666666,
+        "step_stall_ratio": 0.05732399065732399
+      },
+      {
+        "cost": {
+          "ci95_high": 130.03870152850897,
+          "ci95_low": 33.26129847149106,
+          "mean": 81.65,
+          "std": 191.2368152096385
+        },
+        "cost_cvar_20": 364.0833333333333,
+        "episodes": 60,
+        "goal_met_episode_rate": 0.15,
+        "goal_met_total": 9,
+        "goals_per_episode_mean": 0.15,
+        "mean_action_norm": 0.5411848178588368,
+        "mean_min_goal_distance": 1.1151866882904398,
+        "mean_start_end_displacement": 1.1840652277644104,
+        "milestone": 20000,
+        "return": {
+          "ci95_high": 0.2835746042073196,
+          "ci95_low": -0.25571088005175935,
+          "mean": 0.013931862077780143,
+          "std": 1.0656541221480447
+        },
+        "stall_ratio": 0.06666666666666667,
+        "step_stall_ratio": 0.23113113113113115
+      },
+      {
+        "cost": {
+          "ci95_high": 84.85174177162625,
+          "ci95_low": 8.61492489504041,
+          "mean": 46.733333333333334,
+          "std": 150.64762641552892
+        },
+        "cost_cvar_20": 224.66666666666666,
+        "episodes": 60,
+        "goal_met_episode_rate": 0.11666666666666667,
+        "goal_met_total": 10,
+        "goals_per_episode_mean": 0.16666666666666666,
+        "mean_action_norm": 0.4111421944584736,
+        "mean_min_goal_distance": 1.0824533090921247,
+        "mean_start_end_displacement": 0.9265502341448042,
+        "milestone": 50000,
+        "return": {
+          "ci95_high": 0.44161492198747365,
+          "ci95_low": -0.08632687637707401,
+          "mean": 0.17764402280519984,
+          "std": 1.0432384518088584
+        },
+        "stall_ratio": 0.2,
+        "step_stall_ratio": 0.3875375375375375
+      },
+      {
+        "cost": {
+          "ci95_high": 14.521181082355325,
+          "ci95_low": -0.45451441568865825,
+          "mean": 7.033333333333333,
+          "std": 29.592696457332494
+        },
+        "cost_cvar_20": 35.166666666666664,
+        "episodes": 60,
+        "goal_met_episode_rate": 0.03333333333333333,
+        "goal_met_total": 2,
+        "goals_per_episode_mean": 0.03333333333333333,
+        "mean_action_norm": 0.3822938434019355,
+        "mean_min_goal_distance": 1.2533123011921325,
+        "mean_start_end_displacement": 0.9639512513484045,
+        "milestone": 100000,
+        "return": {
+          "ci95_high": -0.055895005151477495,
+          "ci95_low": -0.458870965362699,
+          "mean": -0.25738298525708825,
+          "std": 0.796299929555215
+        },
+        "stall_ratio": 0.16666666666666666,
+        "step_stall_ratio": 0.3980814147480814
+      }
+    ],
+    "tier": "development"
+  },
+  "risk_metric_namespaces": {
+    "external": {
+      "available": true,
+      "criteria": [
+        "external_auroc_above_065",
+        "external_brier_skill_positive"
+      ],
+      "source": "fixed-random-flow checkpoint evaluation"
+    },
+    "held_out": {
+      "available": false,
+      "criteria": [],
+      "reason": "P4.1 did not implement an episode-separated held-out split",
+      "source": null
+    },
+    "replay": {
+      "available": true,
+      "criteria": [
+        "replay_auroc_above_065",
+        "replay_brier_skill_positive"
+      ],
+      "source": "full replay checkpoint audit"
+    }
+  }
+}

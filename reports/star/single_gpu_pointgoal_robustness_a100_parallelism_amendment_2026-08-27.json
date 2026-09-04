@@ -1,0 +1,51 @@
+{
+  "version": "star-pointgoal-robustness-a100-parallelism-amendment-v1",
+  "status": "post_run_engineering_disclosure",
+  "recorded_after_terminal_result": true,
+  "runtime_change": {
+    "authorized_goal": "Use additional A100-node programs to reduce wall-clock time.",
+    "changed_at": "2026-08-27T22:26:48+08:00",
+    "original_maximum_concurrent_evaluators": 2,
+    "actual_maximum_concurrent_evaluators": 6,
+    "completed_evaluation_json_count_at_change": 0,
+    "implementation": "The original controller was SIGSTOP-paused while its C0/P47 seed-2027 children continued. Four additional CPU evaluators for seeds 2028 and 2029 were launched from the identical source and frozen protocol. After all four exited successfully, the original controller was resumed; it authenticated all six result files and ran the unchanged finalizer.",
+    "failure_behavior": "The launcher always resumed the original controller; failed or missing extra outputs would have been rerun by the original paired queue.",
+    "launcher_sha256": "f9a612759cf19e480ece29f0089638d7865bd9dca1bbd877bbb797e60ca53c57"
+  },
+  "scientific_identity": {
+    "evaluation_source_commit": "52ff54482b64f9816a4354cffb76f4213550124f",
+    "global_protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "robustness_protocol_sha256": "b01cee3668251b8a788d7399f03ee1f255d2127dd519e6c979473a480d960db9",
+    "environment": "SafetyPointGoal1-v0",
+    "arms": [
+      "C0",
+      "P47"
+    ],
+    "training_seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "evaluation_device": "cpu",
+    "retraining": false,
+    "checkpoint_or_condition_selection_changed": false,
+    "evaluation_seeds_changed": false,
+    "episode_counts_changed": false,
+    "metrics_or_finalizer_changed": false
+  },
+  "terminal_evidence": {
+    "finished_at_utc": "2026-08-27T16:16:59.100350+00:00",
+    "checkpoint_results": 6,
+    "episodes_per_checkpoint": 650,
+    "total_episodes": 3900,
+    "queue_identity_sha256": "d57511f4535625e7967178acf47c2afa9545e67a9c7d8fa5eb39a26b48a085f2",
+    "queue_state_sha256": "c96b29034805169a4d3a864d717d56f3a844adc1c9ba4cf3c48a113c8f480a16",
+    "final_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
+    "host_stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d",
+    "portable_file_count": 30,
+    "portable_bytes": 1434969,
+    "checkpoints_copied": false,
+    "logs_copied": false
+  },
+  "claim_boundary": "Concurrency is an engineering nuisance variable only. The robustness table remains an aggregate n=3 trend analysis, not a new selection gate and not an every-seed Pareto claim."
+}

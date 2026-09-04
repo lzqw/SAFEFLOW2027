@@ -1,0 +1,88 @@
+{
+  "a100_snapshot": {
+    "c0_2029_learner_pid": 302998,
+    "c0_2029_progress_step": 1585000,
+    "observed_at": "2026-09-02T19:01:17+08:00",
+    "p47_2029_learner_pid": 4125679,
+    "p47_2029_progress_step": 1825000,
+    "running_learners": 2
+  },
+  "c0_2027_recovery": {
+    "checkpoint": {
+      "bytes": 146466543,
+      "environment": "Ant-v4",
+      "format": "star-checkpoint",
+      "replay_capacity": 400000,
+      "replay_pointer": 100000,
+      "replay_size": 400000,
+      "seed": 2027,
+      "sha256": "750a3aa54244bf7edb6e581a61a964966c5b9d388465f1d80800418a66c23ad0",
+      "step": 500000,
+      "version": 1
+    },
+    "first_new_progress": {
+      "learner_alive": true,
+      "observed_at": "2026-09-02T19:08:57+08:00",
+      "step": 505000
+    },
+    "last_cloned_log_step_before_recovery": 585000,
+    "learner_pid": 17418,
+    "logged_but_not_replay_recoverable_steps": 85000,
+    "resume_argument_verified": true,
+    "run_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05",
+    "status": "running_verified",
+    "supervisor_pid": 17407
+  },
+  "c0_2029_handoff": {
+    "a100_source_progress_at_snapshot": 1585000,
+    "checkpoint": {
+      "bytes": 146459826,
+      "destination_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-05-00-handoff/checkpoints/latest_full.pt",
+      "seed": 2029,
+      "sha256": "c6fc86d37c11135abf78b2bea6efc23af51be72544ac486760ef8fd21bc85c0d",
+      "source_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress/C0-2029/step-1500000/latest_full.pt",
+      "step": 1500000,
+      "transfer_sha256_equal": true
+    },
+    "first_new_progress": {
+      "learner_alive": true,
+      "observed_at": "2026-09-02T19:22:05+08:00",
+      "step": 1505000
+    },
+    "launched_at": "2026-09-02T19:09:18+08:00",
+    "learner_pid": 18932,
+    "prior_matching_learner_absent": true,
+    "prior_passed_receipt_absent": true,
+    "resume_argument_verified": true,
+    "run_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29",
+    "status": "running_verified",
+    "supervisor_pid": 18922
+  },
+  "engineering_disclosure": {
+    "a100_c0_2029_continues_as_fallback_race": true,
+    "duplicate_p47_2029_started_on_seeta": false,
+    "first_valid_frozen_identity_terminal_receipt_will_be_accepted": true,
+    "tmux_attempt": {
+      "failure": "tmux: command not found",
+      "learner_created": false,
+      "scientific_steps": 0
+    }
+  },
+  "identity": {
+    "c0_config_sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "controller_commit": "8d8e4b9927847d2d8e8baf1e247278ca515a8e5f",
+    "training_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+  },
+  "kind": "ant_seeta_recovery_and_c0_2029_checkpoint_handoff",
+  "observed_at": "2026-09-02T19:22:05+08:00",
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_read_or_run_for_this_event": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "running_verified"
+}

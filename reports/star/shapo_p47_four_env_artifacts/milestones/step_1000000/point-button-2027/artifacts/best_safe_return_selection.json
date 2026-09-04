@@ -1,0 +1,24 @@
+{
+  "last_candidate": {
+    "constraint_satisfied": false,
+    "cost_cvar_20": 79.7,
+    "failure_rate": 0.0,
+    "formal_cost_budget": 10.0,
+    "mean_cost": 24.38,
+    "mean_return": -0.8526426159343262,
+    "milestone": 1000000,
+    "selection_status": "provisional_minimum_cost_until_a_safe_checkpoint_exists"
+  },
+  "last_candidate_selected": true,
+  "selected": {
+    "constraint_satisfied": false,
+    "cost_cvar_20": 79.7,
+    "failure_rate": 0.0,
+    "formal_cost_budget": 10.0,
+    "mean_cost": 24.38,
+    "mean_return": -0.8526426159343262,
+    "milestone": 1000000,
+    "selection_status": "provisional_minimum_cost_until_a_safe_checkpoint_exists"
+  },
+  "selection_rule": "feasible_first;maximum_mean_return;minimum_mean_cost;earliest_milestone;before_feasibility_minimum_mean_cost_then_maximum_mean_return"
+}

@@ -1,0 +1,997 @@
+# Copyright 2026 SAFEFLOW2027 Authors. All Rights Reserved.
+"""Locked protocol and compatibility tests for the P4.7 SHAPO four-environment matrix."""
+
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+import torch
+import yaml
+from scripts.star.finalize_shapo_p47_formal import main as finalize_formal
+from scripts.star.finalize_shapo_p47_formal import verify_artifact_identity
+from scripts.star.materialize_shapo_p47_config import canonical_method_sha256, materialize
+from scripts.star.plot_shapo_p47_formal import trajectory_coordinate_contract
+from scripts.star.validate_shapo_p47_run import (
+    undefined,
+    validate_checkpoint_artifact,
+    validate_checkpoint_training_costs,
+    validate_evaluation_artifact,
+    validate_high_risk_geometry,
+    validate_trajectory_artifact,
+)
+from torch import nn
+
+from omnisafe.algorithms.off_policy.star import (
+    STAR,
+    best_safe_checkpoint_candidate_is_better,
+    cost_geometry_contract,
+)
+from omnisafe.models.safety.distributional_backend import compute_cost_stochastic_reference
+
+
+ROOT = Path(__file__).resolve().parents[2]
+PROTOCOL = ROOT / 'reports/star/shapo_p47_four_env_preregistration.json'
+PROTOCOL_SHA256 = '007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337'
+MATRIX = ROOT / 'configs/star/shapo_p47_four_env.yaml'
+MATRIX_SHA256 = 'f22d644f798e1e036d0ef64359d40ff10fb745d9d97eb2887ec6bb02adc66b0f'
+METHOD_SHA256 = 'cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d'
+STRICT_VALIDATOR = ROOT / 'scripts/star/validate_shapo_p47_run.py'
+
+
+class AnalyticFailureCostCritic(nn.Module):
+    """Two agreeing future-failure cost heads with a known action derivative."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.action_scale = nn.Parameter(torch.tensor(0.1))
+
+    def expected_cost(self, obs: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
+        del obs
+        value = 0.2 + self.action_scale * action[..., 0]
+        return torch.stack((value, value), dim=0)
+
+
+def _write_trajectory(
+    path: Path,
+    milestone: int,
+    seeds: list[int],
+    position_source: str = 'simulator_xy',
+) -> None:
+    """Write a compact fixed-seed trajectory fixture accepted by the formal validator."""
+    rows = []
+    for seed in seeds:
+        for step in range(2):
+            rows.append(
+                {
+                    'milestone': milestone,
+                    'base_seed': seed,
+                    'episode_index': 0,
+                    'step': step,
+                    'x': float(step),
+                    'y': float(seed % 10),
+                    'position_source': position_source,
+                    'predicted_violation_probability': 0.1 * (step + 1),
+                    'predicted_cost_to_go': 0.2,
+                    'geometry_budget_ratio': 0.5,
+                    'cost_margin': -0.3,
+                    'cost_normal_0': 1.0,
+                    'cost_normal_1': 0.0,
+                    'cost': 0.0,
+                    'is_failure': 0,
+                },
+            )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('w', encoding='utf-8', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def _write_formal_evaluation(path: Path, milestone: int) -> dict[str, object]:
+    """Write a small binary-failure evaluation with independently checkable metrics."""
+    payload: dict[str, object] = {
+        'milestone': milestone,
+        'episodes': 4,
+        'base_seeds': [11, 12],
+        'episodes_per_base_seed': 2,
+        'seeds': [11, 11, 12, 12],
+        'episode_indices': [0, 1, 0, 1],
+        'trajectory_seeds': [101, 103, 105],
+        'returns': [1.0, 2.0, 3.0, 4.0],
+        'costs': [0.0, 1.0, 0.0, 1.0],
+        'lengths': [5, 5, 5, 5],
+        'mean_return': 2.5,
+        'mean_cost': 0.5,
+        'cost_cvar_20': 1.0,
+        'training_cumulative_cost': 7.0,
+        'episode_failure_flags': [0, 1, 0, 1],
+        'failure_count': 2,
+        'failure_rate': 0.5,
+        'episode_end_reasons': [
+            'time_limit',
+            'unhealthy_height',
+            'time_limit',
+            'unhealthy_height',
+        ],
+        'failure_reason_counts': {'time_limit': 2, 'unhealthy_height': 2},
+        'time_limit_count': 2,
+        'time_limit_rate': 0.5,
+        'goal_counts': [0, 1, 0, 1],
+        'success_rate': 0.5,
+        'path_lengths': [1.0, 2.0, 3.0, 4.0],
+        'mean_path_length': 2.5,
+        'cost_per_successful_episode': 1.0,
+        'direction_geometry_high_risk_top_20_percent': {
+            'fraction': 0.2,
+            'population_samples': 10,
+            'selected_samples': 2,
+            'ranking': 'descending_local_cost_margin_stable_ties',
+            'normal_to_tangent_variance_ratio': 0.75,
+            'dangerous_outward_velocity': 0.125,
+        },
+        'failure_times': [1.0, 3.0],
+        'failure_steps': [10.0, 30.0],
+        'failure_heights': [0.1, 0.3],
+        'failure_torso_angles': [-0.2, 0.2],
+        'mean_failure_time': 2.0,
+        'mean_failure_step': 20.0,
+        'mean_failure_height': 0.2,
+        'mean_failure_torso_angle': 0.0,
+    }
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    return payload
+
+
+def _write_checkpoint(
+    path: Path,
+    *,
+    environment: str = 'Ant-v4',
+    seed: int = 2027,
+    step: int = 6,
+    capacity: int = 8,
+    include_replay: bool = True,
+    resume_from: str | None = None,
+) -> None:
+    """Write a tiny structurally complete STAR checkpoint fixture."""
+    replay = None
+    if include_replay:
+        size = min(step, capacity)
+        replay = {
+            'version': 3,
+            'capacity': capacity,
+            'size': size,
+            'pointer': step % capacity,
+            'obs_dim': 3,
+            'act_dim': 2,
+            'data': {
+                'obs': torch.zeros(size, 3),
+                'action': torch.zeros(size, 2),
+                'cost': torch.zeros(size),
+                'next_obs': torch.zeros(size, 3),
+                'context': torch.zeros(size, 3),
+                'next_context': torch.zeros(size, 3),
+                'is_failure': torch.zeros(size, dtype=torch.bool),
+            },
+        }
+    payload = {
+        'format': 'star-checkpoint',
+        'version': 1,
+        'model': {'weight': torch.ones(1)},
+        'optimizers': {'actor': {}},
+        'duals': {},
+        'normalizer': {},
+        'counters': {'env_steps': step, 'cumulative_training_cost': 2.0},
+        'warmup': {},
+        'rng': {},
+        'replay': replay,
+        'extra': {
+            'environment': environment,
+            'seed': seed,
+            'resolved_config': {
+                'env_id': environment,
+                'seed': seed,
+                'algo_cfgs': {
+                    'directional_loss_weight': 1.0,
+                    **({'resume_from': resume_from} if resume_from is not None else {}),
+                },
+            },
+        },
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(payload, path)
+
+
+def _artifact_identity(path: Path) -> dict[str, object]:
+    """Return the compact identity schema consumed by the formal finalizer."""
+    return {
+        'artifact': str(path),
+        'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+        'bytes': path.stat().st_size,
+    }
+
+
+def test_shapo_protocol_matrix_and_frozen_method_are_byte_sealed() -> None:
+    assert hashlib.sha256(PROTOCOL.read_bytes()).hexdigest() == PROTOCOL_SHA256
+    assert hashlib.sha256(MATRIX.read_bytes()).hexdigest() == MATRIX_SHA256
+    protocol = json.loads(PROTOCOL.read_text(encoding='utf-8'))
+    matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
+    assert protocol['status'] == 'locked_before_any_shapo_p47_formal_training'
+    assert protocol['scope']['pointgoal_method_search_closed'] is True
+    assert protocol['scope']['new_weight_scans'] is False
+    assert protocol['formal_training']['training_seeds'] == [2027, 2028, 2029, 2030, 2031]
+    assert protocol['formal_training']['total_environment_steps'] == 150_000_000
+    assert protocol['formal_training']['scientific_early_stop'] is False
+    assert protocol['formal_evaluation']['episodes_per_training_seed'] == 100
+    assert protocol['formal_evaluation']['statistical_unit'] == 'training_seed'
+    assert matrix['protocol_sha256'] == PROTOCOL_SHA256
+    assert matrix['frozen_method_canonical_sha256'] == METHOD_SHA256
+    assert matrix['training_invariants']['replay_size'] == 400_000
+    assert matrix['training_invariants']['batch_size'] == 256
+
+
+@pytest.mark.parametrize(
+    ('env_id', 'steps', 'budget', 'mode', 'scale', 'milestones'),
+    [
+        (
+            'SafetyPointGoal1-v0',
+            10_000_000,
+            10.0,
+            'remaining_cost_budget',
+            10.0,
+            [1_000_000, 4_000_000, 10_000_000],
+        ),
+        (
+            'SafetyPointButton1-v0',
+            10_000_000,
+            10.0,
+            'remaining_cost_budget',
+            10.0,
+            [1_000_000, 4_000_000, 10_000_000],
+        ),
+        (
+            'Ant-v4',
+            5_000_000,
+            0.0,
+            'future_failure_probability',
+            1.0,
+            [500_000, 2_000_000, 5_000_000],
+        ),
+        (
+            'Walker2d-v4',
+            5_000_000,
+            0.0,
+            'future_failure_probability',
+            1.0,
+            [500_000, 2_000_000, 5_000_000],
+        ),
+    ],
+)
+def test_formal_materialization_changes_only_locked_environment_and_procedure_fields(
+    env_id: str,
+    steps: int,
+    budget: float,
+    mode: str,
+    scale: float,
+    milestones: list[int],
+) -> None:
+    resolved = materialize(MATRIX, env_id)
+    custom = resolved['custom_cfgs']
+    algo = custom['algo_cfgs']
+    assert canonical_method_sha256(resolved) == METHOD_SHA256
+    assert custom['train_cfgs'] == {'total_steps': steps, 'eval_episodes': 100}
+    assert custom['lagrange_cfgs']['cost_limit'] == budget
+    assert algo['eval_seeds'] == [32027, 32028, 32029, 32030, 32031]
+    assert algo['eval_episodes_per_seed'] == 20
+    assert algo['eval_milestones'] == milestones
+    assert algo['checkpoint_milestones'] == milestones
+    assert algo['directional_loss_weight'] == 1.0
+    assert algo['safety_aware_cost_geometry_enabled'] is True
+    assert algo['candidate_probing_enabled'] is False
+    assert algo['safety_inward_drift_enabled'] is False
+    assert algo['safety_outward_rectification_enabled'] is False
+    assert resolved['shapo_four_env_metadata']['geometry_mode'] == mode
+    assert resolved['shapo_four_env_metadata']['cost_normalization_scale'] == scale
+    assert resolved['shapo_four_env_metadata']['engineering_smoke_only'] is False
+
+
+def test_engineering_materialization_is_explicitly_non_scientific() -> None:
+    smoke = materialize(MATRIX, 'Ant-v4', smoke=True)
+    assert smoke['custom_cfgs']['train_cfgs'] == {'total_steps': 32, 'eval_episodes': 1}
+    assert smoke['custom_cfgs']['algo_cfgs']['max_episode_steps'] == 25
+    assert smoke['shapo_four_env_metadata']['engineering_smoke_only'] is True
+    assert 'smoke_schedule_overrides' in smoke['shapo_four_env_metadata']
+
+
+def test_cost_geometry_contract_is_exact_for_budget_and_binary_failure_tasks() -> None:
+    assert cost_geometry_contract('SafetyPointGoal1-v0', 10.0) == (
+        'remaining_cost_budget',
+        10.0,
+    )
+    assert cost_geometry_contract('SafetyPointButton1-v0', 10.0) == (
+        'remaining_cost_budget',
+        10.0,
+    )
+    assert cost_geometry_contract('Ant-v4', 0.0) == ('future_failure_probability', 1.0)
+    assert cost_geometry_contract('Walker2d-v4', 0.0) == (
+        'future_failure_probability',
+        1.0,
+    )
+    with pytest.raises(ValueError, match='positive Point-task budget'):
+        cost_geometry_contract('SafetyPointGoal1-v0', 0.0)
+    with pytest.raises(ValueError, match='zero-budget'):
+        cost_geometry_contract('Ant-v4', 1.0)
+
+
+def test_zero_budget_failure_geometry_uses_unit_score_scale_and_zero_boundary() -> None:
+    critic = AnalyticFailureCostCritic()
+    obs = torch.zeros(3, 8)
+    action = torch.zeros(3, 2)
+    reference = compute_cost_stochastic_reference(
+        critic,
+        obs,
+        action,
+        torch.zeros(3),
+        anisotropy_enabled=True,
+        safety_aware_geometry=True,
+        cost_normalization_scale=1.0,
+        boundary_bandwidth=0.1,
+    )
+    torch.testing.assert_close(reference.risk_ucb, torch.full((3,), 0.2))
+    torch.testing.assert_close(reference.margin, torch.full((3,), 0.2))
+    torch.testing.assert_close(reference.normal, torch.tensor([[1.0, 0.0]]).expand(3, -1))
+    torch.testing.assert_close(reference.gradient_norm, torch.full((3,), 0.1))
+    torch.testing.assert_close(
+        reference.boundary_reliability,
+        torch.sigmoid(reference.margin / 0.1),
+    )
+    assert bool((reference.reliability > 0.0).all())
+    with pytest.raises(ValueError, match='positive normalization scale'):
+        compute_cost_stochastic_reference(
+            critic,
+            obs,
+            action,
+            torch.zeros(3),
+            anisotropy_enabled=True,
+            cost_normalization_scale=0.0,
+        )
+
+
+def test_locomotion_geometry_ignores_placeholder_context_budget() -> None:
+    algorithm = object.__new__(STAR)
+    algorithm._env_id = 'Ant-v4'  # pylint: disable=protected-access
+    algorithm._cfgs = SimpleNamespace(  # pylint: disable=protected-access
+        lagrange_cfgs=SimpleNamespace(cost_limit=0.0),
+    )
+    algorithm._actor_critic = SimpleNamespace(context_dim=3)  # pylint: disable=protected-access
+    augmented = torch.zeros(4, 10)
+    augmented[:, -3] = 1.0
+    budget = algorithm._cost_geometry_budget_ratio(augmented)  # pylint: disable=protected-access
+    torch.testing.assert_close(budget, torch.zeros(4))
+    assert algorithm._cost_geometry_scale() == 1.0  # pylint: disable=protected-access
+
+
+def test_best_safe_return_checkpoint_order_is_feasible_first_and_seed_local() -> None:
+    unsafe = {
+        'milestone': 10,
+        'mean_return': 100.0,
+        'mean_cost': 1.0,
+        'constraint_satisfied': False,
+    }
+    safer_unsafe = {
+        'milestone': 20,
+        'mean_return': 1.0,
+        'mean_cost': 0.5,
+        'constraint_satisfied': False,
+    }
+    safe_low_return = {
+        'milestone': 30,
+        'mean_return': 0.0,
+        'mean_cost': 0.0,
+        'constraint_satisfied': True,
+    }
+    safe_high_return = {
+        'milestone': 40,
+        'mean_return': 2.0,
+        'mean_cost': 0.0,
+        'constraint_satisfied': True,
+    }
+    assert best_safe_checkpoint_candidate_is_better(unsafe, None)
+    assert best_safe_checkpoint_candidate_is_better(safer_unsafe, unsafe)
+    assert best_safe_checkpoint_candidate_is_better(safe_low_return, safer_unsafe)
+    assert best_safe_checkpoint_candidate_is_better(safe_high_return, safe_low_return)
+    assert not best_safe_checkpoint_candidate_is_better(unsafe, safe_high_return)
+
+
+def test_launchers_enforce_clean_source_smoke_gate_and_no_scientific_early_stop() -> None:
+    smoke = (ROOT / 'scripts/star/launch_shapo_p47_smoke.sh').read_text(encoding='utf-8')
+    formal = (ROOT / 'scripts/star/launch_shapo_p47_formal.sh').read_text(encoding='utf-8')
+    for launcher in (smoke, formal):
+        assert 'status --porcelain' in launcher
+        assert PROTOCOL_SHA256 in launcher
+        assert MATRIX_SHA256 in launcher
+    assert 'smoke_gate.json' in formal
+    assert '--replay-size 400000' in formal
+    assert '--batch-size 256' in formal
+    assert 'scientific_early_stop=false' in formal
+    assert 'for seed in 2027 2028 2029 2030 2031' in formal
+
+
+def test_formal_finalization_wrapper_revalidates_and_atomically_seals_output() -> None:
+    script = (ROOT / 'scripts/star/finalize_shapo_p47_formal.sh').read_text(encoding='utf-8')
+    required_fragments = (
+        'formal_matrix_complete',
+        'matrix_failure_count.txt',
+        'merge-base --is-ancestor',
+        'validate_shapo_p47_run.py',
+        'finalize_shapo_p47_formal.py',
+        'plot_shapo_p47_formal.py',
+        'shapo_p47_strict_validation_manifest.csv',
+        'strict_validations/$slug-$seed.json',
+        'training_seed_is_statistical_unit',
+        'Refusing to overwrite final artifacts',
+        'mktemp -d',
+        'checksums.sha256',
+        'sha256sum -c',
+        'finalization_complete',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
+def test_host_sync_wrapper_is_capacity_gated_and_checksum_verified() -> None:
+    script = (ROOT / 'scripts/star/sync_shapo_p47_final_to_host.sh').read_text(encoding='utf-8')
+    required_fragments = (
+        'BatchMode=yes',
+        'finalization_complete',
+        'sha256sum -c checksums.sha256',
+        'completion_health.json',
+        'health_journal.jsonl',
+        'RESERVE_BYTES=${4:-536870912}',
+        'Insufficient host space',
+        'Refusing to overwrite host artifacts',
+        'mktemp -d',
+        'runtime_health_manifest.csv',
+        'transfer_checksums.sha256',
+        'transfer_complete',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
+def test_milestone_auditor_reuses_strict_evaluation_and_keeps_checkpoints_server_only() -> None:
+    script = (ROOT / 'scripts/star/audit_shapo_p47_milestone.py').read_text(encoding='utf-8')
+    required_fragments = (
+        'validate_evaluation_artifact',
+        'validate_trajectory_artifact',
+        'validate_checkpoint_artifact',
+        'validate_checkpoint_training_costs',
+        "'training_seed_is_statistical_unit': True",
+        "'server_only': True",
+        "'diagnostic_only': True",
+        "'used_for_checkpoint_or_configuration_selection': False",
+        'checksums.sha256',
+        'milestone_audit_complete',
+        'refusing to overwrite milestone audit',
+    )
+    for fragment in required_fragments:
+        assert fragment in script
+
+
+def test_trajectory_validator_requires_exact_seed_coverage_and_finite_risk(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / 'trajectory_step_100.csv'
+    seeds = [32027, 32029, 32031]
+    _write_trajectory(path, 100, seeds)
+    result = validate_trajectory_artifact(path, 100, seeds)
+    assert result['row_count'] == 6
+    assert result['trajectory_seeds'] == seeds
+    assert result['rows_per_seed'] == {str(seed): 2 for seed in seeds}
+
+    _write_trajectory(path, 100, seeds[:-1])
+    with pytest.raises(ValueError, match='seed coverage mismatch'):
+        validate_trajectory_artifact(path, 100, seeds)
+
+    _write_trajectory(path, 100, seeds)
+    text = path.read_text(encoding='utf-8').replace('0.1,0.2', 'nan,0.2', 1)
+    path.write_text(text, encoding='utf-8')
+    with pytest.raises(ValueError, match='not finite'):
+        validate_trajectory_artifact(path, 100, seeds)
+
+
+def test_trajectory_coordinate_contract_distinguishes_spatial_and_projected_traces() -> None:
+    point = trajectory_coordinate_contract(
+        'SafetyPointGoal1-v0',
+        [{'position_source': 'simulator_xy'}],
+    )
+    locomotion = trajectory_coordinate_contract(
+        'Ant-v4',
+        [{'position_source': 'observation_projection'}],
+    )
+    assert point['x_label'] == 'Simulator x position'
+    assert 'not physical XY trajectories' in locomotion['title_kind']
+    with pytest.raises(ValueError, match='coordinate source mismatch'):
+        trajectory_coordinate_contract(
+            'Walker2d-v4',
+            [{'position_source': 'simulator_xy'}],
+        )
+
+
+def test_checkpoint_validator_proves_replay_and_lightweight_contracts(tmp_path: Path) -> None:
+    full = tmp_path / 'latest_full.pt'
+    lightweight = tmp_path / 'milestone_4.pt'
+    _write_checkpoint(full)
+    _write_checkpoint(lightweight, step=4, include_replay=False)
+    full_result = validate_checkpoint_artifact(
+        full,
+        label='latest_full',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={6},
+        replay_required=True,
+        replay_capacity=8,
+        expected_custom_config={'algo_cfgs': {'directional_loss_weight': 1.0}},
+    )
+    assert full_result['replay_included'] is True
+    assert full_result['replay_size'] == 6
+    assert full_result['observation_dimension'] == 3
+    assert full_result['cumulative_training_cost'] == 2.0
+    light_result = validate_checkpoint_artifact(
+        lightweight,
+        label='milestone_4',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={4},
+        replay_required=False,
+        replay_capacity=8,
+    )
+    assert light_result['replay_included'] is False
+    assert light_result['replay_size'] == 0
+    assert light_result['cumulative_training_cost'] == 2.0
+
+    with pytest.raises(ValueError, match=r'directional_loss_weight.*mismatch'):
+        validate_checkpoint_artifact(
+            full,
+            label='latest_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+            expected_custom_config={'algo_cfgs': {'directional_loss_weight': 0.5}},
+        )
+
+
+def test_checkpoint_validator_allows_only_audited_same_run_resume_path(
+    tmp_path: Path,
+) -> None:
+    resume = tmp_path / 'training' / 'old-segment' / 'checkpoints' / 'latest_full.pt'
+    recovered = tmp_path / 'training' / 'new-segment' / 'checkpoints' / 'final_full.pt'
+    _write_checkpoint(resume)
+    _write_checkpoint(recovered, resume_from=str(resume))
+    expected = {
+        'algo_cfgs': {
+            'directional_loss_weight': 1.0,
+            'resume_from': '',
+        },
+    }
+    result = validate_checkpoint_artifact(
+        recovered,
+        label='final_full',
+        environment='Ant-v4',
+        seed=2027,
+        expected_steps={6},
+        replay_required=True,
+        replay_capacity=8,
+        expected_custom_config=expected,
+        allowed_resume_checkpoints={resume},
+    )
+    assert result['resume_from'] == str(resume)
+
+    with pytest.raises(ValueError, match='not an approved same-run'):
+        validate_checkpoint_artifact(
+            recovered,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+            expected_custom_config=expected,
+        )
+
+
+def test_optional_formal_diagnostics_accept_only_explicitly_undefined_values() -> None:
+    assert undefined(None)
+    assert undefined(float('nan'))
+    assert undefined(float('inf'))
+    assert not undefined(0.0)
+    assert not undefined('not-a-number-token')
+
+
+def test_finalizer_rejects_compact_artifact_identity_drift(tmp_path: Path) -> None:
+    path = tmp_path / 'evaluation.json'
+    path.write_text('{"status":"passed"}', encoding='utf-8')
+    identity = _artifact_identity(path)
+    assert verify_artifact_identity(identity, 'evaluation') == path
+    path.write_text('{"status":"changed"}', encoding='utf-8')
+    with pytest.raises(ValueError, match=r'unavailable or changed|identity mismatch'):
+        verify_artifact_identity(identity, 'evaluation')
+
+
+def test_formal_validator_requires_exact_top_twenty_percent_geometry_contract() -> None:
+    payload = {
+        'fraction': 0.2,
+        'population_samples': 101,
+        'selected_samples': 21,
+        'ranking': 'descending_local_cost_margin_stable_ties',
+        'normal_to_tangent_variance_ratio': 0.8,
+        'dangerous_outward_velocity': 0.1,
+    }
+    assert validate_high_risk_geometry('evaluation', payload) == (0.8, 0.1)
+    payload['selected_samples'] = 20
+    with pytest.raises(ValueError, match='locked top 20 percent'):
+        validate_high_risk_geometry('evaluation', payload)
+
+
+def test_formal_evaluation_validator_recomputes_fixed_schedule_metrics(tmp_path: Path) -> None:
+    path = tmp_path / 'evaluation_step_100.json'
+    payload = _write_formal_evaluation(path, 100)
+    result = validate_evaluation_artifact(
+        path,
+        environment='Ant-v4',
+        milestone=100,
+        base_seeds=[11, 12],
+        trajectory_seeds=[101, 103, 105],
+        episodes_per_seed=2,
+        geometry_mode='future_failure_probability',
+    )
+    assert result['episodes'] == 4
+    assert result['mean_return'] == 2.5
+    assert result['cost_cvar_20'] == 1.0
+    assert result['high_risk_vn_vt'] == 0.75
+    assert result['high_risk_dangerous_outward_velocity'] == 0.125
+
+    payload['mean_return'] = 9.0
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    with pytest.raises(ValueError, match='mean_return mismatch'):
+        validate_evaluation_artifact(
+            path,
+            environment='Ant-v4',
+            milestone=100,
+            base_seeds=[11, 12],
+            trajectory_seeds=[101, 103, 105],
+            episodes_per_seed=2,
+            geometry_mode='future_failure_probability',
+        )
+
+    payload['mean_return'] = 2.5
+    payload['milestone'] = 99
+    path.write_text(json.dumps(payload), encoding='utf-8')
+    with pytest.raises(ValueError, match='wrong internal milestone identity'):
+        validate_evaluation_artifact(
+            path,
+            environment='Ant-v4',
+            milestone=100,
+            base_seeds=[11, 12],
+            trajectory_seeds=[101, 103, 105],
+            episodes_per_seed=2,
+            geometry_mode='future_failure_probability',
+        )
+
+
+def test_checkpoint_validator_rejects_wrong_step_identity_and_missing_replay(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / 'checkpoint.pt'
+    _write_checkpoint(path, include_replay=False)
+    with pytest.raises(ValueError, match='unexpected checkpoint step'):
+        validate_checkpoint_artifact(
+            path,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={8},
+            replay_required=True,
+            replay_capacity=8,
+        )
+    with pytest.raises(ValueError, match='not a replay-bearing'):
+        validate_checkpoint_artifact(
+            path,
+            label='final_full',
+            environment='Ant-v4',
+            seed=2027,
+            expected_steps={6},
+            replay_required=True,
+            replay_capacity=8,
+        )
+    with pytest.raises(ValueError, match='identity does not match'):
+        validate_checkpoint_artifact(
+            path,
+            label='milestone_6',
+            environment='Ant-v4',
+            seed=2028,
+            expected_steps={6},
+            replay_required=False,
+            replay_capacity=8,
+        )
+
+
+def test_checkpoint_training_costs_are_bound_to_same_step_evaluations() -> None:
+    evaluations = [
+        {'milestone': 4, 'training_cumulative_cost': 2.0},
+        {'milestone': 6, 'training_cumulative_cost': 3.0},
+    ]
+    checkpoints = [
+        {
+            'label': 'milestone_4',
+            'env_steps': 4,
+            'cumulative_training_cost': 2.0,
+        },
+        {
+            'label': 'best_safe_return',
+            'env_steps': 4,
+            'cumulative_training_cost': 2.0,
+        },
+        {
+            'label': 'latest_full',
+            'env_steps': 6,
+            'cumulative_training_cost': 3.0,
+        },
+    ]
+    validate_checkpoint_training_costs(evaluations, checkpoints)
+
+    checkpoints[-1]['cumulative_training_cost'] = 2.5
+    with pytest.raises(ValueError, match=r'latest_full.*cumulative training cost.*mismatch'):
+        validate_checkpoint_training_costs(evaluations, checkpoints)
+
+    checkpoints[-1]['cumulative_training_cost'] = 3.0
+    checkpoints[-1]['env_steps'] = 5
+    with pytest.raises(ValueError, match='no matching evaluation milestone'):
+        validate_checkpoint_training_costs(evaluations, checkpoints)
+
+
+def test_finalizer_aggregates_twenty_runs_by_training_seed(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    matrix = yaml.safe_load(MATRIX.read_text(encoding='utf-8'))
+    validator_sha256 = hashlib.sha256(STRICT_VALIDATOR.read_bytes()).hexdigest()
+    run_root = tmp_path / 'formal'
+    output = tmp_path / 'summary'
+    run_root.mkdir()
+    (run_root / 'formal_matrix_complete').touch()
+    slugs = {
+        'SafetyPointGoal1-v0': 'point-goal',
+        'SafetyPointButton1-v0': 'point-button',
+        'Ant-v4': 'ant',
+        'Walker2d-v4': 'walker2d',
+    }
+    for env_index, (env_id, environment) in enumerate(matrix['environments'].items()):
+        for seed_index, seed in enumerate(matrix['training_seeds']):
+            container = run_root / 'runs' / f'{slugs[env_id]}-{seed}'
+            container.mkdir(parents=True)
+            evaluations = []
+            trajectories = []
+            for milestone in environment['milestones']:
+                value = float(env_index + seed_index + 1)
+                evaluation_row = {
+                    'milestone': milestone,
+                    'episodes': 100,
+                    'mean_return': value,
+                    'mean_cost': value / 10.0,
+                    'cost_cvar_20': value / 5.0,
+                    'training_cumulative_cost': value * 100.0,
+                    'success_rate': value / 10.0,
+                    'mean_path_length': value * 2.0,
+                    'cost_per_successful_episode': value / 2.0,
+                    'failure_count': value,
+                    'failure_rate': value / 100.0,
+                    'failure_reason_counts': {
+                        'unhealthy_height': int(value),
+                        'time_limit': 100 - int(value),
+                    },
+                    'mean_failure_time': value,
+                    'mean_failure_step': value,
+                    'mean_failure_height': value,
+                    'mean_failure_torso_angle': value,
+                    'time_limit_count': 100.0 - value,
+                    'time_limit_rate': 1.0 - value / 100.0,
+                    'high_risk_vn_vt': 0.5,
+                    'high_risk_dangerous_outward_velocity': 0.1,
+                }
+                evaluation_path = (
+                    container / 'training' / 'artifacts' / f'evaluation_step_{milestone}.json'
+                )
+                evaluation_path.parent.mkdir(parents=True, exist_ok=True)
+                evaluation_path.write_text(json.dumps(evaluation_row), encoding='utf-8')
+                evaluation_row.update(
+                    {
+                        'artifact': str(evaluation_path),
+                        'artifact_sha256': hashlib.sha256(
+                            evaluation_path.read_bytes(),
+                        ).hexdigest(),
+                        'artifact_bytes': evaluation_path.stat().st_size,
+                    },
+                )
+                evaluations.append(evaluation_row)
+                trajectory_path = (
+                    container / 'training' / 'artifacts' / f'trajectory_step_{milestone}.csv'
+                )
+                _write_trajectory(
+                    trajectory_path,
+                    milestone,
+                    matrix['evaluation']['trajectory_base_seeds'],
+                    (
+                        'simulator_xy'
+                        if env_id.startswith('SafetyPoint')
+                        else 'observation_projection'
+                    ),
+                )
+                trajectories.append(
+                    validate_trajectory_artifact(
+                        trajectory_path,
+                        milestone,
+                        matrix['evaluation']['trajectory_base_seeds'],
+                    ),
+                )
+            checkpoint_artifacts = []
+            checkpoint_specs = [
+                ('latest_full', environment['total_steps'], True),
+                ('final_full', environment['total_steps'], True),
+                ('best_safe_return', environment['milestones'][0], False),
+                *[
+                    (f'milestone_{milestone}', milestone, False)
+                    for milestone in environment['milestones']
+                ],
+            ]
+            for label, checkpoint_step, replay_included in checkpoint_specs:
+                checkpoint_path = container / 'checkpoint-fixtures' / f'{label}.pt'
+                checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+                checkpoint_path.write_bytes(f'{env_id}-{seed}-{label}'.encode())
+                checkpoint_artifacts.append(
+                    {
+                        'label': label,
+                        'artifact': str(checkpoint_path),
+                        'sha256': hashlib.sha256(checkpoint_path.read_bytes()).hexdigest(),
+                        'bytes': checkpoint_path.stat().st_size,
+                        'env_steps': checkpoint_step,
+                        'replay_included': replay_included,
+                        'replay_size': 400_000 if replay_included else 0,
+                        'replay_capacity': 400_000,
+                        'resume_from': (
+                            f'/server/{env_id}/{seed}/checkpoints/latest_full.pt'
+                            if seed == matrix['training_seeds'][0]
+                            else None
+                        ),
+                    },
+                )
+            provenance = {}
+            for label, suffix in (
+                ('resolved_config', '.yaml'),
+                ('receipt', '.json'),
+                ('training_summary', '.json'),
+                ('run_manifest', '.json'),
+            ):
+                provenance_path = container / 'provenance-fixtures' / f'{label}{suffix}'
+                provenance_path.parent.mkdir(parents=True, exist_ok=True)
+                provenance_path.write_text(
+                    json.dumps({'environment': env_id, 'seed': seed, 'label': label}),
+                    encoding='utf-8',
+                )
+                provenance[label] = _artifact_identity(provenance_path)
+            (container / 'formal_validation.json').write_text(
+                json.dumps(
+                    {
+                        'status': 'passed',
+                        'validator_sha256': validator_sha256,
+                        'protocol_version': matrix['protocol_version'],
+                        'protocol_sha256': matrix['protocol_sha256'],
+                        'matrix_sha256': hashlib.sha256(MATRIX.read_bytes()).hexdigest(),
+                        'frozen_method_canonical_sha256': matrix['frozen_method_canonical_sha256'],
+                        'source_commit': 'a' * 40,
+                        'environment': env_id,
+                        'training_seed': seed,
+                        'training_seed_is_statistical_unit': True,
+                        'total_steps': environment['total_steps'],
+                        'formal_cost_budget': environment['cost_limit'],
+                        'geometry_mode': environment['geometry_mode'],
+                        'cost_normalization_scale': environment['cost_normalization_scale'],
+                        'evaluation_rows': evaluations,
+                        'trajectory_artifacts': trajectories,
+                        'checkpoint_artifacts': checkpoint_artifacts,
+                        'compact_provenance_artifacts': provenance,
+                    },
+                ),
+                encoding='utf-8',
+            )
+    first_validation = run_root / 'runs/point-goal-2027/formal_validation.json'
+    corrupted_validation = json.loads(first_validation.read_text(encoding='utf-8'))
+    corrupted_validation['validator_sha256'] = '0' * 64
+    first_validation.write_text(json.dumps(corrupted_validation), encoding='utf-8')
+    monkeypatch.setattr(
+        sys,
+        'argv',
+        [
+            'finalize_shapo_p47_formal.py',
+            '--run-root',
+            str(run_root),
+            '--matrix',
+            str(MATRIX),
+            '--output-dir',
+            str(output),
+        ],
+    )
+    with pytest.raises(ValueError, match="field 'validator_sha256' does not match"):
+        finalize_formal()
+    corrupted_validation['validator_sha256'] = validator_sha256
+    first_validation.write_text(json.dumps(corrupted_validation), encoding='utf-8')
+    finalize_formal()
+    with (output / 'shapo_p47_final_seed_metrics.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        rows = list(csv.DictReader(stream))
+    assert len(rows) == 20
+    summary = json.loads((output / 'shapo_p47_final_summary.json').read_text('utf-8'))
+    assert summary['statistical_unit'] == 'training_seed'
+    assert summary['validator_sha256'] == validator_sha256
+    plotter_sha256 = hashlib.sha256(
+        (ROOT / 'scripts/star/plot_shapo_p47_formal.py').read_bytes(),
+    ).hexdigest()
+    assert summary['plotter_sha256'] == plotter_sha256
+    assert summary['aggregate']['Ant-v4']['mean_return']['n_training_seeds'] == 5
+    assert (
+        summary['failure_reason_aggregate']['Ant-v4']['unhealthy_height']['n_training_seeds'] == 5
+    )
+    assert summary['evaluation_artifact_count'] == 60
+    assert summary['provenance_artifact_count'] == 80
+    assert summary['trajectory_artifact_count'] == 60
+    assert summary['checkpoint_artifact_count'] == 120
+    assert summary['checkpoint_recovery']['recovered_training_run_count'] == 4
+    assert len(summary['checkpoint_recovery']['recovered_training_runs']) == 4
+    assert len(summary['figures']) == 6
+    assert all((output / path).is_file() for path in summary['figures'])
+    with (output / 'shapo_p47_evaluation_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        evaluation_rows = list(csv.DictReader(stream))
+    assert len(evaluation_rows) == 60
+    with (output / 'shapo_p47_provenance_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        provenance_rows = list(csv.DictReader(stream))
+    assert len(provenance_rows) == 80
+    with (output / 'shapo_p47_trajectory_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        trajectory_rows = list(csv.DictReader(stream))
+    assert len(trajectory_rows) == 60
+    with (output / 'shapo_p47_checkpoint_manifest.csv').open(
+        encoding='utf-8',
+        newline='',
+    ) as stream:
+        checkpoint_rows = list(csv.DictReader(stream))
+    assert len(checkpoint_rows) == 120
+    assert {row['server_only'] for row in checkpoint_rows} == {'True'}
+    assert sum(bool(row['resume_from']) for row in checkpoint_rows) == 24
+    report = (output / 'SHAPO_P47_FOUR_ENV_REPORT.md').read_text('utf-8')
+    assert 'Episode-level observations are not treated as independent replicates' in report
+    assert f'Strict validator SHA-256: `{validator_sha256}`' in report
+    assert f'Plotter SHA-256: `{plotter_sha256}`' in report
+    assert 'not physical XY trajectories' in report
+    assert 'Locomotion failure diagnostics' in report
+    assert 'Failure-reason rates' in report
+    assert 'High-risk direction diagnostics' in report
+    assert 'Audited recovered training runs: `4/20`' in report
+    assert 'shapo_p47_ant_trajectory_risk.png' in report
+    assert 'large replay-bearing checkpoint payloads remain server-only' in report

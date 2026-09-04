@@ -1,0 +1,23 @@
+{
+  "auroc": null,
+  "brier_score": null,
+  "brier_skill": null,
+  "calibration_error": null,
+  "cost_cvar_20": 0.0,
+  "counterfactual_file": "counterfactual_step_30000.json",
+  "episodes": 0,
+  "goals_per_episode": 0.0,
+  "goals_per_episode_mean": 0.0,
+  "mean_action_norm": 0.0,
+  "mean_cost": 0.0,
+  "mean_displacement": 0.0,
+  "mean_path_length": 0.0,
+  "mean_return": 0.0,
+  "mean_start_end_displacement": 0.0,
+  "mean_step_displacement": 0.0,
+  "milestone": 30000,
+  "probability_split": "external_isolated_environment",
+  "spearman": null,
+  "stall_ratio": 0.0,
+  "violation_ratio": 0.0
+}

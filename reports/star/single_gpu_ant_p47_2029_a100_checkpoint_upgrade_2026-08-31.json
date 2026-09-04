@@ -1,0 +1,72 @@
+{
+  "a100_checkpoint_before": {
+    "backup_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/latest_full.pt.pre-seeta-1m-upgrade-step750000",
+    "bytes": 146461042,
+    "remote_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/latest_full.pt",
+    "sha256": "c3ec1cfcd913adf86cdab9eb89fac2410db721cdbd8d09dffb4bcf82100e9c0c",
+    "step": 750000
+  },
+  "identity": {
+    "config_sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf",
+    "environment": "Ant-v4",
+    "seed": 2029,
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "source_dirty": false
+  },
+  "kind": "ant_p47_2029_a100_replay_checkpoint_upgrade",
+  "operation": {
+    "a100_c0_pid": 302998,
+    "a100_c0_pid_unchanged": true,
+    "a100_p47_new_pid": 4125679,
+    "a100_p47_new_process_started_at": "2026-08-31T00:35:03+08:00",
+    "a100_p47_old_pid": 302240,
+    "bridge_service_after_operation": "active",
+    "explicit_resume_argument": true,
+    "installed_checkpoint_sha256": "e0da55fe333aa5a3a0ec1388dbc6f5c86f4371a542a2a91b7c5bfafe68ba93ce",
+    "launcher": "/home/lzqw/SAFEFLOW2027_A100/launch_a100_ant.sh",
+    "old_checkpoint_preserved": true,
+    "tmux_session": "safeflow-ant-gpu1"
+  },
+  "proof_of_resumed_progress": {
+    "a100_c0_progress_step": 775000,
+    "a100_learners": 2,
+    "a100_p47_progress_step": 1005000,
+    "observed_at": "2026-08-31T01:15:40+08:00"
+  },
+  "schema_version": 1,
+  "scientific_effect": {
+    "configuration_changed": false,
+    "evaluation_or_metric_based_selection": false,
+    "evaluation_read_or_run_for_this_event": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "source_checkpoint": {
+    "bytes": 146467823,
+    "environment": "Ant-v4",
+    "format": "star-checkpoint",
+    "host_path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress/P47-2029/step-1000000/latest_full.pt",
+    "replay_capacity": 400000,
+    "replay_size": 400000,
+    "seed": 2029,
+    "sha256": "e0da55fe333aa5a3a0ec1388dbc6f5c86f4371a542a2a91b7c5bfafe68ba93ce",
+    "step": 1000000
+  },
+  "status": "complete",
+  "trigger": {
+    "a100_checkpoint_before_step": 750000,
+    "a100_live_progress_before_step": 770000,
+    "checkpoint_gain_steps": 250000,
+    "live_progress_gain_steps": 230000,
+    "reason": "Work-conserving fallback during the Seeta SSH outage using the same frozen seed, source and configuration.",
+    "seeta_ssh_status": "connection_refused",
+    "source_checkpoint_step": 1000000
+  },
+  "validation": {
+    "installed_bytes": 146467823,
+    "installed_sha_equals_host_source_sha": true,
+    "old_backup_bytes": 146461042,
+    "resume_advanced_beyond_source_checkpoint": true
+  }
+}

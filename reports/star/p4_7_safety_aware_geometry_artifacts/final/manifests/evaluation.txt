@@ -1,0 +1,6 @@
+protocol_version=p4.7-safety-aware-geometry-v1
+source_commit=34631cc937bb9a7124ce78e6a4b457517e51ab6f
+base_seeds=22027,22028,22029,22030,22031
+intermediate_episodes_per_base_seed=4
+formal_episodes_per_base_seed=20
+primary_only=true

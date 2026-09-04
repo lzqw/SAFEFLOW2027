@@ -1,0 +1,103 @@
+{
+  "captured_at_utc": "2026-08-04T14:11:13.018684+00:00",
+  "estimated_cost_cny": 0.25489652444372574,
+  "matrix_elapsed_seconds": 620.0185729712248,
+  "results": [
+    {
+      "cost_td_error_ema": 0.062227525570527985,
+      "end_to_end_fps": 38.59969183278925,
+      "env_steps": 5000,
+      "environment": "SafetyPointGoal1-v0",
+      "finalized_labels": 5000,
+      "geometry_activation_step": null,
+      "negative_labels": 3498,
+      "peak_cuda_memory_mib": 69.7646484375,
+      "positive_labels": 1502,
+      "replay_auroc_ema": 0.9947704402515712,
+      "replay_brier_skill_ema": 0.94703750804907,
+      "replay_calibration_error_ema": 0.017491504981581744,
+      "replay_classification": {
+        "boundary": 0.0074,
+        "failure": 0.0704,
+        "normal": 0.9222
+      },
+      "seed": 2027,
+      "status": "passed",
+      "updates": 3000,
+      "warmup_stage": "W1"
+    },
+    {
+      "cost_td_error_ema": 0.13206560113065005,
+      "end_to_end_fps": 26.57639899942421,
+      "env_steps": 5000,
+      "environment": "SafetyPointButton1-v0",
+      "finalized_labels": 5000,
+      "geometry_activation_step": null,
+      "negative_labels": 3066,
+      "peak_cuda_memory_mib": 71.5322265625,
+      "positive_labels": 1934,
+      "replay_auroc_ema": 0.9942302997009085,
+      "replay_brier_skill_ema": 0.9624976605688363,
+      "replay_calibration_error_ema": 0.009434423878801829,
+      "replay_classification": {
+        "boundary": 0.0,
+        "failure": 0.0536,
+        "normal": 0.9464
+      },
+      "seed": 2027,
+      "status": "passed",
+      "updates": 3000,
+      "warmup_stage": "W1"
+    },
+    {
+      "cost_td_error_ema": 0.006495772158037962,
+      "end_to_end_fps": 33.6622254206099,
+      "env_steps": 5000,
+      "environment": "Ant-v4",
+      "finalized_labels": 4878,
+      "geometry_activation_step": null,
+      "negative_labels": 3000,
+      "peak_cuda_memory_mib": 68.28564453125,
+      "positive_labels": 1878,
+      "replay_auroc_ema": 0.9972929852857942,
+      "replay_brier_skill_ema": 0.8551195497175104,
+      "replay_calibration_error_ema": 0.09574196000446619,
+      "replay_classification": {
+        "boundary": 0.002,
+        "failure": 0.0048,
+        "normal": 0.9932
+      },
+      "seed": 2027,
+      "status": "passed",
+      "updates": 3000,
+      "warmup_stage": "W1"
+    },
+    {
+      "cost_td_error_ema": 0.014905821743505573,
+      "end_to_end_fps": 36.9841017444666,
+      "env_steps": 5000,
+      "environment": "Walker2d-v4",
+      "finalized_labels": 4982,
+      "geometry_activation_step": null,
+      "negative_labels": 0,
+      "peak_cuda_memory_mib": 66.4638671875,
+      "positive_labels": 4982,
+      "replay_auroc_ema": null,
+      "replay_brier_skill_ema": null,
+      "replay_calibration_error_ema": 8.948859933301465e-07,
+      "replay_classification": {
+        "boundary": 0.0,
+        "failure": 0.047,
+        "normal": 0.953
+      },
+      "seed": 2027,
+      "status": "passed",
+      "updates": 3000,
+      "warmup_stage": "W1"
+    }
+  ],
+  "schema_version": 1,
+  "source_commit": "83b5cd8be160389336416eb86d118002de494557",
+  "status": "passed",
+  "steps_per_environment": 5000
+}

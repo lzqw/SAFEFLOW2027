@@ -1,0 +1,25 @@
+{
+  "controller_elapsed_seconds": 3461.704319551587,
+  "finished_at_utc": "2026-08-24T15:08:11.390543+00:00",
+  "newly_launched_methods": [
+    "SACLag",
+    "SHAPO-PIDLag"
+  ],
+  "phase": "formal_pointgoal",
+  "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "rows": [
+    {
+      "method": "SACLag",
+      "receipt": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/formal_pointgoal/saclag/seed-2027/receipt.json",
+      "state": "completed"
+    },
+    {
+      "method": "SHAPO-PIDLag",
+      "receipt": "/root/autodl-tmp/SAFE/single_gpu_paper_core/v3/formal_pointgoal/shapo_pidlag/seed-2027/receipt.json",
+      "state": "completed"
+    }
+  ],
+  "seed": 2027,
+  "started_at_utc": "2026-08-24T14:10:29.686207+00:00",
+  "steps_per_method": 200000
+}

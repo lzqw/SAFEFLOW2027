@@ -1,0 +1,49 @@
+{
+  "checkpoint": {
+    "bytes": 146462511,
+    "cumulative_training_cost": 249.0,
+    "environment": "Ant-v4",
+    "format": "star-checkpoint",
+    "remote_latest_path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/checkpoints/latest_full.pt",
+    "remote_snapshot_path": null,
+    "replay_capacity": 400000,
+    "replay_pointer": 200000,
+    "replay_size": 400000,
+    "seed": 2027,
+    "sha256": "8939e31a0e7e19f054d519539c74d223736908d259cc899218da5fd8f0e19d38",
+    "step": 1000000,
+    "version": 1,
+    "written_at": "2026-09-03T14:38:48.417772722+08:00"
+  },
+  "event": {
+    "a100_c0_2029_progress_step": 1810000,
+    "c0_2027_progress_step": 1000000,
+    "c0_2029_progress_step": 1985000,
+    "observed_at": "2026-09-03T14:40:33+08:00",
+    "seeta_learners": 2
+  },
+  "host_backup": {
+    "bytes": 146462511,
+    "path": "/home/lzqw/SAFEFLOW2027_single_gpu/a100-bridge/ant/completed-backup/in-progress/C0-2027/step-1000000/latest_full.pt",
+    "sha256": "8939e31a0e7e19f054d519539c74d223736908d259cc899218da5fd8f0e19d38",
+    "status": "passed"
+  },
+  "kind": "ant_c0_2027_recovery_checkpoint_observation",
+  "schema_version": 1,
+  "scientific_effect": {
+    "checkpoint_or_metric_selection": false,
+    "configuration_changed": false,
+    "evaluation_read_or_run_for_this_event": false,
+    "method_changed": false,
+    "seed_changed": false,
+    "training_budget_changed": false
+  },
+  "status": "complete",
+  "validation": {
+    "checkpoint_metadata_verified": true,
+    "host_sha_equals_remote_sha": true,
+    "milestone_file_expected": false,
+    "milestone_file_note": "The frozen run only names milestone checkpoints at 500k and 2M; the 250k full-save cadence updates latest_full.pt.",
+    "purpose": "Protect replay-bearing 1M recovery state while the frozen 2M run continues."
+  }
+}

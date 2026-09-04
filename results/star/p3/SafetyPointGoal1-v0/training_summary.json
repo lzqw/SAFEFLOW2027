@@ -1,0 +1,29 @@
+{
+  "end_to_end_fps": 22.18397494146446,
+  "env_steps": 20000,
+  "environment": "SafetyPointGoal1-v0",
+  "geometry_activation_step": null,
+  "last_update_order": [
+    "distributional_cost_critic",
+    "twin_reward_critics",
+    "differentiable_flow",
+    "terminal_reward_cost_utility",
+    "late_path_safety_geometry",
+    "flow_actor",
+    "energy_dual",
+    "true_episode_global_dual",
+    "target_networks"
+  ],
+  "replay": {
+    "boundary": 0.0001,
+    "failure": 0.04135,
+    "normal": 0.95855
+  },
+  "run_env_steps": 20000,
+  "seed": 2027,
+  "status": "completed",
+  "training_seconds": 901.5516855195165,
+  "updates": 18000,
+  "violation_ratio": 0.04135,
+  "warmup_stage": "W2"
+}

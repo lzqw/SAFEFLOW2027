@@ -1,0 +1,78 @@
+# Single-GPU Ant P4.7: the frozen high-dimensional method at the 2M paper-core budget.
+env_id: Ant-v4
+custom_cfgs:
+  train_cfgs:
+    total_steps: 2000000
+    eval_episodes: 100
+  algo_cfgs:
+    enable_global_safety_constraint: true
+    enable_local_safety_geometry: false
+    use_target_flow_for_reward_backup: true
+    actor_update_interval: 2
+    reward_target_samples: 4
+    reward_critic_updates_per_update: 2
+    separate_reward_replay: true
+    reward_replay_recent_fraction: 0.5
+    reward_replay_recent_window: 10000
+    reward_target_polyak: 0.001
+    bellman_probability_enabled: true
+    probability_mc_aux_weight: 0.1
+    probability_target_polyak: 0.005
+    heldout_episode_period: 5
+    heldout_recent_episodes: 20
+    heldout_eval_batch_size: 20000
+    complete_heldout_evidence: true
+    heldout_min_positive_labels: 256
+    heldout_min_negative_labels: 256
+    dynamic_geometry_gate: false
+    candidate_probing_enabled: false
+    stochastic_flow_enabled: true
+    safety_anisotropy_enabled: true
+    safety_inward_drift_enabled: false
+    safety_outward_rectification_enabled: false
+    unified_cost_geometry_enabled: true
+    directional_loss_enabled: true
+    safety_aware_cost_geometry_enabled: true
+    directional_loss_weight: 1.0
+    directional_loss_epsilon: 1.0e-08
+    cost_geometry_bandwidth: 0.1
+    safety_protocol_version: shapo-p47-four-env-v1
+    safety_protocol_sha256: 007c9a89d6b8f63d2c56516f9611d22e60164b82ccff939aa0af060d1dffa337
+    risk_boundary: 0.2
+    boundary_bandwidth: 0.1
+    risk_ucb_beta: 0.5
+    flow_reference_variance: 0.04
+    flow_normal_variance_ratio: 0.1
+    safety_gradient_scale: 0.005
+    safety_ensemble_scale: 0.05
+    safety_calibration_auroc_full: 0.75
+    safety_calibration_brier_score_scale: 0.25
+    safety_drift_strength: 0.2
+    safety_drift_temperature: 0.05
+    numerical_hard_stops_enabled: false
+    engineering_hard_stops_enabled: true
+    q_absolute_overflow_threshold: 1000000.0
+    eval_seeds: [32027, 32028, 32029, 32030, 32031]
+    eval_episodes_per_seed: 20
+    evaluate_initial_policy: false
+    trajectory_eval_seeds: [32027, 32029, 32031]
+    eval_milestones: [500000, 2000000]
+    checkpoint_milestones: [500000, 2000000]
+    checkpoint_replay: true
+    milestone_checkpoints: true
+    full_checkpoint_freq: 250000
+    resume_from: ''
+  dual_cfgs:
+    energy_initial: 0.004
+    target_energy_per_action: 12.5
+  lagrange_cfgs:
+    cost_limit: 0.0
+single_gpu_ant_metadata:
+  protocol_version: star-single-gpu-ant-v1
+  arm: P47
+  parent_method_canonical_sha256: cf447f9ad97053054d1970a462a3089deffc83b332101f896b492621140f5f3d
+  reused_seed_2027_source_commit: 62ca7399357c10645a955dcbead7ed2153a82c69
+  geometry_mode: future_failure_probability
+  training_seed_is_statistical_unit: true
+  scientific_early_stop: false
+
