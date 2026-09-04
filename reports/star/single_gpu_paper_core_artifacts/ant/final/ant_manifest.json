@@ -1,0 +1,189 @@
+{
+  "aggregate_rows": [
+    {
+      "arm": "C0",
+      "cost_cvar_20": 0.85,
+      "failure_rate": 0.17,
+      "high_risk_dangerous_outward_velocity": 0.3717911144097646,
+      "high_risk_vn_vt": 0.8707385857899984,
+      "mean_cost": 0.17,
+      "mean_return": 5905.978351732602,
+      "method": "C0 / isotropic FLAC",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 0.2783882181415011,
+      "seed_std_failure_rate": 0.10583005244258362,
+      "seed_std_mean_cost": 0.10583005244258362,
+      "seed_std_mean_return": 1046.8743726283324,
+      "seed_std_training_cumulative_cost": 322.95871769211203,
+      "training_cumulative_cost_mean": 599.6666666666666,
+      "training_seeds": 3,
+      "training_steps_per_seed": 2000000
+    },
+    {
+      "arm": "P47",
+      "cost_cvar_20": 0.35,
+      "failure_rate": 0.07,
+      "high_risk_dangerous_outward_velocity": 0.2974030574162801,
+      "high_risk_vn_vt": 0.7954785227775574,
+      "mean_cost": 0.07,
+      "mean_return": 6227.66581001111,
+      "method": "P4.7 / Ours",
+      "pooled_evaluation_episodes": 300,
+      "seed_std_cost_cvar_20": 0.20000000000000004,
+      "seed_std_failure_rate": 0.04,
+      "seed_std_mean_cost": 0.04,
+      "seed_std_mean_return": 355.77328472895266,
+      "seed_std_training_cumulative_cost": 62.40459384799595,
+      "training_cumulative_cost_mean": 538.3333333333334,
+      "training_seeds": 3,
+      "training_steps_per_seed": 2000000
+    }
+  ],
+  "arm_configs": {
+    "C0": {
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/configs/star/single_gpu_ant_c0.yaml",
+      "sha256": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9"
+    },
+    "P47": {
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/configs/star/single_gpu_ant_p47.yaml",
+      "sha256": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+    }
+  },
+  "environment": "Ant-v4",
+  "evaluation_episodes_per_training_seed": 100,
+  "every_seed_pareto_claim": false,
+  "evidence": [
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/evaluation_step_2000000.json",
+      "role": "new_preregistered_training",
+      "sha256": "02d372969afc2956b5f276c2b5828a7b60f17ecb22487b107b7616c9a1cb0721",
+      "training_seed": 2027
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/receipt.json",
+      "role": "training_receipt",
+      "sha256": "a47fbfa0bb49e5164ad9117b5d62b6bc66befdb2456bde37f6f10ab54addffcf",
+      "training_seed": 2027
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "b7f7898ac35b7b49553875ca172834ce3a44d5400e75d601f89b29b62c6cf6fb",
+      "training_seed": 2027
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/evaluation_step_2000000.json",
+      "role": "new_preregistered_training",
+      "sha256": "c81a95a5fd5b76af87ec3c63d88b8ddb5df50f0979b6875b32f8a888e0b60da6",
+      "training_seed": 2028
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2028/receipt.json",
+      "role": "training_receipt",
+      "sha256": "42e527544b0d36013f9cd5fb36b61c1206b399d53c49fd10e6f4892c3cdbc8db",
+      "training_seed": 2028
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "e5aeb4f5beea65dd3a14d68da27e83f7a2f355e2e1c31b34708f78cf07033ae3",
+      "training_seed": 2028
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/evaluation_step_2000000.json",
+      "role": "new_preregistered_training",
+      "sha256": "5603b3a15403585cb401cf675a64a5f9c46b88a7ecac1ea07a8579327fe6b45f",
+      "training_seed": 2029
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/receipt.json",
+      "role": "training_receipt",
+      "sha256": "7f89e0d697f1ebff97f80bd67ece33ae5119aaa0b6f381b3075f150933bd023a",
+      "training_seed": 2029
+    },
+    {
+      "arm": "C0",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "6a35241d8c29cc5e9cddfaf677346533356a5d8fd691c1e9ed2fd551bbf89f20",
+      "training_seed": 2029
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/artifacts/evaluation_step_2000000.json",
+      "role": "reused_sealed_milestone",
+      "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24",
+      "training_seed": 2027
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/ant-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-14-23-27-40/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "39a9d7a0717402d5e3fea5694cd0724aebd0982306beb1fb39c8091135fddc35",
+      "training_seed": 2027
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/evaluation_step_2000000.json",
+      "role": "new_preregistered_training",
+      "sha256": "d18cf2c91de8469800ce021535833fc3a23d30e0ffb01adfdb348ecb3925a126",
+      "training_seed": 2028
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2028/receipt.json",
+      "role": "training_receipt",
+      "sha256": "2f0c926cd37aef47736958af52b6c9c1fdf0e6e84a8371ccc9549b0c80a50945",
+      "training_seed": 2028
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "6a775d05eb8cf6c52030ac8d70e56fcc6f7e683f2feb15ce01f7900fa2f57496",
+      "training_seed": 2028
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+      "role": "new_preregistered_training",
+      "sha256": "8fe4e68253533aa4b2dff492d1adac3087f032ddb26d7ba2a0f956c0c582581a",
+      "training_seed": 2029
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/receipt.json",
+      "role": "training_receipt",
+      "sha256": "b4735791cc09f9e0302f4f6f0c485d984882540c4fde486230a3b341eca1a37d",
+      "training_seed": 2029
+    },
+    {
+      "arm": "P47",
+      "path": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/milestone_2000000.pt",
+      "role": "server_only_checkpoint",
+      "sha256": "6c47cf42c9022b73ad83a89388e9839e9e39fbc723d8ec9fa3aa6e0fbf9d5ab4",
+      "training_seed": 2029
+    }
+  ],
+  "finalizer_source_commit": "8d8e4b9927847d2d8e8baf1e247278ca515a8e5f",
+  "protocol_sha256": "5769bd35b603733dd038f94aea1b7dbc45cfd5335314788836e316781bed2692",
+  "reused_seed": {
+    "arm": "P47",
+    "audit": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json",
+    "audit_sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14",
+    "training_seed": 2027
+  },
+  "statistical_unit": "training_seed",
+  "status": "complete",
+  "training_seeds_per_arm": 3,
+  "training_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "training_steps_per_seed": 2000000
+}

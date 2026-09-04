@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "audit_id": "single_gpu_paper_core_2026-08-25",
-  "updated_at": "2026-08-28T00:31:00+08:00",
-  "overall_status": "in_progress",
+  "updated_at": "2026-09-05T07:48:14+08:00",
+  "overall_status": "complete",
   "protocol": {
     "path": "reports/star/single_gpu_paper_core_preregistration.json",
     "sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
@@ -27,18 +27,23 @@
     "claim_boundary": "Aggregate n=3 conclusions only; no every-seed Pareto claim."
   },
   "completion_gate": {
-    "achieved": false,
+    "achieved": true,
     "blocked": false,
-    "outstanding_requirements": [
+    "outstanding_requirements": [],
+    "completed_requirements": [
       {
         "id": "ant_three_seed_2m",
         "required_evidence": "A complete Ant manifest covering C0/P47 training seeds 2027-2029 at exactly 2M steps, with 100-episode final evaluations and the reused P47-2027 identity preserved.",
-        "current_status": "in_progress"
+        "current_status": "complete",
+        "evidence": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "evidence_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
       },
       {
         "id": "terminal_github_delivery",
         "required_evidence": "SHA-receipted Ant and PointGoal robustness terminal artifacts imported into the host worktree, committed, pushed, and matched by the remote branch head.",
-        "current_status": "pointgoal_published_ant_pending"
+        "current_status": "complete",
+        "branch": "codex/star-single-gpu-paper-core",
+        "ant_stage_receipt": "reports/star/single_gpu_paper_core_artifacts/ant/stage_receipt.json"
       }
     ],
     "conditional_dispositions_not_outstanding": [
@@ -380,13 +385,14 @@
       "evidence": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/queue_state.json"
     },
     "ant_secondary_extension": {
-      "status": "in_progress",
-      "server_queue_state": "training",
+      "status": "complete",
+      "server_queue_state": "complete",
       "scientific_training_launched": true,
       "started_at": "2026-08-25T23:16:17+08:00",
+      "finished_at": "2026-09-05T07:44:11+08:00",
       "point_core_terminal_state": "screen_not_passed",
       "active_learners_at_start": 2,
-      "latest_throughput_snapshot": {
+      "historical_throughput_snapshot": {
         "observed_at": "2026-08-28T00:24:00+08:00",
         "distributed": true,
         "seeta_rtx_3090": {
@@ -447,6 +453,47 @@
         "high_risk_vn_vt": 0.7006186,
         "evidence": "reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json",
         "evidence_sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14"
+      },
+      "evaluation_episodes_per_training_seed": 100,
+      "pooled_evaluation_episodes_per_arm": 300,
+      "statistical_unit": "training_seed",
+      "aggregate_metrics": {
+        "C0": {
+          "return": 5905.978351732602,
+          "mean_cost": 0.17,
+          "cvar_20": 0.85,
+          "failure_rate": 0.17,
+          "training_cumulative_cost": 599.6666666666666,
+          "high_risk_vn_vt": 0.8707385857899984,
+          "high_risk_dangerous_outward_velocity": 0.3717911144097646
+        },
+        "P47": {
+          "return": 6227.66581001111,
+          "mean_cost": 0.07,
+          "cvar_20": 0.35,
+          "failure_rate": 0.07,
+          "training_cumulative_cost": 538.3333333333334,
+          "high_risk_vn_vt": 0.7954785227775574,
+          "high_risk_dangerous_outward_velocity": 0.2974030574162801
+        }
+      },
+      "aggregate_relative_change": {
+        "return_percent": 5.4,
+        "mean_cost_percent": -58.8,
+        "cvar_20_percent": -58.8,
+        "failure_rate_percentage_points": -10.0,
+        "training_cumulative_cost_percent": -10.2,
+        "high_risk_vn_vt_percent": -8.6,
+        "high_risk_dangerous_outward_velocity_percent": -20.0
+      },
+      "claim_boundary": "Aggregate n=3 improvement only; every_seed_pareto_claim is false.",
+      "evidence": {
+        "report": "reports/star/single_gpu_paper_core_artifacts/ant/final/ANT_2M_FORMAL_REPORT.md",
+        "summary": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_summary.csv",
+        "seed_metrics": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_seed_metrics.csv",
+        "episode_records": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_episode_records.csv",
+        "manifest": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
       }
     },
     "walker2d_appendix_seed_2027": {
@@ -462,9 +509,10 @@
       "evidence_sha256": "6e504644ac792bdb2b645d0ac3e82b150d8527bccb2e7810ae5869208c5498d8"
     },
     "host_terminal_evidence_staging": {
-      "status": "monitoring",
-      "service_state": "active",
-      "service_substate": "running",
+      "status": "complete",
+      "service_state": "inactive",
+      "service_substate": "dead",
+      "service_result": "success",
       "unit_file_state": "enabled",
       "service_restart_count": 0,
       "persistent_unit": "/home/lzqw/.config/systemd/user/safeflow-evidence-stager.service",
@@ -485,10 +533,21 @@
         "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/pointgoal/robustness/stage_receipt.json",
         "stage_receipt_sha256": "9a4c35a7022b0a268cc7b7f2a712e4be7d22ea12ac3f85ec915e3135b619417d",
         "git_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7"
+      },
+      "ant_terminal_evidence": {
+        "status": "imported_to_git_worktree",
+        "staged_at": "2026-09-05T07:48:14+08:00",
+        "portable_bytes": 22427673,
+        "portable_file_count": 157,
+        "git_path": "reports/star/single_gpu_paper_core_artifacts/ant",
+        "stage_receipt": "reports/star/single_gpu_paper_core_artifacts/ant/stage_receipt.json",
+        "stage_receipt_sha256": "f0996d583d8b4592d9cafde6022bec18e491d12a85be437ad83588d63cb23b67",
+        "final_manifest": "reports/star/single_gpu_paper_core_artifacts/ant/final/ant_manifest.json",
+        "final_manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
       }
     },
     "github_delivery": {
-      "status": "pointgoal_published_ant_pending",
+      "status": "complete",
       "repository": "lzqw/SAFEFLOW2027",
       "branch": "codex/star-single-gpu-paper-core",
       "pull_request": 12,
@@ -497,7 +556,10 @@
       "pointgoal_robustness_hardening_commit": "23d09f8",
       "pointgoal_robustness_terminal_evidence_commit": "4e5672a077488b75539fdb367ddbfa09db45dba7",
       "pointgoal_robustness_manifest_sha256": "c7820aa0f9ce3440d76efdd7ae22eb100a80fd502cd9546941f9159fb15240c2",
-      "remaining": "Wait for and publish the Ant terminal package."
+      "ant_terminal_evidence_path": "reports/star/single_gpu_paper_core_artifacts/ant",
+      "ant_manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe",
+      "verification_rule": "The remote branch head must contain this audit and the byte-identical Ant terminal artifacts.",
+      "remaining": null
     }
   }
 }

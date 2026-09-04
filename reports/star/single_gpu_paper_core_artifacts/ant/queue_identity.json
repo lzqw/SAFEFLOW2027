@@ -1,0 +1,46 @@
+{
+  "ant_protocol_sha256": "5769bd35b603733dd038f94aea1b7dbc45cfd5335314788836e316781bed2692",
+  "arms": [
+    "C0",
+    "P47"
+  ],
+  "config_sha256": {
+    "C0": "db16e3ed72b0a23a47bd9fd7db0f6aea863e8e1f338a35ada3d25618db4848b9",
+    "P47": "4d011ec9c0eaedf1f51835804c3e0476114e4a0427d8ef32a5b9a0336fc97ebf"
+  },
+  "controller_source_commit": "8d8e4b9927847d2d8e8baf1e247278ca515a8e5f",
+  "environment": "Ant-v4",
+  "maximum_concurrent_learners": 2,
+  "new_training_steps": 10000000,
+  "parent_protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+  "reused_P47_2027": {
+    "audit": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/milestone_audit.json",
+    "audit_sha256": "9e5102da78dae0ef24712df1c081a9f36026214a9e784fc7f2ab925df264aa14",
+    "checkpoint": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/ant-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-14-23-27-40/checkpoints/milestone_2000000.pt",
+    "checkpoint_sha256": "39a9d7a0717402d5e3fea5694cd0724aebd0982306beb1fb39c8091135fddc35",
+    "evaluation": "/root/autodl-tmp/SAFE/code/SAFEFLOW2027-ant-controller-8d8e4b9/reports/star/shapo_p47_four_env_artifacts/milestones/step_2000000/ant-2027/artifacts/evaluation_step_2000000.json",
+    "evaluation_sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24"
+  },
+  "seeds": [
+    2027,
+    2028,
+    2029
+  ],
+  "steps_per_run": 2000000,
+  "training_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "utd_ratio": 1.0,
+  "vector_env_nums": 1,
+  "waves": [
+    [
+      "C0-2028",
+      "P47-2028"
+    ],
+    [
+      "C0-2029",
+      "P47-2029"
+    ],
+    [
+      "C0-2027"
+    ]
+  ]
+}

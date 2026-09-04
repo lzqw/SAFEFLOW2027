@@ -1,8 +1,29 @@
 # SAFEFlow 单 GPU 论文核心实验：正式结果与进度
 
-更新时间：2026-09-03 18:18（Asia/Shanghai）
+更新时间：2026-09-05 07:48（Asia/Shanghai）
 
 ## 当前结论
+
+单 GPU 论文核心协议已经完成。PointGoal 四方法比较与 checkpoint-only 鲁棒性评测均已完成；PointCircle 原始配置及协议唯一允许的几何增强均在冻结的 `300k` 筛选点判定为未通过，因此后续条件矩阵按预注册规则未启动；Ant C0/P4.7 的三训练 seed、每 seed `2M` 正式扩展已经完成严格汇总。所有主结果的独立统计单位均为训练 seed（`n=3`），不把合并后的 episodes 当成独立样本。
+
+### Ant 2M 正式结果
+
+两种方法都使用训练 seeds `2027–2029`、每 seed `2M` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。P4.7 seed `2027` 复用此前密封的同协议结果。
+
+| 方法 | Return | Mean Cost | CVaR-20 | Failure | 训练累计 Cost | 高风险 V_N/V_T | 危险外向速度 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| C0 / isotropic FLAC | 5905.978 | 0.170 | 0.850 | 17.0% | 599.7 | 0.8707 | 0.3718 |
+| P4.7 / Ours | **6227.666** | **0.070** | **0.350** | **7.0%** | **538.3** | **0.7955** | **0.2974** |
+
+三 seed 聚合层面，P4.7 相对 C0 的 return 提高 `5.4%`，mean cost 与 CVaR-20 均降低 `58.8%`，failure rate 降低 `10.0 pp`，训练累计 cost 降低 `10.2%`，高风险 `V_N/V_T` 降低 `8.6%`，危险外向速度降低 `20.0%`。这是聚合层面的任务性能、安全性和方向机制共同改善；由于 seed `2027` 并非单 seed Pareto 改进，不声明每个 seed 都 Pareto。
+
+- [Ant 完整正式报告](single_gpu_paper_core_artifacts/ant/final/ANT_2M_FORMAL_REPORT.md)
+- [Ant 聚合主表](single_gpu_paper_core_artifacts/ant/final/ant_summary.csv)
+- [Ant 逐训练 seed 指标](single_gpu_paper_core_artifacts/ant/final/ant_seed_metrics.csv)
+- [Ant 完整 episode 记录](single_gpu_paper_core_artifacts/ant/final/ant_episode_records.csv)
+- [Ant 终态 manifest 与证据哈希](single_gpu_paper_core_artifacts/ant/final/ant_manifest.json)
+
+### PointGoal 正式结果
 
 PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议唯一允许的几何增强都已完成 `300k` 单 seed 筛选，并按完全相同的冻结规则判定为未通过；PointCircle 方法修改与权重搜索已经停止。PointGoal 所有方法使用训练 seeds `2027–2029`、每 seed `200k` 环境步，并对每个最终 checkpoint 使用 `5` 个固定基础种子、每个 `20` 个连续 episodes，共 `100` episodes。独立统计单位是训练 seed（`n=3`），不是合并后的 episodes。
 
@@ -49,6 +70,8 @@ PointGoal 四方法正式比较已经完成。PointCircle 原始配置及协议�
 - [A100 六路并行工程披露](single_gpu_pointgoal_robustness_a100_parallelism_amendment_2026-08-27.json)
 
 ## 当前运行状态
+
+`2026-09-05 07:38`，A100 竞速分支完成最后一条 Ant C0 seed `2027` 的冻结 `2M` 训练和唯一一次 `5 × 20 = 100` 回合终点评测；receipt 为 `passed`，训练源码 commit `62ca7399357c10645a955dcbead7ed2153a82c69`、C0 配置 SHA、环境、seed 与预算全部匹配。A100 结果经主机同步到 RTX 3090 原队列根目录并通过校验，落后副本已停止。`07:44`，未修改的严格 finalizer 生成 `status=complete` 的 Ant manifest；`07:48`，便携终态证据及 SHA receipt 自动拉回主机。该协议已经没有剩余科学训练或评测任务。
 
 `2026-09-03 18:18`，为利用已经空闲的 A100 节点并缩短最后一条 C0 seed `2027` 的关键路径，主机将已认证的 `1M` 完整回放断点复制到 A100，并在完全相同的历史 source commit、C0 配置 SHA、seed、`2M` 预算、`vector_env_nums=1` 与 UTD=1 下启动竞速分支；3090 原分支继续作为独立兜底。A100 连续两个完整 `5k` 区间到达 `1.005M/1.010M`，累计吞吐为 `10.114/10.166 FPS`；同期 3090 到达 `1.090M`，累计吞吐约 `7.300 FPS`。按当前速率，A100 训练预计于 `2026-09-04 21:21` 完成，连同约半小时冻结终评预计约 `21:51` 形成 receipt，比仅等待 3090 约提前 `7.5` 小时。桥接服务已支持 C0-2027 双机 first-valid-receipt 竞速：任一分支先通过既有身份和 `2M` 检查后停止落后副本，A100 若胜出则经主机同步到原 Seeta run root，再恢复未修改的严格 finalizer。远端 replay-aware launcher 与主机五分钟存活保护也已覆盖该竞速分支；若发生工程退出，会从最新完整回放断点恢复，而不会从零重跑。该工程竞速不读取中期评测、不选择 checkpoint 性能，也不改变科学配置、seed、预算或唯一一次 `100` episodes 终评。机器记录见 [C0-2027 A100 竞速观测](single_gpu_ant_c0_2027_a100_race_observation_2026-09-03.json)。
 
@@ -168,6 +191,12 @@ Walker2d 按协议只保留为 seed `2027` 的附录案例，不新增训练。�
 
 ## 正式证据
 
+- [Ant 2M 正式报告](single_gpu_paper_core_artifacts/ant/final/ANT_2M_FORMAL_REPORT.md)
+- [Ant 2M 聚合主表](single_gpu_paper_core_artifacts/ant/final/ant_summary.csv)
+- [Ant 2M 逐训练 seed 指标](single_gpu_paper_core_artifacts/ant/final/ant_seed_metrics.csv)
+- [Ant 2M 完整 episode 记录](single_gpu_paper_core_artifacts/ant/final/ant_episode_records.csv)
+- [Ant 2M 终态 manifest 与证据哈希](single_gpu_paper_core_artifacts/ant/final/ant_manifest.json)
+- [Ant 2M 主机暂存 SHA receipt](single_gpu_paper_core_artifacts/ant/stage_receipt.json)
 - [四方法正式报告](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/POINTGOAL_FOUR_METHOD_REPORT.md)
 - [四方法聚合主表](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_summary.csv)
 - [逐训练 seed 指标](single_gpu_paper_core_artifacts/pointgoal/postprocess/final/pointgoal_four_method_seed_metrics.csv)

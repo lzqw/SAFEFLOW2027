@@ -1,0 +1,810 @@
+{
+  "checkpoints_copied": false,
+  "git_worktree_modified": false,
+  "job": "ant_2m",
+  "logs_copied": false,
+  "portable_bytes": 22427673,
+  "portable_file_count": 157,
+  "portable_files": [
+    {
+      "bytes": 842,
+      "path": "final/ANT_2M_FORMAL_REPORT.md",
+      "sha256": "70554d233cdea7a8473462bdc48e3d1388b66ff195314565779c881df32be37e"
+    },
+    {
+      "bytes": 37251,
+      "path": "final/ant_episode_records.csv",
+      "sha256": "0be8f9b9a7c1bbf52b9d7a4f16658d1f66f21e1b69a638c23c354c52a4cecedd"
+    },
+    {
+      "bytes": 8457,
+      "path": "final/ant_manifest.json",
+      "sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe"
+    },
+    {
+      "bytes": 1036,
+      "path": "final/ant_seed_metrics.csv",
+      "sha256": "a691d3a6ea0a75e95b38d21fb51debeceadde10321adbab4614714a90a06d8b4"
+    },
+    {
+      "bytes": 737,
+      "path": "final/ant_summary.csv",
+      "sha256": "8c57652699ffd35596746b875f4da6d9e884fb283dee42d185df12393a28c306"
+    },
+    {
+      "bytes": 1756,
+      "path": "queue_identity.json",
+      "sha256": "a4c92729f67c13c6ea00c52f6d9abe185fe3499cea8f0af3d0a98b4ee06024b1"
+    },
+    {
+      "bytes": 553,
+      "path": "queue_state.json",
+      "sha256": "45d91eb4b961cb420e5a230ad6ba8cef1d2730b59be90d1677b738015378ace2"
+    },
+    {
+      "bytes": 5338,
+      "path": "runs/C0-2027/receipt.json",
+      "sha256": "a47fbfa0bb49e5164ad9117b5d62b6bc66befdb2456bde37f6f10ab54addffcf"
+    },
+    {
+      "bytes": 813,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/best_safe_return_selection.json",
+      "sha256": "7f6092cbd376998737f472ab3b6022730ec57a27587b3d0e0ce90200dd49ba00"
+    },
+    {
+      "bytes": 1560,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/counterfactual_step_500000.json",
+      "sha256": "faad8b6c99f95084a7c43206fa69349ae60d48a1830939d1581118c6a190268c"
+    },
+    {
+      "bytes": 250445,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/diagnostics.csv",
+      "sha256": "88490f1df3b6d3435cd13b715b555bafd3002851fba11f1611a1a4640f056023"
+    },
+    {
+      "bytes": 1184,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/evaluation.csv",
+      "sha256": "b3ce5f87229417eecf8b5a55808b990c15f1667f3c594f20b08cb42bd43670fa"
+    },
+    {
+      "bytes": 24315,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/evaluation_step_500000.json",
+      "sha256": "ec666c204670d4683fda9d372a68a42340deaf5e4cf746f48e054fd4cb6d8ca5"
+    },
+    {
+      "bytes": 30453,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/heldout_probability.csv",
+      "sha256": "894067ca1df30ab00fa7e689efc1cd7c988ca25bf76a9e9dc44811b96436e76d"
+    },
+    {
+      "bytes": 745,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/heldout_probability_latest.json",
+      "sha256": "fd5d2341b354fa05e6b30e258d7105219544bd677e133edc4fc99ed07aafd946"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/run_manifest.json",
+      "sha256": "bb5230d39d83a4f0e541e3a392550e9055104c2e1985052050880af0da8c0fa4"
+    },
+    {
+      "bytes": 1308931,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/trajectory_step_500000.csv",
+      "sha256": "438bd6c9cf6ad9321c5b057abe72c3bee278cc3f6f4222b669bec65d006d981f"
+    },
+    {
+      "bytes": 2304,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/artifacts/warmup_status.json",
+      "sha256": "5da3795fbf7ffe4ed26b82e1d3fa406994cb61106e4c164777671eec141648bf"
+    },
+    {
+      "bytes": 9891,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/config.json",
+      "sha256": "1b569c4aa8c7c9774fb8c499482a7efd694ed613282a2924c9d3e4036354a83a"
+    },
+    {
+      "bytes": 254812,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-08-29-21-40-09/progress.csv",
+      "sha256": "5b16da83cb80599fe172aa8e344ada2a8e5b32452e0b786f77cdbf8bb096111f"
+    },
+    {
+      "bytes": 328450,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/artifacts/diagnostics.csv",
+      "sha256": "636483098afc12d7dbcc8028e2f167591dc96ffe1d8d05b0f9b7d5a942eb322d"
+    },
+    {
+      "bytes": 39099,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/artifacts/heldout_probability.csv",
+      "sha256": "b91d9c703362dec12eb8d8b295f02812267ff88ba9e05ee148d759c98d633a43"
+    },
+    {
+      "bytes": 750,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/artifacts/heldout_probability_latest.json",
+      "sha256": "c85481260a49497522ace47679a72e1cb3a4cd2d10ddc94d58a1ee1bc02dfdea"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/artifacts/run_manifest.json",
+      "sha256": "bb5230d39d83a4f0e541e3a392550e9055104c2e1985052050880af0da8c0fa4"
+    },
+    {
+      "bytes": 2307,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/artifacts/warmup_status.json",
+      "sha256": "660a937389a9726e9327a31a448c9e5479fb31db5f08920b2d4850d0d4608d90"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/config.json",
+      "sha256": "717baa39ad36ba8a175c1e51c1717f0e5fde5889b335da39079adf9a87c55de8"
+    },
+    {
+      "bytes": 332649,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-02-18-57-05/progress.csv",
+      "sha256": "fccedeea08a3c86e56ec5687341645b453556eb65da7e44f44764ed9d6a333b5"
+    },
+    {
+      "bytes": 817,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/best_safe_return_selection.json",
+      "sha256": "18e54f4bc93bc2d9b99c2724c5d1e992dc06398ebc98965481da767560b60980"
+    },
+    {
+      "bytes": 1565,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/counterfactual_step_2000000.json",
+      "sha256": "b26ed28d2e03997f4fd17a27012b0a8931f20fe2cd48625d1501ecb0cd55482d"
+    },
+    {
+      "bytes": 421062,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/diagnostics.csv",
+      "sha256": "fc4f2f23c9e0463db038729426adadb5e9a76861489b0527e873644027faae1e"
+    },
+    {
+      "bytes": 1188,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/evaluation.csv",
+      "sha256": "b8163eaffd177128143d701da0b0fd374686aeb85145a623498abf5e6a8ee3ca"
+    },
+    {
+      "bytes": 23132,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/evaluation_step_2000000.json",
+      "sha256": "02d372969afc2956b5f276c2b5828a7b60f17ecb22487b107b7616c9a1cb0721"
+    },
+    {
+      "bytes": 51629,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/heldout_probability.csv",
+      "sha256": "68add9475bf05fb3d57f08e4f75d22c6886b5a80133bd560607664254c28839e"
+    },
+    {
+      "bytes": 753,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/heldout_probability_latest.json",
+      "sha256": "fac2fa4d24446bb552c443b935a9f1bd7eead6e9696ef530848d0ab667154cd2"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/run_manifest.json",
+      "sha256": "bb5230d39d83a4f0e541e3a392550e9055104c2e1985052050880af0da8c0fa4"
+    },
+    {
+      "bytes": 4131,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/training_summary.json",
+      "sha256": "cc943e942ac841af0beb7fe1e1bfe2adb5a86c487020e9b0adf0342af4dc3999"
+    },
+    {
+      "bytes": 1425467,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/trajectory_step_2000000.csv",
+      "sha256": "05dbce48786a5d43ede59a800f4417890514095b84696d92f823ac6facb7bb57"
+    },
+    {
+      "bytes": 2322,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/warmup_status.json",
+      "sha256": "9c029021afd6f73e3ec4441b89918ec798e722d057468efc5e8474e9c580e92d"
+    },
+    {
+      "bytes": 10033,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/config.json",
+      "sha256": "76f7e27504f8299d38f4a07b9d339a25570ee78719b7b852d8b430d43e5f032a"
+    },
+    {
+      "bytes": 426471,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/progress.csv",
+      "sha256": "e4ede433a803e73600ca0d9254814f04993559a8a3175566ac82b1ce005b4603"
+    },
+    {
+      "bytes": 218058,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/artifacts/diagnostics.csv",
+      "sha256": "d9857093772c6ebebf19bdffac03dd86bd7165bcf26a07ca79c2fff310a45476"
+    },
+    {
+      "bytes": 26732,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/artifacts/heldout_probability.csv",
+      "sha256": "89f7f350e50f6c5ad3d0e832c7f89c6739bd4c136c46bf8f51c0d0030bb01f80"
+    },
+    {
+      "bytes": 716,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/artifacts/heldout_probability_latest.json",
+      "sha256": "67f05c45d6b309e5db33bf9e656108aa5508903329d89ddaebfeb39c74b93ecb"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/artifacts/run_manifest.json",
+      "sha256": "bb5230d39d83a4f0e541e3a392550e9055104c2e1985052050880af0da8c0fa4"
+    },
+    {
+      "bytes": 2275,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/artifacts/warmup_status.json",
+      "sha256": "de1817d5be521e64f819c3ef38dea0b4869a96d8fd0972d779af443610319b88"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/config.json",
+      "sha256": "26cd0f7af2516db21a4e8725f4bc53ca9c51ac9afd0fbc5de463bab6835feb64"
+    },
+    {
+      "bytes": 220887,
+      "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-04-11-36-53/progress.csv",
+      "sha256": "64af3127e6e53c1b0fec7a0a1f178fc6060a87f84c2f608467a929d3ca985ea7"
+    },
+    {
+      "bytes": 5360,
+      "path": "runs/C0-2028/receipt.json",
+      "sha256": "42e527544b0d36013f9cd5fb36b61c1206b399d53c49fd10e6f4892c3cdbc8db"
+    },
+    {
+      "bytes": 811,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/best_safe_return_selection.json",
+      "sha256": "1ff6f2b9b85e23d59ca04ede06022be61647c57f35a0c93834733b072efa3f23"
+    },
+    {
+      "bytes": 1553,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/counterfactual_step_500000.json",
+      "sha256": "7255307308c59d53af73795fb2db18206ba22e978e97af610507c91d25f8b23b"
+    },
+    {
+      "bytes": 871496,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/diagnostics.csv",
+      "sha256": "c3af9f49c0ee56c626a9f68ac4766e126f09c0520aa456f62137d95a94d70569"
+    },
+    {
+      "bytes": 1186,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/evaluation.csv",
+      "sha256": "9178f3db2f519fdbaac89d0f3c909be1b56cd52dcaf616fb130d5baae1226481"
+    },
+    {
+      "bytes": 24744,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/evaluation_step_500000.json",
+      "sha256": "21f2f3b037d09aba10722cb1a292872681fd075d61d20c5400760aa241fc382f"
+    },
+    {
+      "bytes": 100391,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/heldout_probability.csv",
+      "sha256": "4c7743a94141c058bd8ab1bb9052fc0b3d323c8dd02e5d5f0d179c0c1298f9ec"
+    },
+    {
+      "bytes": 753,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/heldout_probability_latest.json",
+      "sha256": "bd6d38577675e72fad277fb3d4f7e1ced9a235f6c850c52f89740a761fc6440c"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/run_manifest.json",
+      "sha256": "937c07b12d949a98cc0476d5c14bba16f407b8ff1b9514645b0494da098f00ff"
+    },
+    {
+      "bytes": 1355679,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/trajectory_step_500000.csv",
+      "sha256": "1a9e0f42deb1ee9d6010fc7ece7f89308be4be89057f79851a02eac794246945"
+    },
+    {
+      "bytes": 2324,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/warmup_status.json",
+      "sha256": "f353a0f3890dc837851fbeadd2948d4b63f6bd98779b8de20bb4ea00507ef0d3"
+    },
+    {
+      "bytes": 9891,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/config.json",
+      "sha256": "8a5abba0f99b51194a79524b6bee41a30a0afca2bdb40096b99c5e9c57d8eb91"
+    },
+    {
+      "bytes": 893245,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/progress.csv",
+      "sha256": "bb4c7bf5c77e14658ad413b023c328885356ebed42ce9ee742f14bb3cb3ba9c3"
+    },
+    {
+      "bytes": 814,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/best_safe_return_selection.json",
+      "sha256": "b41809ac54e7f680f0c5d9a33461364e2dbcbdefc8bc5a7efa3aea5e09311a68"
+    },
+    {
+      "bytes": 1554,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/counterfactual_step_2000000.json",
+      "sha256": "be0b0cdb77a14d652b0589c88675b9f477dd2db4c6e545a4fd7308b491ced9e9"
+    },
+    {
+      "bytes": 108810,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/diagnostics.csv",
+      "sha256": "0738d4570e75f3157633679fd8cc132c11f4901d48ebdb7cfb065ec51212c058"
+    },
+    {
+      "bytes": 1183,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/evaluation.csv",
+      "sha256": "0747376060e577ad35a745523288c425bc773d99e17f6eedee6e89de68009222"
+    },
+    {
+      "bytes": 24875,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/evaluation_step_2000000.json",
+      "sha256": "c81a95a5fd5b76af87ec3c63d88b8ddb5df50f0979b6875b32f8a888e0b60da6"
+    },
+    {
+      "bytes": 13348,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/heldout_probability.csv",
+      "sha256": "ae3870a3064563a11180e8b89833312de742218d1a2c4acd2ab8ed86b0d848c0"
+    },
+    {
+      "bytes": 751,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/heldout_probability_latest.json",
+      "sha256": "6c2aaedcadbba470666b67085ddc33d9433f1078fbf648c4d6c02292dda5f579"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/run_manifest.json",
+      "sha256": "937c07b12d949a98cc0476d5c14bba16f407b8ff1b9514645b0494da098f00ff"
+    },
+    {
+      "bytes": 4121,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/training_summary.json",
+      "sha256": "76ec01beb7f6a79946b8bd6cf5908a1543ef31beb84bd6b4c4133a97f2c6d430"
+    },
+    {
+      "bytes": 1141815,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/trajectory_step_2000000.csv",
+      "sha256": "4d95068f26aff7becd3857aeb71144d15ca8c38c525528a983868506873131e2"
+    },
+    {
+      "bytes": 2324,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/artifacts/warmup_status.json",
+      "sha256": "7073e1e18eea3585869ea08f7c921f8b08c3ab4c34102d90955815cb835bf23f"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/config.json",
+      "sha256": "4bb5dfc94cb012df30d6fd80c7b556b7cfe10c6413d231fe22d38f2bcf2028b6"
+    },
+    {
+      "bytes": 110140,
+      "path": "runs/C0-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-29/progress.csv",
+      "sha256": "8b7a3cdd29b18bc5497e07993247e582ff4111f57b2fce26981f9aeecd20a49b"
+    },
+    {
+      "bytes": 5362,
+      "path": "runs/C0-2029/receipt.json",
+      "sha256": "7f89e0d697f1ebff97f80bd67ece33ae5119aaa0b6f381b3075f150933bd023a"
+    },
+    {
+      "bytes": 816,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/best_safe_return_selection.json",
+      "sha256": "150dfa8dd62ba7e12bdd7b5331771d8a429c33b9921f2bc124d6daaeb320b9e7"
+    },
+    {
+      "bytes": 1552,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/counterfactual_step_2000000.json",
+      "sha256": "33ee1e1018376eeb90bd1c2c2de10a1a2d01f117d8d83d9ec1bc03d2d93fc0b6"
+    },
+    {
+      "bytes": 212078,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/diagnostics.csv",
+      "sha256": "006e0cbcf8b94d9da38d7ee5023ac182033fa7b5a7b92672c9218f9e0720b9ad"
+    },
+    {
+      "bytes": 1191,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/evaluation.csv",
+      "sha256": "6c465523501a76c2de1fec82394f15da1d8996f7857621999054fec2bf8c7f7e"
+    },
+    {
+      "bytes": 23535,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/evaluation_step_2000000.json",
+      "sha256": "5603b3a15403585cb401cf675a64a5f9c46b88a7ecac1ea07a8579327fe6b45f"
+    },
+    {
+      "bytes": 25558,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/heldout_probability.csv",
+      "sha256": "0c5048c7863d690a390fec92871adb220ce914c9019964e2857f0445575c9488"
+    },
+    {
+      "bytes": 753,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/heldout_probability_latest.json",
+      "sha256": "b311aefc1ec742c408d22e3d7e2f94dd77e205c24de943fd609446c1c39269b6"
+    },
+    {
+      "bytes": 6258,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/run_manifest.json",
+      "sha256": "c3353e9bc2ed2c893e39d4cf376de97832f2f7bb43375b90bac23a3dc4d5ab74"
+    },
+    {
+      "bytes": 4125,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/training_summary.json",
+      "sha256": "8ed215267aef07c7deb83c53df51877161e29848a1acf6ac7f154b9804535342"
+    },
+    {
+      "bytes": 1453904,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/trajectory_step_2000000.csv",
+      "sha256": "8f452a1168e0c71d09de34cdf7497fca86c2512d64b4fddc6b671cf997f74019"
+    },
+    {
+      "bytes": 2319,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/artifacts/warmup_status.json",
+      "sha256": "76deefcc683a5348886588b2c707498e0e9b22c0cd18c678a141fb553d55da25"
+    },
+    {
+      "bytes": 10199,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/config.json",
+      "sha256": "8092ce05d92c691dae03a4609a7175beb07273c6b8a96028e73625174682b8c2"
+    },
+    {
+      "bytes": 214290,
+      "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-02-19-09-29/progress.csv",
+      "sha256": "a5e64c6fe092574da01f2c1fdd3756cae05de53be851504c3aa8f3c16ad49b68"
+    },
+    {
+      "bytes": 5312,
+      "path": "runs/P47-2028/receipt.json",
+      "sha256": "2f0c926cd37aef47736958af52b6c9c1fdf0e6e84a8371ccc9549b0c80a50945"
+    },
+    {
+      "bytes": 813,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/best_safe_return_selection.json",
+      "sha256": "d8e67531f00a0213e9aad6fe37c3c817eb279502d28cb0cd48517347dc9f3799"
+    },
+    {
+      "bytes": 1530,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/counterfactual_step_500000.json",
+      "sha256": "5f1923d9de053934863bab32d6f5c20b338ad7cf84d8d025e25e0c69f0497575"
+    },
+    {
+      "bytes": 862472,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/diagnostics.csv",
+      "sha256": "6ac68ec91c7b3ba594387f6e2cd61732c234b105f877847d173f62f63b2a467d"
+    },
+    {
+      "bytes": 1187,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/evaluation.csv",
+      "sha256": "ce571c20cf05d63da9781a3b102dac2aabd828e33b49f432defcd8a0542a4d16"
+    },
+    {
+      "bytes": 22907,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/evaluation_step_500000.json",
+      "sha256": "cd01e478812ee54552ac56857310c5202cce3052d3ce8eaa67e32838b6536ac7"
+    },
+    {
+      "bytes": 97496,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/heldout_probability.csv",
+      "sha256": "1c21a023fea84d8a27f19f19805cf0f13d76441eccdd8bf9387dea5a0808e768"
+    },
+    {
+      "bytes": 717,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/heldout_probability_latest.json",
+      "sha256": "48c30b1b8258f5055c733754aa6a1679dbf4315bd3e5820dcc3d442aa955795c"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/run_manifest.json",
+      "sha256": "6c14594d843cf9f29a37157bdae1a3b3268afffa26092bf27d6053a08bd415c1"
+    },
+    {
+      "bytes": 1436660,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/trajectory_step_500000.csv",
+      "sha256": "6bc3759de8bd2f3e012e29e34006c96730fc3feb7ade034c4093fb8a1daaf4f7"
+    },
+    {
+      "bytes": 2276,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/artifacts/warmup_status.json",
+      "sha256": "84e5046dcbd98953ad58220fe98b5e4116353a778d09e1156621906c34d51739"
+    },
+    {
+      "bytes": 9889,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/config.json",
+      "sha256": "60c53f71cbf3e8335e7a41b235f1ba6357ce3c8eaefa5c751cea9ce3c8972d4a"
+    },
+    {
+      "bytes": 889271,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-25-23-16-22/progress.csv",
+      "sha256": "d275bf9055e58d99a280501fcd352581919f36cb292472a052f6daea6c78c529"
+    },
+    {
+      "bytes": 817,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/best_safe_return_selection.json",
+      "sha256": "923d5cb779ac5e44b7213f25ff6495346d2d4809793ca6f97f13b1bc87f44117"
+    },
+    {
+      "bytes": 1536,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/counterfactual_step_2000000.json",
+      "sha256": "f4791e86e4b66e1d07eb4c9850e4dfba32915f0afdf1b8a40bdf098300e31885"
+    },
+    {
+      "bytes": 108129,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/diagnostics.csv",
+      "sha256": "4bb6b7a62919702dd9f3a1f3ba9d56c7adc461b8082e883c9c7b20a6b1c8babe"
+    },
+    {
+      "bytes": 1186,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/evaluation.csv",
+      "sha256": "3f61be959655859f40edc54b37371907abcdd68aa72046a0e71590801bf5059e"
+    },
+    {
+      "bytes": 22644,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/evaluation_step_2000000.json",
+      "sha256": "d18cf2c91de8469800ce021535833fc3a23d30e0ffb01adfdb348ecb3925a126"
+    },
+    {
+      "bytes": 13178,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/heldout_probability.csv",
+      "sha256": "fef83a31a9293e12da3b360354b4af362ece72140ee118a520718fb48c0a489d"
+    },
+    {
+      "bytes": 716,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/heldout_probability_latest.json",
+      "sha256": "f0cf981f25cf00e2e131263b93d49e98061a0e54ad18a829e8d14299a63c22ba"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/run_manifest.json",
+      "sha256": "6c14594d843cf9f29a37157bdae1a3b3268afffa26092bf27d6053a08bd415c1"
+    },
+    {
+      "bytes": 4072,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/training_summary.json",
+      "sha256": "97ea2ca4f1613c9216da9130dc457b3cbda83f5daa310444eb125faeb204c706"
+    },
+    {
+      "bytes": 1444254,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/trajectory_step_2000000.csv",
+      "sha256": "70dd057b294aa4cae7503887d6f8c4476a3fabf12f691da12fa51117d4d657a4"
+    },
+    {
+      "bytes": 2274,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/artifacts/warmup_status.json",
+      "sha256": "c9212134c533cd7f941955fd3fb172823ba3d14e245e083db2461d7875e8b565"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/config.json",
+      "sha256": "5c0ffaf232e02a752d651f901d2cbebc57461f66555547279a4ce28b75d7a56f"
+    },
+    {
+      "bytes": 109459,
+      "path": "runs/P47-2028/training/STAR-{Ant-v4}/seed-2028-2026-08-29-10-58-30/progress.csv",
+      "sha256": "280d01b2443b3f46571b8b8878fe938491e88b6eb5f4fb1a80adb7c8e293f264"
+    },
+    {
+      "bytes": 5285,
+      "path": "runs/P47-2029/receipt.json",
+      "sha256": "b4735791cc09f9e0302f4f6f0c485d984882540c4fde486230a3b341eca1a37d"
+    },
+    {
+      "bytes": 813,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/best_safe_return_selection.json",
+      "sha256": "2504082edefbdd0383d2b4fe1e2ed1451ab819343da6bd8c72488e62ecf07c7b"
+    },
+    {
+      "bytes": 1540,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/counterfactual_step_500000.json",
+      "sha256": "d36dcc947c780cd0599314603fdb4ec8ebb5b91ea54b487ad761d44c9dbabd5b"
+    },
+    {
+      "bytes": 335170,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/diagnostics.csv",
+      "sha256": "d7ca312a4043f68e39388d027485d88b960a92d69e00eff7a475729ef098d127"
+    },
+    {
+      "bytes": 1187,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/evaluation.csv",
+      "sha256": "8601f354b7ca1a2c72e3fc45f6d7a724b487fae8a222ee46f05d93bcb464b01d"
+    },
+    {
+      "bytes": 23481,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/evaluation_step_500000.json",
+      "sha256": "981bac0e3832d3ff4f22b5898d32da2b52d4e1e4ae9e5bf2ed1b94855290024c"
+    },
+    {
+      "bytes": 39738,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability.csv",
+      "sha256": "8567a0c801fa9b8307efa251f3ff9fb50653e7d223bf376f152d5956213137db"
+    },
+    {
+      "bytes": 753,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability_latest.json",
+      "sha256": "acf148c5e33cdce8c6d2408e3b9a8fe6b151b4fdbf057b7073314822a7d1531c"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/run_manifest.json",
+      "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+    },
+    {
+      "bytes": 4110,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/training_summary.json",
+      "sha256": "37e52788b0dc45f59d4f359831469a6e7f5a2c9759222d64ab1e613921529db5"
+    },
+    {
+      "bytes": 1437315,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/trajectory_step_500000.csv",
+      "sha256": "601ed9c9182c38122499b5635870a87d1ceccfcf3e8acbf3eb135f20017737f8"
+    },
+    {
+      "bytes": 2322,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/warmup_status.json",
+      "sha256": "b6b62ca3acc5294861631059c00e73e0e1c67b99bb17ea7a6de62f2704fe33d7"
+    },
+    {
+      "bytes": 9857,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/config.json",
+      "sha256": "087d8257cb944fb81d6b64c190925e4fcde68f7397eba532c3d76b422af74906"
+    },
+    {
+      "bytes": 342748,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/progress.csv",
+      "sha256": "a2999e4d9ba4998a6f40ffb37e0bfd40518d2a77babd36b8c9d79b57353bec6d"
+    },
+    {
+      "bytes": 16027,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/artifacts/diagnostics.csv",
+      "sha256": "c58e82b5e3eff440ffc4ea5f7a407dff2b2a958d3f9004992959c0b5a766b95e"
+    },
+    {
+      "bytes": 1891,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/artifacts/heldout_probability.csv",
+      "sha256": "9ac4c18d9375e1bac3125f3da3b4292bc209ce801b6b0bd22ed5c9efb070fdff"
+    },
+    {
+      "bytes": 747,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/artifacts/heldout_probability_latest.json",
+      "sha256": "8938cca3ca62e8f1b4cfe41407828642d30da6a1d47116d8d70d7a20f9e349f8"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/artifacts/run_manifest.json",
+      "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+    },
+    {
+      "bytes": 2318,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/artifacts/warmup_status.json",
+      "sha256": "0f2807c391819937a37aa7ea216f82376ac08175985a1125e0752b4abc61d96f"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/config.json",
+      "sha256": "6c2ac508d47398e1603ad321cd9706ea953db6876ec96f341618be6abde408d4"
+    },
+    {
+      "bytes": 16218,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-21-42-09/progress.csv",
+      "sha256": "77eb0208e2b64f35f7c276bd18c208e8247fd2af9ee1d099972fb7cba383cd11"
+    },
+    {
+      "bytes": 231979,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/artifacts/diagnostics.csv",
+      "sha256": "a6481e61dc3b47e0841d2afb8e28e13eb19cbbf7829527d30d73dd1e83af6c91"
+    },
+    {
+      "bytes": 28011,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/artifacts/heldout_probability.csv",
+      "sha256": "943fe540902b5572008ae127fba6179279c9f3be093e2ad572455d925b8e1d3b"
+    },
+    {
+      "bytes": 752,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/artifacts/heldout_probability_latest.json",
+      "sha256": "c44235740b14eada7636efb7efbf3766adb2674da13d81769f59d8702994207e"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/artifacts/run_manifest.json",
+      "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+    },
+    {
+      "bytes": 2318,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/artifacts/warmup_status.json",
+      "sha256": "81d9b00c28c7700c91bb5129bbeba58fab2659cf817e25d3e1bfc39378127086"
+    },
+    {
+      "bytes": 10183,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/config.json",
+      "sha256": "6c2ac508d47398e1603ad321cd9706ea953db6876ec96f341618be6abde408d4"
+    },
+    {
+      "bytes": 234763,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-29-22-55-56/progress.csv",
+      "sha256": "fdddb81b9a87185deee9b67b25c9517740fa05f525ef3b775c1bc2e81c2aca7c"
+    },
+    {
+      "bytes": 819,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/best_safe_return_selection.json",
+      "sha256": "c82590aa4d6e45b0551430ed3f2b3e8fc754f3eb94f35956de235c29193e25d9"
+    },
+    {
+      "bytes": 1536,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/counterfactual_step_2000000.json",
+      "sha256": "bfaf777965d07d12bf4ae7f561279b659c242166a10778bb17ee919de70dff99"
+    },
+    {
+      "bytes": 422169,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/diagnostics.csv",
+      "sha256": "973f574d585cb55122cb32c1818d0904995f230edc9f49dd3a951c9accbfebb1"
+    },
+    {
+      "bytes": 1190,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation.csv",
+      "sha256": "43670f08a0882c618d47b2e2df743a3cc252b064f08c2eb49503639524c02901"
+    },
+    {
+      "bytes": 22991,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+      "sha256": "8fe4e68253533aa4b2dff492d1adac3087f032ddb26d7ba2a0f956c0c582581a"
+    },
+    {
+      "bytes": 51725,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/heldout_probability.csv",
+      "sha256": "7273071288d68eca47142c3b4c85e797074502c422424d746706f7948c255bff"
+    },
+    {
+      "bytes": 719,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/heldout_probability_latest.json",
+      "sha256": "f40dfd83048f8a4be2af86129267b568d19c8c6011451f717e98bd21723b69d0"
+    },
+    {
+      "bytes": 6256,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/run_manifest.json",
+      "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+    },
+    {
+      "bytes": 4077,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/training_summary.json",
+      "sha256": "9e1ee070fe87ebea5ee22bb87d5db87110d7442a412f2b633ded2abd98b713e7"
+    },
+    {
+      "bytes": 1445891,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/trajectory_step_2000000.csv",
+      "sha256": "2becb6147fccada9a9d72c4c38367031b9b6d94527da075177e1a5a1287d315e"
+    },
+    {
+      "bytes": 2279,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/warmup_status.json",
+      "sha256": "2eb2ac531668c15e1a77a63b1dcd220ff0338023727333048f728aec52bf029a"
+    },
+    {
+      "bytes": 10119,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/config.json",
+      "sha256": "69ca3f2f174e6143eee6c064f2f3f29f64549b77fd828e924ad1390e8ad4ed5c"
+    },
+    {
+      "bytes": 427123,
+      "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/progress.csv",
+      "sha256": "8dbebcf0f83a5248605fda094993e4d64d26ddb4eb0d0580c9a20f2553cb9e34"
+    },
+    {
+      "bytes": 610,
+      "path": "wave-1.json",
+      "sha256": "051b2a8701705ab9552667b44a9be12f8ead841c2e53a9abf27c313b60b8c6ec"
+    },
+    {
+      "bytes": 610,
+      "path": "wave-2.json",
+      "sha256": "6d9079f1a012aafb7b0c45cbc11caa7d8872cd6f3c2f2a5fe9324a45ae4a89fb"
+    },
+    {
+      "bytes": 471,
+      "path": "wave-3.json",
+      "sha256": "52de2c3c9b5db20556426c9db2930008d452331c97df91d9f4e619066cb07b4d"
+    }
+  ],
+  "remote_directory": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1",
+  "remote_state_payload": {
+    "ant_protocol_sha256": "5769bd35b603733dd038f94aea1b7dbc45cfd5335314788836e316781bed2692",
+    "final_manifest": "/root/autodl-tmp/SAFE/single_gpu_paper_core/ant-2m-v1/final/ant_manifest.json",
+    "final_manifest_sha256": "005795abc13de0e49243014acfa86cfb32ff88c9bfdf3a1074865c45672a32fe",
+    "finished_at_utc": "2026-09-04T23:44:11.201153+00:00",
+    "point_core_terminal_state": "screen_not_passed",
+    "protocol_sha256": "0a21c9165116e15eb13c4f1c84956de515cb7631e3a1a93611239cdd54b1cdf8",
+    "scientific_training_launched": true,
+    "state": "complete"
+  },
+  "ssh_host": "seeta-nmb2",
+  "staged_at_utc": "2026-09-04T23:48:14.192312+00:00",
+  "status": "complete",
+  "terminal_state": "complete"
+}
