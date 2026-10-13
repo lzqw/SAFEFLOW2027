@@ -26,6 +26,38 @@ def load_json(path: Path) -> dict[str, Any]:
     return payload
 
 
+def resolve_run_path(container: Path, recorded: str) -> Path:
+    """Resolve an audited host relocation without changing original evidence bytes."""
+    root = container.resolve()
+    path = Path(recorded)
+    if not path.is_absolute() or '..' in path.parts:
+        raise ValueError(f'run artifact must have an absolute non-traversing path: {recorded}')
+    try:
+        path.resolve().relative_to(root)
+        candidate = path
+    except ValueError:
+        manifest = load_json(container / 'artifact_relocation.json')
+        origin = Path(manifest['original_container'])
+        if (
+            manifest.get('format') != 'shapo-artifact-relocation-v1'
+            or manifest.get('job') != container.name
+            or not origin.is_absolute()
+            or '..' in origin.parts
+            or origin.name != container.name
+            or origin.parent.name != 'runs'
+            or origin.parent.parent.name != 'shapo_p47_four_env'
+        ):
+            raise ValueError('artifact relocation does not identify this matrix cell')
+        relative = path.relative_to(origin)
+        if not relative.parts or relative.parts[0] != 'training':
+            raise ValueError('only same-run training artifacts may be relocated')
+        candidate = container / relative
+    candidate.resolve().relative_to(root)
+    if not candidate.exists():
+        raise FileNotFoundError(f'recorded artifact is missing after relocation: {recorded}')
+    return candidate
+
+
 def finite(label: str, value: Any) -> float:
     """Require and return one finite metric."""
     numeric = float(value)
@@ -78,6 +110,7 @@ def validate_checkpoint_resolved_config(
     observed: Any,
     expected: dict[str, Any],
     allowed_resume_checkpoints: set[Path] | None,
+    container: Path | None = None,
 ) -> str | None:
     """Validate a checkpoint config while admitting one audited recovery-path override."""
     if not isinstance(observed, dict):
@@ -104,7 +137,10 @@ def validate_checkpoint_resolved_config(
             for path in (allowed_resume_checkpoints or set())
             if path.is_file() and path.name == 'latest_full.pt'
         }
-        runtime_resume = Path(observed_resume)
+        runtime_resume = (
+            resolve_run_path(container, observed_resume) if container is not None
+            else Path(observed_resume)
+        )
         if not runtime_resume.is_file() or runtime_resume.resolve() not in allowed:
             raise ValueError(
                 f'{label}.algo_cfgs.resume_from is not an approved same-run '
@@ -490,6 +526,7 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
     replay_capacity: int,
     expected_custom_config: dict[str, Any] | None = None,
     allowed_resume_checkpoints: set[Path] | None = None,
+    container: Path | None = None,
 ) -> dict[str, Any]:
     """Deeply validate one STAR checkpoint and return its immutable compact identity."""
     if path.stat().st_size <= 0:
@@ -537,6 +574,7 @@ def validate_checkpoint_artifact(  # pylint: disable=too-many-arguments
             resolved,
             expected_custom_config,
             allowed_resume_checkpoints,
+            container,
         )
 
     replay = payload['replay']
@@ -682,7 +720,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
     if int(receipt['run_steps']) <= 0:
         raise ValueError('formal receipt has no run steps')
 
-    final_log_dir = Path(receipt['log_dir'])
+    final_log_dir = resolve_run_path(args.container, receipt['log_dir'])
     summary = load_json(final_log_dir / 'artifacts/training_summary.json')
     if summary.get('status') != 'completed' or int(summary.get('env_steps', -1)) != total_steps:
         raise ValueError('formal training summary is incomplete')
@@ -781,6 +819,7 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
                 replay_capacity=replay_capacity,
                 expected_custom_config=config['custom_cfgs'],
                 allowed_resume_checkpoints=allowed_resume_checkpoints,
+                container=args.container,
             ),
         )
     validate_checkpoint_training_costs(evaluation_rows, checkpoint_artifacts)
@@ -814,6 +853,13 @@ def main() -> None:  # pylint: disable=too-many-locals,too-many-statements
             'run_manifest': artifact_identity(manifest_path),
         },
     }
+    relocation = args.container / 'artifact_relocation.json'
+    if relocation.is_file():
+        payload['artifact_relocation'] = {
+            **load_json(relocation),
+            'manifest_sha256': sha256_file(relocation),
+            'original_evidence_modified': False,
+        }
     atomic_json(args.container / 'formal_validation.json', payload)
     print(json.dumps(payload, indent=2, sort_keys=True))
 
