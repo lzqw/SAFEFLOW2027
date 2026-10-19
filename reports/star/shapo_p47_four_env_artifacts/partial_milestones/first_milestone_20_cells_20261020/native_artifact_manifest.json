@@ -1,0 +1,268 @@
+{
+  "kind": "unchanged_native_evaluation_transfer_manifest_not_full_provenance_audit",
+  "host_directory": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/partial_milestones/first_milestone_20_cells_20261020",
+  "raw_file_count": 20,
+  "additional_rollouts": 0,
+  "files": [
+    {
+      "job": "point-goal-2027",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6",
+      "publication_relative_path": "native_evaluations/point-goal-2027/evaluation_step_1000000.json",
+      "bytes": 23991,
+      "sha256": "28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-goal-2027/1792444352327528131-699cfa76f0691e2d077486a57be09b525ee6e3c31eb883fee44518dfbc661e9c.json",
+      "original_paths": [
+        "training/recovered-history/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-goal-2028",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f",
+      "publication_relative_path": "native_evaluations/point-goal-2028/evaluation_step_1000000.json",
+      "bytes": 23980,
+      "sha256": "22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/point-goal-2028/1792444379639149619-c15ec49eb92f169472bd946a87576e6552514cdf2daa5afcb61293186b7b5989.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-15-10-54-21/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-goal-2029",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/3da49b620c1caceed249c407f4f70b5a9e2c78fb357c76d5c7e12f20fbc2a70d",
+      "publication_relative_path": "native_evaluations/point-goal-2029/evaluation_step_1000000.json",
+      "bytes": 23993,
+      "sha256": "3da49b620c1caceed249c407f4f70b5a9e2c78fb357c76d5c7e12f20fbc2a70d",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/3da49b620c1caceed249c407f4f70b5a9e2c78fb357c76d5c7e12f20fbc2a70d",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-goal-2029/1792444516878844047-a2c04a73168da682af20a21c4f6e8ec31b12c5228959dfa90e27c1878a13756e.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-goal-2030",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26",
+      "publication_relative_path": "native_evaluations/point-goal-2030/evaluation_step_1000000.json",
+      "bytes": 24001,
+      "sha256": "d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-goal-2030/1792444355650043565-944091ca38b08b86d4efaed4af93278f2cd90c1af8c92b59da76ca9ba947b92c.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-09-09-18-17-22/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-goal-2031",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/dac379660b2b20963ca2b7e87a2a320b618e6482230e2a7e4b3539edb3b960ea",
+      "publication_relative_path": "native_evaluations/point-goal-2031/evaluation_step_1000000.json",
+      "bytes": 23994,
+      "sha256": "dac379660b2b20963ca2b7e87a2a320b618e6482230e2a7e4b3539edb3b960ea",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/dac379660b2b20963ca2b7e87a2a320b618e6482230e2a7e4b3539edb3b960ea",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-goal-2031/1792444562922971989-2b1245ce9a4d861d367ccd4bc9d05c2c8763043d698fe0b858fc750de81468ca.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2027",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/01db805067bf50e62d32ab9df631a5303f274de34e0487f9bdb65f7fe2af764f",
+      "publication_relative_path": "native_evaluations/point-button-2027/evaluation_step_1000000.json",
+      "bytes": 23866,
+      "sha256": "01db805067bf50e62d32ab9df631a5303f274de34e0487f9bdb65f7fe2af764f",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/01db805067bf50e62d32ab9df631a5303f274de34e0487f9bdb65f7fe2af764f",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-button-2027/1792444344690093383-b0d9644da176fc2891f539ea6ad092e8f689e19cda83e805a00c86daf61c55ba.json",
+      "original_paths": [
+        "training/recovered-history/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2028",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/fd7b1e7098555b2a964a5a02b69d75def07eff419c3c910c331ed64a4a477ef5",
+      "publication_relative_path": "native_evaluations/point-button-2028/evaluation_step_1000000.json",
+      "bytes": 23856,
+      "sha256": "fd7b1e7098555b2a964a5a02b69d75def07eff419c3c910c331ed64a4a477ef5",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/fd7b1e7098555b2a964a5a02b69d75def07eff419c3c910c331ed64a4a477ef5",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-button-2028/1792444348974688065-2bac76f209d7c0f3fb1ff2b9ed57d7e2036a28a3b98e22a3d27ad985b3bb228e.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2029",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/7f0f300345c83a63ef290907b047416a821532eca0232780fee8bdf274b12d44",
+      "publication_relative_path": "native_evaluations/point-button-2029/evaluation_step_1000000.json",
+      "bytes": 23852,
+      "sha256": "7f0f300345c83a63ef290907b047416a821532eca0232780fee8bdf274b12d44",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/7f0f300345c83a63ef290907b047416a821532eca0232780fee8bdf274b12d44",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-button-2029/1792444475399187152-dc01b428cc22bcae1edb3cad3fa9f924575088a9f64f8fae2a9c66a6d276f066.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-14-22-34-14/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2030",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452",
+      "publication_relative_path": "native_evaluations/point-button-2030/evaluation_step_1000000.json",
+      "bytes": 23896,
+      "sha256": "03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-button-2030/1792444478525920855-2585d81d4e5b7fa847cc3c682ca4899381d550645bb338f3f76bbf413e52b0ac.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2031",
+      "milestone_steps": 1000000,
+      "host_blob_relative_path": "blobs/a050f1f6853d188b6c4bcf442273a1c7a59e3c7e3a51c8e34a1d7cfbb0c6a7e4",
+      "publication_relative_path": "native_evaluations/point-button-2031/evaluation_step_1000000.json",
+      "bytes": 23884,
+      "sha256": "a050f1f6853d188b6c4bcf442273a1c7a59e3c7e3a51c8e34a1d7cfbb0c6a7e4",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/a050f1f6853d188b6c4bcf442273a1c7a59e3c7e3a51c8e34a1d7cfbb0c6a7e4",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-button-2031/1792444481535265005-05b47dee40f4f3c431d681f9b23b57846edf09994ddd1d1f809f306c5c20b83a.json",
+      "original_paths": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json"
+      ]
+    },
+    {
+      "job": "ant-2027",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/7fd1d2aca5911fe122b59aac8ca80a9c0dd05a3a5976009903c7dbe0d7100e42",
+      "publication_relative_path": "native_evaluations/ant-2027/evaluation_step_500000.json",
+      "bytes": 23821,
+      "sha256": "7fd1d2aca5911fe122b59aac8ca80a9c0dd05a3a5976009903c7dbe0d7100e42",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/7fd1d2aca5911fe122b59aac8ca80a9c0dd05a3a5976009903c7dbe0d7100e42",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2027/1792444324905890939-dd114109907bff5c72efd9d9095c68a829a2de2a01c4a4626cf25e2bcb7bf8b7.json",
+      "original_paths": [
+        "training/recovered-history/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "ant-2028",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/1a42db66b30367aa041a13304420bcb40e7291e3d538a01a55d139df97669d2d",
+      "publication_relative_path": "native_evaluations/ant-2028/evaluation_step_500000.json",
+      "bytes": 23716,
+      "sha256": "1a42db66b30367aa041a13304420bcb40e7291e3d538a01a55d139df97669d2d",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/1a42db66b30367aa041a13304420bcb40e7291e3d538a01a55d139df97669d2d",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/ant-2028/1792444384335513965-b4926df1546ae8f2094d69b7aa24a002d1ef976898dcbfd442189317e475bf1b.json",
+      "original_paths": [
+        "training/STAR-{Ant-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "ant-2029",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa",
+      "publication_relative_path": "native_evaluations/ant-2029/evaluation_step_500000.json",
+      "bytes": 24437,
+      "sha256": "cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/ant-2029/1792444425823111896-3818083882ae591978a20b3bbc0b700a7a3182468061d228befd2a589701e283.json",
+      "original_paths": [
+        "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "ant-2030",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/c31e282fb0d03a8feb1060224f493bb5c5204f321a8e7a0ba5792e7fde0d6994",
+      "publication_relative_path": "native_evaluations/ant-2030/evaluation_step_500000.json",
+      "bytes": 23888,
+      "sha256": "c31e282fb0d03a8feb1060224f493bb5c5204f321a8e7a0ba5792e7fde0d6994",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/c31e282fb0d03a8feb1060224f493bb5c5204f321a8e7a0ba5792e7fde0d6994",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2030/1792444328000723494-6915e7f3ff66ce719bcfa53b33decda2d5edd45643d8391fdc7f72238d3484ab.json",
+      "original_paths": [
+        "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "ant-2031",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/634c3d9169fa714225690915b8a27eefad8db0c076f67f65a3fd764ba90f0570",
+      "publication_relative_path": "native_evaluations/ant-2031/evaluation_step_500000.json",
+      "bytes": 26648,
+      "sha256": "634c3d9169fa714225690915b8a27eefad8db0c076f67f65a3fd764ba90f0570",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/634c3d9169fa714225690915b8a27eefad8db0c076f67f65a3fd764ba90f0570",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2031/1792444340487371668-ed4740f2f0cc6aa12d74c783a86c9fb22fed9e7056840f195ab8ad313f01dbcf.json",
+      "original_paths": [
+        "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "walker2d-2027",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/24acc438ab6023aadd574a7394e42391e12eec695f60c0dea9ab9550d623a9cb",
+      "publication_relative_path": "native_evaluations/walker2d-2027/evaluation_step_500000.json",
+      "bytes": 22141,
+      "sha256": "24acc438ab6023aadd574a7394e42391e12eec695f60c0dea9ab9550d623a9cb",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/24acc438ab6023aadd574a7394e42391e12eec695f60c0dea9ab9550d623a9cb",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2027/1792444358077687557-c338edcd1104a53fd0688b7e15d5863020d44a42f830c59f91026f6f9e870beb.json",
+      "original_paths": [
+        "training/recovered-history/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "walker2d-2028",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/7a1a98f57c9eff5b3d4ba65d422257c18db2b2180814279769b96193ace4dedc",
+      "publication_relative_path": "native_evaluations/walker2d-2028/evaluation_step_500000.json",
+      "bytes": 30039,
+      "sha256": "7a1a98f57c9eff5b3d4ba65d422257c18db2b2180814279769b96193ace4dedc",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/7a1a98f57c9eff5b3d4ba65d422257c18db2b2180814279769b96193ace4dedc",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/walker2d-2028/1792444608174864171-1cb79323480cdb9b560f95b187b23b70002f54e80298b0683bc5fed1e2794a00.json",
+      "original_paths": [
+        "training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "walker2d-2029",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/0e129a66d10362c6bb8c73946a440e40a297fdb14107b4685a021f60686f2ac8",
+      "publication_relative_path": "native_evaluations/walker2d-2029/evaluation_step_500000.json",
+      "bytes": 24020,
+      "sha256": "0e129a66d10362c6bb8c73946a440e40a297fdb14107b4685a021f60686f2ac8",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/0e129a66d10362c6bb8c73946a440e40a297fdb14107b4685a021f60686f2ac8",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/walker2d-2029/1792444609656583417-200c2de8560d9d1ab10d5678244c47835b14d0571a749f2c73d69a57431fd51a.json",
+      "original_paths": [
+        "training/STAR-{Walker2d-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "walker2d-2030",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/27d168495a5964f6bcb6ae5ee787fe3be0ce3310b1d2fa0fcf00793bf9c5a4e3",
+      "publication_relative_path": "native_evaluations/walker2d-2030/evaluation_step_500000.json",
+      "bytes": 28576,
+      "sha256": "27d168495a5964f6bcb6ae5ee787fe3be0ce3310b1d2fa0fcf00793bf9c5a4e3",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/27d168495a5964f6bcb6ae5ee787fe3be0ce3310b1d2fa0fcf00793bf9c5a4e3",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2030/1792444360623649188-ccc5a565826f8fdfaa4b78ca7acc2fec44376a03d1acb1243057c544b8b50ff1.json",
+      "original_paths": [
+        "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json"
+      ]
+    },
+    {
+      "job": "walker2d-2031",
+      "milestone_steps": 500000,
+      "host_blob_relative_path": "blobs/6c679d1e91eefe2e4402bf5a0de2c0f57fee5caf2b34516a5f09d899de5f38f5",
+      "publication_relative_path": "native_evaluations/walker2d-2031/evaluation_step_500000.json",
+      "bytes": 22478,
+      "sha256": "6c679d1e91eefe2e4402bf5a0de2c0f57fee5caf2b34516a5f09d899de5f38f5",
+      "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/6c679d1e91eefe2e4402bf5a0de2c0f57fee5caf2b34516a5f09d899de5f38f5",
+      "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2031/1792444369048702023-0cf5a316dfd0371a8c042412098fc972abd89af97f9d61bd4442e3d164a51409.json",
+      "original_paths": [
+        "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_500000.json"
+      ]
+    }
+  ]
+}
