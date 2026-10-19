@@ -81,16 +81,23 @@ def direct_5080_recovery_accounting():
     """Do not omit an eventual direct 4080-to-5080 continuation from delivery."""
     specifications = (
         ('point-button-2031_direct_5080_20261020',
-         'handoff_button2031_4080_to_5080_20261020.py', False),
+         'handoff_button2031_4080_to_5080_20261020.py', False, 'point-button-2031', 0, 0),
         ('point-button-2031_balanced_5080_20261020_0321',
-         'rebalance_button2031_4080_to_5080_20261020_0321.py', True))
+         'rebalance_button2031_4080_to_5080_20261020_0321.py', True, 'point-button-2031', 3, 8),
+        ('point-button-2030_balanced_5080_20261020_0421',
+         'rebalance_button2030_4080_to_5080_20261020_0421.py', True, 'point-button-2030', 4, 4))
     present = [entry for entry in specifications
                if (BASE / (entry[0] + '_state.json')).exists()]
-    if len(present) > 1:
-        raise ValueError('Multiple direct transactions need explicit reconciliation')
-    if not present:
-        return []
-    prefix, controller_filename, balancing = present[0]
+    if len({entry[3] for entry in present}) != len(present):
+        raise ValueError('Multiple direct transactions for one job need explicit reconciliation')
+    result = []
+    for specification in present:
+        result.extend(_verify_direct_5080_recovery(*specification))
+    return result
+
+
+def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
+                                expected_cohort_size, minimum_speed_ratio):
     path = BASE / (prefix + '_state.json')
     proof = json.loads(path.read_text())
     moved = json.loads((BASE / (prefix + '_receipt.json')).read_text())
@@ -115,18 +122,18 @@ def direct_5080_recovery_accounting():
                 and sorted(w['pid'] for w in workers) == pids
                 and all(w['boot_id'] == plan['expected_target_boot_id'] for w in workers))
         source = next(w for w in current['hosts']['4080']['training']
-                      if w['job'] == 'point-button-2031')
+                      if w['job'] == job)
         target = [w for w in current['hosts']['5080']['training'] if w['device'] == 'cuda:0']
         qualified = qualified and (
             q.get('kind') == 'existing_cohort_makespan_balance'
-            and q.get('spare_compute_claimed') is False and len(pids) == 3
+            and q.get('spare_compute_claimed') is False and len(pids) == expected_cohort_size
             and plan.get('additional_experiment_cells') == 0
             and q['observed_at_unix'] == current['observed_at_unix']
             and q['previous_observed_at_unix'] == previous['observed_at_unix']
             and q['observed_at_unix'] - q['previous_observed_at_unix'] >= 1800
             and q['source_last_epoch_fps'] == source['last_epoch_fps']
             and q['target_minimum_last_epoch_fps'] == min(w['last_epoch_fps'] for w in target)
-            and 0 < q['source_last_epoch_fps'] * 8 <= q['target_minimum_last_epoch_fps'])
+            and 0 < q['source_last_epoch_fps'] * minimum_speed_ratio <= q['target_minimum_last_epoch_fps'])
     else:
         qualified = qualified and (
             q.get('status') == 'available_for_rebalance'
@@ -136,7 +143,7 @@ def direct_5080_recovery_accounting():
     for snapshot in sorted(BASE.glob('capacity_progress_observation_*.json')):
         observed = json.loads(snapshot.read_text())
         for worker in observed.get('hosts', {}).get('5080', {}).get('training', []):
-            if (worker.get('job') == 'point-button-2031'
+            if (worker.get('job') == job
                     and all(worker.get(key) == identity.get(key)
                             for key in ('pid', 'start_ticks', 'device'))
                     and worker.get('boot_id') == plan.get('expected_target_boot_id')
@@ -144,7 +151,7 @@ def direct_5080_recovery_accounting():
                 matches.append(snapshot.name)
     capacities = (moved['target_capacity_at_launch'], proof['target_capacity_at_launch'])
     if (not matches
-            or plan.get('job') != 'point-button-2031'
+            or plan.get('job') != job
             or plan.get('source_commit') != SOURCE
             or plan.get('source_host') != '4080' or plan.get('target_host') != '5080'
             or plan.get('total_training_budget') != 10000000
@@ -153,7 +160,7 @@ def direct_5080_recovery_accounting():
             or hashlib.sha256(controller.read_bytes()).hexdigest() != moved.get('controller_sha256')
             or proof.get('controller_sha256') != moved.get('controller_sha256')
             or plan.get('controller_sha256') != moved.get('controller_sha256')
-            or any(r.get('job') != 'point-button-2031' or r.get('source_commit') != SOURCE
+            or any(r.get('job') != job or r.get('source_commit') != SOURCE
                    or r.get('source_host') != '4080' or r.get('target_host') != '5080'
                    or r.get('scientific_parameters_changed') is not False
                    or r.get('additional_evaluation') is not False
@@ -197,7 +204,7 @@ def direct_5080_recovery_accounting():
             or not moved['resume_steps'] + 5000 <= proof.get('first_verified_target_steps', -1) <= 10000000
             or not proof.get('first_verified_target_csv', '').startswith('/home/autodrive/LZQW/SAFEFLOW2027/')):
         raise ValueError('Direct 4080-to-5080 continuation/accounting unproven')
-    return [{'job': 'point-button-2031', 'plan': plan, 'receipt': moved,
+    return [{'job': job, 'plan': plan, 'receipt': moved,
              'first_new_epoch_proof': proof, 'matching_native_observations': matches,
              'placement_qualification_kind': ('existing_cohort_makespan_balance_not_spare_compute'
                                                if balancing else 'stable_spare_gpu_capacity'),
@@ -1166,7 +1173,7 @@ def annotate_recovery(target):
                      if item['placement_qualification_kind'] == 'existing_cohort_makespan_balance_not_spare_compute'
                      else 'stable spare-capacity RTX 5080')
         disclosure += (
-            '\nPoint-button-2031 continued from the shared RTX 4080 on a '
+            f'\n{r["job"]} continued from the shared RTX 4080 on a '
             f'{placement} using the original full replay/RNG '
             f'checkpoint at {r["resume_steps"]:,} steps. The ten-million-step '
             'budget and algorithm were unchanged. The old source retired only '
