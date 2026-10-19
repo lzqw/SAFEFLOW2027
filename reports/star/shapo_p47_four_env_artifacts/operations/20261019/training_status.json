@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_2221.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_2221.json for current runtime and partial native4M evaluation output; no final scientific audit is claimed.",
+  "superseded_by": "training_status_2353.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_2353.json for the post-CPU-handoff runtime snapshot and partial native4M evaluation output; no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

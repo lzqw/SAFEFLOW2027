@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "kind": "in_progress_operational_snapshot",
+  "observed_at": "2026-10-19T23:52:54+08:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "repository_base_commit": "a2e20effcb7e3cdd2fc9b1eea192620b3a57c0cb",
+  "final_scientific_report": false,
+  "training_matrix": {
+    "environments": [
+      "SafetyPointGoal1-v0",
+      "SafetyPointButton1-v0",
+      "Ant-v4",
+      "Walker2d-v4"
+    ],
+    "training_seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "total_cells": 20,
+    "point_budget_steps": 10000000,
+    "ant_walker_budget_steps": 5000000,
+    "completed_training_receipts": 2,
+    "active_unique_training_cells": 18
+  },
+  "placement": {
+    "4080": {
+      "gpu": 3,
+      "cpu": 1
+    },
+    "5080": {
+      "gpu": 3,
+      "cpu": 4
+    },
+    "tjucta-a100": {
+      "gpu": 3,
+      "cpu": 4
+    }
+  },
+  "active_training": [
+    {
+      "host": "4080",
+      "job": "point-button-2030",
+      "device": "cuda:0",
+      "pid": 9472,
+      "process_state": "R",
+      "steps": 4895000,
+      "last_epoch_fps": 1.0625967979431152,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "4080",
+      "job": "point-button-2031",
+      "device": "cuda:0",
+      "pid": 9473,
+      "process_state": "R",
+      "steps": 4345000,
+      "last_epoch_fps": 1.0623587369918823,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "4080",
+      "job": "point-button-2028",
+      "device": "cuda:0",
+      "pid": 9474,
+      "process_state": "R",
+      "steps": 2745000,
+      "last_epoch_fps": 1.066744089126587,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "point-goal-2029",
+      "device": "cuda:0",
+      "pid": 28355,
+      "process_state": "R",
+      "steps": 1960000,
+      "last_epoch_fps": 15.025792121887207,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "point-button-2029",
+      "device": "cuda:0",
+      "pid": 31275,
+      "process_state": "R",
+      "steps": 1795000,
+      "last_epoch_fps": 13.847208023071289,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "ant-2028",
+      "device": "cpu",
+      "pid": 38700,
+      "process_state": "R",
+      "steps": 1570000,
+      "last_epoch_fps": 7.419216156005859,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "ant-2029",
+      "device": "cpu",
+      "pid": 40396,
+      "process_state": "R",
+      "steps": 1565000,
+      "last_epoch_fps": 7.418925762176514,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "walker2d-2028",
+      "device": "cpu",
+      "pid": 42764,
+      "process_state": "R",
+      "steps": 1615000,
+      "last_epoch_fps": 7.6765875816345215,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "walker2d-2029",
+      "device": "cpu",
+      "pid": 44234,
+      "process_state": "R",
+      "steps": 1610000,
+      "last_epoch_fps": 7.706029891967773,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "5080",
+      "job": "point-goal-2031",
+      "device": "cuda:0",
+      "pid": 51246,
+      "process_state": "R",
+      "steps": 4150000,
+      "last_epoch_fps": 14.562864303588867,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "point-goal-2027",
+      "device": "cuda:0",
+      "pid": 7777,
+      "process_state": "S",
+      "steps": 5365000,
+      "last_epoch_fps": 7.737766742706299,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00",
+      "physical_gpu_index": 0
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "point-button-2027",
+      "device": "cuda:0",
+      "pid": 7780,
+      "process_state": "S",
+      "steps": 5250000,
+      "last_epoch_fps": 4.598997116088867,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00",
+      "physical_gpu_index": 1
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "walker2d-2030",
+      "device": "cpu",
+      "pid": 14547,
+      "process_state": "R",
+      "steps": 3920000,
+      "last_epoch_fps": 4.276981830596924,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "walker2d-2031",
+      "device": "cpu",
+      "pid": 14548,
+      "process_state": "R",
+      "steps": 3920000,
+      "last_epoch_fps": 4.290804386138916,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "ant-2031",
+      "device": "cpu",
+      "pid": 14549,
+      "process_state": "R",
+      "steps": 3915000,
+      "last_epoch_fps": 4.091692924499512,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "ant-2030",
+      "device": "cpu",
+      "pid": 14550,
+      "process_state": "R",
+      "steps": 3915000,
+      "last_epoch_fps": 4.093254089355469,
+      "total_budget_steps": 5000000,
+      "observed_at": "2026-10-19T23:51:22+08:00"
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "point-goal-2030",
+      "device": "cuda:0",
+      "pid": 86928,
+      "process_state": "R",
+      "steps": 3795000,
+      "last_epoch_fps": 4.654564380645752,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:51:22+08:00",
+      "physical_gpu_index": 1
+    },
+    {
+      "host": "4080",
+      "job": "point-goal-2028",
+      "device": "cpu",
+      "pid": 667308,
+      "process_state": "R",
+      "steps": 2955000,
+      "last_epoch_fps": 6.236214637756348,
+      "total_budget_steps": 10000000,
+      "observed_at": "2026-10-19T23:52:54+08:00",
+      "fps_is_first_epoch_after_resume": true
+    }
+  ],
+  "runtime": {
+    "scientific_parameters_changed": false,
+    "other_projects_paused": false,
+    "source_torch": "2.7.1+cu118",
+    "target_5080_torch": "2.7.1+cu128",
+    "target_5080_python": "3.11.17",
+    "cuda_build_changed_on_5080": true,
+    "bitwise_equivalence_claimed": false,
+    "performance_caveat": "FPS describes only the last logged epoch and is not a completion-time guarantee; GPUs remain shared with unrelated projects."
+  },
+  "recovery_cost_accounting": {
+    "known_additional_repeated_environment_steps_lower_bound": 988613,
+    "known_additional_training_cost_lower_bound": 7698,
+    "unknown_unlogged_tails_may_exist": true,
+    "unknown_is_not_zero": true
+  },
+  "protection": {
+    "monitor_interval_seconds": 1800,
+    "monitor_services_observed_active": 4,
+    "checkpoints_copied_to_separate_hosts": true,
+    "archive_on_4080_4t_disk": true,
+    "point_goal_2031_first_4t_copy": {
+      "sha256": "39c0ac54b68eddccfc093da70b5ea4ea4d77b74c187547bce8fb9bb801c4bf67",
+      "checkpoint_steps": 3800000,
+      "snapshot_logged_steps": 3815000,
+      "sha256_matches_handoff": true
+    },
+    "extra_scientific_evaluations": false
+  },
+  "pending": {
+    "final_strict_audit": "Not complete; only 2/20 terminal training receipts exist.",
+    "point_goal_2027_old_4000000_step_parent_full_checkpoint": "The retained4M lightweight checkpoint references an unavailable historical full input checkpoint. Its exact training counter cannot be inferred from the path alone. A fresh full-budget rerun requires the user's explicit choice; none has been started.",
+    "other_2027_legacy_parent_references": "PointButton, Ant, and Walker2d older parent references remain unresolved. Their preserved 4.10M/4.15M descendant full checkpoints cannot substitute for the referenced older inputs.",
+    "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
+  },
+  "observation_window_started_at": "2026-10-19T23:51:22+08:00",
+  "physical_a100_assignment": {
+    "gpu_0": [
+      "point-goal-2027"
+    ],
+    "gpu_1": [
+      "point-button-2027",
+      "point-goal-2030"
+    ],
+    "cpu": [
+      "ant-2030",
+      "ant-2031",
+      "walker2d-2030",
+      "walker2d-2031"
+    ]
+  },
+  "latest_resource_handoff": {
+    "job": "point-goal-2028",
+    "source_host": "4080",
+    "target_host": "4080",
+    "source_device": "cuda:0",
+    "target_device": "cpu",
+    "status": "completed_first_new_target_epoch_verified",
+    "source_retired_after_first_new_epoch": true,
+    "resume_steps": 2950000,
+    "first_new_target_steps": 2955000,
+    "first_new_target_fps": 6.236214637756348,
+    "prior_shared_gpu_epoch_fps": 1.135925054550171,
+    "known_replayed_steps": 0,
+    "known_extra_training_safety_cost": 0,
+    "unknown_unlogged_tail_not_zero": true,
+    "training_budget_steps": 10000000,
+    "scientific_parameters_changed": false,
+    "extra_evaluation": false,
+    "evidence_file": "4080_cpu_rebalance_evidence.json",
+    "controller_source_file": "4080_cpu_rebalance_controller.py",
+    "controller_sha256": "0fed6ec3279511e081e3f0979dee8a6615ca92c6d781131b38224469ed993352"
+  },
+  "resource_storage_observation": {
+    "observed_at": "2026-10-19T23:51:22+08:00",
+    "project_free_gib": {
+      "4080": 72.6,
+      "5080": 201.93,
+      "tjucta-a100": 28.14
+    },
+    "archive_4080_4t_free_gib": 3076.91,
+    "poll_interval_seconds": 1800,
+    "project_low_space_warning_gib": 20,
+    "archive_low_space_warning_gib": 100,
+    "alerts_only": true,
+    "no_automatic_file_deletion": true
+  },
+  "progress_note": "Other17 cells observed at23:51:22 plus first CPU epoch/retired GPU source proof at23:52:54. PointGoal2028 now runs only on CPU667308, sourceGPU9471 retired. Its first resumed5k epoch achieved6.236 steps/s versus the last sharedGPU epoch1.136; this is not a sustained-rate guarantee. Eighteen unique cells remain active and full budgets are unchanged.",
+  "new_partial_scientific_result": {
+    "job": "point-goal-2031",
+    "milestone_steps": 4000000,
+    "budget_steps": 10000000,
+    "n_training_seeds": 1,
+    "evaluation_episodes": 100,
+    "mean_return": -0.19566832619822627,
+    "success_rate": 0.09,
+    "mean_cost": 6.72,
+    "cost_cvar20": 33.6,
+    "high_risk_normal_tangent_variance_ratio": 0.9392572045326233,
+    "summary_path": "point_goal2031_step4000000/stage_summary.json",
+    "final_result": false,
+    "matched_baseline_comparison_claimed": false,
+    "extra_evaluation_rollouts": 0,
+    "config_changed": false
+  },
+  "cold_archive_backup": {
+    "receipt_path": "a100_retired_archive_backup_receipt.json",
+    "bytes": 3969566720,
+    "sha256": "38dcd1559c1a7a2961e1b1a846c53313173329f0a71509ddecb1244a9de19dfb",
+    "destination": "4080 separate4T filesystem",
+    "source_originals_retained": true,
+    "source_disk_space_freed": false
+  },
+  "monitor_progress_extension": {
+    "controller_source": "capacity_progress_observer.py",
+    "rollout_receipt": "progress_monitoring_enabled.json",
+    "controller_sha256": "d3edbc3dab2306df13615f4bfd5b5b2f0398e34053df1ae508c869f137af72db",
+    "monitor_service_pid": 109574,
+    "reads_existing_logs_only": true,
+    "additional_ssh_connections_per_cycle": 0,
+    "training_restarts": 0,
+    "first_scheduled_observation_verified": true,
+    "poll_seconds": 1800
+  },
+  "gpu_capacity": {
+    "4080": [
+      {
+        "index": 0,
+        "status": "occupied_or_insufficient_headroom",
+        "utilization_percent": 100,
+        "free_mib": 3025,
+        "foreign_process_count": 5,
+        "own_gpu_process_count_at_resource_sampling": 4
+      }
+    ],
+    "5080": [
+      {
+        "index": 0,
+        "status": "occupied_or_insufficient_headroom",
+        "utilization_percent": 95,
+        "free_mib": 13660,
+        "foreign_process_count": 0,
+        "own_gpu_process_count_at_resource_sampling": 3
+      }
+    ],
+    "tjucta-a100": [
+      {
+        "index": 0,
+        "status": "available_for_rebalance",
+        "utilization_percent": 12,
+        "free_mib": 80256,
+        "foreign_process_count": 0,
+        "own_gpu_process_count_at_resource_sampling": 1
+      },
+      {
+        "index": 1,
+        "status": "occupied_or_insufficient_headroom",
+        "utilization_percent": 88,
+        "free_mib": 64505,
+        "foreign_process_count": 1,
+        "own_gpu_process_count_at_resource_sampling": 2
+      }
+    ]
+  },
+  "gpu_capacity_observed_at": "2026-10-19T23:51:22+08:00",
+  "gpu_capacity_note": "The23:51 resource sample preceded oldGPU9471 retirement; its CUDA context was still counted then. The post-handoff placement table reflects the later verifiedCPU-only job.",
+  "prepared_next_handoff": {
+    "job": "point-button-2028",
+    "source_host": "4080",
+    "target_host": "tjucta-a100",
+    "target_physical_gpu_index": 0,
+    "status": "prepared_not_started",
+    "fresh_target_capacity_check_required_before_source_pause": true,
+    "source_continues_training": true,
+    "extra_scientific_experiment": false
+  }
+}
