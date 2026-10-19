@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0617.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0617.json for05:51 native progress, the06:16 A100 connection check, and a pending existing-cell balance awaiting the06:21 ordinary observation. The pending move has NOT completed. Previous detailed status and early native evaluation aggregation remain linked. Full budgets and scientific provenance requirements are unchanged.",
+  "superseded_by": "training_status_20261020_0635.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0635.json for06:21 native progress and the06:35 completed A100 Goal2030-to-5080 continuation. All18 unique active cells retain full budgets. The first target epoch is verified, source is retired and archived, and physical recovery overhead is disclosed. Early evaluation aggregation remains linked; no final scientific audit or resolved legacy-parent provenance is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
