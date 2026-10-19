@@ -77,6 +77,90 @@ def remote_head():
     return output.split()[0] if output else None
 
 
+def direct_5080_recovery_accounting():
+    """Do not omit an eventual direct 4080-to-5080 continuation from delivery."""
+    prefix = 'point-button-2031_direct_5080_20261020'
+    path = BASE / (prefix + '_state.json')
+    if not path.exists():
+        return []
+    proof = json.loads(path.read_text())
+    moved = json.loads((BASE / (prefix + '_receipt.json')).read_text())
+    plan = moved['plan']
+    q = plan['capacity_qualification']
+    controller = BASE / 'handoff_button2031_4080_to_5080_20261020.py'
+    identity = proof.get('target_identity', {})
+    matches = []
+    for snapshot in sorted(BASE.glob('capacity_progress_observation_*.json')):
+        observed = json.loads(snapshot.read_text())
+        for worker in observed.get('hosts', {}).get('5080', {}).get('training', []):
+            if (worker.get('job') == 'point-button-2031'
+                    and all(worker.get(key) == identity.get(key)
+                            for key in ('pid', 'start_ticks', 'device'))
+                    and worker.get('boot_id') == plan.get('expected_target_boot_id')
+                    and worker.get('progress_csv') == proof.get('first_verified_target_csv')):
+                matches.append(snapshot.name)
+    capacities = (moved['target_capacity_at_launch'], proof['target_capacity_at_launch'])
+    if (not matches
+            or plan.get('job') != 'point-button-2031'
+            or plan.get('source_commit') != SOURCE
+            or plan.get('source_host') != '4080' or plan.get('target_host') != '5080'
+            or plan.get('total_training_budget') != 10000000
+            or plan.get('target_physical_gpu_index') != 0
+            or q.get('status') != 'available_for_rebalance' or q.get('foreign_pids')
+            or q['observed_at_unix'] - q['candidate_since_unix'] < 1800
+            or hashlib.sha256(controller.read_bytes()).hexdigest() != moved.get('controller_sha256')
+            or proof.get('controller_sha256') != moved.get('controller_sha256')
+            or plan.get('controller_sha256') != moved.get('controller_sha256')
+            or any(r.get('job') != 'point-button-2031' or r.get('source_commit') != SOURCE
+                   or r.get('source_host') != '4080' or r.get('target_host') != '5080'
+                   or r.get('scientific_parameters_changed') is not False
+                   or r.get('additional_evaluation') is not False
+                   or r.get('total_training_budget') != 10000000
+                   or r.get('full_replay_and_rng_present') is not True
+                   or r.get('original_evidence_preserved') is not True
+                   or r.get('physical_repeated_steps_and_cost_unknown_not_zero') is not True
+                   or r.get('unlogged_source_tail_may_exist') is not True
+                   or r.get('runtime_change', {}).get('from_torch') != '2.7.1+cu118'
+                   or r.get('runtime_change', {}).get('to_torch') != '2.7.1+cu128'
+                   or r.get('runtime_change', {}).get('cuda_build_changed') is not True
+                   or r.get('runtime_change', {}).get('bitwise_equivalence_claimed') is not False
+                   for r in (moved, proof))
+            or any(moved['source_identity'].get(key) != plan['expected_source_identity'][key]
+                   for key in ('pid', 'start_ticks', 'boot_id', 'device'))
+            or proof.get('source_identity') != moved['source_identity']
+            or moved['source_identity'].get('cuda_visible_devices') != '0'
+            or any(c.get('physical_gpu_index') != 0 or c.get('uuid') != q['uuid']
+                   or c.get('foreign_gpu_processes') != 0 or c.get('free_mib', 0) < 8192
+                   or c.get('utilization_percent', 100) > 85
+                   or c.get('project_free_bytes', 0) < 5 * 1024**3
+                   or c.get('cpu_affinity_count', 0) < 16
+                   or c.get('load_1m', 1e9) >= c.get('cpu_affinity_count', 0) * .35
+                   or c.get('memory_available_bytes', 0) < 8 * 1024**3 for c in capacities)
+            or moved['known_repeated_environment_steps_lower_bound'] != moved['last_logged_source_steps'] - moved['resume_steps']
+            or not 0 <= moved['known_repeated_environment_steps_lower_bound'] < 50000
+            or moved['known_additional_training_cost_lower_bound'] != moved['last_logged_source_cumulative_training_cost'] - moved['resume_cumulative_training_cost']
+            or moved['known_additional_training_cost_lower_bound'] < 0
+            or any(proof.get(key) != moved[key] for key in
+                   ('checkpoint_sha256', 'resume_steps', 'resume_cumulative_training_cost',
+                    'known_repeated_environment_steps_lower_bound',
+                    'known_additional_training_cost_lower_bound'))
+            or proof.get('phase') != 'handoff_completed_first_target_epoch_verified'
+            or proof.get('source_retired') is not True or proof.get('source_paused') is not False
+            or proof.get('source_canonical_path_vacated_for_final_collection') is not True
+            or identity.get('pid', 0) <= 0 or identity.get('device') != 'cuda:0'
+            or identity.get('cuda_visible_devices') != '0'
+            or proof.get('target_gpu_uuid_verified') != q['uuid']
+            or not moved['resume_steps'] + 5000 <= proof.get('first_verified_target_steps', -1) <= 10000000
+            or not proof.get('first_verified_target_csv', '').startswith('/home/autodrive/LZQW/SAFEFLOW2027/')):
+        raise ValueError('Direct 4080-to-5080 continuation/accounting unproven')
+    return [{'job': 'point-button-2031', 'plan': plan, 'receipt': moved,
+             'first_new_epoch_proof': proof, 'matching_native_observations': matches,
+             'capacity_receipt_field_semantics': 'Receipt contains pre-pause capacity; completion state contains final launch capacity. Both raw snapshots remain unchanged.',
+             'known_additional_physical_steps': moved['known_repeated_environment_steps_lower_bound'],
+             'known_additional_physical_training_cost': moved['known_additional_training_cost_lower_bound'],
+             'unknown_unlogged_tail_not_zero': True}]
+
+
 def annotate_recovery(target):
     """Disclose known discarded exploration without changing audited raw metrics."""
     receipt = json.loads(RECOVERY_RECEIPT.read_text())
@@ -716,6 +800,7 @@ def annotate_recovery(target):
             'known_additional_physical_steps': moved['known_repeated_environment_steps_lower_bound'],
             'known_additional_physical_training_cost': moved['known_additional_training_cost_lower_bound'],
             'unknown_unlogged_tail_not_zero': True})
+    direct_5080_handoffs = direct_5080_recovery_accounting()
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
     marker = b'<!-- known-recovery-accounting-v1 -->'
@@ -727,9 +812,9 @@ def annotate_recovery(target):
         'audited_report_before_annotation_sha256': hashlib.sha256(original).hexdigest(),
         'raw_metrics_modified': False,
         'accounting_scope': 'known discarded tails and measured failed-runtime work; not an exhaustive ledger of historical attempts',
-        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts),
+        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs),
         'known_discarded_training_cost_is_lower_bound': True,
-        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts),
+        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs),
         'known_repeated_environment_steps_is_lower_bound': True,
         'reported_training_cost_basis': 'accepted checkpoint lineage',
         'interpretation': 'Physically incurred training cost is at least accepted-lineage cost plus 539 for point-button-2029, plus 2 for ant-2027, and plus 75 for point-button-2031. Other historical discarded tails are not reconstructed here.',
@@ -773,6 +858,7 @@ def annotate_recovery(target):
     ledger['recoveries'].extend(shared_cpu_rebalances)
     ledger['recoveries'].extend(failed_cpu_runtime_attempts)
     ledger['recoveries'].extend(a100_return_handoffs)
+    ledger['recoveries'].extend(direct_5080_handoffs)
     if cuda_recoveries:
         ledger['interpretation'] += (' The observed CUDA-interruption tails add '
             '14 cost units for ant-2031, 17 for walker2d-2031, and 722 for '
@@ -1018,6 +1104,19 @@ def annotate_recovery(target):
             f'were retained. The known repeated tail is at least {item["known_additional_physical_steps"]:,} '
             f'steps and {item["known_additional_physical_training_cost"]:,.0f} training-cost units; '
             'the unlogged tail remains unknown, not zero.\n'
+        )
+    for item in direct_5080_handoffs:
+        r = item['receipt']
+        disclosure += (
+            '\nPoint-button-2031 continued from the shared RTX 4080 on a '
+            'capacity-qualified RTX 5080 using the original full replay/RNG '
+            f'checkpoint at {r["resume_steps"]:,} steps. The ten-million-step '
+            'budget and algorithm were unchanged. The old source retired only '
+            'after a new target epoch. PyTorch changed from2.7.1+cu118 to '
+            '2.7.1+cu128; bitwise equivalence is not claimed. '
+            f'The known repeated tail is at least {item["known_additional_physical_steps"]:,} '
+            f'steps and {item["known_additional_physical_training_cost"]:,.0f} '
+            'training-cost units; other unlogged work remains unknown, not zero.\n'
         )
     disclosure += (
         '\nThe combined known recovery ledger is a lower bound of '
