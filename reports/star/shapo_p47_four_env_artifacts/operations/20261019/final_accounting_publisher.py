@@ -79,15 +79,58 @@ def remote_head():
 
 def direct_5080_recovery_accounting():
     """Do not omit an eventual direct 4080-to-5080 continuation from delivery."""
-    prefix = 'point-button-2031_direct_5080_20261020'
-    path = BASE / (prefix + '_state.json')
-    if not path.exists():
+    specifications = (
+        ('point-button-2031_direct_5080_20261020',
+         'handoff_button2031_4080_to_5080_20261020.py', False),
+        ('point-button-2031_balanced_5080_20261020_0321',
+         'rebalance_button2031_4080_to_5080_20261020_0321.py', True))
+    present = [entry for entry in specifications
+               if (BASE / (entry[0] + '_state.json')).exists()]
+    if len(present) > 1:
+        raise ValueError('Multiple direct transactions need explicit reconciliation')
+    if not present:
         return []
+    prefix, controller_filename, balancing = present[0]
+    path = BASE / (prefix + '_state.json')
     proof = json.loads(path.read_text())
     moved = json.loads((BASE / (prefix + '_receipt.json')).read_text())
     plan = moved['plan']
-    q = plan['capacity_qualification']
-    controller = BASE / 'handoff_button2031_4080_to_5080_20261020.py'
+    q = plan['rebalance_qualification' if balancing else 'capacity_qualification']
+    controller = BASE / controller_filename
+    maximum_utilization = 100 if balancing else 85
+    qualified = (not q.get('foreign_pids'))
+    if balancing:
+        previous = json.loads((BASE / q['previous_observation_file']).read_text())
+        current = json.loads((BASE / q['current_observation_file']).read_text())
+        pids = sorted(q['owned_gpu_pids'])
+        for observation in (previous, current):
+            host = observation['hosts']['5080']
+            gpu = next(g for g in host['gpus'] if g['index'] == 0)
+            workers = [w for w in host['training'] if w['device'] == 'cuda:0']
+            qualified = qualified and (
+                gpu['uuid'] == q['uuid'] and not gpu['foreign_pids']
+                and gpu['free_mib'] >= 8192
+                and sorted(p['pid'] for p in gpu['processes']
+                           if p['role'] == 'safeflow') == pids
+                and sorted(w['pid'] for w in workers) == pids
+                and all(w['boot_id'] == plan['expected_target_boot_id'] for w in workers))
+        source = next(w for w in current['hosts']['4080']['training']
+                      if w['job'] == 'point-button-2031')
+        target = [w for w in current['hosts']['5080']['training'] if w['device'] == 'cuda:0']
+        qualified = qualified and (
+            q.get('kind') == 'existing_cohort_makespan_balance'
+            and q.get('spare_compute_claimed') is False and len(pids) == 3
+            and plan.get('additional_experiment_cells') == 0
+            and q['observed_at_unix'] == current['observed_at_unix']
+            and q['previous_observed_at_unix'] == previous['observed_at_unix']
+            and q['observed_at_unix'] - q['previous_observed_at_unix'] >= 1800
+            and q['source_last_epoch_fps'] == source['last_epoch_fps']
+            and q['target_minimum_last_epoch_fps'] == min(w['last_epoch_fps'] for w in target)
+            and 0 < q['source_last_epoch_fps'] * 8 <= q['target_minimum_last_epoch_fps'])
+    else:
+        qualified = qualified and (
+            q.get('status') == 'available_for_rebalance'
+            and q['observed_at_unix'] - q['candidate_since_unix'] >= 1800)
     identity = proof.get('target_identity', {})
     matches = []
     for snapshot in sorted(BASE.glob('capacity_progress_observation_*.json')):
@@ -106,8 +149,7 @@ def direct_5080_recovery_accounting():
             or plan.get('source_host') != '4080' or plan.get('target_host') != '5080'
             or plan.get('total_training_budget') != 10000000
             or plan.get('target_physical_gpu_index') != 0
-            or q.get('status') != 'available_for_rebalance' or q.get('foreign_pids')
-            or q['observed_at_unix'] - q['candidate_since_unix'] < 1800
+            or not qualified
             or hashlib.sha256(controller.read_bytes()).hexdigest() != moved.get('controller_sha256')
             or proof.get('controller_sha256') != moved.get('controller_sha256')
             or plan.get('controller_sha256') != moved.get('controller_sha256')
@@ -131,11 +173,13 @@ def direct_5080_recovery_accounting():
             or moved['source_identity'].get('cuda_visible_devices') != '0'
             or any(c.get('physical_gpu_index') != 0 or c.get('uuid') != q['uuid']
                    or c.get('foreign_gpu_processes') != 0 or c.get('free_mib', 0) < 8192
-                   or c.get('utilization_percent', 100) > 85
+                   or c.get('utilization_percent', 101) > maximum_utilization
                    or c.get('project_free_bytes', 0) < 5 * 1024**3
                    or c.get('cpu_affinity_count', 0) < 16
                    or c.get('load_1m', 1e9) >= c.get('cpu_affinity_count', 0) * .35
                    or c.get('memory_available_bytes', 0) < 8 * 1024**3 for c in capacities)
+            or (balancing and any(sorted(c.get('owned_gpu_pids', [])) != pids
+                                  for c in capacities))
             or moved['known_repeated_environment_steps_lower_bound'] != moved['last_logged_source_steps'] - moved['resume_steps']
             or not 0 <= moved['known_repeated_environment_steps_lower_bound'] < 50000
             or moved['known_additional_training_cost_lower_bound'] != moved['last_logged_source_cumulative_training_cost'] - moved['resume_cumulative_training_cost']
@@ -155,6 +199,8 @@ def direct_5080_recovery_accounting():
         raise ValueError('Direct 4080-to-5080 continuation/accounting unproven')
     return [{'job': 'point-button-2031', 'plan': plan, 'receipt': moved,
              'first_new_epoch_proof': proof, 'matching_native_observations': matches,
+             'placement_qualification_kind': ('existing_cohort_makespan_balance_not_spare_compute'
+                                               if balancing else 'stable_spare_gpu_capacity'),
              'capacity_receipt_field_semantics': 'Receipt contains pre-pause capacity; completion state contains final launch capacity. Both raw snapshots remain unchanged.',
              'known_additional_physical_steps': moved['known_repeated_environment_steps_lower_bound'],
              'known_additional_physical_training_cost': moved['known_additional_training_cost_lower_bound'],
@@ -1116,9 +1162,12 @@ def annotate_recovery(target):
         )
     for item in direct_5080_handoffs:
         r = item['receipt']
+        placement = ('own-cohort makespan-balanced RTX 5080 (not a spare-compute claim)'
+                     if item['placement_qualification_kind'] == 'existing_cohort_makespan_balance_not_spare_compute'
+                     else 'stable spare-capacity RTX 5080')
         disclosure += (
             '\nPoint-button-2031 continued from the shared RTX 4080 on a '
-            'capacity-qualified RTX 5080 using the original full replay/RNG '
+            f'{placement} using the original full replay/RNG '
             f'checkpoint at {r["resume_steps"]:,} steps. The ten-million-step '
             'budget and algorithm were unchanged. The old source retired only '
             'after a new target epoch. PyTorch changed from2.7.1+cu118 to '
