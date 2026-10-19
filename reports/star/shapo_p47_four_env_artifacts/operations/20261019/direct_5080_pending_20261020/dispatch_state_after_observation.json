@@ -1,0 +1,47 @@
+{
+  "phase": "deferred_capacity_not_qualified_source_untouched",
+  "updated_at_unix": 1792435896.846849,
+  "job": "point-button-2031",
+  "source_host": "4080",
+  "target_host": "5080",
+  "observed_at_unix": 1792435885.087794,
+  "qualification": {
+    "index": 0,
+    "uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+    "name": "NVIDIA GeForce RTX 5080",
+    "free_mib": 13660,
+    "total_mib": 16303,
+    "utilization_percent": 95,
+    "processes": [
+      {
+        "pid": 28355,
+        "role": "safeflow",
+        "executable": "python",
+        "memory_mib": 598
+      },
+      {
+        "pid": 31275,
+        "role": "safeflow",
+        "executable": "python",
+        "memory_mib": 646
+      },
+      {
+        "pid": 51246,
+        "role": "safeflow",
+        "executable": "python",
+        "memory_mib": 598
+      }
+    ],
+    "status": "occupied_or_insufficient_headroom",
+    "foreign_pids": [],
+    "safeflow_gpu_processes": 3,
+    "reserve_mib": 8192,
+    "max_rebalance_utilization_percent": 85,
+    "candidate_since_unix": null,
+    "signature": [
+      "occupied_or_insufficient_headroom",
+      [],
+      3
+    ]
+  }
+}
