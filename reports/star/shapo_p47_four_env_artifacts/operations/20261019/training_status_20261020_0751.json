@@ -486,8 +486,9 @@
   },
   "conditional_existing_training_remaining_time": {
     "kind": "conditional_stationary_rate_engineering_projection_not_finish_promise",
-    "baseline_observation_file": "qualification_time_series_baseline_0651.json",
-    "current_observation_file": "post_handoff_ordinary_observation_0751.json",
+    "estimated_at_unix": 1792453892.035595,
+    "baseline_observation_file": "balanced_5080_20261020_0621/qualification_time_series_baseline_0651.json",
+    "current_observation_file": "balanced_5080_20261020_0621/post_handoff_ordinary_observation_0751.json",
     "equation": "remaining_days = (full_training_budget - logged_steps) / observed_rate / 86400",
     "last_epoch_longest_remaining_days": 12.560787847344287,
     "recent_hour_logged_rate_longest_remaining_days": 14.317840726118948,
