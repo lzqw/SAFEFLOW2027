@@ -1,0 +1,28 @@
+{
+  "host_directory": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/partial_milestones/step_4000000/point-goal-2031",
+  "files": [
+    {
+      "relative_path": "artifacts/evaluation_step_4000000.json",
+      "bytes": 23961,
+      "sha256": "84fc282be31ad2af6c4536ad1a3b2719cd5be2473a242814ca9eaf55228ab041"
+    },
+    {
+      "relative_path": "artifacts/counterfactual_step_4000000.json",
+      "bytes": 1546,
+      "sha256": "7dc9c637580d808f0d6b99d72c603c1a5055a7311f7b7514419b648b8ee68c13"
+    },
+    {
+      "relative_path": "artifacts/trajectory_step_4000000.csv",
+      "bytes": 1356231,
+      "sha256": "9ed64882ebbb86865a859227d05f0f2c98a0dbfd5f323a47fa0b4a714c6e6317"
+    },
+    {
+      "relative_path": "checkpoints/milestone_4000000.pt",
+      "bytes": 9600547,
+      "sha256": "d6c817e980330aba00f049cef5529e18088e55fbc5f17753306661f19caa4fe7"
+    }
+  ],
+  "existing_native_evaluation_read_only": true,
+  "additional_rollouts": 0,
+  "formal_final_audit_executed": false
+}

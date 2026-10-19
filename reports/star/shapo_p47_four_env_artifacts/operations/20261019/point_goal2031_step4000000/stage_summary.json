@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "partial_native_milestone_result_not_final_scientific_report",
+  "job": "point-goal-2031",
+  "environment": "SafetyPointGoal1-v0",
+  "training_seed": 2031,
+  "training_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "milestone_steps": 4000000,
+  "total_training_budget_steps": 10000000,
+  "remaining_training_budget_steps": 6000000,
+  "n_training_seeds_represented": 1,
+  "evaluation": {
+    "episodes": 100,
+    "episodes_per_base_seed": 20,
+    "base_seeds": [
+      32027,
+      32028,
+      32029,
+      32030,
+      32031
+    ],
+    "trajectory_base_seeds": [
+      32027,
+      32029,
+      32031
+    ]
+  },
+  "metrics": {
+    "mean_return": -0.19566832619822627,
+    "success_rate": 0.09,
+    "goal_met_episodes": 9,
+    "mean_cost": 6.72,
+    "cost_cvar_20": 33.6,
+    "training_cumulative_cost": 69498,
+    "training_cost_basis": "Native retained-checkpoint lineage; separately disclosed recovery overhead and unknown discarded tails are not silently treated as zero."
+  },
+  "direction_geometry_global": {
+    "action_clipping_rate": 0.01693,
+    "action_gradient_norm": 0.17245893866384765,
+    "crossing_rate": 0.0000825,
+    "danger_side_sample_ratio": 0.1275375,
+    "dangerous_normal_velocity": 0.07106236309733364,
+    "normal_energy": 0.3837080231948918,
+    "normal_to_tangent_variance_ratio": 0.987848835336417,
+    "normal_variance": 0.039664339135084305,
+    "outward_velocity_ratio": 0.4921625,
+    "safety_band_sample_ratio": 0.0093325,
+    "safety_weight": 0.12220190756703818,
+    "tangent_energy": 1.9436641931033,
+    "tangent_variance": 0.0403356590763852
+  },
+  "direction_geometry_high_risk_top_20_percent": {
+    "dangerous_outward_velocity": 0.15067113935947418,
+    "fraction": 0.2,
+    "maximum_selected_margin": 13.65260124206543,
+    "mean_selected_margin": 1.6192437410354614,
+    "minimum_selected_margin": -0.9774858355522156,
+    "normal_to_tangent_variance_ratio": 0.9392572045326233,
+    "outward_velocity_ratio": 0.5339375138282776,
+    "population_samples": 400000,
+    "ranking": "descending_local_cost_margin_stable_ties",
+    "reliability": 0.046612195670604706,
+    "safety_weight": 0.6108270287513733,
+    "selected_samples": 80000
+  },
+  "interpretation": [
+    "这是训练种子2031的400万步中期结果，不是五个训练种子的均值，也不是1000万步最终结果。",
+    "成功率9%、平均回报为负，当前任务表现偏弱，不能称为已兼顾安全和任务性能。",
+    "高风险20%样本的法向/切向方差比约0.939，整体约0.988；风险区方向性更明显，但抑制幅度仍有限。",
+    "没有匹配的同预算同训练种子C0对照，这份快照不声称相对基线的成本降幅。",
+    "不根据这个中期结果改动冻结配置或科学提前停止；继续完成1000万步。"
+  ],
+  "artifacts": [
+    {
+      "relative_path": "artifacts/evaluation_step_4000000.json",
+      "bytes": 23961,
+      "sha256": "84fc282be31ad2af6c4536ad1a3b2719cd5be2473a242814ca9eaf55228ab041"
+    },
+    {
+      "relative_path": "artifacts/counterfactual_step_4000000.json",
+      "bytes": 1546,
+      "sha256": "7dc9c637580d808f0d6b99d72c603c1a5055a7311f7b7514419b648b8ee68c13"
+    },
+    {
+      "relative_path": "artifacts/trajectory_step_4000000.csv",
+      "bytes": 1356231,
+      "sha256": "9ed64882ebbb86865a859227d05f0f2c98a0dbfd5f323a47fa0b4a714c6e6317"
+    },
+    {
+      "relative_path": "checkpoints/milestone_4000000.pt",
+      "bytes": 9600547,
+      "sha256": "d6c817e980330aba00f049cef5529e18088e55fbc5f17753306661f19caa4fe7"
+    }
+  ],
+  "raw_artifacts_unchanged": true,
+  "additional_evaluation_rollouts": 0,
+  "formal_cohort_final_audit_executed": false,
+  "checkpoint_binary_saved_on_host_not_committed_to_github": true
+}

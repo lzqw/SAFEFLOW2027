@@ -1,0 +1,32 @@
+{
+  "source_host": "tjucta-a100",
+  "source_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers",
+  "source_folders": [
+    "ant-2028_cpu5080_1792397493369363796",
+    "ant-2029_cpu5080_1792397501825106309",
+    "point-button-2029_5080_after_reboot_1792394832217976708",
+    "point-button-2030_1792041646634230940",
+    "point-button-2031_1792106274391480995",
+    "point-goal-2029_5080_1792393236238695773",
+    "point-goal-2031_5080_1792400319644619229",
+    "walker2d-2028_cpu5080_1792397604877988208",
+    "walker2d-2029_cpu5080_1792398162395213925"
+  ],
+  "target_host": "4080",
+  "target_stage": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/.retired_a100_20261019.nu38xk",
+  "archive_file": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/retired_a100_20261019_nu38xk/retired_a100_workers.tar",
+  "source_originals_retained": true,
+  "active_training_directories_untouched": true,
+  "phase": "backup_verified_originals_retained",
+  "target_directory": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/retired_a100_20261019_nu38xk",
+  "bytes": 3969566720,
+  "member_count": 446,
+  "sha256": "38dcd1559c1a7a2961e1b1a846c53313173329f0a71509ddecb1244a9de19dfb",
+  "verified_at_unix": 1792414985.8232312,
+  "source_stream_sha256": "38dcd1559c1a7a2961e1b1a846c53313173329f0a71509ddecb1244a9de19dfb",
+  "target_file_sha256": "38dcd1559c1a7a2961e1b1a846c53313173329f0a71509ddecb1244a9de19dfb",
+  "receiver_fsync_completed": true,
+  "tar_top_level_folders_verified": 9,
+  "source_files_deleted": false,
+  "original_staging_path_is_historical": true
+}
