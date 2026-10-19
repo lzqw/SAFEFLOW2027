@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0433.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0433.json for04:21 counters and the04:33 completed second own-cohort balance. Mixed timestamps and discarded source costs are explicit; no final scientific audit is claimed.",
+  "superseded_by": "training_status_20261020_0451.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0451.json for04:51 native progress and the later04:58 queued, unexecuted A100 balance. All budgets remain full and no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
