@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0251.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0251.json for later counters and the deferred, unexecuted resource transfer: target utilization95%, source untouched. No final scientific audit is claimed.",
+  "superseded_by": "training_status_20261020_0301.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0301.json for the02:51 training counters and02:59 resolution of the aborted PointButton2030 CPU attempt. Original GPU process resumed; no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

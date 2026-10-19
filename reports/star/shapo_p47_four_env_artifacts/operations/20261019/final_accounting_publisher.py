@@ -605,7 +605,9 @@ def annotate_recovery(target):
             ('point-goal-2028', '4080_gpu_cpu_rebalance_20261019_2330',
              'rebalance_4080_point_goal_2028_cpu_20261019.py'),
             ('point-button-2031', '4080_gpu_cpu_rebalance_20261020_0050',
-             'rebalance_4080_point_button_2031_cpu_20261020.py')):
+             'rebalance_4080_point_button_2031_cpu_20261020.py'),
+            ('point-button-2030', '4080_gpu_cpu_rebalance_20261020_0300',
+             'rebalance_4080_point_button_2030_cpu_20261020.py')):
         cpu_plan_path = BASE / (cpu_side + '.json')
         if not cpu_plan_path.exists():
             continue
@@ -615,6 +617,13 @@ def annotate_recovery(target):
         proof = json.loads((BASE / (prefix + '_state.json')).read_text())
         capacity = moved['target_capacity_at_launch']
         controller = BASE / controller_filename
+        if job == 'point-button-2030' and any(
+                r.get('immutable_input_checkpoint_preserved') is not True
+                or r.get('immutable_input_checkpoint_sha256') != r.get('checkpoint_sha256')
+                or r.get('immutable_input_checkpoint') != r.get('checkpoint')
+                or not r.get('checkpoint', '').endswith('/preserved_runtime_inputs/' + cpu_side + '/source_full_input.pt')
+                for r in (moved, proof)):
+            raise ValueError('CPU placement immutable input preservation unproven: ' + job)
         if proof.get('phase') == 'needs_inspection_after_rebalance_error':
             resolution = json.loads((BASE / (prefix + '_abort_resolution.json')).read_text())
             reconciled = json.loads((BASE / (prefix + '_terminal_counter_reconciliation.json')).read_text())
