@@ -516,16 +516,83 @@ def annotate_recovery(target):
             'known_additional_physical_training_cost': moved['known_additional_cost'],
             'unknown_unlogged_tail_not_zero': True})
     shared_cpu_rebalances = []
-    cpu_side = '4080_gpu_cpu_rebalance_20261019_2330'
-    cpu_plan_path = BASE / (cpu_side + '.json')
-    if cpu_plan_path.exists():
+    failed_cpu_runtime_attempts = []
+    for job, cpu_side, controller_filename in (
+            ('point-goal-2028', '4080_gpu_cpu_rebalance_20261019_2330',
+             'rebalance_4080_point_goal_2028_cpu_20261019.py'),
+            ('point-button-2031', '4080_gpu_cpu_rebalance_20261020_0050',
+             'rebalance_4080_point_button_2031_cpu_20261020.py')):
+        cpu_plan_path = BASE / (cpu_side + '.json')
+        if not cpu_plan_path.exists():
+            continue
         plan = json.loads(cpu_plan_path.read_text())
-        job = 'point-goal-2028'
         prefix = job + '_' + cpu_side
         moved = json.loads((BASE / (prefix + '_receipt.json')).read_text())
         proof = json.loads((BASE / (prefix + '_state.json')).read_text())
         capacity = moved['target_capacity_at_launch']
-        controller = BASE / 'rebalance_4080_point_goal_2028_cpu_20261019.py'
+        controller = BASE / controller_filename
+        if proof.get('phase') == 'needs_inspection_after_rebalance_error':
+            resolution = json.loads((BASE / (prefix + '_abort_resolution.json')).read_text())
+            reconciled = json.loads((BASE / (prefix + '_terminal_counter_reconciliation.json')).read_text())
+            host_manifest = json.loads((BASE / (prefix + '_host_manifest.json')).read_text())
+            host_dir = Path(host_manifest['host_directory'])
+            stop_path = host_dir / 'failed_training_run/artifacts/engineering_hard_stop.json'
+            summary_path = host_dir / 'failed_training_run/artifacts/training_summary.json'
+            stop = json.loads(stop_path.read_text())
+            summary = json.loads(summary_path.read_text())
+            input_digest = hashlib.sha256()
+            with (host_dir / 'source_full_input.pt').open('rb') as stream:
+                for block in iter(lambda: stream.read(1024 * 1024), b''):
+                    input_digest.update(block)
+            extra_steps = stop['env_steps'] - moved['resume_steps']
+            extra_cost = summary['cumulative_training_cost'] - moved['resume_cumulative_training_cost']
+            if (plan.get('job') != job or plan.get('source_commit') != SOURCE
+                    or hashlib.sha256(controller.read_bytes()).hexdigest() != plan.get('controller_sha256')
+                    or any(r.get('controller_sha256') != plan.get('controller_sha256')
+                           or r.get('job') != job or r.get('source_commit') != SOURCE
+                           or r.get('source_host') != '4080' or r.get('target_host') != '4080'
+                           or r.get('target_device') != 'cpu' or r.get('target_cuda_visible_devices') != '-1'
+                           or r.get('scientific_parameters_changed') is not False
+                           or r.get('additional_evaluation') is not False
+                           or r.get('total_training_budget') != 10000000
+                           or r.get('full_replay_and_rng_present') is not True for r in (moved, proof))
+                    or proof.get('source_paused') is not False or proof.get('source_retired') is not False
+                    or proof.get('target_workers') != [] or proof.get('source_resume_error')
+                    or resolution.get('phase') != 'cpu_placement_aborted_source_resumed_verified'
+                    or resolution.get('job') != job or resolution.get('source_commit') != SOURCE
+                    or resolution.get('source_boot_id') != plan['expected_boot_id']
+                    or any(resolution['source_identity'].get(key) != moved['source_identity'][key]
+                           for key in ('pid', 'start_ticks', 'device', 'cuda_visible_devices'))
+                    or moved['source_identity']['pid'] != plan['expected_source_pid']
+                    or moved['source_identity']['start_ticks'] != plan['expected_source_start_ticks']
+                    or resolution.get('source_resumed_in_memory') is not True
+                    or resolution.get('source_checkpoint_reloaded') is not False
+                    or resolution.get('source_training_budget') != 10000000
+                    or resolution.get('failed_target_worker_absent_verified') is not True
+                    or resolution.get('failed_target_session_absent_verified') is not True
+                    or resolution.get('source_canonical_container_unchanged') is not True
+                    or resolution.get('input_checkpoint_sha256') != moved['checkpoint_sha256']
+                    or input_digest.hexdigest() != moved['checkpoint_sha256']
+                    or resolution.get('input_checkpoint_steps') != moved['resume_steps']
+                    or resolution.get('input_checkpoint_saved_on_separate_filesystem') is not True
+                    or resolution.get('input_checkpoint_receiver_fsync_completed') is not True
+                    or stop.get('category') != 'nan_or_inf' or summary.get('status') != 'hard_stopped'
+                    or stop['env_steps'] != summary['env_steps']
+                    or summary.get('seed') != int(job.rsplit('-', 1)[1])
+                    or extra_steps != summary.get('run_env_steps') or not 0 <= extra_steps < 5000
+                    or extra_cost < 0 or reconciled.get('known_extra_environment_steps') != extra_steps
+                    or reconciled.get('known_extra_training_safety_cost') != extra_cost
+                    or hashlib.sha256(stop_path.read_bytes()).hexdigest() != reconciled['hard_stop_sha256']
+                    or hashlib.sha256(summary_path.read_bytes()).hexdigest() != reconciled['training_summary_sha256']):
+                raise ValueError('Aborted CPU placement/source recovery accounting unproven: ' + job)
+            failed_cpu_runtime_attempts.append({'job': job, 'receipt': moved,
+                'failed_target_state': proof, 'abort_resolution': resolution,
+                'native_terminal_counter_reconciliation': reconciled,
+                'known_additional_physical_steps': extra_steps,
+                'known_additional_physical_training_cost': extra_cost,
+                'source_accepted_lineage_preserved_in_memory': True,
+                'failed_cpu_extra_work_measured_from_native_terminal_counters': True})
+            continue
         if (plan.get('job') != job or plan.get('source_commit') != SOURCE
                 or plan.get('total_training_budget') != 10000000
                 or plan.get('source_gpu_index') != 0 or plan.get('target_device') != 'cpu'
@@ -659,10 +726,10 @@ def annotate_recovery(target):
         'scientific_source_commit': SOURCE,
         'audited_report_before_annotation_sha256': hashlib.sha256(original).hexdigest(),
         'raw_metrics_modified': False,
-        'accounting_scope': 'known discarded tail only; not an exhaustive ledger of historical attempts',
-        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs),
+        'accounting_scope': 'known discarded tails and measured failed-runtime work; not an exhaustive ledger of historical attempts',
+        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts),
         'known_discarded_training_cost_is_lower_bound': True,
-        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs),
+        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts),
         'known_repeated_environment_steps_is_lower_bound': True,
         'reported_training_cost_basis': 'accepted checkpoint lineage',
         'interpretation': 'Physically incurred training cost is at least accepted-lineage cost plus 539 for point-button-2029, plus 2 for ant-2027, and plus 75 for point-button-2031. Other historical discarded tails are not reconstructed here.',
@@ -704,6 +771,7 @@ def annotate_recovery(target):
     ledger['recoveries'].extend(near_cpu_rebalances)
     ledger['recoveries'].extend(same_host_gpu_rebalances)
     ledger['recoveries'].extend(shared_cpu_rebalances)
+    ledger['recoveries'].extend(failed_cpu_runtime_attempts)
     ledger['recoveries'].extend(a100_return_handoffs)
     if cuda_recoveries:
         ledger['interpretation'] += (' The observed CUDA-interruption tails add '
@@ -906,6 +974,22 @@ def annotate_recovery(target):
             f'{r["known_repeated_steps"]:,} steps and '
             f'{r["known_additional_cost"]:,.0f} training-cost units; unlogged '
             'work remains unknown, not zero. No other project was paused.\n'
+        )
+    for item in failed_cpu_runtime_attempts:
+        r = item['native_terminal_counter_reconciliation']
+        disclosure += (
+            f'\n{item["job"]} attempted CPU continuation on20 October, but '
+            'the native non-finite actor-gradient guard stopped that target. '
+            'This placement was abandoned, not counted as a completed handoff. '
+            'The original GPU process resumed in memory without checkpoint '
+            'rollback, seed exclusion, budget reduction, or algorithm changes. '
+            'The original input was preserved byte-for-byte on4080 4T and '
+            'the host; failed logs and terminal counter artifacts are retained. '
+            f'Native terminal counters establish exactly {r["known_extra_environment_steps"]:,} '
+            f'extra environment steps and {r["known_extra_training_safety_cost"]:,.0f} '
+            'extra training-safety cost. This measured zero cost is not an '
+            'assumption about other unknown historical tails. No new evaluation '
+            'was performed and the original full-budget GPU training continues.\n'
         )
     for item in a100_return_handoffs:
         r = item['receipt']

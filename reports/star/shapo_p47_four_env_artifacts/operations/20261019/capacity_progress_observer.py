@@ -25,7 +25,7 @@ STABLE_SECONDS = 1800
 MAX_REBALANCE_GPU_UTILIZATION_PERCENT = 85
 
 REMOTE = r'''
-import csv,json,math,shutil,subprocess,sys,time
+import csv,json,math,os,shutil,subprocess,sys,time
 from pathlib import Path
 project=Path(sys.argv[1]).resolve()
 def query(fields):
@@ -127,8 +127,28 @@ for cmdline in Path('/proc').glob('[0-9]*/cmdline'):
     except (OSError,ValueError,IndexError):
         continue
     try:
-        files=list(config.parent.glob('training/**/progress.csv'))
-        latest=max(files,key=lambda path:path.stat().st_mtime_ns) if files else None
+        # Prefer this worker's open logger, not a newer abandoned run/header.
+        # This also distinguishes a paused source and starting handoff target.
+        logger_files=set()
+        try:
+            for fd in (cmdline.parent/'fd').iterdir():
+                try:
+                    candidate=Path(os.readlink(fd))
+                    if not candidate.is_absolute() or candidate.name!='progress.csv':
+                        continue
+                    candidate.relative_to(config.parent/'training')
+                    if candidate.is_file():logger_files.add(candidate)
+                except (OSError,ValueError):
+                    continue
+        except OSError:
+            pass
+        if len(logger_files)==1:
+            latest=next(iter(logger_files))
+            worker['progress_selection']='active_worker_logger_fd'
+        else:
+            files=list(config.parent.glob('training/**/progress.csv'))
+            latest=max(files,key=lambda path:path.stat().st_mtime_ns) if files else None
+            worker['progress_selection']='latest_mtime_fallback'
         if latest:
             worker.update(progress_csv=str(latest),
                           progress_age_seconds=max(0,time.time()-latest.stat().st_mtime))

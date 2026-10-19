@@ -1,0 +1,18 @@
+{
+  "kind": "monitor_only_active_logger_selection",
+  "changed_at": "2026-10-20T01:19:40+08:00",
+  "service": "safeflow-gpu-capacity-watch.service",
+  "main_pid": 134327,
+  "controller_sha256": "6c9b1444d90ba7e29f24ba9607c65d7334b002313a4e5cec8c1beb91d1ab6a2d",
+  "poll_seconds": 1800,
+  "training_restarts": 0,
+  "additional_ssh_connections_per_cycle": 0,
+  "additional_model_validations": 0,
+  "additional_evaluations": 0,
+  "existing_sampling_deadline_preserved": true,
+  "first_scheduled_observation_at": "2026-10-20T01:21:23+08:00",
+  "observed_unique_jobs": 18,
+  "active_logger_fd_selection_count": 18,
+  "source_gpu_9473_observed_running": true,
+  "no_experiment_source_changes": true
+}
