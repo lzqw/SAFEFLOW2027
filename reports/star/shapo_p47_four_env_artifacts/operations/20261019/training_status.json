@@ -1,5 +1,7 @@
 {
   "schema_version": 1,
+  "superseded_by": "training_status_2008.json",
+  "snapshot_notice": "This 17:27 snapshot is preserved for history; see training_status_2008.json for the newer post-handoff observation.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
