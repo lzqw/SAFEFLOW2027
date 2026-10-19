@@ -1,0 +1,17 @@
+{
+  "job": "point-goal-2027",
+  "observed_local_time": "2026-10-19T16:06:29+08:00",
+  "existing_lightweight_checkpoint": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2027/training/recovered-history/checkpoints/milestone_4000000.pt",
+  "checkpoint_steps": 4000000,
+  "checkpoint_bytes": 9600375,
+  "embedded_resume_from": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-17-00-57-07/checkpoints/latest_full.pt",
+  "finding_basis": "One CPU metadata read of the existing 4M lightweight checkpoint and direct inspection of frozen 427079c validator validate_checkpoint_resolved_config; no new scientific evaluation or full final audit was run",
+  "prior_search_status": "Original full replay checkpoint not recovered from the former 3090, preserved hosts or GitHub; user confirmed the 3090 no longer exists",
+  "strict_requirement": "Required milestone checkpoint configs with nonempty resume_from must resolve to a genuine approved same-run latest_full.pt; do not forge or alias different bytes as the missing historical full input",
+  "user_question_sent": "Allow only this training seed to restart from zero to the full 10M budget, retaining old evidence and leaving the other 19 cells unchanged; or keep current training for now",
+  "decision": "awaiting_explicit_user_reply",
+  "new_from_scratch_run_authorized": false,
+  "new_from_scratch_run_started": false,
+  "current_training_kept_running": true,
+  "final_goal_not_complete": true
+}

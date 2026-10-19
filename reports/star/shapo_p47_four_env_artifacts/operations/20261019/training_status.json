@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0651.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0651.json for the ordinary06:51 native progress of all18 unique active cells. Goal2030 advanced a second5k epoch on5080 after the06:35 completed handoff, with the same PID/start_ticks/boot/CSV. Other17 workers also have positive logged deltas. Full budgets and provenance requirements remain unchanged; no final scientific audit is claimed.",
+  "superseded_by": "training_status_20261020_0721.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0721.json for the ordinary07:21 native progress: all18 same-identity workers advanced; Goal2030 is3.925M on5080. Full budgets and provenance requirements remain unchanged. A fresh Goal2027 replacement still requires explicit user approval and has NOT started. No final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

@@ -1,0 +1,16 @@
+{
+  "job": "point-goal-2027",
+  "request_local_time_window": "2026-10-20T06:53:00+08:00 to 2026-10-20T06:54:00+08:00",
+  "prior_decision_record": "point_goal_2027_provenance_decision_pending_20261019.json",
+  "basis_unchanged": "The historical full input referenced by the retained4M lightweight checkpoint has not been recovered from the retired3090, retained hosts or GitHub. Do not substitute a later full checkpoint or a lightweight payload.",
+  "question": "Allow this same training seed to restart from zero to the full10M budget using the unchanged frozen scientific configuration, preserving all old evidence and using the new complete run as this seed's formal result; the other19 cells stay unchanged?",
+  "asynchronous_question_delivery_accepted": true,
+  "explicit_user_reply_received": false,
+  "new_from_scratch_run_authorized": false,
+  "new_from_scratch_run_started": false,
+  "current_training_kept_running": true,
+  "scientific_provenance_requirement_not_waived": true,
+  "do_not_repeat_this_question_during_each_monitor_cycle": true,
+  "other_legacy2027_parent_references_not_assumed_resolved": true,
+  "all_twenty_cell_goal_still_active": true
+}
