@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "kind": "in_progress_operational_snapshot",
+  "observed_at": "2026-10-19T17:27:00+08:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "repository_base_commit": "a2e20effcb7e3cdd2fc9b1eea192620b3a57c0cb",
+  "final_scientific_report": false,
+  "training_matrix": {
+    "environments": [
+      "SafetyPointGoal1-v0",
+      "SafetyPointButton1-v0",
+      "Ant-v4",
+      "Walker2d-v4"
+    ],
+    "training_seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "total_cells": 20,
+    "point_budget_steps": 10000000,
+    "ant_walker_budget_steps": 5000000,
+    "completed_training_receipts": 2,
+    "active_unique_training_cells": 18
+  },
+  "placement": {
+    "4080": {
+      "gpu": 4,
+      "cpu": 0
+    },
+    "5080": {
+      "gpu": 3,
+      "cpu": 4
+    },
+    "tjucta-a100": {
+      "gpu": 3,
+      "cpu": 4
+    }
+  },
+  "active_training": [
+    {
+      "host": "tjucta-a100",
+      "job": "point-goal-2027",
+      "device": "cuda:0",
+      "steps": 5270000,
+      "last_epoch_fps": 2.172741651535034,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "point-goal-2030",
+      "device": "cuda:0",
+      "steps": 3770000,
+      "last_epoch_fps": 2.165517568588257,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "point-button-2027",
+      "device": "cuda:0",
+      "steps": 5170000,
+      "last_epoch_fps": 2.2209925651550293,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "walker2d-2030",
+      "device": "cpu",
+      "steps": 3820000,
+      "last_epoch_fps": 4.343677043914795,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "walker2d-2031",
+      "device": "cpu",
+      "steps": 3820000,
+      "last_epoch_fps": 4.364071369171143,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "ant-2031",
+      "device": "cpu",
+      "steps": 3820000,
+      "last_epoch_fps": 4.18647575378418,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "tjucta-a100",
+      "job": "ant-2030",
+      "device": "cpu",
+      "steps": 3820000,
+      "last_epoch_fps": 4.2149176597595215,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "4080",
+      "job": "point-goal-2028",
+      "device": "cuda:0",
+      "steps": 2820000,
+      "last_epoch_fps": 9.50290584564209,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "4080",
+      "job": "point-button-2030",
+      "device": "cuda:0",
+      "steps": 4765000,
+      "last_epoch_fps": 9.185940742492676,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "4080",
+      "job": "point-button-2031",
+      "device": "cuda:0",
+      "steps": 4215000,
+      "last_epoch_fps": 9.095566749572754,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "4080",
+      "job": "point-button-2028",
+      "device": "cuda:0",
+      "steps": 2615000,
+      "last_epoch_fps": 9.161721229553223,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "5080",
+      "job": "point-goal-2029",
+      "device": "cuda:0",
+      "steps": 1615000,
+      "last_epoch_fps": 15.309407234191895,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "5080",
+      "job": "point-button-2029",
+      "device": "cuda:0",
+      "steps": 1455000,
+      "last_epoch_fps": 14.926841735839844,
+      "total_budget_steps": 10000000
+    },
+    {
+      "host": "5080",
+      "job": "ant-2028",
+      "device": "cpu",
+      "steps": 1395000,
+      "last_epoch_fps": 7.450013637542725,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "5080",
+      "job": "ant-2029",
+      "device": "cpu",
+      "steps": 1390000,
+      "last_epoch_fps": 7.471375942230225,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "5080",
+      "job": "walker2d-2028",
+      "device": "cpu",
+      "steps": 1435000,
+      "last_epoch_fps": 7.670526504516602,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "5080",
+      "job": "walker2d-2029",
+      "device": "cpu",
+      "steps": 1435000,
+      "last_epoch_fps": 7.728267669677734,
+      "total_budget_steps": 5000000
+    },
+    {
+      "host": "5080",
+      "job": "point-goal-2031",
+      "device": "cuda:0",
+      "steps": 3830000,
+      "last_epoch_fps": 14.89801025390625,
+      "total_budget_steps": 10000000
+    }
+  ],
+  "runtime": {
+    "scientific_parameters_changed": false,
+    "other_projects_paused": false,
+    "source_torch": "2.7.1+cu118",
+    "target_5080_torch": "2.7.1+cu128",
+    "target_5080_python": "3.11.17",
+    "cuda_build_changed_on_5080": true,
+    "bitwise_equivalence_claimed": false,
+    "performance_caveat": "FPS describes only the last logged epoch and is not a completion-time guarantee; GPUs remain shared with unrelated projects."
+  },
+  "recovery_cost_accounting": {
+    "known_additional_repeated_environment_steps_lower_bound": 943613,
+    "known_additional_training_cost_lower_bound": 7048,
+    "unknown_unlogged_tails_may_exist": true,
+    "unknown_is_not_zero": true
+  },
+  "protection": {
+    "monitor_interval_seconds": 1800,
+    "monitor_services_observed_active": 4,
+    "checkpoints_copied_to_separate_hosts": true,
+    "archive_on_4080_4t_disk": true,
+    "point_goal_2031_first_4t_copy": {
+      "sha256": "39c0ac54b68eddccfc093da70b5ea4ea4d77b74c187547bce8fb9bb801c4bf67",
+      "checkpoint_steps": 3800000,
+      "snapshot_logged_steps": 3815000,
+      "sha256_matches_handoff": true
+    },
+    "extra_scientific_evaluations": false
+  },
+  "pending": {
+    "final_strict_audit": "Not complete; only 2/20 terminal training receipts exist.",
+    "point_goal_2027_old_4000000_step_parent_full_checkpoint": "Missing from recovered evidence. A fresh full-budget rerun requires the user's explicit choice; none has been started.",
+    "other_2027_legacy_parent_references": "PointButton, Ant, and Walker2d older parent references remain unresolved. Their preserved 4.10M/4.15M descendant full checkpoints cannot substitute for the referenced older inputs.",
+    "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
+  }
+}
