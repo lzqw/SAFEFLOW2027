@@ -87,7 +87,10 @@ def direct_5080_recovery_accounting():
         ('point-button-2030_balanced_5080_20261020_0421',
          'rebalance_button2030_4080_to_5080_20261020_0421.py', True, 'point-button-2030', 4, 4, '4080'),
         ('point-button-2028_balanced_5080_20261020_0521',
-         'rebalance_button2028_a100_to_5080_20261020_0521.py', True, 'point-button-2028', 5, 2, 'tjucta-a100'))
+         'rebalance_button2028_a100_to_5080_20261020_0521.py', True, 'point-button-2028', 5, 2, 'tjucta-a100'),
+        ('point-goal-2030_balanced_5080_20261020_0621',
+         'rebalance_goal2030_a100_to_5080_20261020_0621.py', True, 'point-goal-2030', 6, 1.5,
+         'tjucta-a100', 1, 'idle_checked'))
     present = [entry for entry in specifications
                if (BASE / (entry[0] + '_state.json')).exists()]
     if len({entry[3] for entry in present}) != len(present):
@@ -99,7 +102,8 @@ def direct_5080_recovery_accounting():
 
 
 def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
-                                expected_cohort_size, minimum_speed_ratio, source_host):
+                                expected_cohort_size, minimum_speed_ratio, source_host,
+                                source_gpu_index=0, target_cpu_policy='load_reserved'):
     path = BASE / (prefix + '_state.json')
     proof = json.loads(path.read_text())
     moved = json.loads((BASE / (prefix + '_receipt.json')).read_text())
@@ -145,7 +149,7 @@ def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
                 and moved['source_identity']['pid'] in before_pause['owned_gpu_pids']
                 and proof.get('source_shared_capacity_before_pause') == before_pause)
             for observation in (previous, current):
-                gpu = next(g for g in observation['hosts'][source_host]['gpus'] if g['index'] == 0)
+                gpu = next(g for g in observation['hosts'][source_host]['gpus'] if g['index'] == source_gpu_index)
                 qualified = qualified and gpu['uuid'] == plan['source_gpu_uuid'] and bool(gpu['foreign_pids'])
     else:
         qualified = qualified and (
@@ -163,6 +167,23 @@ def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
                     and worker.get('progress_csv') == proof.get('first_verified_target_csv')):
                 matches.append(snapshot.name)
     capacities = (moved['target_capacity_at_launch'], proof['target_capacity_at_launch'])
+    minimum_affinity = 32 if target_cpu_policy == 'idle_checked' else 16
+    maximum_load_fraction = .5 if target_cpu_policy == 'idle_checked' else .35
+    if target_cpu_policy == 'idle_checked':
+        qualified = qualified and (
+            plan.get('cpu_capacity_policy') == 'idle_checked'
+            and plan.get('source_physical_gpu_index') == source_gpu_index
+            and plan.get('source_cuda_visible_devices') == str(source_gpu_index)
+            and all(c.get('cpu_max_load_affinity_fraction') == .5
+                    and .4 <= c.get('cpu_idle_fraction', -1) <= 1
+                    and c.get('cpu_idle_sample_seconds', 0) >= 1
+                    and c.get('cpu_quota_scope') == 'observer_tmux_and_existing_target_gpu_workers'
+                    and sorted(c.get('cpu_quota_checked_gpu_pids', [])) == pids
+                    and c.get('cpu_quota_checked_tmux_server_pid', 0) > 0
+                    and 'minimum_cpu_quota_cores_or_null' in c
+                    and (c['minimum_cpu_quota_cores_or_null'] is None
+                         or c['minimum_cpu_quota_cores_or_null'] >= 16)
+                    for c in capacities))
     if (not matches
             or plan.get('job') != job
             or plan.get('source_commit') != SOURCE
@@ -190,13 +211,13 @@ def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
             or any(moved['source_identity'].get(key) != plan['expected_source_identity'][key]
                    for key in ('pid', 'start_ticks', 'boot_id', 'device'))
             or proof.get('source_identity') != moved['source_identity']
-            or moved['source_identity'].get('cuda_visible_devices') != '0'
+            or moved['source_identity'].get('cuda_visible_devices') != str(source_gpu_index)
             or any(c.get('physical_gpu_index') != 0 or c.get('uuid') != q['uuid']
                    or c.get('foreign_gpu_processes') != 0 or c.get('free_mib', 0) < 8192
                    or c.get('utilization_percent', 101) > maximum_utilization
                    or c.get('project_free_bytes', 0) < 5 * 1024**3
-                   or c.get('cpu_affinity_count', 0) < 16
-                   or c.get('load_1m', 1e9) >= c.get('cpu_affinity_count', 0) * .35
+                   or c.get('cpu_affinity_count', 0) < minimum_affinity
+                   or c.get('load_1m', 1e9) >= c.get('cpu_affinity_count', 0) * maximum_load_fraction
                    or c.get('memory_available_bytes', 0) < 8 * 1024**3 for c in capacities)
             or (balancing and any(sorted(c.get('owned_gpu_pids', [])) != pids
                                   for c in capacities))
