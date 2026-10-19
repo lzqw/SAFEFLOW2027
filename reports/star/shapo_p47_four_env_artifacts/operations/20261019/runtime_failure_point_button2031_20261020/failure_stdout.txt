@@ -1,0 +1,36 @@
+AdroitHandRelocateDense-v1, AdroitHandHammerDense-v1, AdroitHandDoorDense-v1 environment's reward functions were updated in v1.2.1 without an environment version update. Therefore, use gymnasium-robotics==1.2.0 for v1 reproducibility or use v2 in gymnasium-robotics>=1.4.3. See https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220 for more details
+AdroitHandRelocateDense-v1, AdroitHandHammerDense-v1, AdroitHandDoorDense-v1 environment's reward functions were updated in v1.2.1 without an environment version update. Therefore, use gymnasium-robotics==1.2.0 for v1 reproducibility or use v2 in gymnasium-robotics>=1.4.3. See https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220 for more details
+2026-10-20 00:55:13.435545: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-10-20 00:55:13.442765: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2026-10-20 00:55:13.450638: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2026-10-20 00:55:13.453025: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2026-10-20 00:55:13.459040: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-10-20 00:55:13.811937: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+/home/carla/SAFEFLOW2027_4080/env/lib/python3.11/site-packages/pygame/pkgdata.py:25: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_stream, resource_exists
+Loading STAR.yaml from /home/carla/SAFEFLOW2027_4080/code/omnisafe/utils/../configs/off-policy/STAR.yaml
+Logging data to 
+/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2031/tra
+ining/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-00-55-21/progress.csv
+Save with config in config.json
+INFO: Start STAR route-A training
+Traceback (most recent call last):
+  File "/home/carla/SAFEFLOW2027_4080/code/scripts/star/train_star.py", line 237, in <module>
+    main()
+  File "/home/carla/SAFEFLOW2027_4080/code/scripts/star/train_star.py", line 196, in main
+    final_return, final_cost, final_length = wrapper.learn()
+                                             ^^^^^^^^^^^^^^^
+  File "/home/carla/SAFEFLOW2027_4080/code/omnisafe/algorithms/algo_wrapper.py", line 180, in learn
+    ep_ret, ep_cost, ep_len = self.agent.learn()
+                              ^^^^^^^^^^^^^^^^^^
+  File "/home/carla/SAFEFLOW2027_4080/code/omnisafe/algorithms/off_policy/star.py", line 3943, in learn
+    self._collect_once()
+  File "/home/carla/SAFEFLOW2027_4080/code/omnisafe/algorithms/off_policy/star.py", line 1793, in _collect_once
+    self._update()
+  File "/home/carla/SAFEFLOW2027_4080/code/omnisafe/algorithms/off_policy/star.py", line 2466, in _update
+    metrics.update(self._update_actor(actor_augmented_obs))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/carla/SAFEFLOW2027_4080/code/omnisafe/algorithms/off_policy/star.py", line 2353, in _update_actor
+    raise FloatingPointError('non-finite actor gradient norm')
+FloatingPointError: non-finite actor gradient norm
