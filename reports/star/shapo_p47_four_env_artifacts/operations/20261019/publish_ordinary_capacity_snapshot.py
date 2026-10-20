@@ -151,6 +151,8 @@ def main():
         names.append('Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json')
     if (BASE / 'Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json').exists():
         names.append('Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json')
+    if (BASE / 'Point_5080_to_4080_MPS_regular_dispatch_20261021_state.json').exists():
+        names.append('Point_5080_to_4080_MPS_regular_dispatch_20261021_state.json')
     snapshots = []
     for name in names:
         snapshot = 'snapshot_' + args.stamp + '_' + name

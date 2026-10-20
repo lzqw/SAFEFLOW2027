@@ -1,0 +1,43 @@
+{
+  "kind": "three_NEW_completed_host_inputs_added_to_existing_restorable_RAM_cache",
+  "phase": "completed_same_SHA_links_and_durable_originals_preserved",
+  "completed_at_unix": 1792533152.17682,
+  "new_entries": [
+    {
+      "job": "walker2d-2030",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/walker2d-2030/cpu_to_mps_a100_gpu1_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/walker2d-2030/cpu_to_mps_a100_gpu1_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/walker2d-2030/cpu_to_mps_a100_gpu1_20261020/input/latest_full.pt",
+      "sha256": "b38d2afa46729d59523734cf758fb7ce24997a2f1cc6ab9ac285156a281e2f03"
+    },
+    {
+      "job": "ant-2030",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+      "sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c"
+    },
+    {
+      "job": "walker2d-2029",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/walker2d-2029/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/walker2d-2029/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/walker2d-2029/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "sha256": "56247ec76542793320795b65d0eec8b772d62a3f28f12987a1de3d7114692ac1"
+    }
+  ],
+  "new_durable_copy_proof": {
+    "verified_durable4T_copies": 3
+  },
+  "previous_manifest": "host_input_cache_completed_three_extension_20261021_previous_manifest.json",
+  "previous_manifest_sha256": "8d3a1e919231a346e6f97503b7afa76826b85e3a73c4fcfdd490209429bc04e9",
+  "updated_manifest_sha256": "8c0c4510082d333ac3fb5fb7f53521fe97e1c12b03691258f47213ef7bee0159",
+  "restore_manifest_entries": 14,
+  "duplicate_host_regular_bytes_released": 368275241,
+  "host_free_bytes_before": 2691469312,
+  "host_free_bytes_after": 3059732480,
+  "existing_ensure_cache_restores_all_fourteen_after_reboot": true,
+  "source_originals_and_4T_originals_removed": 0,
+  "learner_signals_or_restarts": 0,
+  "new_scientific_rollouts_or_audits": 0,
+  "scientific_parameters_or_budgets_changed": false
+}
