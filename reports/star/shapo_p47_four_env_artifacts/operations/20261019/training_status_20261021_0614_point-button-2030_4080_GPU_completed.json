@@ -1,0 +1,59 @@
+{
+  "kind": "existing_Point_GPU_placement_observation_not_full_cohort_census",
+  "job": "point-button-2030",
+  "phase": "completed_first_MPS_epoch_source_retired",
+  "engineering_observed_at_unix": 1792534488.8051176,
+  "completed_existing_cell_placement": true,
+  "previous_status": "training_status_20261021_0605_point-button-2030_4080_GPU_inflight.json",
+  "latest_all_host_native_frame": "ordinary_observation_20261021_0551.json",
+  "state_snapshot": "point-button-2030_point_5080_to_4080_MPS_20261021_completed_state_20261021_0614.json",
+  "dispatch_snapshot": "snapshot_20261021_0614_point-button-2030_completed_Point_GPU_dispatch.json",
+  "first_target_native_observation": "point-button-2030_point_5080_to_4080_MPS_20261021_first_epoch_native_20261021_0614.json",
+  "source_host": "5080",
+  "target_host": "4080",
+  "runtime_change": {
+    "from_torch": "2.7.1+cu128",
+    "to_torch": "2.7.1+cu118",
+    "from_backend": "private_MPS",
+    "to_backend": "private_MPS",
+    "cuda_build_changed": true,
+    "bitwise_equivalence_claimed": false
+  },
+  "first_target_epoch_not_claimed_when_inflight": false,
+  "source_paused": false,
+  "source_retired": true,
+  "genuine_resume_steps": 6000000,
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2030/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "host_input_sha256": "9f95dfcbd27e2d295424f77d367a8b0fee2b7a37ce8b172a8647e04934422b70",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2030/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "archive_input_sha256": "9f95dfcbd27e2d295424f77d367a8b0fee2b7a37ce8b172a8647e04934422b70",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "first_target_FPS": 22.651611328125,
+  "source_previous_native_epoch_FPS": 16.074512481689453,
+  "FPS_is_single_epoch_not_sustained_or_causal_guarantee": true,
+  "previous_target_container_preserved_at": null,
+  "completed_new_Point_recovery_additions": [
+    {
+      "job": "point-button-2030",
+      "steps": 0,
+      "safety_cost": 0.0
+    }
+  ],
+  "completed_recovery_totals_lower_bound": {
+    "environment_steps": 1162276,
+    "safety_cost": 10386.0,
+    "unlogged_and_historical_unknown_work_not_zero": true
+  },
+  "unfinished_Point_transactions_not_in_completed_floors": [],
+  "new_whole_group_accounting_check_not_claimed_by_this_report": true,
+  "scientific_parameters_changed": false,
+  "training_budget_each": 10000000,
+  "additional_training_cells_or_evaluation_rollouts": 0,
+  "other_projects_modified": false,
+  "all_host_counters_not_spliced_with_later_single_host_observations": true,
+  "full_final_scientific_audit_executed": false,
+  "original_2027_parent_gaps_not_repaired": true,
+  "data_notice": "Engineering continuation of an existing full-budget Point cell, not a new seed or scientific result. Inflight source/target work must not be counted as a completed handoff; target first5k epoch and MPS identity precede source retirement. Native all-host frame remains a separate historical census. Final20-cell scientific/provenance gates are unchanged."
+}
