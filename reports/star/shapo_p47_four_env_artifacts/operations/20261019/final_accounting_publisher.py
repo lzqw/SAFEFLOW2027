@@ -19,6 +19,7 @@ from cpu_to_mps_walkers_a100_recovery_accounting_20261020 import verify_A100_Wal
 from host_full_input_cache_20261020 import ensure_cache
 from a100_rebalance_accounting_20261020 import verify_A100_return_balances
 from crosshost_goal2027_MPS_accounting_20261020 import verify_Goal2027_crosshost_MPS
+from crosshost_button2027_MPS_accounting_20261020 import verify_Button2027_crosshost_MPS
 
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
@@ -1174,7 +1175,8 @@ def annotate_recovery(target):
                               + verify_A100_CPU_to_MPS_transitions(BASE)
                               + verify_A100_Walker_CPU_to_MPS_transitions(BASE))
     new_a100_return_balances = verify_A100_return_balances(BASE)
-    new_crosshost_mps_balances = verify_Goal2027_crosshost_MPS(BASE)
+    new_crosshost_mps_balances = (verify_Goal2027_crosshost_MPS(BASE)
+                                 + verify_Button2027_crosshost_MPS(BASE))
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
     marker = b'<!-- known-recovery-accounting-v1 -->'
