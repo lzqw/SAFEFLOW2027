@@ -1,0 +1,28 @@
+{
+  "kind": "one_NEW_completed_Point_host_duplicate_added_to_restorable_RAM_cache",
+  "phase": "completed_same_SHA_link_and_durable_originals_preserved",
+  "job": "point-button-2028",
+  "completed_at_unix": 1792536537.9728856,
+  "new_entry": {
+    "job": "point-button-2028",
+    "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2028/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2028/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2028/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "sha256": "94a1f021294796bdef959082d5ddc8037d4bb59538005398417a350686cc8d62"
+  },
+  "new_durable_copy_proof": {
+    "verified_durable4T_copies": 1
+  },
+  "previous_manifest": "host_input_cache_point-button-2028_20261021_0648_previous_manifest.json",
+  "previous_manifest_sha256": "6cdc5e0bca16460139d8d3ebe33a57eba0adcb65c6da8d690d2fa5e0895b4ec2",
+  "updated_manifest_sha256": "b879e33e637bb3e0c1aff5be0e733736a7281b2ea36893c41a601b0aabe5d093",
+  "restore_manifest_entries": 17,
+  "duplicate_host_regular_bytes_released": 294865842,
+  "host_free_bytes_before": 2766168064,
+  "host_free_bytes_after": 3061014528,
+  "unchanged_ensure_cache_restores_all_manifest_entries_after_reboot": true,
+  "source_originals_and_4T_originals_removed": 0,
+  "learner_signals_or_restarts": 0,
+  "scientific_parameters_or_budgets_changed": false,
+  "new_scientific_rollouts_or_audits": 0
+}

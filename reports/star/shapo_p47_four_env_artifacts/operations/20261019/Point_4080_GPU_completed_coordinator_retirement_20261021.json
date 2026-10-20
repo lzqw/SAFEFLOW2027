@@ -1,0 +1,35 @@
+{
+  "kind": "completed_local_one_shot_dispatcher_boot_trigger_retirement_not_training_stop",
+  "completed_at_unix": 1792536540.1959932,
+  "unit": "safeflow-points-idle4080-capacity.service",
+  "command": [
+    "systemctl",
+    "--user",
+    "disable",
+    "safeflow-points-idle4080-capacity.service"
+  ],
+  "before": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "enabled"
+  },
+  "after": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "disabled"
+  },
+  "no_stop_or_now_flag_used": true,
+  "successful_exit_proven_before_disable": true,
+  "queue_snapshot": "Point_4080_GPU_completed_queue_snapshot_20261021.json",
+  "group_accounting_receipt": "Point_4080_GPU_completed_group_accounting_20261021.json",
+  "remote_learner_signals_or_restarts": 0,
+  "other_projects_or_scientific_parameters_or_budgets_changed": false,
+  "regular1800_second_monitor_unchanged": true,
+  "expected_lifecycle": "All3 existing-cell placements finished. Inactive local dispatcher is expected; independent remote tmux learners continue. Do not restart historical coordinator73574 or its retired predecessor72138."
+}

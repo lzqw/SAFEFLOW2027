@@ -1,0 +1,35 @@
+{
+  "kind": "three_completed_existing_Point_MPS_placements_engineering_accounting_not_final_scientific_audit",
+  "checked_at_unix": 1792536540.024627,
+  "verified_completed_existing_handoffs": 3,
+  "additions": [
+    {
+      "job": "point-button-2028",
+      "known_additional_physical_steps": 5000,
+      "known_additional_physical_training_cost": 52.0,
+      "unknown_unlogged_tail_not_zero": true
+    },
+    {
+      "job": "point-button-2029",
+      "known_additional_physical_steps": 5000,
+      "known_additional_physical_training_cost": 13.0,
+      "unknown_unlogged_tail_not_zero": true
+    },
+    {
+      "job": "point-button-2030",
+      "known_additional_physical_steps": 0,
+      "known_additional_physical_training_cost": 0.0,
+      "unknown_unlogged_tail_not_zero": true
+    }
+  ],
+  "first_epoch_native_MPS_and_full_input_identities_checked": true,
+  "completed_recovery_floors_including_prior_history": {
+    "environment_steps": 1172276,
+    "safety_cost": 10451.0,
+    "historical_and_unlogged_unknown_work_not_zero": true
+  },
+  "new_scientific_evaluations_or_training_cells": 0,
+  "scientific_parameters_or_budgets_changed": false,
+  "full_final_20_cell_scientific_audit_executed": false,
+  "legacy2027_parent_gaps_not_repaired": true
+}
