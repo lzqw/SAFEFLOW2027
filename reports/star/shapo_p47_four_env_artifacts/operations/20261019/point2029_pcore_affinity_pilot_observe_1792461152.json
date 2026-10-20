@@ -1,0 +1,308 @@
+{
+  "observed_at_unix": 1792461152.1409066,
+  "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+  "mode": "--observe",
+  "main_thread_only": true,
+  "topology": [
+    {
+      "cpu": 0,
+      "thread_siblings": "0-1",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 1,
+      "thread_siblings": "0-1",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 2,
+      "thread_siblings": "2-3",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 3,
+      "thread_siblings": "2-3",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 4,
+      "thread_siblings": "4-5",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 5,
+      "thread_siblings": "4-5",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 6,
+      "thread_siblings": "6-7",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 7,
+      "thread_siblings": "6-7",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 8,
+      "thread_siblings": "8-9",
+      "max_frequency_khz": 6000000
+    },
+    {
+      "cpu": 9,
+      "thread_siblings": "8-9",
+      "max_frequency_khz": 6000000
+    },
+    {
+      "cpu": 10,
+      "thread_siblings": "10-11",
+      "max_frequency_khz": 6000000
+    },
+    {
+      "cpu": 11,
+      "thread_siblings": "10-11",
+      "max_frequency_khz": 6000000
+    },
+    {
+      "cpu": 12,
+      "thread_siblings": "12-13",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 13,
+      "thread_siblings": "12-13",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 14,
+      "thread_siblings": "14-15",
+      "max_frequency_khz": 5700000
+    },
+    {
+      "cpu": 15,
+      "thread_siblings": "14-15",
+      "max_frequency_khz": 5700000
+    }
+  ],
+  "before": [
+    {
+      "job": "point-goal-2029",
+      "pid": 28355,
+      "start_ticks": 1928788,
+      "old_affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "progress": {
+        "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/progress.csv",
+        "mtime_unix": 1792460696.3281853,
+        "recent_rows": [
+          {
+            "TotalEnvSteps": "2325000.0",
+            "Time/FPS": "6.746987819671631",
+            "Time/Total": "65514.40625",
+            "Train/CumulativeCost": "45589.0"
+          },
+          {
+            "TotalEnvSteps": "2330000.0",
+            "Time/FPS": "6.952058792114258",
+            "Time/Total": "66233.6171875",
+            "Train/CumulativeCost": "45589.0"
+          },
+          {
+            "TotalEnvSteps": "2335000.0",
+            "Time/FPS": "6.928164482116699",
+            "Time/Total": "66955.3125",
+            "Train/CumulativeCost": "45674.0"
+          },
+          {
+            "TotalEnvSteps": "2340000.0",
+            "Time/FPS": "7.149630069732666",
+            "Time/Total": "67654.6484375",
+            "Train/CumulativeCost": "45674.0"
+          }
+        ]
+      }
+    },
+    {
+      "job": "point-button-2029",
+      "pid": 31275,
+      "start_ticks": 1959385,
+      "old_affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "progress": {
+        "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-15-02-27/progress.csv",
+        "mtime_unix": 1792461081.0564795,
+        "recent_rows": [
+          {
+            "TotalEnvSteps": "2155000.0",
+            "Time/FPS": "6.837315559387207",
+            "Time/Total": "65577.40625",
+            "Train/CumulativeCost": "60838.0"
+          },
+          {
+            "TotalEnvSteps": "2160000.0",
+            "Time/FPS": "6.647286891937256",
+            "Time/Total": "66329.59375",
+            "Train/CumulativeCost": "61012.0"
+          },
+          {
+            "TotalEnvSteps": "2165000.0",
+            "Time/FPS": "6.778213024139404",
+            "Time/Total": "67067.25",
+            "Train/CumulativeCost": "61130.0"
+          },
+          {
+            "TotalEnvSteps": "2170000.0",
+            "Time/FPS": "7.508795738220215",
+            "Time/Total": "67733.1328125",
+            "Train/CumulativeCost": "61394.0"
+          }
+        ]
+      }
+    }
+  ],
+  "after": [
+    {
+      "job": "point-goal-2029",
+      "pid": 28355,
+      "start_ticks": 1928788,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "progress": {
+        "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/progress.csv",
+        "mtime_unix": 1792460696.3281853,
+        "recent_rows": [
+          {
+            "TotalEnvSteps": "2325000.0",
+            "Time/FPS": "6.746987819671631",
+            "Time/Total": "65514.40625",
+            "Train/CumulativeCost": "45589.0"
+          },
+          {
+            "TotalEnvSteps": "2330000.0",
+            "Time/FPS": "6.952058792114258",
+            "Time/Total": "66233.6171875",
+            "Train/CumulativeCost": "45589.0"
+          },
+          {
+            "TotalEnvSteps": "2335000.0",
+            "Time/FPS": "6.928164482116699",
+            "Time/Total": "66955.3125",
+            "Train/CumulativeCost": "45674.0"
+          },
+          {
+            "TotalEnvSteps": "2340000.0",
+            "Time/FPS": "7.149630069732666",
+            "Time/Total": "67654.6484375",
+            "Train/CumulativeCost": "45674.0"
+          }
+        ]
+      }
+    },
+    {
+      "job": "point-button-2029",
+      "pid": 31275,
+      "start_ticks": 1959385,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "progress": {
+        "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-15-02-27/progress.csv",
+        "mtime_unix": 1792461081.0564795,
+        "recent_rows": [
+          {
+            "TotalEnvSteps": "2155000.0",
+            "Time/FPS": "6.837315559387207",
+            "Time/Total": "65577.40625",
+            "Train/CumulativeCost": "60838.0"
+          },
+          {
+            "TotalEnvSteps": "2160000.0",
+            "Time/FPS": "6.647286891937256",
+            "Time/Total": "66329.59375",
+            "Train/CumulativeCost": "61012.0"
+          },
+          {
+            "TotalEnvSteps": "2165000.0",
+            "Time/FPS": "6.778213024139404",
+            "Time/Total": "67067.25",
+            "Train/CumulativeCost": "61130.0"
+          },
+          {
+            "TotalEnvSteps": "2170000.0",
+            "Time/FPS": "7.508795738220215",
+            "Time/Total": "67733.1328125",
+            "Train/CumulativeCost": "61394.0"
+          }
+        ]
+      }
+    }
+  ],
+  "trainers_restarted": false,
+  "scientific_parameters_changed": false,
+  "extra_environment_steps": 0,
+  "other_projects_modified": false
+}
