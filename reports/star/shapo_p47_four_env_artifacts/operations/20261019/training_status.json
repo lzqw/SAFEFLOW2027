@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0951.json",
+  "superseded_by": "training_status_20261020_1021.json",
   "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0951.json for all18 workers in the ordinary09:51 observation, all with positive same-identity progress since09:21. Two Point2029 GPU workers have a reversible CPU P-core affinity pilot; Button2029's first complete post-change epoch is12.9% faster than its preceding four-epoch mean, not a sustained guarantee. Disposable zero-environment-step MPS testing improved update-only throughput32.9%; no formal MPS conversion or overall training speed claim is made. Full budgets, failure accounting and scientific gates remain unchanged; no final scientific audit is claimed.",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1021.json for all18 workers in the ordinary10:21 observation, all with positive same-identity progress since09:51. Each P-core pilot has3 complete post-change epochs, with mean FPS about3.7%/9.9% above its prior four-epoch mean; observational, not sustained/causal guarantees. Both A100 cards now show no previously observed foreign GPU processes,17% utilization, and one remaining SAFEFLOW trainer each: first-frame spare-capacity candidates, not yet two-frame-stable. Reassess balanced short-tail Point placement at10:51 before starting the prepared MPS pilot; no formal MPS or A100 relocation has begun. Full budgets, failure accounting and scientific gates remain unchanged; no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

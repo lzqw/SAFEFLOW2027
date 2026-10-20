@@ -1,0 +1,29 @@
+{
+  "kind": "engineering_placement_decision_from_new_resource_evidence",
+  "ordinary_observation": "capacity_progress_observation_20261020_1021.json",
+  "observed_at_unix": 1792462894.5805879,
+  "formal_MPS_transition_started": false,
+  "formal_MPS_daemon_started": false,
+  "MPS_launch_ready_file_not_created": true,
+  "formal_trainers_paused_or_restarted_for_MPS": false,
+  "reason": "Both A100 cards have no previously observed foreign GPU processes in this first ordinary frame,17% utilization, about80GB free, and one existing SAFEFLOW Point trainer per card. Additional A100 capacity may improve balance before introducing a new MPS runtime segment.",
+  "next_action": "At10:51 ordinary observation, assess stable A100 capacity and shorter-remaining-budget Point candidates from5080. Do not move the longest Point tail onto a slower host without considering makespan. Keep existing training running meanwhile.",
+  "MPS_code_retained_as_an_engineering_option_not_launched": true,
+  "all18_current_cell_identities_unchanged_and_progressing": true,
+  "PointGoal2028_now_above_old_failed_CPU_counter": true,
+  "PointGoal2030_latest_steps": 3995000,
+  "PointGoal2030_approaching_fixed4M_evaluation_not_an_engineering_stop": true,
+  "performance_affinity_followup": "point2029_pcore_affinity_pilot_observe_1792463041.json",
+  "affinity_complete_post_change_epochs_per_cell": 3,
+  "affinity_mean_FPS_ratios_vs_previous4_epochs_not_causal_or_sustained_guarantees": {
+    "point-goal-2029": 1.0372435188274558,
+    "point-button-2029": 1.0993991782607566
+  },
+  "scientific_parameters_changed": false,
+  "full_budgets_retained": true,
+  "other_projects_paused": false,
+  "new_scientific_evaluations_requested": false,
+  "final_scientific_audit_executed": false,
+  "legacy_parent_provenance_gaps_not_waived": true,
+  "next_ordinary_observation_local": "2026-10-20T10:51:35+08:00"
+}
