@@ -1,18 +1,18 @@
 {
   "latest_local_reboot_reconciliation": "local_host_reboot_20261020_2107_receipt.json",
   "new_Ant_CPU_capacity_queue_preparation": "Ant_CPU_5080_to_4080_20261020_preparation.json",
-  "latest_host_storage_extension": "host_input_cache_Goal2027_extension_20261020_receipt.json",
+  "latest_host_storage_extension": "host_input_cache_Button2027_extension_20261020_receipt.json",
   "new_read_only_4080_CPU_capacity_evidence": "4080_CPU_placement_preflight_20261020_2051.json",
   "latest_completed_engineering_backup": "post_local_reboot_backup_recovered_20261020_2033.json",
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_2151_inflight.json",
+  "superseded_by": "training_status_20261020_2204_handoff_completed.json",
   "latest_Goal2027_existing_cell_MPS_continuation_plan": "point_goal2027_5080_MPS_balanced_20261020.json",
   "latest_GPU1_capacity_qualification": "walkers_GPU1_regular_qualification_20261020_1623.json",
   "latest_queued_engineering_transition": "A100_shared_GPU_capacity_hold_20261020_1734.json",
-  "latest_completed_engineering_transition": "point-goal-2027_balanced_MPS_5080_20261020_state.json",
-  "newer_engineering_runtime": "Goal2027_A100_to_5080_MPS_completed_20261020_1914.json",
+  "latest_completed_engineering_transition": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+  "newer_engineering_runtime": "training_status_20261020_2204_handoff_completed.json",
   "newer_engineering_preparation": "cpu_to_mps_ant2030_a100_gpu0_20261020_preparation.json",
-  "snapshot_notice": "Historical17:27 payload below. Latest native frame plus in-flight move:training_status_20261020_2151_inflight.json. Native21:51 frame showed18 advancing existing cells. Subsequently the existingButton2027 source was held for a genuine full5.65M continuation to private5080MPS; this is not a fresh seed. This in-flight snapshot does not prove target training or source retirement, and must not pass the steady-state or final-scientific audit. A5000-step/26-cost logged source tail is conditional recovery work, plus unknown unlogged work, not yet declared as completed repeated work. All original training/evaluation budgets and strict final gates remain; earlier2027 parent gaps are not repaired.",
+  "snapshot_notice": "Historical17:27 payload below. Latest completed engineering evidence:training_status_20261020_2204_handoff_completed.json. ExistingButton2027 continued from genuine5.65M input on private5080MPS; a real5000-step epoch and native client/server/GPU proof preceded source retirement and recoverable source archival. First epoch13.333FPS vs source4.828FPS is not a sustained whole-training guarantee. Target cohort now10 PointGPU clients. Known extra5000steps/26cost are now included:global floors1142276steps/10370cost plus unknown work. This is not a new seed or an early2027 provenance repair, and not a final20-cell scientific report. Latest all-host frame remains21:51; next regular all-host observation22:21 will supply fresh cohort counters.",
   "newest_intermediate_scientific_result": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
@@ -233,6 +233,5 @@
     "point_goal_2027_old_4000000_step_parent_full_checkpoint": "Missing from recovered evidence. A fresh full-budget rerun requires the user's explicit choice; none has been started.",
     "other_2027_legacy_parent_references": "PointButton, Ant, and Walker2d older parent references remain unresolved. Their preserved 4.10M/4.15M descendant full checkpoints cannot substitute for the referenced older inputs.",
     "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
-  },
-  "latest_inflight_engineering_transition": "point-button-2027_balanced_MPS_5080_20261020_inflight_state_20261020_2151.json"
+  }
 }

@@ -1,0 +1,22 @@
+{
+  "kind": "one_completed_runtime_handoff_accounting_check_not_full_science_audit",
+  "checked_at_local": "2026-10-20T22:06:15+08:00",
+  "verification_function": "crosshost_button2027_MPS_accounting_20261020.verify_Button2027_crosshost_MPS",
+  "verified_new_handoff_records": 1,
+  "job": "point-button-2027",
+  "target_pid": 361827,
+  "target_start_ticks": 13092557,
+  "target_boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+  "input_checkpoint_sha256": "9406fd800307c6d8565b3a6790f1819cbb0d03c2de8b64a79850b72bb8b5f6cf",
+  "resume_steps": 5650000,
+  "first_verified_target_steps": 5655000,
+  "first_target_FPS": 13.332992553710938,
+  "source_last_epoch_FPS": 4.828476428985596,
+  "first_epoch_only_ratio_not_sustained_guarantee": 2.7613249748248303,
+  "known_repeated_environment_steps": 5000,
+  "known_extra_safety_cost": 26,
+  "target_native_5080_Point_GPU_client_count": 10,
+  "target_native_Point_FPS_snapshot_sum": 136.81762218475342,
+  "full_final_scientific_audit_executed": false,
+  "legacy_2027_parent_gaps_not_repaired": true
+}

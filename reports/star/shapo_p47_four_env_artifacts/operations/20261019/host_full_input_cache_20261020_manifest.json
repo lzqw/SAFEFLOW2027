@@ -53,6 +53,13 @@
       "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
       "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
       "sha256": "1c5057b0e5782e436f721cdf323d6e36bb2ff5356dc7b1866eb93a94e499beed"
+    },
+    {
+      "job": "point-button-2027",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "sha256": "9406fd800307c6d8565b3a6790f1819cbb0d03c2de8b64a79850b72bb8b5f6cf"
     }
   ],
   "source_originals_and_durable4T_files_not_removed": true,

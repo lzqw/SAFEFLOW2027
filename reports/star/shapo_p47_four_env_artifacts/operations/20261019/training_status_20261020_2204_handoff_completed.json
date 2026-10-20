@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "kind": "completed_existing_cell_runtime_handoff_not_full_cohort_snapshot",
+  "engineering_completed_at_unix": 1792505071.4870706,
+  "previous_status": "training_status_20261020_2151_inflight.json",
+  "latest_all_host_native_frame": "ordinary_observation_20261020_2151.json",
+  "latest_target_native_probe": "point-button-2027_balanced_MPS_5080_20261020_first_epoch_native_observation.json",
+  "completed_state": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+  "completed_accounting_check": "Button2027_completed_handoff_accounting_check_20261020_2206.json",
+  "historical_input_transfer_receipt_not_completion_proof": "point-button-2027_balanced_MPS_5080_20261020_receipt.json",
+  "new_target_identity": {
+    "pid": 361827,
+    "start_ticks": 13092557,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "0",
+    "args": [
+      "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+      "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/resolved_formal_config.yaml",
+      "--seed",
+      "2027",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/training",
+      "--result",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-19-15-25-21/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+  },
+  "verified_target_GPU_UUID": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+  "first_target_steps": 5655000,
+  "first_target_FPS": 13.332992553710938,
+  "source_last_epoch_FPS": 4.828476428985596,
+  "first_epoch_only_speed_ratio_not_sustained_or_causal_guarantee": 2.7613249748248303,
+  "new_5080_Point_GPU_client_count_at_target_probe": 10,
+  "target_Point_FPS_snapshot_sum_not_whole_training_guarantee": 136.81762218475342,
+  "source_retired_after_target_first_epoch": true,
+  "source_original_directory_recoverably_archived": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers/point-button-2027_balanced_MPS_5080_20261020_1792505069788259532",
+  "source_canonical_path_vacated_for_existing_final_collector": true,
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+    "host_input_sha256": "9406fd800307c6d8565b3a6790f1819cbb0d03c2de8b64a79850b72bb8b5f6cf",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+    "archive_input_sha256": "9406fd800307c6d8565b3a6790f1819cbb0d03c2de8b64a79850b72bb8b5f6cf",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "new_known_additional_physical_steps_lower_bound": 5000,
+  "new_known_additional_physical_safety_cost_lower_bound": 26,
+  "completed_recovery_totals_lower_bound": {
+    "environment_steps": 1142276,
+    "safety_cost": 10370,
+    "unknown_historical_and_unlogged_work_not_assumed_zero": true
+  },
+  "last_all_host_native_logical_active_cells": 18,
+  "post_handoff_placement_from_target_probe_and_verified_source_retirement": {
+    "tjucta-a100": {
+      "GPU": 1,
+      "CPU": 2
+    },
+    "4080": {
+      "GPU": 0,
+      "CPU": 1
+    },
+    "5080": {
+      "GPU": 10,
+      "CPU": 4
+    }
+  },
+  "not_a_new_simultaneous_all_host_observation_or_spliced_progress_total": true,
+  "Ant_CPU_handoffs": {
+    "queue": "Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json",
+    "pending": [
+      "ant-2028",
+      "ant-2029"
+    ],
+    "sources_continue_until_fresh_full_input_and_live_CPU_capacity": true
+  },
+  "latest_native_science_summary_reference": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
+  "training_matrix": {
+    "environments": [
+      "SafetyPointGoal1-v0",
+      "SafetyPointButton1-v0",
+      "Ant-v4",
+      "Walker2d-v4"
+    ],
+    "training_seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "total_cells": 20,
+    "point_budget_steps": 10000000,
+    "ant_walker_budget_steps": 5000000,
+    "completed_training_receipts": 2,
+    "active_unique_training_cells": 18,
+    "observed_training_processes_at_1851": 18
+  },
+  "last_known_training_budgets_complete": 2,
+  "total_training_cells": 20,
+  "additional_training_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "training_budgets_reduced": false,
+  "other_projects_paused": false,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "next_ordinary_resource_check_local": "2026-10-20T22:21:49+08:00",
+  "data_notice": "ExistingButton2027 continued from genuine5.65M input on private5080MPS; a real5000-step epoch and native client/server/GPU proof preceded source retirement and recoverable source archival. First epoch13.333FPS vs source4.828FPS is not a sustained whole-training guarantee. Target cohort now10 PointGPU clients. Known extra5000steps/26cost are now included:global floors1142276steps/10370cost plus unknown work. This is not a new seed or an early2027 provenance repair, and not a final20-cell scientific report. Latest all-host frame remains21:51; next regular all-host observation22:21 will supply fresh cohort counters."
+}
