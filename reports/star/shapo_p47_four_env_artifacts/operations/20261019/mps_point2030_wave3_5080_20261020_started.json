@@ -1,0 +1,30 @@
+{
+  "kind": "engineering_controller_started_not_training_handoff_completed",
+  "controller_started_at": "2026-10-20T13:23:26+08:00",
+  "verified_live_at_utc": "2026-10-20 05:25:19 UTC",
+  "unit": "safeflow-point2030-mps-wave3-5080-20261020.service",
+  "verified_local_main_pid": 236271,
+  "verified_unit_state": "active/running",
+  "controller": "handoff_point2030_MPS_wave3_5080_20261020.py",
+  "controller_sha256": "8dd5f072b2bbd0f8e7565458ff48d78ef835ead19288d5ec0c84230252880631",
+  "all_four_earlier_MPS_clients_verified_live_before_pause": true,
+  "uses_existing_private_MPS_server": true,
+  "existing_MPS_server_pid": 215213,
+  "jobs": [
+    "point-goal-2030",
+    "point-button-2030"
+  ],
+  "first_cell": "point-goal-2030",
+  "observed_first_cell_phase": "source_paused_full_input_preserved",
+  "first_cell_genuine_full_input_steps": 4050000,
+  "first_cell_genuine_full_input_cumulative_cost": 65270,
+  "first_cell_genuine_full_input_sha256": "0629c217dd52a592c29a61d48ac23fe1bf3c762193cb009526b3fb8f30ecd81d",
+  "first_new_target_epoch_not_yet_claimed": true,
+  "source_segments_and_input_preservation_required": true,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "new_training_cells": 0,
+  "additional_evaluation_rollouts": 0,
+  "full_training_objective_complete": false,
+  "final_scientific_audit_executed": false
+}

@@ -1,0 +1,266 @@
+{
+  "kind": "targeted_legacy_parent_metadata_lookup_not_final_provenance_audit",
+  "observed_at": "2026-10-20T13:18:29+08:00",
+  "scope": "Read six latest raw-evidence manifests for three2027 cells on A100/4080 and CPU-load only the three distinct historical full candidates. No GPU work, no new rollouts and no final whole-cohort audit.",
+  "jobs": [
+    "point-button-2027",
+    "ant-2027",
+    "walker2d-2027"
+  ],
+  "current_archive_indexes": [
+    {
+      "origin": "tjucta-a100",
+      "job": "ant-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2027/1792472788609950652-35cfaf37f8f55bcfd62f7896bff9ffa18391e568e4dcf1fed5204747e5580c9e.json",
+      "latest_full_entries": [
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-13-12-07-14/checkpoints/latest_full.pt",
+          "sha256": "f9ec2440369101878e9c23c7e90bb308ae285645731b925d3cd4e1a2a01f1b94",
+          "bytes": 146457138,
+          "mtime_ns": 1792018148000000000,
+          "mode": 436
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/checkpoints/latest_full.pt",
+          "sha256": "b3477aac97103e2cf783cc71786c28e9e78771c85c17f13fea980840b68abaa9",
+          "bytes": 146457781,
+          "mtime_ns": 1792038867000000000,
+          "mode": 436
+        },
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "c7ecfb8afc8008d9d94aa6e914a5cb4bea68c231e9dc7b3a9572f816cb627c82",
+          "bytes": 146457900,
+          "mtime_ns": 1787149412000000000,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    },
+    {
+      "origin": "tjucta-a100",
+      "job": "point-button-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-button-2027/1792472795716720509-b1040cc367bf5c8611868feb4c58ca2a9af6a6466fa0d2825112334975d48e68.json",
+      "latest_full_entries": [
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-13-15-56-08/checkpoints/latest_full.pt",
+          "sha256": "d0294e5494192edda39b16f4f690a498c60fcfea7c29b581652c6e7a977e39ec",
+          "bytes": 294865842,
+          "mtime_ns": 1792125812488329500,
+          "mode": 436
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-16-15-25-25/checkpoints/latest_full.pt",
+          "sha256": "60711cdf2ab1d3ae564dbe51e0d96e3f37dc55eb0643f85926a44ee6ab77c879",
+          "bytes": 294865906,
+          "mtime_ns": 1792181510334097000,
+          "mode": 436
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-19-15-25-21/checkpoints/latest_full.pt",
+          "sha256": "789d54c6ae4ec16504bc752895bbbf7c597143e42ee634cdf707fb8aeb6274bf",
+          "bytes": 294865004,
+          "mtime_ns": 1792464808413230300,
+          "mode": 436
+        },
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "0b03259925f703bd08d4ffd84e0e2f4527f70b281ecee42ef8b9968a51c44f4b",
+          "bytes": 294865004,
+          "mtime_ns": 1787146372000000000,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    },
+    {
+      "origin": "tjucta-a100",
+      "job": "walker2d-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2027/1792472801630906089-cb38f63f2d80ef17ced48212c1a5bdd88a00759bad2472026c0efba41b4e3fe1.json",
+      "latest_full_entries": [
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/checkpoints/latest_full.pt",
+          "sha256": "fb14aeeac8779f43e57d18698ba5fbc1e0a5e61edd8da78f32abfc2f742387eb",
+          "bytes": 110900773,
+          "mtime_ns": 1792004366000000000,
+          "mode": 436
+        },
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "1dd32f3447d208d3726f0ce72e2c02be5e092a6eae9ab4a9b4c8279f313af390",
+          "bytes": 110912364,
+          "mtime_ns": 1787148318000000000,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    },
+    {
+      "origin": "4080",
+      "job": "ant-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/ant-2027/1792472809174685599-498182bc5731b44ead1a7cec4da78b0536650333339269bd5d1606b50ccc1683.json",
+      "latest_full_entries": [
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-13-12-07-14/checkpoints/latest_full.pt",
+          "sha256": "f9ec2440369101878e9c23c7e90bb308ae285645731b925d3cd4e1a2a01f1b94",
+          "bytes": 146457138,
+          "mtime_ns": 1792018148308908500,
+          "mode": 436
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/checkpoints/latest_full.pt",
+          "sha256": "b3477aac97103e2cf783cc71786c28e9e78771c85c17f13fea980840b68abaa9",
+          "bytes": 146457781,
+          "mtime_ns": 1792038867302180000,
+          "mode": 436
+        },
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "c7ecfb8afc8008d9d94aa6e914a5cb4bea68c231e9dc7b3a9572f816cb627c82",
+          "bytes": 146457900,
+          "mtime_ns": 1787149412216215000,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    },
+    {
+      "origin": "4080",
+      "job": "point-button-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/point-button-2027/1792472829731075054-9f062a8578b3c72dc41673f7ca6e0144cfd542a3e26d0c251321d3e7f9db13d6.json",
+      "latest_full_entries": [
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "0b03259925f703bd08d4ffd84e0e2f4527f70b281ecee42ef8b9968a51c44f4b",
+          "bytes": 294865004,
+          "mtime_ns": 1787146372517804500,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    },
+    {
+      "origin": "4080",
+      "job": "walker2d-2027",
+      "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/walker2d-2027/1792472835214783521-6845e7c9736046cdffec2e1c4f292bc9cb6a44c311b36d19eccd99cee8cc44b4.json",
+      "latest_full_entries": [
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/checkpoints/latest_full.pt",
+          "sha256": "fb14aeeac8779f43e57d18698ba5fbc1e0a5e61edd8da78f32abfc2f742387eb",
+          "bytes": 110900773,
+          "mtime_ns": 1792004366145596400,
+          "mode": 436
+        },
+        {
+          "path": "training/recovered-history/checkpoints/latest_full.pt",
+          "sha256": "1dd32f3447d208d3726f0ce72e2c02be5e092a6eae9ab4a9b4c8279f313af390",
+          "bytes": 110912364,
+          "mtime_ns": 1787148318560384500,
+          "mode": 420
+        }
+      ],
+      "any_original_August_run_paths": false
+    }
+  ],
+  "historical_full_candidate_metadata": [
+    {
+      "job": "ant-2027",
+      "archive_blob_sha256": "c7ecfb8afc8008d9d94aa6e914a5cb4bea68c231e9dc7b3a9572f816cb627c82",
+      "historical_relative_path": "training/recovered-history/checkpoints/latest_full.pt",
+      "format": "star-checkpoint",
+      "counters": {
+        "env_steps": 4150000,
+        "updates": 4148000,
+        "actor_updates": 2071000,
+        "reward_critic_updates": 8296000,
+        "utd_carry": 0,
+        "violations": 805,
+        "cumulative_training_cost": 805
+      },
+      "config_resume_fields": {},
+      "has_replay_rng_optimizers": true
+    },
+    {
+      "job": "point-button-2027",
+      "archive_blob_sha256": "0b03259925f703bd08d4ffd84e0e2f4527f70b281ecee42ef8b9968a51c44f4b",
+      "historical_relative_path": "training/recovered-history/checkpoints/latest_full.pt",
+      "format": "star-checkpoint",
+      "counters": {
+        "env_steps": 4100000,
+        "updates": 4098000,
+        "actor_updates": 2046000,
+        "reward_critic_updates": 8196000,
+        "utd_carry": 0,
+        "violations": 97655,
+        "cumulative_training_cost": 97655
+      },
+      "config_resume_fields": {},
+      "has_replay_rng_optimizers": true
+    },
+    {
+      "job": "walker2d-2027",
+      "archive_blob_sha256": "1dd32f3447d208d3726f0ce72e2c02be5e092a6eae9ab4a9b4c8279f313af390",
+      "historical_relative_path": "training/recovered-history/checkpoints/latest_full.pt",
+      "format": "star-checkpoint",
+      "counters": {
+        "env_steps": 4150000,
+        "updates": 4148000,
+        "actor_updates": 2071000,
+        "reward_critic_updates": 8296000,
+        "utd_carry": 0,
+        "violations": 3358,
+        "cumulative_training_cost": 3358
+      },
+      "config_resume_fields": {},
+      "has_replay_rng_optimizers": true
+    }
+  ],
+  "findings": [
+    {
+      "job": "ant-2027",
+      "candidate_steps": 4150000,
+      "required_earlier_milestones": [
+        500000,
+        2000000
+      ],
+      "candidate_later_than_all_earlier_required_milestones": true,
+      "genuine_original_parent_identity_established": false,
+      "late_candidate_must_not_be_aliased_as_earlier_parent": true,
+      "old_original_date_paths_not_in_these_latest_manifests": true
+    },
+    {
+      "job": "point-button-2027",
+      "candidate_steps": 4100000,
+      "required_earlier_milestones": [
+        1000000,
+        4000000
+      ],
+      "candidate_later_than_all_earlier_required_milestones": true,
+      "genuine_original_parent_identity_established": false,
+      "late_candidate_must_not_be_aliased_as_earlier_parent": true,
+      "old_original_date_paths_not_in_these_latest_manifests": true
+    },
+    {
+      "job": "walker2d-2027",
+      "candidate_steps": 4150000,
+      "required_earlier_milestones": [
+        500000,
+        2000000
+      ],
+      "candidate_later_than_all_earlier_required_milestones": true,
+      "genuine_original_parent_identity_established": false,
+      "late_candidate_must_not_be_aliased_as_earlier_parent": true,
+      "old_original_date_paths_not_in_these_latest_manifests": true
+    }
+  ],
+  "metadata_read_limit": "Only payload counters, presence of replay/RNG/optimizers, and filtered top-level config dictionaries were inspected. Empty config_resume_fields does not prove absence of all embedded resume metadata.",
+  "absence_claim_limit": "Latest manifest-path absence and later candidate counters are not proof of permanent loss. Older manifests, other archive indexes or original external backup material may still require targeted lookup. None of the three references is marked resolved or permanently lost here.",
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "active_training_interrupted": false,
+  "archive_files_changed": false,
+  "no_original_parent_path_rebound_or_fake_checkpoint_created": true,
+  "three_cells_restart_authorized": false,
+  "full_scientific_audit_executed": false,
+  "point_goal2027_research_not_repeated": true
+}

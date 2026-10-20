@@ -1,8 +1,21 @@
 {
-  "kind": "engineering_readiness_guard_not_scientific_audit",
-  "native_1321_throughput_supports_expansion": false,
-  "prior_four_formal_MPS_handoffs_completed": false,
-  "reason": "Wave2 Button2028 still waiting for fresh full checkpoint. Future13:21 ordinary observation has not happened; do not launch third wave yet.",
+  "kind": "engineering_throughput_readiness_not_scientific_audit",
+  "native_1321_throughput_supports_expansion": true,
+  "prior_four_formal_MPS_handoffs_completed": true,
+  "evidence_file": "capacity_progress_observation_20261020_1321.json",
+  "ordinary_observed_at_unix": 1792473698.0265114,
+  "native_four_MPS_clients": [
+    215058,
+    232496,
+    244831,
+    257493
+  ],
+  "whole_5080_Point_last_epoch_FPS_sum": 75.76443433761597,
+  "previous_1151_FPS_sum": 54.27428197860718,
+  "ratio_not_causal_or_sustained_whole_training_guarantee": 1.3959546137796788,
   "additional_standalone_benchmarks_or_evaluation_rollouts": 0,
+  "new_training_cells": 0,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
   "controller_started": false
 }

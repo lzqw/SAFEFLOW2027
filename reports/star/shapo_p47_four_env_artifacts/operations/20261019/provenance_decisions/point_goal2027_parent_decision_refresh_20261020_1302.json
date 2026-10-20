@@ -1,0 +1,17 @@
+{
+  "kind": "pending_user_authority_refresh_not_restart_authorization",
+  "requested_at_utc": "2026-10-20 05:02:36 UTC",
+  "job": "point-goal-2027",
+  "original_parent_path": "/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-17-00-57-07/checkpoints/latest_full.pt",
+  "reason": "Original historical full parent from retired3090 has not been recovered. Later full checkpoints must not be substituted for the original parent.",
+  "decision_basis_is_missing_provenance_not_evaluation_performance": true,
+  "proposed_action_if_explicitly_approved": "Only this same seed2027, same frozen configuration, from0 to10000000; preserve all old native evidence and results, including poor outcomes; other19 planned cells unchanged.",
+  "approved": false,
+  "answer_received": false,
+  "current_training_continues_until_explicit_direction": true,
+  "other19_training_cells_unchanged": true,
+  "no_replacement_or_new_training_started": true,
+  "strict_final_provenance_gate_not_waived": true,
+  "goal_continuation_wrappers_are_not_user_approval": true,
+  "async_question_accepted_by_product": true
+}
