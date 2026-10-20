@@ -4,6 +4,7 @@ import argparse
 import datetime
 import hashlib
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -246,6 +247,160 @@ def _verify_direct_5080_recovery(prefix, controller_filename, balancing, job,
              'known_additional_physical_steps': moved['known_repeated_environment_steps_lower_bound'],
              'known_additional_physical_training_cost': moved['known_additional_training_cost_lower_bound'],
              'unknown_unlogged_tail_not_zero': True}]
+
+
+def terminal_cpu_gpu_recovery_accounting():
+    """Account the native terminal tail, not all accepted work of the CPU run."""
+    prefix = 'point-goal-2028_cpu_failure_gpu_recovery_20261020_0830'
+    raw_path = BASE / (prefix + '_state.json')
+    if not raw_path.exists():
+        return []
+    launcher = BASE / 'recover_goal2028_cpu_failure_to_5080_20261020_0830.py'
+    finalizer = BASE / 'complete_goal2028_cpu_failure_gpu_recovery_20261020_0830.py'
+    raw = json.loads(raw_path.read_text())
+    receipt = json.loads((BASE / (prefix + '_receipt.json')).read_text())
+    proof = json.loads((BASE / (prefix + '_completion_state.json')).read_text())
+    manifest = json.loads((BASE / (prefix + '_host_manifest.json')).read_text())
+    plan = receipt['plan']
+    q = plan['rebalance_qualification']
+    previous = json.loads((BASE / q['previous_observation_file']).read_text())
+    current = json.loads((BASE / q['current_observation_file']).read_text())
+    observation = json.loads((BASE / proof['independent_target_launch_observation_file']).read_text())
+    target = next(w for w in observation['hosts']['5080']['training']
+                  if w['job'] == 'point-goal-2028')
+    identity = proof['target_identity']
+    stop, summary = receipt['native_hard_stop'], receipt['native_training_summary']
+    cohort = sorted(q['owned_gpu_pids'])
+    launcher_sha = hashlib.sha256(launcher.read_bytes()).hexdigest()
+    finalizer_sha = hashlib.sha256(finalizer.read_bytes()).hexdigest()
+    if (launcher_sha != 'dee09ea813b961829887ab740c6cce80cf327927d0f36192d6af2f4c0469a5fb'
+            or finalizer_sha != 'd5a67ccc1a436fbef4929cc1c1efbd5fb4047859670fcd438f7b431f796151d2'
+            or raw.get('phase') != 'needs_inspection_after_cpu_failure_gpu_recovery_error'
+            or raw.get('target_launch_requested') is not True
+            or 'scp' not in raw.get('error', '')
+            or proof.get('prior_launch_controller_error') != raw['error']
+            or proof.get('raw_launch_controller_error_record_sha256') != hashlib.sha256(raw_path.read_bytes()).hexdigest()
+            or proof.get('completion_controller_sha256') != finalizer_sha
+            or manifest.get('launch_controller_sha256') != launcher_sha
+            or manifest.get('completion_controller_sha256') != finalizer_sha
+            or plan.get('kind') != 'terminal_cpu_numerical_failure_recovery_within_owned_gpu_cohort'
+            or plan.get('job') != 'point-goal-2028' or plan.get('seed') != 2028
+            or plan.get('source_commit') != SOURCE or plan.get('total_training_budget') != 10000000
+            or plan.get('scientific_parameters_changed') is not False
+            or plan.get('additional_evaluation') is not False or plan.get('additional_experiment_cells') != 0
+            or plan.get('source_host') != '4080' or plan.get('target_host') != '5080'
+            or plan.get('target_physical_gpu_index') != 0
+            or len(cohort) != 7 or q.get('spare_compute_claimed') is not False
+            or q.get('expected_concurrency_after_recovery') != 8
+            or q.get('foreign_pids') or current['observed_at_unix'] != q['observed_at_unix']
+            or current['observed_at_unix'] - previous['observed_at_unix'] < 1800
+            or any(w['job'] == 'point-goal-2028' for w in current['hosts']['4080']['training'])
+            or stop.get('category') != 'nan_or_inf'
+            or stop.get('reason') != 'non-finite actor gradient norm'
+            or summary.get('status') != 'hard_stopped' or summary.get('seed') != 2028
+            or stop.get('env_steps') != summary.get('env_steps')
+            or receipt.get('failed_at_steps') != stop['env_steps']
+            or receipt.get('failed_summary_cumulative_training_cost') != summary.get('cumulative_training_cost')
+            or not all(math.isfinite(value) for value in
+                       (receipt['resume_cumulative_training_cost'], summary['cumulative_training_cost'],
+                        receipt['known_additional_training_cost']))
+            or not 0 < receipt['resume_steps'] < receipt['failed_at_steps'] < 10000000
+            or not 0 <= receipt['known_repeated_environment_steps'] < 50000
+            or receipt['known_repeated_environment_steps'] != receipt['failed_at_steps'] - receipt['resume_steps']
+            or receipt['known_additional_training_cost'] != summary['cumulative_training_cost'] - receipt['resume_cumulative_training_cost']
+            or receipt['known_additional_training_cost'] < 0
+            or proof.get('phase') != 'recovery_completed_first_gpu_epoch_verified'
+            or any(proof.get(key) is not True for key in
+                   ('host_copy_error_resolved', 'target_process_not_restarted',
+                    'host_native_evidence_and_full_input_preserved', 'failed_cpu_not_restarted',
+                    'failed_source_remains_terminal', 'source_canonical_path_vacated'))
+            or not proof.get('failed_source_archive', '').startswith('/home/carla/SAFEFLOW2027_4080/recovery_backups/retired_cpu_workers/')
+            or not receipt['resume_steps'] + 5000 <= proof.get('first_verified_target_steps', -1) <= 10000000
+            or proof.get('first_verified_target_csv') != target.get('progress_csv')
+            or target.get('boot_id') != plan.get('expected_target_boot_id')
+            or any(identity.get(key) != target.get(key) for key in ('pid', 'start_ticks', 'device'))
+            or identity.get('device') != 'cuda:0' or identity.get('cuda_visible_devices') != '0'
+            or proof.get('target_gpu_uuid_verified') != q['uuid']):
+        raise ValueError('Terminal PointGoal2028 CPU-to-GPU recovery/accounting unproven')
+    failed = next(w for w in previous['hosts']['4080']['training'] if w['job'] == 'point-goal-2028')
+    if any(failed.get(key) != plan['failed_source_identity'].get(key)
+           for key in ('pid', 'start_ticks', 'boot_id', 'device')):
+        raise ValueError('Failed CPU worker identity differs from native previous observation')
+    for frame in (previous, current):
+        host = frame['hosts']['5080']
+        gpu = next(g for g in host['gpus'] if g['index'] == 0)
+        if (gpu['uuid'] != q['uuid'] or gpu['foreign_pids'] or gpu['free_mib'] < 8192
+                or sorted(p['pid'] for p in gpu['processes'] if p['role'] == 'safeflow') != cohort
+                or sorted(w['pid'] for w in host['training'] if w['device'] == 'cuda:0') != cohort
+                or any(w['boot_id'] != plan['expected_target_boot_id'] for w in host['training'])):
+            raise ValueError('Owned target cohort changed before terminal CPU recovery')
+    for value in (receipt, proof):
+        if (value.get('job') != 'point-goal-2028' or value.get('source_commit') != SOURCE
+                or value.get('controller_sha256') != launcher_sha
+                or value.get('source_host') != '4080' or value.get('target_host') != '5080'
+                or value.get('scientific_parameters_changed') is not False
+                or value.get('additional_evaluation') is not False or value.get('total_training_budget') != 10000000
+                or value.get('full_replay_and_rng_present') is not True
+                or value.get('source_exit_code') != 1 or value.get('source_workers_absent') is not True
+                or value.get('model_parameter_finiteness_verified') is not True
+                or value.get('this_failure_tail_has_native_exact_counters') is not True
+                or value.get('older_unknown_historical_tails_not_assumed_zero') is not True
+                or any(value.get(k) != receipt[k] for k in
+                       ('checkpoint_sha256', 'resume_steps', 'resume_cumulative_training_cost',
+                        'known_repeated_environment_steps', 'known_additional_training_cost'))
+                or value['runtime_change'].get('from_device') != 'cpu'
+                or value['runtime_change'].get('to_device') != 'cuda:0'
+                or value['runtime_change'].get('from_torch') != '2.7.1+cu118'
+                or value['runtime_change'].get('to_torch') != '2.7.1+cu128'
+                or value['runtime_change'].get('cuda_build_changed') is not True
+                or value['runtime_change'].get('bitwise_equivalence_claimed') is not False):
+            raise ValueError('Frozen protocol or terminal-tail receipt differs')
+    for c in (receipt['target_capacity_before_copy'], proof['target_capacity_at_launch']):
+        if (c.get('uuid') != q['uuid'] or c.get('physical_gpu_index') != 0
+                or c.get('free_mib', 0) < 8192 or c.get('foreign_gpu_processes') != 0
+                or sorted(c.get('owned_gpu_pids', [])) != cohort or c.get('utilization_percent', 101) > 100
+                or c.get('cpu_affinity_count', 0) < 32 or c.get('load_1m', 1e9) >= .5 * c.get('cpu_affinity_count', 0)
+                or c.get('memory_available_bytes', 0) < 8 * 1024**3
+                or c.get('project_free_bytes', 0) < 5 * 1024**3
+                or c.get('cpu_idle_fraction', -1) < .4 or c.get('cpu_idle_sample_seconds', 0) < 1
+                or c.get('cpu_quota_scope') != 'observer_tmux_and_existing_target_gpu_workers'
+                or sorted(c.get('cpu_quota_checked_gpu_pids', [])) != cohort
+                or c.get('cpu_quota_checked_tmux_server_pid', 0) <= 0
+                or 'minimum_cpu_quota_cores_or_null' not in c
+                or (c['minimum_cpu_quota_cores_or_null'] is not None and c['minimum_cpu_quota_cores_or_null'] < 16)):
+            raise ValueError('Terminal CPU recovery resource proof differs')
+    helper = BASE / plan['capacity_helper_filename']
+    if hashlib.sha256(helper.read_bytes()).hexdigest() != plan['capacity_helper_sha256']:
+        raise ValueError('Engineering capacity helper source differs')
+    expected_files = {f['relative_path']: f for f in receipt['source_artifacts']}
+    if (expected_files[receipt['relative_checkpoint']]['sha256'] != receipt['checkpoint_sha256']
+            or manifest.get('source_input_sha256') != receipt['checkpoint_sha256']):
+        raise ValueError('Retained full input identity differs')
+    if len(manifest['files']) != len(expected_files) or manifest.get('raw_native_bytes_preserved') is not True:
+        raise ValueError('Raw failure evidence inventory differs')
+    for item in manifest['files']:
+        expected_file = expected_files[item['relative_path']]
+        path = Path(item['host_path'])
+        if (item['sha256'] != expected_file['sha256'] or item['bytes'] != expected_file['bytes']
+                or path.stat().st_size != item['bytes'] or hashlib.sha256(path.read_bytes()).hexdigest() != item['sha256']):
+            raise ValueError('Retained raw failure artifact differs: ' + item['relative_path'])
+    host_files = {item['relative_path']: Path(item['host_path']) for item in manifest['files']}
+    failed_run = plan['failed_source_run_relative']
+    if (json.loads(host_files[failed_run + '/artifacts/engineering_hard_stop.json'].read_text()) != stop
+            or json.loads(host_files[failed_run + '/artifacts/training_summary.json'].read_text()) != summary
+            or host_files['exit_code.txt'].read_text().strip() != '1'):
+        raise ValueError('Native terminal counter evidence differs from receipt')
+    launched_gpu = next(g for g in observation['hosts']['5080']['gpus'] if g['index'] == 0)
+    if (launched_gpu['uuid'] != q['uuid']
+            or not any(p['pid'] == identity['pid'] and p['role'] == 'safeflow'
+                       for p in launched_gpu['processes'])):
+        raise ValueError('Independent native GPU identity proof differs')
+    return [{'job': 'point-goal-2028', 'plan': plan, 'receipt': receipt,
+             'raw_launch_error_record': raw, 'completed_recovery': proof, 'host_manifest': manifest,
+             'known_additional_physical_steps': receipt['known_repeated_environment_steps'],
+             'known_additional_physical_training_cost': receipt['known_additional_training_cost'],
+             'native_exact_failed_tail_not_entire_cpu_run': True,
+             'other_unknown_historical_tails_not_zero': True}]
 
 
 def annotate_recovery(target):
@@ -897,6 +1052,7 @@ def annotate_recovery(target):
             'known_additional_physical_training_cost': moved['known_additional_training_cost_lower_bound'],
             'unknown_unlogged_tail_not_zero': True})
     direct_5080_handoffs = direct_5080_recovery_accounting()
+    terminal_cpu_gpu_recoveries = terminal_cpu_gpu_recovery_accounting()
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
     marker = b'<!-- known-recovery-accounting-v1 -->'
@@ -908,9 +1064,9 @@ def annotate_recovery(target):
         'audited_report_before_annotation_sha256': hashlib.sha256(original).hexdigest(),
         'raw_metrics_modified': False,
         'accounting_scope': 'known discarded tails and measured failed-runtime work; not an exhaustive ledger of historical attempts',
-        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs),
+        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries),
         'known_discarded_training_cost_is_lower_bound': True,
-        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs),
+        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries),
         'known_repeated_environment_steps_is_lower_bound': True,
         'reported_training_cost_basis': 'accepted checkpoint lineage',
         'interpretation': 'Physically incurred training cost is at least accepted-lineage cost plus 539 for point-button-2029, plus 2 for ant-2027, and plus 75 for point-button-2031. Other historical discarded tails are not reconstructed here.',
@@ -955,6 +1111,7 @@ def annotate_recovery(target):
     ledger['recoveries'].extend(failed_cpu_runtime_attempts)
     ledger['recoveries'].extend(a100_return_handoffs)
     ledger['recoveries'].extend(direct_5080_handoffs)
+    ledger['recoveries'].extend(terminal_cpu_gpu_recoveries)
     if cuda_recoveries:
         ledger['interpretation'] += (' The observed CUDA-interruption tails add '
             '14 cost units for ant-2031, 17 for walker2d-2031, and 722 for '
@@ -1216,6 +1373,22 @@ def annotate_recovery(target):
             f'The known repeated tail is at least {item["known_additional_physical_steps"]:,} '
             f'steps and {item["known_additional_physical_training_cost"]:,.0f} '
             'training-cost units; other unlogged work remains unknown, not zero.\n'
+        )
+    for item in terminal_cpu_gpu_recoveries:
+        r = item['receipt']
+        disclosure += (
+            f'\n{r["job"]} hit the existing non-finite actor-gradient engineering guard '
+            f'on CPU at{r["failed_at_steps"]:,} steps. Recovery retained the exact '
+            f'full replay/RNG input at{r["resume_steps"]:,} steps and continued on '
+            'the owned RTX5080 GPU cohort, without changing the algorithm or10M budget. '
+            'The CPU run was already terminal; no other project was paused. '
+            'The native terminal counters establish a repeated tail of '
+            f'{item["known_additional_physical_steps"]:,} steps and '
+            f'{item["known_additional_physical_training_cost"]:,.0f} training-cost units, '
+            'not the entire accepted CPU run. Original logs, summary, full input and '
+            'hashes were retained. A local evidence-transfer filename error was '
+            'resolved without restarting the GPU actor; a new GPU epoch was verified. '
+            'CPU2.7.1+cu118 changed to GPU2.7.1+cu128; bitwise equivalence is not claimed.\n'
         )
     disclosure += (
         '\nThe combined known recovery ledger is a lower bound of '

@@ -1,0 +1,66 @@
+{
+  "job": "point-goal-2028",
+  "source_input_sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62",
+  "files": [
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt",
+      "sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62",
+      "bytes": 243203173,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/engineering_hard_stop.json",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/engineering_hard_stop.json",
+      "sha256": "77dd0ea5b7b0548ba53afb65e96ccbd9e61afbba55b8af92f336004ad63c2d4c",
+      "bytes": 123,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/engineering_hard_stop.json"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/training_summary.json",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/training_summary.json",
+      "sha256": "5792f9f81f976d034cae3edfeb35024a4a986a5371219207f49a304a80398f21",
+      "bytes": 4094,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/training_summary.json"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/progress.csv",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/progress.csv",
+      "sha256": "3c4ca5eeac45e1d76075dfa421af2b89354cdda6cc841c976234f20b18dd35b1",
+      "bytes": 81299,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/progress.csv"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/config.json",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/config.json",
+      "sha256": "0f00f4039e6d976f8e327bf940d8adf09470122391c22d2467318c8f748e4d02",
+      "bytes": 10361,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/config.json"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/run_manifest.json",
+      "relative_path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/run_manifest.json",
+      "sha256": "04064b3b3aeaec7aa00dc1f9a368b0eff5aeba0341d5533e1344cd977dcb553d",
+      "bytes": 6295,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/artifacts/run_manifest.json"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/train_4080_gpu_cpu_rebalance_20261019_2330.log",
+      "relative_path": "train_4080_gpu_cpu_rebalance_20261019_2330.log",
+      "sha256": "bab057c637481d6cc94964b96f9906f9d2bd5fb82f6e1db41f78536afc7a8cca",
+      "bytes": 458277,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/train_4080_gpu_cpu_rebalance_20261019_2330.log"
+    },
+    {
+      "source_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/exit_code.txt",
+      "relative_path": "exit_code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2,
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/exit_code.txt"
+    }
+  ],
+  "raw_native_bytes_preserved": true,
+  "launch_controller_sha256": "dee09ea813b961829887ab740c6cce80cf327927d0f36192d6af2f4c0469a5fb",
+  "completion_controller_sha256": "d5a67ccc1a436fbef4929cc1c1efbd5fb4047859670fcd438f7b431f796151d2",
+  "updated_at_unix": 1792456348.9567134
+}

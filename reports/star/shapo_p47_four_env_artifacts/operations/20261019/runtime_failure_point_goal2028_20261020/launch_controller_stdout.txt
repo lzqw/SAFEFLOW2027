@@ -1,0 +1,15 @@
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_plan.json", "phase": null, "updated_at_unix": 1792456039.9510715}
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_state.json", "phase": "verifying_terminal_source_and_full_input", "updated_at_unix": 1792456039.951309}
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_state.json", "phase": "copying_terminal_source", "updated_at_unix": 1792456041.434093}
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_receipt.json", "phase": "copying_terminal_source", "updated_at_unix": 1792456160.783404}
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_state.json", "phase": "gpu_target_starting_failed_cpu_not_restarted", "updated_at_unix": 1792456163.942219}
+protocol error: filename does not match request
+{"file": "point-goal-2028_cpu_failure_gpu_recovery_20261020_0830_state.json", "phase": "needs_inspection_after_cpu_failure_gpu_recovery_error", "updated_at_unix": 1792456164.2074497}
+Traceback (most recent call last):
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/recover_goal2028_cpu_failure_to_5080_20261020_0830.py", line 270, in <module>
+    main()
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/recover_goal2028_cpu_failure_to_5080_20261020_0830.py", line 215, in main
+    subprocess.run(['scp', '-q', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12',
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['scp', '-q', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', "4080:'/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt'", '/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/failed_runtime_attempts/point-goal-2028/cpu_failure_gpu_recovery_20261020_0830/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt']' returned non-zero exit status 1.
