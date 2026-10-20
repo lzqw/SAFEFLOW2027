@@ -1,0 +1,63 @@
+{
+  "kind": "prepared_engineering_controller_not_authorized_to_start_by_readiness",
+  "prepared_at": "2026-10-20T12:58:06+08:00",
+  "controller": "handoff_point2030_MPS_wave3_5080_20261020.py",
+  "controller_sha256": "8dd5f072b2bbd0f8e7565458ff48d78ef835ead19288d5ec0c84230252880631",
+  "accounting_module": "mps_wave3_recovery_accounting_20261020.py",
+  "accounting_module_sha256": "8a9106984f49e9b29e0c6f08548f971a05b53062fb9fc6fddb23c34c63b7d823",
+  "prepared_bootstrap": {
+    "path": "mps_training_bootstrap_20261020.py",
+    "sha256": "e2152f91622afd2a12ce7ba8555ef70e523d92cefce6ad8a53a5525eaec9e6c0"
+  },
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "workers_at_ordinary_observation": [
+    {
+      "job": "point-goal-2030",
+      "pid": 166944,
+      "start_ticks": 7489225,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 4035000,
+      "last_epoch_fps": 7.155431270599365,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-06-24-08/progress.csv",
+      "progress_age_seconds": 282.8144180774689,
+      "logged_step_delta": 15000,
+      "observation_interval_seconds": 1800.884327173233,
+      "observed_logged_steps_per_second": 8.329241236467876
+    },
+    {
+      "job": "point-button-2030",
+      "pid": 144563,
+      "start_ticks": 6771290,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 5120000,
+      "last_epoch_fps": 7.073977947235107,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2030/training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/progress.csv",
+      "progress_age_seconds": 583.6629185676575,
+      "logged_step_delta": 10000,
+      "observation_interval_seconds": 1800.884327173233,
+      "observed_logged_steps_per_second": 5.552827490978585
+    }
+  ],
+  "observation_file": "capacity_progress_observation_20261020_1251.json",
+  "selection_basis": "Existing Point2030 cells; ordering only by remaining budget/native speed, not scientific outcome.",
+  "prior_controller_must_finish": "safeflow-point2028-mps-wave2-5080-20261020.service",
+  "required_completed_prior_handoffs": 4,
+  "required_next_native_observation": "2026-10-20T13:21:37+08:00",
+  "new_training_cells": 0,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "reuse_only_existing_private_MPS_server": true,
+  "minimum_checkpoint_freshness_policy": "At most5000 logged steps since a genuine50k full snapshot; keep old worker paused until a new5k target epoch, preserve host/4T/source input copies.",
+  "ready_to_start": false,
+  "controller_started": false,
+  "strict_final_accounting_publisher_updated_to_include_wave3_module": true
+}

@@ -3,7 +3,7 @@
   "superseded_by": "training_status_20261020_1251.json",
   "latest_completed_engineering_transition": "point-goal-2028_mps_wave2_5080_20261020_state.json",
   "newer_engineering_runtime": "mps_point2028_wave2_5080_20261020_progress_1246.json",
-  "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
+  "newer_engineering_preparation": "mps_point2030_wave3_5080_20261020_preparation.json",
   "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1251.json for the12:51 ordinary counters:18 logical cells,10 GPU and8 CPU, all advanced versus12:21. Goal2028 also completed its MPS handoff and first3.205M epoch; old PID186026 was retired, and genuine full input3.2M/cost59343 remains preserved on source, host and4T. Three verified MPS clients now share our existing5080 server. Button2028 remains default CUDA waiting for a fresh full checkpoint. The8 Point5080 FPS snapshot sum rose from54.2743 at11:51 to67.5892 at12:51; this is observational, not a sustained or causal whole-training guarantee. Six available Point4M native results and same-seed1M context are under partial_milestones/point_4M_available6_20261020: Button cost/CVaR declines accompany lower return/success, while Goal results are heterogeneous. They are not final five-seed cohorts, and Goal2027 historical parent provenance remains missing. A100 foreign jobs remain active; no A100 relocation occurred. Full budgets, recovery accounting and scientific gates remain unchanged; no final audit is claimed.",
   "newest_intermediate_scientific_result": "../../partial_milestones/point_4M_available6_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
