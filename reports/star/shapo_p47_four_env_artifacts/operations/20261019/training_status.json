@@ -5,14 +5,14 @@
   "new_read_only_4080_CPU_capacity_evidence": "4080_CPU_placement_preflight_20261020_2051.json",
   "latest_completed_engineering_backup": "post_local_reboot_backup_recovered_20261020_2033.json",
   "schema_version": 1,
-  "superseded_by": "training_status_20261021_0030_Walker_inflight.json",
+  "superseded_by": "training_status_20261021_0047_walker2d-2028_handoff_completed.json",
   "latest_Goal2027_existing_cell_MPS_continuation_plan": "point_goal2027_5080_MPS_balanced_20261020.json",
   "latest_GPU1_capacity_qualification": "walkers_GPU1_regular_qualification_20261020_1623.json",
   "latest_queued_engineering_transition": "A100_shared_GPU_capacity_hold_20261020_1734.json",
-  "latest_completed_engineering_transition": "ant-2029_cpu_5080_to_4080_20261020_completed_state_20261020_2323.json",
+  "latest_completed_engineering_transition": "walker2d-2028_walker_cpu_5080_to_4080_20261021_completed_state_20261021_0047.json",
   "newer_engineering_runtime": "training_status_20261020_2204_handoff_completed.json",
   "newer_engineering_preparation": "cpu_to_mps_ant2030_a100_gpu0_20261020_preparation.json",
-  "snapshot_notice": "Historical17:27 payload below. Latest later engineering transition:training_status_20261021_0030_Walker_inflight.json. Existing Walker2028 is being continued from a genuine2.2M full replay/RNG/optimizer checkpoint. All original5M budgets and scientific settings remain. Source held in memory; target first5k epoch and source retirement are not yet established. No candidate policy selection or extra evaluation occurs. First placement uses live CPU capacity, not an unmeasured Walker speed guarantee. Second placement requires actual target Walker FPS improvement. This is runtime-only engineering admission, not a scientific metric gate. Early2027 original full-parent gaps remain unresolved.",
+  "snapshot_notice": "Historical17:27 payload below. Latest completed existing-cell CPU placement:training_status_20261021_0047_walker2d-2028_handoff_completed.json. Existing Walker cell continued from a genuine full checkpoint with replay/RNG/optimizers. A new real5k CPU epoch and native process identity preceded source retirement and recoverable archival. This is engineering evidence only, not a simultaneous all-host frame, sustained speed guarantee, cohort accounting pass, or final scientific certification. All150M budgets and final provenance gates remain; legacy2027 missing original full parents are not repaired.",
   "newest_intermediate_scientific_result": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
@@ -234,6 +234,5 @@
     "other_2027_legacy_parent_references": "PointButton, Ant, and Walker2d older parent references remain unresolved. Their preserved 4.10M/4.15M descendant full checkpoints cannot substitute for the referenced older inputs.",
     "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
   },
-  "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json",
-  "latest_inflight_engineering_transition": "walker2d-2028_walker_cpu_5080_to_4080_20261021_inflight_state_20261021_0030.json"
+  "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json"
 }
