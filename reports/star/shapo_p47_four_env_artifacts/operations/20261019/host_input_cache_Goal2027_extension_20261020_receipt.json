@@ -1,0 +1,25 @@
+{
+  "kind": "one_verified_duplicate_added_to_existing_restorable_RAM_cache",
+  "updated_at_unix": 1792500998.1652737,
+  "new_entry": {
+    "job": "point-goal-2027",
+    "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+    "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+    "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+    "sha256": "1c5057b0e5782e436f721cdf323d6e36bb2ff5356dc7b1866eb93a94e499beed"
+  },
+  "previous_manifest_preserved_at": "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/host_full_input_cache_manifest_initial6_before_Goal2027_extension_20261020.json",
+  "previous_manifest_sha256": "be73d09965e83609be921f149f4668620fc379358fbf56ad59b4e54c73deebc0",
+  "updated_manifest_sha256": "ba1d9aaa512c5aca3e6dfdf45e4f01d982ce06c471b08a7264e0923adf19bff4",
+  "original_six_entry_offload_receipt_not_overwritten": true,
+  "new_durable_copy_proof": {
+    "verified_durable4T_copies": 1
+  },
+  "current_restore_manifest_entries": 7,
+  "duplicate_host_regular_bytes_released": 243205868,
+  "host_free_bytes_after": 3005259776,
+  "canonical_host_path_preserved_as_same_SHA_cache_link": true,
+  "unmodified_existing_ensure_cache_restores_all_seven_after_reboot": true,
+  "source_originals_and_4T_original_not_removed": true,
+  "scientific_byte_checks_or_gates_waived": false
+}
