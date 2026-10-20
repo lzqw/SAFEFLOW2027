@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "superseded_by": "training_status_20261020_1321.json",
-  "latest_completed_engineering_transition": "point-button-2028_mps_wave2_5080_20261020_state.json",
-  "newer_engineering_runtime": "mps_point2030_wave3_5080_20261020_started.json",
-  "newer_engineering_preparation": "mps_point2030_wave3_5080_20261020_preparation.json",
+  "latest_completed_engineering_transition": "point-goal-2030_mps_wave3_5080_20261020_state.json",
+  "newer_engineering_runtime": "mps_point2030_wave3_5080_20261020_progress_1333.json",
+  "newer_engineering_preparation": "mps_point2031_wave4_5080_20261020_preparation.json",
   "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1321.json for the13:21 ordinary counters:18 logical cells,10 GPU and8 CPU, all advanced since12:51. The first two MPS waves completed four first target epochs; Button2028 reached2.955M/cost70265 and only then retired original PID155591. Four verified clients share our existing5080 MPS server, with original segments and genuine full inputs preserved on source, host and4T. The8 Point5080 FPS snapshot sum is75.7644 versus54.2743 at11:51: observational asynchronous epochs, not a sustained or causal whole-training guarantee. A separate third-wave controller started at13:23 for the two existing Point2030 cells; Goal2030 paused at genuine full4.05M/cost65270 for input preservation, while no completed third-wave epoch is yet claimed here. Six available Point4M native results remain intermediate, not final five-seed cohorts or matched-C0 evidence. Missing Goal2027 original parent and other unresolved legacy references remain disclosed; no fresh2027 restart has user approval. Full budgets and strict scientific gates remain unchanged. No final audit or full training completion is claimed.",
   "newest_intermediate_scientific_result": "../../partial_milestones/point_4M_available6_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",

@@ -13,6 +13,7 @@ from pathlib import Path
 from mps_recovery_accounting_20261020 import verify_existing_MPS_transitions
 from mps_wave2_recovery_accounting_20261020 import verify_wave2_MPS_transitions
 from mps_wave3_recovery_accounting_20261020 import verify_wave3_MPS_transitions
+from mps_wave4_recovery_accounting_20261020 import verify_wave4_MPS_transitions
 from a100_rebalance_accounting_20261020 import verify_A100_return_balances
 
 BASE = Path(__file__).resolve().parent
@@ -1164,7 +1165,8 @@ def annotate_recovery(target):
     cross_host_cpu_handoffs = cross_host_cpu_handoff_accounting()
     mps_execution_handoffs = (verify_existing_MPS_transitions(BASE)
                               + verify_wave2_MPS_transitions(BASE)
-                              + verify_wave3_MPS_transitions(BASE))
+                              + verify_wave3_MPS_transitions(BASE)
+                              + verify_wave4_MPS_transitions(BASE))
     new_a100_return_balances = verify_A100_return_balances(BASE)
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()

@@ -1,0 +1,49 @@
+{
+  "kind": "native_engineering_launch_observation_not_completed_handoff",
+  "observed_at": "2026-10-20T13:30:44+08:00",
+  "job": "point-goal-2030",
+  "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+  "workers": [
+    {
+      "pid": 166944,
+      "start_ticks": 7489225,
+      "state": "T",
+      "device": "cuda:0",
+      "cuda_visible_devices": "0"
+    },
+    {
+      "pid": 263255,
+      "start_ticks": 10022207,
+      "state": "R",
+      "device": "cuda:0",
+      "cuda_visible_devices": "0"
+    }
+  ],
+  "MPS_target_connection": {
+    "client_pid": 263255,
+    "server_pid": 215213,
+    "client_pids": [
+      215058,
+      263255,
+      257493,
+      244831,
+      232496
+    ],
+    "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+    "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+    "connection_verified": true
+  },
+  "first_new_epoch_not_yet_claimed": true,
+  "genuine_full_input_steps": 4050000,
+  "genuine_full_input_cumulative_cost": 65270,
+  "genuine_full_input_sha256": "0629c217dd52a592c29a61d48ac23fe1bf3c762193cb009526b3fb8f30ecd81d",
+  "host_and_separate4T_input_preservation_completed": true,
+  "old_source_retired": false,
+  "source_paused_until_new_first_epoch": true,
+  "existing_private_server_reused": true,
+  "new_experiment_cells": 0,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "final_scientific_audit_executed": false
+}
