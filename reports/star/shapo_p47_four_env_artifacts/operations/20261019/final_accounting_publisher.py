@@ -10,6 +10,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from mps_recovery_accounting_20261020 import verify_existing_MPS_transitions
+
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
 WORKTREE = Path('/home/lzqw/SAFEFLOW2027_delivery/recovered-final-20261013')
@@ -1157,6 +1159,7 @@ def annotate_recovery(target):
     direct_5080_handoffs = direct_5080_recovery_accounting()
     terminal_cpu_gpu_recoveries = terminal_cpu_gpu_recovery_accounting()
     cross_host_cpu_handoffs = cross_host_cpu_handoff_accounting()
+    mps_execution_handoffs = verify_existing_MPS_transitions(BASE)
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
     marker = b'<!-- known-recovery-accounting-v1 -->'
@@ -1168,9 +1171,9 @@ def annotate_recovery(target):
         'audited_report_before_annotation_sha256': hashlib.sha256(original).hexdigest(),
         'raw_metrics_modified': False,
         'accounting_scope': 'known discarded tails and measured failed-runtime work; not an exhaustive ledger of historical attempts',
-        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries + cross_host_cpu_handoffs),
+        'known_discarded_training_cost': 616 + (753 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_training_cost'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries + cross_host_cpu_handoffs + mps_execution_handoffs),
         'known_discarded_training_cost_is_lower_bound': True,
-        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries + cross_host_cpu_handoffs),
+        'known_repeated_environment_steps': 82065 + (111548 if cuda_manifest is not None else 0) + sum(r['known_additional_physical_steps'] for r in reboot_recoveries + gpu_5080_handoffs + cpu_5080_recoveries + near_cpu_rebalances + same_host_gpu_rebalances + shared_cpu_rebalances + a100_return_handoffs + failed_cpu_runtime_attempts + direct_5080_handoffs + terminal_cpu_gpu_recoveries + cross_host_cpu_handoffs + mps_execution_handoffs),
         'known_repeated_environment_steps_is_lower_bound': True,
         'reported_training_cost_basis': 'accepted checkpoint lineage',
         'interpretation': 'Physically incurred training cost is at least accepted-lineage cost plus 539 for point-button-2029, plus 2 for ant-2027, and plus 75 for point-button-2031. Other historical discarded tails are not reconstructed here.',
@@ -1217,6 +1220,7 @@ def annotate_recovery(target):
     ledger['recoveries'].extend(direct_5080_handoffs)
     ledger['recoveries'].extend(terminal_cpu_gpu_recoveries)
     ledger['recoveries'].extend(cross_host_cpu_handoffs)
+    ledger['recoveries'].extend(mps_execution_handoffs)
     if cuda_recoveries:
         ledger['interpretation'] += (' The observed CUDA-interruption tails add '
             '14 cost units for ant-2031, 17 for walker2d-2031, and 722 for '
@@ -1508,6 +1512,23 @@ def annotate_recovery(target):
             f'steps and{item["known_additional_physical_training_cost"]:,.0f} '
             'training-cost units; the unlogged tail remains unknown, not zero. '
             'Bitwise equivalence across CPU hardware is not claimed.\n'
+        )
+    for item in mps_execution_handoffs:
+        r = item['completion_state']
+        disclosure += (
+            f'\n{r["job"]} resumed the unchanged10M-step experiment on the same5080 GPU '
+            'using a private NVIDIA MPS execution backend. The genuine full input '
+            f'at{r["resume_steps"]:,} steps, replay/RNG/optimizer state, and old training '
+            'segments were preserved. The original default-CUDA worker was held in '
+            'memory until a new5000-step epoch and live MPS-client/server/GPU-UUID '
+            'connection were proven, then retired. No GPU compute-mode change or '
+            'other-project pause was used. The numerical learner and configuration '
+            'were unchanged; bitwise equivalence is not claimed. '
+            f'The known repeated tail is at least{item["known_additional_physical_steps"]:,} '
+            f'steps and{item["known_additional_physical_training_cost"]:,.0f} '
+            'training-cost units; the unlogged tail remains unknown, not zero. '
+            'Short update-only performance tests are not scientific evaluations or '
+            'a guarantee of equal whole-training acceleration.\n'
         )
     disclosure += (
         '\nThe combined known recovery ledger is a lower bound of '

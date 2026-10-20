@@ -1,0 +1,103 @@
+{
+  "kind": "engineering_checkpoint_transition_contract_not_started",
+  "host": "5080",
+  "project": "/home/autodrive/LZQW/SAFEFLOW2027",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+  "expected_boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+  "workers_at_ordinary_observation": [
+    {
+      "job": "point-goal-2029",
+      "pid": 28355,
+      "start_ticks": 1928788,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 2340000,
+      "last_epoch_fps": 7.149630069732666,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/progress.csv",
+      "progress_age_seconds": 399.1308505535126,
+      "logged_step_delta": 10000,
+      "observation_interval_seconds": 1801.225379228592,
+      "observed_logged_steps_per_second": 5.551776093829349
+    },
+    {
+      "job": "point-button-2029",
+      "pid": 31275,
+      "start_ticks": 1959385,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 2170000,
+      "last_epoch_fps": 7.508795738220215,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-15-02-27/progress.csv",
+      "progress_age_seconds": 14.404229640960693,
+      "logged_step_delta": 15000,
+      "observation_interval_seconds": 1801.225379228592,
+      "observed_logged_steps_per_second": 8.327664140744023
+    }
+  ],
+  "formal_transition_started": false,
+  "MPS_daemon_started": false,
+  "source_trainers_paused_or_restarted": false,
+  "training_configuration_and_budgets_changed": false,
+  "budgets_per_cell": 10000000,
+  "input_requirements": {
+    "native_checkpoint_name": "latest_full.pt",
+    "must_remain_at_original_same_run_training_path": true,
+    "full_replay_rng_optimizers_and_finite_model_required": true,
+    "wait_for_fresh_checkpoint_if_logged_source_ahead_by_more_than_steps": 5000,
+    "immutable_input_copy_and_sha256_required_before_launch": true,
+    "host_and_4T_backups_must_preserve_genuine_full_input": true
+  },
+  "transition_requirements": {
+    "matching_pid_start_ticks_boot_config_before_any_signal": true,
+    "no_global_compute_mode_changes_or_unrelated_process_actions": true,
+    "pause_only_one_original_default_CUDA_worker_at_a_time": true,
+    "keep_original_paused_in_memory_until_new_native_epoch": true,
+    "same_container_keep_all_old_training_segments_at_original_paths": true,
+    "new_target_log_and_exit_marker_names_must_be_unique": true,
+    "require_new_native_5000_step_epoch_and_live_MPS_client_server_UUID_proof": true,
+    "retire_original_default_CUDA_worker_only_after_target_proof": true,
+    "archive_original_wrapper_exit_marker_before_target_canonical_marker_promotion": true,
+    "failed_target_absence_required_before_resuming_original_in_memory": true,
+    "do_not_SIGKILL_MPS_clients_or_quit_daemon_with_live_formal_clients": true
+  },
+  "accounting_requirements": {
+    "record_input_step_cost_hash_and_last_logged_source_step_cost": true,
+    "do_not_claim_unlogged_source_tail_zero": true,
+    "failed_target_work_if_original_resumes_is_separate_attempt_not_source_rollback": true,
+    "final_accounting_publisher_must_include_completed_and_aborted_transition_receipts": true,
+    "all_existing_scientific_gates_and_legacy_provenance_gaps_unchanged": true
+  },
+  "prepared_bootstrap": {
+    "filename": "mps_training_bootstrap_20261020.py",
+    "sha256": "e2152f91622afd2a12ce7ba8555ef70e523d92cefce6ad8a53a5525eaec9e6c0",
+    "same_frozen_train_script_via_runpy": true,
+    "synchronize_CUDA_on_natural_exception_or_graceful_SIGTERM_exit": true
+  },
+  "resource_observer": {
+    "filename": "watch_gpu_capacity.py",
+    "sha256": "447e89af1b8bbec78fdf705bdccb2d58858b2efbfcc9295c937a360382d9be18",
+    "verified_MPS_client_counting_implemented": true,
+    "syntax_checked_no_extra_remote_sampling": true,
+    "normal_schedule_preserved_after_monitor_only_restart": true
+  },
+  "remaining_before_actual_launch": [
+    "Implement and review identity-checked same-container handoff controller and rollback path.",
+    "Implement receipt accounting hook before introducing a new accepted runtime segment.",
+    "Use next ordinary observation for both complete P-core pilot epochs.",
+    "Revalidate live identities and GPU ownership at launch, not only from this saved observation."
+  ],
+  "performance_evidence_limits": {
+    "MPS_test_seconds_per_phase": 12,
+    "MPS_updates_only_ratio": 1.328833560616675,
+    "default_measurement_reused_within_minutes_not_simultaneous": true,
+    "full_training_acceleration_not_proven": true
+  },
+  "ordinary_observer_next_check_local": "2026-10-20T10:21:35+08:00"
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "engineering_preparation_not_a_training_or_scientific_completion_claim",
+  "prepared_local_time": "2026-10-20T10:11:25+08:00",
+  "selected_existing_cells": ["point-goal-2029", "point-button-2029"],
+  "new_experiment_cells": 0,
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "training_budgets_reduced": false,
+  "formal_MPS_conversion_started": false,
+  "formal_MPS_daemon_started": false,
+  "formal_trainers_paused_or_restarted_for_MPS": false,
+  "monitor_only_restart": {
+    "service": "safeflow-gpu-capacity-watch.service",
+    "MainPID": 206306,
+    "MPS_client_identity_server_and_GPU_UUID_accounting_implemented": true,
+    "unproven_MPS_accounting_disqualifies_spare_capacity": true,
+    "normal_half_hour_schedule_retained": true,
+    "previous_source_preserved": "watch_gpu_capacity.before_MPS_accounting_20261020.py"
+  },
+  "prepared_components": {
+    "same_container_controller": "handoff_point2029_MPS_5080_20261020.py",
+    "CUDA_synchronized_exit_bootstrap": "mps_training_bootstrap_20261020.py",
+    "bootstrap_copied_outside_frozen_training_code_on_5080": true,
+    "recovery_accounting_hook": "mps_recovery_accounting_20261020.py",
+    "final_publisher_hook_integrated_before_any_transition": true,
+    "local_python_syntax_checks_passed": true,
+    "no_existing_MPS_transition_records": true
+  },
+  "launch_guard": {
+    "required_file_not_yet_created": "mps_checkpoint_pilot_5080_20261020_launch_ready.json",
+    "wait_for_1021_ordinary_observation_and_two_complete_post_affinity_epochs": true,
+    "revalidate_live_identity_and_GPU_ownership_before_pausing_each_source": true,
+    "wait_for_fresh_50k_full_checkpoint_if_logged_rollback_exceeds_5000_steps": true,
+    "preserve_original_full_input_and_all_old_training_segments_at_original_paths": true,
+    "retain_original_worker_in_memory_until_new_5000_step_target_epoch_and_MPS_proof": true,
+    "resume_original_only_if_target_absence_is_proven": true,
+    "do_not_force_kill_MPS_clients_or_quit_daemon_with_formal_clients": true
+  },
+  "full_scientific_audit_executed": false,
+  "additional_evaluation_rollouts": 0,
+  "other_projects_paused": false,
+  "legacy_parent_provenance_gaps_not_waived": true,
+  "next_ordinary_observation_local": "2026-10-20T10:21:35+08:00"
+}

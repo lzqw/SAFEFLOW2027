@@ -109,6 +109,29 @@ def finite_number(value):
     number=float(value)
     return number if math.isfinite(number) else None
 training=[]
+mps_connections={}
+def mps_connection(pipe,pid):
+    if pipe not in mps_connections:
+        entry={'pipe_directory':pipe,'status':'unproven'}
+        try:
+            Path(pipe).resolve().relative_to(project/'operations')
+            env=dict(os.environ,CUDA_MPS_PIPE_DIRECTORY=pipe)
+            def control(command):
+                return subprocess.run(['nvidia-cuda-mps-control'],input=command+'\n',env=env,
+                    capture_output=True,text=True,check=True,timeout=8).stdout
+            servers=[int(v) for v in control('get_server_list').split() if v.isdigit()]
+            assert len(servers)==1
+            server=servers[0]
+            gpu=next(g for g in gpus if any(p['pid']==server for p in g['processes']))
+            clients=[int(v) for v in control('get_client_list '+str(server)).split() if v.isdigit()]
+            entry.update(status='observed',server_pid=server,client_pids=clients,gpu_uuid=gpu['uuid'])
+        except (OSError,ValueError,AssertionError,StopIteration,subprocess.SubprocessError) as error:
+            entry['error_type']=type(error).__name__
+        mps_connections[pipe]=entry
+    proof=dict(mps_connections[pipe])
+    if proof['status']=='observed' and pid not in proof['client_pids']:
+        proof.update(status='unproven',error_type='worker_not_in_server_client_list')
+    return proof
 run_root=project/'runs/shapo_p47_four_env/runs'
 boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 for cmdline in Path('/proc').glob('[0-9]*/cmdline'):
@@ -162,7 +185,27 @@ for cmdline in Path('/proc').glob('[0-9]*/cmdline'):
                 worker['last_epoch_fps']=finite_number(row['Time/FPS'])
     except (OSError,ValueError,csv.Error) as error:
         worker.update(progress_status='unknown',progress_error_type=type(error).__name__)
+    try:
+        env=dict(v.split(b'=',1) for v in (cmdline.parent/'environ').read_bytes().split(b'\0') if b'=' in v)
+        pipe=env.get(b'CUDA_MPS_PIPE_DIRECTORY',b'').decode()
+        if pipe and worker['device'].startswith('cuda'):
+            worker['cuda_execution_backend']='mps_requested'
+            worker['mps_connection']=mps_connection(pipe,worker['pid'])
+            if worker['mps_connection']['status']=='observed':
+                worker['cuda_execution_backend']='mps_verified'
+                worker['mps_gpu_uuid_verified']=worker['mps_connection']['gpu_uuid']
+    except (OSError,ValueError) as error:
+        worker['execution_backend_observation_error']=type(error).__name__
     training.append(worker)
+for gpu in gpus:
+    clients=[w for w in training if w.get('mps_gpu_uuid_verified')==gpu['uuid']]
+    server_pids={w['mps_connection']['server_pid'] for w in clients}
+    for process in gpu['processes']:
+        if process['pid'] in server_pids:
+            process['raw_role_before_MPS_proof']=process['role']
+            process['role']='safeflow_mps_server'
+    gpu['safeflow_mps_client_pids']=[w['pid'] for w in clients]
+    gpu['MPS_accounting_unproven']=any(w.get('cuda_execution_backend')=='mps_requested' for w in training)
 print(json.dumps({'observed_at_unix':time.time(),'gpus':gpus,'storage':storage,
                   'training':training}))
 '''
@@ -250,9 +293,10 @@ def cycle(previous):
                             if g['uuid'] == gpu['uuid']), {})
                 foreign = sorted(p['pid'] for p in gpu['processes']
                                  if p['role'] == 'foreign_or_unknown')
-                own = sum(p['role'] == 'safeflow' for p in gpu['processes'])
+                own_os_processes = sum(p['role'] in ('safeflow','safeflow_mps_server') for p in gpu['processes'])
+                own = sum(p['role'] == 'safeflow' for p in gpu['processes']) + len(gpu.get('safeflow_mps_client_pids', []))
                 reserve = 8192 if gpu['total_mib'] <= 24576 else 16384
-                eligible = (not foreign and gpu['free_mib'] >= reserve
+                eligible = (not foreign and not gpu.get('MPS_accounting_unproven', False) and gpu['free_mib'] >= reserve
                             and gpu['utilization_percent'] <= MAX_REBALANCE_GPU_UTILIZATION_PERCENT)
                 recent = now - old_host.get('observed_at_unix', 0) < 3 * POLL_SECONDS
                 since = old.get('candidate_since_unix') if recent else None
@@ -261,7 +305,8 @@ def cycle(previous):
                           else 'candidate_waiting_stability' if eligible
                           else 'occupied_or_insufficient_headroom')
                 gpu.update(status=status, foreign_pids=foreign,
-                           safeflow_gpu_processes=own, reserve_mib=reserve,
+                           safeflow_gpu_processes=own, safeflow_gpu_os_processes=own_os_processes,
+                           safeflow_gpu_processes_semantics='verified_training_clients_count_MPS_server_not_double_counted', reserve_mib=reserve,
                            max_rebalance_utilization_percent=MAX_REBALANCE_GPU_UTILIZATION_PERCENT,
                            candidate_since_unix=since)
                 signature = [status, foreign, own]

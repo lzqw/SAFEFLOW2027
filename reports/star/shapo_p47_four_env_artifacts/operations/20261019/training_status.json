@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "superseded_by": "training_status_20261020_0951.json",
+  "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
   "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0951.json for all18 workers in the ordinary09:51 observation, all with positive same-identity progress since09:21. Two Point2029 GPU workers have a reversible CPU P-core affinity pilot; Button2029's first complete post-change epoch is12.9% faster than its preceding four-epoch mean, not a sustained guarantee. Disposable zero-environment-step MPS testing improved update-only throughput32.9%; no formal MPS conversion or overall training speed claim is made. Full budgets, failure accounting and scientific gates remain unchanged; no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
