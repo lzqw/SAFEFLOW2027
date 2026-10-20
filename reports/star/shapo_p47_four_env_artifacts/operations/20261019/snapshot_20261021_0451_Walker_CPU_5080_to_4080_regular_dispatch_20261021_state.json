@@ -1,0 +1,32 @@
+{
+  "phase": "waiting_on_regular_capacity_and_fresh_full",
+  "pending": [
+    "walker2d-2029"
+  ],
+  "completed": [
+    {
+      "job": "walker2d-2028",
+      "state_file": "walker2d-2028_walker_cpu_5080_to_4080_20261021_state.json",
+      "completed_at_unix": 1792514853.5148137
+    }
+  ],
+  "last_attempted_frame": {
+    "walker2d-2028": 1792513311.424769
+  },
+  "controller_sha256": "cee36b8ce494be1ab4092df0a8cb2e5618e17b7ff8c7b69ff3750c7006166bdd",
+  "accounting_module_sha256": "9155f94480487560bd3ed2fad9282768835841c70bc1e7ce36e1894694367c83",
+  "initial_CPU_qualification": "Walker_CPU_5080_to_4080_20261021_preparation.json",
+  "first_move_requires_live_CPU_capacity_not_cross_environment_speed_assumption": true,
+  "second_move_requires_observed_same_environment_FPS_gain_ratio": 1.2,
+  "runtime_admission_not_scientific_policy_selection": true,
+  "source_originals_preserved": true,
+  "scientific_parameters_changed": false,
+  "new_experiment_cells": 0,
+  "other_projects_paused": false,
+  "full_training_budget_each": 5000000,
+  "ordinary_poll_seconds": 1800,
+  "local_pid": 32455,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "updated_at_unix": 1792514853.5148153,
+  "attempted_job": "walker2d-2028"
+}
