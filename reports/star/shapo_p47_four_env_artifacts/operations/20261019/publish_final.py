@@ -23,6 +23,7 @@ from crosshost_button2027_MPS_accounting_20261020 import verify_Button2027_cross
 from cpu_5080_to_4080_recovery_accounting_20261020 import verify_Ant_CPU_5080_to_4080
 from walker_cpu_5080_to_4080_recovery_accounting_20261021 import verify_Walker_CPU_5080_to_4080
 from retired_GPU_archive_relocation_accounting_20261021 import verify_retired_GPU_archive_relocation
+from point_5080_to_4080_MPS_accounting_20261021 import verify_Point_5080_to_4080_MPS
 
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
@@ -1179,7 +1180,8 @@ def annotate_recovery(target):
                               + verify_A100_Walker_CPU_to_MPS_transitions(BASE))
     new_a100_return_balances = verify_A100_return_balances(BASE)
     new_crosshost_mps_balances = (verify_Goal2027_crosshost_MPS(BASE)
-                                 + verify_Button2027_crosshost_MPS(BASE))
+                                 + verify_Button2027_crosshost_MPS(BASE)
+                                 + verify_Point_5080_to_4080_MPS(BASE))
     new_crosshost_cpu_balances = (verify_Ant_CPU_5080_to_4080(BASE)
                                   + verify_Walker_CPU_5080_to_4080(BASE))
     storage_relocations = verify_retired_GPU_archive_relocation(BASE)

@@ -1,0 +1,14 @@
+[Unit]
+Description=Continue existing Point cells on newly stable 4080 GPU capacity
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013
+ExecStart=/usr/bin/python3 -u /home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/dispatch_existing_Points_to_idle4080_GPU_20261021.py
+Restart=no
+StandardOutput=append:/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/Point_5080_to_4080_MPS_regular_dispatch_20261021.log
+StandardError=append:/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/Point_5080_to_4080_MPS_regular_dispatch_20261021.log
+
+[Install]
+WantedBy=default.target

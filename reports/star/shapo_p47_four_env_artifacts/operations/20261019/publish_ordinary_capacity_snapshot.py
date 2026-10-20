@@ -36,6 +36,8 @@ def new_steady_runtime_recoveries():
                'completed_first_MPS_epoch_source_retired', 'handoff_ant2030_A100_GPU0_MPS_20261020.py'),
               ('walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json',
                'completed_first_MPS_epoch_source_retired', 'handoff_walkers_A100_GPU1_MPS_20261020.py')]
+    specs += [(path.name, 'completed_first_MPS_epoch_source_retired', 'handoff_Point_5080_to_4080_MPS_20261021.py')
+              for path in sorted(BASE.glob('point-*_point_5080_to_4080_MPS_20261021_state.json'))]
     for name, phase, controller in specs:
         path = BASE / name
         if not path.exists():
