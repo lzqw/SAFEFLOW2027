@@ -9,14 +9,14 @@
   "new_read_only_4080_CPU_capacity_evidence": "4080_CPU_placement_preflight_20261020_2051.json",
   "latest_completed_engineering_backup": "post_local_reboot_backup_recovered_20261020_2033.json",
   "schema_version": 1,
-  "superseded_by": "training_status_20261021_0621_point-button-2029_4080_GPU_inflight.json",
+  "superseded_by": "training_status_20261021_0628_point-button-2029_4080_GPU_completed.json",
   "latest_Goal2027_existing_cell_MPS_continuation_plan": "point_goal2027_5080_MPS_balanced_20261020.json",
   "latest_GPU1_capacity_qualification": "walkers_GPU1_regular_qualification_20261020_1623.json",
   "latest_queued_engineering_transition": "A100_shared_GPU_capacity_hold_20261020_1734.json",
-  "latest_completed_engineering_transition": "point-button-2030_point_5080_to_4080_MPS_20261021_completed_state_20261021_0614.json",
+  "latest_completed_engineering_transition": "point-button-2029_point_5080_to_4080_MPS_20261021_completed_state_20261021_0628.json",
   "newer_engineering_runtime": "training_status_20261020_2204_handoff_completed.json",
   "newer_engineering_preparation": "cpu_to_mps_ant2030_a100_gpu0_20261020_preparation.json",
-  "snapshot_notice": "Historical17:27 payload below; latest:training_status_20261021_0621_point-button-2029_4080_GPU_inflight.json. Engineering continuation of an existing full-budget Point cell, not a new seed or scientific result. Inflight source/target work must not be counted as a completed handoff; target first5k epoch and MPS identity precede source retirement. Native all-host frame remains a separate historical census. Final20-cell scientific/provenance gates are unchanged.",
+  "snapshot_notice": "Historical17:27 payload below; latest:training_status_20261021_0628_point-button-2029_4080_GPU_completed.json. Engineering continuation of an existing full-budget Point cell, not a new seed or scientific result. Inflight source/target work must not be counted as a completed handoff; target first5k epoch and MPS identity precede source retirement. Native all-host frame remains a separate historical census. Final20-cell scientific/provenance gates are unchanged.",
   "newest_intermediate_scientific_result": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
@@ -239,13 +239,12 @@
     "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
   },
   "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json",
-  "recent_host_input_cache_extension": "host_input_cache_point-button-2030_20261021_0614_receipt.json",
+  "recent_host_input_cache_extension": "host_input_cache_point-button-2029_20261021_0628_receipt.json",
   "completed_A100_transfer_coordinator_retirement": "A100_completed_transfer_coordinator_retirement_20261021.json",
   "latest_available_Point_4M_learning_curve_context": "../../partial_milestones/point_4M_available7_20261021/summary.json",
   "archive_background_priority_deployment": "archive_background_priority_deployment_20261021_receipt.json",
   "completed_Walker_CPU_group_accounting": "Walker_CPU_completed_group_accounting_check_20261021_0536.json",
   "completed_Walker_CPU_coordinator_retirement": "Walker_CPU_completed_coordinator_retirement_20261021.json",
   "new_Point_GPU_resource_dispatch_prepared_not_completed": "Point_4080_GPU_spare_capacity_preparation_20261021.json",
-  "Point_GPU_source_checkpoint_timing_update": "Point_4080_GPU_checkpoint_timing_update_20261021.json",
-  "latest_inflight_engineering_transition": "point-button-2029_point_5080_to_4080_MPS_20261021_inflight_state_20261021_0621.json"
+  "Point_GPU_source_checkpoint_timing_update": "Point_4080_GPU_checkpoint_timing_update_20261021.json"
 }

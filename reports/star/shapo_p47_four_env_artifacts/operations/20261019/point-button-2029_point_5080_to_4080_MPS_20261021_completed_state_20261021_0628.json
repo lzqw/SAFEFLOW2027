@@ -1,0 +1,348 @@
+{
+  "job": "point-button-2029",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "regular_frame_file": "Point_4080_GPU_placement_regular_frame_1792533119.json",
+  "regular_frame_at_unix": 1792533119.0758545,
+  "regular_gpu_status": "available_for_rebalance",
+  "candidate_since_unix": 1792531318.4312239,
+  "expected_source_identity": {
+    "job": "point-button-2029",
+    "pid": 215058,
+    "start_ticks": 9157056,
+    "state": "R",
+    "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+    "device": "cuda:0",
+    "progress_status": "observed",
+    "steps": 3130000,
+    "last_epoch_fps": 15.99767017364502,
+    "progress_selection": "active_worker_logger_fd",
+    "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/progress.csv",
+    "progress_age_seconds": 193.90607142448425,
+    "cuda_execution_backend": "mps_verified",
+    "mps_connection": {
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "status": "observed",
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        361827,
+        336857,
+        289336,
+        284803,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5"
+    },
+    "mps_gpu_uuid_verified": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+    "logged_step_delta": 30000,
+    "observation_interval_seconds": 1800.6705927848816,
+    "observed_logged_steps_per_second": 16.66045978659683
+  },
+  "controller_sha256": "a8e2e77447300b32391ded6ef18fb8d6e1b85150b142646e47c6fb8d1452c8df",
+  "accounting_module_sha256": "047bfc2baf5892d61f7beb93ccab6a3acb106b1a309bf7083f8c7078001fde22",
+  "accounting_hook_integrated_before_any_transition": true,
+  "updated_at_unix": 1792535332.7910995,
+  "plan": {
+    "job": "point-button-2029",
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "regular_frame_file": "Point_4080_GPU_placement_regular_frame_1792533119.json",
+    "regular_frame_at_unix": 1792533119.0758545,
+    "regular_gpu_status": "available_for_rebalance",
+    "candidate_since_unix": 1792531318.4312239,
+    "expected_source_identity": {
+      "job": "point-button-2029",
+      "pid": 215058,
+      "start_ticks": 9157056,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 3130000,
+      "last_epoch_fps": 15.99767017364502,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/progress.csv",
+      "progress_age_seconds": 193.90607142448425,
+      "cuda_execution_backend": "mps_verified",
+      "mps_connection": {
+        "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+        "status": "observed",
+        "server_pid": 215213,
+        "client_pids": [
+          215058,
+          361827,
+          336857,
+          289336,
+          284803,
+          273025,
+          263255,
+          257493,
+          244831,
+          232496
+        ],
+        "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5"
+      },
+      "mps_gpu_uuid_verified": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "logged_step_delta": 30000,
+      "observation_interval_seconds": 1800.6705927848816,
+      "observed_logged_steps_per_second": 16.66045978659683
+    },
+    "controller_sha256": "a8e2e77447300b32391ded6ef18fb8d6e1b85150b142646e47c6fb8d1452c8df",
+    "accounting_module_sha256": "047bfc2baf5892d61f7beb93ccab6a3acb106b1a309bf7083f8c7078001fde22",
+    "accounting_hook_integrated_before_any_transition": true,
+    "updated_at_unix": 1792534509.1294446
+  },
+  "seed": 2029,
+  "source_host": "5080",
+  "target_host": "4080",
+  "total_training_budget": 10000000,
+  "source_identity": {
+    "pid": 215058,
+    "start_ticks": 9157056,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "0",
+    "args": [
+      "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+      "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/resolved_formal_config.yaml",
+      "--seed",
+      "2029",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training",
+      "--result",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-15-02-27/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+  },
+  "source_MPS_proof": {
+    "client_pid": 215058,
+    "server_pid": 215213,
+    "client_pids": [
+      215058,
+      361827,
+      336857,
+      289336,
+      284803,
+      263255,
+      257493,
+      244831,
+      232496
+    ],
+    "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+    "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+    "connection_verified": true
+  },
+  "target_capacity_before_pause": {
+    "CPU": {
+      "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+      "cpu_affinity_count": 28,
+      "load_1m": 6.34765625,
+      "maximum_load_affinity_fraction": 0.5,
+      "actual_cpu_idle_fraction": 0.7722878625134264,
+      "cpu_idle_sample_seconds": 1.0001935859909281,
+      "memory_available_bytes": 54634405888,
+      "project_free_bytes": 408190328832,
+      "minimum_cpu_quota_cores_or_null": null,
+      "cpu_quota_scope": "observer_and_target_tmux_server_with_ancestors",
+      "cpu_quota_checked_tmux_server_pid": 1154,
+      "target_device": "cpu",
+      "target_cuda_visible_devices": "-1",
+      "GPU_capacity_not_claimed_or_used": true
+    },
+    "GPU": {
+      "uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+      "free_mib": 14877,
+      "utilization_percent": 22,
+      "compute_mode": "Default",
+      "foreign_gpu_processes": 0,
+      "MPS_server_pids": [
+        1394075
+      ],
+      "MPS_client_pids": [
+        1394013
+      ]
+    }
+  },
+  "phase": "completed_first_MPS_epoch_source_retired",
+  "scientific_parameters_changed": false,
+  "additional_evaluation": false,
+  "additional_experiment_cells": 0,
+  "other_projects_modified": false,
+  "runtime_change": {
+    "from_torch": "2.7.1+cu128",
+    "to_torch": "2.7.1+cu118",
+    "from_backend": "private_MPS",
+    "to_backend": "private_MPS",
+    "cuda_build_changed": true,
+    "bitwise_equivalence_claimed": false
+  },
+  "previous_target_container_preserved_at": "/home/carla/SAFEFLOW2027_4080/recovery_backups/retired_target_containers/point-button-2029_point_5080_to_4080_MPS_20261021_1792534514519075211",
+  "no_previous_target_files_deleted": true,
+  "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/checkpoints/latest_full.pt",
+  "relative_checkpoint": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/checkpoints/latest_full.pt",
+  "checkpoint_sha256": "788c1b3d699e4f247bf66206a0459319d792e282e62d112f389b538480446156",
+  "checkpoint_bytes": 294865906,
+  "resume_steps": 3150000,
+  "resume_cumulative_training_cost": 83961.0,
+  "full_replay_rng_optimizers_and_finite_state_verified": true,
+  "source_paused": false,
+  "source_retired": true,
+  "original_evidence_preserved": true,
+  "last_logged_source_steps": 3155000,
+  "last_logged_source_cost": 83974.0,
+  "known_repeated_environment_steps_lower_bound": 5000,
+  "known_additional_training_cost_lower_bound": 13.0,
+  "unknown_unlogged_source_tail_not_zero": true,
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2029/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "host_input_sha256": "788c1b3d699e4f247bf66206a0459319d792e282e62d112f389b538480446156",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2029/point_5080_to_4080_MPS_20261021/input/latest_full.pt",
+    "archive_input_sha256": "788c1b3d699e4f247bf66206a0459319d792e282e62d112f389b538480446156",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "target_capacity_at_launch": {
+    "CPU": {
+      "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+      "cpu_affinity_count": 28,
+      "load_1m": 7.32080078125,
+      "maximum_load_affinity_fraction": 0.5,
+      "actual_cpu_idle_fraction": 0.7264252420222302,
+      "cpu_idle_sample_seconds": 1.0002888099988922,
+      "memory_available_bytes": 54451908608,
+      "project_free_bytes": 406952210432,
+      "minimum_cpu_quota_cores_or_null": null,
+      "cpu_quota_scope": "observer_and_target_tmux_server_with_ancestors",
+      "cpu_quota_checked_tmux_server_pid": 1154,
+      "target_device": "cpu",
+      "target_cuda_visible_devices": "-1",
+      "GPU_capacity_not_claimed_or_used": true
+    },
+    "GPU": {
+      "uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+      "free_mib": 14877,
+      "utilization_percent": 23,
+      "compute_mode": "Default",
+      "foreign_gpu_processes": 0,
+      "MPS_server_pids": [
+        1394075
+      ],
+      "MPS_client_pids": [
+        1394013
+      ]
+    }
+  },
+  "target_daemon": {
+    "pipe": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+    "created_new_private_daemon": false,
+    "compute_mode_unchanged": true
+  },
+  "target_capacity_immediately_before_client_launch": {
+    "CPU": {
+      "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+      "cpu_affinity_count": 28,
+      "load_1m": 7.69580078125,
+      "maximum_load_affinity_fraction": 0.5,
+      "actual_cpu_idle_fraction": 0.7329036877909059,
+      "cpu_idle_sample_seconds": 1.0002312409924343,
+      "memory_available_bytes": 54417502208,
+      "project_free_bytes": 406867943424,
+      "minimum_cpu_quota_cores_or_null": null,
+      "cpu_quota_scope": "observer_and_target_tmux_server_with_ancestors",
+      "cpu_quota_checked_tmux_server_pid": 1154,
+      "target_device": "cpu",
+      "target_cuda_visible_devices": "-1",
+      "GPU_capacity_not_claimed_or_used": true
+    },
+    "GPU": {
+      "uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+      "free_mib": 14877,
+      "utilization_percent": 20,
+      "compute_mode": "Default",
+      "foreign_gpu_processes": 0,
+      "MPS_server_pids": [
+        1394075
+      ],
+      "MPS_client_pids": [
+        1394013
+      ]
+    }
+  },
+  "target_session": "safeflow_point_button_2029_point_5080_to_4080_MPS_20261021",
+  "target_identity": {
+    "pid": 1405139,
+    "start_ticks": 16099990,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "0",
+    "args": [
+      "/home/carla/SAFEFLOW2027_4080/env/bin/python",
+      "/home/carla/SAFEFLOW2027_4080/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2029/resolved_formal_config.yaml",
+      "--seed",
+      "2029",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2029/training",
+      "--result",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2029/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026"
+  },
+  "target_MPS_proof": {
+    "client_pid": 1405139,
+    "server_pid": 1394075,
+    "client_pids": [
+      1394013,
+      1405139
+    ],
+    "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+    "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+    "connection_verified": true
+  },
+  "target_first_epoch_native_observation": "point-button-2029_point_5080_to_4080_MPS_20261021_first_epoch_native_observation.json",
+  "first_verified_target_steps": 3155000,
+  "first_verified_target_fps": 21.741657257080078,
+  "first_verified_target_cost": 83981.0,
+  "source_wrapper_exit_code": 143,
+  "retired_source_archive": "/home/autodrive/LZQW/SAFEFLOW2027/recovery_backups/retired_gpu_workers/point-button-2029_point_5080_to_4080_MPS_20261021_1792535332269309171",
+  "retired_source_full_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/recovery_backups/retired_gpu_workers/point-button-2029_point_5080_to_4080_MPS_20261021_1792535332269309171/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/checkpoints/latest_full.pt",
+  "retired_source_full_checkpoint_SHA_verified": true,
+  "source_canonical_path_vacated": true
+}
