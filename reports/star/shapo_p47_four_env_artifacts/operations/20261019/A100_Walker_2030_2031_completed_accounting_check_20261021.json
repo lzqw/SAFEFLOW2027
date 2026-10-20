@@ -1,0 +1,21 @@
+{
+  "kind": "completed_existing_A100_Walker_runtime_accounting_not_final_scientific_audit",
+  "checked_at_unix": 1792525005.6700628,
+  "completed_records_checked": 2,
+  "records": [
+    {
+      "job": "walker2d-2030",
+      "extra_steps_lower_bound": 5000,
+      "extra_cost_lower_bound": 7.0
+    },
+    {
+      "job": "walker2d-2031",
+      "extra_steps_lower_bound": 0,
+      "extra_cost_lower_bound": 0.0
+    }
+  ],
+  "accounting_module_sha256": "21756d9ada91872fd3beac24dbc13a6d7c87def515c7ce7981b6886f13d84979",
+  "additional_evaluation_rollouts": 0,
+  "full_final_scientific_audit": false,
+  "strict_final_matrix_requirements_waived": false
+}
