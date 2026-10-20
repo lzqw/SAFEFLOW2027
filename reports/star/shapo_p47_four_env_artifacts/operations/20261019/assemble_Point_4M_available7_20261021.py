@@ -41,6 +41,38 @@ def metrics(e):
                               'training_cumulative_cost', 'direction_geometry_high_risk_top_20_percent')}
 
 
+def current_interpretation_notes(records, previous_notes):
+    notes = list(previous_notes)
+    goals = [r for r in records if r['job'].startswith('point-goal')]
+    buttons = [r for r in records if r['job'].startswith('point-button')]
+    seeds = '/'.join(str(r['training_seed']) for r in goals)
+    successes = '/'.join(f"{100 * r['native_4M']['metrics']['success_rate']:g}%" for r in goals)
+    notes[0] = ('PointGoal4M success for available training seeds' + seeds + ' is' + successes
+                + '. This is not the complete five-seed final cohort. Seed2027 original-full-parent provenance remains unresolved.')
+    def span(rows):
+        values = [r['native_4M']['metrics']['direction_geometry_high_risk_top_20_percent']['normal_to_tangent_variance_ratio'] for r in rows]
+        return f'{min(values):.4f}-{max(values):.4f}'
+    notes[2] = ('High-risk20% normal-to-tangent variance ratios at4M span' + span(goals)
+                + ' for the available Goal seeds and' + span(buttons)
+                + ' for Button. These are diagnostic ranges, not a causal gain overC0 or a training/configuration gate.')
+    return notes
+
+
+def refresh_existing_notes():
+    # Update only scope-dependent descriptive text after adding a seed; keep all
+    # native bytes, recorded metrics, paired1M context and CSV unchanged.
+    s = read(OUT / 'summary.json')
+    assert s == read(CACHE / 'summary.json')
+    s['interpretation_limits'] = current_interpretation_notes(s['records'], s['interpretation_limits'])
+    for root in (CACHE, OUT):
+        temporary = root / 'summary.current_notes.tmp'
+        with temporary.open('x') as stream:
+            stream.write(json.dumps(s, indent=2) + '\n')
+        temporary.replace(root / 'summary.json')
+    print(json.dumps({'local_descriptive_notes_updated': True, 'native_metrics_or_CSV_changed': False,
+                      'network_calls_or_evaluation_rollouts': 0}))
+
+
 def protocol(e, milestone):
     assert e['milestone'] == milestone and e['episodes'] == 100
     assert e['base_seeds'] == list(range(32027, 32032)) and e['episodes_per_base_seed'] == 20
@@ -137,7 +169,7 @@ print(json.dumps({{'manifest':str(p),'manifest_sha256':manifest_sha,'manifest_cr
         'full_checkpoint_provenance_audit_executed': False, 'final_scientific_audit_executed': False,
         'final_scientific_cohort_report': False, 'full_scientific_objective_complete': False,
         'new_evaluation_archive_receipt': meta, 'records': records,
-        'interpretation_limits': previous['interpretation_limits'] + [
+        'interpretation_limits': current_interpretation_notes(records, previous['interpretation_limits']) + [
             'Available Goal n=4 and Button n=3, not complete five-training-seed final cohorts.',
             'Every reported native milestone uses100 fixed-schedule evaluation episodes, not extra independent training runs.',
             'No matched C0 comparison or causal superiority claim is made; all10M Point budgets remain.',

@@ -630,9 +630,9 @@
     }
   ],
   "interpretation_limits": [
-    "PointGoal4M success across available seeds2027/2030/2031 is0%/6%/9%; only2031 improves success versus its own1M result. PointGoal2027 also has a known original-parent gap and is not accepted as provenance-validated final evidence.",
+    "PointGoal4M success for available training seeds2027/2028/2030/2031 is0%/6%/6%/9%. This is not the complete five-seed final cohort. Seed2027 original-full-parent provenance remains unresolved.",
     "PointButton4M success across available seeds2027/2030/2031 is3%/4%/6%, versus6%/5%/9% at1M. All three reduce mean evaluation cost and CVaR20 but have lower return and success at4M. These are within-seed learning-curve changes, not baseline-relative gains.",
-    "High-risk20% normal-to-tangent variance ratios at4M remain roughly0.939\u20130.952 for Goal and0.967\u20130.983 for Button: risk-state anisotropy suppression is limited at these observed checkpoints.",
+    "High-risk20% normal-to-tangent variance ratios at4M span0.9393-0.9654 for the available Goal seeds and0.9665-0.9832 for Button. These are diagnostic ranges, not a causal gain overC0 or a training/configuration gate.",
     "No pooling of episodes as independent training seeds, no available-subset mean substituted for the planned five-seed cohort, and no matched C0 comparison at4M is claimed.",
     "Reported training cumulative costs follow native retained lineages; separately disclosed recovery/discarded work and unknown historical or unlogged tails are not silently treated as zero.",
     "Continue all frozen full budgets and preregistered evaluations. No scientific early stopping, weight search, added critic, candidate action mechanism, or new experiment cell is authorized by these intermediate results.",
