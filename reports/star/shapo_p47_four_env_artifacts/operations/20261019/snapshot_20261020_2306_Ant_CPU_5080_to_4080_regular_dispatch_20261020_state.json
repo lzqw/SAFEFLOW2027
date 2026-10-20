@@ -1,0 +1,30 @@
+{
+  "phase": "checking_one_existing_cell_before_bounded_handoff",
+  "pending": [
+    "ant-2029"
+  ],
+  "completed": [
+    {
+      "job": "ant-2028",
+      "state_file": "ant-2028_cpu_5080_to_4080_20261020_state.json",
+      "completed_at_unix": 1792508796.048714
+    }
+  ],
+  "last_attempted_frame": {
+    "ant-2028": 1792507909.5169923,
+    "ant-2029": 1792507909.5169923
+  },
+  "controller_sha256": "ba905780a68225885e9d7495fbf44b8247c13577bf1204df9a0336ddb5c4e239",
+  "accounting_module_sha256": "cde62a06288832047fbf80ef235b29ddf0d686a325ac94f089699bb01bf9340d",
+  "initial_CPU_qualification": "4080_CPU_placement_preflight_20261020_2051.json",
+  "source_originals_preserved": true,
+  "scientific_parameters_changed": false,
+  "new_experiment_cells": 0,
+  "other_projects_paused": false,
+  "full_training_budget_each": 5000000,
+  "ordinary_poll_seconds": 1800,
+  "local_pid": 5357,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "updated_at_unix": 1792508796.0495179,
+  "attempted_job": "ant-2029"
+}
