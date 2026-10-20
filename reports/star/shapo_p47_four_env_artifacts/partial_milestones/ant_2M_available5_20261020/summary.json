@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "kind": "five_available_native_Ant_2M_metrics_descriptive_intermediate_not_final_5M_report",
+  "assembled_at_utc": "2026-10-20 09:55:50 UTC",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "environment": "Ant-v4",
+  "milestone_steps": 2000000,
+  "total_training_budget_steps": 5000000,
+  "planned_training_seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "available_training_seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "newly_available_native_seed_results": [
+    2028,
+    2029
+  ],
+  "availability_basis": "All five fixed2M native evaluation files are now present in existing4T archives. Include every planned seed; do not select by evaluation performance.",
+  "native_evaluation_protocol_checked": {
+    "episodes_per_training_seed": 100,
+    "base_seed_count": 5,
+    "episodes_per_base_seed": 20,
+    "source_json_bytes_and_SHA_match_archive_rows": true,
+    "only_metrics_JSON_protocol_checks_not_full_checkpoint_or_final_matrix_audit": true
+  },
+  "descriptive_aggregation": {
+    "unit": "training seed",
+    "n": 5,
+    "spread": "sample standard deviation across five training-seed metrics, not episode-level SE",
+    "cost_cvar_20_aggregation": "Mean of the five native per-training-seed CVaR20 values, not a pooled500-episode CVaR.",
+    "metrics": {
+      "mean_return": {
+        "mean_across_five_training_seeds": 5635.325222928306,
+        "sd_across_five_training_seeds": 1203.3681442915615
+      },
+      "mean_cost": {
+        "mean_across_five_training_seeds": 0.154,
+        "sd_across_five_training_seeds": 0.16440802900101928
+      },
+      "cost_cvar_20": {
+        "mean_across_five_training_seeds": 0.53,
+        "sd_across_five_training_seeds": 0.325192250830182
+      },
+      "failure_rate": {
+        "mean_across_five_training_seeds": 0.154,
+        "sd_across_five_training_seeds": 0.16440802900101928
+      }
+    }
+  },
+  "records": [
+    {
+      "training_seed": 2027,
+      "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24",
+      "mean_return": 5823.825219453966,
+      "mean_cost": 0.11,
+      "cost_cvar_20": 0.55,
+      "failure_rate": 0.11,
+      "time_limit_rate": 0.89,
+      "training_cumulative_cost_at_2M": 509,
+      "high_risk_normal_tangent_variance_ratio": 0.7006186246871948,
+      "high_risk_dangerous_outward_velocity": 0.326953649520874,
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/ant-2027/evaluation_step_2000000.json",
+        "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24",
+        "bytes": 23294,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2027/1792489185329653410-ce27a165c03eb41d97d1b21031fe9fd9bf90eb33e141ad2a62784ff7e7ea741a.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24",
+        "source_relative_path": "training/recovered-history/artifacts/evaluation_step_2000000.json",
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2028,
+      "sha256": "9429144a433ccbbea9abef4375f43d05badcdf9b9f3f62acdd32a2c38c0cbaa5",
+      "mean_return": 4131.063295793756,
+      "mean_cost": 0.04,
+      "cost_cvar_20": 0.2,
+      "failure_rate": 0.04,
+      "time_limit_rate": 0.96,
+      "training_cumulative_cost_at_2M": 523,
+      "high_risk_normal_tangent_variance_ratio": 0.8928277492523193,
+      "high_risk_dangerous_outward_velocity": 0.15902209281921387,
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/ant-2028/evaluation_step_2000000.json",
+        "sha256": "9429144a433ccbbea9abef4375f43d05badcdf9b9f3f62acdd32a2c38c0cbaa5",
+        "bytes": 22738,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/ant-2028/1792489229291728500-fa62c15b5b7496254fb0dffe9a765bd436e5a86e77ae20743b7939cf6153a70f.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/9429144a433ccbbea9abef4375f43d05badcdf9b9f3f62acdd32a2c38c0cbaa5",
+        "source_relative_path": "training/STAR-{Ant-v4}/seed-2028-2026-10-19-15-39-27/artifacts/evaluation_step_2000000.json",
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2029,
+      "sha256": "acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4",
+      "mean_return": 6773.745987317242,
+      "mean_cost": 0.13,
+      "cost_cvar_20": 0.65,
+      "failure_rate": 0.13,
+      "time_limit_rate": 0.87,
+      "training_cumulative_cost_at_2M": 368,
+      "high_risk_normal_tangent_variance_ratio": 0.999658465385437,
+      "high_risk_dangerous_outward_velocity": 0.35318660736083984,
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/ant-2029/evaluation_step_2000000.json",
+        "sha256": "acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4",
+        "bytes": 23487,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/ant-2029/1792489316858147018-1b8828c14ee37c76ce1633dfbc5e8cdbbd6f4031d41e690386b5fcab7c8a46d8.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4",
+        "source_relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation_step_2000000.json",
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2030,
+      "sha256": "c407a1e55e01a3c66fc1c0b0e176a6008651e6e6bef4bd9d0eaaaddd86a8c2f6",
+      "mean_return": 6768.581031679571,
+      "mean_cost": 0.05,
+      "cost_cvar_20": 0.25,
+      "failure_rate": 0.05,
+      "time_limit_rate": 0.95,
+      "training_cumulative_cost_at_2M": 481,
+      "high_risk_normal_tangent_variance_ratio": 0.5031809210777283,
+      "high_risk_dangerous_outward_velocity": 0.24300891160964966,
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/ant-2030/evaluation_step_2000000.json",
+        "sha256": "c407a1e55e01a3c66fc1c0b0e176a6008651e6e6bef4bd9d0eaaaddd86a8c2f6",
+        "bytes": 22811,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2030/1792489188354488187-b97d7febf80b70f724850cbaa97a9440a5171d060336d6f70dcfee0ac28b0617.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/c407a1e55e01a3c66fc1c0b0e176a6008651e6e6bef4bd9d0eaaaddd86a8c2f6",
+        "source_relative_path": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json",
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2031,
+      "sha256": "85841f2d6e672f0db4d79a894f8db12c7e1cc080275a742ba0f9716f72292b46",
+      "mean_return": 4679.410580396993,
+      "mean_cost": 0.44,
+      "cost_cvar_20": 1,
+      "failure_rate": 0.44,
+      "time_limit_rate": 0.56,
+      "training_cumulative_cost_at_2M": 986,
+      "high_risk_normal_tangent_variance_ratio": 0.9851350784301758,
+      "high_risk_dangerous_outward_velocity": 0.3666929006576538,
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/ant-2031/evaluation_step_2000000.json",
+        "sha256": "85841f2d6e672f0db4d79a894f8db12c7e1cc080275a742ba0f9716f72292b46",
+        "bytes": 26091,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/ant-2031/1792489216709710342-a6b80dfc3a08d27e96c1b36bd30d74ecc1f82877ae4b2dfe0d7a806c36251dea.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/85841f2d6e672f0db4d79a894f8db12c7e1cc080275a742ba0f9716f72292b46",
+        "source_relative_path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_2000000.json",
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    }
+  ],
+  "notes": [
+    "This2M snapshot is not the5M final Ant cohort and does not establish full training completion.",
+    "No matched C0 control is supplied here; no causal safety or task-performance improvement claim is justified from these files alone.",
+    "Mean evaluation cost and failure rate are numerically equal in these five native files; retain the failure-rate column instead of treating low cost alone as sufficient task performance.",
+    "Seed2031 has44% failure at2M; the other four seeds have4%-13%. Return varies from4131.06 to6773.75, so cross-seed behavior is not uniform.",
+    "High-risk V_N/V_T ranges from0.5032 to0.9997. This is diagnostic variation, not a new training gate or evidence of a causal anisotropy benefit.",
+    "The native training_cumulative_cost_at_2M field is accepted-lineage cost, not full physically executed cost including recovery tails.",
+    "Seed2027 metrics come from recovered-history. Its historical full-parent identity remains unresolved; readable metrics and matching archive hashes do not repair that gap."
+  ],
+  "legacy_provenance_reference": "../../operations/20261019/provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+  "matched_control_comparison_performed": false,
+  "inferential_or_significance_test_performed": false,
+  "additional_evaluation_rollouts": 0,
+  "new_training_cells": 0,
+  "scientific_parameters_changed": false,
+  "early_scientific_stop_or_configuration_selection_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "strict_final_matrix_audit_executed": false,
+  "final_scientific_cohort_report": false,
+  "full_scientific_objective_complete": false
+}
