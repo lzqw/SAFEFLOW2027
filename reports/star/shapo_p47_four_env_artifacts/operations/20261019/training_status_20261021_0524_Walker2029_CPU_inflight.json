@@ -1,0 +1,172 @@
+{
+  "kind": "later_Walker2029_CPU_to_CPU_transaction_not_new_all_host_census",
+  "engineering_observed_at_unix": 1792531791.8196275,
+  "previous_status": "training_status_20261021_0521.json",
+  "last_steady_training_status": "training_status_20261021_0521.json",
+  "last_all_host_native_frame_before_transaction": "ordinary_observation_20261021_0521.json",
+  "pre_pause_worker_counts_not_relabelled_as_post_pause_census": true,
+  "job": "walker2d-2029",
+  "inflight_phase": "target_CPU_starting_source_CPU_paused",
+  "inflight_state_snapshot": "walker2d-2029_walker_cpu_5080_to_4080_20261021_inflight_state_20261021_0524.json",
+  "dispatcher_snapshot": "snapshot_20261021_0524_Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json",
+  "source_held_paused_until_actual_first_target_epoch": true,
+  "target_first_epoch_and_source_retirement_not_yet_proven": true,
+  "source_identity": {
+    "pid": 44234,
+    "start_ticks": 2374389,
+    "state": "R",
+    "device": "cpu",
+    "cuda_visible_devices": "-1",
+    "args": [
+      "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2029/resolved_formal_config.yaml",
+      "--seed",
+      "2029",
+      "--steps",
+      "5000000",
+      "--device",
+      "cpu",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2029/training",
+      "--result",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2029/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+  },
+  "runtime_change": {
+    "from_device": "cpu",
+    "to_device": "cpu",
+    "from_torch": "2.7.1+cu128",
+    "to_torch": "2.7.1+cu118",
+    "cuda_build_changed": true,
+    "bitwise_equivalence_claimed": false
+  },
+  "genuine_resume_steps": 2300000,
+  "genuine_input_sha256": "56247ec76542793320795b65d0eec8b772d62a3f28f12987a1de3d7114692ac1",
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/walker2d-2029/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+    "host_input_sha256": "56247ec76542793320795b65d0eec8b772d62a3f28f12987a1de3d7114692ac1",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/walker2d-2029/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+    "archive_input_sha256": "56247ec76542793320795b65d0eec8b772d62a3f28f12987a1de3d7114692ac1",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "target_capacity_before_pause": {
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+    "cpu_affinity_count": 28,
+    "load_1m": 4.31103515625,
+    "maximum_load_affinity_fraction": 0.5,
+    "actual_cpu_idle_fraction": 0.8477483917083631,
+    "cpu_idle_sample_seconds": 1.00023271801183,
+    "memory_available_bytes": 57499631616,
+    "project_free_bytes": 410758631424,
+    "minimum_cpu_quota_cores_or_null": null,
+    "cpu_quota_scope": "observer_and_target_tmux_server_with_ancestors",
+    "cpu_quota_checked_tmux_server_pid": 1154,
+    "target_device": "cpu",
+    "target_cuda_visible_devices": "-1",
+    "GPU_capacity_not_claimed_or_used": true
+  },
+  "original_runtime_FPS_gain_requirement_unchanged": 1.2,
+  "observed_runtime_admission_ratio": 1.200047125825875,
+  "runtime_admission_not_scientific_policy_selection": true,
+  "GPU_capacity_not_claimed_or_used": true,
+  "conditional_repeated_work_if_completed": {
+    "logged_steps": 5000,
+    "safety_cost": 6.0,
+    "not_added_to_completed_recovery_totals_yet": true,
+    "unknown_unlogged_source_tail_not_zero": true
+  },
+  "last_completed_recovery_accounting": {
+    "extra_environment_steps_lower_bound": 1157276,
+    "extra_training_safety_cost_lower_bound": 10380.0,
+    "unknown_historical_and_unlogged_tails_not_assumed_zero": true,
+    "full_final_ledger_audit_not_executed": true,
+    "first_completed_A100_Walker_GPU_handoff_known_logged_rollback_steps": 0,
+    "first_completed_A100_Walker_GPU_handoff_known_extra_cost": 0,
+    "zero_known_logged_rollback_is_not_zero_unknown_unlogged_physical_overhead": true,
+    "Goal2027_crosshost_known_repeated_steps": 5000,
+    "Goal2027_crosshost_known_extra_safety_cost": 321,
+    "subsequent_runtime_placement_recoveries": [
+      {
+        "job": "point-button-2027",
+        "state_file": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 26.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2028",
+        "state_file": "ant-2028_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 0,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2029",
+        "state_file": "ant-2029_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "walker2d-2028",
+        "state_file": "walker2d-2028_walker_cpu_5080_to_4080_20261021_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 3.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2030",
+        "state_file": "ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json",
+        "extra_steps_lower_bound": 0,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "walker2d-2030",
+        "state_file": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 7.0,
+        "unlogged_tail_unknown_not_zero": true
+      }
+    ]
+  },
+  "full_training_budget_steps": 5000000,
+  "new_experiment_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "next_regular_resource_check_local": "2026-10-21T05:51:58.431224+08:00",
+  "data_notice": "The05:21 all-host census preceded this later Walker2029 CPU transfer. Do not read those counters as a post-pause worker census. The existing unchanged dispatcher admitted the move using its original20percent same-environment FPS rule plus fresh full-checkpoint and live CPU headroom checks. Target staysCPU; no4080GPU allocation or foreign task pause occurs. Genuine2.3M full replay/RNG/optimizer bytes are preserved; source remains held until a real new5k target epoch. All5M budgets/source62ca739/final gates remain; early2027 parent gaps are unresolved."
+}
