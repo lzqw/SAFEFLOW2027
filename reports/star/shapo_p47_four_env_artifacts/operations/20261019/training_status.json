@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "superseded_by": "training_status_20261020_1221.json",
-  "latest_completed_engineering_transition": "point-goal-2029_mps_5080_20261020_state.json",
-  "newer_engineering_runtime": "mps_point2028_wave2_5080_20261020_started.json",
+  "latest_completed_engineering_transition": "point-goal-2028_mps_wave2_5080_20261020_state.json",
+  "newer_engineering_runtime": "mps_point2028_wave2_5080_20261020_progress_1246.json",
   "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
   "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1221.json for the12:21 ordinary counters:18 logical cells,10 GPU and8 CPU. Goal/Button2029 both completed first MPS epochs and retired their original default-CUDA workers; their genuine full inputs and original segments were preserved, with verified host and4T input copies. The8 Point5080 FPS snapshot sum rose from54.2743 at11:51 to60.8162 at12:21; this is observational, not a sustained or causal whole-training guarantee. Goal2030 finished its fixed4M evaluation and resumed training. Its native100-episode intermediate result and same-seed1M comparison are under partial_milestones/point-goal-2030_step4000000_20261020; success remains6%, without a final-cohort claim. A100 foreign jobs remain active; no A100 relocation occurred. The prepared2028 MPS wave2 is not represented as launched in this12:21 snapshot. Full budgets, recovery accounting and scientific gates remain unchanged; no final audit is claimed.",
   "newest_intermediate_scientific_result": "../../partial_milestones/point-goal-2030_step4000000_20261020/context.json",
