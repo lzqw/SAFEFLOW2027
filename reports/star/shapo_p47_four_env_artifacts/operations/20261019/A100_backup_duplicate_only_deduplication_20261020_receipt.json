@@ -1,0 +1,27 @@
+{
+  "kind": "duplicate_only_backup_maintenance_not_training_or_scientific_audit",
+  "started_at_unix": 1792511912.0340502,
+  "phase": "duplicate_only_operation_completed",
+  "local_backup_pid": 989,
+  "local_backup_start_ticks": 736,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "remote_host": "tjucta-a100",
+  "exact_remote_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/from_4080",
+  "helper_sha256": "6ad42c324471c7b45c9f83b249cbe982b7c8c67928d5b82ff96c19102c7a354b",
+  "remote_training_processes_signalled": 0,
+  "other_projects_modified": false,
+  "distinct_checkpoints_removed": 0,
+  "additional_scientific_rollouts": 0,
+  "backup_writer_held_at_unix": 1792511927.085496,
+  "remote_returncode": 0,
+  "remote_stdout": "{\"filesystem_free_bytes_before\": 20276211712}\n{\"job\": \"point-button-2029\", \"bytes\": 294862053, \"sha256\": \"497a394766abb19fe99ba9ffc9780ef2d1de11ff776c7aa711cf1f85aa2e001c\", \"previous_inode\": 31262157, \"verified_inode\": 31262164, \"previous_link_count\": 1, \"replaced_duplicate_allocated_bytes\": 294866944, \"mode\": \"applied\"}\n{\"job\": \"point-goal-2029\", \"bytes\": 243202981, \"sha256\": \"69f6c07ec75c8cf563904411736b68f4f1c188da9a2abd0a6613971736c91e09\", \"previous_inode\": 31262223, \"verified_inode\": 31262187, \"previous_link_count\": 1, \"replaced_duplicate_allocated_bytes\": 243208192, \"mode\": \"applied\"}\n{\"job\": \"walker2d-2027\", \"bytes\": 110912421, \"sha256\": \"dd369d8b8f648d3b54a771fd453f6f2ed9b4f100654cd9032b3de1c02e8fb3ec\", \"previous_inode\": 31262321, \"verified_inode\": 31262162, \"previous_link_count\": 1, \"replaced_duplicate_allocated_bytes\": 110919680, \"mode\": \"applied\"}\n{\"deduplicated_copies\": 3, \"identical_copy_bytes\": 648977455}\n{\"filesystem_free_bytes_after\": 20925202432}\n",
+  "remote_stderr": "",
+  "summary": {
+    "deduplicated_copies": 3,
+    "identical_copy_bytes": 648977455
+  },
+  "duplicate_paths_byte_content_preserved": true,
+  "originals_and_unique_checkpoints_preserved": true,
+  "original_backup_writer_resumed_at_unix": 1792511930.0643961,
+  "finished_at_unix": 1792511930.0643966
+}
