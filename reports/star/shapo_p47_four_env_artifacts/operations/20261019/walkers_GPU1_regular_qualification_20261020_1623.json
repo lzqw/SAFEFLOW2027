@@ -1,0 +1,59 @@
+{
+  "phase": "waiting_for_fresh_A100_GPU1_full_checkpoints",
+  "private_daemon_started": false,
+  "completed_jobs": [],
+  "Goal2027_and_Button2027_retained_on_original_GPUs": true,
+  "GPU1_shared_foreign_processes_not_modified": true,
+  "new_training_cells": 0,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "performance_gain_not_guaranteed": true,
+  "updated_at_unix": 1792484615.2299695,
+  "regular_capacity_qualification": {
+    "observed_at_unix": 1792484502.1764657,
+    "gpu": {
+      "index": 1,
+      "uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+      "name": "NVIDIA A100 80GB PCIe",
+      "free_mib": 80208,
+      "total_mib": 81920,
+      "utilization_percent": 12,
+      "processes": [
+        {
+          "pid": 7780,
+          "role": "safeflow",
+          "executable": "python",
+          "memory_mib": 818
+        }
+      ],
+      "safeflow_mps_client_pids": [],
+      "MPS_accounting_unproven": false,
+      "status": "available_for_rebalance",
+      "foreign_pids": [],
+      "safeflow_gpu_processes": 1,
+      "safeflow_gpu_os_processes": 1,
+      "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+      "reserve_mib": 16384,
+      "max_rebalance_utilization_percent": 85,
+      "candidate_since_unix": 1792482701.0606728,
+      "signature": [
+        "available_for_rebalance",
+        [],
+        1
+      ]
+    },
+    "live_capacity": {
+      "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+      "owned_GPU_OS_pids": [
+        7780
+      ],
+      "foreign_pids": [],
+      "memory_free_MiB": 80208,
+      "compute_mode": "Default",
+      "utilization_percent": 13,
+      "no_foreign_process_actions": true,
+      "shared_load_ceiling_percent": 60,
+      "no_speed_gain_guaranteed": true
+    }
+  }
+}
