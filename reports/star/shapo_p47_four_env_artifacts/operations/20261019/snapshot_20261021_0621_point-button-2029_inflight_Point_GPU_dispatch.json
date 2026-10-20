@@ -1,0 +1,52 @@
+{
+  "phase": "one_existing_Point_GPU_transaction_in_progress",
+  "completed": [
+    {
+      "job": "point-button-2030",
+      "state_file": "point-button-2030_point_5080_to_4080_MPS_20261021_state.json",
+      "completed_at_unix": 1792534489.1084812
+    }
+  ],
+  "maximum_existing_cells_to_move": 3,
+  "attempted_frames": {
+    "point-button-2030": 1792533119.0758545,
+    "point-button-2029": 1792533119.0758545
+  },
+  "controller_sha256": "a8e2e77447300b32391ded6ef18fb8d6e1b85150b142646e47c6fb8d1452c8df",
+  "accounting_module_sha256": "047bfc2baf5892d61f7beb93ccab6a3acb106b1a309bf7083f8c7078001fde22",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "scientific_parameters_changed": false,
+  "additional_training_cells": 0,
+  "additional_evaluation_rollouts": 0,
+  "other_projects_paused": false,
+  "full_training_budget_each": 10000000,
+  "regular_poll_seconds": 1800,
+  "candidate_order": "largest_remaining_budget_among_existing_Point_workers_ready_for_predicted_full_checkpoint",
+  "GPU_stable_seconds": 1800,
+  "minimum_GPU_free_MiB": 8192,
+  "maximum_GPU_utilization_percent": 85,
+  "local_pid": 73574,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "updated_at_unix": 1792534509.129834,
+  "checkpoint_attempts": {
+    "point-button-2030": {
+      "frame": 1792533119.0758545,
+      "count": 1,
+      "next_due": 1792533877.9063895
+    },
+    "point-button-2029": {
+      "frame": 1792533119.0758545,
+      "count": 1,
+      "next_due": 1792534629.1294246
+    }
+  },
+  "checkpoint_query_minimum_interval_seconds": 120,
+  "maximum_source_checkpoint_attempts_per_job_per_frame": 2,
+  "source_checkpoint_timing_only_not_extra_resource_polling": true,
+  "next_predicted_checkpoint_query": {
+    "job": "point-goal-2027",
+    "due_at_unix": 1792534555.0271642
+  },
+  "next_checkpoint_query_not_before": 1792534629.129425,
+  "attempted_job": "point-button-2029"
+}
