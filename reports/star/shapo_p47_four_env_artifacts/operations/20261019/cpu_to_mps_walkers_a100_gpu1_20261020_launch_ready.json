@@ -1,0 +1,15 @@
+{
+  "prepared_at_utc": "2026-10-20 08:03:27 UTC",
+  "GPU1_regular_stable_observation_required_before_any_pause": true,
+  "accounting_hook_integrated_before_any_transition": true,
+  "current_qualification_is_only_live_free_capacity_not_yet_regular_stability": true,
+  "expected_regular_qualification_earliest_local": "2026-10-20T16:21:41+08:00",
+  "controller_sha256": "532fe6429ca46c59636da17912adde6e641700278438a116fa034d797d7885b7",
+  "accounting_module_sha256": "21756d9ada91872fd3beac24dbc13a6d7c87def515c7ce7981b6886f13d84979",
+  "previous_native_observation": "capacity_progress_observation_20261020_1551.json",
+  "no_extra_broad_GPU_polls_while_waiting_for_regular_observer": true,
+  "no_fresh_seeds": true,
+  "no_other_project_pause": true,
+  "no_budget_reduction": true,
+  "no_new_evaluation_rollouts": true
+}

@@ -1,0 +1,152 @@
+{
+  "kind": "A100_three_existing_CPU_cells_GPU_transfer_queues_not_completed_handoffs",
+  "observed_at_utc": "2026-10-20 08:05:16 UTC",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "completed_GPU_transfer_cells": 0,
+  "source_CPU_training_continues": true,
+  "source_Points_remain_on_original_GPUs": true,
+  "other_projects_modified": false,
+  "training_budget_each": 5000000,
+  "new_experiment_cells": 0,
+  "extra_evaluation_rollouts": 0,
+  "performance_gain_not_yet_measured": true,
+  "queues": [
+    {
+      "unit": "safeflow-ant2030-cpu-to-mps-a100-gpu0-20261020.service",
+      "live_main_pid": 256662,
+      "phase": "waiting_for_fresh_A100_GPU0_full_checkpoints",
+      "jobs": [
+        "ant-2030"
+      ],
+      "target_physical_gpu_index": 0,
+      "source_live_receipt": "ant2030_A100_GPU0_MPS_queue_started_20261020.json"
+    },
+    {
+      "unit": "safeflow-walkers-cpu-to-mps-a100-gpu1-20261020.service",
+      "live_main_pid": 259143,
+      "phase": "waiting_for_regular_A100_GPU1_capacity_observation",
+      "controller": "handoff_walkers_A100_GPU1_MPS_20261020.py",
+      "controller_sha256": "532fe6429ca46c59636da17912adde6e641700278438a116fa034d797d7885b7",
+      "accounting_module": "cpu_to_mps_walkers_a100_recovery_accounting_20261020.py",
+      "accounting_module_sha256": "21756d9ada91872fd3beac24dbc13a6d7c87def515c7ce7981b6886f13d84979",
+      "jobs": [
+        "walker2d-2031",
+        "walker2d-2030"
+      ],
+      "source_identities_from_live_preflight": [
+        {
+          "pid": 14548,
+          "start_ticks": 257252,
+          "state": "R",
+          "device": "cpu",
+          "cuda_visible_devices": "-1",
+          "args": [
+            "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+            "scripts/star/train_star.py",
+            "--config",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/resolved_formal_config.yaml",
+            "--seed",
+            "2031",
+            "--steps",
+            "5000000",
+            "--device",
+            "cpu",
+            "--vector-envs",
+            "1",
+            "--batch-size",
+            "256",
+            "--replay-size",
+            "400000",
+            "--steps-per-epoch",
+            "5000",
+            "--log-dir",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/training",
+            "--result",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/receipt.json",
+            "--no-tensorboard",
+            "--resume",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-16-15-25-16/checkpoints/latest_full.pt"
+          ],
+          "job": "walker2d-2031",
+          "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+          "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-19-15-55-45/progress.csv",
+          "steps": 4180000,
+          "last_epoch_fps": 4.592606067657471
+        },
+        {
+          "pid": 14547,
+          "start_ticks": 257250,
+          "state": "R",
+          "device": "cpu",
+          "cuda_visible_devices": "-1",
+          "args": [
+            "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+            "scripts/star/train_star.py",
+            "--config",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/resolved_formal_config.yaml",
+            "--seed",
+            "2030",
+            "--steps",
+            "5000000",
+            "--device",
+            "cpu",
+            "--vector-envs",
+            "1",
+            "--batch-size",
+            "256",
+            "--replay-size",
+            "400000",
+            "--steps-per-epoch",
+            "5000",
+            "--log-dir",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training",
+            "--result",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/receipt.json",
+            "--no-tensorboard",
+            "--resume",
+            "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-16-20-57-46/checkpoints/latest_full.pt"
+          ],
+          "job": "walker2d-2030",
+          "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+          "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-19-15-55-44/progress.csv",
+          "steps": 4175000,
+          "last_epoch_fps": 4.533839702606201
+        }
+      ],
+      "target_physical_gpu_index": 1,
+      "target_gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+      "source_CPU_continues_while_waiting": true,
+      "target_training_started": false,
+      "source_paused": false,
+      "source_retired": false,
+      "private_MPS_daemon_not_yet_started": true,
+      "regular_stability_required": true,
+      "qualify_only_from_existing_half_hour_observer": true,
+      "qualification_earliest_if_still_free_local": "2026-10-20T16:21:41+08:00",
+      "next_full_checkpoint_steps": 4200000,
+      "preparation": "cpu_to_mps_walkers_a100_gpu1_20261020_preparation.json"
+    }
+  ],
+  "max_logged_checkpoint_tail_replay_steps_each": 5000,
+  "unlogged_source_tails_unknown_not_zero": true,
+  "host_source_separate4T_full_inputs_required": true,
+  "first_real_5000_step_target_epoch_and_native_MPS_UUID_proof_required_before_source_retirement": true,
+  "known_recovery_floors_unchanged": {
+    "steps": 1132276,
+    "safety_cost": 10023
+  },
+  "current_native_snapshot": "training_status_20261020_1551.json",
+  "current_observed_GPU_CPU_counts_unchanged": {
+    "GPU": 10,
+    "CPU": 8
+  },
+  "planned_after_all_three_complete_not_current_counts": {
+    "GPU": 13,
+    "CPU": 5
+  },
+  "training_budgets_complete_still": 2,
+  "total_cells": 20,
+  "strict_final_gates_unchanged": true,
+  "fresh_Goal2027_replacement_not_authorized": true,
+  "full_scientific_objective_complete": false
+}

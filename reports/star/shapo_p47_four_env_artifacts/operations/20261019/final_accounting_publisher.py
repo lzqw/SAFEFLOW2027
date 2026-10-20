@@ -15,6 +15,7 @@ from mps_wave2_recovery_accounting_20261020 import verify_wave2_MPS_transitions
 from mps_wave3_recovery_accounting_20261020 import verify_wave3_MPS_transitions
 from mps_wave4_recovery_accounting_20261020 import verify_wave4_MPS_transitions
 from cpu_to_mps_a100_recovery_accounting_20261020 import verify_A100_CPU_to_MPS_transitions
+from cpu_to_mps_walkers_a100_recovery_accounting_20261020 import verify_A100_Walker_CPU_to_MPS_transitions
 from host_full_input_cache_20261020 import ensure_cache
 from a100_rebalance_accounting_20261020 import verify_A100_return_balances
 
@@ -1169,7 +1170,8 @@ def annotate_recovery(target):
                               + verify_wave2_MPS_transitions(BASE)
                               + verify_wave3_MPS_transitions(BASE)
                               + verify_wave4_MPS_transitions(BASE)
-                              + verify_A100_CPU_to_MPS_transitions(BASE))
+                              + verify_A100_CPU_to_MPS_transitions(BASE)
+                              + verify_A100_Walker_CPU_to_MPS_transitions(BASE))
     new_a100_return_balances = verify_A100_return_balances(BASE)
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
@@ -1528,7 +1530,7 @@ def annotate_recovery(target):
     for item in mps_execution_handoffs:
         r = item['completion_state']
         placement = item.get('runtime_placement', '')
-        physical_gpu = 'A100 GPU0' if 'A100' in placement else '5080 GPU'
+        physical_gpu = item.get('physical_gpu_label', 'A100 GPU0' if 'A100' in placement else '5080 GPU')
         original_backend = r['source_runtime_backend']
         disclosure += (
             f'\n{r["job"]} resumed the unchanged{r["total_budget_steps"]:,}-step experiment on the {physical_gpu} '
