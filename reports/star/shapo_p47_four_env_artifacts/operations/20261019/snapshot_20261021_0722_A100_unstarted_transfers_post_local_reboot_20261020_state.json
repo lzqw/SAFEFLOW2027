@@ -1,0 +1,59 @@
+{
+  "phase": "all_requested_transfers_finished",
+  "pending": [],
+  "completed": [
+    {
+      "job": "walker2d-2030",
+      "per_cell_state": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json",
+      "completed_at_unix": 1792524990.7281497
+    },
+    {
+      "job": "ant-2030",
+      "per_cell_state": "ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json",
+      "completed_at_unix": 1792526856.9706597
+    }
+  ],
+  "last_attempted_frame": {
+    "ant-2030": 1792525916.9257126,
+    "walker2d-2030": 1792524116.1281147
+  },
+  "capacity_deferrals": [
+    {
+      "job": "ant-2030",
+      "frame": 1792515112.5591404,
+      "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=15', '-o', 'ServerAliveCountMax=3', 'tjucta-a100', 'env PYTHONNOUSERSITE=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python3 -c \\'\\nimport csv,json,os,shutil,subprocess\\nfrom pathlib import Path\\nassert Path(\\'\"\\'\"\\'/proc/sys/kernel/random/boot_id\\'\"\\'\"\\').read_text().strip()==\\'\"\\'\"\\'6928f333-1036-473c-92d5-4c482d5fef59\\'\"\\'\"\\'\\nrows=list(csv.reader(subprocess.check_output([\\'\"\\'\"\\'nvi"
+    },
+    {
+      "job": "ant-2030",
+      "frame": 1792520514.8494627,
+      "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=15', '-o', 'ServerAliveCountMax=3', 'tjucta-a100', 'env PYTHONNOUSERSITE=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python3 -c \\'\\nimport csv,json,os,shutil,subprocess\\nfrom pathlib import Path\\nassert Path(\\'\"\\'\"\\'/proc/sys/kernel/random/boot_id\\'\"\\'\"\\').read_text().strip()==\\'\"\\'\"\\'6928f333-1036-473c-92d5-4c482d5fef59\\'\"\\'\"\\'\\nrows=list(csv.reader(subprocess.check_output([\\'\"\\'\"\\'nvi"
+    },
+    {
+      "job": "ant-2030",
+      "frame": 1792522315.48609,
+      "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=15', '-o', 'ServerAliveCountMax=3', 'tjucta-a100', 'env PYTHONNOUSERSITE=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python3 -c \\'\\nimport csv,json,os,shutil,subprocess\\nfrom pathlib import Path\\nassert Path(\\'\"\\'\"\\'/proc/sys/kernel/random/boot_id\\'\"\\'\"\\').read_text().strip()==\\'\"\\'\"\\'6928f333-1036-473c-92d5-4c482d5fef59\\'\"\\'\"\\'\\nrows=list(csv.reader(subprocess.check_output([\\'\"\\'\"\\'nvi"
+    }
+  ],
+  "old_coordinator_mains_never_replayed": true,
+  "stale_local_PIDs_never_signaled": true,
+  "new_seeds": 0,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "regular_observation_seconds": 1800,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "local_pid": 995,
+  "not_before_observation_unix": 1792501649.6119316,
+  "updated_at_unix": 1792526856.9709861,
+  "attempted_job": "ant-2030",
+  "live_capacity": {
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "owned_GPU_OS_pids": [],
+    "foreign_pids": [],
+    "memory_free_MiB": 81036,
+    "compute_mode": "Default",
+    "utilization_percent": 0,
+    "no_foreign_process_actions": true,
+    "shared_load_ceiling_percent": 60,
+    "no_speed_gain_guaranteed": true
+  }
+}
