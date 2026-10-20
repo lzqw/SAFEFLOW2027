@@ -37,7 +37,7 @@ def main():
     # Only the five indexed manifests are read. No historical manifest sweep,
     # checkpoint deserialization or remote training/evaluation command occurs.
     code = f'''
-import hashlib,json
+import hashlib,json,re
 from pathlib import Path
 rows=json.loads({json.dumps(selected)!r})
 root=Path('/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive')
@@ -52,7 +52,8 @@ for r in rows:
  assert entries,'Missing native Walker2M evaluation: '+r['job']
  hashes={{f['sha256'] for f in entries}}
  assert len(hashes)==1,'Ambiguous same-seed milestone: never select by metric value: '+r['job']
- sha=next(iter(hashes));blob=root/'blobs'/sha
+ sha=next(iter(hashes));assert re.fullmatch('[0-9a-f]{{64}}',sha)
+ blob=root/'blobs'/sha
  data=blob.read_bytes();assert hashlib.sha256(data).hexdigest()==sha
  assert all(f['bytes']==len(data) for f in entries)
  result.append(dict(r,sha256=sha,bytes=len(data),blob=str(blob),source_relative_paths=sorted(f['path'] for f in entries)))
