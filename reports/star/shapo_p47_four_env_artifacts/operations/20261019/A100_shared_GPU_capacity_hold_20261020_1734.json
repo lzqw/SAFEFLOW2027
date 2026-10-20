@@ -1,0 +1,101 @@
+{
+  "kind": "hold_only_unstarted_local_handoff_coordinators_during_volatile_shared_GPU_load",
+  "recorded_at_utc": "2026-10-20 09:37:26 UTC",
+  "trigger_native_observation": "ordinary_observation_20261020_1721.json",
+  "trigger_GPU1": {
+    "utilization_percent": 99,
+    "foreign_PID": 2423667,
+    "our_existing_GPU_training_clients": [
+      7780,
+      2384563
+    ],
+    "our_private_MPS_server": 2384685
+  },
+  "later_live_capacity_at_local": "2026-10-20T17:30:54+08:00",
+  "later_GPU0": {
+    "utilization_percent": 100,
+    "memory_free_MiB": 61320,
+    "our_Goal_PID": 7777,
+    "foreign_PID": 2432776
+  },
+  "later_GPU1": {
+    "utilization_percent": 74,
+    "memory_free_MiB": 79446,
+    "foreign_PID2423667_no_longer_present_at_that_instant": true,
+    "our_existing_GPU_training_clients": [
+      7780,
+      2384563
+    ]
+  },
+  "live_admission_guards_rejected_GPU0_and_later_GPU1_before_any_new_target_or_source_pause": true,
+  "held_local_controllers": {
+    "observed_at_unix": 1792488420.6033902,
+    "local_controller_processes_only_paused": [
+      {
+        "pid": 259143,
+        "start_ticks": 10945243,
+        "command": [
+          "/usr/bin/python3",
+          "-u",
+          "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_walkers_A100_GPU1_MPS_20261020.py"
+        ],
+        "source_sha256": "532fe6429ca46c59636da17912adde6e641700278438a116fa034d797d7885b7"
+      },
+      {
+        "pid": 256662,
+        "start_ticks": 10847651,
+        "command": [
+          "/usr/bin/python3",
+          "-u",
+          "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_ant2030_A100_GPU0_MPS_20261020.py"
+        ],
+        "source_sha256": "18eed33ca1cd365251e81a37b81c3b43e5ed9b0b3760accee0da751b7744c1ca"
+      }
+    ],
+    "no_scientific_training_process_signaled": true,
+    "no_pending_cell_transition_started": true,
+    "completed_Walker2031_GPU_actor_untouched": true
+  },
+  "held_at_local": "2026-10-20T17:27:00+08:00",
+  "not_scientific_training_processes": true,
+  "CPU_learner_PIDs_never_signaled": [
+    14547,
+    14550
+  ],
+  "existing_GPU_Walker2031_PID_never_signaled": 2384563,
+  "foreign_jobs_never_signaled": true,
+  "no_unstarted_Ant_or_Walker2030_per_cell_transition_created": true,
+  "old_executed_MPS_controller_sources_and_logs_not_edited": true,
+  "new_GPU0_rebalance_draft_superseded_before_main_launch_due_new_GPU0_saturation": true,
+  "no_fresh_scientific_trial_or_replacement_seed": true,
+  "first_completed_Walker2031_GPU_handoff_not_reversed": true,
+  "capacity_resumer": {
+    "script": "resume_A100_held_coordinators_on_capacity_20261020.py",
+    "sha256": "61a7e96e4325d5bf9b711da7e68e16ad77f611e943aae46c3613df38ae564a80",
+    "live_main_PID": 271292,
+    "unit": "safeflow-a100-held-coordinator-capacity-resumer-20261020.service",
+    "state": "waiting_for_fresh_regular_shared_GPU_headroom",
+    "ignore_observations_before_resumer_start": true,
+    "only_new_regular_half_hour_observations_may_trigger_capacity_attempt": true,
+    "live_original_immutable_admission_guard_required_before_SIGCONT": true,
+    "allowed_signal_targets_only_local_coordinators": [
+      256662,
+      259143
+    ],
+    "original_controllers_still_recheck_capacity_and_fresh_full_input_before_touching_any_source": true
+  },
+  "remaining_training_budgets_unchanged": true,
+  "scientific_parameters_changed": false,
+  "extra_evaluation_rollouts": 0,
+  "new_experiment_cells": 0,
+  "physical_recovery_floors_unchanged": {
+    "steps": 1132276,
+    "safety_cost": 10023,
+    "unlogged_and_historical_tails_unknown_not_zero": true
+  },
+  "all18_active_cells_advanced_at1721": true,
+  "observed_scientific_training_budgets_complete": 2,
+  "total_scientific_cells": 20,
+  "full_scientific_objective_complete": false,
+  "next_ordinary_check_local": "2026-10-20T17:51:43+08:00"
+}

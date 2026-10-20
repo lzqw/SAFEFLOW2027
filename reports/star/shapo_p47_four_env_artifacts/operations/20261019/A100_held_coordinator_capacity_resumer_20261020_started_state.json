@@ -1,0 +1,32 @@
+{
+  "phase": "waiting_for_fresh_regular_shared_GPU_headroom",
+  "pending": [
+    {
+      "job": "ant-2030",
+      "pid": 256662,
+      "start_ticks": 10847651,
+      "script": "handoff_ant2030_A100_GPU0_MPS_20261020.py",
+      "sha256": "18eed33ca1cd365251e81a37b81c3b43e5ed9b0b3760accee0da751b7744c1ca",
+      "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+      "source_learner_pid": 14550,
+      "per_cell_state": "ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json"
+    },
+    {
+      "job": "walker2d-2030",
+      "pid": 259143,
+      "start_ticks": 10945243,
+      "script": "handoff_walkers_A100_GPU1_MPS_20261020.py",
+      "sha256": "532fe6429ca46c59636da17912adde6e641700278438a116fa034d797d7885b7",
+      "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+      "source_learner_pid": 14547,
+      "per_cell_state": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json"
+    }
+  ],
+  "released": [],
+  "not_before_observation_unix": 1792488870.9779627,
+  "only_local_coordinators_may_receive_SIGCONT": true,
+  "training_learners_and_foreign_projects_never_signaled": true,
+  "last_attempted_native_frame_by_job": {},
+  "capacity_failures": [],
+  "updated_at_unix": 1792488870.9861321
+}
