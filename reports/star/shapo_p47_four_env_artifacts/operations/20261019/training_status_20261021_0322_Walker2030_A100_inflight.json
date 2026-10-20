@@ -1,0 +1,146 @@
+{
+  "kind": "pre_handoff_native_progress_with_separate_later_Walker2030_MPS_transaction",
+  "engineering_observed_at_unix": 1792524263.5410924,
+  "last_steady_training_status": "training_status_20261021_0251.json",
+  "native_frame_before_this_transaction": "ordinary_observation_20261021_0321.json",
+  "native_observed_at_local": "2026-10-21T03:21:55.598855+08:00",
+  "native_all_18_cells_advanced": true,
+  "native_logged_step_gain_since_0251": 360000,
+  "native_accepted_logged_steps_including_two_budget_complete_cells": 83705000,
+  "native_training_budget_fraction": 0.5580333333333334,
+  "completed_training_budgets": 2,
+  "native_worker_rows_are_not_a_current_post_pause_worker_census": true,
+  "job": "walker2d-2030",
+  "inflight_phase": "MPS_target_starting_source_paused",
+  "inflight_state_snapshot": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_inflight_state_20261021_0322.json",
+  "dispatcher_snapshot": "snapshot_20261021_0322_A100_unstarted_transfers_post_local_reboot_20261020_state.json",
+  "source_identity": {
+    "pid": 14547,
+    "start_ticks": 257250,
+    "state": "R",
+    "device": "cpu",
+    "cuda_visible_devices": "-1",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/resolved_formal_config.yaml",
+      "--seed",
+      "2030",
+      "--steps",
+      "5000000",
+      "--device",
+      "cpu",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-16-20-57-46/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59"
+  },
+  "source_held_paused_until_verified_first_target_epoch": true,
+  "target_launch_requested": true,
+  "first_target_epoch_and_source_retirement_not_yet_proven": true,
+  "genuine_resume_steps": 4350000,
+  "genuine_input_sha256": "b38d2afa46729d59523734cf758fb7ce24997a2f1cc6ab9ac285156a281e2f03",
+  "genuine_input_has_full_replay_rng_optimizers_and_finite_model": true,
+  "physical_target": "A100 GPU1 existing private MPS server",
+  "capacity_before_pause": {
+    "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+    "owned_GPU_OS_pids": [
+      2384685,
+      2384563
+    ],
+    "foreign_pids": [],
+    "memory_free_MiB": 80268,
+    "compute_mode": "Default",
+    "utilization_percent": 12,
+    "no_foreign_process_actions": true,
+    "shared_load_ceiling_percent": 60,
+    "no_speed_gain_guaranteed": true
+  },
+  "conditional_extra_work_if_completed": {
+    "steps": 5000,
+    "safety_cost": 7.0,
+    "not_added_to_completed_recovery_totals_yet": true,
+    "unknown_unlogged_source_tail_not_zero": true
+  },
+  "last_completed_recovery_accounting": {
+    "extra_environment_steps_lower_bound": 1152276,
+    "extra_training_safety_cost_lower_bound": 10373.0,
+    "unknown_historical_and_unlogged_tails_not_assumed_zero": true,
+    "full_final_ledger_audit_not_executed": true,
+    "first_completed_A100_Walker_GPU_handoff_known_logged_rollback_steps": 0,
+    "first_completed_A100_Walker_GPU_handoff_known_extra_cost": 0,
+    "zero_known_logged_rollback_is_not_zero_unknown_unlogged_physical_overhead": true,
+    "Goal2027_crosshost_known_repeated_steps": 5000,
+    "Goal2027_crosshost_known_extra_safety_cost": 321,
+    "subsequent_runtime_placement_recoveries": [
+      {
+        "job": "point-button-2027",
+        "state_file": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 26.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2028",
+        "state_file": "ant-2028_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 0,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2029",
+        "state_file": "ant-2029_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "walker2d-2028",
+        "state_file": "walker2d-2028_walker_cpu_5080_to_4080_20261021_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 3.0,
+        "unlogged_tail_unknown_not_zero": true
+      }
+    ]
+  },
+  "no_new_experiment_cells": true,
+  "no_extra_scientific_evaluations": true,
+  "full_training_budget_steps": 5000000,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "no_speed_gain_guaranteed_before_actual_target_epochs": true,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "next_regular_resource_check_local": "2026-10-21T03:51:55.598855+08:00",
+  "data_notice": "The03:21 native cohort frame preceded the Walker2030 CPU-to-GPU1 pause. All18 advanced in that frame; do not infer all18 are currently running while this later handoff is partial. Source remains available in memory; completion requires a real new5k target epoch, verified MPS GPU identity and source retirement. Resume is the genuine4.35M full checkpoint, not a candidate policy choice. All5M budgets, source62ca739 and strict final gates remain unchanged. Early2027 original parent gaps remain unresolved."
+}
