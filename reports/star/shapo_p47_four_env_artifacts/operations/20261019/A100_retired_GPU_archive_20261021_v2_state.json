@@ -1,0 +1,71 @@
+{
+  "format": "retired-GPU-originals-copy-operation-v1",
+  "local_pid": 41148,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "controller_sha256": "e804bfc606c39e10f9f891bba4b120af4cdcfb71736b4588aa58917ba4a384bf",
+  "source_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers",
+  "target_parent": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021",
+  "source_files_removed": 0,
+  "training_processes_signalled": 0,
+  "other_projects_modified": false,
+  "additional_scientific_rollouts": 0,
+  "source_cleanup_not_authorized_by_this_copy_program": true,
+  "predecessor_failed_before_transfer": "A100_retired_GPU_archive_20261021_state.json",
+  "predecessor_failure_cause": "Source system Python3.8 lacks Path.is_relative_to; replaced with parent membership checks",
+  "phase": "verified_4T_archive_source_originals_still_untouched",
+  "updated_at_unix": 1792518388.0343018,
+  "source_manifest": "A100_retired_GPU_archive_20261021_v2_source_manifest.json",
+  "source_manifest_sha256": "eeddea5e98694aba67dde59a6de076758b9d78fcff729c436a7389f7fe49ac8c",
+  "original_regular_files": 598,
+  "original_logical_bytes": 8013297651,
+  "target": {
+    "target_staging_directory": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021/.retired_gpu_workers-incoming.2m243wbi",
+    "target_archive_directory": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021/retired_gpu_workers",
+    "separate_4T_filesystem_verified": true,
+    "archive_helper_CPU_affinity": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ]
+  },
+  "target_verification": {
+    "format": "verified-retired-GPU-originals-4T-copy-v1",
+    "verified_at_unix": 1792518387.5429091,
+    "source_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers",
+    "target_archive_directory": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021/retired_gpu_workers",
+    "source_manifest_sha256": "eeddea5e98694aba67dde59a6de076758b9d78fcff729c436a7389f7fe49ac8c",
+    "verified_regular_files": 598,
+    "verified_data_bytes": 8013297651,
+    "source_files_removed": 0,
+    "separate_4T_filesystem_verified": true,
+    "archive_helper_CPU_affinity": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "no_early2027_parent_repair_or_checkpoint_identity_alias": true
+  },
+  "source_identity_recheck": {
+    "source_file_identity_cookies_unchanged": true,
+    "file_count": 598,
+    "source_files_removed": 0
+  }
+}

@@ -22,6 +22,7 @@ from crosshost_goal2027_MPS_accounting_20261020 import verify_Goal2027_crosshost
 from crosshost_button2027_MPS_accounting_20261020 import verify_Button2027_crosshost_MPS
 from cpu_5080_to_4080_recovery_accounting_20261020 import verify_Ant_CPU_5080_to_4080
 from walker_cpu_5080_to_4080_recovery_accounting_20261021 import verify_Walker_CPU_5080_to_4080
+from retired_GPU_archive_relocation_accounting_20261021 import verify_retired_GPU_archive_relocation
 
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
@@ -1181,6 +1182,8 @@ def annotate_recovery(target):
                                  + verify_Button2027_crosshost_MPS(BASE))
     new_crosshost_cpu_balances = (verify_Ant_CPU_5080_to_4080(BASE)
                                   + verify_Walker_CPU_5080_to_4080(BASE))
+    storage_relocations = verify_retired_GPU_archive_relocation(BASE)
+    storage_files = set()
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
     marker = b'<!-- known-recovery-accounting-v1 -->'
@@ -1245,6 +1248,13 @@ def annotate_recovery(target):
     ledger['recoveries'].extend(new_a100_return_balances)
     ledger['recoveries'].extend(new_crosshost_mps_balances)
     ledger['recoveries'].extend(new_crosshost_cpu_balances)
+    ledger['retired_original_storage_relocations'] = storage_relocations
+    for storage in storage_relocations:
+        for key in ('manifest_file', 'release_state_file', 'copy_state_file'):
+            name = storage[key]
+            assert Path(name).name == name
+            shutil.copyfile(BASE / name, target / name)
+            storage_files.add(name)
     if cuda_recoveries:
         ledger['interpretation'] += (' The observed CUDA-interruption tails add '
             '14 cost units for ant-2031, 17 for walker2d-2031, and 722 for '
@@ -1608,6 +1618,17 @@ def annotate_recovery(target):
             f'steps and{item["known_additional_physical_training_cost"]:,.0f} '
             'training-cost units; the unlogged tail remains unknown, not zero.\n'
         )
+    for storage in storage_relocations:
+        disclosure += (
+            '\nAfter the runtime handoffs,13 cold retired-source directories '
+            '(598 original files,8,013,297,651 logical bytes) were preserved '
+            'byte-for-byte on the separate4080-4T archive. Only then were the '
+            'A100 cold copies released; their directories retain exact location '
+            'and restoration pointers. The original-path/SHA manifest and release '
+            'receipt accompany this report. This storage-only operation changed '
+            'no rollout, metric, training setting or checkpoint identity and does '
+            'not reconstruct any missing earlier2027 full checkpoint parent.\n'
+        )
     disclosure += (
         '\nThe combined known recovery ledger is a lower bound of '
         f'{ledger["known_repeated_environment_steps"]:,} repeated environment '
@@ -1620,7 +1641,7 @@ def annotate_recovery(target):
     # Replace only these two hashes; retain every audited evidence checksum.
     checksums = target / 'checksums.sha256'
     rows = checksums.read_text().splitlines()
-    names = {'SHAPO_P47_FOUR_ENV_REPORT.md', 'recovery_accounting.json'}
+    names = {'SHAPO_P47_FOUR_ENV_REPORT.md', 'recovery_accounting.json'} | storage_files
     kept = []
     for row in rows:
         filename = row[66:]
