@@ -1,0 +1,14 @@
+[Unit]
+Description=Balance existing Ant2028 and2029 CPU runs using spare 4080 CPU capacity
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013
+ExecStart=/usr/bin/python3 -u /home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/dispatch_Ant_CPU_5080_to_4080_on_regular_frames_20261020.py
+StandardOutput=append:/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/Ant_CPU_5080_to_4080_regular_dispatch_20261020.log
+StandardError=inherit
+Restart=no
+
+[Install]
+WantedBy=default.target

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Publish an already-collected ordinary frame, without SSH or scientific tests."""
 import argparse
+import hashlib
 import json
+import math
 import re
 import shutil
 from datetime import datetime, timedelta
@@ -18,6 +20,31 @@ def read(path):
 
 def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+
+
+def new_steady_runtime_recoveries():
+    records = []
+    specs = [('point-button-2027_balanced_MPS_5080_20261020_state.json',
+              'handoff_completed_first_target_epoch_verified', 'handoff_Button2027_A100_to_5080_MPS_20261020.py')]
+    specs += [(job + '_cpu_5080_to_4080_20261020_state.json',
+               'handoff_completed_first_CPU_epoch_verified', 'handoff_Ant_CPU_5080_to_4080_20261020.py')
+              for job in ('ant-2028', 'ant-2029')]
+    for name, phase, controller in specs:
+        path = BASE / name
+        if not path.exists():
+            continue
+        s = read(path)
+        if s.get('phase') != phase:
+            raise ValueError('Use transition-specific evidence, not a steady renderer: ' + name)
+        assert s['source_retired'] is True and s['source_paused'] is False
+        assert hashlib.sha256((BASE / controller).read_bytes()).hexdigest() == s['controller_sha256']
+        steps = s['last_logged_source_steps'] - s['resume_steps']
+        cost = s['last_logged_source_cumulative_training_cost'] - s['resume_cumulative_training_cost']
+        assert 0 <= steps <= 5000 and steps == s['known_repeated_environment_steps_lower_bound']
+        assert math.isfinite(cost) and cost >= 0 and cost == s['known_additional_training_cost_lower_bound']
+        records.append({'job': s['job'], 'state_file': name, 'extra_steps_lower_bound': steps,
+                        'extra_safety_cost_lower_bound': cost, 'unlogged_tail_unknown_not_zero': True})
+    return records
 
 
 def main():
@@ -68,26 +95,33 @@ def main():
         A100_Walker2031_current_logged_steps=walker['steps'],
         A100_Walker2031_current_last_epoch_FPS=walker['last_epoch_fps'],
         whole_5080_Point_last_epoch_FPS_snapshot_sum=sum(w['last_epoch_fps'] for w in workers if w['host'] == '5080' and w['device'] != 'cpu'))
-    names = ('Button2027_5080_regular_capacity_dispatch_20261020_state.json',
-             'A100_unstarted_transfers_post_local_reboot_20261020_state.json')
+    names = ['Button2027_5080_regular_capacity_dispatch_20261020_state.json',
+             'A100_unstarted_transfers_post_local_reboot_20261020_state.json']
+    if (BASE / 'Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json').exists():
+        names.append('Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json')
     snapshots = []
     for name in names:
         snapshot = 'snapshot_' + args.stamp + '_' + name
         shutil.copyfile(BASE / name, OUT / snapshot)
         snapshots.append(snapshot)
     current['capacity_dispatch_state_snapshots'] = snapshots
+    new_recoveries = new_steady_runtime_recoveries()
+    recovery_steps = 1137276 + sum(r['extra_steps_lower_bound'] for r in new_recoveries)
+    recovery_cost = 10344 + sum(r['extra_safety_cost_lower_bound'] for r in new_recoveries)
+    current['known_recovery_accounting'].update(
+        extra_environment_steps_lower_bound=recovery_steps,
+        extra_training_safety_cost_lower_bound=recovery_cost,
+        subsequent_runtime_placement_recoveries=new_recoveries)
     current['data_notice'] = (
         f'{observed.isoformat()} ordinary native frame:all18 active existing cells advanced;'
         '11GPU/7CPU;2/20 budgets complete. 9 verifiedPointMPS clients on5080;'
         f'Button2027 remains on A100 at{button["steps"]}steps,awaiting stable target capacity '
         'and genuine fresh50k full input boundary;no source pause or fresh replacement. '
         'Capacity schedulers use existing30min frames,not additional broad SSH polling. '
-        'Source/host/separate4T originals preserved;recovery floors1137276steps/10344cost '
+        f'Source/host/separate4T originals preserved;recovery floors{recovery_steps}steps/{recovery_cost:g}cost '
         'plus unknown historical/unlogged tails. Early2027 parent gaps still unresolved;'
         'strict final gates not waived. No scientific parameter,budget,seed,extra evaluation '
         'or foreign-project change. Per-job time extrapolations are training-only,not guarantees.')
-    assert current['known_recovery_accounting']['extra_environment_steps_lower_bound'] == 1137276
-    assert current['known_recovery_accounting']['extra_training_safety_cost_lower_bound'] == 10344
     name = 'training_status_' + args.stamp + '.json'
     write(OUT / name, current)
     shutil.copyfile(BASE / ('capacity_progress_observation_' + args.stamp + '.json'), OUT / current['native_observation_file'])

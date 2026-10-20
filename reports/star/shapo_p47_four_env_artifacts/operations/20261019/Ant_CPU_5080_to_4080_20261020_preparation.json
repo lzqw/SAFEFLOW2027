@@ -1,0 +1,49 @@
+{
+  "kind": "existing_Ant_CPU_5080_to_4080_handoff_preparation",
+  "phase": "code_and_accounting_ready_not_yet_launched",
+  "jobs": [
+    "ant-2028",
+    "ant-2029"
+  ],
+  "source": "5080",
+  "target": "4080",
+  "total_budget_each": 5000000,
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "CPU_qualification": "4080_CPU_placement_preflight_20261020_2051.json",
+  "target_CPU_idle_fraction_at_qualification": 0.7862759113652609,
+  "target_available_memory_bytes_at_qualification": 34115928064,
+  "target_existing_Ant_FPS_at_qualification": 7.671107292175293,
+  "source_Ant_FPS_at_qualification": [
+    5.370781421661377,
+    5.301555156707764
+  ],
+  "cross_seed_hardware_rate_comparison_not_causal_guarantee": true,
+  "source_native_steps_at_qualification": 2060000,
+  "source_latest_full_boundary": 2050000,
+  "fresh_checkpoint_required": true,
+  "maximum_known_logged_rollback_steps": 5000,
+  "source_kept_running_until_capacity_and_full_input_are_ready": true,
+  "one_existing_cell_at_a_time": true,
+  "required_first_new_CPU_steps_before_source_retirement": 5000,
+  "full_replay_rng_optimizers_and_finite_model_required": true,
+  "source_host_separate4T_same_SHA_input_copies_required": true,
+  "host_disk_reserve_bytes": 2147483648,
+  "additional_reserve_for_queued_Button2027_bytes": 314572800,
+  "host_cache_manifest_entries": 7,
+  "original_cache_receipt_not_overwritten": true,
+  "other_projects_paused": false,
+  "new_scientific_cells": 0,
+  "additional_evaluation_rollouts": 0,
+  "frozen_training_parameters_changed": false,
+  "CPU_only_CUDA_VISIBLE_DEVICES": "-1",
+  "runtime_from_torch": "2.7.1+cu128",
+  "runtime_to_torch": "2.7.1+cu118",
+  "bitwise_equivalence_claimed": false,
+  "final_scientific_gates_unchanged": true,
+  "code_sha256": {
+    "handoff_Ant_CPU_5080_to_4080_20261020.py": "ba905780a68225885e9d7495fbf44b8247c13577bf1204df9a0336ddb5c4e239",
+    "cpu_5080_to_4080_recovery_accounting_20261020.py": "cde62a06288832047fbf80ef235b29ddf0d686a325ac94f089699bb01bf9340d",
+    "dispatch_Ant_CPU_5080_to_4080_on_regular_frames_20261020.py": "da46465a98bc487ae633439486113bda688692d14e9460c95d3823d29ed12003",
+    "publish_final.py": "6a7dec94a91ed42ff950f9df3522aa93b9478d4ae968547cf67a44a19dcb647b"
+  }
+}
