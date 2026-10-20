@@ -29,6 +29,9 @@ def new_steady_runtime_recoveries():
     specs += [(job + '_cpu_5080_to_4080_20261020_state.json',
                'handoff_completed_first_CPU_epoch_verified', 'handoff_Ant_CPU_5080_to_4080_20261020.py')
               for job in ('ant-2028', 'ant-2029')]
+    specs += [(job + '_walker_cpu_5080_to_4080_20261021_state.json',
+               'handoff_completed_first_CPU_epoch_verified', 'handoff_Walker_CPU_5080_to_4080_20261021.py')
+              for job in ('walker2d-2028', 'walker2d-2029')]
     specs += [('ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json',
                'completed_first_MPS_epoch_source_retired', 'handoff_ant2030_A100_GPU0_MPS_20261020.py'),
               ('walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json',
@@ -144,6 +147,8 @@ def main():
              'A100_unstarted_transfers_post_local_reboot_20261020_state.json']
     if (BASE / 'Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json').exists():
         names.append('Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json')
+    if (BASE / 'Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json').exists():
+        names.append('Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json')
     snapshots = []
     for name in names:
         snapshot = 'snapshot_' + args.stamp + '_' + name
