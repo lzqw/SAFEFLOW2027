@@ -33,6 +33,15 @@ def save(path, data):
     temporary.replace(path)
 
 
+def checkpoint_due(worker, frame):
+    if worker['steps'] % 50000 <= 5000:
+        return frame
+    # The logged epoch may already be several minutes old. Use its own age,
+    # not the resource-frame timestamp, then allow45s for atomic full-save.
+    remaining = 50000 - worker['steps'] % 50000
+    return frame - worker.get('progress_age_seconds', 0) + remaining / worker['last_epoch_fps'] + 45
+
+
 def main():
     lock = (BASE / 'Point_5080_to_4080_MPS_regular_dispatch_20261021.lock').open('a')
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -52,6 +61,10 @@ def main():
              'candidate_order': 'largest_remaining_budget_among_fresh_full_existing_Point_workers',
              'GPU_stable_seconds': 1800, 'minimum_GPU_free_MiB': 8192, 'maximum_GPU_utilization_percent': 85}
     assert digest(CONTROLLER) == s['controller_sha256'] and digest(ACCOUNTING) == s['accounting_module_sha256']
+    s.setdefault('checkpoint_attempts', {})
+    s.update(checkpoint_query_minimum_interval_seconds=120, maximum_source_checkpoint_attempts_per_job_per_frame=2,
+             source_checkpoint_timing_only_not_extra_resource_polling=True,
+             candidate_order='largest_remaining_budget_among_existing_Point_workers_ready_for_predicted_full_checkpoint')
     s.update(local_pid=os.getpid(), local_boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip())
     save(STATE, s)
     while len(s['completed']) < s['maximum_existing_cells_to_move']:
@@ -68,11 +81,27 @@ def main():
                 or frame - gpu['candidate_since_unix'] < 1800):
             time.sleep(20); continue
         completed = {x['job'] for x in s['completed']}
+        if time.time() < s.get('next_checkpoint_query_not_before', 0):
+            time.sleep(20); continue
         candidates = [w for w in source.get('training', [])
                       if w['job'].startswith('point-') and w['job'] not in completed
                       and w['device'] == 'cuda:0' and w.get('cuda_execution_backend') == 'mps_verified'
-                      and w.get('steps') is not None and w['steps'] % 50000 <= 5000
-                      and s['attempted_frames'].get(w['job']) != frame]
+                      and w.get('steps') is not None and w.get('last_epoch_fps', 0) > 0]
+        ready = []
+        future = []
+        for worker in candidates:
+            attempt = s['checkpoint_attempts'].get(worker['job'], {})
+            count = attempt.get('count', 0) if attempt.get('frame') == frame else 0
+            if count >= 2:
+                continue
+            due = attempt['next_due'] if count else checkpoint_due(worker, source['observed_at_unix'])
+            if due <= time.time():ready.append(worker)
+            else:future.append({'job': worker['job'], 'due_at_unix': due})
+        candidates = ready
+        next_query = min(future, key=lambda x: x['due_at_unix']) if future else None
+        if s.get('next_predicted_checkpoint_query') != next_query:
+            s['next_predicted_checkpoint_query'] = next_query
+            save(STATE, s)
         candidates.sort(key=lambda w: (w['steps'], w['job']))
         for worker in candidates:
             if len(s['completed']) >= s['maximum_existing_cells_to_move']:
@@ -81,6 +110,10 @@ def main():
             path = BASE / (job + '_' + SIDE + '_state.json')
             assert not path.exists(), 'Inspect existing per-cell transaction, never repeat'
             s['attempted_frames'][job] = frame
+            previous = s['checkpoint_attempts'].get(job, {})
+            count = previous.get('count', 0) if previous.get('frame') == frame else 0
+            s['checkpoint_attempts'][job] = {'frame': frame, 'count': count + 1, 'next_due': time.time() + 120}
+            s['next_checkpoint_query_not_before'] = time.time() + 120
             native_name = 'Point_4080_GPU_placement_regular_frame_' + str(int(frame)) + '.json'
             native_path = BASE / native_name
             if not native_path.exists():
@@ -108,6 +141,9 @@ def main():
                 s['completed'].append({'job': job, 'state_file': path.name, 'completed_at_unix': time.time()})
             s['phase'] = 'waiting_for_regular_GPU_capacity_and_fresh_full'
             save(STATE, s)
+            # One source-only checkpoint attempt at a time. No sampling wave of
+            # all Point jobs between ordinary1800-second resource frames.
+            break
         time.sleep(20)
     s['phase'] = 'all_requested_placements_completed'
     save(STATE, s)
