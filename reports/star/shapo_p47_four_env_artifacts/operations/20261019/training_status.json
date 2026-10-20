@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_1021.json",
+  "superseded_by": "training_status_20261020_1051.json",
+  "newer_engineering_runtime": "MPS_first_live_client_20261020_1105.json",
   "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1021.json for all18 workers in the ordinary10:21 observation, all with positive same-identity progress since09:51. Each P-core pilot has3 complete post-change epochs, with mean FPS about3.7%/9.9% above its prior four-epoch mean; observational, not sustained/causal guarantees. Both A100 cards now show no previously observed foreign GPU processes,17% utilization, and one remaining SAFEFLOW trainer each: first-frame spare-capacity candidates, not yet two-frame-stable. Reassess balanced short-tail Point placement at10:51 before starting the prepared MPS pilot; no formal MPS or A100 relocation has begun. Full budgets, failure accounting and scientific gates remain unchanged; no final scientific audit is claimed.",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1051.json for the10:51 ordinary counters:18 original worker identities,17 positive deltas, Goal2030 flat at3.995M with its process still live around the fixed4M evaluation. A100 foreign GPU jobs returned; spare capacity did not qualify and no A100 relocation began. Separate11:05 evidence proves Button2029's new live MPS client215058, while original31275 is paused in memory pending a new5000-step epoch. This intentional handoff overlap is one logical experiment, not a new cell. Verified full input2.2M/cost62490 is on the host and4080's4T disk. Full budgets, failure accounting and scientific gates remain unchanged; no sustained overall speed gain or final audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

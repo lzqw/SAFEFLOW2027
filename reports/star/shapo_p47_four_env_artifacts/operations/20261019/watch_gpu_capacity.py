@@ -294,7 +294,11 @@ def cycle(previous):
                 foreign = sorted(p['pid'] for p in gpu['processes']
                                  if p['role'] == 'foreign_or_unknown')
                 own_os_processes = sum(p['role'] in ('safeflow','safeflow_mps_server') for p in gpu['processes'])
-                own = sum(p['role'] == 'safeflow' for p in gpu['processes']) + len(gpu.get('safeflow_mps_client_pids', []))
+                # Some driver/NVML versions expose BOTH the MPS server and clients.
+                # Count the union, not direct processes plus clients a second time.
+                direct_clients = {p['pid'] for p in gpu['processes'] if p['role'] == 'safeflow'}
+                mps_clients = set(gpu.get('safeflow_mps_client_pids', []))
+                own = len(direct_clients | mps_clients)
                 reserve = 8192 if gpu['total_mib'] <= 24576 else 16384
                 eligible = (not foreign and not gpu.get('MPS_accounting_unproven', False) and gpu['free_mib'] >= reserve
                             and gpu['utilization_percent'] <= MAX_REBALANCE_GPU_UTILIZATION_PERCENT)

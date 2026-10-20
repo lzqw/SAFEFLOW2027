@@ -1,0 +1,20 @@
+{
+  "kind": "engineering_launch_readiness_not_scientific_audit",
+  "both_Pcore_pilot_complete_post_epochs_observed": true,
+  "Pcore_followup": "point2029_pcore_affinity_pilot_observe_1792463041.json",
+  "accounting_hook_integrated_before_any_transition": true,
+  "A100_capacity_reassessment_after1021_resolved": true,
+  "A100_reassessment_outcome": "Both cards again show foreign GPU tasks at10:51; spare capacity did not qualify across two ordinary frames. Do not run the prepared A100-return dispatcher.",
+  "A100_reassessment_native_observation": "capacity_progress_observation_20261020_1051.json",
+  "new_A100_relocation_started": false,
+  "training_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "selected_existing_cells": ["point-goal-2029", "point-button-2029"],
+  "total_steps_per_cell": 10000000,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "wait_for_fresh_checkpoint_if_logged_rollback_exceeds_5000_steps": true,
+  "host_and_4080_4T_input_copies_required_before_launch": true,
+  "original_default_CUDA_worker_kept_in_memory_until_new_target_epoch": true,
+  "no_full_training_acceleration_guarantee_from_short_MPS_test": true,
+  "full_scientific_audit_executed": false
+}
