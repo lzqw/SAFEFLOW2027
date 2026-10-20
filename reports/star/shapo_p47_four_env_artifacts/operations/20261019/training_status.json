@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_1051.json",
+  "superseded_by": "training_status_20261020_1121.json",
+  "latest_completed_engineering_transition": "point-button-2029_mps_5080_20261020_state.json",
   "newer_engineering_runtime": "MPS_first_live_client_20261020_1105.json",
   "newer_engineering_preparation": "MPS_preparation_20261020_1011.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1051.json for the10:51 ordinary counters:18 original worker identities,17 positive deltas, Goal2030 flat at3.995M with its process still live around the fixed4M evaluation. A100 foreign GPU jobs returned; spare capacity did not qualify and no A100 relocation began. Separate11:05 evidence proves Button2029's new live MPS client215058, while original31275 is paused in memory pending a new5000-step epoch. This intentional handoff overlap is one logical experiment, not a new cell. Verified full input2.2M/cost62490 is on the host and4080's4T disk. Full budgets, failure accounting and scientific gates remain unchanged; no sustained overall speed gain or final audit is claimed.",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_1121.json for the11:21 ordinary counters:18 logical cells, including Button2029's verified MPS client215058 after its first2.205M epoch. Original31275 was retired only after the new epoch; old segments and genuine full input2.2M/cost62490 were preserved on source, host and4T. Single-client FPS is near the preceding default epoch; no substantial/sustained speed gain is established. Goal2029 continues default CUDA while waiting for a fresh full checkpoint before joining. Other17 identities match10:51,16 advanced; Goal2030 remains live at3.995M around its fixed4M evaluation. A100 foreign jobs remain active; no A100 relocation occurred. Full budgets, recovery accounting and scientific gates remain unchanged; no final audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
