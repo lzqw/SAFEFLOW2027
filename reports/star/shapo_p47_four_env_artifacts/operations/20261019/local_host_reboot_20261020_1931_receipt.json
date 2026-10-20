@@ -1,0 +1,37 @@
+{
+  "kind": "local_coordinator_host_reboot_reconciliation",
+  "host_boot_time_local": "2026-10-20T19:31:17+08:00",
+  "reconciliation_observed_local": "2026-10-20T19:44:14+08:00",
+  "remote_boot_ids_unchanged_and_original_learner_handles_observed": true,
+  "remote_training_process_count": 18,
+  "remote_hosts": {
+    "tjucta-a100": {"boot_id": "6928f333-1036-473c-92d5-4c482d5fef59", "training_actors": 4},
+    "4080": {"boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026", "training_actors": 1},
+    "5080": {"boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f", "training_actors": 13}
+  },
+  "automatically_restored_local_services": {
+    "safeflow-gpu-capacity-watch.service": 863,
+    "safeflow-recovered-checkpoint-backup.service": 865,
+    "safeflow-recovered-result-collector.service": 866,
+    "safeflow-scientific-evidence-archive.service": 867
+  },
+  "capacity_monitor_poll_seconds": 1800,
+  "next_regular_frame_local": "2026-10-20T19:51:46+08:00",
+  "RAM_input_cache_restoration": {
+    "command": "python3 host_full_input_cache_20261020.py ensure",
+    "exit_code": 0,
+    "host_inputs_materialized_and_verified": 6,
+    "source": "unchanged separate 4080 4T copies, original SHA256 verified",
+    "original_offload_receipt_and_manifest_not_overwritten": true
+  },
+  "previous_local_capacity_resumer_and_two_held_coordinators": {
+    "terminated_by_local_reboot": true,
+    "old_pids_never_reused_or_signaled": true,
+    "remote_CPU_sources_14547_and_14550_still_training": true,
+    "pending_per_cell_transitions_not_executed": ["ant-2030", "walker2d-2030"],
+    "new_explicit_continuation_coordinator_required_not_old_main_replay": true
+  },
+  "additional_training_restarts_or_scientific_evaluations": 0,
+  "other_projects_paused_or_modified": false,
+  "temporary_early_boot_SSH_error_did_not_prove_training_stopped": true
+}
