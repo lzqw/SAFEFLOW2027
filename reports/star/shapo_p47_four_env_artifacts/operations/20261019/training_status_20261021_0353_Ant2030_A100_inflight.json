@@ -1,0 +1,153 @@
+{
+  "kind": "later_Ant2030_CPU_to_GPU0_partial_handoff_not_new_all_host_frame",
+  "engineering_observed_at_unix": 1792526142.6216745,
+  "previous_status": "training_status_20261021_0351.json",
+  "last_steady_training_status": "training_status_20261021_0351.json",
+  "last_all_host_native_frame_before_transaction": "ordinary_observation_20261021_0351.json",
+  "pre_pause_census_not_relabelled_as_current_post_pause_workers": true,
+  "job": "ant-2030",
+  "inflight_phase": "MPS_target_starting_source_paused",
+  "inflight_state_snapshot": "ant-2030_cpu_to_mps_a100_gpu0_20261020_inflight_state_20261021_0353.json",
+  "dispatcher_snapshot": "snapshot_20261021_0353_A100_unstarted_transfers_post_local_reboot_20261020_state.json",
+  "source_identity": {
+    "pid": 14550,
+    "start_ticks": 257260,
+    "state": "R",
+    "device": "cpu",
+    "cuda_visible_devices": "-1",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/resolved_formal_config.yaml",
+      "--seed",
+      "2030",
+      "--steps",
+      "5000000",
+      "--device",
+      "cpu",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-16-14-54-20/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59"
+  },
+  "source_held_paused_until_verified_first_target_epoch": true,
+  "target_launch_requested": true,
+  "first_target_epoch_and_source_retirement_not_yet_proven": true,
+  "genuine_resume_steps": 4350000,
+  "genuine_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+  "genuine_input_has_full_replay_rng_optimizers_and_finite_model": true,
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+    "host_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+    "archive_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "capacity_before_pause": {
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "owned_GPU_OS_pids": [],
+    "foreign_pids": [],
+    "memory_free_MiB": 81036,
+    "compute_mode": "Default",
+    "utilization_percent": 0,
+    "no_foreign_process_actions": true,
+    "shared_load_ceiling_percent": 60,
+    "no_speed_gain_guaranteed": true
+  },
+  "physical_target": "A100 GPU0 private MPS",
+  "bitwise_trajectory_equivalence_claimed": false,
+  "conditional_repeated_work_if_completed": {
+    "logged_steps": 0,
+    "safety_cost": 0.0,
+    "not_added_to_completed_recovery_totals_yet": true,
+    "unknown_unlogged_source_tail_not_zero": true
+  },
+  "last_completed_recovery_accounting": {
+    "extra_environment_steps_lower_bound": 1157276,
+    "extra_training_safety_cost_lower_bound": 10380.0,
+    "unknown_historical_and_unlogged_tails_not_assumed_zero": true,
+    "full_final_ledger_audit_not_executed": true,
+    "first_completed_A100_Walker_GPU_handoff_known_logged_rollback_steps": 0,
+    "first_completed_A100_Walker_GPU_handoff_known_extra_cost": 0,
+    "zero_known_logged_rollback_is_not_zero_unknown_unlogged_physical_overhead": true,
+    "Goal2027_crosshost_known_repeated_steps": 5000,
+    "Goal2027_crosshost_known_extra_safety_cost": 321,
+    "subsequent_runtime_placement_recoveries": [
+      {
+        "job": "point-button-2027",
+        "state_file": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 26.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2028",
+        "state_file": "ant-2028_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 0,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2029",
+        "state_file": "ant-2029_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "walker2d-2028",
+        "state_file": "walker2d-2028_walker_cpu_5080_to_4080_20261021_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 3.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "walker2d-2030",
+        "state_file": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 7.0,
+        "unlogged_tail_unknown_not_zero": true
+      }
+    ]
+  },
+  "full_training_budget_steps": 5000000,
+  "additional_experiment_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "no_speed_gain_guaranteed_before_actual_target_epochs": true,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "next_regular_resource_check_local": "2026-10-21T04:21:56.376794+08:00",
+  "data_notice": "The03:51 all-host census preceded the later Ant2030 CPU pause and GPU0 launch request. It remains an immutable pre-transaction frame, not a current worker count. Ant resumes from its genuine4.35M full replay/RNG/optimizer checkpoint, preserved on source, host and separate4T. Source remains held until a real new5k epoch and actual MPS GPU/client proof, then retirement. Known logged rollback is0, but unlogged source tail is unknown, not assumed zero. All5M budgets, source62ca739 and final gates remain unchanged; early2027 parent gaps remain unresolved."
+}
