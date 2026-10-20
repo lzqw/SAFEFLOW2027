@@ -1,0 +1,69 @@
+{
+  "kind": "durable4T_verified_originals_with_rebuildable_host_RAM_cache",
+  "host_root": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions",
+  "cache_root": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020",
+  "archive_host": "4080",
+  "authority": "User requested moving archives to4080's4T disk; do not delete originals or unrelated project data.",
+  "entries": [
+    {
+      "job": "point-goal-2029",
+      "sha256": "5ab4fae22ed297a4a6734781009111bcdb8a720090e78292c4128fc5eb926f39",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-goal-2029/mps_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2029/mps_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2029/mps_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-button-2029",
+      "sha256": "667f2ed56c29dbed1feb5ffd93375c4e74512e37f165095b3c05627f43d0f275",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2029/mps_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2029/mps_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2029/mps_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-goal-2028",
+      "sha256": "a49d40eae29f1b9c3b9676c7eacf8a33c57097efa1e432b96d9cf9519e9bf7ce",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-goal-2028/mps_wave2_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2028/mps_wave2_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2028/mps_wave2_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-button-2028",
+      "sha256": "b92d57cf4bf9d5ca3c32c96729f41af249660f4d604af98da19ac9fab07ef371",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2028/mps_wave2_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2028/mps_wave2_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2028/mps_wave2_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-goal-2030",
+      "sha256": "0629c217dd52a592c29a61d48ac23fe1bf3c762193cb009526b3fb8f30ecd81d",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-goal-2030/mps_wave3_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2030/mps_wave3_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2030/mps_wave3_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-button-2030",
+      "sha256": "85e5afdf1bcc8bd0bab0fa060332d2f117a862313429d1988d5bf22ae10a9bbf",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2030/mps_wave3_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2030/mps_wave3_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2030/mps_wave3_5080_20261020/input/latest_full.pt"
+    },
+    {
+      "job": "point-goal-2027",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-goal-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "sha256": "1c5057b0e5782e436f721cdf323d6e36bb2ff5356dc7b1866eb93a94e499beed"
+    },
+    {
+      "job": "point-button-2027",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/point-button-2027/balanced_MPS_5080_20261020/input/latest_full.pt",
+      "sha256": "9406fd800307c6d8565b3a6790f1819cbb0d03c2de8b64a79850b72bb8b5f6cf"
+    }
+  ],
+  "source_originals_and_durable4T_files_not_removed": true,
+  "only_duplicate_host_regular_copies_to_be_replaced_by_links": true,
+  "RAM_cache_ephemeral_rebuild_from_same_SHA_on4T_required_after_reboot": true,
+  "final_scientific_byte_checks_not_waived": true
+}

@@ -238,5 +238,6 @@
     "other_2027_legacy_parent_references": "PointButton, Ant, and Walker2d older parent references remain unresolved. Their preserved 4.10M/4.15M descendant full checkpoints cannot substitute for the referenced older inputs.",
     "final_delivery": "Await all full-budget runs and strict audit: 60 evaluation artifacts, 80 provenance artifacts, 60 trajectories, 120 checkpoint identities. No gate has been waived."
   },
-  "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json"
+  "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json",
+  "recent_host_input_cache_extension": "host_input_cache_Ant_Walker_extension_20261021_receipt.json"
 }

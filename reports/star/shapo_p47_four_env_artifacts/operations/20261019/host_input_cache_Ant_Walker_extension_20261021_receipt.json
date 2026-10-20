@@ -1,0 +1,47 @@
+{
+  "kind": "three_verified_redundant_host_inputs_added_to_restorable_RAM_cache",
+  "phase": "completed_same_SHA_links_and_durable_originals_preserved",
+  "completed_at_unix": 1792522567.5244842,
+  "new_entries": [
+    {
+      "job": "ant-2028",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2028/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/ant-2028/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2028/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "sha256": "ece3b5647da88e05990f06acddf968bed7bc7b01607acefaabde4666c5889f71"
+    },
+    {
+      "job": "ant-2029",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2029/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/ant-2029/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2029/cpu_5080_to_4080_20261020/input/latest_full.pt",
+      "sha256": "5e20506d499075c5128b3f165dcb28f433caa2b06ad7f5fccc8efeb1d6eea3cd"
+    },
+    {
+      "job": "walker2d-2028",
+      "host_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/walker2d-2028/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "cache_path": "/dev/shm/SAFEFLOW2027_full_input_cache_20261020/walker2d-2028/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/walker2d-2028/walker_cpu_5080_to_4080_20261021/input/latest_full.pt",
+      "sha256": "6047fcba32353f3c0b036ad008292a9321477222b7d36474c6a817310f7d5b43"
+    }
+  ],
+  "previous_manifest_preserved_at": "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/host_full_input_cache_manifest_eight_before_Ant_Walker_extension_20261021.json",
+  "previous_manifest_sha256": "6c49f8985483a05cac6ea3d5473f739a5c4d43fbddc55b9aead8be2ad1b55e2b",
+  "updated_manifest_sha256": "8d3a1e919231a346e6f97503b7afa76826b85e3a73c4fcfdd490209429bc04e9",
+  "unchanged_restore_helper_sha256": "b5bcb294c6d0fb8fd412584d3fbfa2006bb78071040cb75c7830ff6d180949da",
+  "new_durable_copy_proof": {
+    "verified_durable4T_copies": 3
+  },
+  "restore_manifest_entries": 11,
+  "duplicate_host_regular_bytes_released": 403830441,
+  "host_free_bytes_before": 2666151936,
+  "host_free_bytes_after": 3069972480,
+  "canonical_paths_preserved_as_same_SHA_links": true,
+  "existing_ensure_cache_restores_all_eleven_after_reboot": true,
+  "initial_and_prior_extension_receipts_not_overwritten": true,
+  "source_originals_and_4T_originals_removed": 0,
+  "new_scientific_rollouts_or_audits": 0,
+  "training_budget_or_parameters_changed": false,
+  "learner_processes_signaled_or_restarted": 0,
+  "scientific_byte_checks_or_gates_waived": false
+}
