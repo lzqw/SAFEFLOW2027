@@ -1,0 +1,22 @@
+{
+  "kind": "completed_scheduled_checkpoint_backup_cycle_after_local_host_reboot",
+  "observed_at_local": "2026-10-20T20:33:00+08:00",
+  "local_host_reboot_time": "2026-10-20T19:31:17+08:00",
+  "backup_service_pid": 865,
+  "backup_service_not_restarted_or_stopped": true,
+  "backup_cycle_last_transfer_completed_local": "2026-10-20T20:24:29.403052+08:00",
+  "current_export_registry_matches": {
+    "tjucta-a100": {"observed_at_unix": 1792497687.5540142, "exported_checkpoint_rows": 6, "replicated_current_rows": 6, "destination_host": "4080"},
+    "4080": {"observed_at_unix": 1792497702.2070425, "exported_checkpoint_rows": 7, "replicated_current_rows": 7, "destination_host": "tjucta-a100"},
+    "5080": {"observed_at_unix": 1792497780.9530525, "exported_checkpoint_rows": 13, "replicated_current_rows": 13, "destination_host": "4080", "physical_destination_root": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/from_5080"}
+  },
+  "registry_comparison": "Each current export checkpoint metadata SHA256 equals its completed replication registry identity; unchanged already-backed-up rows also count. These are per-host backup rows, not26 unique scientific runs or26 new transfers.",
+  "source_of_evidence": ["backup_state.json", "backup.log", "live backup PID865 with no active transfer children"],
+  "collector_last_completed_regular_observation": {"time_local": "2026-10-20T20:31:29.543961+08:00", "terminal_training_receipts": 2, "total_training_cells": 20, "full_strict_final_audit": "pending"},
+  "temporary_passive_observer_cleanup": {"pid": 12112, "session_id": 83830, "reason": "Expected hrtimer_nanosleep but this Python sleep uses do_select; independently confirmed all current export identities replicated before ending observer only", "signal": "SIGTERM", "training_or_backup_service_signaled": false},
+  "remote_training_restarts_added": 0,
+  "scientific_evaluation_rollouts_added": 0,
+  "independent_rehash_of_all_remote_checkpoint_bytes_or_final_scientific_audit_executed": false,
+  "early_2027_missing_provenance_not_repaired_by_backup": true,
+  "next_regular_resource_observation_local": "2026-10-20T20:51:46+08:00"
+}
