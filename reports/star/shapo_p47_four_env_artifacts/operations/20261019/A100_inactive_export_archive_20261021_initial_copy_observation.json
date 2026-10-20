@@ -1,0 +1,38 @@
+{
+  "kind": "copy_only_inactive_A100_exports_to_4T",
+  "local_pid": 86313,
+  "controller_sha256": "f8cb9a1cc58913ce016f5a52ae153df104282fe797acd6be10270cd644ae509d",
+  "source_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/export",
+  "scope_jobs": [
+    "ant-2028",
+    "ant-2029",
+    "ant-2031",
+    "point-button-2027",
+    "point-button-2028",
+    "point-button-2029",
+    "point-button-2030",
+    "point-button-2031",
+    "point-goal-2027",
+    "point-goal-2028",
+    "point-goal-2029",
+    "point-goal-2030",
+    "point-goal-2031",
+    "walker2d-2028",
+    "walker2d-2029"
+  ],
+  "target_root": "/home/carla/4T/SAFEFLOW2027_4080/retired_export_snapshots_from_a100/20261021/inactive_export_snapshots",
+  "source_files_removed": 0,
+  "training_signals_or_model_runs": 0,
+  "source_release_not_authorized_by_this_copy_program": true,
+  "phase": "copying_closed_exports_source_untouched",
+  "updated_at_unix": 1792537778.2350185,
+  "manifest_file": "A100_inactive_export_archive_20261021_source_manifest.json",
+  "manifest_sha256": "fdf3c3de1ad8933c45075d9129ba46e7d8c72c56a748fab300d4f86ff4252840",
+  "file_count": 89,
+  "logical_bytes": 6255582853,
+  "target": {
+    "stage": "/home/carla/4T/SAFEFLOW2027_4080/retired_export_snapshots_from_a100/20261021/.inactive-export-incoming.915gio88",
+    "final": "/home/carla/4T/SAFEFLOW2027_4080/retired_export_snapshots_from_a100/20261021/inactive_export_snapshots",
+    "separate_4T_filesystem_verified": true
+  }
+}

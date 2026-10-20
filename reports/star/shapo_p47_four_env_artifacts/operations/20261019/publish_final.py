@@ -24,6 +24,7 @@ from cpu_5080_to_4080_recovery_accounting_20261020 import verify_Ant_CPU_5080_to
 from walker_cpu_5080_to_4080_recovery_accounting_20261021 import verify_Walker_CPU_5080_to_4080
 from retired_GPU_archive_relocation_accounting_20261021 import verify_retired_GPU_archive_relocation
 from point_5080_to_4080_MPS_accounting_20261021 import verify_Point_5080_to_4080_MPS
+from inactive_A100_export_storage_accounting_20261021 import verify_inactive_A100_export_relocation
 
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
@@ -1184,7 +1185,8 @@ def annotate_recovery(target):
                                  + verify_Point_5080_to_4080_MPS(BASE))
     new_crosshost_cpu_balances = (verify_Ant_CPU_5080_to_4080(BASE)
                                   + verify_Walker_CPU_5080_to_4080(BASE))
-    storage_relocations = verify_retired_GPU_archive_relocation(BASE)
+    storage_relocations = (verify_retired_GPU_archive_relocation(BASE)
+                           + verify_inactive_A100_export_relocation(BASE))
     storage_files = set()
     report = target / 'SHAPO_P47_FOUR_ENV_REPORT.md'
     original = report.read_bytes()
@@ -1621,6 +1623,18 @@ def annotate_recovery(target):
             'training-cost units; the unlogged tail remains unknown, not zero.\n'
         )
     for storage in storage_relocations:
+        if storage.get('storage_kind') == 'inactive_A100_export_snapshots':
+            disclosure += (
+                '\n15 inactive A100 export-snapshot directories, no longer attached '
+                'to canonical or live A100 matrix jobs, were copied byte-for-byte '
+                'to the separate4080-4T archive. Only after fresh source and archive '
+                'SHA verification were89 old export-copy files released on A100; '
+                'dated restoration notes remain and later fresh exports may repopulate '
+                'those names. Canonical runs, active export jobs, metrics, and '
+                'scientific settings were not modified. This neither aliases a '
+                'different checkpoint nor repairs any missing earlier2027 parent.\n'
+            )
+            continue
         disclosure += (
             '\nAfter the runtime handoffs,13 cold retired-source directories '
             '(598 original files,8,013,297,651 logical bytes) were preserved '
