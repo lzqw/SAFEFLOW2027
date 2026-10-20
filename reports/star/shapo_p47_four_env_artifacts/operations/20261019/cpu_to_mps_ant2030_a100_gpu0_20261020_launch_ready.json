@@ -1,0 +1,25 @@
+{
+  "prepared_at_utc": "2026-10-20 07:46:15 UTC",
+  "GPU0_shared_headroom_qualified": true,
+  "accounting_hook_integrated_before_any_transition": true,
+  "capacity": {
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "owned_GPU_OS_pids": [
+      7777
+    ],
+    "foreign_pids": [],
+    "memory_free_MiB": 80256,
+    "compute_mode": "Default",
+    "utilization_percent": 12,
+    "no_foreign_process_actions": true,
+    "shared_load_ceiling_percent": 60,
+    "no_speed_gain_guaranteed": true
+  },
+  "controller_sha256": "18eed33ca1cd365251e81a37b81c3b43e5ed9b0b3760accee0da751b7744c1ca",
+  "accounting_module_sha256": "f7ccee9a0f3d7922e533aa6d55cfaf7b7d4b87ab562aa4955ca1c0276a21dd7f",
+  "no_fresh_seeds": true,
+  "no_budget_reduction": true,
+  "no_other_project_pause": true,
+  "start_daemon_only_after_full_input_preserved": true,
+  "GPU_utilization_is_not_training_speed_proof": true
+}
