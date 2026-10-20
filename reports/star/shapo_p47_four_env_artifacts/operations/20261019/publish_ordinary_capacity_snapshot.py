@@ -172,6 +172,12 @@ def main():
     write(OUT / name, current)
     shutil.copyfile(BASE / ('capacity_progress_observation_' + args.stamp + '.json'), OUT / current['native_observation_file'])
     root = read(OUT / 'training_status.json')
+    maintenance = root.get('newer_storage_maintenance_after_snapshot')
+    if maintenance:
+        path = (OUT / maintenance).resolve()
+        path.relative_to(OUT.resolve())
+        if read(path).get('finished_at_unix', float('inf')) <= raw['observed_at_unix']:
+            root['recent_storage_maintenance'] = root.pop('newer_storage_maintenance_after_snapshot')
     if root.get('newer_scientific_summary_after_snapshot') == current.get('latest_native_science', {}).get('summary'):
         root.pop('newer_scientific_summary_after_snapshot', None)
     root.update(superseded_by=name, snapshot_notice='Historical17:27 payload below. Latest:' + name + '. ' + current['data_notice'])
