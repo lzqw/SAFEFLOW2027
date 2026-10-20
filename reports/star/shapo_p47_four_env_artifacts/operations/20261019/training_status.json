@@ -1,4 +1,5 @@
 {
+  "newer_scientific_summary_after_snapshot": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "latest_local_reboot_reconciliation": "local_host_reboot_20261020_2107_receipt.json",
   "new_Ant_CPU_capacity_queue_preparation": "Ant_CPU_5080_to_4080_20261020_preparation.json",
   "latest_host_storage_extension": "host_input_cache_Goal2027_extension_20261020_receipt.json",
@@ -13,7 +14,7 @@
   "newer_engineering_runtime": "Goal2027_A100_to_5080_MPS_completed_20261020_1914.json",
   "newer_engineering_preparation": "cpu_to_mps_ant2030_a100_gpu0_20261020_preparation.json",
   "snapshot_notice": "Historical17:27 payload below. Latest:training_status_20261020_2121.json. 2026-10-20T21:21:47.507800+08:00 ordinary native frame:all18 active existing cells advanced;11GPU/7CPU;2/20 budgets complete. 9PointGPU clients on5080;Button2027 currently ontjucta-a100 at5645000steps. Completed placements require genuine full inputs and target epoch proof before source retirement;partial transactions need separate evidence and cannot pass this steady-state renderer. Capacity schedulers use existing30min frames,not additional broad SSH polling. Source/host/separate4T originals preserved;recovery floors1137276steps/10344cost plus unknown historical/unlogged tails. Early2027 parent gaps still unresolved;strict final gates not waived. No scientific parameter,budget,seed,extra evaluation or foreign-project change. Per-job time extrapolations are training-only,not guarantees.",
-  "newest_intermediate_scientific_result": "../../partial_milestones/ant_2M_available5_20261020/summary.json",
+  "newest_intermediate_scientific_result": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",

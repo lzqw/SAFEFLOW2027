@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "known_original_full_parent_gap_seeds": [2027],
+  "descriptive_summary_includes_provenance_unresolved_history": true,
+  "kind": "existing_native_intermediate_milestone_descriptive_summary",
+  "assembled_at_utc": "2026-10-20T13:34:43.924250+00:00",
+  "environment": "Walker2d-v4",
+  "milestone_steps": 2000000,
+  "total_training_budget_steps": 5000000,
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "planned_training_seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "available_training_seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "availability_basis": "Five exact latest indexed4T archive manifests; all same-seed2M copies must have one SHA, never selected by return/cost.",
+  "records": [
+    {
+      "training_seed": 2027,
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "mean_return": 5810.754651839165,
+      "mean_cost": 0.01,
+      "cost_cvar_20": 0.05,
+      "failure_rate": 0.01,
+      "time_limit_rate": 0.99,
+      "training_cumulative_cost_at_2M": 2312.0,
+      "high_risk_normal_tangent_variance_ratio": 0.7184643149375916,
+      "high_risk_dangerous_outward_velocity": 0.21863071620464325,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2027/evaluation_step_2000000.json",
+        "sha256": "b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd",
+        "bytes": 22548,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2027/1792500449620496048-1341dfbddad7db8b0d8e6bd135a1ce4a9dcadca74d1db7ab54b1e17baeb90a8d.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd",
+        "all_identical_SHA_source_relative_paths": [
+          "training/recovered-history/artifacts/evaluation_step_2000000.json"
+        ],
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2028,
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "mean_return": 3119.1886580344203,
+      "mean_cost": 0.75,
+      "cost_cvar_20": 1.0,
+      "failure_rate": 0.75,
+      "time_limit_rate": 0.25,
+      "training_cumulative_cost_at_2M": 3343.0,
+      "high_risk_normal_tangent_variance_ratio": 0.8301751613616943,
+      "high_risk_dangerous_outward_velocity": 0.25105801224708557,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2028/evaluation_step_2000000.json",
+        "sha256": "3d6607aaecf6ef21e11d1262c8dd397980a58465dc468b7aeefd7f8804d3c8f4",
+        "bytes": 28694,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/walker2d-2028/1792500898441469188-93c800ac9d821d6c64f6714976c3ea77b341f16e9c19a563971f336d22109d03.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/3d6607aaecf6ef21e11d1262c8dd397980a58465dc468b7aeefd7f8804d3c8f4",
+        "all_identical_SHA_source_relative_paths": [
+          "training/STAR-{Walker2d-v4}/seed-2028-2026-10-19-16-02-36/artifacts/evaluation_step_2000000.json"
+        ],
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2029,
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "mean_return": 5667.186724215728,
+      "mean_cost": 0.43,
+      "cost_cvar_20": 1.0,
+      "failure_rate": 0.43,
+      "time_limit_rate": 0.57,
+      "training_cumulative_cost_at_2M": 2717.0,
+      "high_risk_normal_tangent_variance_ratio": 0.6700829863548279,
+      "high_risk_dangerous_outward_velocity": 0.1974431723356247,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2029/evaluation_step_2000000.json",
+        "sha256": "f82eb564eb43cd7ce8d4ec64591aac2d72001aa4fda64f381079e39dbe8ef96b",
+        "bytes": 25978,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/walker2d-2029/1792500900905957683-e7bfc74ad6d3389c9f0056d2d0180ad11c9ed9d0d0ce6210c72c793faaab76bb.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/f82eb564eb43cd7ce8d4ec64591aac2d72001aa4fda64f381079e39dbe8ef96b",
+        "all_identical_SHA_source_relative_paths": [
+          "training/STAR-{Walker2d-v4}/seed-2029-2026-10-19-16-11-34/artifacts/evaluation_step_2000000.json"
+        ],
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2030,
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "mean_return": 3392.2557399800517,
+      "mean_cost": 0.43,
+      "cost_cvar_20": 1.0,
+      "failure_rate": 0.43,
+      "time_limit_rate": 0.57,
+      "training_cumulative_cost_at_2M": 2667.0,
+      "high_risk_normal_tangent_variance_ratio": 0.8273454308509827,
+      "high_risk_dangerous_outward_velocity": 0.340679794549942,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2030/evaluation_step_2000000.json",
+        "sha256": "4e45b3ec2598d72412e1d4e5767005ff69b692d6e5f72dd3d1bb9a94c677b90f",
+        "bytes": 26098,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2030/1792500451729653015-b492d675fd7de581d655f2bb6881c76cd15794afd773e6974e7b221d6b1ae64a.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/4e45b3ec2598d72412e1d4e5767005ff69b692d6e5f72dd3d1bb9a94c677b90f",
+        "all_identical_SHA_source_relative_paths": [
+          "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json"
+        ],
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    },
+    {
+      "training_seed": 2031,
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "total_training_budget_steps": 5000000,
+      "mean_return": 5716.591169351176,
+      "mean_cost": 0.26,
+      "cost_cvar_20": 1.0,
+      "failure_rate": 0.26,
+      "time_limit_rate": 0.74,
+      "training_cumulative_cost_at_2M": 2570.0,
+      "high_risk_normal_tangent_variance_ratio": 0.6689738631248474,
+      "high_risk_dangerous_outward_velocity": 0.17178545892238617,
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2031/evaluation_step_2000000.json",
+        "sha256": "b5e341b6810590c212b088ed0ca01ec930c4741ed818e4afce2a9a685a2a755c",
+        "bytes": 24651,
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2031/1792500459645610371-9e8303f7a68fa96fb997ea26bf32880cc98bca2833f29d4dac663fffcf765052.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/b5e341b6810590c212b088ed0ca01ec930c4741ed818e4afce2a9a685a2a755c",
+        "all_identical_SHA_source_relative_paths": [
+          "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_2000000.json"
+        ],
+        "archive_manifest_declared_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69"
+      },
+      "protocol": {
+        "episodes": 100,
+        "episodes_per_base_seed": 20,
+        "base_seeds": [
+          32027,
+          32028,
+          32029,
+          32030,
+          32031
+        ],
+        "trajectory_seeds": [
+          32027,
+          32029,
+          32031
+        ]
+      },
+      "strict_full_checkpoint_provenance_audit_executed": false
+    }
+  ],
+  "descriptive_aggregation": {
+    "unit": "training seed",
+    "n": 5,
+    "spread": "Sample standard deviation across five training seeds, not episode-level SE",
+    "cost_cvar_20_aggregation": "Mean of five native per-training-seed CVaR20 values, not pooled500-episode CVaR",
+    "metrics": {
+      "mean_return": {
+        "mean_across_five_training_seeds": 4741.195388684108,
+        "sd_across_five_training_seeds": 1360.455613934377
+      },
+      "mean_cost": {
+        "mean_across_five_training_seeds": 0.376,
+        "sd_across_five_training_seeds": 0.2707027890510181
+      },
+      "cost_cvar_20": {
+        "mean_across_five_training_seeds": 0.81,
+        "sd_across_five_training_seeds": 0.42485291572496003
+      },
+      "failure_rate": {
+        "mean_across_five_training_seeds": 0.376,
+        "sd_across_five_training_seeds": 0.2707027890510181
+      }
+    }
+  },
+  "native_evaluation_protocol_checked": {
+    "episodes_per_training_seed": 100,
+    "base_seed_count": 5,
+    "episodes_per_base_seed": 20,
+    "source_JSON_bytes_and_SHA_match_archive_rows": true,
+    "only_metrics_JSON_protocol_checks_not_full_checkpoint_or_final_matrix_audit": true
+  },
+  "additional_evaluation_rollouts": 0,
+  "new_training_cells": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "inferential_or_significance_test_performed": false,
+  "early_scientific_stop_or_configuration_selection_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "strict_final_matrix_audit_executed": false,
+  "final_scientific_cohort_report": false,
+  "full_scientific_objective_complete": false,
+  "notes": [
+    "This2M snapshot is not the5M final Walker cohort or evidence of full experiment completion.",
+    "No matchedC0 control is supplied; these data alone do not establish causal safety or task-performance improvement.",
+    "Native mean cost equals failure rate for these files: average0.376 means37.6% failures, not a standalone low-cost success claim.",
+    "At this fixed2M milestone, failure varies from1% for recovered seed2027 to75% for seed2028; cross-seed task/safety behavior is not uniform.",
+    "High-risk normal-to-tangent variance ratios span0.6690-0.8302. This shows normal diffusion suppression in these diagnostic samples, not a causal task/safety improvement overC0.",
+    "The statistical unit is5 training seeds, not500 independent training runs.",
+    "High-risk direction geometry is diagnostic, not a new training or configuration-selection gate.",
+    "Native training cumulative cost is accepted-lineage cost, not all physically executed recovery work.",
+    "Seed2027 recovered-history full-parent identity remains unresolved; matching metric JSON/archive SHA does not repair it."
+  ]
+}
