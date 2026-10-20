@@ -1,0 +1,69 @@
+{
+  "kind": "targeted_all_current_scientific_archive_indexes_lookup_not_final_audit",
+  "observed_at_unix": 1792474829.028115,
+  "scope": "All currently indexed scientific-evidence manifests for three2027 jobs only; no checkpoint tensors, tar payloads or new evaluations read",
+  "results": [
+    {
+      "job": "point-button-2027",
+      "manifests_read": 166,
+      "earliest_snapshot_created_at_ns": 1792082427398700800,
+      "latest_snapshot_created_at_ns": 1792472829731075000,
+      "historical_full_distinct_hashes": {
+        "0b03259925f703bd08d4ffd84e0e2f4527f70b281ecee42ef8b9968a51c44f4b": {
+          "bytes": 294865004,
+          "manifest_count": 166,
+          "example_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-button-2027/1792082427398700891-2f18d272f463757dd7600cb6fd46dc0cf99c07d8fdb5014ae02898591694052c.json"
+        }
+      },
+      "exact_original_August_full_paths": []
+    },
+    {
+      "job": "ant-2027",
+      "manifests_read": 166,
+      "earliest_snapshot_created_at_ns": 1792081935900455200,
+      "latest_snapshot_created_at_ns": 1792472809174685700,
+      "historical_full_distinct_hashes": {
+        "c7ecfb8afc8008d9d94aa6e914a5cb4bea68c231e9dc7b3a9572f816cb627c82": {
+          "bytes": 146457900,
+          "manifest_count": 166,
+          "example_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/ant-2027/1792081935900455269-1d61bcd8c0077bbfcc039348884be50fa7bb0bf6c6866373c5102fc569b5ee91.json"
+        }
+      },
+      "exact_original_August_full_paths": []
+    },
+    {
+      "job": "walker2d-2027",
+      "manifests_read": 166,
+      "earliest_snapshot_created_at_ns": 1792083513592735000,
+      "latest_snapshot_created_at_ns": 1792472835214783500,
+      "historical_full_distinct_hashes": {
+        "1dd32f3447d208d3726f0ce72e2c02be5e092a6eae9ab4a9b4c8279f313af390": {
+          "bytes": 110912364,
+          "manifest_count": 166,
+          "example_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2027/1792083513592734916-d33fb14037c179ba4b3c908981c49bec827233a1420c2981227999833132462b.json"
+        }
+      },
+      "exact_original_August_full_paths": []
+    }
+  ],
+  "total_manifests_read": 498,
+  "known_historical_candidate_steps": {
+    "ant-2027": 4150000,
+    "point-button-2027": 4100000,
+    "walker2d-2027": 4150000
+  },
+  "each_job_has_only_one_historical_full_hash": true,
+  "exact_original_August_full_path_match_count": 0,
+  "conclusion": "Earlier original parent identities remain unresolved in all currently indexed scientific-evidence snapshots for these three cells. The sole historical full candidates are later than their early required milestones and must not be rebound or aliased as those parents.",
+  "absence_claim_limit": "This is not proof of permanent loss across every possible unindexed tar archive, external backup or unavailable original machine.",
+  "next_useful_evidence": "An original external3090 backup or an already preserved but not yet indexed archive inventory explicitly identifying the earlier native parent; do not rerun this unchanged index lookup without new original material.",
+  "duplicate_index_lookup_not_needed_without_new_original_backup_or_lineage_manifest": true,
+  "point_goal2027_prior_search_not_repeated": true,
+  "training_actors_not_interrupted": true,
+  "checkpoint_payloads_loaded_in_this_index_lookup": 0,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "existing_strict_final_gates_unchanged": true,
+  "no_cell_restart_authorized_or_started": true,
+  "full_scientific_audit_executed": false
+}
