@@ -24,6 +24,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('job', choices=('ant-2028', 'ant-2029'))
     parser.add_argument('stamp')
+    parser.add_argument('--native-frame', help='Already collected public all-host frame; may include migration overlap')
     args = parser.parse_args()
     assert re.fullmatch(r'2026102[01]_\d{4}', args.stamp)
     name = 'training_status_' + args.stamp + '_' + args.job + '_handoff_completed.json'
@@ -71,6 +72,20 @@ def main():
         other_additions.append({'job': job, 'state_file': path.name, 'steps': steps, 'safety_cost': cost})
     root = read(OUT / 'training_status.json')
     previous = read(OUT / root['superseded_by'])
+    frame = args.native_frame or previous.get('native_observation_file', previous.get('latest_all_host_native_frame'))
+    source_fps = state['expected_source_identity']['last_epoch_fps']
+    source_fps_reference = 'planned_regular_frame_expected_source_identity'
+    if args.native_frame:
+        assert re.fullmatch(r'ordinary_observation_\d{8}_\d{4}\.json', frame)
+        frame_data = read(OUT / frame)
+        assert all(d['status'] == 'observed' for d in frame_data['hosts'].values())
+        source_rows = [w for d in frame_data['hosts'].values() for w in d.get('training', [])
+                       if w['job'] == args.job and w['pid'] == state['source_identity']['pid']
+                       and w['start_ticks'] == state['source_identity']['start_ticks']
+                       and w['boot_id'] == state['source_identity']['boot_id']]
+        if len(source_rows) == 1 and source_rows[0].get('steps') == state['last_logged_source_steps']:
+            source_fps = source_rows[0]['last_epoch_fps']
+            source_fps_reference = frame
     snapshot_name = prefix + '_completed_state_' + args.stamp + '.json'
     immutable(OUT / snapshot_name, state)
     native_snapshot = prefix + '_first_epoch_native_' + args.stamp + '.json'
@@ -78,13 +93,15 @@ def main():
     report = {
         'schema_version': 1, 'kind': 'completed_existing_cell_CPU_handoff_not_full_cohort_snapshot',
         'engineering_completed_at_unix': state['updated_at_unix'], 'previous_status': root['superseded_by'],
-        'latest_all_host_native_frame': previous.get('native_observation_file', previous.get('latest_all_host_native_frame')),
+        'latest_all_host_native_frame': frame,
+        'all_host_native_frame_may_include_controlled_source_target_overlap_and_missing_first_epoch': True,
         'completed_state': snapshot_name, 'first_target_native_observation': native_snapshot,
         'job': args.job, 'target_identity': state['target_identity'],
         'genuine_resume_steps': state['resume_steps'], 'first_target_steps': state['first_verified_target_steps'],
         'first_target_FPS': state['first_verified_target_fps'],
-        'source_previous_epoch_FPS': state['expected_source_identity']['last_epoch_fps'],
-        'first_epoch_only_speed_ratio_not_sustained_or_causal_guarantee': state['first_verified_target_fps'] / state['expected_source_identity']['last_epoch_fps'],
+        'source_previous_epoch_FPS': source_fps,
+        'source_previous_epoch_FPS_reference': source_fps_reference,
+        'first_epoch_only_speed_ratio_not_sustained_or_causal_guarantee': state['first_verified_target_fps'] / source_fps,
         'runtime_change': state['runtime_change'], 'GPU_capacity_not_claimed_or_used': True,
         'source_original_directory_recoverably_archived': state['retired_source_archive'],
         'input_preservation': state['input_preservation'],

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "completed_existing_cell_CPU_handoff_not_full_cohort_snapshot",
+  "engineering_completed_at_unix": 1792509783.5401793,
+  "previous_status": "training_status_20261020_2306_ant-2028_handoff_completed.json",
+  "latest_all_host_native_frame": "ordinary_observation_20261020_2321.json",
+  "all_host_native_frame_may_include_controlled_source_target_overlap_and_missing_first_epoch": true,
+  "completed_state": "ant-2029_cpu_5080_to_4080_20261020_completed_state_20261020_2323.json",
+  "first_target_native_observation": "ant-2029_cpu_5080_to_4080_20261020_first_epoch_native_20261020_2323.json",
+  "job": "ant-2029",
+  "target_identity": {
+    "pid": 1234198,
+    "start_ticks": 13493607,
+    "state": "R",
+    "device": "cpu",
+    "cuda_visible_devices": "-1",
+    "args": [
+      "/home/carla/SAFEFLOW2027_4080/env/bin/python",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2029/resolved_formal_config.yaml",
+      "--seed",
+      "2029",
+      "--steps",
+      "5000000",
+      "--device",
+      "cpu",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2029/training",
+      "--result",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2029/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2029/training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026"
+  },
+  "genuine_resume_steps": 2100000,
+  "first_target_steps": 2105000,
+  "first_target_FPS": 6.902708053588867,
+  "source_previous_epoch_FPS": 5.2967939376831055,
+  "source_previous_epoch_FPS_reference": "ordinary_observation_20261020_2321.json",
+  "first_epoch_only_speed_ratio_not_sustained_or_causal_guarantee": 1.3031860659106953,
+  "runtime_change": {
+    "from_device": "cpu",
+    "to_device": "cpu",
+    "from_torch": "2.7.1+cu128",
+    "to_torch": "2.7.1+cu118",
+    "cuda_build_changed": true,
+    "bitwise_equivalence_claimed": false
+  },
+  "GPU_capacity_not_claimed_or_used": true,
+  "source_original_directory_recoverably_archived": "/home/autodrive/LZQW/SAFEFLOW2027/recovery_backups/retired_cpu_workers/ant-2029_cpu_5080_to_4080_20261020_1792509782595352493",
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2029/cpu_5080_to_4080_20261020/input/latest_full.pt",
+    "host_input_sha256": "5e20506d499075c5128b3f165dcb28f433caa2b06ad7f5fccc8efeb1d6eea3cd",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2029/cpu_5080_to_4080_20261020/input/latest_full.pt",
+    "archive_input_sha256": "5e20506d499075c5128b3f165dcb28f433caa2b06ad7f5fccc8efeb1d6eea3cd",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "completed_Ant_CPU_recovery_additions": [
+    {
+      "job": "ant-2028",
+      "steps": 0,
+      "safety_cost": 0.0
+    },
+    {
+      "job": "ant-2029",
+      "steps": 5000,
+      "safety_cost": 0.0
+    }
+  ],
+  "subsequent_completed_A100_runtime_recovery_additions": [],
+  "completed_recovery_totals_lower_bound": {
+    "environment_steps": 1147276,
+    "safety_cost": 10370.0,
+    "unknown_historical_and_unlogged_work_not_assumed_zero": true
+  },
+  "other_Ant_CPU_state_phases_at_report": {
+    "ant-2028": "handoff_completed_first_CPU_epoch_verified"
+  },
+  "full_CPU_group_accounting_not_claimed_by_this_single_cell_report": true,
+  "all_host_counters_not_spliced_with_later_target_probe": true,
+  "additional_training_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "training_budgets_reduced": false,
+  "other_projects_paused": false,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "data_notice": "Existing Ant cell continued from a genuine full checkpoint with replay/RNG/optimizers. A new real5k CPU epoch and native process identity preceded source retirement and recoverable archival. This is engineering evidence only, not a simultaneous all-host frame, sustained speed guarantee, cohort accounting pass, or final scientific certification. All150M budgets and final provenance gates remain; legacy2027 missing original full parents are not repaired."
+}
