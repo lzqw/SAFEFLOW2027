@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0841.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0841.json: Goal2028's terminal CPU numerical failure was recovered on5080 from its genuine3.1M full input, with the first GPU epoch verified. The native discarded tail38,661 steps/547 training-cost units and a resolved local evidence-copy error are disclosed. Other17 cells use08:21 native progress. Full budgets and scientific gates remain unchanged; previous time projections predate this new placement and are not current promises.",
+  "superseded_by": "training_status_20261020_0907.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0907.json: Ant2031 has continued from a4.05M full input onto available4080-host CPU capacity, with first new epoch verified at4.055M. Its source retired afterward; raw records and known/unknown rollback costs are retained. Eighteen unique cells remain active with full budgets. Earlier Goal2028 CPU failure/GPU recovery remains disclosed. No scientific parameters or final audit gates changed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
