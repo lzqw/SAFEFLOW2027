@@ -1,0 +1,126 @@
+{
+  "kind": "completed_existing_Ant2030_CPU_to_GPU0_MPS_not_full_cohort_census",
+  "completed_at_unix": 1792526856.6340866,
+  "published_at_unix": 1792526871.5595248,
+  "previous_status": "training_status_20261021_0353_Ant2030_A100_inflight.json",
+  "job": "ant-2030",
+  "last_all_host_native_frame_before_this_handoff": "ordinary_observation_20261021_0351.json",
+  "old_all_host_counters_not_spliced_with_later_single_host_probe": true,
+  "completed_state": "ant-2030_cpu_to_mps_a100_gpu0_20261020_completed_state_20261021_0407.json",
+  "first_target_native_observation": "ant-2030_cpu_to_mps_a100_gpu0_20261020_target_first_epoch_native_20261021_0407.json",
+  "engineering_accounting_check": "A100_Ant2030_completed_accounting_check_20261021.json",
+  "genuine_resume_steps": 4350000,
+  "genuine_full_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+  "first_target_epoch": {
+    "csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/progress.csv",
+    "mtime_ns": 1792526850957434653,
+    "steps": 4355000,
+    "cost": 732.0,
+    "fps": 5.889501571655273
+  },
+  "target_identity": {
+    "pid": 3633164,
+    "start_ticks": 13202918,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "0",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "/home/lzqw/SAFEFLOW2027_A100/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/resolved_formal_config.yaml",
+      "--seed",
+      "2030",
+      "--steps",
+      "5000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-19-15-55-44/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59"
+  },
+  "MPS_connection_proof": {
+    "client_pid": 3633164,
+    "server_pid": 3633500,
+    "client_pids": [
+      3633164
+    ],
+    "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu0_20261020",
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "connection_verified": true
+  },
+  "runtime_change": {
+    "from": "CPU",
+    "to": "A100_GPU0_private_MPS",
+    "bitwise_trajectory_equivalence_claimed": false
+  },
+  "source_previous_epoch_FPS": 4.320019245147705,
+  "source_FPS_reference": "ordinary_observation_20261021_0351.json",
+  "first_epoch_only_speed_ratio_not_sustained_or_causal_guarantee": 1.3633044756155726,
+  "source_retirement": {
+    "original_wrapper_exit_code": -15,
+    "archived_exit_marker": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/cpu_to_mps_a100_gpu0_20261020/original_wrapper_exit_code.txt",
+    "original_exit_marker_sha256": "0e55cbbc9d11449b186092d82905aa6974858df7a0b7d706ae51c4716c9461ef",
+    "original_exit_marker_encoding": "normal_newline",
+    "old_full_input_still_at_original_path_and_hash": true,
+    "target_marker_promoted": true
+  },
+  "input_preservation": {
+    "host_input_path": "/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+    "host_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+    "archive_input_path": "/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/ant-2030/cpu_to_mps_a100_gpu0_20261020/input/latest_full.pt",
+    "archive_input_sha256": "94d74c222744cde1eeb95b6746f7f237a28f362301ea3b6781f1e4b2251ff96c",
+    "archive_separate_4T_filesystem_verified": true
+  },
+  "original_segments_preserved_at_original_paths": true,
+  "new_completed_recovery_addition": {
+    "environment_steps": 0,
+    "safety_cost": 0.0
+  },
+  "completed_recovery_totals_lower_bound": {
+    "baseline": "training_status_20261021_0351.json",
+    "environment_steps": 1157276,
+    "safety_cost": 10380.0,
+    "unknown_historical_and_unlogged_work_not_assumed_zero": true
+  },
+  "full_training_budget_steps": 5000000,
+  "cohort_budget_steps": 150000000,
+  "new_experiment_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "full_final_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "data_notice": "Ant2030 continued from its genuine4.35M full replay/RNG/optimizer input. A real new5k GPU epoch and actual private-MPS GPU0/client proof preceded source retirement; original full and training segments remain at original paths, with sameSHA host and separate4T preservation. Known logged rollback is0, but unknown source tail is not assumed zero. FPS describes the first target epoch only. This is not a new simultaneous all-host census or a final scientific audit. All150M budgets and provenance gates remain; early2027 missing original parents are unresolved."
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "new_Ant_runtime_accounting_not_final_scientific_validation",
+  "checked_at_unix": 1792526871.5594156,
+  "completed_records_checked": 1,
+  "job": "ant-2030",
+  "extra_steps_lower_bound": 0,
+  "extra_cost_lower_bound": 0.0,
+  "unknown_unlogged_source_tail_not_zero": true,
+  "accounting_module_sha256": "f7ccee9a0f3d7922e533aa6d55cfaf7b7d4b87ab562aa4955ca1c0276a21dd7f",
+  "existing_Walker_check_not_repeated": "A100_Walker_2030_2031_completed_accounting_check_20261021.json",
+  "additional_scientific_rollouts": 0,
+  "full_final_scientific_audit": false,
+  "strict_final_matrix_requirements_waived": false
+}

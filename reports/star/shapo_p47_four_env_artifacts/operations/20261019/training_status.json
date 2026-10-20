@@ -9,14 +9,14 @@
   "new_read_only_4080_CPU_capacity_evidence": "4080_CPU_placement_preflight_20261020_2051.json",
   "latest_completed_engineering_backup": "post_local_reboot_backup_recovered_20261020_2033.json",
   "schema_version": 1,
-  "superseded_by": "training_status_20261021_0353_Ant2030_A100_inflight.json",
+  "superseded_by": "training_status_20261021_0407_Ant2030_A100_MPS_completed.json",
   "latest_Goal2027_existing_cell_MPS_continuation_plan": "point_goal2027_5080_MPS_balanced_20261020.json",
   "latest_GPU1_capacity_qualification": "walkers_GPU1_regular_qualification_20261020_1623.json",
   "latest_queued_engineering_transition": "A100_shared_GPU_capacity_hold_20261020_1734.json",
-  "latest_completed_engineering_transition": "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_completed_state_20261021_0336.json",
+  "latest_completed_engineering_transition": "ant-2030_cpu_to_mps_a100_gpu0_20261020_completed_state_20261021_0407.json",
   "newer_engineering_runtime": "training_status_20261020_2204_handoff_completed.json",
   "newer_engineering_preparation": "cpu_to_mps_ant2030_a100_gpu0_20261020_preparation.json",
-  "snapshot_notice": "Historical17:27 payload below. Latest engineering report:training_status_20261021_0353_Ant2030_A100_inflight.json. The03:51 all-host census preceded the later Ant2030 CPU pause and GPU0 launch request. It remains an immutable pre-transaction frame, not a current worker count. Ant resumes from its genuine4.35M full replay/RNG/optimizer checkpoint, preserved on source, host and separate4T. Source remains held until a real new5k epoch and actual MPS GPU/client proof, then retirement. Known logged rollback is0, but unlogged source tail is unknown, not assumed zero. All5M budgets, source62ca739 and final gates remain unchanged; early2027 parent gaps remain unresolved.",
+  "snapshot_notice": "Historical17:27 payload below. Latest completed engineering report:training_status_20261021_0407_Ant2030_A100_MPS_completed.json. Ant2030 continued from its genuine4.35M full replay/RNG/optimizer input. A real new5k GPU epoch and actual private-MPS GPU0/client proof preceded source retirement; original full and training segments remain at original paths, with sameSHA host and separate4T preservation. Known logged rollback is0, but unknown source tail is not assumed zero. FPS describes the first target epoch only. This is not a new simultaneous all-host census or a final scientific audit. All150M budgets and provenance gates remain; early2027 missing original parents are unresolved.",
   "newest_intermediate_scientific_result": "../../partial_milestones/walker_2M_available5_20261020/summary.json",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
@@ -240,5 +240,5 @@
   },
   "recent_storage_maintenance": "A100_backup_duplicate_only_deduplication_20261020_receipt.json",
   "recent_host_input_cache_extension": "host_input_cache_Ant_Walker_extension_20261021_receipt.json",
-  "latest_inflight_engineering_transition": "ant-2030_cpu_to_mps_a100_gpu0_20261020_inflight_state_20261021_0353.json"
+  "completed_A100_transfer_coordinator_retirement": "A100_completed_transfer_coordinator_retirement_20261021.json"
 }

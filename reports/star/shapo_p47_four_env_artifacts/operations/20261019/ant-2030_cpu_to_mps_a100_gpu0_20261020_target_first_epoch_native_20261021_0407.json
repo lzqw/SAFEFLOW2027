@@ -1,0 +1,169 @@
+{
+  "observed_at_unix": 1792526856.649,
+  "gpus": [
+    {
+      "index": 0,
+      "uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+      "name": "NVIDIA A100 80GB PCIe",
+      "free_mib": 59954,
+      "total_mib": 81920,
+      "utilization_percent": 98,
+      "processes": [
+        {
+          "pid": 3633500,
+          "role": "safeflow_mps_server",
+          "executable": "nvidia-cuda-mps-server",
+          "memory_mib": 30,
+          "raw_role_before_MPS_proof": "safeflow"
+        },
+        {
+          "pid": 3633164,
+          "role": "safeflow",
+          "executable": "python",
+          "memory_mib": 748
+        },
+        {
+          "pid": 3645233,
+          "role": "foreign_or_unknown",
+          "executable": "test02_our_data01_t023",
+          "memory_mib": 20290
+        }
+      ],
+      "safeflow_mps_client_pids": [
+        3633164
+      ],
+      "MPS_accounting_unproven": false
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+      "name": "NVIDIA A100 80GB PCIe",
+      "free_mib": 58515,
+      "total_mib": 81920,
+      "utilization_percent": 95,
+      "processes": [
+        {
+          "pid": 2384685,
+          "role": "safeflow_mps_server",
+          "executable": "nvidia-cuda-mps-server",
+          "memory_mib": 30,
+          "raw_role_before_MPS_proof": "safeflow"
+        },
+        {
+          "pid": 2384563,
+          "role": "safeflow",
+          "executable": "python",
+          "memory_mib": 728
+        },
+        {
+          "pid": 3570579,
+          "role": "safeflow",
+          "executable": "python",
+          "memory_mib": 754
+        },
+        {
+          "pid": 3647131,
+          "role": "foreign_or_unknown",
+          "executable": "test02_our_data01_t024",
+          "memory_mib": 20992
+        }
+      ],
+      "safeflow_mps_client_pids": [
+        2384563,
+        3570579
+      ],
+      "MPS_accounting_unproven": false
+    }
+  ],
+  "storage": [
+    {
+      "label": "project_filesystem",
+      "path": "/home/lzqw/SAFEFLOW2027_A100",
+      "warning_below_free_gib": 20,
+      "status": "ok",
+      "free_gib": 23.3,
+      "total_gib": 1642.35,
+      "separate_from_project_filesystem": false
+    }
+  ],
+  "training": [
+    {
+      "job": "walker2d-2031",
+      "pid": 2384563,
+      "start_ticks": 9279674,
+      "state": "R",
+      "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 4410000,
+      "last_epoch_fps": 6.185584545135498,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/progress.csv",
+      "progress_age_seconds": 449.41481018066406,
+      "cuda_execution_backend": "mps_verified",
+      "mps_connection": {
+        "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+        "status": "observed",
+        "server_pid": 2384685,
+        "client_pids": [
+          2384563,
+          3570579
+        ],
+        "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+      },
+      "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+    },
+    {
+      "job": "walker2d-2030",
+      "pid": 3570579,
+      "start_ticks": 13019287,
+      "state": "S",
+      "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 4365000,
+      "last_epoch_fps": 6.20128059387207,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/progress.csv",
+      "progress_age_seconds": 264.59127378463745,
+      "cuda_execution_backend": "mps_verified",
+      "mps_connection": {
+        "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+        "status": "observed",
+        "server_pid": 2384685,
+        "client_pids": [
+          2384563,
+          3570579
+        ],
+        "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+      },
+      "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+    },
+    {
+      "job": "ant-2030",
+      "pid": 3633164,
+      "start_ticks": 13202918,
+      "state": "R",
+      "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 4355000,
+      "last_epoch_fps": 5.889501571655273,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/progress.csv",
+      "progress_age_seconds": 5.681861162185669,
+      "cuda_execution_backend": "mps_verified",
+      "mps_connection": {
+        "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu0_20261020",
+        "status": "observed",
+        "server_pid": 3633500,
+        "client_pids": [
+          3633164
+        ],
+        "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe"
+      },
+      "mps_gpu_uuid_verified": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe"
+    }
+  ],
+  "updated_at_unix": 1792526856.6337805
+}

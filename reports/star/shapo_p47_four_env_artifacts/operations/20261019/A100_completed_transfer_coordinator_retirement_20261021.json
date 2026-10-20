@@ -1,0 +1,43 @@
+{
+  "kind": "completed_local_one_shot_coordinator_boot_trigger_retirement_not_training_stop",
+  "completed_at_unix": 1792526953.0835326,
+  "unit": "safeflow-unstarted-a100-capacity-after-reboot.service",
+  "command": ["systemctl", "--user", "disable", "safeflow-unstarted-a100-capacity-after-reboot.service"],
+  "no_stop_or_now_flag_used": true,
+  "coordinator_queue_phase_before_action": "all_requested_transfers_finished",
+  "coordinator_queue_pending_before_action": [],
+  "completed_jobs": ["walker2d-2030", "ant-2030"],
+  "queue_snapshot": "A100_unstarted_transfers_completed_snapshot_20261021.json",
+  "completion_proofs": [
+    "walker2d-2030_cpu_to_mps_a100_gpu1_20261020_completed_state_20261021_0336.json",
+    "ant-2030_cpu_to_mps_a100_gpu0_20261020_completed_state_20261021_0407.json"
+  ],
+  "before": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainCode": "1",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "enabled"
+  },
+  "after": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainCode": "0",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "disabled"
+  },
+  "successful_exit_proven_before_disable_not_inferred_from_reset_after_metadata": true,
+  "only_finished_local_coordinator_boot_trigger_disabled": true,
+  "unit_definition_and_controller_scripts_kept": true,
+  "remote_learner_signals": 0,
+  "remote_learners_restarted": 0,
+  "regular_monitor986_not_changed": true,
+  "other_projects_modified": false,
+  "scientific_parameters_or_budgets_changed": false,
+  "new_scientific_rollouts_or_full_audits": 0,
+  "expected_lifecycle": "The original two pending CPU-to-GPU handoffs completed successfully. This one-shot service being inactive and disabled is expected, not a learner failure. Remote tmux learners and the separate1800-second capacity monitor continue. Do not restart this old coordinator or signal its historical PID995."
+}
