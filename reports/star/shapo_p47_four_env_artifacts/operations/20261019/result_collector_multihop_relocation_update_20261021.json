@@ -1,0 +1,32 @@
+{
+  "kind": "local_result_collection_compatibility_and_disk_reserve_update",
+  "reason": "The former import annotation only accepted direct A100-origin relocation. Existing Ant and Walker cells now also have approved5080-to4080 relocation edges.",
+  "accepted_source_roots": {
+    "tjucta-a100": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs",
+    "4080": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs",
+    "5080": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs"
+  },
+  "source_job_names_limited_to_original_twenty_cells": true,
+  "relocation_target_must_equal_actual_exporting_host": true,
+  "original_container_must_match_approved_origin_and_exact_job": true,
+  "scientific_protocol_changed_and_original_evidence_modified_must_both_be_false": true,
+  "previous_relocation_descriptor_retained_before_import_annotation": true,
+  "relocation_checked_before_streaming_a_terminal_container": true,
+  "destination_training_disk_reserve_bytes": 2147483648,
+  "receiver_checks_incoming_bytes_plus_reserve_before_creating_import_stage": true,
+  "checks_performed": ["syntax compilation", "small temporary metadata fixture: approved5080-to4080 edge accepted", "small temporary metadata fixture: unapproved original path rejected"],
+  "local_collector_previous_pid": 992,
+  "old_local_collector_had_no_transfer_children_before_restart": true,
+  "local_collector_new_pid": 41154,
+  "new_collector_started_local": "2026-10-21 01:40:11 Asia/Shanghai",
+  "new_local_service_state": "active running",
+  "training_receipts_complete_after_update": 2,
+  "training_matrix_size": 20,
+  "remote_training_processes_signalled_or_restarted": 0,
+  "other_projects_modified": false,
+  "training_scientific_commit_unchanged": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "frozen_final_scientific_validator_modified": false,
+  "full_final_scientific_audit_executed": false,
+  "additional_scientific_evaluation_rollouts": 0,
+  "known_early2027_full_parent_gaps_not_repaired_or_waived": true
+}
