@@ -1,0 +1,28 @@
+{
+  "kind": "verified_retired_originals_storage_location_and_restore_guide",
+  "source_original_cold_root": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers",
+  "archive_host": "4080",
+  "archive_root": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021/retired_gpu_workers",
+  "original_regular_files_archived": 598,
+  "original_logical_bytes_archived": 8013297651,
+  "source_local_retired_copies_removed_after_archive_verification": 598,
+  "source_directories_retaining_ARCHIVE_LOCATION_json_pointers": 13,
+  "source_manifest_file": "A100_retired_GPU_archive_20261021_v2_source_manifest.json",
+  "source_manifest_sha256": "eeddea5e98694aba67dde59a6de076758b9d78fcff729c436a7389f7fe49ac8c",
+  "release_receipt": "A100_retired_GPU_archive_20261021_source_release_state.json",
+  "verified_archive_metadata_files": ["ARCHIVE_MANIFEST.json", "ARCHIVE_VERIFICATION.json"],
+  "restore_steps_if_requested_later": [
+    "Read ARCHIVE_LOCATION.json in the exact original retired directory, or locate the same directory in the signed source manifest.",
+    "Confirm sufficient A100 disk capacity before restoring; never redirect the restore into active runs or unrelated folders.",
+    "Copy that exact archived directory from the4080 archive root back under the original A100 cold root, preserving its original filenames. The small location-pointer file may remain alongside restored originals.",
+    "Check restored file sizes and SHA256 values against ARCHIVE_MANIFEST.json before use. A relocated full checkpoint may represent only its recorded byte identity, never a different missing earlier parent."
+  ],
+  "active_training_directories_modified": false,
+  "remote_training_processes_signalled": 0,
+  "scientific_settings_or_budgets_changed": false,
+  "additional_training_steps_or_evaluation_rollouts": 0,
+  "known_early2027_missing_full_parent_problem_repaired": false,
+  "source_filesystem_free_bytes_before": 20489461760,
+  "source_filesystem_free_bytes_after": 25543294976,
+  "observed_filesystem_delta_includes_other_shared_filesystem_activity": true
+}
