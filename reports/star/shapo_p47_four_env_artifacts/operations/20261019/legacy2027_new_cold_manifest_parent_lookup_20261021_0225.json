@@ -1,0 +1,55 @@
+{
+  "kind": "scope_limited_existing_metadata_lookup_not_scientific_validation",
+  "lookup_started_local": "2026-10-21T02:25:21+08:00",
+  "inputs": {
+    "saved_original_references": "legacy2027_parent_reference_inventory_20261019.json",
+    "saved_Goal2027_decision": "point_goal_2027_provenance_decision_pending_20261019.json",
+    "new_verified_cold_archive_manifest": "A100_retired_GPU_archive_20261021_v2_source_manifest.json",
+    "manifest_previously_verified_sha256": "eeddea5e98694aba67dde59a6de076758b9d78fcff729c436a7389f7fe49ac8c",
+    "archive_current_root": "/home/carla/4T/SAFEFLOW2027_4080/retired_originals_from_a100/20261021/retired_gpu_workers",
+    "archive_manifest_files": 598,
+    "archive_current_source_release_receipt": "A100_retired_GPU_archive_20261021_source_release_state.json"
+  },
+  "scope": {
+    "jobs": ["point-goal-2027", "point-button-2027"],
+    "early_milestones_each": [1000000, 4000000],
+    "local_saved_metadata_and_one_new_manifest_only": true,
+    "other_2027_environments_exhaustively_searched": false,
+    "all_unindexed_or_external_storage_exhausted": false,
+    "previous_498_indexed_archive_search_repeated": false
+  },
+  "findings": {
+    "early_original_resume_references_examined": 4,
+    "expected_parent_SHA_fields_in_these_saved_entries": 0,
+    "exact_expected_parent_SHA_join_possible_from_these_entries": false,
+    "Goal2027_latest_full_candidates_in_new_manifest": 3,
+    "Button2027_latest_full_candidates_in_new_manifest": 4,
+    "no_parent_identity_established_by_directory_name_or_file_size": true,
+    "no_full_checkpoint_candidate_bound_to_an_early_original_reference": true,
+    "original_early_parent_gaps_repaired": false
+  },
+  "unresolved_historical_Goal_candidate": {
+    "manifest_relative_path": "point-goal-2027_balanced_MPS_5080_20261020_1792494887972611747/training/recovered-history/checkpoints/latest_full.pt",
+    "sha256_from_manifest": "aefc88ac8a143041f849a3e66845e0b2973e26d8dc2ed07fd0c6731fe19e5c3b",
+    "bytes_from_manifest": 243205868,
+    "previously_inventoried_as_history_full_candidate_on_20261019": true,
+    "previous_single_CPU_counter_read_output_not_recovered": true,
+    "counter_is_unknown_in_this_record": true,
+    "checkpoint_load_repeated_during_this_lookup": false,
+    "not_accepted_as_original_early_parent": true
+  },
+  "scientific_and_operational_effects": {
+    "remote_calls_during_this_lookup": 0,
+    "new_full_checkpoint_loads": 0,
+    "archive_payload_rehashes": 0,
+    "additional_scientific_rollouts": 0,
+    "full_final_audits_executed": 0,
+    "training_processes_restarted_or_paused": 0,
+    "scientific_parameters_or_budgets_changed": false,
+    "parent_path_aliases_or_checkpoint_bytes_modified": false,
+    "frozen_final_validation_requirements_waived": false,
+    "new_from_scratch_replacement_authorized_or_started": false
+  },
+  "next_action": "Keep the current full-budget training running and retain the unresolved provenance qualification. Reopen this lookup only for genuinely new original-input identity evidence or an explicitly authorized replacement decision; do not repeat scans or checkpoint loads merely to restate this result.",
+  "final_scientific_completion_proven": false
+}
