@@ -1,0 +1,42 @@
+{
+  "kind": "local_report_baseline_path_context_fix_not_new_evaluation",
+  "completed_at_unix": 1792528803.6867795,
+  "job": "point-goal-2028",
+  "reason": "Resolve OUT/../published1M before testing existence; the new output directory did not yet exist on initial assembly.",
+  "previous_generated_summary_preserved_at": "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/Point_4M_available7_summary_before_local_1M_context_20261021.json",
+  "previous_summary_sha256": "cafa1f697e0c7008298fc2e3e378483c70b4adbf796832d56d0a302bac25f07c",
+  "updated_summary_sha256": "a4f1d0bece03e27d581d7f5c868b20838a8063b671ac95e9f3dc9f4f4c076e8a",
+  "existing_published_1M_SHA": "22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f",
+  "unchanged_4M_SHA": "86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9",
+  "unchanged_4M_metrics": {
+    "mean_return": -0.23964112682835859,
+    "success_rate": 0.06,
+    "mean_cost": 7.27,
+    "cost_cvar_20": 36.35,
+    "training_cumulative_cost": 73696.0,
+    "direction_geometry_high_risk_top_20_percent": {
+      "dangerous_outward_velocity": 0.1575431525707245,
+      "fraction": 0.2,
+      "maximum_selected_margin": 13.466200828552246,
+      "mean_selected_margin": 1.559786319732666,
+      "minimum_selected_margin": -0.9343436360359192,
+      "normal_to_tangent_variance_ratio": 0.9654496908187866,
+      "outward_velocity_ratio": 0.46018749475479126,
+      "population_samples": 400000,
+      "ranking": "descending_local_cost_margin_stable_ties",
+      "reliability": 0.026548262685537338,
+      "safety_weight": 0.5869908332824707,
+      "selected_samples": 80000
+    }
+  },
+  "added_same_seed_differences": {
+    "mean_return": 0.11592038266714277,
+    "success_percentage_points": -1.0,
+    "mean_cost": 0.11999999999999922,
+    "cost_cvar_20": 0.6000000000000014
+  },
+  "other_six_records_and_4M_CSV_not_modified": true,
+  "additional_archive_reads_or_network_calls": 0,
+  "new_model_loads_or_evaluation_rollouts": 0,
+  "full_checkpoint_or_final_scientific_audit_executed": false
+}

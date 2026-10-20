@@ -1,0 +1,646 @@
+{
+  "schema_version": 2,
+  "kind": "available_native_Point_4M_learning_curve_context_not_final_cohort_report",
+  "assembled_at_utc": "2026-10-20T20:37:01.806911+00:00",
+  "previous_summary": "../point_4M_available6_20261020/summary.json",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "point_total_training_budget_steps": 10000000,
+  "milestone_steps": 4000000,
+  "planned_seeds_per_environment": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "available_seeds_per_environment": {
+    "SafetyPointGoal1-v0": [
+      2027,
+      2028,
+      2030,
+      2031
+    ],
+    "SafetyPointButton1-v0": [
+      2027,
+      2030,
+      2031
+    ]
+  },
+  "seeds_not_yet_at_4M_per_environment": {
+    "SafetyPointGoal1-v0": [
+      2029
+    ],
+    "SafetyPointButton1-v0": [
+      2028,
+      2029
+    ]
+  },
+  "availability_basis": "Six already-published native4M results plus newly archived Goal2028 native4M JSON; availability only, never selected by return/cost.",
+  "statistical_unit": "training_seed_per_environment",
+  "available_training_seed_counts": {
+    "SafetyPointGoal1-v0": 4,
+    "SafetyPointButton1-v0": 3
+  },
+  "episodes_are_not_additional_independent_training_runs": true,
+  "aggregate_or_significance_test_performed": false,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "early_stop_or_configuration_selection_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "final_scientific_audit_executed": false,
+  "final_scientific_cohort_report": false,
+  "full_scientific_objective_complete": false,
+  "new_evaluation_archive_receipt": {
+    "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-goal-2028/1792528409116839705-1f28af359852c96cffcf36ba0fd9b966c85fc4e7352d0afae3c5e869d749e11c.json",
+    "manifest_sha256": "1f28af359852c96cffcf36ba0fd9b966c85fc4e7352d0afae3c5e869d749e11c",
+    "manifest_created_at_ns": 1792528409116839705,
+    "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9",
+    "sha256": "86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9",
+    "bytes": 23987,
+    "all_identical_SHA_source_relative_paths": [
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/artifacts/evaluation_step_4000000.json"
+    ]
+  },
+  "records": [
+    {
+      "job": "point-goal-2027",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2027,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-goal-2027/evaluation_step_4000000.json",
+        "sha256": "0adb6cf6bdc48ed9055abe999d1a3bd242a88623d2da62b6eae393e36411adf7",
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-goal-2027/1792470850583730765-e992a1726e82d7fa5005566b0f5390e50680b7dfb6ec1f2a13b110ad0f8a6667.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/0adb6cf6bdc48ed9055abe999d1a3bd242a88623d2da62b6eae393e36411adf7",
+        "source_relative_path": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+        "previously_published_context": null,
+        "metrics": {
+          "mean_return": -0.2518957812814983,
+          "success_rate": 0,
+          "mean_cost": 11.75,
+          "cost_cvar_20": 58.75,
+          "training_cumulative_cost": 70912,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.18915025889873505,
+            "fraction": 0.2,
+            "maximum_selected_margin": 50.59929656982422,
+            "mean_selected_margin": 3.474931240081787,
+            "minimum_selected_margin": -0.9587723016738892,
+            "normal_to_tangent_variance_ratio": 0.9455116987228394,
+            "outward_velocity_ratio": 0.49312499165534973,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.04182303324341774,
+            "safety_weight": 0.5215454697608948,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-goal-2027/evaluation_step_1000000.json",
+        "sha256": "28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6",
+        "metrics": {
+          "mean_return": -0.038242015352310116,
+          "success_rate": 0.06,
+          "mean_cost": 3.51,
+          "cost_cvar_20": 17.55,
+          "training_cumulative_cost": 15721,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.21232138574123383,
+            "fraction": 0.2,
+            "maximum_selected_margin": 10.424328804016113,
+            "mean_selected_margin": 0.1084894984960556,
+            "minimum_selected_margin": -0.9999830722808838,
+            "normal_to_tangent_variance_ratio": 0.9714672565460205,
+            "outward_velocity_ratio": 0.47856250405311584,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.022187162190675735,
+            "safety_weight": 0.16797390580177307,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": -0.2136537659291882,
+        "success_percentage_points": -6,
+        "mean_cost": 8.24,
+        "cost_cvar_20": 41.2
+      },
+      "legacy_provenance_notice": "Known missing original historical full parent from retired3090; these native evaluation bytes are preserved as historical evidence, not accepted final-checkpoint provenance. No later parent was substituted."
+    },
+    {
+      "job": "point-goal-2028",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2028,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-goal-2028/evaluation_step_4000000.json",
+        "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-goal-2028/1792528409116839705-1f28af359852c96cffcf36ba0fd9b966c85fc4e7352d0afae3c5e869d749e11c.json",
+        "manifest_sha256": "1f28af359852c96cffcf36ba0fd9b966c85fc4e7352d0afae3c5e869d749e11c",
+        "manifest_created_at_ns": 1792528409116839705,
+        "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+        "blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9",
+        "sha256": "86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9",
+        "bytes": 23987,
+        "all_identical_SHA_source_relative_paths": [
+          "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/artifacts/evaluation_step_4000000.json"
+        ],
+        "metrics": {
+          "mean_return": -0.23964112682835859,
+          "success_rate": 0.06,
+          "mean_cost": 7.27,
+          "cost_cvar_20": 36.35,
+          "training_cumulative_cost": 73696.0,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.1575431525707245,
+            "fraction": 0.2,
+            "maximum_selected_margin": 13.466200828552246,
+            "mean_selected_margin": 1.559786319732666,
+            "minimum_selected_margin": -0.9343436360359192,
+            "normal_to_tangent_variance_ratio": 0.9654496908187866,
+            "outward_velocity_ratio": 0.46018749475479126,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.026548262685537338,
+            "safety_weight": 0.5869908332824707,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "legacy_provenance_notice": "This metrics-only assembly does not audit full checkpoint ancestry or certify final provenance.",
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-goal-2028/evaluation_step_1000000.json",
+        "sha256": "22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f",
+        "metrics": {
+          "mean_return": -0.35556150949550136,
+          "success_rate": 0.07,
+          "mean_cost": 7.15,
+          "cost_cvar_20": 35.75,
+          "training_cumulative_cost": 15534.0,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.2124972641468048,
+            "fraction": 0.2,
+            "maximum_selected_margin": 16.50041389465332,
+            "mean_selected_margin": 1.5383225679397583,
+            "minimum_selected_margin": -0.9988929629325867,
+            "normal_to_tangent_variance_ratio": 0.9460472464561462,
+            "outward_velocity_ratio": 0.46921250224113464,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.041426341980695724,
+            "safety_weight": 0.4186321198940277,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": 0.11592038266714277,
+        "success_percentage_points": -1.0,
+        "mean_cost": 0.11999999999999922,
+        "cost_cvar_20": 0.6000000000000014
+      }
+    },
+    {
+      "job": "point-goal-2030",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2030,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-goal-2030/evaluation_step_4000000.json",
+        "sha256": "d6d78bd196bb3bdcb09582d865a6eee34b2f9b863b7cd362a0460b160f0cf703",
+        "archive_manifest": null,
+        "archive_blob": null,
+        "source_relative_path": null,
+        "previously_published_context": "../point-goal-2030_step4000000_20261020/context.json",
+        "metrics": {
+          "mean_return": -0.8432457692317307,
+          "success_rate": 0.06,
+          "mean_cost": 9.19,
+          "cost_cvar_20": 45.95,
+          "training_cumulative_cost": 64183,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.15111595392227173,
+            "fraction": 0.2,
+            "maximum_selected_margin": 18.128446578979492,
+            "mean_selected_margin": 1.8445885181427002,
+            "minimum_selected_margin": -0.9000000357627869,
+            "normal_to_tangent_variance_ratio": 0.9518609642982483,
+            "outward_velocity_ratio": 0.5263749957084656,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.03736322000622749,
+            "safety_weight": 0.6275198459625244,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-goal-2030/evaluation_step_1000000.json",
+        "sha256": "d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26",
+        "metrics": {
+          "mean_return": -0.4517404516456285,
+          "success_rate": 0.06,
+          "mean_cost": 9.07,
+          "cost_cvar_20": 45.35,
+          "training_cumulative_cost": 15514,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.18092669546604156,
+            "fraction": 0.2,
+            "maximum_selected_margin": 11.339447021484375,
+            "mean_selected_margin": 2.4878122806549072,
+            "minimum_selected_margin": -0.9983532428741455,
+            "normal_to_tangent_variance_ratio": 0.8744291067123413,
+            "outward_velocity_ratio": 0.4572874903678894,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.10041879117488861,
+            "safety_weight": 0.6970445513725281,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": -0.3915053175861022,
+        "success_percentage_points": 0,
+        "mean_cost": 0.11999999999999922,
+        "cost_cvar_20": 0.6000000000000014
+      },
+      "legacy_provenance_notice": "This intermediate bundle does not execute or substitute for the final strict checkpoint-provenance audit."
+    },
+    {
+      "job": "point-goal-2031",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2031,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-goal-2031/evaluation_step_4000000.json",
+        "sha256": "84fc282be31ad2af6c4536ad1a3b2719cd5be2473a242814ca9eaf55228ab041",
+        "archive_manifest": null,
+        "archive_blob": null,
+        "source_relative_path": null,
+        "previously_published_context": "../first_milestone_20_cells_20261020/later_native_context/point-goal-2031/evaluation_step_4000000.json",
+        "metrics": {
+          "mean_return": -0.19566832619822627,
+          "success_rate": 0.09,
+          "mean_cost": 6.72,
+          "cost_cvar_20": 33.6,
+          "training_cumulative_cost": 69498,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.15067113935947418,
+            "fraction": 0.2,
+            "maximum_selected_margin": 13.65260124206543,
+            "mean_selected_margin": 1.6192437410354614,
+            "minimum_selected_margin": -0.9774858355522156,
+            "normal_to_tangent_variance_ratio": 0.9392572045326233,
+            "outward_velocity_ratio": 0.5339375138282776,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.046612195670604706,
+            "safety_weight": 0.6108270287513733,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-goal-2031/evaluation_step_1000000.json",
+        "sha256": "dac379660b2b20963ca2b7e87a2a320b618e6482230e2a7e4b3539edb3b960ea",
+        "metrics": {
+          "mean_return": -0.44093367543301687,
+          "success_rate": 0.06,
+          "mean_cost": 17.33,
+          "cost_cvar_20": 86.15,
+          "training_cumulative_cost": 18152,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.2270365059375763,
+            "fraction": 0.2,
+            "maximum_selected_margin": 41.86375045776367,
+            "mean_selected_margin": 3.6035873889923096,
+            "minimum_selected_margin": -0.9919558167457581,
+            "normal_to_tangent_variance_ratio": 0.8807868361473083,
+            "outward_velocity_ratio": 0.4866749942302704,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.09049201756715775,
+            "safety_weight": 0.595870852470398,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": 0.2452653492347906,
+        "success_percentage_points": 3,
+        "mean_cost": -10.61,
+        "cost_cvar_20": -52.550000000000004
+      },
+      "legacy_provenance_notice": "This intermediate bundle does not execute or substitute for the final strict checkpoint-provenance audit."
+    },
+    {
+      "job": "point-button-2027",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2027,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-button-2027/evaluation_step_4000000.json",
+        "sha256": "cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0",
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/point-button-2027/1792470847415799614-0b4f3b142c1075115d101ab787a7c5d76abb74b72cfb6bb8cbfaad206cf3ecb8.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0",
+        "source_relative_path": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+        "previously_published_context": null,
+        "metrics": {
+          "mean_return": -1.7276865113582318,
+          "success_rate": 0.03,
+          "mean_cost": 15.97,
+          "cost_cvar_20": 52.25,
+          "training_cumulative_cost": 95762,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.04952843487262726,
+            "fraction": 0.2,
+            "maximum_selected_margin": 9.68249797821045,
+            "mean_selected_margin": 3.596646785736084,
+            "minimum_selected_margin": 1.399999976158142,
+            "normal_to_tangent_variance_ratio": 0.9825083017349243,
+            "outward_velocity_ratio": 0.1975499987602234,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.013024497777223587,
+            "safety_weight": 1,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-button-2027/evaluation_step_1000000.json",
+        "sha256": "01db805067bf50e62d32ab9df631a5303f274de34e0487f9bdb65f7fe2af764f",
+        "metrics": {
+          "mean_return": -0.8526426159343262,
+          "success_rate": 0.06,
+          "mean_cost": 24.38,
+          "cost_cvar_20": 79.7,
+          "training_cumulative_cost": 26141,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.1440853625535965,
+            "fraction": 0.2,
+            "maximum_selected_margin": 15.517688751220703,
+            "mean_selected_margin": 4.619307041168213,
+            "minimum_selected_margin": 2,
+            "normal_to_tangent_variance_ratio": 0.8586248159408569,
+            "outward_velocity_ratio": 0.45108750462532043,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.10845866799354553,
+            "safety_weight": 1,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": -0.8750438954239056,
+        "success_percentage_points": -3,
+        "mean_cost": -8.409999999999998,
+        "cost_cvar_20": -27.450000000000003
+      },
+      "legacy_provenance_notice": "Legacy parent references remain unresolved; not proven lost or valid. This bundle does not waive final provenance gates."
+    },
+    {
+      "job": "point-button-2030",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2030,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-button-2030/evaluation_step_4000000.json",
+        "sha256": "d6d21ca0b3fce9f575ff6d474a53e07551452c98685b1a2c79358f0816f7dd8a",
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-button-2030/1792470881451030305-a9d73c149ea5d6e7e8ffa5aaf2c86a490b495b6f45dac6551431606d953e80ee.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/d6d21ca0b3fce9f575ff6d474a53e07551452c98685b1a2c79358f0816f7dd8a",
+        "source_relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation_step_4000000.json",
+        "previously_published_context": null,
+        "metrics": {
+          "mean_return": -4.962598803641859,
+          "success_rate": 0.04,
+          "mean_cost": 16.37,
+          "cost_cvar_20": 56.95,
+          "training_cumulative_cost": 89065,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.06332749128341675,
+            "fraction": 0.2,
+            "maximum_selected_margin": 18.95670509338379,
+            "mean_selected_margin": 3.8718695640563965,
+            "minimum_selected_margin": 1.2000000476837158,
+            "normal_to_tangent_variance_ratio": 0.9665254950523376,
+            "outward_velocity_ratio": 0.39771249890327454,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.025047672912478447,
+            "safety_weight": 0.9999997019767761,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-button-2030/evaluation_step_1000000.json",
+        "sha256": "03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452",
+        "metrics": {
+          "mean_return": -0.7795667369375283,
+          "success_rate": 0.05,
+          "mean_cost": 26.06,
+          "cost_cvar_20": 96.9,
+          "training_cumulative_cost": 24814,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.14984461665153503,
+            "fraction": 0.2,
+            "maximum_selected_margin": 27.12837791442871,
+            "mean_selected_margin": 5.338357925415039,
+            "minimum_selected_margin": 1.320404052734375,
+            "normal_to_tangent_variance_ratio": 0.8903318643569946,
+            "outward_velocity_ratio": 0.4250375032424927,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.08326888829469681,
+            "safety_weight": 0.9999998807907104,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": -4.18303206670433,
+        "success_percentage_points": -1.0000000000000002,
+        "mean_cost": -9.689999999999998,
+        "cost_cvar_20": -39.95
+      },
+      "legacy_provenance_notice": "This intermediate bundle does not execute or substitute for the final strict checkpoint-provenance audit."
+    },
+    {
+      "job": "point-button-2031",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2031,
+      "episodes_each_milestone": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "trajectory_seeds": [
+        32027,
+        32029,
+        32031
+      ],
+      "native_4M": {
+        "relative_path": "native_evaluations/point-button-2031/evaluation_step_4000000.json",
+        "sha256": "f902584fca9987c70314bf05625e43852e97f425d0a65fe98004dbc8a7271efd",
+        "archive_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-button-2031/1792470884539079043-8ebed9b2c1d04c149a80a858531f6c9c3ee955e01858de2071ec48c70cd790e8.json",
+        "archive_blob": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/f902584fca9987c70314bf05625e43852e97f425d0a65fe98004dbc8a7271efd",
+        "source_relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-16-07-11-15/artifacts/evaluation_step_4000000.json",
+        "previously_published_context": null,
+        "metrics": {
+          "mean_return": -5.192804280402562,
+          "success_rate": 0.06,
+          "mean_cost": 16.5,
+          "cost_cvar_20": 51.05,
+          "training_cumulative_cost": 102827,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.03935284912586212,
+            "fraction": 0.2,
+            "maximum_selected_margin": 8.879278182983398,
+            "mean_selected_margin": 3.6561176776885986,
+            "minimum_selected_margin": 2,
+            "normal_to_tangent_variance_ratio": 0.9832279086112976,
+            "outward_velocity_ratio": 0.19632500410079956,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.012742027640342712,
+            "safety_weight": 1,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "same_seed_native_1M": {
+        "previously_published_relative_path": "../first_milestone_20_cells_20261020/native_evaluations/point-button-2031/evaluation_step_1000000.json",
+        "sha256": "a050f1f6853d188b6c4bcf442273a1c7a59e3c7e3a51c8e34a1d7cfbb0c6a7e4",
+        "metrics": {
+          "mean_return": -1.9432364108431606,
+          "success_rate": 0.09,
+          "mean_cost": 29.78,
+          "cost_cvar_20": 100.8,
+          "training_cumulative_cost": 30472,
+          "direction_geometry_high_risk_top_20_percent": {
+            "dangerous_outward_velocity": 0.1414911448955536,
+            "fraction": 0.2,
+            "maximum_selected_margin": 41.1004753112793,
+            "mean_selected_margin": 5.321959495544434,
+            "minimum_selected_margin": 1.7035671472549438,
+            "normal_to_tangent_variance_ratio": 0.8794262409210205,
+            "outward_velocity_ratio": 0.5406625270843506,
+            "population_samples": 400000,
+            "ranking": "descending_local_cost_margin_stable_ties",
+            "reliability": 0.09198405593633652,
+            "safety_weight": 1,
+            "selected_samples": 80000
+          }
+        }
+      },
+      "differences_4M_minus_1M": {
+        "mean_return": -3.2495678695594017,
+        "success_percentage_points": -3,
+        "mean_cost": -13.280000000000001,
+        "cost_cvar_20": -49.75
+      },
+      "legacy_provenance_notice": "This intermediate bundle does not execute or substitute for the final strict checkpoint-provenance audit."
+    }
+  ],
+  "interpretation_limits": [
+    "PointGoal4M success across available seeds2027/2030/2031 is0%/6%/9%; only2031 improves success versus its own1M result. PointGoal2027 also has a known original-parent gap and is not accepted as provenance-validated final evidence.",
+    "PointButton4M success across available seeds2027/2030/2031 is3%/4%/6%, versus6%/5%/9% at1M. All three reduce mean evaluation cost and CVaR20 but have lower return and success at4M. These are within-seed learning-curve changes, not baseline-relative gains.",
+    "High-risk20% normal-to-tangent variance ratios at4M remain roughly0.939\u20130.952 for Goal and0.967\u20130.983 for Button: risk-state anisotropy suppression is limited at these observed checkpoints.",
+    "No pooling of episodes as independent training seeds, no available-subset mean substituted for the planned five-seed cohort, and no matched C0 comparison at4M is claimed.",
+    "Reported training cumulative costs follow native retained lineages; separately disclosed recovery/discarded work and unknown historical or unlogged tails are not silently treated as zero.",
+    "Continue all frozen full budgets and preregistered evaluations. No scientific early stopping, weight search, added critic, candidate action mechanism, or new experiment cell is authorized by these intermediate results.",
+    "Available Goal n=4 and Button n=3, not complete five-training-seed final cohorts.",
+    "Every reported native milestone uses100 fixed-schedule evaluation episodes, not extra independent training runs.",
+    "No matched C0 comparison or causal superiority claim is made; all10M Point budgets remain.",
+    "Historical2027 original-full-parent gaps remain unresolved; JSON/hash matching does not repair checkpoint ancestry.",
+    "Logged training cumulative cost is accepted-lineage cost, not all physically executed recovery work.",
+    "Only one newly indexed archive/metrics blob was read; previous six local native JSONs were reused, not re-evaluated."
+  ]
+}
