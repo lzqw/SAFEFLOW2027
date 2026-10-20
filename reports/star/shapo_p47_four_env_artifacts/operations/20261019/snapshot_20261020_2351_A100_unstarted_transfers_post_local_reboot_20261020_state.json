@@ -1,0 +1,20 @@
+{
+  "phase": "waiting_on_regular_capacity",
+  "pending": [
+    "ant-2030",
+    "walker2d-2030"
+  ],
+  "completed": [],
+  "last_attempted_frame": {},
+  "capacity_deferrals": [],
+  "old_coordinator_mains_never_replayed": true,
+  "stale_local_PIDs_never_signaled": true,
+  "new_seeds": 0,
+  "scientific_parameters_changed": false,
+  "foreign_projects_modified": false,
+  "regular_observation_seconds": 1800,
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "local_pid": 995,
+  "not_before_observation_unix": 1792501649.6119316,
+  "updated_at_unix": 1792501649.611934
+}
