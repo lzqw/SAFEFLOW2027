@@ -1,0 +1,108 @@
+{
+  "phase": "read_only_CPU_placement_preflight_completed",
+  "minimum_frame_unix": 1792500706.5858595,
+  "read_only_remote_probe": true,
+  "training_or_foreign_process_signals": 0,
+  "new_training_cells": 0,
+  "scientific_evaluation_rollouts": 0,
+  "updated_at_unix": 1792500711.3146539,
+  "regular_native_frame_unix": 1792500708.3022528,
+  "source_existing_CPU_workers": [
+    {
+      "job": "ant-2028",
+      "pid": 38700,
+      "start_ticks": 2181655,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cpu",
+      "progress_status": "observed",
+      "steps": 2060000,
+      "last_epoch_fps": 5.370781421661377,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/ant-2028/training/STAR-{Ant-v4}/seed-2028-2026-10-19-15-39-27/progress.csv",
+      "progress_age_seconds": 916.4372203350067,
+      "logged_step_delta": 5000,
+      "observation_interval_seconds": 1800.5276083946228,
+      "observed_logged_steps_per_second": 2.776963805880252
+    },
+    {
+      "job": "ant-2029",
+      "pid": 40396,
+      "start_ticks": 2246107,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cpu",
+      "progress_status": "observed",
+      "steps": 2060000,
+      "last_epoch_fps": 5.301555156707764,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/ant-2029/training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/progress.csv",
+      "progress_age_seconds": 765.2869212627411,
+      "logged_step_delta": 10000,
+      "observation_interval_seconds": 1800.5276083946228,
+      "observed_logged_steps_per_second": 5.553927611760504
+    }
+  ],
+  "target_existing_workers": [
+    {
+      "job": "ant-2031",
+      "pid": 893525,
+      "start_ticks": 8366332,
+      "state": "R",
+      "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+      "device": "cpu",
+      "progress_status": "observed",
+      "steps": 4370000,
+      "last_epoch_fps": 7.671107292175293,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2031/training/STAR-{Ant-v4}/seed-2031-2026-10-20-08-55-56/progress.csv",
+      "progress_age_seconds": 404.5726366043091,
+      "logged_step_delta": 15000,
+      "observation_interval_seconds": 1801.3883004188538,
+      "observed_logged_steps_per_second": 8.32691097000699
+    }
+  ],
+  "target_CPU_proof": {
+    "observed_at_unix": 1792500711.3143601,
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+    "cpu_models": [
+      "Intel(R) Core(TM) i7-14700KF"
+    ],
+    "affinity_logical_CPUs": 28,
+    "load_1m": 5.92626953125,
+    "actual_cpu_idle_fraction": 0.7862759113652609,
+    "CPU_idle_sample_seconds": 1.0002212859981228,
+    "memory_available_bytes": 34115928064,
+    "project_free_bytes": 413298094080,
+    "minimum_cpu_quota_cores_or_null": null,
+    "quota_checked_pids": [
+      1177700,
+      1154,
+      893525
+    ],
+    "quota_scope": "observer_tmux_existing_target_learners_and_ancestors",
+    "runtime_versions": {
+      "torch": "2.7.1+cu118",
+      "gymnasium": "0.28.1",
+      "safety-gymnasium": "1.0.0",
+      "mujoco": "2.3.3",
+      "numpy": "1.23.5"
+    },
+    "frozen_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+    "frozen_source_dirty": false,
+    "target_containers": {
+      "ant-2028": {
+        "canonical_container_exists": false,
+        "canonical_container_is_symlink": false
+      },
+      "ant-2029": {
+        "canonical_container_exists": false,
+        "canonical_container_is_symlink": false
+      }
+    },
+    "CPU_headroom_eligible_under_existing_conservative_policy": true,
+    "does_not_authorize_or_start_a_handoff": true,
+    "GPU_resources_not_claimed": true
+  },
+  "next_action": "Inspect evidence before preparing any new immutable handoff/accounting hook; no task has moved"
+}
