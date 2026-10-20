@@ -1,0 +1,85 @@
+{
+  "kind": "second_wave_existing_cell_runtime_transition_preparation",
+  "host": "5080",
+  "jobs": [
+    "point-goal-2028",
+    "point-button-2028"
+  ],
+  "workers_at_ordinary_observation": [
+    {
+      "job": "point-button-2028",
+      "pid": 155591,
+      "start_ticks": 7131430,
+      "state": "S",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 2925000,
+      "last_epoch_fps": 7.2597856521606445,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/progress.csv",
+      "progress_age_seconds": 627.6435632705688,
+      "logged_step_delta": 10000,
+      "observation_interval_seconds": 1800.555948972702,
+      "observed_logged_steps_per_second": 5.55384019347216
+    },
+    {
+      "job": "point-goal-2028",
+      "pid": 186026,
+      "start_ticks": 8241742,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 3190000,
+      "last_epoch_fps": 7.235954761505127,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-08-29-32/progress.csv",
+      "progress_age_seconds": 607.4787974357605,
+      "logged_step_delta": 10000,
+      "observation_interval_seconds": 1800.555948972702,
+      "observed_logged_steps_per_second": 5.55384019347216
+    }
+  ],
+  "native_observation_file": "capacity_progress_observation_20261020_1221.json",
+  "expected_scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "controller_sha256": "b02833ea1b8ea53e5d1e5ccb91c4bce4402037125f7059e4c5e14e50dbe5e382",
+  "accounting_sha256": "bba8d35d48e3d04ee2b18db9ab895a52e2afc6d2e5f07bf8003f0cbbe5508fc0",
+  "prepared_bootstrap": {
+    "filename": "mps_training_bootstrap_20261020.py",
+    "sha256": "e2152f91622afd2a12ce7ba8555ef70e523d92cefce6ad8a53a5525eaec9e6c0"
+  },
+  "existing_formal_MPS_client_pids": [
+    215058,
+    232496
+  ],
+  "existing_formal_server_PID_at_observation": 215213,
+  "attach_existing_server_not_create_new_daemon": true,
+  "selection_basis": "Remaining training budget and conditional runtime tails, not returns, success or safety scores.",
+  "last_epoch_snapshot_evidence": {
+    "previous_1151_Point_FPS_sum": 54.27428197860718,
+    "current_1221_Point_FPS_sum": 60.816171646118164,
+    "ratio_not_causal_or_sustained_guarantee": 1.1205338777229619,
+    "MPS_clients": [
+      {
+        "job": "point-button-2029",
+        "steps": 2235000,
+        "fps": 8.796079635620117
+      },
+      {
+        "job": "point-goal-2029",
+        "steps": 2410000,
+        "fps": 9.198816299438477
+      }
+    ]
+  },
+  "total_training_budget_steps_per_cell": 10000000,
+  "new_experiment_cells": 0,
+  "scientific_parameters_changed": false,
+  "extra_scientific_evaluations_requested": 0,
+  "full_checkpoint_replay_rng_and_finite_model_required": true,
+  "host_and_separate4T_input_copies_required_before_launch": true,
+  "original_held_in_memory_until_new5000_step_epoch_and_MPS_proof": true,
+  "source_physical_tail_unlogged_unknown_not_zero": true,
+  "all_final_scientific_gates_and_legacy_provenance_requirements_retained": true
+}

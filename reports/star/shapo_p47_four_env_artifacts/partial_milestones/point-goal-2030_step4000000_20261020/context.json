@@ -1,0 +1,104 @@
+{
+  "kind": "single_training_seed_intermediate_learning_curve_context_not_final_result",
+  "environment": "SafetyPointGoal1-v0",
+  "training_seed": 2030,
+  "expected_scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "training_total_budget_steps": 10000000,
+  "evaluation_milestone_steps": 4000000,
+  "native_source_host": "5080",
+  "native_source_path": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-06-24-08/artifacts/evaluation_step_4000000.json",
+  "native_sha256": "d6d78bd196bb3bdcb09582d865a6eee34b2f9b863b7cd362a0460b160f0cf703",
+  "host_and_remote_native_sha256_match": true,
+  "episodes": 100,
+  "evaluation_base_seeds": [
+    32027,
+    32028,
+    32029,
+    32030,
+    32031
+  ],
+  "episodes_per_base_seed": 20,
+  "trajectory_base_seeds": [
+    32027,
+    32029,
+    32031
+  ],
+  "metrics": {
+    "mean_return": -0.8432457692317307,
+    "success_rate": 0.06,
+    "mean_cost": 9.19,
+    "cost_cvar_20": 45.95,
+    "training_cumulative_cost": 64183
+  },
+  "high_risk_top20_geometry": {
+    "dangerous_outward_velocity": 0.15111595392227173,
+    "fraction": 0.2,
+    "maximum_selected_margin": 18.128446578979492,
+    "mean_selected_margin": 1.8445885181427002,
+    "minimum_selected_margin": -0.9000000357627869,
+    "normal_to_tangent_variance_ratio": 0.9518609642982483,
+    "outward_velocity_ratio": 0.5263749957084656,
+    "population_samples": 400000,
+    "ranking": "descending_local_cost_margin_stable_ties",
+    "reliability": 0.03736322000622749,
+    "safety_weight": 0.6275198459625244,
+    "selected_samples": 80000
+  },
+  "local_scope_of_checks": {
+    "native_json_hash_match": true,
+    "return_and_cost_arrays_each100": true,
+    "recomputed_return_cost_and_upper20_cost_mean_match": true,
+    "no_new_rollouts_requested": true,
+    "full_checkpoint_provenance_audit_executed": false,
+    "final_cohort_scientific_audit_executed": false
+  },
+  "same_seed_1M_reference": {
+    "public_bundle": "first_milestone_20_cells_20261020/native_evaluations/point-goal-2030/evaluation_step_1000000.json",
+    "native_sha256": "d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26",
+    "metrics": {
+      "milestone": 1000000,
+      "episodes": 100,
+      "episodes_per_base_seed": 20,
+      "base_seeds": [
+        32027,
+        32028,
+        32029,
+        32030,
+        32031
+      ],
+      "mean_return": -0.4517404516456285,
+      "mean_cost": 9.07,
+      "cost_cvar_20": 45.35,
+      "success_rate": 0.06,
+      "failure_rate": 0,
+      "training_cumulative_cost": 15514,
+      "direction_geometry_high_risk_top_20_percent": {
+        "dangerous_outward_velocity": 0.18092669546604156,
+        "fraction": 0.2,
+        "maximum_selected_margin": 11.339447021484375,
+        "mean_selected_margin": 2.4878122806549072,
+        "minimum_selected_margin": -0.9983532428741455,
+        "normal_to_tangent_variance_ratio": 0.8744291067123413,
+        "outward_velocity_ratio": 0.4572874903678894,
+        "population_samples": 400000,
+        "ranking": "descending_local_cost_margin_stable_ties",
+        "reliability": 0.10041879117488861,
+        "safety_weight": 0.6970445513725281,
+        "selected_samples": 80000
+      }
+    }
+  },
+  "same_seed_differences_4M_minus_1M": {
+    "mean_return": -0.3915053175861022,
+    "success_percentage_points": 0,
+    "mean_cost": 0.11999999999999922,
+    "cost_cvar_20": 0.6000000000000014
+  },
+  "interpretation_limits": [
+    "Single training seed at an intermediate budget, not a five-training-seed4M summary.",
+    "Success remains6% for this seed between1M and4M; return decreased and evaluation cost is broadly unchanged. This is not a conclusion about the full method.",
+    "Do not pool this4M artifact with1M first-milestone aggregates or later contexts from other seeds/budgets.",
+    "No matched C0 comparison at this budget is present.",
+    "All full budgets, fixed evaluations, scientific gates and unresolved historical checkpoint-provenance requirements remain in force."
+  ]
+}
