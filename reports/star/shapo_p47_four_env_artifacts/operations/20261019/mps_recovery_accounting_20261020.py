@@ -32,6 +32,11 @@ def verify_existing_MPS_transitions(base):
         assert state['source_paused'] is False and state['source_retired'] is True
         assert state['original_training_segments_preserved_at_original_paths'] is True
         assert state['full_replay_rng_optimizers_finite_model'] is True
+        preservation=state['input_preservation']
+        assert preservation['host_input_sha256']==state['checkpoint_sha256']
+        assert preservation['archive_input_sha256']==state['checkpoint_sha256']
+        assert preservation['archive_separate_4T_filesystem_verified'] is True
+        assert hashlib.sha256(Path(preservation['host_input_path']).read_bytes()).hexdigest()==state['checkpoint_sha256']
         for filename,key in [('handoff_point2029_MPS_5080_20261020.py','controller_sha256'),
                              ('mps_training_bootstrap_20261020.py','bootstrap_sha256')]:
             assert hashlib.sha256((base/filename).read_bytes()).hexdigest()==state[key]

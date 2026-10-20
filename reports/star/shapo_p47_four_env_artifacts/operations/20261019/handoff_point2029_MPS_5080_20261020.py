@@ -7,7 +7,9 @@ or signals unrelated processes. Source remains paused until a new target epoch.
 import hashlib
 import importlib.util
 import json
+import re
 import shlex
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -131,6 +133,44 @@ print(json.dumps({{'client_pid':{pid},'server_pid':servers[0],'client_pids':clie
 '''))
 
 
+def preserve_input(h, job, full):
+    """Keep verified immutable copies on the host and4080's separate4T disk."""
+    source=full['source_checkpoint']
+    assert re.fullmatch(r'[A-Za-z0-9_./{}-]+',source)
+    directory=Path('/home/lzqw/SAFEFLOW2027_artifacts/recovered_a100_4080/mps_runtime_transitions')/job/SIDE/'input'
+    directory.mkdir(parents=True,exist_ok=True)
+    assert shutil.disk_usage(directory).free>=2*1024**3
+    target=directory/'latest_full.pt';partial=directory/'latest_full.pt.partial'
+    assert not target.exists() and not partial.exists()
+    subprocess.run(['scp','-o','BatchMode=yes','-o','ConnectTimeout=12',HOST+':'+source,str(partial)],
+                   check=True,capture_output=True,text=True,timeout=3600)
+    assert hashlib.sha256(partial.read_bytes()).hexdigest()==full['checkpoint_sha256']
+    partial.rename(target)
+    archive='/home/carla/4T/SAFEFLOW2027_4080/mps_runtime_transitions/'+job+'/'+SIDE+'/input/latest_full.pt'
+    prepare=f'''
+from pathlib import Path
+import shutil
+p=Path({archive!r});p.parent.mkdir(parents=True,exist_ok=True)
+assert p.parent.stat().st_dev!=Path('/home/carla/SAFEFLOW2027_4080').stat().st_dev
+assert shutil.disk_usage(p.parent).free>=2*1024**3
+assert not p.exists() and not Path(str(p)+'.partial').exists()
+'''
+    h.ssh('4080','python3 -c '+shlex.quote(prepare))
+    subprocess.run(['scp','-o','BatchMode=yes','-o','ConnectTimeout=12',str(target),'4080:'+archive+'.partial'],
+                   check=True,capture_output=True,text=True,timeout=3600)
+    finish=f'''
+import hashlib,json
+from pathlib import Path
+p=Path({archive!r});part=Path(str(p)+'.partial')
+assert hashlib.sha256(part.read_bytes()).hexdigest()=={full['checkpoint_sha256']!r}
+assert not p.exists();part.rename(p)
+print(json.dumps({{'archive_input_path':str(p),'archive_input_sha256':{full['checkpoint_sha256']!r},
+ 'archive_separate_4T_filesystem_verified':True}}))
+'''
+    archive_proof=json.loads(h.ssh('4080','python3 -c '+shlex.quote(finish)))
+    return {'host_input_path':str(target),'host_input_sha256':full['checkpoint_sha256'],**archive_proof}
+
+
 def start_daemon(h, controller):
     if controller.get('private_daemon_started'):
         return
@@ -201,6 +241,8 @@ assert b'CUDA_MPS_PIPE_DIRECTORY=' not in Path('/proc/{source['pid']}/environ').
             known_extra_training_cost_lower_bound=last['cost']-full['resume_cumulative_training_cost'],
             unlogged_source_tail_unknown_not_zero=True)
         assert state['known_extra_training_cost_lower_bound']>=0
+        save(path,state)
+        state['input_preservation']=preserve_input(h,job,full)
         save(path,state)
         h.py(HOST,f'''from pathlib import Path
 d=Path({root!r});side=Path({side!r})
