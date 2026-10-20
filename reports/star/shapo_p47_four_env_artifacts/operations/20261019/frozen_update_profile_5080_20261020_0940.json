@@ -1,0 +1,266 @@
+{
+  "kind": "disposable_frozen_update_performance_profile_not_scientific_result",
+  "observed_at_unix": 1792460443.1655087,
+  "input": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/checkpoints/latest_full.pt",
+  "input_sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "torch": "2.7.1+cu128",
+  "device": "NVIDIA GeForce RTX 5080",
+  "warmup_updates": 2,
+  "profiled_updates": 4,
+  "profile_wall_seconds": 1.0341473550070077,
+  "simulator_environment_steps": 0,
+  "formal_trainers_modified_or_restarted": false,
+  "formal_checkpoints_or_counts_modified": false,
+  "temporary_optimizer_updates_not_formal_experiment_data": 6,
+  "phase_wall_seconds": {
+    "sample_batch": {
+      "calls": 4,
+      "total": 0.0066944879945367575,
+      "mean": 0.0016736219986341894
+    },
+    "_update_cost_critic": {
+      "calls": 4,
+      "total": 0.12083825700392481,
+      "mean": 0.030209564250981202
+    },
+    "_update_violation_critic": {
+      "calls": 4,
+      "total": 0.2375764650059864,
+      "mean": 0.0593941162514966
+    },
+    "_sample_reward_batch": {
+      "calls": 8,
+      "total": 0.04708388200378977,
+      "mean": 0.005885485250473721
+    },
+    "_update_reward_critics": {
+      "calls": 8,
+      "total": 0.13710581402119715,
+      "mean": 0.017138226752649643
+    },
+    "_update_actor": {
+      "calls": 2,
+      "total": 0.09207130898721516,
+      "mean": 0.04603565449360758
+    },
+    "polyak_update": {
+      "calls": 4,
+      "total": 0.0021199529874138534,
+      "mean": 0.0005299882468534634
+    }
+  },
+  "top_self_cpu_events": [
+    {
+      "name": "cudaStreamSynchronize",
+      "calls": 882,
+      "self_cpu_total_ms": 276.15165000000053,
+      "cpu_total_ms": 276.15165000000053,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "cudaLaunchKernel",
+      "calls": 13856,
+      "self_cpu_total_ms": 51.54846799999819,
+      "cpu_total_ms": 51.84031799999823,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "phase::_update_reward_critics",
+      "calls": 8,
+      "self_cpu_total_ms": 46.09012799999849,
+      "cpu_total_ms": 136.85194299999998,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "phase::_update_violation_critic",
+      "calls": 4,
+      "self_cpu_total_ms": 40.394309999998804,
+      "cpu_total_ms": 237.49021199999999,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "phase::_update_cost_critic",
+      "calls": 4,
+      "self_cpu_total_ms": 27.618416999997844,
+      "cpu_total_ms": 120.73777300000002,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::index",
+      "calls": 444,
+      "self_cpu_total_ms": 27.258728000000406,
+      "cpu_total_ms": 69.31510499999972,
+      "self_device_total_ms": 0.17843800000000193
+    },
+    {
+      "name": "phase::_update_actor",
+      "calls": 2,
+      "self_cpu_total_ms": 20.42024699999974,
+      "cpu_total_ms": 92.02586199999999,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::addmm",
+      "calls": 1104,
+      "self_cpu_total_ms": 17.659241000002744,
+      "cpu_total_ms": 32.74213300000053,
+      "self_device_total_ms": 10.589700999999943
+    },
+    {
+      "name": "aten::nonzero",
+      "calls": 60,
+      "self_cpu_total_ms": 12.139553000000905,
+      "cpu_total_ms": 40.65163800000026,
+      "self_device_total_ms": 0.17335200000085751
+    },
+    {
+      "name": "aten::cat",
+      "calls": 762,
+      "self_cpu_total_ms": 11.176264999999438,
+      "cpu_total_ms": 13.94015300000026,
+      "self_device_total_ms": 0.812313000000171
+    },
+    {
+      "name": "cudaMemcpyAsync",
+      "calls": 1276,
+      "self_cpu_total_ms": 8.126296000000515,
+      "cpu_total_ms": 8.126296000000515,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::mul",
+      "calls": 1352,
+      "self_cpu_total_ms": 7.4120779999993625,
+      "cpu_total_ms": 11.86492999999915,
+      "self_device_total_ms": 1.262558999999562
+    },
+    {
+      "name": "aten::mm",
+      "calls": 710,
+      "self_cpu_total_ms": 7.1077130000002295,
+      "cpu_total_ms": 10.804603999999644,
+      "self_device_total_ms": 3.9914909999999018
+    },
+    {
+      "name": "aten::select",
+      "calls": 5604,
+      "self_cpu_total_ms": 6.401403000001953,
+      "cpu_total_ms": 7.7090270000022265,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::div",
+      "calls": 894,
+      "self_cpu_total_ms": 5.573831000000372,
+      "cpu_total_ms": 9.165198000000776,
+      "self_device_total_ms": 0.9653180000006168
+    },
+    {
+      "name": "aten::empty",
+      "calls": 1928,
+      "self_cpu_total_ms": 4.962876999998625,
+      "cpu_total_ms": 5.11708399999862,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::copy_",
+      "calls": 2728,
+      "self_cpu_total_ms": 4.887955000001372,
+      "cpu_total_ms": 16.79056700000075,
+      "self_device_total_ms": 0.42916399999942084
+    },
+    {
+      "name": "Optimizer.step#Adam.step",
+      "calls": 20,
+      "self_cpu_total_ms": 4.886548999999922,
+      "cpu_total_ms": 22.869526999999902,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::clamp_min",
+      "calls": 866,
+      "self_cpu_total_ms": 4.459239000001458,
+      "cpu_total_ms": 7.199685000000503,
+      "self_device_total_ms": 0.8269730000004001
+    },
+    {
+      "name": "aten::sub",
+      "calls": 506,
+      "self_cpu_total_ms": 4.095935000000082,
+      "cpu_total_ms": 6.750128000000277,
+      "self_device_total_ms": 0.5153430000007256
+    },
+    {
+      "name": "aten::as_strided",
+      "calls": 12126,
+      "self_cpu_total_ms": 3.9979230000019164,
+      "cpu_total_ms": 3.9979230000019164,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::sum",
+      "calls": 384,
+      "self_cpu_total_ms": 3.9896680000005706,
+      "cpu_total_ms": 7.554416999999889,
+      "self_device_total_ms": 0.87046999999937
+    },
+    {
+      "name": "aten::_local_scalar_dense",
+      "calls": 3752,
+      "self_cpu_total_ms": 3.9005559999980832,
+      "cpu_total_ms": 250.51944999999932,
+      "self_device_total_ms": 0.34499199999963187
+    },
+    {
+      "name": "aten::mean",
+      "calls": 342,
+      "self_cpu_total_ms": 3.720607000001113,
+      "cpu_total_ms": 5.81353600000057,
+      "self_device_total_ms": 0.5926200000003146
+    },
+    {
+      "name": "aten::add",
+      "calls": 702,
+      "self_cpu_total_ms": 3.4656220000023588,
+      "cpu_total_ms": 5.589593000002419,
+      "self_device_total_ms": 0.6219469999996536
+    },
+    {
+      "name": "aten::empty_strided",
+      "calls": 1000,
+      "self_cpu_total_ms": 3.3154919999999755,
+      "cpu_total_ms": 3.3154919999999755,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::arange",
+      "calls": 104,
+      "self_cpu_total_ms": 2.9233030000000473,
+      "cpu_total_ms": 6.38206799999997,
+      "self_device_total_ms": 0.025568000000126632
+    },
+    {
+      "name": "cudaMemsetAsync",
+      "calls": 844,
+      "self_cpu_total_ms": 2.8495499999999674,
+      "cpu_total_ms": 2.8495499999999674,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::item",
+      "calls": 3752,
+      "self_cpu_total_ms": 2.80395099999961,
+      "cpu_total_ms": 253.3234009999989,
+      "self_device_total_ms": 0.0
+    },
+    {
+      "name": "aten::t",
+      "calls": 2150,
+      "self_cpu_total_ms": 2.6047679999978954,
+      "cpu_total_ms": 5.100011000000194,
+      "self_device_total_ms": 0.0
+    }
+  ],
+  "output_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/performance_20261020/disposable_update_profile_ce7s4c_j"
+}

@@ -1,0 +1,107 @@
+{
+  "kind": "engineering_update_only_comparison_not_scientific_result",
+  "output_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/performance_20261020/disposable_mps_comparison_rvk22eqs",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "input_sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62",
+  "formal_workers_before": [
+    {
+      "pid": 28355,
+      "start_ticks": 1928788
+    },
+    {
+      "pid": 31275,
+      "start_ticks": 1959385
+    },
+    {
+      "pid": 51246,
+      "start_ticks": 2623239
+    },
+    {
+      "pid": 135035,
+      "start_ticks": 6431092
+    },
+    {
+      "pid": 144563,
+      "start_ticks": 6771290
+    },
+    {
+      "pid": 155591,
+      "start_ticks": 7131430
+    },
+    {
+      "pid": 166944,
+      "start_ticks": 7489225
+    },
+    {
+      "pid": 186026,
+      "start_ticks": 8241742
+    }
+  ],
+  "environment_steps": 0,
+  "compute_mode_changed": false,
+  "formal_trainers_restarted_or_modified": false,
+  "default": {
+    "workers": [
+      {
+        "pid": 199424,
+        "updates": 84,
+        "seconds": 12.029470627006958,
+        "updates_per_second": 6.982850917098084,
+        "environment_steps": 0,
+        "formal_training_data": false,
+        "MPS_pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/performance_20261020/disposable_mps_comparison_rvk22eqs/nonexistent_no_mps"
+      },
+      {
+        "pid": 199425,
+        "updates": 84,
+        "seconds": 12.025978163990658,
+        "updates_per_second": 6.984878806076739,
+        "environment_steps": 0,
+        "formal_training_data": false,
+        "MPS_pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/performance_20261020/disposable_mps_comparison_rvk22eqs/nonexistent_no_mps"
+      }
+    ],
+    "aggregate_updates_per_second": 13.967729723174823,
+    "MPS_connection_proof": {}
+  },
+  "daemon_start": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "observed_at_unix": 1792460568.604128,
+  "formal_workers_after": [
+    {
+      "pid": 28355,
+      "start_ticks": 1928788
+    },
+    {
+      "pid": 31275,
+      "start_ticks": 1959385
+    },
+    {
+      "pid": 51246,
+      "start_ticks": 2623239
+    },
+    {
+      "pid": 135035,
+      "start_ticks": 6431092
+    },
+    {
+      "pid": 144563,
+      "start_ticks": 6771290
+    },
+    {
+      "pid": 155591,
+      "start_ticks": 7131430
+    },
+    {
+      "pid": 166944,
+      "start_ticks": 7489225
+    },
+    {
+      "pid": 186026,
+      "start_ticks": 8241742
+    }
+  ]
+}
