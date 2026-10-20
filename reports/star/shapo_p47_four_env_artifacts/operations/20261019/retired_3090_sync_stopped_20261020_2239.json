@@ -1,0 +1,38 @@
+{
+  "observed_at_local": "2026-10-20 22:39:29 Asia/Shanghai",
+  "action": "stopped_obsolete_local_3090_milestone_sync_only",
+  "unit": "safeflow2027-shapo-p47-milestone-sync.service",
+  "reason": "The user retired the 3090. This obsolete local sync service was still retrying its unavailable original SSH endpoint every 30 seconds.",
+  "before": {
+    "active_state": "activating",
+    "sub_state": "auto-restart",
+    "unit_file_state": "disabled",
+    "restart_count_observed": 181,
+    "last_exit_status": 1,
+    "error": "remote milestone scan failed with exit 255: SSH connection refused",
+    "training_worker": false
+  },
+  "after": {
+    "active_state": "inactive",
+    "sub_state": "dead",
+    "main_pid": 0,
+    "unit_file_state": "disabled"
+  },
+  "unmodified_active_local_services": {
+    "safeflow-gpu-capacity-watch.service": 986,
+    "safeflow-recovered-checkpoint-backup.service": 989,
+    "safeflow-recovered-result-collector.service": 992,
+    "safeflow-scientific-evidence-archive.service": 993,
+    "safeflow-ant-cpu-5080-to-4080-capacity.service": 5357
+  },
+  "ordinary_remote_capacity_interval_seconds": 1800,
+  "additional_remote_probes_performed": 0,
+  "remote_training_processes_signalled": 0,
+  "other_projects_stopped": false,
+  "scientific_parameters_changed": false,
+  "training_budget_reduced": false,
+  "files_deleted": false,
+  "original_sync_script_unit_logs_and_saved_artifacts_preserved": true,
+  "reversible_by_explicit_systemctl_start": true,
+  "completion_claim": "None. This is a local maintenance receipt, not new training progress or scientific certification."
+}
