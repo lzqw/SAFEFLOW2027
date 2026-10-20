@@ -1,0 +1,42 @@
+{
+  "kind": "second_local_coordinator_reboot_with_remote_training_preserved",
+  "local_boot_time": "2026-10-20T21:07:22+08:00",
+  "local_boot_id": "ed9270a3-a60a-4b58-86e3-f7bf1af3fe8a",
+  "remote_comparison_before": "capacity_progress_observation_20261020_2051.json",
+  "remote_comparison_after": "capacity_progress_observation_20261020_2121.json",
+  "regular_after_frame_unix": 1792502507.5077999,
+  "active_remote_training_cells": 18,
+  "all_18_host_PID_start_ticks_boot_id_and_active_logger_paths_unchanged": true,
+  "all_18_logged_step_counters_advanced": true,
+  "restored_current_local_services": {
+    "capacity_monitor": 986,
+    "checkpoint_backup": 989,
+    "result_collector": 992,
+    "scientific_evidence_archiver": 993,
+    "Button2027_capacity_dispatch": 982,
+    "unstarted_A100_CPU_to_GPU_dispatch": 995,
+    "new_Ant2028_2029_CPU_dispatch": 5357
+  },
+  "cache_restoration": {
+    "command": "python3 host_full_input_cache_20261020.py ensure",
+    "exit_code": 0,
+    "host_inputs_materialized_and_verified": 7,
+    "source": "same-SHA immutable copies on separate 4080 4T filesystem",
+    "initial_six_entry_history_and_original_offload_receipt_not_overwritten": true
+  },
+  "new_Ant_CPU_dispatch": {
+    "phase": "waiting_on_regular_capacity_and_fresh_full",
+    "pending": ["ant-2028", "ant-2029"],
+    "source_training_not_paused": true,
+    "new_per_cell_handoffs_not_started": true,
+    "controller_sha256": "ba905780a68225885e9d7495fbf44b8247c13577bf1204df9a0336ddb5c4e239",
+    "accounting_sha256": "cde62a06288832047fbf80ef235b29ddf0d686a325ac94f089699bb01bf9340d",
+    "code_and_accounting_published_before_queue_start_commit": "4866dc4f8b0e488ead25a2187565403f7be1a9bc"
+  },
+  "remote_training_restarts_added": 0,
+  "scientific_evaluation_rollouts_added": 0,
+  "full_scientific_audit_executed": false,
+  "other_projects_or_training_budgets_changed": false,
+  "known_early_2027_parent_gaps_not_waived": true,
+  "next_regular_resource_check_local": "2026-10-20T21:51:48+08:00"
+}

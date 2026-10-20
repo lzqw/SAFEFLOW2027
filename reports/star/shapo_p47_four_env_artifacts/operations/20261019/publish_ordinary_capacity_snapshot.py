@@ -29,6 +29,10 @@ def new_steady_runtime_recoveries():
     specs += [(job + '_cpu_5080_to_4080_20261020_state.json',
                'handoff_completed_first_CPU_epoch_verified', 'handoff_Ant_CPU_5080_to_4080_20261020.py')
               for job in ('ant-2028', 'ant-2029')]
+    specs += [('ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json',
+               'completed_first_MPS_epoch_source_retired', 'handoff_ant2030_A100_GPU0_MPS_20261020.py'),
+              ('walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json',
+               'completed_first_MPS_epoch_source_retired', 'handoff_walkers_A100_GPU1_MPS_20261020.py')]
     for name, phase, controller in specs:
         path = BASE / name
         if not path.exists():
@@ -39,9 +43,12 @@ def new_steady_runtime_recoveries():
         assert s['source_retired'] is True and s['source_paused'] is False
         assert hashlib.sha256((BASE / controller).read_bytes()).hexdigest() == s['controller_sha256']
         steps = s['last_logged_source_steps'] - s['resume_steps']
-        cost = s['last_logged_source_cumulative_training_cost'] - s['resume_cumulative_training_cost']
-        assert 0 <= steps <= 5000 and steps == s['known_repeated_environment_steps_lower_bound']
-        assert math.isfinite(cost) and cost >= 0 and cost == s['known_additional_training_cost_lower_bound']
+        last_cost = s.get('last_logged_source_cumulative_training_cost', s.get('last_logged_source_cost'))
+        cost = last_cost - s['resume_cumulative_training_cost']
+        known_steps = s.get('known_repeated_environment_steps_lower_bound', s.get('known_repeated_steps_lower_bound'))
+        known_cost = s.get('known_additional_training_cost_lower_bound', s.get('known_extra_training_cost_lower_bound'))
+        assert 0 <= steps <= 5000 and steps == known_steps
+        assert math.isfinite(cost) and cost >= 0 and cost == known_cost
         records.append({'job': s['job'], 'state_file': name, 'extra_steps_lower_bound': steps,
                         'extra_safety_cost_lower_bound': cost, 'unlogged_tail_unknown_not_zero': True})
     return records
@@ -90,11 +97,20 @@ def main():
     goal = next(w for w in workers if w['job'] == 'point-goal-2027')
     walker = next(w for w in workers if w['job'] == 'walker2d-2031')
     button = next(w for w in workers if w['job'] == 'point-button-2027')
+    rtx_points = [w for w in workers if w['host'] == '5080' and w['device'] != 'cpu']
+    gpu_count = sum(p['gpu'] for p in placement.values())
+    cpu_count = sum(p['cpu'] for p in placement.values())
     current['performance_engineering'].update(
         current_Goal2027_steps=goal['steps'], current_Goal2027_fps=goal['last_epoch_fps'],
         A100_Walker2031_current_logged_steps=walker['steps'],
         A100_Walker2031_current_last_epoch_FPS=walker['last_epoch_fps'],
-        whole_5080_Point_last_epoch_FPS_snapshot_sum=sum(w['last_epoch_fps'] for w in workers if w['host'] == '5080' and w['device'] != 'cpu'))
+        whole_5080_Point_last_epoch_FPS_snapshot_sum=sum(w['last_epoch_fps'] for w in rtx_points),
+        current_5080_Point_MPS_actor_count=len(rtx_points),
+        verified_5080_native_MPS_client_pids=[w['pid'] for w in rtx_points],
+        remaining_two_A100_CPU_to_GPU_transfers_not_yet_launched=not any(
+            (BASE / n).exists() for n in ('ant-2030_cpu_to_mps_a100_gpu0_20261020_state.json',
+                                         'walker2d-2030_cpu_to_mps_a100_gpu1_20261020_state.json')))
+    current['performance_engineering'].pop('nine_existing_5080_Point_MPS_actors', None)
     names = ['Button2027_5080_regular_capacity_dispatch_20261020_state.json',
              'A100_unstarted_transfers_post_local_reboot_20261020_state.json']
     if (BASE / 'Ant_CPU_5080_to_4080_regular_dispatch_20261020_state.json').exists():
@@ -114,9 +130,10 @@ def main():
         subsequent_runtime_placement_recoveries=new_recoveries)
     current['data_notice'] = (
         f'{observed.isoformat()} ordinary native frame:all18 active existing cells advanced;'
-        '11GPU/7CPU;2/20 budgets complete. 9 verifiedPointMPS clients on5080;'
-        f'Button2027 remains on A100 at{button["steps"]}steps,awaiting stable target capacity '
-        'and genuine fresh50k full input boundary;no source pause or fresh replacement. '
+        f'{gpu_count}GPU/{cpu_count}CPU;2/20 budgets complete. {len(rtx_points)}PointGPU clients on5080;'
+        f'Button2027 currently on{button["host"]} at{button["steps"]}steps. '
+        'Completed placements require genuine full inputs and target epoch proof before source retirement;'
+        'partial transactions need separate evidence and cannot pass this steady-state renderer. '
         'Capacity schedulers use existing30min frames,not additional broad SSH polling. '
         f'Source/host/separate4T originals preserved;recovery floors{recovery_steps}steps/{recovery_cost:g}cost '
         'plus unknown historical/unlogged tails. Early2027 parent gaps still unresolved;'
