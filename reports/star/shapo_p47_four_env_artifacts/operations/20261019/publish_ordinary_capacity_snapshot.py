@@ -63,6 +63,35 @@ def main():
     raw = read(BASE / ('capacity_progress_observation_' + args.stamp + '.json'))
     previous_name = 'training_status_' + args.previous + '.json'
     current = read(OUT / previous_name)
+    root_status = read(OUT / 'training_status.json')
+    latest_science = root_status.get('newest_intermediate_scientific_result')
+    if latest_science:
+        summary_path = (OUT / latest_science).resolve()
+        summary_path.relative_to((OUT.parent.parent / 'partial_milestones').resolve())
+        detail = read(summary_path)
+        aggregation = detail.get('descriptive_aggregation', {})
+        metrics = aggregation.get('metrics', {})
+        current['latest_published_native_science_summary_reference'] = latest_science
+        if {'mean_return', 'mean_cost', 'cost_cvar_20', 'failure_rate'} <= set(metrics):
+            old_science = current.get('latest_native_science', {})
+            if old_science.get('summary') != latest_science:
+                current['previous_native_science_summary'] = old_science
+            current['latest_native_science'] = {
+                'summary': latest_science, 'environment': detail['environment'],
+                'milestone_steps': detail['milestone_steps'],
+                'final_budget_steps': detail['total_training_budget_steps'],
+                'available_native_training_seeds': detail['available_training_seeds'],
+                'descriptive_training_seed_unit_n': aggregation['n'],
+                'mean_return': metrics['mean_return']['mean_across_five_training_seeds'],
+                'SD_return_across_training_seeds': metrics['mean_return']['sd_across_five_training_seeds'],
+                'mean_cost': metrics['mean_cost']['mean_across_five_training_seeds'],
+                'mean_of_seed_specific_CVaR20': metrics['cost_cvar_20']['mean_across_five_training_seeds'],
+                'mean_failure_rate': metrics['failure_rate']['mean_across_five_training_seeds'],
+                'not_final_5M_or_strict_provenance_validated_cohort': True,
+                'no_matched_C0_or_causal_improvement_claim': True,
+                'known_original_full_parent_gap_seeds': detail.get('known_original_full_parent_gap_seeds', [2027]),
+                'assembled_from_existing_native_results_only': True,
+                'extra_evaluation_rollouts': detail['additional_evaluation_rollouts']}
     old = {w['job']: w for w in current['active_training']}
     workers, placement = [], {}
     for host, info in raw['hosts'].items():
@@ -143,6 +172,8 @@ def main():
     write(OUT / name, current)
     shutil.copyfile(BASE / ('capacity_progress_observation_' + args.stamp + '.json'), OUT / current['native_observation_file'])
     root = read(OUT / 'training_status.json')
+    if root.get('newer_scientific_summary_after_snapshot') == current.get('latest_native_science', {}).get('summary'):
+        root.pop('newer_scientific_summary_after_snapshot', None)
     root.update(superseded_by=name, snapshot_notice='Historical17:27 payload below. Latest:' + name + '. ' + current['data_notice'])
     write(OUT / 'training_status.json', root)
     print(json.dumps({'status': name, 'active': len(workers), 'retained_logged_steps': total,
