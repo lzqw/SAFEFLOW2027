@@ -1,0 +1,27 @@
+{
+  "kind": "completed_existing_Walker_CPU_group_engineering_accounting_not_final_scientific_audit",
+  "observed_at_unix": 1792532280.9155562,
+  "verified_completed_existing_CPU_handoffs": 2,
+  "jobs": [
+    {
+      "job": "walker2d-2028",
+      "known_additional_physical_steps": 5000,
+      "known_additional_physical_training_cost": 3.0,
+      "unknown_unlogged_tail_not_zero": true
+    },
+    {
+      "job": "walker2d-2029",
+      "known_additional_physical_steps": 5000,
+      "known_additional_physical_training_cost": 6.0,
+      "unknown_unlogged_tail_not_zero": true
+    }
+  ],
+  "all_original_inputs_and_first_epoch_identities_checked": true,
+  "full_final_scientific_audit_executed": false,
+  "additional_scientific_evaluation_rollouts": 0,
+  "new_training_cells": 0,
+  "scientific_parameters_changed": false,
+  "budgets_reduced": false,
+  "other_projects_paused": false,
+  "original_2027_full_parent_gaps_not_repaired": true
+}

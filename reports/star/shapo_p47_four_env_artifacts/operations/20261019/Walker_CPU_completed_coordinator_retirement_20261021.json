@@ -1,0 +1,36 @@
+{
+  "kind": "completed_local_one_shot_coordinator_boot_trigger_retirement_not_training_stop",
+  "completed_at_unix": 1792532281.0924017,
+  "unit": "safeflow-walker-cpu-5080-to-4080-capacity.service",
+  "command": [
+    "systemctl",
+    "--user",
+    "disable",
+    "safeflow-walker-cpu-5080-to-4080-capacity.service"
+  ],
+  "queue_snapshot": "Walker_CPU_completed_queue_snapshot_20261021.json",
+  "accounting_receipt": "Walker_CPU_completed_group_accounting_check_20261021_0536.json",
+  "before": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "enabled"
+  },
+  "after": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "disabled"
+  },
+  "no_stop_or_now_flag_used": true,
+  "successful_exit_proven_before_disable": true,
+  "remote_learner_signals": 0,
+  "remote_learners_restarted": 0,
+  "regular_monitor986_not_changed": true,
+  "scientific_parameters_or_budgets_changed": false,
+  "expected_lifecycle": "Both requested Walker CPU placements completed. Inactive coordinator is expected. Remote learners and1800-second capacity monitor continue; never restart historical coordinator32455."
+}
