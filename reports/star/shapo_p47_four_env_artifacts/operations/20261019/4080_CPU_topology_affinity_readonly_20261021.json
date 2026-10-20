@@ -1,0 +1,29 @@
+{
+  "kind": "one_shot_read_only_CPU_topology_and_owned_worker_affinity",
+  "host": "4080",
+  "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+  "observation_window_local": "2026-10-21 after the00:51 and before the01:21 ordinary frame",
+  "higher_frequency_SMT_CPU_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "higher_frequency_cpuinfo_max_freq_kHz": [5500000, 5600000],
+  "higher_frequency_sibling_groups": [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 11], [12, 13], [14, 15]],
+  "lower_frequency_single_thread_CPU_ids": [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+  "lower_frequency_cpuinfo_max_freq_kHz": 4300000,
+  "kernel_core_type_attribute_available": false,
+  "classification_basis": "Observed sysfs maximum-frequency and SMT-sibling groups, not a kernel core_type flag or a new performance benchmark.",
+  "owned_workers_at_this_observation": [
+    {"job": "ant-2031", "pid": 893525, "start_ticks": 8366332, "current_CPU": 8, "thread_count": 3},
+    {"job": "ant-2028", "pid": 1224257, "start_ticks": 13400868, "current_CPU": 3, "thread_count": 3},
+    {"job": "ant-2029", "pid": 1234198, "start_ticks": 13493607, "current_CPU": 6, "thread_count": 3},
+    {"job": "walker2d-2028", "pid": 1268762, "start_ticks": 14000418, "current_CPU": 4, "thread_count": 3}
+  ],
+  "all_four_leaders_observed_on_distinct_higher_frequency_physical_cores": true,
+  "original_allowed_affinity_each_worker_CPU_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+  "action": "no_affinity_change; no evidence in this sample of a worker leader placed on the lower-frequency group",
+  "future_core_placement_or_speed_not_guaranteed_by_this_single_sample": true,
+  "training_processes_signalled_or_restarted": 0,
+  "other_projects_changed": false,
+  "additional_scientific_evaluation_rollouts": 0,
+  "new_performance_benchmark_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "ordinary_remote_capacity_interval_seconds_unchanged": 1800
+}
