@@ -1,0 +1,141 @@
+{
+  "kind": "existing_Walker_CPU_inflight_engineering_not_new_native_cohort_frame",
+  "previous_status": "training_status_20261021_0021.json",
+  "engineering_observed_at_unix": 1792513872.1104836,
+  "latest_all_host_native_frame": "ordinary_observation_20261021_0021.json",
+  "earlier_native_cohort_counters_not_relabelled_as_current_migration_counters": true,
+  "job": "walker2d-2028",
+  "inflight_phase": "copying_paused_CPU_source",
+  "inflight_state_snapshot": "walker2d-2028_walker_cpu_5080_to_4080_20261021_inflight_state_20261021_0030.json",
+  "dispatcher_snapshot": "snapshot_20261021_0030_Walker_CPU_5080_to_4080_regular_dispatch_20261021_state.json",
+  "source_identity": {
+    "pid": 42764,
+    "start_ticks": 2320568,
+    "state": "R",
+    "device": "cpu",
+    "cuda_visible_devices": "-1",
+    "args": [
+      "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/resolved_formal_config.yaml",
+      "--seed",
+      "2028",
+      "--steps",
+      "5000000",
+      "--device",
+      "cpu",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/training",
+      "--result",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+  },
+  "source_held_in_memory_until_real_new_target_epoch": true,
+  "target_first_epoch_and_source_retirement_not_yet_proven": true,
+  "genuine_resume_steps": 2200000,
+  "genuine_input_sha256": "6047fcba32353f3c0b036ad008292a9321477222b7d36474c6a817310f7d5b43",
+  "runtime_change": {
+    "from_device": "cpu",
+    "to_device": "cpu",
+    "from_torch": "2.7.1+cu128",
+    "to_torch": "2.7.1+cu118",
+    "cuda_build_changed": true,
+    "bitwise_equivalence_claimed": false
+  },
+  "GPU_capacity_not_claimed_or_used": true,
+  "target_capacity_before_pause": {
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+    "cpu_affinity_count": 28,
+    "load_1m": 8.09033203125,
+    "maximum_load_affinity_fraction": 0.5,
+    "actual_cpu_idle_fraction": 0.7288619336425258,
+    "cpu_idle_sample_seconds": 1.0001860210031737,
+    "memory_available_bytes": 30562820096,
+    "project_free_bytes": 412396871680,
+    "minimum_cpu_quota_cores_or_null": null,
+    "cpu_quota_scope": "observer_and_target_tmux_server_with_ancestors",
+    "cpu_quota_checked_tmux_server_pid": 1154,
+    "target_device": "cpu",
+    "target_cuda_visible_devices": "-1",
+    "GPU_capacity_not_claimed_or_used": true
+  },
+  "conditional_repeated_work_if_move_completes": {
+    "logged_steps": 5000,
+    "safety_cost": 3.0,
+    "not_added_to_completed_recovery_totals_yet": true,
+    "unknown_unlogged_source_tail_not_zero": true
+  },
+  "last_completed_recovery_accounting": {
+    "extra_environment_steps_lower_bound": 1147276,
+    "extra_training_safety_cost_lower_bound": 10370.0,
+    "unknown_historical_and_unlogged_tails_not_assumed_zero": true,
+    "full_final_ledger_audit_not_executed": true,
+    "first_completed_A100_Walker_GPU_handoff_known_logged_rollback_steps": 0,
+    "first_completed_A100_Walker_GPU_handoff_known_extra_cost": 0,
+    "zero_known_logged_rollback_is_not_zero_unknown_unlogged_physical_overhead": true,
+    "Goal2027_crosshost_known_repeated_steps": 5000,
+    "Goal2027_crosshost_known_extra_safety_cost": 321,
+    "subsequent_runtime_placement_recoveries": [
+      {
+        "job": "point-button-2027",
+        "state_file": "point-button-2027_balanced_MPS_5080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 26.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2028",
+        "state_file": "ant-2028_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 0,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      },
+      {
+        "job": "ant-2029",
+        "state_file": "ant-2029_cpu_5080_to_4080_20261020_state.json",
+        "extra_steps_lower_bound": 5000,
+        "extra_safety_cost_lower_bound": 0.0,
+        "unlogged_tail_unknown_not_zero": true
+      }
+    ]
+  },
+  "second_Walker_move_requires_actual_first_target_same_environment_FPS_gain": true,
+  "new_training_cells": 0,
+  "additional_scientific_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "budgets_reduced": false,
+  "other_projects_paused": false,
+  "full_scientific_audit_executed": false,
+  "final_scientific_report": false,
+  "legacy_provenance": {
+    "Goal2027_original_historical_parent_still_missing": true,
+    "fresh_Goal2027_restart_still_not_authorized": true,
+    "latest_user_authority_request": "provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json",
+    "other_three_2027_parent_identities_still_unresolved": true,
+    "indexed_archive_lookup": "provenance_decisions/legacy_other3_all_indexed_archive_lookup_20261020_1340.json",
+    "do_not_repeat_unchanged_498_manifest_lookup_without_new_original_material": true,
+    "no_later_checkpoint_alias_created_as_missing_original_parent": true
+  },
+  "final_scientific_requirements_unchanged": {
+    "terminal_receipts": 20,
+    "evaluations": 60,
+    "provenance_records": 80,
+    "trajectories": 60,
+    "checkpoint_identities": 120
+  },
+  "next_ordinary_resource_check_local": "2026-10-21T00:51:51+08:00",
+  "data_notice": "Existing Walker2028 is being continued from a genuine2.2M full replay/RNG/optimizer checkpoint. All original5M budgets and scientific settings remain. Source held in memory; target first5k epoch and source retirement are not yet established. No candidate policy selection or extra evaluation occurs. First placement uses live CPU capacity, not an unmeasured Walker speed guarantee. Second placement requires actual target Walker FPS improvement. This is runtime-only engineering admission, not a scientific metric gate. Early2027 original full-parent gaps remain unresolved."
+}
