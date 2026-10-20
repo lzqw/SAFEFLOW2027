@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "superseded_by": "training_status_20261020_0907.json",
-  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0907.json: Ant2031 has continued from a4.05M full input onto available4080-host CPU capacity, with first new epoch verified at4.055M. Its source retired afterward; raw records and known/unknown rollback costs are retained. Eighteen unique cells remain active with full budgets. Earlier Goal2028 CPU failure/GPU recovery remains disclosed. No scientific parameters or final audit gates changed.",
+  "superseded_by": "training_status_20261020_0921.json",
+  "snapshot_notice": "Historical17:27 snapshot. See training_status_20261020_0921.json for all18 workers in the ordinary09:21 observation: Goal2028 advanced on5080 GPU to3.120M; Ant2031 advanced on4080 CPU to4.060M. Both match their independently recorded launch identities and progress files. Other17 workers also have positive same-identity periodic deltas. Full budgets, failure accounting and scientific gates remain unchanged; no final scientific audit is claimed.",
   "kind": "in_progress_operational_snapshot",
   "observed_at": "2026-10-19T17:27:00+08:00",
   "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
