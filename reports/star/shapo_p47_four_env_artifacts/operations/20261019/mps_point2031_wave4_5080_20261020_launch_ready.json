@@ -1,8 +1,25 @@
 {
-  "kind": "engineering_readiness_guard_not_scientific_audit",
-  "native_1421_throughput_supports_expansion": false,
-  "prior_six_formal_MPS_handoffs_completed": false,
-  "reason": "Wave3 still in progress and14:21 ordinary observation has not occurred; do not launch fourth wave.",
-  "additional_standalone_benchmarks_or_evaluation_rollouts": 0,
+  "kind": "engineering_throughput_readiness_not_scientific_audit",
+  "recent_native_throughput_supports_expansion": true,
+  "prior_six_formal_MPS_handoffs_completed": true,
+  "ordinary_observation_file": "capacity_progress_observation_20261020_1351.json",
+  "mandatory_post_handoff_native_file": "point-button-2030_mps_wave3_5080_20261020_first_epoch_native_observation.json",
+  "ordinary_observed_at_unix": 1792475498.66201,
+  "mandatory_post_handoff_observed_at_unix": 1792475819.2871065,
+  "all_eight_Point_clients_uniquely_present_in_post_handoff_frame": true,
+  "native_six_MPS_client_pids": [
+    215058,
+    232496,
+    244831,
+    257493,
+    263255,
+    273025
+  ],
+  "whole_5080_Point_last_epoch_FPS_sum": 93.57511806488037,
+  "earlier_1421_wait_superseded_by_existing_completed_handoff_evidence": true,
+  "prior_prepared_guard_not_deployed_before_this_update": true,
+  "no_new_standalone_benchmark_or_evaluation_rollouts": true,
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
   "controller_started": false
 }

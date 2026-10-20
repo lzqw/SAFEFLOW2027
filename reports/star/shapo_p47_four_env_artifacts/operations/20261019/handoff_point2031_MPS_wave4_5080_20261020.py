@@ -375,7 +375,7 @@ def main():
     readiness=json.loads((BASE/'mps_point2031_wave4_5080_20261020_preparation.json').read_text())
     assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest()==readiness['controller_sha256']
     launch=json.loads((BASE/'mps_point2031_wave4_5080_20261020_launch_ready.json').read_text())
-    assert launch['native_1421_throughput_supports_expansion'] is True
+    assert launch['recent_native_throughput_supports_expansion'] is True
     prior=module(BASE/'mps_recovery_accounting_20261020.py','prior_MPS_accounting')
     assert len(prior.verify_existing_MPS_transitions(BASE))==2
     wave2=module(BASE/'mps_wave2_recovery_accounting_20261020.py','completed_wave2_MPS_accounting')

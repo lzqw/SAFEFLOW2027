@@ -14,6 +14,7 @@ from mps_recovery_accounting_20261020 import verify_existing_MPS_transitions
 from mps_wave2_recovery_accounting_20261020 import verify_wave2_MPS_transitions
 from mps_wave3_recovery_accounting_20261020 import verify_wave3_MPS_transitions
 from mps_wave4_recovery_accounting_20261020 import verify_wave4_MPS_transitions
+from host_full_input_cache_20261020 import ensure_cache
 from a100_rebalance_accounting_20261020 import verify_A100_return_balances
 
 BASE = Path(__file__).resolve().parent
@@ -1578,6 +1579,7 @@ def annotate_recovery(target):
 
 
 def publish():
+    ensure_cache(BASE)
     if not readiness():
         raise RuntimeError('final evidence is not ready; refusing publication')
     receipt = json.loads(STATE.read_text()) if STATE.exists() else {}

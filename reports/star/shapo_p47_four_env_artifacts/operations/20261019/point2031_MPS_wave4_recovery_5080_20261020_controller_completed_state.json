@@ -1,0 +1,106 @@
+{
+  "phase": "two_existing_Point2031_cells_running_MPS_after_storage_recovery",
+  "private_daemon_started": true,
+  "existing_formal_server_attached_not_created": true,
+  "existing_formal_server_proofs": [
+    {
+      "client_pid": 232496,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    },
+    {
+      "client_pid": 215058,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    },
+    {
+      "client_pid": 244831,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    },
+    {
+      "client_pid": 257493,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    },
+    {
+      "client_pid": 263255,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    },
+    {
+      "client_pid": 273025,
+      "server_pid": 215213,
+      "client_pids": [
+        215058,
+        273025,
+        263255,
+        257493,
+        244831,
+        232496
+      ],
+      "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+      "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+      "connection_verified": true
+    }
+  ],
+  "completed_jobs": [
+    "point-button-2031",
+    "point-goal-2031"
+  ],
+  "recovery_helper_sha256": "edcd8cc5b83a486596f2983b27b31cab28f60a6022c0a511312e105eeeeae795",
+  "abort_resolution_receipt": "mps_wave4_prelaunch_storage_abort_resolution_20261020.json",
+  "scientific_parameters_changed": false,
+  "other_projects_modified": false,
+  "updated_at_unix": 1792478395.8337114
+}

@@ -1,0 +1,175 @@
+{
+  "kind": "resolved_prelaunch_storage_abort_no_new_target_or_discarded_rollouts",
+  "failed_original_state": "point-button-2031_mps_wave4_5080_20261020_state.json",
+  "failed_original_state_sha256": "b4e684d851503ee39869cd646ac6e96d6cfd19f1b3c9973fd2fa2d736f3a5dfe",
+  "original_transaction_implementation_sha256": "458e802571d17d47acb70586ce9ed4e82334e08381a756497ce7402f5b29de84",
+  "recovery_helper": "recover_wave4_after_host_storage_guard_20261020.py",
+  "recovery_helper_sha256": "edcd8cc5b83a486596f2983b27b31cab28f60a6022c0a511312e105eeeeae795",
+  "transaction_namespace_override": "mps_wave4_recovery_5080_20261020",
+  "source_continuity_proofs": [
+    {
+      "job": "point-button-2031",
+      "source_identity": {
+        "pid": 135035,
+        "start_ticks": 6431092,
+        "state": "S",
+        "device": "cuda:0",
+        "cuda_visible_devices": "0",
+        "args": [
+          "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+          "scripts/star/train_star.py",
+          "--config",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/resolved_formal_config.yaml",
+          "--seed",
+          "2031",
+          "--steps",
+          "10000000",
+          "--device",
+          "cuda:0",
+          "--vector-envs",
+          "1",
+          "--batch-size",
+          "256",
+          "--replay-size",
+          "400000",
+          "--steps-per-epoch",
+          "5000",
+          "--log-dir",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training",
+          "--result",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/receipt.json",
+          "--no-tensorboard",
+          "--resume",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-19-09-57-35/checkpoints/latest_full.pt"
+        ],
+        "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+      },
+      "progress": [
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-09-09-18-17-23/progress.csv",
+          "mtime_ns": 1789650938000000000,
+          "steps": 2575000,
+          "cost": 76830.0,
+          "fps": 5.463457107543945
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-13-10-41-35/progress.csv",
+          "mtime_ns": 1791935652000000000,
+          "steps": 2800000,
+          "cost": 80699.0,
+          "fps": 3.2659752368927
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-14-08-18-42/progress.csv",
+          "mtime_ns": 1792105651000000000,
+          "steps": 3405000,
+          "cost": 91659.0,
+          "fps": 3.6628735065460205
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-16-07-11-15/progress.csv",
+          "mtime_ns": 1792159724560846591,
+          "steps": 4010000,
+          "cost": 102943.0,
+          "fps": 5.151130676269531
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-19-09-57-35/progress.csv",
+          "mtime_ns": 1792437578034111291,
+          "steps": 4360000,
+          "cost": 109041.0,
+          "fps": 1.0976063013076782
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-03-27-46/progress.csv",
+          "mtime_ns": 1792476861591554719,
+          "steps": 4655000,
+          "cost": 112774.0,
+          "fps": 9.117758750915527
+        }
+      ]
+    },
+    {
+      "job": "point-goal-2031",
+      "source_identity": {
+        "pid": 51246,
+        "start_ticks": 2623239,
+        "state": "S",
+        "device": "cuda:0",
+        "cuda_visible_devices": "0",
+        "args": [
+          "/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python",
+          "scripts/star/train_star.py",
+          "--config",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/resolved_formal_config.yaml",
+          "--seed",
+          "2031",
+          "--steps",
+          "10000000",
+          "--device",
+          "cuda:0",
+          "--vector-envs",
+          "1",
+          "--batch-size",
+          "256",
+          "--replay-size",
+          "400000",
+          "--steps-per-epoch",
+          "5000",
+          "--log-dir",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training",
+          "--result",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/receipt.json",
+          "--no-tensorboard",
+          "--resume",
+          "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-13-10-41-34/checkpoints/latest_full.pt"
+        ],
+        "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f"
+      },
+      "progress": [
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-09-09-18-17-23/progress.csv",
+          "mtime_ns": 1789651455255643820,
+          "steps": 2630000,
+          "cost": 49016.0,
+          "fps": 5.514847755432129
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-13-10-41-34/progress.csv",
+          "mtime_ns": 1792191317399527335,
+          "steps": 3825000,
+          "cost": 67563.0,
+          "fps": 4.766263484954834
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-13-12-19/progress.csv",
+          "mtime_ns": 1792391042879119376,
+          "steps": 3810000,
+          "cost": 67119.0,
+          "fps": 1.8819743394851685
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-15-25-20/progress.csv",
+          "mtime_ns": 1792398775863567883,
+          "steps": 3815000,
+          "cost": 67210.0,
+          "fps": 2.2619988918304443
+        },
+        {
+          "csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-16-53-06/progress.csv",
+          "mtime_ns": 1792477265375731860,
+          "steps": 4650000,
+          "cost": 78339.0,
+          "fps": 9.319230079650879
+        }
+      ]
+    }
+  ],
+  "prelaunch_failed_attempt_additional_physical_steps": 0,
+  "prelaunch_failed_attempt_additional_training_cost": 0,
+  "no_original_state_log_or_input_deleted": true,
+  "host_storage_offload_receipt": "host_full_input_cache_20261020_offload_receipt.json",
+  "scientific_parameters_changed": false,
+  "new_experiment_cells": 0,
+  "updated_at_unix": 1792477331.5686371
+}

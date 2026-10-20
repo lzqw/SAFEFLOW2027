@@ -1,0 +1,14 @@
+{"file": "point2031_MPS_wave4_5080_20261020_controller_state.json", "phase": "waiting_for_fresh_wave4_full_checkpoints", "time": 1792476249.3997483}
+{"file": "point-button-2031_mps_wave4_5080_20261020_state.json", "phase": "preparing_fresh_full_checkpoint", "time": 1792476344.1814754}
+{"file": "point-button-2031_mps_wave4_5080_20261020_state.json", "phase": "source_paused_full_input_preserved", "time": 1792476349.9855955}
+{"file": "point-button-2031_mps_wave4_5080_20261020_state.json", "phase": "needs_inspection_after_MPS_handoff_error", "time": 1792476350.804203}
+Traceback (most recent call last):
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_point2031_MPS_wave4_5080_20261020.py", line 411, in <module>
+    main()
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_point2031_MPS_wave4_5080_20261020.py", line 403, in main
+    if transition(helpers(expected['job']),expected,controller):
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_point2031_MPS_wave4_5080_20261020.py", line 266, in transition
+    state['input_preservation']=preserve_input(h,job,full)
+  File "/home/lzqw/SAFEFLOW2027_multi_gpu/shapo-p47/4080_20261013/handoff_point2031_MPS_wave4_5080_20261020.py", line 163, in preserve_input
+    assert shutil.disk_usage(directory).free>=2*1024**3
+AssertionError

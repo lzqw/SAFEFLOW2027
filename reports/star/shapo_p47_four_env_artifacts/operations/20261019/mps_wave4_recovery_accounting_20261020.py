@@ -18,6 +18,29 @@ def verify_wave4_MPS_transitions(base):
     records = []
     for job in ('point-goal-2031', 'point-button-2031'):
         path = base/(job+'_mps_wave4_5080_20261020_state.json')
+        recovered = base/(job+'_mps_wave4_recovery_5080_20261020_state.json')
+        recovery_receipt = None
+        if recovered.exists():
+            recovery_receipt=json.loads((base/'mps_wave4_prelaunch_storage_abort_resolution_20261020.json').read_text())
+            helper=base/recovery_receipt['recovery_helper']
+            assert helper.name=='recover_wave4_after_host_storage_guard_20261020.py'
+            assert hashlib.sha256(helper.read_bytes()).hexdigest()==recovery_receipt['recovery_helper_sha256']
+            assert recovery_receipt['original_transaction_implementation_sha256']=='458e802571d17d47acb70586ce9ed4e82334e08381a756497ce7402f5b29de84'
+            assert recovery_receipt['transaction_namespace_override']=='mps_wave4_recovery_5080_20261020'
+            failed_path=base/recovery_receipt['failed_original_state']
+            assert failed_path.name=='point-button-2031_mps_wave4_5080_20261020_state.json'
+            assert hashlib.sha256(failed_path.read_bytes()).hexdigest()==recovery_receipt['failed_original_state_sha256']
+            failed=json.loads(failed_path.read_text())
+            assert failed['target_launch_requested'] is False and failed['target_absence_confirmed'] is True
+            assert failed['original_source_resumed_in_memory'] is True and failed['source_paused'] is False
+            assert recovery_receipt['prelaunch_failed_attempt_additional_physical_steps']==0
+            assert recovery_receipt['prelaunch_failed_attempt_additional_training_cost']==0
+            assert recovery_receipt['no_original_state_log_or_input_deleted'] is True
+            assert len(recovery_receipt['source_continuity_proofs'])==2
+            for row in recovery_receipt['source_continuity_proofs']:
+                assert row['source_identity']['state'] not in ('T','t')
+                assert row['source_identity']['boot_id']==BOOT
+            path=recovered
         if not path.exists():
             continue
         state = json.loads(path.read_text())
@@ -68,6 +91,7 @@ def verify_wave4_MPS_transitions(base):
         assert worker['cuda_execution_backend']=='mps_verified'
         assert worker['mps_connection']['server_pid']==proof['server_pid']
         records.append({'job':job,'runtime_placement':'same5080_GPU_private_MPS_execution',
+                        'prelaunch_storage_abort_resolution':recovery_receipt,
                         'completion_state':state,'first_target_native_observation':native,
                         'known_additional_physical_steps':steps,
                         'known_additional_physical_training_cost':cost,

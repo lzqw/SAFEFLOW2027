@@ -1,0 +1,65 @@
+{
+  "kind": "historical_ordinary_snapshot_during_engineering_handoff_not_additional_experiment",
+  "observed_at_unix": 1792475498.66201,
+  "raw_observation": "ordinary_observation_20261020_1351.json",
+  "raw_training_process_count": 19,
+  "unique_logical_training_cells": 18,
+  "duplicate_job": "point-button-2030",
+  "native_actor_rows": [
+    {
+      "job": "point-button-2030",
+      "pid": 144563,
+      "start_ticks": 6771290,
+      "state": "T",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "observed",
+      "steps": 5150000,
+      "last_epoch_fps": 8.100662231445312,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2030/training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/progress.csv",
+      "progress_age_seconds": 252.50414323806763,
+      "logged_step_delta": 15000,
+      "observation_interval_seconds": 1800.6489725112915,
+      "observed_logged_steps_per_second": 8.330329913819968
+    },
+    {
+      "job": "point-button-2030",
+      "pid": 273025,
+      "start_ticks": 10164113,
+      "state": "R",
+      "boot_id": "5f46bb0c-b4ec-4802-8f6e-01ac611c0f2f",
+      "device": "cuda:0",
+      "progress_status": "no_logged_epoch_yet",
+      "steps": null,
+      "last_epoch_fps": null,
+      "progress_selection": "active_worker_logger_fd",
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2030/training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/progress.csv",
+      "progress_age_seconds": 101.22307348251343,
+      "cuda_execution_backend": "mps_verified",
+      "mps_connection": {
+        "pipe_directory": "/home/autodrive/LZQW/SAFEFLOW2027/operations/mps_formal_20261020",
+        "status": "observed",
+        "server_pid": 215213,
+        "client_pids": [
+          215058,
+          273025,
+          263255,
+          257493,
+          244831,
+          232496
+        ],
+        "gpu_uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5"
+      },
+      "mps_gpu_uuid_verified": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5"
+    }
+  ],
+  "target_steps_null_preserved_not_assumed_zero": true,
+  "retained_genuine_full_input_budget_anchor_steps": 5150000,
+  "full_input_cumulative_cost": 104955,
+  "full_input_sha256": "85e5afdf1bcc8bd0bab0fa060332d2f117a862313429d1988d5bf22ae10a9bbf",
+  "no_1351_full_Point_FPS_sum_claim": true,
+  "subsequent_first_epoch_and_retirement_state": "point-button-2030_mps_wave3_5080_20261020_state.json",
+  "original_source_PID144563_retired_only_after_5155000_epoch": true,
+  "no_new_training_cell_or_scientific_evaluation": true
+}
