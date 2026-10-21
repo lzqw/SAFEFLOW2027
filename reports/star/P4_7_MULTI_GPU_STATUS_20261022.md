@@ -185,3 +185,5 @@ At the **2026-10-22 03:56:08 CST** follow-up, four 5080 lanes advanced to approx
 At the **2026-10-22 03:56:43 CST** follow-up, five 5080 lanes advanced to approximately **4.910M, 7.655M, 7.085M, 7.035M, and 6.530M / 10M steps**; the other two remained at approximately 7.885M and 5.675M. GPU utilization was about 83%, and all seven training processes remained alive.
 
 At the **2026-10-22 03:57:22 CST** follow-up, four 5080 lanes advanced to approximately **5.680M, 4.910M, 6.530M, and 7.655M / 10M steps**; the other three remained at approximately 7.085M, 7.885M, and 7.035M. GPU utilization was about 82%, and all seven training processes remained alive.
+
+At the **2026-10-22 03:57:57 CST** follow-up, the 4080 PointButton 2029 lane advanced to **4.235M / 10M steps** (FPS about 24.63, GPU utilization about 34%). Two 5080 lanes advanced to approximately **7.040M and 7.655M / 10M steps**; the other five remained at approximately 5.680M, 6.530M, 7.085M, 7.885M, and 4.910M. GPU utilization was about 83%, and all observed training processes remained alive.
