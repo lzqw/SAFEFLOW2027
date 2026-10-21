@@ -465,3 +465,5 @@ At the **2026-10-22 05:55 CST** follow-up, a fourth 4080 process (Walker2d-2029,
 At the **2026-10-22 05:57 CST** follow-up, the resumed 4080 Walker2d-2028 lane advanced to approximately **2.610M / 5M steps**. All 4 processes remained alive, with 4080 GPU utilization about **67%**; Ant-2028 and Walker2d-2029 were still in high-load initialization with no errors. The leading 5080 lane remained around **8.030M / 10M**.
 
 At the **2026-10-22 05:58 CST** follow-up, the resumed 4080 Ant-2028 lane began writing progress at approximately **2.505M / 5M steps**; Walker2d-2028 remained around **2.610M / 5M**. Walker2d-2029 was still in active initialization (CPU about 101%) with no error output, and all 4 4080 processes remained alive (GPU about **67%**). The leading 5080 lane remained around **8.030M / 10M**.
+
+At the **2026-10-22 05:59 CST** follow-up, the 4080 Walker2d-2029 lane also began writing progress at approximately **2.605M / 5M steps**. All four 4080 lanes now have active progress records; GPU utilization was about **65%**. A100 remained at 15 processes and 5080 at 7 processes, with the leading 5080 lane around **8.030M / 10M**.
