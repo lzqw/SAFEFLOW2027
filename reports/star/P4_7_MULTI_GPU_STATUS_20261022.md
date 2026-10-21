@@ -41,3 +41,5 @@ At the **2026-10-22 03:03 CST** follow-up, the 4080 PointButton 2029 lane advanc
 At the **2026-10-22 03:04 CST** follow-up, the 5080 PointGoal lanes advanced to approximately **7.595M and 7.825M / 10M steps**; the other five observed lanes remained at approximately 6.975M, 5.615M, 6.465M, 4.845M, and 7.020M. GPU utilization was about 83%, and all seven training processes remained alive. A100 and 4080 remained active.
 
 At the **2026-10-22 03:05 CST** follow-up, a further 5080 lane advanced to approximately **7.025M / 10M steps**; the other six observed lanes remained unchanged. The 5080 retained seven active processes with GPU utilization about 78%; A100 and 4080 remained active as well.
+
+At the **2026-10-22 03:07 CST** follow-up, A100 PointButton 2028 advanced to **4.255M / 10M steps** while PointButton 2030 remained at **6.500M / 10M steps** (GPU utilization about 35%/44%). A 5080 lane also advanced to approximately **4.850M / 10M steps**; its other six observed lanes remained at approximately 7.025M, 7.595M, 7.825M, 6.975M, 5.615M, and 6.465M, with GPU utilization about 81%. The 4080 remained at 4.155M; all observed training processes remained alive.
