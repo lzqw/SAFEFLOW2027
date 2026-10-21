@@ -1,0 +1,75 @@
+{
+  "kind": "shared_GPU_runtime_context_not_a_scientific_result",
+  "native_capacity_frames": {
+    "0822": {
+      "native_observation": "ordinary_observation_20261021_0822.json",
+      "GPU_total_utilization_percent": 47,
+      "foreign_or_unknown_GPU_pids": [],
+      "verified_SAFEFLOW_MPS_clients": [
+        1394013,
+        1405139,
+        1411949
+      ]
+    },
+    "0852": {
+      "native_observation": "ordinary_observation_20261021_0852.json",
+      "GPU_total_utilization_percent": 100,
+      "foreign_or_unknown_GPU_pids": [
+        1447629,
+        1447630,
+        1447631
+      ],
+      "verified_SAFEFLOW_MPS_clients": [
+        1394013,
+        1405139,
+        1411949
+      ]
+    },
+    "0922": {
+      "native_observation": "ordinary_observation_20261021_0922.json",
+      "GPU_total_utilization_percent": 48,
+      "foreign_or_unknown_GPU_pids": [],
+      "verified_SAFEFLOW_MPS_clients": [
+        1394013,
+        1405139,
+        1411949
+      ]
+    }
+  },
+  "one_shot_OS_log_proof": "CPU_4080_Point_slowdown_20261021_0922.json",
+  "one_shot_OS_log_proof_sha256": "6d3febbd1ecf67df92446777790e561c440de0f57f873ba7cdea5d1019957d4d",
+  "most_recent_bounded_log_rows": {
+    "point-button-2030": {
+      "last_logged_steps": 6200000.0,
+      "last_logged_epoch_FPS": 19.146459579467773,
+      "native_4M_file_in_current_segment_at_sample": false
+    },
+    "point-button-2029": {
+      "last_logged_steps": 3335000.0,
+      "last_logged_epoch_FPS": 18.4079532623291,
+      "native_4M_file_in_current_segment_at_sample": false
+    },
+    "point-button-2028": {
+      "last_logged_steps": 3995000.0,
+      "last_logged_epoch_FPS": 8.839481353759766,
+      "native_4M_file_in_current_segment_at_sample": false
+    }
+  },
+  "interpretation": [
+    "A transient multi-client slowdown overlaps with three foreign-or-unknown GPU processes at08:52, absent at09:22. This supports resource-contention as an explanation, not a controlled causal measurement.",
+    "Two Point clients have subsequent18-20FPS complete epochs. Button2028 has not yet logged a subsequent complete epoch in this observation; its recovery is not assumed.",
+    "The08:52 totalGPU100percent was not SAFEFLOW-only utilization or proof of useful SAFEFLOW throughput.",
+    "Eight existing learners each used approximately one CPU core in a one-second sample. This is not evidence of sustained utilization or permission to oversubscribe additional workers.",
+    "The raw last-epoch Button2028 estimate remains7.86days in the09:22 snapshot. It extrapolates a contention-affected epoch, not a reliable steady-state deadline. Wait for normal scheduled frames rather than replace measured FPS with a preferred number.",
+    "Button2028 native4M JSON was not yet present in its current segment at this sample. No extra evaluation was launched and no task was declared stopped."
+  ],
+  "raw_last_epoch_Button2028_training_only_days": 7.862714115602818,
+  "additional_remote_observations_by_this_publisher": 0,
+  "GPU_queries_by_diagnostic": 0,
+  "training_restarts": 0,
+  "foreign_processes_signaled_or_modified": false,
+  "scientific_parameters_or_budgets_changed": false,
+  "additional_evaluation_rollouts": 0,
+  "original_full_parent_gaps_repaired": false,
+  "final_scientific_audit_executed": false
+}
