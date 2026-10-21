@@ -16,3 +16,5 @@ To use the available A100 capacity, the existing 4080 CPU cells `ant-2028`, `ant
 The next verified write advanced `point-button-2028` to approximately 4.205M steps (training-only FPS about 5.63); `point-button-2030` remained at approximately 6.450M steps (training-only FPS about 5.70) at the 2026-10-22 00:42 local observation. Both processes remained alive, with A100 GPU utilization approximately 43%/42%.
 
 The following verified write advanced `point-button-2030` to approximately 6.455M steps (training-only FPS about 5.64); `point-button-2028` remained at approximately 4.205M steps (training-only FPS about 5.63) at the 2026-10-22 00:44 local observation. Both processes remained alive, with A100 GPU utilization approximately 42%/42%.
+
+The next verified write advanced `point-button-2028` to approximately 4.210M steps (training-only FPS about 5.73) and `point-button-2030` to approximately 6.460M steps (training-only FPS about 5.70) at the 2026-10-22 00:57 local observation. Both processes remained alive, with A100 GPU utilization approximately 52%/50%.
