@@ -1,0 +1,45 @@
+{
+  "kind": "targeted_final_import_multihop_storage_path_diagnostic_not_scientific_audit",
+  "frozen_controller_commit_unchanged": "427079c7674ba5e9f5eae417700d6bec2a553aa4",
+  "frozen_validator_file_sha256": "2952eaaeebbf99f6e36b542b8e4db98e21283756dd6af57ed52ca1c8634e99cb",
+  "actual_retained_checkpoint_metadata_reference": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/checkpoints/latest_full.pt",
+  "actual_reference_obtained_by_safe_pickle_opcode_string_read_bytes": 46203,
+  "real_parent_stat_only": {
+    "copied_old_parent_exists": true,
+    "current_copied_path": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/checkpoints/latest_full.pt",
+    "current_copied_bytes": 110912101,
+    "tensor_bytes_or_model_loaded": false
+  },
+  "future_collector_last_hop_manifest_from_existing_code": {
+    "format": "shapo-artifact-relocation-v1",
+    "job": "walker2d-2028",
+    "original_host": "4080",
+    "target_host": "tjucta-a100",
+    "original_container": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/walker2d-2028",
+    "scientific_protocol_changed": false,
+    "original_evidence_modified": false
+  },
+  "previous_relocation_manifest_preserved_but_not_used_by_frozen_resolver": {
+    "format": "shapo-artifact-relocation-v1",
+    "job": "walker2d-2028",
+    "original_host": "5080",
+    "target_host": "4080",
+    "original_container": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028",
+    "scientific_protocol_changed": false,
+    "original_evidence_modified": false
+  },
+  "tiny_fixture_last_hop_path_resolves": true,
+  "tiny_fixture_old_hop_rejected_even_though_relative_file_exists": {
+    "error_type": "ValueError",
+    "error": "'/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/checkpoints/latest_full.pt' is not in the subpath of '/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/walker2d-2028' OR one path is relative and the other is absolute."
+  },
+  "fixture_no_real_checkpoint_payloads_or_torch_imported": true,
+  "training_parameters_or_original_artifacts_or_frozen_controller_changed": false,
+  "new_model_or_evaluation_runs": 0,
+  "full_final_scientific_audit_executed": false,
+  "missing2027_original_parent_gap_repaired": false,
+  "proposed_action_not_executed": "Request approval for storage-only multi-hop locator update; retain missing-file, same-run, traversal, checkpoint/SHA,20-run/60-eval/80-provenance/60-trajectory/120-identity requirements.",
+  "diagnostic_received_UTC": "2026-10-20T23:57:16Z",
+  "locator_version_change_user_approval_requested_not_received": true,
+  "named_parent_presence_is_not_a_full_tensor_or_scientific_identity_audit": true
+}
