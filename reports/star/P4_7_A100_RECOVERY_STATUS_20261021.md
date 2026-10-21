@@ -10,3 +10,5 @@ At the latest direct observation (2026-10-21 18:47 local server time):
 - 4080 retained six active cells and 5080 retained seven active cells. No task was terminated and no scientific configuration was changed.
 
 The complete checkpoint inputs and the original 4080 records remain preserved. The two recovery cells continue toward their full budgets; this file records an intermediate operational state and is not a final result.
+
+To use the available A100 capacity, the existing 4080 CPU cells `ant-2028`, `ant-2029`, `walker2d-2028`, `walker2d-2029`, and `ant-2031` were stopped at verified full checkpoints and resumed on the A100 MPS servers. Their original 5,000,000-step budgets and configurations were retained. The latest verification showed fresh A100 progress files for all five migrated cells, no recovery log errors, and A100 GPU utilization of approximately 42%/43%.
