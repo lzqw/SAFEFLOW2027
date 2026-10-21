@@ -463,3 +463,5 @@ At the **2026-10-22 05:54 CST** follow-up, an additional 4080 Ant-2028 run was r
 At the **2026-10-22 05:55 CST** follow-up, a fourth 4080 process (Walker2d-2029, resumed from approximately **2.605M / 5M**) was started successfully. The 4080 now has **4 active training processes** and GPU utilization increased to about **67%**; the new process reached STAR route-A initialization without errors.
 
 At the **2026-10-22 05:57 CST** follow-up, the resumed 4080 Walker2d-2028 lane advanced to approximately **2.610M / 5M steps**. All 4 processes remained alive, with 4080 GPU utilization about **67%**; Ant-2028 and Walker2d-2029 were still in high-load initialization with no errors. The leading 5080 lane remained around **8.030M / 10M**.
+
+At the **2026-10-22 05:58 CST** follow-up, the resumed 4080 Ant-2028 lane began writing progress at approximately **2.505M / 5M steps**; Walker2d-2028 remained around **2.610M / 5M**. Walker2d-2029 was still in active initialization (CPU about 101%) with no error output, and all 4 4080 processes remained alive (GPU about **67%**). The leading 5080 lane remained around **8.030M / 10M**.
