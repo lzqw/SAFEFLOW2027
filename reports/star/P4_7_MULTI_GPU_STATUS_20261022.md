@@ -311,6 +311,29 @@ its recovery ledger and checksums; physical-work totals are unchanged. Six
 4080 workers and one A100 worker continue training, while the 5080 reservation
 still ends at 19:11. The twenty-cell final scientific audit remains pending.
 
+## 5080 local backup resume timer
+
+A second, 5080-local user timer is now enabled for the same 19:11 CST deadline,
+alongside the existing host-side SSH timer. Both call the same reservation
+dispatcher and share its exclusive file lock, per-lane duplicate checks, and
+eight-hour not-before guard. This reduces dependence on the host's network
+availability; it does not advance the resume time or terminate another project.
+
+The [local timer](p4_7_training_receipts_20261022/runtime_schedule/safeflow-5080-local-resume-20261022.timer)
+was observed active with the correct next deadline; its
+[dispatcher service](p4_7_training_receipts_20261022/runtime_schedule/safeflow-5080-local-resume-20261022.service)
+was still inactive, and the reservation state remained `held`. No resume command
+was invoked for this installation. The service deliberately retains its cgroup
+after dispatch so successful detached trainers are not killed when the short
+dispatcher exits. Memory/SSH failures retain the existing thirty-minute retry
+policy and do not interrupt other workloads.
+
+The local timer requires the 5080 user manager to be available at trigger time;
+no user-linger or unrelated account setting was changed. The host timer remains
+an independent fallback. Training code, budgets, and scientific gates are
+unchanged, and the pending request to change only multi-hop artifact lookup is
+not treated as approved.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.

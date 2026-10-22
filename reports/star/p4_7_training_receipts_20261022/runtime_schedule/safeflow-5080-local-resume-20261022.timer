@@ -1,0 +1,11 @@
+[Unit]
+Description=End the SAFEFLOW 5080 reservation at 19:11 CST on 2026-10-22
+
+[Timer]
+OnCalendar=2026-10-22 19:11:00 Asia/Taipei
+Persistent=true
+AccuracySec=1s
+Unit=safeflow-5080-local-resume-20261022.service
+
+[Install]
+WantedBy=timers.target

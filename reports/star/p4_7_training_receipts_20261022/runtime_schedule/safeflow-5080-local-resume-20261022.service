@@ -1,0 +1,13 @@
+[Unit]
+Description=Resume existing SAFEFLOW lanes after the eight-hour 5080 reservation
+
+[Service]
+Type=oneshot
+# Keep detached trainers in this unit alive after the dispatcher exits.
+RemainAfterExit=yes
+KillMode=process
+ExecStart=/home/autodrive/LZQW/SAFEFLOW2027/env/bin/python /home/autodrive/LZQW/SAFEFLOW2027/operations/hold_5080_8h_20261022.py --resume
+Restart=on-failure
+RestartSec=1800
+TimeoutStartSec=180
+
