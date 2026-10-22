@@ -1,0 +1,321 @@
+{
+  "phase": "ant2029_earlier_history_restored_without_overwrite",
+  "job": "ant-2029",
+  "source_host": "4080",
+  "target_host": "tjucta-a100",
+  "shared_checkpoint_relative": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/checkpoints/latest_full.pt",
+  "shared_checkpoint_sha256": "ad81d3c7eccdca5bd4b0566405d85f886e05957a36af4f76e1cc613a4a492cab",
+  "restored_files": [
+    {
+      "relative_path": "a100_reboot_recovery_20261019.json",
+      "sha256": "962b478787c73370c5cbf6aeb09359c9038bb088de55d4c67e38786196ac96f4",
+      "bytes": 1514
+    },
+    {
+      "relative_path": "a100_reboot_recovery_20261019_state.json",
+      "sha256": "75e2181b4551e59bd631ac0ae0353e089305a0a653e8568458cdcc6af7c17b2e",
+      "bytes": 558
+    },
+    {
+      "relative_path": "artifact_relocation.json.before_cpu_5080_to_4080_20261020_1792509020171250708",
+      "sha256": "e3ab0bfa730d2e030c59d79cdd22f0daae41e70181a52c75bb09bfee3667eef4",
+      "bytes": 300
+    },
+    {
+      "relative_path": "handoff_cpu_5080_to_4080_20261020_receipt.json",
+      "sha256": "fc23207a07ed7799e6255fc5c228c6db13140b9125b2c922092baa52c83d7226",
+      "bytes": 7943
+    },
+    {
+      "relative_path": "handoff_cpu_5080_to_4080_20261020_state.json",
+      "sha256": "4e887478bcd6ce8bb6b3f5b38533f88bef8de0b8dd17faca705400dc1bbc977a",
+      "bytes": 10555
+    },
+    {
+      "relative_path": "materialize.json",
+      "sha256": "79a993368c880b668c8a575b211cc4aca9b556cf8fbce93a43abb5cc88adbe5d",
+      "bytes": 472
+    },
+    {
+      "relative_path": "reboot_cpu_5080_20261019_1512.json",
+      "sha256": "47336a1758d7c170b4491d77c7d4ed24b5df6d0e27a77140a5ad7f12fab413f5",
+      "bytes": 1966
+    },
+    {
+      "relative_path": "reboot_cpu_5080_20261019_1512_state.json",
+      "sha256": "2041e8cf1ed002cc9a670ab9d67892cedc8acb7ae395e518314275157980d008",
+      "bytes": 1410
+    },
+    {
+      "relative_path": "source_commit.txt",
+      "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60",
+      "bytes": 41
+    },
+    {
+      "relative_path": "train_a100_reboot_recovery_20261019.log",
+      "sha256": "d993d30a3418363728d606bab0bdef2164ba74b8c0da3490d2d3b271f0c2e551",
+      "bytes": 63039
+    },
+    {
+      "relative_path": "train_cpu.log",
+      "sha256": "0b33e5accbfbe7911d6b5d23c40752788338b9a1315abd1974347fc5a54f64e4",
+      "bytes": 3370473
+    },
+    {
+      "relative_path": "train_cpu_5080_to_4080_20261020.log",
+      "sha256": "aea58f09d05335bbfbfaa565dcf6664b6a83c2e0cc6012be733c59a0b65b6062",
+      "bytes": 1108623
+    },
+    {
+      "relative_path": "train_reboot_cpu_5080_20261019_1512.log",
+      "sha256": "57e3be730283d243fa2b8b686396b26e508596dbf2d9647d2e4382553f05d733",
+      "bytes": 1857710
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/best_safe_return_selection.json",
+      "sha256": "632419ef1237525c63e4ec3fe0aa71fcf81c56309ce8c7f76fad3ddd9d01f418",
+      "bytes": 815
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/counterfactual_step_500000.json",
+      "sha256": "6191628bd3a48e7c71bdb8cb8ed9eb950a50ff562f7873184bacea24345c1b2a",
+      "bytes": 1538
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/diagnostics.csv",
+      "sha256": "bfb27f3378573639c2f10fe04119aeab3a9953a92cbdc53e7f6f2c8a45934c94",
+      "bytes": 605797
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation.csv",
+      "sha256": "baf4600b7c6677428297784e949f1165e624d16836ab33411894a9df9736fef9",
+      "bytes": 1178
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+      "sha256": "cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa",
+      "bytes": 24437
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/heldout_probability.csv",
+      "sha256": "e1aa832407a59cbea99255fc5aa0efe4355b7b16c7f2574a94812b4807b2792e",
+      "bytes": 70835
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/heldout_probability_latest.json",
+      "sha256": "aef97ede5173417a2b508cdbc81a7daebee03f089653e1116e4e9cd062e4b6f0",
+      "bytes": 752
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/run_manifest.json",
+      "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a",
+      "bytes": 6297
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/trajectory_step_500000.csv",
+      "sha256": "037e57a28385486c5bc53e7045aec64afaab15e6bd9a093b409a8496fdded594",
+      "bytes": 1424070
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/warmup_status.json",
+      "sha256": "9e6d2f8a58afdd831574ac6c446c4630bb1be09c68d65bb860d431f20aef247e",
+      "bytes": 2322
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/best_safe_return.pt",
+      "sha256": "755146039a5894ad6a692faa6dfdbae6e61b2735fd40461a3264d3636f319bb4",
+      "bytes": 8846673
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/latest_full.pt",
+      "sha256": "218b2dec55f285b661dc9459f233f895098b01153909b43e46cc2407f6197f4a",
+      "bytes": 146464997
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/milestone_0.pt",
+      "sha256": "caf739c4ec10c777316fd1674761ef2da7ae8add6098fe689aef046cccc4f293",
+      "bytes": 4434861
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/milestone_500000.pt",
+      "sha256": "8e25d43dd31c7de2020e0f1b7d8cd96bd7bddf64b6ce007ba4b09f7bbc9c425a",
+      "bytes": 8846673
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/config.json",
+      "sha256": "5183131608837d09363de0433b8784d001d3ba94d6eab26d8def5e831aef6d7c",
+      "bytes": 9972
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/progress.csv",
+      "sha256": "c1c291b978a261ff4f497ba208175242e6643a8880c5fa5f1f26ad319388de0a",
+      "bytes": 615515
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/diagnostics.csv",
+      "sha256": "d247b928f2844c9a9c8d67142b15c541026ec10585eec929105190903c7136f1",
+      "bytes": 13615
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/heldout_probability.csv",
+      "sha256": "90c0b53f7d7b9f6eb06a0dd51f5b254849cb1e965a4e4d6499fc6be693a493ac",
+      "bytes": 1465
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/heldout_probability_latest.json",
+      "sha256": "3811900fc2074c914a38b216b1f61ffeb8fb53907115b0e8e5cc7da0abe0f422",
+      "bytes": 717
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/run_manifest.json",
+      "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a",
+      "bytes": 6297
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/warmup_status.json",
+      "sha256": "a69d9468638f4d71364388ccaeba29e1ccb15dfb227165df8e9418f2a7488ff1",
+      "bytes": 2277
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/config.json",
+      "sha256": "6616a5eb511102d03575d64abc61baaf0dec5f5a7ce8b65b424ea54b3a35174f",
+      "bytes": 10264
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/progress.csv",
+      "sha256": "83c443c67c3440b9655c08cc24f31006d974e9d8f51e9c87551224968d6c694a",
+      "bytes": 13764
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/best_safe_return_selection.json",
+      "sha256": "cd66eed9f944fb7ff304e813145f9bf84148fc8b0011f8ea5579867191d608f7",
+      "bytes": 817
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/counterfactual_step_2000000.json",
+      "sha256": "2125a5b712c79b1507a86ff2e629ffa495878fa7e085c39b64a0924c6ca53ea3",
+      "bytes": 1540
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/diagnostics.csv",
+      "sha256": "9c930bf821cf7d14cccc9ef7d4eb9ef2d5a40b6185ddac03b2ae1ab26eddc86d",
+      "bytes": 318952
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation.csv",
+      "sha256": "5055feae5949499bb9d37bad08ff1b13cfb301222a7bc01e76202e18096080af",
+      "bytes": 1192
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation_step_2000000.json",
+      "sha256": "acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4",
+      "bytes": 23487
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/heldout_probability.csv",
+      "sha256": "ada74b3dc52f390c3a6ff0d35518a0a404a04338c5b25edd4fd8e3cfe8105590",
+      "bytes": 38205
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/heldout_probability_latest.json",
+      "sha256": "54523427e1d8aca9adad5875bef171cc6bfe3e98b597ba363bae7c70417fa2bf",
+      "bytes": 754
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/run_manifest.json",
+      "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a",
+      "bytes": 6297
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/trajectory_step_2000000.csv",
+      "sha256": "df9e25d484b95ecd4cf085b04537d93e3ec7268aba5d32547cb9b01b547a0db9",
+      "bytes": 1401497
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/warmup_status.json",
+      "sha256": "9507ccedb8fd3e52661187a03d6202e50e7699b05ace3f28e45d9c71a8b60a10",
+      "bytes": 2318
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/best_safe_return.pt",
+      "sha256": "e508471b01d0e33da7465e1b3c35aab339c0109bc11cb1c7529748a3826827c1",
+      "bytes": 8846630
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/latest_full.pt",
+      "sha256": "5e20506d499075c5128b3f165dcb28f433caa2b06ad7f5fccc8efeb1d6eea3cd",
+      "bytes": 146464803
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/milestone_2000000.pt",
+      "sha256": "7a01b551fa1ff1965c9294e100cef9c01552fb50264bca9cdcb205391dc77551",
+      "bytes": 8846865
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/config.json",
+      "sha256": "e17e4bc8e360b42008adf7af8c8ecfa586b5019f73863705d539bae9a341727b",
+      "bytes": 10284
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/progress.csv",
+      "sha256": "dfb9fb6dae99b349dbff62de0f1df9ebe445bca46a25d37074b4522f1224d1f6",
+      "bytes": 323866
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/diagnostics.csv",
+      "sha256": "ae013692ccc8750b14fb655d1a54a1be563fdebe596adcdedf12cd52a76b8dc1",
+      "bytes": 189129
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/heldout_probability.csv",
+      "sha256": "aa16749b62054000d4bd7787aff95b675cecad4b943789df180f2fa0cd65a0fc",
+      "bytes": 22248
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/heldout_probability_latest.json",
+      "sha256": "7e8bc0419fab4aacd6ad8e6f278b7df1cd98ba349ffecba9aee3bd0ac3ae23c7",
+      "bytes": 747
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/run_manifest.json",
+      "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a",
+      "bytes": 6297
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/warmup_status.json",
+      "sha256": "eab218ced3136b82b92042544a1e92bfcbe7db83195842f2f1f5458275956edb",
+      "bytes": 2305
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/config.json",
+      "sha256": "983a1d55017abde2d1ac3ac406504c4f095aa844b5a56350a67bbf53073c01fe",
+      "bytes": 10268
+    },
+    {
+      "relative_path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/progress.csv",
+      "sha256": "6a10dd034182f151cd098954a066a5f2606ba1538b0e6c501e979a963d004770",
+      "bytes": 191630
+    }
+  ],
+  "restored_bytes": 344539866,
+  "retained_transfer_package": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/historical_ant2029_4080_input_20261022",
+  "artifact_relocation": {
+    "format": "shapo-artifact-relocation-v1",
+    "job": "ant-2029",
+    "original_container": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/ant-2029",
+    "original_host": "5080",
+    "target_host": "tjucta-a100",
+    "scientific_protocol_changed": false,
+    "original_evidence_modified": false,
+    "transfer_via_host": "4080",
+    "scope": "historical artifact path mapping; current A100 training unchanged",
+    "historical_transfer_source": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2029",
+    "shared_checkpoint_sha256": "ad81d3c7eccdca5bd4b0566405d85f886e05957a36af4f76e1cc613a4a492cab",
+    "retained_transfer_package": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/historical_ant2029_4080_input_20261022"
+  },
+  "scientific_parameters_changed": false,
+  "existing_training_files_overwritten": false,
+  "learner_signals_sent": 0,
+  "new_scientific_evaluations": 0,
+  "completed_at": 1792651368.1780498
+}

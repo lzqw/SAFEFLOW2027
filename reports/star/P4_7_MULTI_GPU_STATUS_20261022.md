@@ -237,6 +237,29 @@ and six 4080 cells advancing normally: PointButton 2029/2028/2030 at
 3.155M. No 5080 training worker was present. Full final validation is still
 deferred until all twenty cells finish.
 
+## Ant-2029 historical package repair
+
+The active A100 Ant-2029 container similarly lacked its 500k/2M milestone
+history and source-version marker. The retained 4080 container held the original
+files. Its immutable 2.5M shared resume checkpoint matched A100 byte-for-byte
+(SHA-256 `ad81d3c7eccdca5bd4b0566405d85f886e05957a36af4f76e1cc613a4a492cab`),
+and the resolved formal configuration hashes also matched.
+
+Fifty-eight missing files, totaling 344,539,866 bytes, were restored without
+overwriting an existing training file. Restored bytes matched their originals;
+the source and complete transferred input package remain retained. Historical
+5080 artifact paths are explicitly recorded as transferred through 4080 to A100,
+so the existing audited relocation resolver can locate the early milestone
+parents without editing original checkpoint metadata or weakening its rules.
+The [preservation receipt](p4_7_training_receipts_20261022/ant2029_historical_restoration.json)
+records every restored path and checksum.
+
+No signal was sent to the live Ant trainer, no process was restarted, and no
+scientific evaluation was rerun. The final publisher includes this receipt in
+its recovery ledger and checksums; physical-work totals are unchanged. Six
+4080 workers and one A100 worker continue training, while the 5080 reservation
+still ends at 19:11. The twenty-cell final scientific audit remains pending.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
