@@ -1,5 +1,59 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest operational update: 2026-10-22 11:11 CST
+
+This update supersedes the historical observations below. Counts refer to actual
+Python training workers, not shell wrappers. Training completion is not a claim
+that the safety constraint or the full twenty-cell experiment has passed.
+
+| Host | Actual workers | Latest observation |
+|---|---:|---|
+| A100 | 6 | PointButton 2028/2030: 4.425M/6.675M of 10M; Ant 2028/2029: 2.850M/2.900M of 5M; Walker2d 2028/2029: 2.950M/2.955M of 5M |
+| 4080 | 4 | PointButton 2029: 4.830M of 10M; Walker2d 2028/2029: 3.055M/3.045M of 5M; Ant 2028: 2.945M of 5M |
+| 5080 | 0 | User reservation: no SAFEFLOW training until 2026-10-22 19:11 CST |
+
+Three A100 receipts now show `status=passed`, `training_summary.status=completed`,
+and 5,000,000 environment steps: [Ant 2030](p4_7_training_receipts_20261022/ant-2030/receipt.json),
+[Walker2d 2030](p4_7_training_receipts_20261022/walker2d-2030/receipt.json), and
+[Walker2d 2031](p4_7_training_receipts_20261022/walker2d-2031/receipt.json).
+These are engineering completion receipts; their provisional checkpoint
+selections do **not** satisfy the configured zero-cost constraint.
+
+At inspection, all seven former 5080 workers were already absent. MPS logs show
+their disconnections at approximately 09:17; no cause is established here, and
+this inspection did not terminate them. Their latest full replay checkpoints
+were successfully loaded on CPU and retained unchanged:
+
+| Lane | Durable checkpoint steps | Last logged steps |
+|---|---:|---:|
+| PointGoal 2027 | 8,250,000 | 8,270,000 |
+| PointGoal 2028 | 6,050,000 | 6,055,000 |
+| PointGoal 2029 | 5,250,000 | 5,285,000 |
+| PointGoal 2030 | 6,900,000 | 6,910,000 |
+| PointGoal 2031 | 7,450,000 | 7,470,000 |
+| PointButton 2027 | 8,000,000 | 8,030,000 |
+| PointButton 2031 | 7,400,000 | 7,415,000 |
+
+The host-side timer `safeflow-5080-resume-20261022.timer` is active for 19:11 CST.
+The remote reservation begins at 11:10:21 CST and refuses launches before eight
+hours elapse. The timer invokes a seven-lane-only, duplicate-aware resume script;
+SSH or memory-headroom failures retry every 30 minutes. It never terminates
+other projects. Recovery resumes from durable checkpoints, not the later CSV
+counters; the unsaved tails will be replayed. This schedule requires the host
+and network to be available. A100 and 4080 training were not changed.
+
+Ant 2028 and Walker2d 2028/2029 currently have continuation branches on both A100
+and 4080. They are duplicate branches of the same matrix cells, **not** extra
+independent seeds. No results should count both branches as separate runs; no
+branch was stopped or selected in this update.
+
+A100 `/home` has approximately 25 GiB free; 4080's archive filesystem has about
+2.6 TiB free. Existing half-hour monitoring and checkpoint backups remain active.
+No new scientific evaluations, training-budget reductions, or source changes
+were introduced for this reservation.
+
+## Historical observations
+
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
 
 Snapshot time: **2026-10-22 02:02 CST**
