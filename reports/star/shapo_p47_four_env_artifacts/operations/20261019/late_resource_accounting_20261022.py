@@ -94,6 +94,42 @@ def resource_records(base):
             source_host=source,target_host='tjucta-a100',resume_steps=s['resume_steps'],
             checkpoint_sha256=s['checkpoint_sha256'],known_additional_physical_steps=steps,
             known_additional_physical_training_cost=cost,unknown_unlogged_tail_not_zero=True))
+    cold=base/'cold_point2027_5080_to_a100_20261023_state.json'
+    if cold.exists():
+        s=read(cold.name)
+        assert s['phase']=='completed_first_new_epoch_on_A100_source_cold_archive_preserved'
+        assert s['job']=='point-goal-2027' and s['total_budget_steps']==10000000
+        assert s['source_host']=='5080' and s['target_host']=='tjucta-a100'
+        assert s['source_commit']=='62ca7399357c10645a955dcbead7ed2153a82c69'
+        assert s['new_experiment_cells']==0 and s['scientific_parameters_changed'] is False
+        assert s['source_was_already_stopped'] is True and s['source_archive_preserved'] is True
+        assert s['source_signals_sent']==s['additional_evaluation_rollouts']==0
+        assert s['training_launched_on_5080'] is False and s['other_projects_paused'] is False
+        inventory=read(s['inventory_file'])
+        original=next(r for r in inventory['rows'] if r['job']==s['job'])
+        assert original['full_replay_rng_optimizers_present'] is True
+        assert s['checkpoint_sha256']==original['checkpoint_sha256']
+        assert s['counters']==original['counters'] and s['resume_steps']==s['counters']['env_steps']
+        args=s['target_identity']['args']
+        for flag,value in {'--seed':'2027','--steps':'10000000','--device':'cuda:0',
+                '--resume':s['target_checkpoint'],'--vector-envs':'1','--batch-size':'256',
+                '--replay-size':'400000','--steps-per-epoch':'5000'}.items():
+            assert args[args.index(flag)+1]==value
+        worker=s['first_target_worker']
+        assert worker['pid']==s['target_pid']==s['target_identity']['pid']
+        assert worker['cuda_execution_backend']=='mps_verified'
+        assert worker['mps_gpu_uuid_verified']==s['target_capacity']['gpu_uuid']
+        assert s['first_target_epoch']['steps']>=s['resume_steps']+5000
+        assert s['archive_resume_input'].startswith('/home/carla/4T/SAFEFLOW2027_4080/')
+        steps=s['last_logged_source_steps']-s['resume_steps']
+        cost=s['last_logged_source_cost']-s['resume_cumulative_training_cost']
+        assert steps==s['known_repeated_steps_lower_bound']==original['known_repeated_steps_if_resumed']
+        assert cost==s['known_extra_training_cost_lower_bound']==original['known_additional_training_cost_if_resumed']
+        assert s['unlogged_source_tail_unknown_not_zero'] is True
+        records.append(dict(job=s['job'],kind='cold_full_checkpoint_recovery_without_source_GPU_restart',
+            proof_file=cold.name,source_host='5080',target_host='tjucta-a100',resume_steps=s['resume_steps'],
+            checkpoint_sha256=s['checkpoint_sha256'],known_additional_physical_steps=steps,
+            known_additional_physical_training_cost=cost,unknown_unlogged_tail_not_zero=True))
     hold=base/'hold_5080_8h_20261022.json'
     if hold.exists():
         snapshot=read(hold.name)

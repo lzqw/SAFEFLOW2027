@@ -1,6 +1,55 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest incident update: 2026-10-23, after the 23:53 snapshot
+## Latest continuation update: 2026-10-23 04:05 CST
+
+One of the seven stopped 5080 cells, **PointGoal-2027**, is now continuing on
+**A100 GPU0**, without restarting training on5080. Its complete cold container
+was copied, the **8,500,000-step full checkpoint** matched the incident
+inventory's SHA, and that exact input was pinned on the separate4080-4T disk.
+The new worker (PID1073197) logged **8,505,000 steps** at approximately
+**4.83 FPS**; CUDA/MPS client membership on A100 GPU0 was verified at04:05.
+This restores progress to a stopped cell; it does not claim greater throughput
+than the previous5080 placement or a proven whole-cohort speedup.
+
+| Host | Running unfinished cells | Placement |
+|---|---:|---|
+| A100 | 3 | PointGoal-2027 on GPU0; Ant-2029 and Walker2d-2028 on GPU1 |
+| 4080 | 5 | PointButton2028/2029/2030, Ant-2028 and Walker2d-2029 |
+| 5080 | 0 | Six cells remain stopped; no GPU training launched here |
+
+Together with **six terminal training receipts**, this accounts for all20
+planned cells: six trained, eight running, six stopped. The last whole-cohort
+snapshot at03:53 recorded positive deltas for the other seven running cells
+and the new Point process live, before its first epoch. A100 home free space
+was20.45GiB in that snapshot. Admission of this single1.26GB capsule preserves
+a16GiB operational reserve; the existing20GiB monitoring warning is unchanged.
+No old archive, unrelated file or other project's process was removed.
+
+The original5080 container was moved, not deleted, into its cold recovery
+archive after the target copy/hash and4T input were verified. Its location,
+the new A100 log, checkpoint identity, runtime versions and worker proof are
+in the [cold-recovery receipt](p4_7_training_receipts_20261022/point_goal_2027_cold_to_a100_20261023.json).
+The scientific source remains62ca739, with the same seed, optimizer/replay/RNG
+state, frozen configuration and **10M budget**. PyTorch changed from2.7.1+cu128
+to2.7.1+cu118; bitwise cross-device equivalence is not claimed. No trainer was
+signalled, no extra scientific evaluation performed and no5080 GPU job started.
+
+The known logged rollback for this recovered cell is **25,000 steps /199 cost**,
+from its8.525M last CSV back to the durable8.5M input. It is now included once
+in the late physical-work ledger: **fourteen records, at least1,280,000 extra
+physical steps and3,272 cost units**. The other six incident tails remain
+conditional (**140,000 steps /1,633 cost**) until their own recovery is actually
+executed. Unknown unlogged work remains unknown, not zero; none of these
+physical-work adjustments are added to accepted-lineage learning-curve costs.
+
+The pending question concerns use of the5080 GPU. Continuing an already planned
+cell on the separately authorized A100 does not restart5080. Before any future
+5080 recovery, check current placement and exclude PointGoal-2027, which is
+already running on A100; do not recreate all seven old workers blindly.
+Historical2027 original-parent gaps and the unapproved multi-hop locator change
+remain unresolved. No final scientific gate is waived by this recovery.
+
+## Earlier incident update: 2026-10-23, after the 23:53 snapshot
 
 The 23:53 ordinary snapshot found **zero 5080 training workers**. A subsequent
 direct process check confirmed all seven recorded PIDs absent. MPS logs record

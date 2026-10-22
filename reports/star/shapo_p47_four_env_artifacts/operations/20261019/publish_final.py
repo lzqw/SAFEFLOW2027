@@ -1670,7 +1670,7 @@ def annotate_recovery(target):
         )
     if late_resource_records:
         disclosure += (
-            '\nThe 22 October resource changes include excluded duplicate '
+            '\nThe 22–23 October resource changes include excluded duplicate '
             'continuation branches, full-checkpoint resource handoffs, '
             'and tails of 5080 workers that had already stopped before the '
             'requested eight-hour reservation. No idle reservation time is '
@@ -1683,6 +1683,19 @@ def annotate_recovery(target):
             'The original selection and handoff records accompany the ledger; '
             'unknown unlogged tails are not zero. Branches were selected by '
             'placement and throughput, not reward or safety scores.\n'
+        )
+    if 'cold_point2027_5080_to_a100_20261023_state.json' in late_resource_files:
+        disclosure += (
+            '\nOne previously stopped PointGoal2027 cell resumed on A100 '
+            'from its SHA-matched8.5M full checkpoint after the separate '
+            '23:34 simultaneous5080 exits. The complete cold source was '
+            'preserved, the exact input pinned on4080-4T, and a new epoch '
+            'with CUDA/MPS membership observed. This operation signalled no '
+            'source trainer and launched no5080 GPU job. Only the consumed '
+            'cell\'s logged rollback is added to the physical-work ledger; '
+            'other incident tails require their own executed recovery proof. '
+            'It repairs no historical2027 original-parent gap and waives no '
+            'scientific finalization requirement.\n'
         )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
