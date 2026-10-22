@@ -1,6 +1,33 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-23 06:31 CST
+## Latest storage update: 2026-10-23 06:38 CST
+
+The A100 secondary replicas of4080 checkpoints now live on **A100's separate
+data disk**, under the new private, UID1007-owned project namespace
+`/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/from_4080`.
+The existing home path remains a symlink to those same backups. Only our
+backup writer was briefly held/stopped while idle; **no trainer or foreign
+project was signalled or paused**, and no scientific code/path resolver changed.
+
+All regular-file bytes, relative paths, modes, modification times and internal
+hard-link groups matched before switching paths. Only then was the redundant
+home copy removed; its entire content remains recoverable through the original
+logical path and on the separate data disk. Logical payload8,291,468,873 bytes
+includes hard-linked recovery names; home free space increased from
+19,892,809,728 to25,600,233,472 bytes (about **5.32GiB reclaimed**).
+The data disk retained about150GiB free, including the100GiB migration reserve.
+These are operation-time counters, not a later whole-cohort capacity snapshot.
+
+The same backup service restarted with PID501665 and successfully installed
+another4080 snapshot through the new explicitly allowlisted canonical path.
+Training budgets, canonical training containers, histories and full scientific
+gates were not changed. The [storage relocation receipt](p4_7_training_receipts_20261022/a100_backup_replica_storage_relocation_20261023.json)
+contains the complete content manifest and service identity.5080 training
+remains off. With the recovered home headroom, one additional existing stopped
+cell, Goal-2031, is being copied for A100 GPU0; this is **not yet a confirmed
+new training epoch** and is not counted in the executed-recovery ledger yet.
+
+## Earlier continuation update: 2026-10-23 06:31 CST
 
 **PointButton-2027 has also resumed on A100 GPU1**, from its SHA-verified
 8,250,000-step full checkpoint. At06:11, PID1442660 had logged its first new

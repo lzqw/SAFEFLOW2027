@@ -1,0 +1,974 @@
+{
+  "phase": "completed",
+  "local_backup_pid": 989,
+  "local_backup_start_ticks": 736,
+  "exact_source": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/from_4080",
+  "exact_destination": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/from_4080",
+  "trainers_signalled": 0,
+  "other_projects_paused": false,
+  "additional_scientific_rollouts": 0,
+  "helper_sha256": "88b434a843e2a61b95c5da8565b65b1316cfd80d50af8cd2273d74caa2478ee5",
+  "remote_returncode": 0,
+  "remote_stderr": "",
+  "remote": {
+    "phase": "completed_owned_backup_replica_relocated_original_path_preserved",
+    "logical_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/from_4080",
+    "physical_destination": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/from_4080",
+    "original_retained_at": null,
+    "source_manifest": [
+      {
+        "path": "ant-2027",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "ant-2027/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 146458549,
+        "mode": 436,
+        "mtime_ns": 1792035181000000000,
+        "sha256": "c72d381c8df9dbbe4aaed9bd99eec7b19403d250ecf0021d0c8bc5327f56962a"
+      },
+      {
+        "path": "ant-2027/latest_full.pt",
+        "kind": "file",
+        "bytes": 146457781,
+        "mode": 436,
+        "mtime_ns": 1792038867000000000,
+        "sha256": "b3477aac97103e2cf783cc71786c28e9e78771c85c17f13fea980840b68abaa9"
+      },
+      {
+        "path": "ant-2027/materialize.json",
+        "kind": "file",
+        "bytes": 473,
+        "mode": 436,
+        "mtime_ns": 1791864426000000000,
+        "sha256": "364ef0a5c6eaa30b43840fc42db5957b5f3aaa9b7007290e9bc0eed414fc843b"
+      },
+      {
+        "path": "ant-2027/previous_full.pt",
+        "kind": "file",
+        "bytes": 146458549,
+        "mode": 436,
+        "mtime_ns": 1792035181000000000,
+        "sha256": "c72d381c8df9dbbe4aaed9bd99eec7b19403d250ecf0021d0c8bc5327f56962a"
+      },
+      {
+        "path": "ant-2027/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4094,
+        "mode": 436,
+        "mtime_ns": 1791864426000000000,
+        "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+      },
+      {
+        "path": "ant-2027/snapshot.json",
+        "kind": "file",
+        "bytes": 386,
+        "mode": 436,
+        "mtime_ns": 1792040241000000000,
+        "sha256": "585019624970cab84bfc4f462465bf3d0a94a1ab7112ecf325463473be9cdfe5"
+      },
+      {
+        "path": "ant-2027/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864426000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "ant-2028",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "ant-2028/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 146463541,
+        "mode": 436,
+        "mtime_ns": 1792702524000000000,
+        "sha256": "49a089fecf7e51fd96f45cb2635e9021e9e2b3de50bfff200e546c49c7e4ae0d"
+      },
+      {
+        "path": "ant-2028/latest_full.pt",
+        "kind": "file",
+        "bytes": 146461173,
+        "mode": 436,
+        "mtime_ns": 1792708156000000000,
+        "sha256": "0aeb92205c9d3fc5f28dcc883754074c87615ed3c5eedcbbead8987635f4e31b"
+      },
+      {
+        "path": "ant-2028/materialize.json",
+        "kind": "file",
+        "bytes": 472,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "e912467408475d01f0e9352ce1f827e74069a53ba800918fe179827d521e6352"
+      },
+      {
+        "path": "ant-2028/previous_full.pt",
+        "kind": "file",
+        "bytes": 146463541,
+        "mode": 436,
+        "mtime_ns": 1792702524000000000,
+        "sha256": "49a089fecf7e51fd96f45cb2635e9021e9e2b3de50bfff200e546c49c7e4ae0d"
+      },
+      {
+        "path": "ant-2028/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4094,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+      },
+      {
+        "path": "ant-2028/snapshot.json",
+        "kind": "file",
+        "bytes": 448,
+        "mode": 436,
+        "mtime_ns": 1792708298000000000,
+        "sha256": "3a77473d60e1dfa7ac439cd01d3c23a931d300b9022df7396c6c34325ee84d9b"
+      },
+      {
+        "path": "ant-2028/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "ant-2029",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "ant-2029/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 146458151,
+        "mode": 436,
+        "mtime_ns": 1792570949000000000,
+        "sha256": "1ce80d81fd3b121655ac627d9dd8341b514c7a59f836016dd8a268c2b460dfa0"
+      },
+      {
+        "path": "ant-2029/latest_full.pt",
+        "kind": "file",
+        "bytes": 146462887,
+        "mode": 436,
+        "mtime_ns": 1792579374000000000,
+        "sha256": "ad81d3c7eccdca5bd4b0566405d85f886e05957a36af4f76e1cc613a4a492cab"
+      },
+      {
+        "path": "ant-2029/materialize.json",
+        "kind": "file",
+        "bytes": 472,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "79a993368c880b668c8a575b211cc4aca9b556cf8fbce93a43abb5cc88adbe5d"
+      },
+      {
+        "path": "ant-2029/previous_full.pt",
+        "kind": "file",
+        "bytes": 146458151,
+        "mode": 436,
+        "mtime_ns": 1792570949000000000,
+        "sha256": "1ce80d81fd3b121655ac627d9dd8341b514c7a59f836016dd8a268c2b460dfa0"
+      },
+      {
+        "path": "ant-2029/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4094,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+      },
+      {
+        "path": "ant-2029/snapshot.json",
+        "kind": "file",
+        "bytes": 386,
+        "mode": 436,
+        "mtime_ns": 1792579972000000000,
+        "sha256": "37d6495b9d87864578e2eb4351c2449255a15ccb2bc79fdba82da0e9f7a38149"
+      },
+      {
+        "path": "ant-2029/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "ant-2031",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "ant-2031/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 146459045,
+        "mode": 436,
+        "mtime_ns": 1792566144000000000,
+        "sha256": "f9707f073ac6fe76e5f19ac9d82bc56d3ee70d3fbd4f8c755517f0570942fa1b"
+      },
+      {
+        "path": "ant-2031/latest_full.pt",
+        "kind": "file",
+        "bytes": 146458021,
+        "mode": 436,
+        "mtime_ns": 1792574366000000000,
+        "sha256": "47a3873dd55446bd710e47a601b23479c86a42d3ad083fdc92d4c630dd2f19ed"
+      },
+      {
+        "path": "ant-2031/materialize.json",
+        "kind": "file",
+        "bytes": 472,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "d9e66516177dc4fd96b79548324f02d9b938ad5818e14fae46a2aecbfc38acc6"
+      },
+      {
+        "path": "ant-2031/previous_full.pt",
+        "kind": "file",
+        "bytes": 146459045,
+        "mode": 436,
+        "mtime_ns": 1792566144000000000,
+        "sha256": "f9707f073ac6fe76e5f19ac9d82bc56d3ee70d3fbd4f8c755517f0570942fa1b"
+      },
+      {
+        "path": "ant-2031/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4094,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+      },
+      {
+        "path": "ant-2031/snapshot.json",
+        "kind": "file",
+        "bytes": 444,
+        "mode": 436,
+        "mtime_ns": 1792574968000000000,
+        "sha256": "7045788cf558e76171e32558f670d29e9b8a01d6f18e9329d766e197783de66b"
+      },
+      {
+        "path": "ant-2031/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-button-2027",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-button-2027/latest_full.pt",
+        "kind": "file",
+        "bytes": 294865004,
+        "mode": 420,
+        "mtime_ns": 1787146372000000000,
+        "sha256": "0b03259925f703bd08d4ffd84e0e2f4527f70b281ecee42ef8b9968a51c44f4b"
+      },
+      {
+        "path": "point-button-2027/materialize.json",
+        "kind": "file",
+        "bytes": 497,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "107851ba6ac1b72f5d25bb9f850e94b34891fcec3ce3cdb3cb634fdbe2b92638"
+      },
+      {
+        "path": "point-button-2027/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4112,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+      },
+      {
+        "path": "point-button-2027/snapshot.json",
+        "kind": "file",
+        "bytes": 330,
+        "mode": 436,
+        "mtime_ns": 1791878520000000000,
+        "sha256": "a8f7463f161405135aa20248fc6d31372c647438ea4f966e28aa624a9ba7145f"
+      },
+      {
+        "path": "point-button-2027/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-button-2028",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-button-2028/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 294866101,
+        "mode": 436,
+        "mtime_ns": 1792696636000000000,
+        "sha256": "2c28147023efd3db10d61d57860f4fcfcbdd69487d86d1eb8b794b3ba0b74d9c"
+      },
+      {
+        "path": "point-button-2028/latest_full.pt",
+        "kind": "file",
+        "bytes": 294866101,
+        "mode": 436,
+        "mtime_ns": 1792702854000000000,
+        "sha256": "47549e8a127da0a6b79450d6aaac39d936bc20b8391786f8ae42444a2643039a"
+      },
+      {
+        "path": "point-button-2028/materialize.json",
+        "kind": "file",
+        "bytes": 496,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "23f8a8d583b906e2afb875afa8ae117bb8f0c0e0a01ef67d3d790c8ecae27d81"
+      },
+      {
+        "path": "point-button-2028/previous_full.pt",
+        "kind": "file",
+        "bytes": 294866101,
+        "mode": 436,
+        "mtime_ns": 1792696636000000000,
+        "sha256": "2c28147023efd3db10d61d57860f4fcfcbdd69487d86d1eb8b794b3ba0b74d9c"
+      },
+      {
+        "path": "point-button-2028/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4112,
+        "mode": 436,
+        "mtime_ns": 1792565478000000000,
+        "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+      },
+      {
+        "path": "point-button-2028/snapshot.json",
+        "kind": "file",
+        "bytes": 481,
+        "mode": 436,
+        "mtime_ns": 1792704470000000000,
+        "sha256": "4cc0b99821035dfc99fa12fdc283d8bafe8074a6cca65833699a99c7c7e991f0"
+      },
+      {
+        "path": "point-button-2028/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-button-2029",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-button-2029/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 294866229,
+        "mode": 436,
+        "mtime_ns": 1792699613000000000,
+        "sha256": "3125a5c45d25e27c317d06dee2507d5731cd787526e880e4c470d121e9c8dc82"
+      },
+      {
+        "path": "point-button-2029/latest_full.pt",
+        "kind": "file",
+        "bytes": 294866229,
+        "mode": 436,
+        "mtime_ns": 1792706009000000000,
+        "sha256": "6d7a28398051233b2b18504c4860ca01d55884b5005e90693c5dadfd9f692d5a"
+      },
+      {
+        "path": "point-button-2029/materialize.json",
+        "kind": "file",
+        "bytes": 496,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "569f7f5f69311b3513b98524a84b75eab8a614cb9017abf69c31037d107be2b7"
+      },
+      {
+        "path": "point-button-2029/previous_full.pt",
+        "kind": "file",
+        "bytes": 294866229,
+        "mode": 436,
+        "mtime_ns": 1792699613000000000,
+        "sha256": "3125a5c45d25e27c317d06dee2507d5731cd787526e880e4c470d121e9c8dc82"
+      },
+      {
+        "path": "point-button-2029/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4112,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+      },
+      {
+        "path": "point-button-2029/snapshot.json",
+        "kind": "file",
+        "bytes": 481,
+        "mode": 436,
+        "mtime_ns": 1792706397000000000,
+        "sha256": "7288928f694b3e594d96c95aa2d88affbc5999c425db883bc2eebc69d3d06080"
+      },
+      {
+        "path": "point-button-2029/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-button-2030",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-button-2030/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 294866165,
+        "mode": 436,
+        "mtime_ns": 1792700550000000000,
+        "sha256": "d66e15a28609dbf3cb5e394d4d9dacfa6447713aeb82b63f72f340e580531735"
+      },
+      {
+        "path": "point-button-2030/latest_full.pt",
+        "kind": "file",
+        "bytes": 294866165,
+        "mode": 436,
+        "mtime_ns": 1792706585000000000,
+        "sha256": "f49990a6d84ffa53c022eba62cb2ae0ef1e7ac51e6538dfeba078730c7cb7e80"
+      },
+      {
+        "path": "point-button-2030/materialize.json",
+        "kind": "file",
+        "bytes": 496,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "68cc02adf7e1e70ec92ac4340f319f1ef97b9bd9b54a2226395072e8bf916a15"
+      },
+      {
+        "path": "point-button-2030/previous_full.pt",
+        "kind": "file",
+        "bytes": 294866165,
+        "mode": 436,
+        "mtime_ns": 1792700550000000000,
+        "sha256": "d66e15a28609dbf3cb5e394d4d9dacfa6447713aeb82b63f72f340e580531735"
+      },
+      {
+        "path": "point-button-2030/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4112,
+        "mode": 436,
+        "mtime_ns": 1792565578000000000,
+        "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+      },
+      {
+        "path": "point-button-2030/snapshot.json",
+        "kind": "file",
+        "bytes": 481,
+        "mode": 436,
+        "mtime_ns": 1792708298000000000,
+        "sha256": "3bf1aef88d91322fdddec9730ac16973299112d4f6110e88ea4d8ad906cb3bc6"
+      },
+      {
+        "path": "point-button-2030/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-button-2031",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-button-2031/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 294864940,
+        "mode": 436,
+        "mtime_ns": 1792410990000000000,
+        "sha256": "3c139d960b691289094a4f4f64925c6f2f0ec663618b626b807ca437072d03c5"
+      },
+      {
+        "path": "point-button-2031/latest_full.pt",
+        "kind": "file",
+        "bytes": 294864940,
+        "mode": 436,
+        "mtime_ns": 1792428350000000000,
+        "sha256": "48ac7d5ed8430d12c8deb8cea8765505a6ddec37431e1a10a15cdddb90bd6d65"
+      },
+      {
+        "path": "point-button-2031/materialize.json",
+        "kind": "file",
+        "bytes": 496,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "cf9a0ec7cc4d8caea97cb0438988cc70fd898a6f4068dd7a84ccc622ab443573"
+      },
+      {
+        "path": "point-button-2031/previous_full.pt",
+        "kind": "file",
+        "bytes": 294864940,
+        "mode": 436,
+        "mtime_ns": 1792410990000000000,
+        "sha256": "3c139d960b691289094a4f4f64925c6f2f0ec663618b626b807ca437072d03c5"
+      },
+      {
+        "path": "point-button-2031/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4112,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+      },
+      {
+        "path": "point-button-2031/snapshot.json",
+        "kind": "file",
+        "bytes": 430,
+        "mode": 436,
+        "mtime_ns": 1792429336000000000,
+        "sha256": "cebc144f0f9cbbfc821a8c8ec48245ad44832735aefe11a19e93072ebf82e44a"
+      },
+      {
+        "path": "point-button-2031/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791859271000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-goal-2027",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-goal-2027/latest_full.pt",
+        "kind": "file",
+        "bytes": 243205868,
+        "mode": 420,
+        "mtime_ns": 1787146121000000000,
+        "sha256": "aefc88ac8a143041f849a3e66845e0b2973e26d8dc2ed07fd0c6731fe19e5c3b"
+      },
+      {
+        "path": "point-goal-2027/materialize.json",
+        "kind": "file",
+        "bytes": 493,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "758ac531bb0602e63510ad6750eb0b67ff83cf240c5bf75cc5bc9855d6ab9817"
+      },
+      {
+        "path": "point-goal-2027/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4110,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+      },
+      {
+        "path": "point-goal-2027/snapshot.json",
+        "kind": "file",
+        "bytes": 326,
+        "mode": 436,
+        "mtime_ns": 1791878520000000000,
+        "sha256": "e729cdf95d5508ddde888a7c18d8b2217cbb98db31ef2d0c73f3c726cab975f7"
+      },
+      {
+        "path": "point-goal-2027/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-goal-2028",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-goal-2028/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 243203173,
+        "mode": 436,
+        "mtime_ns": 1792440621000000000,
+        "sha256": "df14e0bb76dc003883b2da8b6432c3e45b910ccc44344e6adcfed0277f17b35f"
+      },
+      {
+        "path": "point-goal-2028/latest_full.pt",
+        "kind": "file",
+        "bytes": 243203173,
+        "mode": 436,
+        "mtime_ns": 1792448524000000000,
+        "sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62"
+      },
+      {
+        "path": "point-goal-2028/materialize.json",
+        "kind": "file",
+        "bytes": 492,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "cb4e0a87aed13fd95167a5a11e2bbee37a987f487820cde1cfd6eda944e2cdbe"
+      },
+      {
+        "path": "point-goal-2028/previous_full.pt",
+        "kind": "file",
+        "bytes": 243203173,
+        "mode": 436,
+        "mtime_ns": 1792440621000000000,
+        "sha256": "df14e0bb76dc003883b2da8b6432c3e45b910ccc44344e6adcfed0277f17b35f"
+      },
+      {
+        "path": "point-goal-2028/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4110,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+      },
+      {
+        "path": "point-goal-2028/snapshot.json",
+        "kind": "file",
+        "bytes": 471,
+        "mode": 436,
+        "mtime_ns": 1792449972000000000,
+        "sha256": "ea5c11ddff3d491aee278be7bf64f1152f84b32629fc8afd86e0936cbb08e83d"
+      },
+      {
+        "path": "point-goal-2028/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "point-goal-2029",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "point-goal-2029/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 243202981,
+        "mode": 436,
+        "mtime_ns": 1791981647000000000,
+        "sha256": "69f6c07ec75c8cf563904411736b68f4f1c188da9a2abd0a6613971736c91e09"
+      },
+      {
+        "path": "point-goal-2029/latest_full.pt",
+        "kind": "file",
+        "bytes": 243202981,
+        "mode": 436,
+        "mtime_ns": 1791991140000000000,
+        "sha256": "633f9c5a415188ba4812915dde5da0024e8c4e859dcb1513c2e1afc0b26a18aa"
+      },
+      {
+        "path": "point-goal-2029/materialize.json",
+        "kind": "file",
+        "bytes": 492,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "4c4c753dc6467199eb96e521a40621136aac231575d62786c463b8f151c29a41"
+      },
+      {
+        "path": "point-goal-2029/previous_full.pt",
+        "kind": "file",
+        "bytes": 243202981,
+        "mode": 436,
+        "mtime_ns": 1791981647000000000,
+        "sha256": "69f6c07ec75c8cf563904411736b68f4f1c188da9a2abd0a6613971736c91e09"
+      },
+      {
+        "path": "point-goal-2029/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4110,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+      },
+      {
+        "path": "point-goal-2029/snapshot.json",
+        "kind": "file",
+        "bytes": 412,
+        "mode": 436,
+        "mtime_ns": 1791993065000000000,
+        "sha256": "47987b2c7cecd85a453d1b972cd62982edae0ce4d6990ba9c0debcb117238f2c"
+      },
+      {
+        "path": "point-goal-2029/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "walker2d-2027",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "walker2d-2027/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 110912421,
+        "mode": 436,
+        "mtime_ns": 1791996902000000000,
+        "sha256": "dd369d8b8f648d3b54a771fd453f6f2ed9b4f100654cd9032b3de1c02e8fb3ec"
+      },
+      {
+        "path": "walker2d-2027/latest_full.pt",
+        "kind": "file",
+        "bytes": 110900773,
+        "mode": 436,
+        "mtime_ns": 1792004366000000000,
+        "sha256": "fb14aeeac8779f43e57d18698ba5fbc1e0a5e61edd8da78f32abfc2f742387eb"
+      },
+      {
+        "path": "walker2d-2027/materialize.json",
+        "kind": "file",
+        "bytes": 483,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "347b70d39c18563ed93ea7f1091bf62814449eed35c54489e565f0f10c6ec2a3"
+      },
+      {
+        "path": "walker2d-2027/previous_full.pt",
+        "kind": "file",
+        "bytes": 110912421,
+        "mode": 436,
+        "mtime_ns": 1791996902000000000,
+        "sha256": "dd369d8b8f648d3b54a771fd453f6f2ed9b4f100654cd9032b3de1c02e8fb3ec"
+      },
+      {
+        "path": "walker2d-2027/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4099,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+      },
+      {
+        "path": "walker2d-2027/snapshot.json",
+        "kind": "file",
+        "bytes": 400,
+        "mode": 436,
+        "mtime_ns": 1792004779000000000,
+        "sha256": "36546b3c146bbb5cd3da354af70446c0b85172562a445f2f2661bf4b576c6edc"
+      },
+      {
+        "path": "walker2d-2027/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791876834000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "walker2d-2028",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "walker2d-2028/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 110915573,
+        "mode": 436,
+        "mtime_ns": 1792676703000000000,
+        "sha256": "5c800522fa08de8efd149231cd7c6b5555591086f0912cb13dd6020473f3479a"
+      },
+      {
+        "path": "walker2d-2028/latest_full.pt",
+        "kind": "file",
+        "bytes": 110913141,
+        "mode": 436,
+        "mtime_ns": 1792679340000000000,
+        "sha256": "c929fa5ca7271e849c7e0dc3e14b1502bfdd88b66c00d8268dc5a0553048c9a2"
+      },
+      {
+        "path": "walker2d-2028/materialize.json",
+        "kind": "file",
+        "bytes": 482,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "167cf621cdb044167ebb059fd5a5e7240c564d1f9419dd72f67535dae9723e7a"
+      },
+      {
+        "path": "walker2d-2028/previous_full.pt",
+        "kind": "file",
+        "bytes": 110915573,
+        "mode": 436,
+        "mtime_ns": 1792676703000000000,
+        "sha256": "5c800522fa08de8efd149231cd7c6b5555591086f0912cb13dd6020473f3479a"
+      },
+      {
+        "path": "walker2d-2028/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4099,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+      },
+      {
+        "path": "walker2d-2028/snapshot.json",
+        "kind": "file",
+        "bytes": 464,
+        "mode": 436,
+        "mtime_ns": 1792679854000000000,
+        "sha256": "3e05f864eadd75183268fa35231d07e7d81198136681ca61d984bda67469605e"
+      },
+      {
+        "path": "walker2d-2028/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      },
+      {
+        "path": "walker2d-2029",
+        "kind": "directory",
+        "mode": 509
+      },
+      {
+        "path": "walker2d-2029/last_verified_full.pt",
+        "kind": "file",
+        "bytes": 110907445,
+        "mode": 436,
+        "mtime_ns": 1792702378000000000,
+        "sha256": "766d9f8b06ac5df2b569b8eec9db260a413a23de7016f73c75a0652b699129aa"
+      },
+      {
+        "path": "walker2d-2029/latest_full.pt",
+        "kind": "file",
+        "bytes": 110910133,
+        "mode": 436,
+        "mtime_ns": 1792708075000000000,
+        "sha256": "373985c81066367221202791eb7774b0ccb15fd261d9eedac77c606fdd3da618"
+      },
+      {
+        "path": "walker2d-2029/materialize.json",
+        "kind": "file",
+        "bytes": 482,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "fa1df524098744a594de564651c7455f5b67f935fe864401828cb80da62299a6"
+      },
+      {
+        "path": "walker2d-2029/previous_full.pt",
+        "kind": "file",
+        "bytes": 110907445,
+        "mode": 436,
+        "mtime_ns": 1792702378000000000,
+        "sha256": "766d9f8b06ac5df2b569b8eec9db260a413a23de7016f73c75a0652b699129aa"
+      },
+      {
+        "path": "walker2d-2029/resolved_formal_config.yaml",
+        "kind": "file",
+        "bytes": 4099,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+      },
+      {
+        "path": "walker2d-2029/snapshot.json",
+        "kind": "file",
+        "bytes": 463,
+        "mode": 436,
+        "mtime_ns": 1792708298000000000,
+        "sha256": "6f0cda82fc5a110d13d6118ef6786872b725ea9bd14d2b5d217515b1a356c687"
+      },
+      {
+        "path": "walker2d-2029/source_commit.txt",
+        "kind": "file",
+        "bytes": 41,
+        "mode": 436,
+        "mtime_ns": 1791864206000000000,
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+      }
+    ],
+    "hardlink_groups": [
+      [
+        "ant-2027/last_verified_full.pt",
+        "ant-2027/previous_full.pt"
+      ],
+      [
+        "ant-2028/last_verified_full.pt",
+        "ant-2028/previous_full.pt"
+      ],
+      [
+        "ant-2029/last_verified_full.pt",
+        "ant-2029/previous_full.pt"
+      ],
+      [
+        "ant-2031/last_verified_full.pt",
+        "ant-2031/previous_full.pt"
+      ],
+      [
+        "point-button-2028/last_verified_full.pt",
+        "point-button-2028/previous_full.pt"
+      ],
+      [
+        "point-button-2029/last_verified_full.pt",
+        "point-button-2029/previous_full.pt"
+      ],
+      [
+        "point-button-2030/last_verified_full.pt",
+        "point-button-2030/previous_full.pt"
+      ],
+      [
+        "point-button-2031/last_verified_full.pt",
+        "point-button-2031/previous_full.pt"
+      ],
+      [
+        "point-goal-2028/last_verified_full.pt",
+        "point-goal-2028/previous_full.pt"
+      ],
+      [
+        "point-goal-2029/last_verified_full.pt",
+        "point-goal-2029/previous_full.pt"
+      ],
+      [
+        "walker2d-2027/last_verified_full.pt",
+        "walker2d-2027/previous_full.pt"
+      ],
+      [
+        "walker2d-2028/last_verified_full.pt",
+        "walker2d-2028/previous_full.pt"
+      ],
+      [
+        "walker2d-2029/last_verified_full.pt",
+        "walker2d-2029/previous_full.pt"
+      ]
+    ],
+    "logical_bytes": 8291468873,
+    "manifest_sha256": "486779c3fcf497b012ccd3b00617b0ed1186d14108eb68925fb7fab9dc64da17",
+    "project_free_before_bytes": 19892809728,
+    "data_disk_free_before_bytes": 166862917632,
+    "trainers_signalled": 0,
+    "foreign_projects_modified": false,
+    "scientific_parameters_changed": false,
+    "additional_scientific_rollouts": 0,
+    "backup_payloads_lost": 0,
+    "updated_at_unix": 1792708666.3358903,
+    "redundant_home_copy_removed": true,
+    "project_free_after_bytes": 25600233472,
+    "data_disk_free_after_bytes": 161152937984
+  },
+  "backup_service_restarted": true,
+  "new_backup_pid": 501665,
+  "updated_at_unix": 1792708666.4192846
+}
