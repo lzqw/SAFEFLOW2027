@@ -86,6 +86,18 @@ the twenty requested cells: six trained, seven actively training, seven held.
 The final strict scientific audit is still pending. A new stable observation
 interval is needed before claiming a speedup from removing redundant work.
 
+### Retired-branch backup: 2026-10-22 11:40 CST
+
+All three complete retired containers (approximately 704 MiB) were copied to
+4080's separate 4T filesystem, at
+`/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/retired_duplicate_branches_20261022_a100/`.
+The A100 originals remain intact; nothing was deleted. The transfer completed
+successfully. A single post-transfer integrity comparison of the sorted relative
+regular-file paths and their SHA-256 values matched on both hosts. The aggregate
+manifest SHA-256 is
+`12b2884ccf0d09e7853d8c2cd9ac4838cb1215754dbc51fe9ebdde38802f6702`.
+This was an archive integrity check, not another scientific evaluation.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
