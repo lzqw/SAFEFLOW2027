@@ -1723,6 +1723,18 @@ def annotate_recovery(target):
             'of other cells. No historical checkpoint gap is repaired or '
             'scientific gate waived by this resource continuation.\n'
         )
+    if 'cold_goal2031_gpu0_5080_to_a100_20261023_state.json' in late_resource_files:
+        disclosure += (
+            '\nThe previously stopped Goal2031 cell likewise continued on '
+            'A100 GPU0 from its SHA-matched7.7M full checkpoint, with the '
+            'complete source container retained and exact resume input pinned '
+            'on4080-4T. The recovery ledger requires its first new epoch and '
+            'verified CUDA/MPS membership; process liveness alone is not '
+            'accepted as completion of the handoff. No5080 GPU training, '
+            'extra scientific evaluation, new experiment cell or budget '
+            'reduction was introduced. Its consumed source tail is counted '
+            'once in physical work, not added to accepted-lineage costs.\n'
+        )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
             '\nEarlier PointButton 2028/2030 training segments omitted from '

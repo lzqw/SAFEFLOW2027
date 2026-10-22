@@ -34,7 +34,7 @@
   "bitwise_equivalence_claimed": false,
   "source_torch_version": "2.7.1+cu128",
   "target_torch_version": "2.7.1+cu118",
-  "phase": "same_A100_target_running_no_5080_GPU_launch",
+  "phase": "completed_first_new_epoch_on_A100_source_cold_archive_preserved",
   "minimum_post_copy_free_bytes": 17179869184,
   "unchanged_storage_alert_threshold_gib": 20,
   "target_capacity": {
@@ -287,7 +287,7 @@
   },
   "controller_basis_sha256": "4e1b0cf65a5bf4cefc8f65ccbc1e213130093531d28270cf7860fedfffcb64f2",
   "controller_sha256": "378a77d5839fca26ae5694c1020a37751cb0e4a0509eaeec6e37d63ec60e55ab",
-  "updated_at_unix": 1792709211.4409633,
+  "updated_at_unix": 1792710076.9538345,
   "target_checkpoint": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-22-19-11-10/checkpoints/latest_full.pt",
   "target_boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
   "archive_resume_input": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261023/cold_goal2031_gpu0/latest_full.pt",
@@ -313,5 +313,73 @@
     ],
     "memory_available_bytes": 116302376960
   },
-  "target_pid": 1581960
+  "target_pid": 1581960,
+  "first_target_epoch": {
+    "csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/progress.csv",
+    "mtime_ns": 1792710051633516302,
+    "steps": 7705000,
+    "cost": 114157.0,
+    "fps": 6.082555770874023
+  },
+  "first_target_worker": {
+    "job": "point-goal-2031",
+    "pid": 1581960,
+    "start_ticks": 31525124,
+    "state": "S",
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+    "device": "cuda:0",
+    "progress_status": "observed",
+    "steps": 7705000,
+    "last_epoch_fps": 6.082555770874023,
+    "progress_selection": "active_worker_logger_fd",
+    "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/progress.csv",
+    "progress_age_seconds": 25.276317596435547,
+    "cuda_execution_backend": "mps_verified",
+    "mps_connection": {
+      "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu0_20261020",
+      "status": "observed",
+      "server_pid": 3633500,
+      "client_pids": [
+        1073197,
+        1581960
+      ],
+      "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe"
+    },
+    "mps_gpu_uuid_verified": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe"
+  },
+  "target_identity": {
+    "pid": 1581960,
+    "start_ticks": 31525124,
+    "state": "S",
+    "device": "cuda:0",
+    "cuda_visible_devices": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "/home/lzqw/SAFEFLOW2027_A100/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/resolved_formal_config.yaml",
+      "--seed",
+      "2031",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-22-19-11-10/checkpoints/latest_full.pt"
+    ]
+  }
 }

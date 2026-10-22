@@ -1,6 +1,39 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest recovery update: 2026-10-23 06:48 CST — first epoch pending
+## Latest continuation update: 2026-10-23 07:01 CST — Goal2031 confirmed
+
+**Goal-2031's first new A100 epoch is now confirmed**: PID1581960 continued
+from7,700,000 to **7,705,000 steps**, approximately **6.08 FPS**, with verified
+CUDA/MPS membership on GPU0. The [updated recovery receipt](p4_7_training_receipts_20261022/point_goal_2031_cold_to_a100_20261023.json)
+contains the first epoch, worker identity, exact checkpoint SHA and preserved
+source/input locations. The same worker was followed throughout; no automatic
+relaunch or duplicate experimental cell was introduced.
+
+Current placement remains **six terminal training receipts, ten running cells,
+and four stopped cells**. The06:53 ordinary snapshot verified positive step
+deltas for all nine older workers, and live MPS membership for Goal2031 before
+its first epoch. A100 hosts Goal2027/2031 on GPU0 and Button2027, Ant2029 and
+Walker2028 on GPU1;4080 hosts Button2028/2029/2030, Ant2028 and Walker2029.
+5080 has zero training workers; the remaining stopped cells are Goal2028/2029/2030
+and Button2031. Do not recreate any of the three relocated Point cells there.
+
+The06:53 snapshot measured A100 home **22.42GiB free**, above the unchanged
+20GiB warning after the backup relocation and this complete-container copy.
+4080 project and separate4T archive free space were267.13GiB and2527.81GiB.
+The backup service's new physical destination has already accepted a subsequent
+snapshot. No training container, foreign project or scientific validator was
+changed by storage maintenance, and no5080 GPU training was launched.
+
+Goal2031's consumed logged tail is **25,000 repeated steps /308 cost**.
+The metadata-only physical-work ledger now has **16 records, at least1,325,000
+extra steps /3,830 cost units**. The other four incident tails remain
+conditional (**95,000 steps /1,075 cost**) until their own executed recoveries.
+Unknown unlogged work is not assumed zero; these adjustments are separate from
+accepted-lineage curves. Full budgets, fixed seeds/evaluations and scientific
+gates remain intact. Historical2027 parent gaps and the pending multi-hop
+locator change are not repaired or waived by these continuations.
+
+## Earlier recovery update: 2026-10-23 06:48 CST — first epoch pending
 
 **PointGoal-2031 is now a live A100 GPU0 process**, continuing its existing
 10M cell from the incident inventory's SHA-matched **7,700,000-step full
