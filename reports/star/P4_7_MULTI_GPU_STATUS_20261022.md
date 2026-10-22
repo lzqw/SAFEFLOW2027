@@ -98,6 +98,39 @@ manifest SHA-256 is
 `12b2884ccf0d09e7853d8c2cd9ac4838cb1215754dbc51fe9ebdde38802f6702`.
 This was an archive integrity check, not another scientific evaluation.
 
+## PointButton-2028 acceleration handoff: 2026-10-22 12:14 CST
+
+The longest-remaining A100 PointButton cell was migrated to 4080 using its full
+4.400M-step checkpoint, with unchanged code, configuration, seed, optimizer/RNG/
+replay state, and 10M-step budget. Its first new epoch reached 4.405M steps at
+21.71 FPS, versus approximately 5.55 logged steps/second over the preceding A100
+half-hour. This is an encouraging startup observation, not yet a long-term
+throughput guarantee or an end-to-end completion estimate.
+
+The full source container was held during transfer and its checkpoint SHA-256
+matched the target. Only after the new target epoch and MPS connection were
+observed did the A100 source exit through its CUDA-synchronizing launcher.
+The [completed handoff record](p4_7_training_receipts_20261022/point_button_2028_a100_to_4080.json)
+preserves the exact locations and counters. The source container and the
+previous, stale 4080 container were retained under their respective
+`recovery_backups/retired_gpu_workers/` directories; no files were deleted.
+
+The source had logged 4.445M steps and cumulative cost 92,862, while the full
+checkpoint held 4.400M steps and cost 92,178. This means at least 45,000 repeated
+physical steps and 684 extra training-cost units, plus an unknown unlogged tail.
+These must be included in final physical-work accounting, not hidden by the
+accepted checkpoint lineage. Bitwise equivalence across GPU/runtime versions is
+not claimed. A100 now has two unique active tasks and 4080 has five; the seven
+5080 tasks remain reserved until 19:11.
+
+The earlier three excluded duplicate branches also incurred measured work.
+Their [separate accounting record](p4_7_training_receipts_20261022/duplicate_branch_accounting.json)
+shows at least 1,075,000 additional physical steps and 823 training-cost units
+after the shared resume checkpoints. Combined with this handoff, these newly
+recorded operations add at least 1,120,000 physical steps and 1,507 cost units;
+unknown tails remain unknown, not zero. Integration into the final consolidated
+recovery ledger is still required before a complete-publication claim.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.

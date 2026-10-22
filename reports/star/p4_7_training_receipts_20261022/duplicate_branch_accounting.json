@@ -1,0 +1,45 @@
+{
+  "format": "safeflow-resource-accounting-v1",
+  "kind": "retired_duplicate_branches",
+  "scientific_parameters_changed": false,
+  "selection_record": "duplicate_branch_selection_20261022.json",
+  "entries": [
+    {
+      "job": "ant-2028",
+      "shared_prefix_steps": 2500000,
+      "shared_prefix_cumulative_training_cost": 555,
+      "retired_source_last_logged_steps": 2855000,
+      "retired_source_last_logged_cost": 607,
+      "known_additional_physical_steps": 355000,
+      "known_additional_physical_training_cost": 52,
+      "unlogged_source_tail_unknown_not_zero": true,
+      "selected_host": "4080"
+    },
+    {
+      "job": "walker2d-2028",
+      "shared_prefix_steps": 2600000,
+      "shared_prefix_cumulative_training_cost": 3856,
+      "retired_source_last_logged_steps": 2960000,
+      "retired_source_last_logged_cost": 4220,
+      "known_additional_physical_steps": 360000,
+      "known_additional_physical_training_cost": 364,
+      "unlogged_source_tail_unknown_not_zero": true,
+      "selected_host": "4080"
+    },
+    {
+      "job": "walker2d-2029",
+      "shared_prefix_steps": 2600000,
+      "shared_prefix_cumulative_training_cost": 3037,
+      "retired_source_last_logged_steps": 2960000,
+      "retired_source_last_logged_cost": 3444,
+      "known_additional_physical_steps": 360000,
+      "known_additional_physical_training_cost": 407,
+      "unlogged_source_tail_unknown_not_zero": true,
+      "selected_host": "4080"
+    }
+  ],
+  "known_additional_physical_steps": 1075000,
+  "known_additional_physical_training_cost": 823,
+  "unknown_unlogged_tails_are_not_zero": true,
+  "excluded_branches_are_not_independent_seeds": true
+}

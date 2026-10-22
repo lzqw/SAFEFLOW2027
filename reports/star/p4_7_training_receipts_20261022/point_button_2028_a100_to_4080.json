@@ -1,0 +1,340 @@
+{
+  "job": "point-button-2028",
+  "phase": "completed_first_target_epoch_source_retired",
+  "source_host": "tjucta-a100",
+  "target_host": "4080",
+  "source_identity": {
+    "pid": 670605,
+    "start_ticks": 17172835,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "/home/lzqw/SAFEFLOW2027_A100/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-button-2028/resolved_formal_config.yaml",
+      "--seed",
+      "2028",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-button-2028/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-button-2028/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints/latest_full.pt"
+    ],
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59"
+  },
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "total_budget_steps": 10000000,
+  "scientific_parameters_changed": false,
+  "other_projects_paused": false,
+  "source_paused": false,
+  "source_retired": true,
+  "target_launch_requested": true,
+  "bitwise_equivalence_claimed": false,
+  "target_capacity_before_pause": {
+    "observed_at_unix": 1792642046.593039,
+    "gpus": [
+      {
+        "index": 0,
+        "uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+        "name": "NVIDIA GeForce RTX 4080 SUPER",
+        "free_mib": 13084,
+        "total_mib": 16376,
+        "utilization_percent": 70,
+        "processes": [
+          {
+            "pid": 3011,
+            "role": "graphics",
+            "executable": "gnome-remote-desktop-daemon",
+            "memory_mib": 249
+          },
+          {
+            "pid": 1394075,
+            "role": "safeflow_mps_server",
+            "executable": "nvidia-cuda-mps-server",
+            "memory_mib": 28,
+            "raw_role_before_MPS_proof": "safeflow"
+          },
+          {
+            "pid": 1405139,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 614
+          },
+          {
+            "pid": 2416328,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 554
+          },
+          {
+            "pid": 2418788,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 546
+          },
+          {
+            "pid": 2419408,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 594
+          }
+        ],
+        "safeflow_mps_client_pids": [
+          1405139,
+          2416328,
+          2418788,
+          2419408
+        ],
+        "MPS_accounting_unproven": false
+      }
+    ],
+    "storage": [
+      {
+        "label": "project_filesystem",
+        "path": "/home/carla/SAFEFLOW2027_4080",
+        "warning_below_free_gib": 20,
+        "status": "ok",
+        "free_gib": 340.98,
+        "total_gib": 1340.24,
+        "separate_from_project_filesystem": false
+      },
+      {
+        "label": "archive_4t_filesystem",
+        "path": "/home/carla/4T/SAFEFLOW2027_4080",
+        "warning_below_free_gib": 100,
+        "status": "ok",
+        "free_gib": 2641.96,
+        "total_gib": 3666.45,
+        "separate_from_project_filesystem": true
+      }
+    ],
+    "training": [
+      {
+        "job": "point-button-2029",
+        "pid": 1405139,
+        "start_ticks": 16099990,
+        "state": "R",
+        "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 4900000,
+        "last_epoch_fps": 22.705856323242188,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/progress.csv",
+        "progress_age_seconds": 14.604803085327148,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+          "status": "observed",
+          "server_pid": 1394075,
+          "client_pids": [
+            2419408,
+            1405139,
+            2416328,
+            2418788
+          ],
+          "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+        },
+        "mps_gpu_uuid_verified": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+      },
+      {
+        "job": "walker2d-2028",
+        "pid": 2416328,
+        "start_ticks": 24529592,
+        "state": "R",
+        "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 3130000,
+        "last_epoch_fps": 24.691715240478516,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-05-49-49/progress.csv",
+        "progress_age_seconds": 104.46363139152527,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+          "status": "observed",
+          "server_pid": 1394075,
+          "client_pids": [
+            2419408,
+            1405139,
+            2416328,
+            2418788
+          ],
+          "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+        },
+        "mps_gpu_uuid_verified": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+      },
+      {
+        "job": "ant-2028",
+        "pid": 2418788,
+        "start_ticks": 24554910,
+        "state": "R",
+        "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 3015000,
+        "last_epoch_fps": 24.140531539916992,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/ant-2028/training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/progress.csv",
+        "progress_age_seconds": 97.77386021614075,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+          "status": "observed",
+          "server_pid": 1394075,
+          "client_pids": [
+            2419408,
+            1405139,
+            2416328,
+            2418788
+          ],
+          "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+        },
+        "mps_gpu_uuid_verified": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+      },
+      {
+        "job": "walker2d-2029",
+        "pid": 2419408,
+        "start_ticks": 24561345,
+        "state": "R",
+        "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 3115000,
+        "last_epoch_fps": 24.550161361694336,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/progress.csv",
+        "progress_age_seconds": 116.77794575691223,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+          "status": "observed",
+          "server_pid": 1394075,
+          "client_pids": [
+            2419408,
+            1405139,
+            2416328,
+            2418788
+          ],
+          "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+        },
+        "mps_gpu_uuid_verified": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+      }
+    ]
+  },
+  "stale_target_archive": "/home/carla/SAFEFLOW2027_4080/recovery_backups/retired_gpu_workers/point-button-2028_before_a100_to_4080_point2028_20261022",
+  "planned_source_archive": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers/point-button-2028_a100_to_4080_point2028_20261022",
+  "selection_reason": "Longest remaining budget; measured A100 CPU-bound throughput versus faster existing 4080 workers",
+  "updated_at_unix": 1792642417.8280196,
+  "relative_checkpoint": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/checkpoints/latest_full.pt",
+  "checkpoint_sha256": "0995b6e3a1340b1b3550287cd49660c87a502f38b04514149747fe43ebd0aaa5",
+  "resume_steps": 4400000,
+  "counters": {
+    "env_steps": 4400000,
+    "updates": 4398000,
+    "actor_updates": 2196000,
+    "reward_critic_updates": 8796000,
+    "utd_carry": 0.0,
+    "violations": 92178,
+    "cumulative_training_cost": 92178.0
+  },
+  "resume_cumulative_training_cost": 92178.0,
+  "last_logged_source_steps": 4445000,
+  "last_logged_source_cost": 92862.0,
+  "source_container_bytes": 590154343,
+  "known_repeated_steps_lower_bound": 45000,
+  "known_extra_training_cost_lower_bound": 684.0,
+  "unlogged_source_tail_unknown_not_zero": true,
+  "target_checkpoint": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/checkpoints/latest_full.pt",
+  "target_pid": 3265981,
+  "first_target_epoch": {
+    "csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/progress.csv",
+    "mtime_ns": 1792642381991030393,
+    "steps": 4405000,
+    "cost": 92269.0,
+    "fps": 21.712841033935547
+  },
+  "first_target_worker": {
+    "job": "point-button-2028",
+    "pid": 3265981,
+    "start_ticks": 26805455,
+    "state": "S",
+    "boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+    "device": "cuda:0",
+    "progress_status": "observed",
+    "steps": 4405000,
+    "last_epoch_fps": 21.712841033935547,
+    "progress_selection": "active_worker_logger_fd",
+    "progress_csv": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/progress.csv",
+    "progress_age_seconds": 32.17412185668945,
+    "cuda_execution_backend": "mps_verified",
+    "mps_connection": {
+      "pipe_directory": "/home/carla/SAFEFLOW2027_4080/operations/mps_formal_4080_20261021",
+      "status": "observed",
+      "server_pid": 1394075,
+      "client_pids": [
+        2419408,
+        1405139,
+        3265981,
+        2416328,
+        2418788
+      ],
+      "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+    },
+    "mps_gpu_uuid_verified": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7"
+  },
+  "target_identity": {
+    "pid": 3265981,
+    "start_ticks": 26805455,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "0",
+    "args": [
+      "/home/carla/SAFEFLOW2027_4080/env/bin/python",
+      "/home/carla/SAFEFLOW2027_4080/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/resolved_formal_config.yaml",
+      "--seed",
+      "2028",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/training",
+      "--result",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/checkpoints/latest_full.pt"
+    ]
+  },
+  "retired_source_archive": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers/point-button-2028_a100_to_4080_point2028_20261022"
+}
