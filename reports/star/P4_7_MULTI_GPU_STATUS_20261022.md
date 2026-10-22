@@ -364,6 +364,30 @@ an independent fallback. Training code, budgets, and scientific gates are
 unchanged, and the pending request to change only multi-hop artifact lookup is
 not treated as approved.
 
+## Fixed preservation of the seven 19:11 resume inputs
+
+The ordinary recovery backup intentionally rotates a limited number of recent
+versions. To prevent that rotation from eventually dropping the exact input
+files named by the 19:11 restart, all seven were pinned in a separate fixed
+archive on the 4080 4T filesystem:
+`/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/`.
+
+The [input preservation manifest](p4_7_training_receipts_20261022/resume_inputs_5080_manifest.json)
+records each original input path, its saved counters, size, SHA-256 and fixed
+archive path. Total retained payload is **1,805,765,534 bytes**. Every archived
+file matched its named 5080 original. Existing same-filesystem backup inodes
+were hard-linked before rolling replacement, so no large checkpoint payload
+was staged on the host and no extra network payload transfer was needed.
+Rolling backups use atomic replacement, leaving these retained input inodes
+intact. Originals were neither moved nor deleted.
+
+SHA values were captured after startup; this is preservation of the named
+current inputs, not a retroactive content-at-start attestation. No earlier
+missing 2027 parent was aliased to a later checkpoint or declared recovered.
+No model/tensor was loaded, learner signalled, evaluation run, or training
+configuration changed. The manifest is now included in final publication
+metadata and checksums; physical-work accounting is unchanged.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.

@@ -1,0 +1,145 @@
+{
+  "schema": "safeflow-resume-input-preservation-v1",
+  "phase": "seven_named_resume_inputs_preserved_on_separate_4T_filesystem",
+  "scope": "Only inputs referenced by the 2026-10-22 19:11 resume; not missing earlier 2027 parents",
+  "source_payloads_moved_or_deleted": false,
+  "scientific_parameters_changed": false,
+  "learner_signals_sent": 0,
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "local_host_large_checkpoint_copies": 0,
+  "source_SHA_captured_after_resume": true,
+  "archive_root": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080",
+  "archive_on_separate_4T_filesystem": true,
+  "rows": [
+    {
+      "job": "point-goal-2027",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-20-19-08-51/checkpoints/latest_full.pt",
+      "bytes": 243206770,
+      "mtime_ns": 1792630690865250433,
+      "sha256": "d3ea6302d0217494fe206632f07b27850af196c92d55bc311f0e1c2b6bc77ee2",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 8250000,
+        "updates": 8248000,
+        "actor_updates": 4121000,
+        "reward_critic_updates": 16496000,
+        "utd_carry": 0.0,
+        "violations": 130465,
+        "cumulative_training_cost": 130465.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-goal-2027/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-goal-2028",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/checkpoints/latest_full.pt",
+      "bytes": 243206706,
+      "mtime_ns": 1792631400798916040,
+      "sha256": "0577443654c2915df1bb405715f133f35001babd62e52f253209953aa012bb38",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 6050000,
+        "updates": 6048000,
+        "actor_updates": 3021000,
+        "reward_critic_updates": 12096000,
+        "utd_carry": 0.0,
+        "violations": 106657,
+        "cumulative_training_cost": 106657.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-goal-2028/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-goal-2029",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/checkpoints/latest_full.pt",
+      "bytes": 243206834,
+      "mtime_ns": 1792629849712039751,
+      "sha256": "2e03c93932fef48cb3969dad74cbd0930958489ed34195ad5b47d7d7879f8596",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 5250000,
+        "updates": 5248000,
+        "actor_updates": 2621000,
+        "reward_critic_updates": 10496000,
+        "utd_carry": 0.0,
+        "violations": 90072,
+        "cumulative_training_cost": 90072.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-goal-2029/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-goal-2030",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-13-26-20/checkpoints/latest_full.pt",
+      "bytes": 243206770,
+      "mtime_ns": 1792631153708128433,
+      "sha256": "68e9f5e4600f1a081c66e81e8e005d600f82b31dc8ee55c0586453732d707902",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 6900000,
+        "updates": 6898000,
+        "actor_updates": 3446000,
+        "reward_critic_updates": 13796000,
+        "utd_carry": 0.0,
+        "violations": 107818,
+        "cumulative_training_cost": 107818.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-goal-2030/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-goal-2031",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-20-14-33-54/checkpoints/latest_full.pt",
+      "bytes": 243206706,
+      "mtime_ns": 1792630735888841999,
+      "sha256": "398bd575cea18d642f04e8b6bde921dacfbf08947599d09d2818f3a54e5a7938",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 7450000,
+        "updates": 7448000,
+        "actor_updates": 3721000,
+        "reward_critic_updates": 14896000,
+        "utd_carry": 0.0,
+        "violations": 111719,
+        "cumulative_training_cost": 111719.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-goal-2031/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-button-2027",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-20-21-58-04/checkpoints/latest_full.pt",
+      "bytes": 294865906,
+      "mtime_ns": 1792630175576027397,
+      "sha256": "595f1be5693595d38c413cd1a93851b66c5861e700822a46101d632aa2698b15",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 8000000,
+        "updates": 7998000,
+        "actor_updates": 3996000,
+        "reward_critic_updates": 15996000,
+        "utd_carry": 0.0,
+        "violations": 156162,
+        "cumulative_training_cost": 156162.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-button-2027/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    },
+    {
+      "job": "point-button-2031",
+      "source_checkpoint": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-14-24-38/checkpoints/latest_full.pt",
+      "bytes": 294865842,
+      "mtime_ns": 1792631054767588180,
+      "sha256": "a6005fec7e599dee22a429b0552ad4b2bc33b73b729465a49f7e1f4e06fedf86",
+      "counters_from_pre_resume_snapshot": {
+        "env_steps": 7400000,
+        "updates": 7398000,
+        "actor_updates": 3696000,
+        "reward_critic_updates": 14796000,
+        "utd_carry": 0.0,
+        "violations": 151177,
+        "cumulative_training_cost": 151177.0
+      },
+      "archive_path": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261022/5080/point-button-2031/latest_full.pt",
+      "method": "hardlink_pinned_before_rolling_replacement"
+    }
+  ],
+  "total_bytes": 1805765534,
+  "completed_at": 1792672918.5120318,
+  "historical_2027_early_parent_gaps_repaired": false
+}
