@@ -1,6 +1,57 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest running status: 2026-10-22 19:23 CST
+## Latest operational update: 2026-10-22 23:37 CST
+
+Walker2d-2028 continued from its ordinary **3,900,000-step full checkpoint** on
+A100 GPU1. At 23:36, the new worker (PID 333807) had logged **3,905,000 steps** at
+approximately **10.08 FPS**, with verified CUDA/MPS membership. Only after this
+new epoch was observed did the held 4080 worker exit through its normal
+CUDA-synchronizing signal handler. Its complete source container remains in the
+4080 recovery archive; no history was deleted. The exact resume input was also
+SHA-verified on the separate 4080-4T filesystem.
+
+| Host | Unfinished cells placed after this handoff | Placement |
+|---|---:|---|
+| A100 | 2 | Ant-2029 and Walker2d-2028 on GPU1, sharing our existing MPS runtime |
+| 4080 | 5 | PointButton 2028/2029/2030, Ant-2028 and Walker2d-2029 |
+| 5080 | 7 | Five PointGoal seeds and PointButton 2027/2031; not moved by this handoff |
+
+There are still **six terminal training receipts and fourteen unfinished cells**.
+This is an operational handoff, not another completed scientific run. The last
+ordinary whole-cohort snapshot at 23:23 recorded positive step deltas for all
+fourteen cells. Periodic snapshots can catch a temporarily stopped worker; a
+subsequent 5080 read-only observation returned running states without any resume
+signal from this handoff. A transient observation is not used to trigger a
+duplicate restart.
+
+The purpose of moving the shorter Walker continuation is to release 4080
+capacity for longer remaining cells. Its first A100 epoch does **not** by itself
+prove an overall makespan improvement; subsequent ordinary half-hour snapshots
+will show the cohort effect. No training seed, learner setting, evaluation
+schedule, 10M/5M budget, or other project's process was changed. Both sides used
+PyTorch 2.7.1+cu118; bitwise cross-device equivalence is not claimed.
+
+The proposed PointGoal-2027 move was **not performed**: another project returned
+to the previously empty A100 GPU0 before admission, and by 22:53 its utilization
+was 84%. Preflight stopped before any source signal or target launch. That
+5080 task stayed in place. Other projects were neither paused nor terminated.
+
+The [Walker handoff receipt](p4_7_training_receipts_20261022/walker2d_2028_4080_to_a100.json)
+contains checkpoint counters/hash, immutable input/archive paths, worker identity,
+first-epoch evidence and source-retirement location. The
+[declined Point preflight](p4_7_training_receipts_20261022/idle_a100_short_cell_preflight.json)
+records that no Point migration occurred. The checkpoint and last logged Walker
+counter both equal 3.9M, so this handoff adds no **known logged** rollback; any
+unlogged in-flight tail remains unknown, not assumed zero. The late-resource
+ledger now contains thirteen records, with its known lower bounds unchanged at
+**1,255,000 additional physical steps and 3,073 training-cost units**. These are
+not added to accepted-lineage learning-curve metrics.
+
+The full scientific final audit remains pending. Existing historical 2027
+checkpoint-parent gaps and the unapproved multi-hop path-locator change remain
+explicitly unresolved; this resource handoff does not repair or waive them.
+
+## Earlier running status: 2026-10-22 19:23 CST
 
 The eight-hour 5080 reservation has ended. Dispatch occurred at **19:11:00 CST**,
 after the not-before deadline. The ordinary 19:23 snapshot observed exactly

@@ -1,0 +1,21 @@
+{
+  "phase": "preflight_declined_before_source_hold",
+  "candidate_job": "point-goal-2027",
+  "candidate_source_host": "5080",
+  "candidate_target_host": "tjucta-a100",
+  "candidate_target_gpu_index": 0,
+  "last_scheduled_capacity_snapshot": "2026-10-22T22:23:08.627693+08:00",
+  "live_target_gpu_free_mib": 59792,
+  "live_target_gpu_utilization_percent": 17,
+  "new_foreign_gpu_pid": 185119,
+  "reason": "The previously empty target GPU acquired another project's worker before the proposed handoff. The idle-card controller refused admission before any source signal or target launch.",
+  "source_signals_sent": 0,
+  "target_launch_requests": 0,
+  "migration_transaction_created": false,
+  "scientific_parameters_changed": false,
+  "other_projects_signalled": false,
+  "training_budgets_changed": false,
+  "extra_scientific_rollouts": 0,
+  "new_controller_is_not_a_running_training_job": true,
+  "next_action": "Continue the existing14 training workers and half-hour capacity observations. Reassess actual headroom before any future handoff; do not retry blindly or assume the GPU is still empty."
+}

@@ -25,6 +25,7 @@ from walker_cpu_5080_to_4080_recovery_accounting_20261021 import verify_Walker_C
 from retired_GPU_archive_relocation_accounting_20261021 import verify_retired_GPU_archive_relocation
 from point_5080_to_4080_MPS_accounting_20261021 import verify_Point_5080_to_4080_MPS
 from inactive_A100_export_storage_accounting_20261021 import verify_inactive_A100_export_relocation
+from late_resource_accounting_20261022 import resource_records
 
 BASE = Path(__file__).resolve().parent
 REPO = Path('/home/lzqw/PycharmProject/ICLR/ICLR-SAFE')
@@ -1267,6 +1268,28 @@ def annotate_recovery(target):
         ledger['interpretation'] += (' Reboot-tail adjustments in the per-run receipts '
             'are cumulative with all earlier known tails, including multiple '
             'interruptions of the same training seed; unknown tails are not zero.')
+    late_resource_records, late_resource_files = resource_records(BASE)
+    ledger['recoveries'].extend(late_resource_records)
+    ledger['known_repeated_environment_steps'] += sum(
+        r['known_additional_physical_steps'] for r in late_resource_records)
+    ledger['known_discarded_training_cost'] += sum(
+        r['known_additional_physical_training_cost'] for r in late_resource_records)
+    for name in sorted(late_resource_files):
+        assert Path(name).name == name
+        shutil.copyfile(BASE / name, target / name)
+        storage_files.add(name)
+    if 'historical_segment_restoration_20261022.json' in late_resource_files:
+        ledger['historical_segment_restoration'] = json.loads(
+            (BASE / 'historical_segment_restoration_20261022.json').read_text())
+    if 'ant2029_historical_restoration_20261022.json' in late_resource_files:
+        ledger['ant2029_historical_restoration'] = json.loads(
+            (BASE / 'ant2029_historical_restoration_20261022.json').read_text())
+    if 'resume_confirmation_5080_20261022.json' in late_resource_files:
+        ledger['eight_hour_reservation_resume_confirmation'] = json.loads(
+            (BASE / 'resume_confirmation_5080_20261022.json').read_text())
+    if 'resume_inputs_5080_20261022_manifest.json' in late_resource_files:
+        ledger['eight_hour_resume_input_preservation'] = json.loads(
+            (BASE / 'resume_inputs_5080_20261022_manifest.json').read_text())
     ledger_path = target / 'recovery_accounting.json'
     ledger_path.write_text(json.dumps(ledger, indent=2) + '\n')
     disclosure = (
@@ -1644,6 +1667,57 @@ def annotate_recovery(target):
             'receipt accompany this report. This storage-only operation changed '
             'no rollout, metric, training setting or checkpoint identity and does '
             'not reconstruct any missing earlier2027 full checkpoint parent.\n'
+        )
+    if late_resource_records:
+        disclosure += (
+            '\nThe 22 October resource changes include excluded duplicate '
+            'continuation branches, full-checkpoint resource handoffs, '
+            'and tails of 5080 workers that had already stopped before the '
+            'requested eight-hour reservation. No idle reservation time is '
+            'counted as training. '
+            'They add at least '
+            f'{sum(r["known_additional_physical_steps"] for r in late_resource_records):,} '
+            'physical steps and '
+            f'{sum(r["known_additional_physical_training_cost"] for r in late_resource_records):,.0f} '
+            'training-cost units beyond accepted checkpoint lineages. '
+            'The original selection and handoff records accompany the ledger; '
+            'unknown unlogged tails are not zero. Branches were selected by '
+            'placement and throughput, not reward or safety scores.\n'
+        )
+    if 'historical_segment_restoration_20261022.json' in late_resource_files:
+        disclosure += (
+            '\nEarlier PointButton 2028/2030 training segments omitted from '
+            'minimal handoff packages were restored from retained containers '
+            'only after the shared checkpoint bytes matched. Only missing '
+            'files were added and their SHA-256 values verified. No active '
+            'training file was overwritten and no scientific evaluation was '
+            'rerun. The complete restoration manifest accompanies the ledger.\n'
+        )
+    if 'ant2029_historical_restoration_20261022.json' in late_resource_files:
+        disclosure += (
+            '\nAnt 2029 earlier milestone files were similarly restored from '
+            'the retained 4080 history after its shared checkpoint SHA matched '
+            'A100. Only missing files were added, with historical 5080 paths '
+            'mapped explicitly through the documented 4080 transfer. No live '
+            'learner was signalled or restarted and no evaluation was rerun.\n'
+        )
+    if 'resume_confirmation_5080_20261022.json' in late_resource_files:
+        disclosure += (
+            '\nThe requested eight-hour 5080 reservation was respected. Seven '
+            'existing Point lanes were dispatched at 19:11 CST on 22 October '
+            'and ordinary monitoring subsequently observed new epochs and '
+            'verified MPS execution for each. Their pre-existing discarded '
+            'stop tails are counted once above, not charged again for the '
+            'resume confirmation. No training budget or scientific gate changed.\n'
+        )
+    if 'resume_inputs_5080_20261022_manifest.json' in late_resource_files:
+        disclosure += (
+            '\nThe seven named checkpoint inputs used by that 19:11 resume '
+            'were also preserved separately from rolling-backup rotation on '
+            'the 4080 4T disk. Archive bytes matched their named 5080 originals. '
+            'Their hashes were captured after startup; this preservation is '
+            'not a claim to reconstruct missing earlier 2027 parents. No model '
+            'was loaded, no learner was signalled, and no extra rollout ran.\n'
         )
     disclosure += (
         '\nThe combined known recovery ledger is a lower bound of '
