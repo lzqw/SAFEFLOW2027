@@ -34,7 +34,9 @@ were successfully loaded on CPU and retained unchanged:
 | PointButton 2027 | 8,000,000 | 8,030,000 |
 | PointButton 2031 | 7,400,000 | 7,415,000 |
 
-The host-side timer `safeflow-5080-resume-20261022.timer` is active for 19:11 CST.
+The enabled host-side timer `safeflow-5080-resume-20261022-persistent.timer` is
+active for 19:11 CST. It is stored in the host's user-service configuration,
+not just a transient session; a missed trigger is caught up when the host returns.
 The remote reservation begins at 11:10:21 CST and refuses launches before eight
 hours elapse. The timer invokes a seven-lane-only, duplicate-aware resume script;
 SSH or memory-headroom failures retry every 30 minutes. It never terminates
