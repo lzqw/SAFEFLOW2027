@@ -54,6 +54,38 @@ A100 `/home` has approximately 25 GiB free; 4080's archive filesystem has about
 No new scientific evaluations, training-budget reductions, or source changes
 were introduced for this reservation.
 
+## Duplicate-branch retirement: 2026-10-22 11:28 CST
+
+The three A100 duplicate branches described above have now been retired. The
+4080 continuations are the selected branches, on an operational basis alone:
+their code commit, resolved-config hashes, seeds, and initial resume-checkpoint
+hashes match the A100 duplicates, while their durable checkpoints are ahead
+and observed throughput is higher. Return and safety scores were not used to
+select a branch. The [selection record](p4_7_training_receipts_20261022/duplicate_branch_selection.json)
+preserves both branches' checkpoint counters, including cumulative costs.
+
+| Matrix cell | Retired A100 checkpoint | Selected 4080 checkpoint |
+|---|---:|---:|
+| Ant 2028 | 2.850M | 2.950M |
+| Walker2d 2028 | 2.950M | 3.050M |
+| Walker2d 2029 | 2.950M | 3.050M |
+
+Only the three identity-checked A100 training PIDs received SIGTERM through the
+existing CUDA-synchronizing launcher. They exited without force-killing. Their
+complete containers were renamed, without deleting files, into
+`/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_duplicate_branches_20261022/`.
+These are excluded alternatives, not three completed matrix cells. No training
+budget or scientific configuration was changed, and no other projects were
+stopped. The existing result collector can import the selected 4080 terminal
+containers into the now-vacant A100 matrix slots without overwriting a branch.
+
+A100 now retains three distinct active tasks (PointButton 2028/2030 and Ant
+2029), while 4080 retains four. The seven 5080 Point lanes remain reserved until
+19:11. Together with the collector's six terminal receipts this accounts for
+the twenty requested cells: six trained, seven actively training, seven held.
+The final strict scientific audit is still pending. A new stable observation
+interval is needed before claiming a speedup from removing redundant work.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
