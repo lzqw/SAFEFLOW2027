@@ -131,6 +131,33 @@ recorded operations add at least 1,120,000 physical steps and 1,507 cost units;
 unknown tails remain unknown, not zero. Integration into the final consolidated
 recovery ledger is still required before a complete-publication claim.
 
+## Second PointButton handoff and accounting integration: 2026-10-22 12:38 CST
+
+The scheduled 12:22 snapshot showed all five 4080 workers at approximately
+21–23 FPS, with GPU utilization 72% and about 12 GiB free VRAM. On that basis,
+PointButton-2030 was also moved from A100, using its 6.700M full checkpoint.
+The target's first new epoch reached 6.705M at 20.82 FPS. Its A100 source was
+retired only after this new epoch and verified MPS execution. The
+[completed handoff record](p4_7_training_receipts_20261022/point_button_2030_a100_to_4080.json)
+retains the source/target identities, original data locations, and unchanged
+10M-step budget. The last logged source counter equals the checkpoint counter,
+so the *known logged* repeated tail is zero; this does not establish a zero
+unlogged tail.
+
+A100 now runs Ant-2029; 4080 runs six distinct cells. Seven 5080 cells remain
+held until 19:11. Together with six terminal receipts this still accounts for
+exactly twenty cells, with no duplicate active continuation branches.
+
+The final publisher now incorporates the three excluded duplicate branches and
+both new A100-to-4080 handoffs into its existing consolidated recovery ledger,
+and includes their original records in the report's checksums. It rejects an
+unfinished handoff rather than silently omitting it. One engineering-only
+accounting read confirmed five records totaling the same known lower bound:
+1,120,000 additional physical steps and 1,507 training-cost units. No raw metric,
+scientific audit gate, configuration, or evaluation budget was modified. The
+full scientific finalization still waits for all twenty cells; the later 5080
+stop/resume tails also require their own explicit accounting.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
