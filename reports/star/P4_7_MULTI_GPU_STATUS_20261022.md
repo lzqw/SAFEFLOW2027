@@ -1,5 +1,35 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest running status: 2026-10-22 19:23 CST
+
+The eight-hour 5080 reservation has ended. Dispatch occurred at **19:11:00 CST**,
+after the not-before deadline. The ordinary 19:23 snapshot observed exactly
+seven expected new workers, each with its recorded PID, verified CUDA/MPS
+execution, and **10,000 steps beyond its saved checkpoint**. Last epoch rates
+were approximately **19.4–20.0 FPS**. This is observed training progress, not
+merely a successful timer exit.
+
+| Host | Distinct active cells | Status |
+|---|---:|---|
+| 5080 | 7 | Five PointGoal seeds and PointButton 2027/2031 resumed |
+| 4080 | 6 | Three PointButton, two Walker2d and one Ant cell continuing |
+| A100 | 1 | Ant-2029 continuing |
+
+Together with six terminal training receipts, this accounts for all twenty
+planned cells: **six trained, fourteen actively training, none held**. The full
+scientific final audit remains pending. All Point budgets remain 10M steps and
+Ant/Walker budgets 5M; no other projects were stopped and no additional
+evaluation was launched to confirm this restart.
+
+The [dispatch record](p4_7_training_receipts_20261022/hold_5080_8h_resumed.json)
+and [new-epoch confirmation](p4_7_training_receipts_20261022/resume_confirmation_5080.json)
+retain the actual timestamps, saved counters, worker identities and log paths.
+Recovery starts from durable checkpoints rather than the later pre-stop CSV
+counters; the already-disclosed discarded tails are not counted twice. The
+publisher now preserves this confirmation alongside the unchanged physical-work
+ledger. Historical checkpoint-ancestry gaps and the unapproved multi-hop locator
+change are not silently treated as repaired.
+
 ## Fixed 40%-budget results: all twenty cells available
 
 This is **descriptive mid-training context, not the final scientific report**.
@@ -51,7 +81,7 @@ mid-training assembly does not certify full provenance or replace the strict
 twenty-cell final audit. All 10M/5M training budgets remain unchanged, with no
 new configuration selection or scientific early stopping.
 
-## Current summary: 2026-10-22 13:52 CST
+## Earlier operational summary: 2026-10-22 13:52 CST
 
 - Six of twenty cells have terminal training receipts; full scientific finalization is pending.
 - Seven distinct cells are active: six on 4080 and Ant-2029 on A100.

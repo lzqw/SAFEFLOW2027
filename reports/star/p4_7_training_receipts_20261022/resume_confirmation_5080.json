@@ -1,0 +1,80 @@
+{
+  "phase": "seven_resume_workers_and_new_epochs_observed",
+  "prepared_at": 1792638621.006414,
+  "resume_after": 1792667421.0064142,
+  "dispatched_at": 1792667460.4825482,
+  "observed_at_unix": 1792668182.5526352,
+  "budget_per_lane": 10000000,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "checkpoint_rollbacks_not_hidden": true,
+  "confirmed_workers": [
+    {
+      "job": "point-goal-2027",
+      "pid": 927961,
+      "checkpoint_steps": 8250000,
+      "observed_steps": 8260000,
+      "last_epoch_fps": 19.655391693115234,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-22-19-11-09/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-goal-2028",
+      "pid": 927962,
+      "checkpoint_steps": 6050000,
+      "observed_steps": 6060000,
+      "last_epoch_fps": 19.803340911865234,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-22-19-11-10/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-goal-2029",
+      "pid": 927963,
+      "checkpoint_steps": 5250000,
+      "observed_steps": 5260000,
+      "last_epoch_fps": 19.96038818359375,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-goal-2030",
+      "pid": 927964,
+      "checkpoint_steps": 6900000,
+      "observed_steps": 6910000,
+      "last_epoch_fps": 19.88459587097168,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-22-19-11-10/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-goal-2031",
+      "pid": 927965,
+      "checkpoint_steps": 7450000,
+      "observed_steps": 7460000,
+      "last_epoch_fps": 19.8236083984375,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-22-19-11-10/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-button-2027",
+      "pid": 927966,
+      "checkpoint_steps": 8000000,
+      "observed_steps": 8010000,
+      "last_epoch_fps": 19.415363311767578,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-22-19-11-10/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    },
+    {
+      "job": "point-button-2031",
+      "pid": 927967,
+      "checkpoint_steps": 7400000,
+      "observed_steps": 7410000,
+      "last_epoch_fps": 19.548809051513672,
+      "progress_csv": "/home/autodrive/LZQW/SAFEFLOW2027/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-22-19-11-09/progress.csv",
+      "cuda_execution_backend": "mps_verified"
+    }
+  ],
+  "other_active_workers": {
+    "4080": 6,
+    "tjucta-a100": 1
+  }
+}
