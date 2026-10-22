@@ -158,6 +158,45 @@ scientific audit gate, configuration, or evaluation budget was modified. The
 full scientific finalization still waits for all twenty cells; the later 5080
 stop/resume tails also require their own explicit accounting.
 
+## Six-worker observation and pre-existing stop tails: 2026-10-22 12:52 CST
+
+The regular half-hour snapshot observed six distinct 4080 workers, with last
+logged epoch rates around 21–23 FPS and GPU utilization 73% (about 12 GiB free
+VRAM). A100 Ant-2029 remained live at 2.940M / 5M, with about 5.55 logged steps
+per second over the previous interval. No SAFEFLOW training worker was present
+on 5080, and its reservation timer remains active for 19:11.
+
+| 4080 cell | Logged steps | Previous-window logged steps/s |
+|---|---:|---:|
+| PointButton 2029 | 4.955M / 10M | 19.44 |
+| Walker2d 2028 | 3.190M / 5M | 22.21 |
+| Ant 2028 | 3.075M / 5M | 22.21 |
+| Walker2d 2029 | 3.175M / 5M | 22.21 |
+| PointButton 2028 | 4.455M / 10M | 22.21 |
+| PointButton 2030 | 6.725M / 10M | New worker; no full matching interval yet |
+
+At unchanged rates, the active 4080 work is roughly a three-to-four-day tail,
+while the A100 Ant run alone is approximately 4.3 days. A provisional overall
+training estimate is **four to six days**, conditional on the seven 5080 jobs
+resuming tonight and shared-resource contention remaining near prior levels.
+This is not a promise or a final-scientific-audit completion estimate; rates and
+remaining time will be updated using the existing half-hour monitor.
+
+Reading only the already-stopped 5080 logs recovered another known lower bound
+of 135,000 discarded physical steps and 1,566 cost units across seven lanes.
+These stops predated the user's reservation; idle reservation time is not
+training, and the stop cause remains unestablished. The
+[historical reservation/accounting snapshot](p4_7_training_receipts_20261022/hold_5080_8h.json)
+retains both full-checkpoint and last-logged counters. This metadata collection
+did not launch a learner or change the 19:11 resume time.
+
+The final publisher now includes all twelve newly documented accounting rows,
+totaling at least 1,255,000 additional physical steps and 3,073 cost units.
+Unknown unlogged tails remain unknown, not zero. These are recovery/placement
+records, not additional experiment cells; the training matrix still has six
+terminal cells, seven active cells, and seven reserved cells. The full scientific
+audit is still deferred until all twenty cells finish.
+
 ## Historical observations
 
 This is an operational snapshot of the ongoing P4.7 training lanes. It is not a completion claim; all listed jobs remain within their configured training budgets.
