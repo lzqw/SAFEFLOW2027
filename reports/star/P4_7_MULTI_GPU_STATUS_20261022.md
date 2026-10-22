@@ -1,6 +1,45 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest operational update: 2026-10-22 23:37 CST
+## Latest incident update: 2026-10-23, after the 23:53 snapshot
+
+The 23:53 ordinary snapshot found **zero 5080 training workers**. A subsequent
+direct process check confirmed all seven recorded PIDs absent. MPS logs record
+all seven clients disconnecting at **2026-10-22 23:34:35 CST**. Application logs
+end after ordinary epochs, without a Python traceback; the checked kernel
+journal contains no OOM/GPU error for the incident window. The cause is **not
+established**, and the absence of an error does not prove either a crash or an
+intentional user stop.
+
+| Host | Current evidence |
+|---|---|
+| A100 | Two continuing cells; Walker-2028 reached 3.910M and Ant-2029 3.180M in the 23:53 snapshot |
+| 4080 | Five continuing cells, all with positive logged step deltas |
+| 5080 | Seven unfinished cells stopped; no automatic relaunch performed |
+
+There are still **six terminal training receipts**: seven further cells are
+running and seven are stopped. The Walker handoff below remains valid; its
+new A100 worker continued after the first verified epoch. No other project's
+job has been paused or terminated.
+
+The [read-only checkpoint inventory](p4_7_training_receipts_20261022/incident_5080_2334_checkpoint_inventory.json)
+successfully loaded all seven full recovery checkpoints on CPU, verified that
+replay/RNG/optimizers are present, and recorded their counters and SHA hashes.
+Saved PointGoal counters are 8.50M/6.30M/5.50M/7.15M/7.70M for seeds 2027–2031;
+PointButton 2027/2031 counters are 8.25M/7.65M. All remain below their original
+10M budgets. No recovery launch, signal to a trainer, or new evaluation was
+performed by this inventory.
+
+The user has been asked whether these simultaneous exits were intentional and
+whether shared 5080 training may resume, to avoid overriding a manual resource
+reservation. A100/4080 training, half-hour observation and backups continue.
+If all seven restart from these recorded checkpoints, their known logged tails
+would add **165,000 repeated physical steps and 1,832 training-cost units**;
+these are conditional recovery accounting, not yet added as an executed
+handoff, and unknown unlogged work is not assumed zero. Historical scientific
+provenance limitations remain unchanged. No full-budget or final-audit gate
+has been reduced or waived.
+
+## Earlier operational update: 2026-10-22 23:37 CST
 
 Walker2d-2028 continued from its ordinary **3,900,000-step full checkpoint** on
 A100 GPU1. At 23:36, the new worker (PID 333807) had logged **3,905,000 steps** at
