@@ -1,5 +1,56 @@
 # P4.7 Multi-GPU Training Status
 
+## Fixed 40%-budget results: all twenty cells available
+
+This is **descriptive mid-training context, not the final scientific report**.
+All four environments now have their five prescribed training seeds at the
+fixed 40% milestone: 4M steps for Point and 2M for Ant/Walker. Each native result
+uses the scheduled five evaluation seeds × twenty episodes. Eighteen local raw
+files were reused and two newly archived Point-2029 JSON files retrieved; no
+policy inference, additional evaluation, training restart, configuration search,
+or early stop was performed.
+
+| Environment | Return, mean ± sample SD | Task metric, mean | Evaluation cost, mean | CVaR-20, mean |
+|---|---:|---:|---:|---:|
+| PointGoal, 4M | -0.379 ± 0.267 | Success 4.6% | 9.442 | 46.710 |
+| PointButton, 4M | -3.485 ± 1.530 | Success 3.8% | 14.978 | 49.350 |
+| Ant, 2M | 5635.3 ± 1203.4 | Failure 15.4% | 0.154 | 0.530 |
+| Walker2d, 2M | 4741.2 ± 1360.5 | Failure 37.6% | 0.376 | 0.810 |
+
+Statistics use five **training seeds** within each environment, not 500
+independent training runs. CVaR entries average the five per-training-seed
+CVaR-20 values; evaluation episodes are not pooled across seeds. Locomotion
+failure rate must not be confused with Point success rate. Different tasks'
+reward/cost scales are not directly comparable.
+
+| Environment | Retained-lineage training cost at 40%, mean | High-risk V_N/V_T, mean | High-risk dangerous outward velocity, mean |
+|---|---:|---:|---:|
+| PointGoal | 69,984.8 | 0.9484 | 0.1572 |
+| PointButton | 94,537.0 | 0.9781 | 0.0508 |
+| Ant | 573.4 | 0.8163 | 0.2898 |
+| Walker2d | 2,721.8 | 0.7430 | 0.2359 |
+
+The Point task success rates are low at this stage. Point normal/tangent
+variance ratios remain close to one. Mean PointButton cost exceeds its budget
+of ten, and neither locomotion environment meets its zero-cost constraint.
+PointGoal's average cost is below ten, but individual seeds range from 6.72 to
+12.28 and tail costs remain substantial. These observations do not establish
+improvement over C0 or causal benefit from a particular mechanism: there is no
+matched-control comparison here, and no significance test was performed.
+
+The [descriptive JSON summary](shapo_p47_four_env_artifacts/partial_milestones/four_env_40pct_all20_20261022/summary.json)
+contains all twenty per-seed records, sample SDs, diagnostic ranges, and raw-file
+hashes; [the per-seed CSV](shapo_p47_four_env_artifacts/partial_milestones/four_env_40pct_all20_20261022/per_training_seed_metrics.csv)
+provides the same tabular metrics. Original native JSON files accompany them.
+Training-cost snapshots reflect accepted lineages, not all physical discarded
+work, and must not be retroactively adjusted using later recovery tails.
+
+Known historical 2027 original-full-parent checkpoint gaps remain unresolved;
+matching metrics JSON hashes does not repair checkpoint ancestry. This
+mid-training assembly does not certify full provenance or replace the strict
+twenty-cell final audit. All 10M/5M training budgets remain unchanged, with no
+new configuration selection or scientific early stopping.
+
 ## Current summary: 2026-10-22 13:52 CST
 
 - Six of twenty cells have terminal training receipts; full scientific finalization is pending.
