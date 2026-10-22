@@ -1,0 +1,809 @@
+{
+  "phase": "both_earlier_histories_restored_without_overwrite",
+  "started_at": 1792648285.3892665,
+  "scientific_parameters_changed": false,
+  "existing_files_overwritten": false,
+  "new_scientific_evaluations": 0,
+  "jobs": [
+    {
+      "job": "point-button-2028",
+      "shared_checkpoint_relative": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints/latest_full.pt",
+      "shared_checkpoint_sha256": "0c78c2d4eb09872fc97fdfa46ca731d7d077901a35a8a0be37472aab7e77bba3",
+      "restored_files": [
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/artifacts/diagnostics.csv",
+          "sha256": "01db44a1fa21dacf6f2f32704f47bfcbd954f3f397490061d3549e29dba35df1",
+          "bytes": 43837
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/artifacts/heldout_probability.csv",
+          "sha256": "a4fd5d5019e75341a5bfd5c940311e94d0b8426f6029af6f1c903556a507f0f1",
+          "bytes": 5315
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/artifacts/heldout_probability_latest.json",
+          "sha256": "63fd3499eb219477af7f6258200bbeba56a6f5c2e3dd35c3af2e95c260c50bd1",
+          "bytes": 748
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/artifacts/warmup_status.json",
+          "sha256": "e37b0ef18edafc11d030ee3bbe33343a94a0959832994e94d59a63cab52e153f",
+          "bytes": 2298
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/checkpoints/latest_full.pt",
+          "sha256": "6576e04ccacf586bd772ee0f0e90f07fd0c7c839df03de3ca9a3a789ceb51a05",
+          "bytes": 81261669
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/checkpoints/milestone_0.pt",
+          "sha256": "ff6b05d26db593879f44576b3c379627dff2cfcd044cdce8bdf305e0d3c75bbd",
+          "bytes": 5040045
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/config.json",
+          "sha256": "c13dd8d409b49d7be9b33e1e6709090c32f886ec3d72e3e6db2cf2db6c05e62c",
+          "bytes": 10033
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/progress.csv",
+          "sha256": "9afa8528f5b5a5e21b6faeb66a635f909b7fa0808d77d82e9db55b9807bcb1cb",
+          "bytes": 45109
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/diagnostics.csv",
+          "sha256": "6733aba85b443f6cfa132a9a734717689e8d5655ca6eae9b620b8aa7a3b7b36c",
+          "bytes": 315207
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/engineering_hard_stop.json",
+          "sha256": "cbf8b22c1fa9dbcc2fa31eba53f369cbea39a27fa552bcc6bdb0e713dfaaae30",
+          "bytes": 121
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/heldout_probability.csv",
+          "sha256": "d0fc61558e4dc6cbb5f3d42267ffe6e4c5693f85491cd94f64a9dc156a5b0412",
+          "bytes": 38980
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/heldout_probability_latest.json",
+          "sha256": "8f8c4092d65389c0010469a7edc58059e01bc2ab31c4ad789246ecabf81e7516",
+          "bytes": 750
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/training_summary.json",
+          "sha256": "42c247f2c1366c70aa87d75a2e1ab3dc1095eb5fab393c74776993ad754cc0a7",
+          "bytes": 3834
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/artifacts/warmup_status.json",
+          "sha256": "eaf86b890aa50eefc67dd17986e867f0e752e903974d8de9846ed373dbc790f3",
+          "bytes": 2319
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/checkpoints/latest_full.pt",
+          "sha256": "092c20289d8f99d175d566eaab47eb4dc1afa1a994ee20ae7ad7b43d11a05882",
+          "bytes": 294861989
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/config.json",
+          "sha256": "d88aec03951d19a33570935fbf571e46d1ea269a8806812f3185b3647f592db1",
+          "bytes": 10377
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/progress.csv",
+          "sha256": "8909b851369c9fa54cf72b18c48e7b9df11fdc2717333eb56c77527f1060f2da",
+          "bytes": 323191
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/best_safe_return_selection.json",
+          "sha256": "ea9f1210585a574bd2b0d2544d8be06c8e9cb97e4062897ccee77d8745b7b4d3",
+          "bytes": 825
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/counterfactual_step_1000000.json",
+          "sha256": "3bde4f35c7ae08a18f38eda5c0d8653c4b1978b08d2744aed0640a3a371adcce",
+          "bytes": 1544
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/diagnostics.csv",
+          "sha256": "e015f00215471341c6458e34b34b9090860d2afdcdf6c396c7d848834288315f",
+          "bytes": 699128
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation.csv",
+          "sha256": "4727e664d629833bb5c0adc442cdf597bb89343d3ebb77b994db1a24ae85c77e",
+          "bytes": 1133
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation_step_1000000.json",
+          "sha256": "fd7b1e7098555b2a964a5a02b69d75def07eff419c3c910c331ed64a4a477ef5",
+          "bytes": 23856
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/heldout_probability.csv",
+          "sha256": "442aa5179a302f7db17da0bc429ab264180643de63f1834a347cd8692cec782c",
+          "bytes": 80897
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/heldout_probability_latest.json",
+          "sha256": "1b1d207b152adcda91e8ee44485f821f0425209e4e8bede4c8b95e60e5fd8728",
+          "bytes": 746
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/trajectory_step_1000000.csv",
+          "sha256": "7e727372889a3f485d26bc06d4d948745cb43fc6476b0143b51794e5c8f37c17",
+          "bytes": 1386422
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/warmup_status.json",
+          "sha256": "4b7021d4420b7b2689243fcaf1e446482ab485d2ce883b1bc8685d271aa3cb2c",
+          "bytes": 2314
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/checkpoints/best_safe_return.pt",
+          "sha256": "69afdc3c3d085dcaeb7f85c725ae9cbff53ef0f3911b275f666bf1afc852d1c3",
+          "bytes": 10059855
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/checkpoints/latest_full.pt",
+          "sha256": "f35260a4b5ac13150ef21b573c57e6d4dbbe6d2177662943084ccf0ab220d41f",
+          "bytes": 294866101
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/checkpoints/milestone_1000000.pt",
+          "sha256": "c854596d6506602347b7bcda8f54ab6b28939617de1332d3b12a3bf1f2e65ed7",
+          "bytes": 10060155
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/config.json",
+          "sha256": "6e52ab9fa4f683ad1ab4e4c93472f80b950a8826413262c8f64de816f110b912",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/progress.csv",
+          "sha256": "08d2f2f4635c0d2557b9ad57adbeb384dd4a6e92f628795d29b94d7e2a0f52b4",
+          "bytes": 736896
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/artifacts/diagnostics.csv",
+          "sha256": "988dc1de49e4a7917099dbd25f24c26c2abed8ea65f1cbf1f3b293a606c2c1c8",
+          "bytes": 144862
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/artifacts/heldout_probability.csv",
+          "sha256": "76cdc5e0e14e6e5713fde6ec527c254d3ea7e379cbc3034fe4530cf7a8629640",
+          "bytes": 18080
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/artifacts/heldout_probability_latest.json",
+          "sha256": "7408a277af84202a4383c9e216a3e219d0f8e6ed4e9a407338c9028153a593e0",
+          "bytes": 750
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/artifacts/warmup_status.json",
+          "sha256": "52eb46bcba46b6bddbd68fae9e3313a98e05760ab505075c3bae43e3695725ed",
+          "bytes": 2315
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/checkpoints/latest_full.pt",
+          "sha256": "d0c28d27a2943e10bf8d5c8411d19749fdb422f7f9945e43a98fc465aab55d70",
+          "bytes": 294864940
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/config.json",
+          "sha256": "e27ff7af6c449caddac9430ba000cd3804b318f2d430b0f8496e70d98510c74c",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/progress.csv",
+          "sha256": "b1288be74076731a87e09a36fa5df3b0bde067ed28e0d2d8051f04117a4d6ef1",
+          "bytes": 148053
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/artifacts/diagnostics.csv",
+          "sha256": "2076140d43ba89f7d2649cc63dbfd47c2e21cb42488d98862ac092e276471411",
+          "bytes": 32117
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/artifacts/heldout_probability.csv",
+          "sha256": "24491e7438ca5a766e78db23308e309bb5afab212b880fc69697ac847d417b28",
+          "bytes": 3928
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/artifacts/heldout_probability_latest.json",
+          "sha256": "6b6741633f1d469e20affb6febb559b8b9bddce6b3aa670956cf8113b1009b56",
+          "bytes": 741
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/artifacts/warmup_status.json",
+          "sha256": "7546b56d72f50b7fad4e2aa4322b5ca9f0d5a5d433dd3749c44b4362146bd553",
+          "bytes": 2310
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/checkpoints/latest_full.pt",
+          "sha256": "b41dc3e2401132ef0ec6446fbeacc5bcd38349ba067eba868065b957d44ce6d7",
+          "bytes": 294865842
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/config.json",
+          "sha256": "9ef4805768cfef0f577dd572cc2bd36b6ee0be64dfea301b9235cd7492d30d59",
+          "bytes": 10379
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/progress.csv",
+          "sha256": "1c19f07bf673d243799f696dabdd9e3e40eccae94cdf55628d4e9e6e2f0db175",
+          "bytes": 32773
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/artifacts/diagnostics.csv",
+          "sha256": "11ff64a4a6dc6f82b656a2aa8ad71bb197f79465ad6973bddc2fc2f540d4b60d",
+          "bytes": 85481
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/artifacts/heldout_probability.csv",
+          "sha256": "ad6dc98a7eea298bd8f85a28f4fb4ace79a29732a662c4d66b6ab85e0d1244fc",
+          "bytes": 10635
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/artifacts/heldout_probability_latest.json",
+          "sha256": "4279009737a6c4079d396950f21529c552094d92d425eb6f5411f465ac7feb64",
+          "bytes": 751
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/artifacts/warmup_status.json",
+          "sha256": "535d584ea495b8edaca5fc82c9d4a749effe0756d96fdb05dbde7271a729ee78",
+          "bytes": 2319
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/checkpoints/latest_full.pt",
+          "sha256": "b92d57cf4bf9d5ca3c32c96729f41af249660f4d604af98da19ac9fab07ef371",
+          "bytes": 294865842
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/config.json",
+          "sha256": "ea33d954ed2d2cc57c091b9c48f40db3c5b4d7048877bdb937760c7368fec71d",
+          "bytes": 10399
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/progress.csv",
+          "sha256": "49bedeacb496f18e0cab9a72c9ec4d13ce2e970c031fadfdc4fc074853b296c5",
+          "bytes": 87347
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/artifacts/diagnostics.csv",
+          "sha256": "ac06f8ce21bcb39318c89d8e87ebd2d50b7e08268963a614185bd110cdc20fab",
+          "bytes": 373847
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/artifacts/heldout_probability.csv",
+          "sha256": "5653235f3c41d7d735aa018c00e1293eef98a5977cbdf4d0f50df4af642ebcb4",
+          "bytes": 46804
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/artifacts/heldout_probability_latest.json",
+          "sha256": "55aea18de3c4ea2110a8965a96f5e997cb08f6ee7ae13fe45df364a458b9c12d",
+          "bytes": 751
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/artifacts/warmup_status.json",
+          "sha256": "fd8c5df490611d6a9dcc600cd0b0e946d62db59979e29a3d32ef23e324e0dc20",
+          "bytes": 2318
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/checkpoints/latest_full.pt",
+          "sha256": "94a1f021294796bdef959082d5ddc8037d4bb59538005398417a350686cc8d62",
+          "bytes": 294865842
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/config.json",
+          "sha256": "5fca2cf057b7725045e3ef56b1e9b01fe2f9592a3d0c80a6b8eaec8e520f892d",
+          "bytes": 10399
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/progress.csv",
+          "sha256": "dffa9db3abc64caae189a48d70ea562e391867e2b94c8a623730fe317a24a62c",
+          "bytes": 382083
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/best_safe_return_selection.json",
+          "sha256": "f9c86a359d320f268039095e1098d714e3fc687399f4a13e87a6226fe429199b",
+          "bytes": 821
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/counterfactual_step_4000000.json",
+          "sha256": "6091d7e38467e5b50dd46d6fc0337aa624e92878b28e84763690ddaea9351ac8",
+          "bytes": 1544
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/diagnostics.csv",
+          "sha256": "b96416fcf5456c37e72aa8055e4d2a2963ae194f37a883ee6735c2d801626612",
+          "bytes": 82975
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/evaluation.csv",
+          "sha256": "85e94f41e2d003cd17570aa43f370c40865a8b622d10377bf3d803335c513b12",
+          "bytes": 1133
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/evaluation_step_4000000.json",
+          "sha256": "efe585be6c10c0d79cd4510d55c39cbbe18e5631dfe809b52c7660e52b57bd04",
+          "bytes": 23735
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/heldout_probability.csv",
+          "sha256": "9a75615504f007bddbff34355d27160feb12795aa82777355e4f8917bc3d4d4f",
+          "bytes": 10110
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/heldout_probability_latest.json",
+          "sha256": "5e85c670c8fe6bf9e830f73dedd4a1a9d08836192c2f6929d8c0f4f9f2205581",
+          "bytes": 751
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/run_manifest.json",
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/trajectory_step_4000000.csv",
+          "sha256": "7984049ccf7252cc30d14f9c56f69d5c5b963e05699fdba131a24f1f8e1b51d8",
+          "bytes": 1409079
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/warmup_status.json",
+          "sha256": "b7eaf75238583723a148c46a50aaf1d3b93fb083161f9f5e55913f5b61f38348",
+          "bytes": 2320
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints/best_safe_return.pt",
+          "sha256": "79d041b4962608fe6ef88fe1109600e14415c331a9f9b5983396156b2f95fee5",
+          "bytes": 10059919
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints/milestone_4000000.pt",
+          "sha256": "3b371c285a111eece8663dfa01a0185785e74c283101b68fc0456ea555349360",
+          "bytes": 10060155
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/config.json",
+          "sha256": "3702ef17ddc09d2d9ab295a0d8d2c9cb7aefc980805912ee696e936bc7b1f97e",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/progress.csv",
+          "sha256": "807c867ec85b45e2dd48bdc9139b1d6bcc3b67a8f681959ce6c50c0c462e955d",
+          "bytes": 85364
+        }
+      ],
+      "restored_bytes": 1902577033,
+      "evaluation_files": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation_step_1000000.json",
+        "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/evaluation_step_4000000.json"
+      ]
+    },
+    {
+      "job": "point-button-2030",
+      "shared_checkpoint_relative": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/checkpoints/latest_full.pt",
+      "shared_checkpoint_sha256": "b12b74713ef0eb10e417c631e04bfcc01fe908dd49da67d00c2ef268bb0bbad5",
+      "restored_files": [
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/best_safe_return_selection.json",
+          "sha256": "6c676c9eb9e00517a126c3717588b2f9f4ed2596fa9d8a41b5e1ffe28b0c95b9",
+          "bytes": 823
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/counterfactual_step_1000000.json",
+          "sha256": "24c62f6eeae5e7d2262dc35b88b3f81528349e5fa15ce13d50b89fb63bcf6731",
+          "bytes": 1549
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/diagnostics.csv",
+          "sha256": "04bdfd32d08de20127404a84ce50cff4a3c0bed5165479e72df12030a83d8a3f",
+          "bytes": 1084694
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation.csv",
+          "sha256": "5f52118d5cafdc71d68103d710db88c2b1971d501f6a08d3894ed8ff46224011",
+          "bytes": 1135
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+          "sha256": "03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452",
+          "bytes": 23896
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/heldout_probability.csv",
+          "sha256": "b8ad86d83e84e7ed9db6cc966e8e9e867d89cbebffe8587d3f270a266e82503c",
+          "bytes": 128290
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/heldout_probability_latest.json",
+          "sha256": "aeb7df315c150e98eb1b4ed07bebf6edeb615c32113bc58c0915185ec7394204",
+          "bytes": 748
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/trajectory_step_1000000.csv",
+          "sha256": "57589f7e8cbc33552710999cba07eadcfbbe6a14803bd8feca5e72553efeba29",
+          "bytes": 1390194
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/warmup_status.json",
+          "sha256": "e4c5ed125388904fe403c986c54ef0c9ee95dceda42f0f1e99a1883a7feaf572",
+          "bytes": 2317
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/checkpoints/best_safe_return.pt",
+          "sha256": "d722bdf2cc375855109709547b2eb845f2e20c1f07abfea8d162c11c7f29eb34",
+          "bytes": 10059279
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/checkpoints/latest_full.pt",
+          "sha256": "20af7cf1008dea82f61e13b40543b25c53f72193adf087e540bd527d005a4ebf",
+          "bytes": 294865461
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/checkpoints/milestone_0.pt",
+          "sha256": "bd6d45efa732aed97217b89a1e5b6dadbbc825060ee264177d47a6fcb94d2a35",
+          "bytes": 5042213
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/checkpoints/milestone_1000000.pt",
+          "sha256": "525391c335640dea496bf879fdd6eca584aeebb1d627c6206bfae3ef38076f4e",
+          "bytes": 10059515
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/config.json",
+          "sha256": "2258328fb72aca4de407383ed6f2c46a783feacdf2d50d02ed269d6dc2f97666",
+          "bytes": 10039
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/progress.csv",
+          "sha256": "f1dc9824a20bb6a542473a7f2e6c717674cc817c0baa3d8cb5cf0aacad182406",
+          "bytes": 1137112
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/artifacts/diagnostics.csv",
+          "sha256": "2d64257398729f18fa384a40ec0326f16efd4dd7faf58e19051b0b4754c235c7",
+          "bytes": 268740
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/artifacts/heldout_probability.csv",
+          "sha256": "275a268257f4519de775f09a40bb01ddfab3f674e7cb21112e74f6fb3f4c32ed",
+          "bytes": 33674
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/artifacts/heldout_probability_latest.json",
+          "sha256": "455826dbaa53bd652d7abf8b12955c3d955ef26d1b5e161a6383a69705157d82",
+          "bytes": 749
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/artifacts/warmup_status.json",
+          "sha256": "a89e517a6fe6ae9708d47ced596901dc3702924642500a700528027bfc08491e",
+          "bytes": 2303
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/checkpoints/latest_full.pt",
+          "sha256": "56624ff05c648e4ce2f263d71e42ceb4a50ab8e534df08863cfdc307ecbecfbc",
+          "bytes": 294865906
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/config.json",
+          "sha256": "3df39d1239e51f4fce18660181c7d08ed0fa58cd0cc34f7ac364dd07b7528b8c",
+          "bytes": 10379
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/progress.csv",
+          "sha256": "e729c8d52999d8690d703faf3ca8e1609514ee3fabfb5bb2ff1ebb5db07992dd",
+          "bytes": 274344
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/best_safe_return_selection.json",
+          "sha256": "d01507a8f61574ec6c6c049e31f773cce202389e96a8dbf6b76c3ee0d11fe7dc",
+          "bytes": 823
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/counterfactual_step_4000000.json",
+          "sha256": "1d6696e18c2da0d780e17800d51e6f0371e2e1d3d69270e387c07cb2cf9e64a6",
+          "bytes": 1547
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/diagnostics.csv",
+          "sha256": "e16d3f99049eae171912e6878582ab9b127026f89bbda3e9f89eeed2c340a1b6",
+          "bytes": 629738
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation.csv",
+          "sha256": "e6109c3cb64eade454cad8f601bfb2de65fe454a00d8583f891a97f2dd2ca294",
+          "bytes": 1132
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation_step_4000000.json",
+          "sha256": "d6d21ca0b3fce9f575ff6d474a53e07551452c98685b1a2c79358f0816f7dd8a",
+          "bytes": 23855
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/heldout_probability.csv",
+          "sha256": "6d71938ca3f46795146ace71968ec5ed78df8442d9f2e7da9b75debef7800dec",
+          "bytes": 76310
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/heldout_probability_latest.json",
+          "sha256": "e2d77529c3f85857767e7db0597174f01521a7bc170f754d319c743732d11b69",
+          "bytes": 753
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/trajectory_step_4000000.csv",
+          "sha256": "323e55c6f1d659926eb1abab712f3382736481511ef57f2637c3df81821dec07",
+          "bytes": 1385311
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/warmup_status.json",
+          "sha256": "50963d8c472437ae5d5c4b48b79363ba2275be64baf91fdb67619e6cf59eedd6",
+          "bytes": 2320
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/checkpoints/best_safe_return.pt",
+          "sha256": "56e9367b04ecb3ae78a5e0343fe9ac1e9e8bc032c1d0cf5abd1d2e89e4ac6fbf",
+          "bytes": 10059919
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/checkpoints/latest_full.pt",
+          "sha256": "b59ca94bc0404ed4143e1260526d8b6b52084287c2cc7945e86c2d6706958de6",
+          "bytes": 294866165
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/checkpoints/milestone_4000000.pt",
+          "sha256": "2cb136cc0d6234ca05ef6215577b9d80501b1a9166d91784212fd72f0d71dd0e",
+          "bytes": 10060219
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/config.json",
+          "sha256": "f27619aa4fdcfd51d3450ef18e366f9844973c05799bf3b1c4dfe7ef94c56c5a",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/progress.csv",
+          "sha256": "4c99c7c236fb601b1f04443a8c010c39a031cd3d6ad5304cf56d93285e423831",
+          "bytes": 652077
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/artifacts/diagnostics.csv",
+          "sha256": "a408c2129faf3d0a9a024879d9c15f92d83e6ee57ff0a787da3e4cafb91adfbe",
+          "bytes": 151093
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/artifacts/heldout_probability.csv",
+          "sha256": "a0cab913f56e443c3f429ce833dfae58f5e22eb34b9c5a65e65dbf9b5439141e",
+          "bytes": 18864
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/artifacts/heldout_probability_latest.json",
+          "sha256": "9a28c233d2c046cb0f9a4102eba8ee55225c96faa8d26789d95c20399bf3308b",
+          "bytes": 751
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/artifacts/warmup_status.json",
+          "sha256": "849cb6f369d3c4d42f53d9d62d25eaa77667b7e6da3af76b648ce10fbee2010c",
+          "bytes": 2320
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/checkpoints/latest_full.pt",
+          "sha256": "6ccae6d292be46dbf3d7fb62eefdd42f70f0ed735f67edf1344a1040d0a9cfa6",
+          "bytes": 294865004
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/config.json",
+          "sha256": "5a1e93a008e87238a0cf6efd2393ffdbeafe74f6f6aa51b2c8155d6b16747f04",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/progress.csv",
+          "sha256": "d8d66924645d2cb24f46430f403cdc2fdf3e963117d66f10958fae3b29583e53",
+          "bytes": 154391
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/artifacts/engineering_hard_stop.json",
+          "sha256": "82c0b2a70daa4fe363f24dedb47a284aa7f190b9efb0a77a21c863af4f52de40",
+          "bytes": 123
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/artifacts/training_summary.json",
+          "sha256": "285a949dfeef27354533e01737d1b2ece82a5fa3916bcb375550f78cdec9d694",
+          "bytes": 3921
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/config.json",
+          "sha256": "7535da114f9a60d064b23e921d8b2088e3102de288369d1ef564713efb429998",
+          "bytes": 10353
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/progress.csv",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/artifacts/diagnostics.csv",
+          "sha256": "8480c3e83190eea8b8f0fa2ead1860c5d3c3948613732770c25200a2d287c27e",
+          "bytes": 106509
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/artifacts/heldout_probability.csv",
+          "sha256": "fe0543de2a026eb1601e86830adfe5f20db35d75947f625b7a39753622b79c2b",
+          "bytes": 13241
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/artifacts/heldout_probability_latest.json",
+          "sha256": "132d20266efdd3172a19d2ce16768ed332a902a68e8a15845f19a2570c3fb3f8",
+          "bytes": 749
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/artifacts/warmup_status.json",
+          "sha256": "a1c24cf923562e7cc84d5dec277479ff2d350126ac667651874db53960428af4",
+          "bytes": 2303
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/checkpoints/latest_full.pt",
+          "sha256": "85e5afdf1bcc8bd0bab0fa060332d2f117a862313429d1988d5bf22ae10a9bbf",
+          "bytes": 294865906
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/config.json",
+          "sha256": "e85e23063301e49ed909944dc1fe13c3bc3afa8b5784e5bf42f214a8ec460e89",
+          "bytes": 10399
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/progress.csv",
+          "sha256": "a70c3e3b6dd9aa0cfe069af6089d0dac91a0604239bd1f69a4b4bb7e02afa970",
+          "bytes": 108712
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/artifacts/diagnostics.csv",
+          "sha256": "5d6cf861a1d53f603bf20aed79515cbc10da2a5ed83a7d5197e8a9f3ba6af81b",
+          "bytes": 353038
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/artifacts/heldout_probability.csv",
+          "sha256": "4d6aa9ad1738f7eab5a0211b692e992167be2f896609fd6396d82829f4ac9784",
+          "bytes": 44009
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/artifacts/heldout_probability_latest.json",
+          "sha256": "64331b5b63ba5beb8852cb6d78f7279646a46f47f02f98ea89ee180217bca365",
+          "bytes": 749
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/artifacts/warmup_status.json",
+          "sha256": "fe965737ea98c5d29d271ea182650b40039cde46339fdcdeb8675ca8add0ee7f",
+          "bytes": 2318
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/checkpoints/latest_full.pt",
+          "sha256": "9f95dfcbd27e2d295424f77d367a8b0fee2b7a37ce8b172a8647e04934422b70",
+          "bytes": 294865906
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/config.json",
+          "sha256": "e430263ce35a580812d22e38c08c8927402dd71e8dbf82fc91a5079a5ddb214e",
+          "bytes": 10399
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/progress.csv",
+          "sha256": "d06c8e259c0c1b377dc25da1367243bbafcaf9b76aa5ad8e34c28e5a14f745ea",
+          "bytes": 360434
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/artifacts/diagnostics.csv",
+          "sha256": "f6b7ec0a593ea2455b20deb43ef2eddcfc13095026a5e48b97287c2620decfa5",
+          "bytes": 108769
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/artifacts/heldout_probability.csv",
+          "sha256": "16c3326d1babdd136fa9e80610bf5a549a7620978bad2a5f81382d0febea03d6",
+          "bytes": 13430
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/artifacts/heldout_probability_latest.json",
+          "sha256": "79763926d79ab1df18ec9defabe4febb9b94c98a23cae2e44abd427c1be966fe",
+          "bytes": 750
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/artifacts/run_manifest.json",
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd",
+          "bytes": 6297
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/artifacts/warmup_status.json",
+          "sha256": "864f4bd9662805d129f6fa56faffdd5b06e6db405cda74a8478ef3b1d3f87400",
+          "bytes": 2320
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/config.json",
+          "sha256": "e9fa9778cd2726226f361d72f2320a2979e2fbbbbabee6862ffd529a4e90dc36",
+          "bytes": 10383
+        },
+        {
+          "relative_path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/progress.csv",
+          "sha256": "ffab2c3d1dd95e39c7b006c04aaaf32065d55e66ebea11c5aad618cc250cfda2",
+          "bytes": 111218
+        }
+      ],
+      "restored_bytes": 1823293033,
+      "evaluation_files": [
+        "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+        "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation_step_4000000.json"
+      ]
+    }
+  ],
+  "completed_at": 1792648296.03507
+}

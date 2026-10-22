@@ -1,6 +1,14 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest operational update: 2026-10-22 11:11 CST
+## Current summary: 2026-10-22 13:52 CST
+
+- Six of twenty cells have terminal training receipts; full scientific finalization is pending.
+- Seven distinct cells are active: six on 4080 and Ant-2029 on A100.
+- Seven 5080 cells remain reserved until 19:11; the persistent resume timer is active.
+- Conditional remaining training estimate: four to six days, assuming tonight's resume and similar shared-resource availability.
+- Earlier PointButton 2028/2030 milestone files have been restored from retained same-checkpoint histories, without overwriting active files or rerunning evaluations.
+
+## Baseline operational update: 2026-10-22 11:11 CST
 
 This update supersedes the historical observations below. Counts refer to actual
 Python training workers, not shell wrappers. Training completion is not a claim
@@ -196,6 +204,38 @@ Unknown unlogged tails remain unknown, not zero. These are recovery/placement
 records, not additional experiment cells; the training matrix still has six
 terminal cells, seven active cells, and seven reserved cells. The full scientific
 audit is still deferred until all twenty cells finish.
+
+## Earlier-segment preservation repair: 2026-10-22 13:51 CST
+
+Inspection of the minimal A100-to-4080 handoff packages found that earlier
+PointButton 2028/2030 evaluation files at 1M and 4M were not in their active
+containers. The original files were still present in the retained 4080
+containers. For each cell, the exact shared resume checkpoint in the active and
+retained histories had identical SHA-256 bytes, establishing the retained
+history as the same checkpoint ancestor rather than another seed or candidate.
+
+Only missing training-history files were restored with ignore-existing copy
+semantics: 80 files for PointButton 2028 and 75 for PointButton 2030, totaling
+3,725,870,066 bytes. Their SHA-256 values matched the retained originals. Active
+files and their shared checkpoints were not overwritten, and the retained
+originals remain intact. The
+[restoration manifest](p4_7_training_receipts_20261022/historical_segment_restoration.json)
+records every added relative path, size, checksum, and ancestor identity.
+
+The restored milestone resume-path metadata refers to same-cell 4080 training
+parents (or no resume), compatible with the existing audited relocation
+resolver when terminal containers are collected back to A100. No validator
+rule or scientific gate was weakened, no training process was restarted, and
+no scientific evaluation was rerun. The final publisher now includes this
+preservation record in the consolidated ledger and report checksums. Physical
+work accounting is unchanged: the twelve newly documented recovery rows still
+total at least 1,255,000 additional steps and 3,073 cost units.
+
+The regular 13:52 snapshot still observed A100 Ant-2029 advancing to 2.960M,
+and six 4080 cells advancing normally: PointButton 2029/2028/2030 at
+5.030M/4.530M/6.800M, Walker2d 2028/2029 at 3.275M/3.260M, and Ant 2028 at
+3.155M. No 5080 training worker was present. Full final validation is still
+deferred until all twenty cells finish.
 
 ## Historical observations
 
