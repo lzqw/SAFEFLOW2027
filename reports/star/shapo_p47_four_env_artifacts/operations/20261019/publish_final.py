@@ -1668,6 +1668,19 @@ def annotate_recovery(target):
             'no rollout, metric, training setting or checkpoint identity and does '
             'not reconstruct any missing earlier2027 full checkpoint parent.\n'
         )
+    if 'a100_backup_replica_storage_relocation_20261023.json' in late_resource_files:
+        disclosure += (
+            '\nA100 secondary4080 checkpoint replicas were moved to a private '
+            'project namespace on A100\'s separate data disk. The original '
+            'home backup path remains a symlink. All file bytes, relative '
+            'paths, metadata and internal hard-link groups were verified '
+            'before the redundant home copy was released. Only our idle '
+            'backup service was stopped/restarted; no trainer, foreign '
+            'project, canonical training container or scientific path '
+            'resolver was changed. The complete content manifest and service '
+            'receipt accompany the ledger; this storage move adds no rollout '
+            'or training-cost record and repairs no historical parent gap.\n'
+        )
     if late_resource_records:
         disclosure += (
             '\nThe 22–23 October resource changes include excluded duplicate '

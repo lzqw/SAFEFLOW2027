@@ -1,4 +1,5 @@
 """Account for the observed 22 October resource moves, without rerunning science."""
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -10,6 +11,32 @@ def resource_records(base):
         value=json.loads(path.read_text())
         files.add(name)
         return value
+    storage=base/'a100_backup_replica_storage_relocation_20261023.json'
+    if storage.exists():
+        s=read(storage.name)
+        assert s['phase']=='completed' and s['backup_service_restarted'] is True
+        assert s['trainers_signalled']==s['additional_scientific_rollouts']==0
+        assert s['other_projects_paused'] is False
+        r=s['remote']
+        assert r['phase']=='completed_owned_backup_replica_relocated_original_path_preserved'
+        assert r['logical_path']=='/home/lzqw/SAFEFLOW2027_A100/recovery_backups/from_4080'
+        assert r['physical_destination']=='/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/from_4080'
+        assert r['trainers_signalled']==r['additional_scientific_rollouts']==r['backup_payloads_lost']==0
+        assert r['scientific_parameters_changed'] is False and r['foreign_projects_modified'] is False
+        assert r['redundant_home_copy_removed'] is True and r['original_retained_at'] is None
+        rows=r['source_manifest']
+        assert len({row['path'] for row in rows})==len(rows)
+        for row in rows:
+            p=Path(row['path'])
+            assert not p.is_absolute() and '..' not in p.parts
+            assert row['kind'] in ('file','directory')
+            if row['kind']=='file':assert len(row['sha256'])==64 and row['bytes']>=0
+        assert sum(row.get('bytes',0) for row in rows)==r['logical_bytes']
+        assert hashlib.sha256(json.dumps(rows,sort_keys=True).encode()).hexdigest()==r['manifest_sha256']
+        helper=base/'relocate_a100_backup_replica_20261023.py'
+        assert hashlib.sha256(helper.read_bytes()).hexdigest()==s['helper_sha256']
+        # Storage-only proof accompanies the ledger without adding scientific
+        # interactions or inventing a physical-work recovery record.
     accounting=base/'duplicate_branch_accounting_20261022.json'
     if accounting.exists():
         a=read(accounting.name)
@@ -97,6 +124,7 @@ def resource_records(base):
     cold_jobs={
         'cold_point2027_5080_to_a100_20261023_state.json':'point-goal-2027',
         'cold_button2027_gpu1_5080_to_a100_20261023_state.json':'point-button-2027',
+        'cold_goal2031_gpu0_5080_to_a100_20261023_state.json':'point-goal-2031',
     }
     for filename,job in cold_jobs.items():
         cold=base/filename
@@ -116,7 +144,7 @@ def resource_records(base):
         assert s['checkpoint_sha256']==original['checkpoint_sha256']
         assert s['counters']==original['counters'] and s['resume_steps']==s['counters']['env_steps']
         args=s['target_identity']['args']
-        for flag,value in {'--seed':'2027','--steps':'10000000','--device':'cuda:0',
+        for flag,value in {'--seed':job.rsplit('-',1)[1],'--steps':'10000000','--device':'cuda:0',
                 '--resume':s['target_checkpoint'],'--vector-envs':'1','--batch-size':'256',
                 '--replay-size':'400000','--steps-per-epoch':'5000'}.items():
             assert args[args.index(flag)+1]==value

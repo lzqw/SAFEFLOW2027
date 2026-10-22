@@ -1,6 +1,31 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest storage update: 2026-10-23 06:38 CST
+## Latest recovery update: 2026-10-23 06:48 CST — first epoch pending
+
+**PointGoal-2031 is now a live A100 GPU0 process**, continuing its existing
+10M cell from the incident inventory's SHA-matched **7,700,000-step full
+checkpoint**. The full1,524,676,884-byte cold container was copied through
+the local host, the exact input pinned on the separate4080-4T disk, and the
+source moved intact to its cold archive. No5080 GPU training was launched.
+
+A direct06:48 process check found PID1581960 running, with the expected
+Goal-2031 configuration, seed2031, budget10M and GPU0 UUID. **The first new
+epoch and final CUDA/MPS recovery confirmation are still pending**; a live
+process is not substituted for that proof. The same controller/session is
+being observed, with no automatic duplicate restart. Its [in-flight receipt](p4_7_training_receipts_20261022/point_goal_2031_cold_to_a100_20261023.json)
+will be updated after confirmation or an engineering exception.
+
+This brings process placement to **A100 five /4080 five /5080 zero**, alongside
+six terminal training receipts and four still-stopped cells: Goal2028/2029/2030
+and Button2031. These counts distinguish a launched worker from a verified new
+epoch. Before any future5080 restart, exclude all three Point cells already
+moved to A100 (Goal2027/2031 and Button2027), including this in-flight worker.
+No other project's process, scientific setting, total budget or acceptance gate
+was changed. The final resource ledger explicitly refuses to finalize while
+this recovery lacks its required first-epoch proof; its incident-tail accounting
+will be added once that proof exists, not silently omitted or counted twice.
+
+## Earlier storage update: 2026-10-23 06:38 CST
 
 The A100 secondary replicas of4080 checkpoints now live on **A100's separate
 data disk**, under the new private, UID1007-owned project namespace
