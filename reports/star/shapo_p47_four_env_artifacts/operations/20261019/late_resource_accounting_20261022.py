@@ -94,11 +94,16 @@ def resource_records(base):
             source_host=source,target_host='tjucta-a100',resume_steps=s['resume_steps'],
             checkpoint_sha256=s['checkpoint_sha256'],known_additional_physical_steps=steps,
             known_additional_physical_training_cost=cost,unknown_unlogged_tail_not_zero=True))
-    cold=base/'cold_point2027_5080_to_a100_20261023_state.json'
-    if cold.exists():
+    cold_jobs={
+        'cold_point2027_5080_to_a100_20261023_state.json':'point-goal-2027',
+        'cold_button2027_gpu1_5080_to_a100_20261023_state.json':'point-button-2027',
+    }
+    for filename,job in cold_jobs.items():
+        cold=base/filename
+        if not cold.exists():continue
         s=read(cold.name)
         assert s['phase']=='completed_first_new_epoch_on_A100_source_cold_archive_preserved'
-        assert s['job']=='point-goal-2027' and s['total_budget_steps']==10000000
+        assert s['job']==job and s['total_budget_steps']==10000000
         assert s['source_host']=='5080' and s['target_host']=='tjucta-a100'
         assert s['source_commit']=='62ca7399357c10645a955dcbead7ed2153a82c69'
         assert s['new_experiment_cells']==0 and s['scientific_parameters_changed'] is False

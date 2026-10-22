@@ -1697,6 +1697,19 @@ def annotate_recovery(target):
             'It repairs no historical2027 original-parent gap and waives no '
             'scientific finalization requirement.\n'
         )
+    if 'cold_button2027_gpu1_5080_to_a100_20261023_state.json' in late_resource_files:
+        disclosure += (
+            '\nA second stopped cell, PointButton2027, continued on A100 GPU1 '
+            'from its SHA-matched8.25M full input. Admission checked exactly '
+            'the two existing owned GPU1 clients and preserved memory/disk '
+            'headroom before adding this single third client. The source '
+            'container and exact4T input were preserved. A new epoch and '
+            'CUDA/MPS membership were observed; no5080 GPU job or extra '
+            'scientific evaluation was launched. Its consumed incident tail '
+            'is accounted once, separately from the still-unconsumed tails '
+            'of other cells. No historical checkpoint gap is repaired or '
+            'scientific gate waived by this resource continuation.\n'
+        )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
             '\nEarlier PointButton 2028/2030 training segments omitted from '

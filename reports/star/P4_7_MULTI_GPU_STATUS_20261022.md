@@ -1,6 +1,55 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-23 04:05 CST
+## Latest continuation update: 2026-10-23 06:31 CST
+
+**PointButton-2027 has also resumed on A100 GPU1**, from its SHA-verified
+8,250,000-step full checkpoint. At06:11, PID1442660 had logged its first new
+epoch at **8,255,000 steps /6.71 FPS**, with verified CUDA/MPS membership beside
+the existing Ant-2029 and Walker2d-2028 clients. The full cold container was
+copied through the local host; its exact resume input was pinned on the4080-4T
+filesystem, and the source container was preserved in its cold archive.
+The [PointButton recovery receipt](p4_7_training_receipts_20261022/point_button_2027_cold_to_a100_20261023.json)
+records the checkpoint SHA, source archive, target worker and first epoch.
+This is continuation of an existing cell, not a new experiment or a claim of
+cross-device bitwise equivalence.
+
+The ordinary **06:23 snapshot** now accounts for all20 planned cells:
+
+| State /host | Cells | Evidence |
+|---|---:|---|
+| Terminal training receipts | 6 | Final strict scientific audit still pending |
+| A100 running | 4 | Goal-2027 on GPU0; Button-2027, Ant-2029 and Walker-2028 on GPU1 |
+| 4080 running | 5 | Button2028/2029/2030, Ant-2028 and Walker-2029 |
+| 5080 stopped | 5 | Goal2028/2029/2030/2031 and Button2031; zero training workers |
+
+All eight previously running workers had positive logged step deltas; the ninth
+is the newly confirmed Button worker. Goal-2027 reached8.545M and Button-2027
+8.255M. These are CSV observations, not assertions of newly durable full
+checkpoints. The original8-hour5080 reservation was honored on22October;
+following the separate23:34 exits, no5080 GPU training has been relaunched.
+Pending clarification about those exits, do not blindly recreate the original
+seven workers: both2027 Point cells are already continuing on A100.
+
+A100 home has **18.75GiB free**, below the unchanged20GiB monitoring warning.
+This single cold recovery retained the16GiB operational storage reserve; no
+further cold-copy admissions are planned with the current headroom. The4080
+project disk has269.56GiB free and its separate4T archive has2528.10GiB free.
+No archive or unrelated file was deleted, no foreign job paused, and no5080
+GPU training started. Half-hour observation, backups and receipt collection
+remain active. Budgets, seed/configuration, optimizer/replay/RNG restoration
+and the frozen scientific source62ca739 remain unchanged; no additional
+scientific evaluation or final-gate relaxation was introduced.
+
+Button's known logged rollback is **20,000 steps /250 cost**, included once.
+The metadata-only late-resource ledger now contains **15 records, at least
+1,300,000 extra physical steps /3,522 cost units**. The remaining five stopped
+incident tails are still conditional: **120,000 steps /1,383 cost**, not yet
+counted as executed recovery. Unknown unlogged work remains unknown, not zero;
+physical-work adjustments are not added to accepted-lineage learning curves.
+The earlier2027 parent-identity gaps and pending multi-hop path-locator change
+remain unresolved; training completion is not final scientific certification.
+
+## Earlier continuation update: 2026-10-23 04:05 CST
 
 One of the seven stopped 5080 cells, **PointGoal-2027**, is now continuing on
 **A100 GPU0**, without restarting training on5080. Its complete cold container
