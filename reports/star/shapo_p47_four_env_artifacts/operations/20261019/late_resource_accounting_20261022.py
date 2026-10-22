@@ -125,6 +125,7 @@ def resource_records(base):
         'cold_point2027_5080_to_a100_20261023_state.json':'point-goal-2027',
         'cold_button2027_gpu1_5080_to_a100_20261023_state.json':'point-button-2027',
         'cold_goal2031_gpu0_5080_to_a100_20261023_state.json':'point-goal-2031',
+        'cold_button2031_gpu0_5080_to_a100_20261023_state.json':'point-button-2031',
     }
     for filename,job in cold_jobs.items():
         cold=base/filename

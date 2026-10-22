@@ -1735,6 +1735,18 @@ def annotate_recovery(target):
             'reduction was introduced. Its consumed source tail is counted '
             'once in physical work, not added to accepted-lineage costs.\n'
         )
+    if 'cold_button2031_gpu0_5080_to_a100_20261023_state.json' in late_resource_files:
+        disclosure += (
+            '\nPointButton2031 was another existing stopped cell continued '
+            'on A100 GPU0, from its SHA-matched7.65M full checkpoint. The '
+            'complete cold history and exact4T input were retained; admission '
+            'bound the two existing owned GPU0 clients before adding one '
+            'third client with reserved memory/disk headroom. Its required '
+            'first new epoch and CUDA/MPS membership accompany the ledger. '
+            'No5080 GPU job, extra evaluation, new scientific cell or budget '
+            'cut was introduced. Only its consumed source tail is counted '
+            'in physical work, separately from accepted-lineage metrics.\n'
+        )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
             '\nEarlier PointButton 2028/2030 training segments omitted from '

@@ -1,0 +1,341 @@
+{
+  "job": "point-button-2031",
+  "source_host": "5080",
+  "target_host": "tjucta-a100",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "total_budget_steps": 10000000,
+  "new_experiment_cells": 0,
+  "scientific_parameters_changed": false,
+  "additional_evaluation_rollouts": 0,
+  "other_projects_paused": false,
+  "source_signals_sent": 0,
+  "training_launched_on_5080": false,
+  "source_was_already_stopped": true,
+  "source_archive_preserved": true,
+  "target_launch_requested": true,
+  "inventory_file": "incident_5080_2334_20261022_checkpoint_inventory.json",
+  "resume_steps": 7650000,
+  "counters": {
+    "env_steps": 7650000,
+    "updates": 7648000,
+    "actor_updates": 3821000,
+    "reward_critic_updates": 15296000,
+    "utd_carry": 0,
+    "violations": 154600,
+    "cumulative_training_cost": 154600
+  },
+  "checkpoint_sha256": "354f4a91df760e08e9a226255ba24bf9d71ab2900dc2830bc9e1bae0ac609d39",
+  "last_logged_source_steps": 7670000,
+  "last_logged_source_cost": 154890,
+  "resume_cumulative_training_cost": 154600,
+  "known_repeated_steps_lower_bound": 20000,
+  "known_extra_training_cost_lower_bound": 290,
+  "unlogged_source_tail_unknown_not_zero": true,
+  "bitwise_equivalence_claimed": false,
+  "source_torch_version": "2.7.1+cu128",
+  "target_torch_version": "2.7.1+cu118",
+  "phase": "same_A100_target_running_no_5080_GPU_launch",
+  "minimum_post_copy_free_bytes": 17179869184,
+  "unchanged_storage_alert_threshold_gib": 20,
+  "target_capacity": {
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "owned_GPU_OS_pids": [
+      3633500,
+      1073197,
+      1581960
+    ],
+    "foreign_pids": [
+      1522262
+    ],
+    "memory_free_MiB": 58631,
+    "utilization_percent": 94,
+    "no_foreign_process_actions": true,
+    "admission_policy": "one_existing_stopped_cell_added_to_two_known_GPU0_clients",
+    "GPU_reserve_mib": 16384,
+    "client_allowance_mib": 2048,
+    "load": [
+      8.73,
+      8.42,
+      7.88
+    ],
+    "memory_available_bytes": 113985552384
+  },
+  "source_container_bytes": 3015931202,
+  "headroom_before": {
+    "phase": "read_only_shared_gpu_headroom_observation",
+    "observed_at_unix": 1792693397.62662,
+    "host": "tjucta-a100",
+    "gpus": [
+      {
+        "index": 0,
+        "uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+        "name": "NVIDIA A100 80GB PCIe",
+        "free_mib": 51790,
+        "total_mib": 81920,
+        "utilization_percent": 17,
+        "processes": [
+          {
+            "pid": 3633500,
+            "role": "safeflow",
+            "executable": "nvidia-cuda-mps-server",
+            "memory_mib": 30
+          },
+          {
+            "pid": 726374,
+            "role": "foreign_or_unknown",
+            "executable": "python",
+            "memory_mib": 29202
+          }
+        ],
+        "safeflow_mps_client_pids": [],
+        "MPS_accounting_unproven": false,
+        "status": "occupied_or_insufficient_headroom",
+        "foreign_pids": [
+          726374
+        ],
+        "safeflow_gpu_processes": 1,
+        "safeflow_gpu_os_processes": 1,
+        "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+        "reserve_mib": 16384,
+        "max_rebalance_utilization_percent": 85,
+        "candidate_since_unix": null,
+        "signature": [
+          "occupied_or_insufficient_headroom",
+          [
+            726374
+          ],
+          1
+        ]
+      },
+      {
+        "index": 1,
+        "uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+        "name": "NVIDIA A100 80GB PCIe",
+        "free_mib": 51121,
+        "total_mib": 81920,
+        "utilization_percent": 96,
+        "processes": [
+          {
+            "pid": 2384685,
+            "role": "safeflow_mps_server",
+            "executable": "nvidia-cuda-mps-server",
+            "memory_mib": 30,
+            "raw_role_before_MPS_proof": "safeflow"
+          },
+          {
+            "pid": 1086738,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 764
+          },
+          {
+            "pid": 333807,
+            "role": "safeflow",
+            "executable": "python",
+            "memory_mib": 738
+          },
+          {
+            "pid": 714957,
+            "role": "foreign_or_unknown",
+            "executable": "python",
+            "memory_mib": 28366
+          }
+        ],
+        "safeflow_mps_client_pids": [
+          333807,
+          1086738
+        ],
+        "MPS_accounting_unproven": false,
+        "status": "occupied_or_insufficient_headroom",
+        "foreign_pids": [
+          714957
+        ],
+        "safeflow_gpu_processes": 2,
+        "safeflow_gpu_os_processes": 3,
+        "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+        "reserve_mib": 16384,
+        "max_rebalance_utilization_percent": 85,
+        "candidate_since_unix": null,
+        "signature": [
+          "occupied_or_insufficient_headroom",
+          [
+            714957
+          ],
+          2
+        ]
+      }
+    ],
+    "training": [
+      {
+        "job": "walker2d-2028",
+        "pid": 333807,
+        "start_ticks": 28889657,
+        "state": "R",
+        "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 3970000,
+        "last_epoch_fps": 6.195261001586914,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/progress.csv",
+        "progress_age_seconds": 615.5792949199677,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+          "status": "observed",
+          "server_pid": 2384685,
+          "client_pids": [
+            333807,
+            1086738
+          ],
+          "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+        },
+        "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+        "logged_step_delta": 10000,
+        "observation_interval_seconds": 1800.6494257450104,
+        "observed_logged_steps_per_second": 5.55355187801898
+      },
+      {
+        "job": "ant-2029",
+        "pid": 1086738,
+        "start_ticks": 18602477,
+        "state": "R",
+        "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+        "device": "cuda:0",
+        "progress_status": "observed",
+        "steps": 3235000,
+        "last_epoch_fps": 5.898142337799072,
+        "progress_selection": "active_worker_logger_fd",
+        "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/ant-2029/training/STAR-{Ant-v4}/seed-2029-2026-10-21-18-53-18/progress.csv",
+        "progress_age_seconds": 599.8925144672394,
+        "cuda_execution_backend": "mps_verified",
+        "mps_connection": {
+          "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+          "status": "observed",
+          "server_pid": 2384685,
+          "client_pids": [
+            333807,
+            1086738
+          ],
+          "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+        },
+        "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+        "logged_step_delta": 10000,
+        "observation_interval_seconds": 1800.6494257450104,
+        "observed_logged_steps_per_second": 5.55355187801898
+      }
+    ],
+    "scientific_parameters_changed": false,
+    "source_signals_sent": 0
+  },
+  "headroom_qualification": {
+    "index": 0,
+    "uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "name": "NVIDIA A100 80GB PCIe",
+    "free_mib": 58645,
+    "total_mib": 81920,
+    "utilization_percent": 93,
+    "processes": [
+      {
+        "pid": 3633500,
+        "role": "safeflow_mps_server",
+        "executable": "nvidia-cuda-mps-server",
+        "memory_mib": 30,
+        "raw_role_before_MPS_proof": "safeflow"
+      },
+      {
+        "pid": 1073197,
+        "role": "safeflow",
+        "executable": "python",
+        "memory_mib": 770
+      },
+      {
+        "pid": 1522262,
+        "role": "foreign_or_unknown",
+        "executable": "python",
+        "memory_mib": 20816
+      },
+      {
+        "pid": 1581960,
+        "role": "safeflow",
+        "executable": "python",
+        "memory_mib": 758
+      }
+    ],
+    "safeflow_mps_client_pids": [
+      1073197,
+      1581960
+    ],
+    "MPS_accounting_unproven": false,
+    "status": "occupied_or_insufficient_headroom",
+    "foreign_pids": [
+      1522262
+    ],
+    "safeflow_gpu_processes": 2,
+    "safeflow_gpu_os_processes": 3,
+    "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+    "reserve_mib": 16384,
+    "max_rebalance_utilization_percent": 85,
+    "candidate_since_unix": null,
+    "signature": [
+      "occupied_or_insufficient_headroom",
+      [
+        1522262
+      ],
+      2
+    ]
+  },
+  "headroom_qualification_time": 1792709603.4976997,
+  "prior_logger_names": [
+    "seed-2031-2026-09-09-18-17-23",
+    "seed-2031-2026-10-13-10-41-35",
+    "seed-2031-2026-10-14-08-18-42",
+    "seed-2031-2026-10-16-07-11-15",
+    "seed-2031-2026-10-19-09-57-35",
+    "seed-2031-2026-10-20-03-27-46",
+    "seed-2031-2026-10-20-14-24-38",
+    "seed-2031-2026-10-22-19-11-09"
+  ],
+  "source_archive": "/home/autodrive/LZQW/SAFEFLOW2027/recovery_backups/retired_gpu_workers/point-button-2031_cold_button2031_gpu0_5080_to_a100_20261023",
+  "selection_reason": "Shortest remaining stopped Point budget; no5080 GPU restart and no reward/cost-based selection",
+  "expected_existing_gpu0_clients": {
+    "1073197": {
+      "job": "point-goal-2027",
+      "start_ticks": 30445516
+    },
+    "1581960": {
+      "job": "point-goal-2031",
+      "start_ticks": 31525124
+    }
+  },
+  "controller_basis_sha256": "378a77d5839fca26ae5694c1020a37751cb0e4a0509eaeec6e37d63ec60e55ab",
+  "controller_sha256": "5fa272e1a5261961ec2fcb251560875ad10e6bde133353c92e40a95e6b0359ea",
+  "updated_at_unix": 1792711257.983508,
+  "target_checkpoint": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-22-19-11-09/checkpoints/latest_full.pt",
+  "target_boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+  "archive_resume_input": "/home/carla/4T/SAFEFLOW2027_4080/runtime_resume_inputs_20261023/cold_button2031_gpu0/latest_full.pt",
+  "target_capacity_at_launch": {
+    "gpu_uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+    "owned_GPU_OS_pids": [
+      3633500,
+      1073197,
+      1581960
+    ],
+    "foreign_pids": [
+      1522262
+    ],
+    "memory_free_MiB": 58631,
+    "utilization_percent": 96,
+    "no_foreign_process_actions": true,
+    "admission_policy": "one_existing_stopped_cell_added_to_two_known_GPU0_clients",
+    "GPU_reserve_mib": 16384,
+    "client_allowance_mib": 2048,
+    "load": [
+      9.03,
+      8.41,
+      8.15
+    ],
+    "memory_available_bytes": 113925165056
+  },
+  "target_pid": 1679029
+}

@@ -1,6 +1,41 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-23 07:01 CST — Goal2031 confirmed
+## Latest recovery update: 2026-10-23 07:23 CST — Button2031 epoch pending
+
+The complete **3,015,931,202-byte PointButton-2031 container** has been copied
+to A100, its **7,650,000-step full input** matched to the incident inventory's
+SHA and pinned on4080's separate4T disk, and the original preserved in its
+5080 cold archive. PID1679029 is live on A100 GPU0. The ordinary07:23 snapshot
+verified its CUDA/MPS membership alongside Goal2027/2031. **Its first new
+epoch is still pending**, so a live process/GPU connection is not treated as
+completed recovery proof. The same controller/session is being followed.
+See the [in-flight Button2031 receipt](p4_7_training_receipts_20261022/point_button_2031_cold_to_a100_20261023.json).
+
+All20 planned cells are accounted for: **six terminal training receipts,
+eleven live training processes, three stopped cells**. A100 has six processes
+(three on each GPU),4080 has five, and5080 has zero. All nine older workers
+had positive logged deltas; Goal2031 reached7.710M, beyond its confirmed first
+7.705M epoch. The remaining stopped cells are Goal2028/2029/2030. Any future
+5080 restart must exclude all four relocated Point cells, including this
+in-flight Button worker; do not recreate the original seven blindly.
+
+After the full3GB copy, A100 home free space is **19.61GiB**, below the
+unchanged20GiB monitoring warning but above the16GiB operational reserve.
+No further cold-copy admissions are planned with this headroom. The4080
+project and separate4T archive have264.75GiB and2527.18GiB free. Other projects
+remain untouched and GPU sharing continues. No5080 GPU training, extra
+evaluation, new scientific cell, configuration change or budget reduction
+was introduced.
+
+The final ledger requires Button2031's new-epoch proof and will refuse to
+finalize while it is pending. Its known20,000-step /290-cost incident tail
+will be counted once that proof is available. The last completed-proof ledger
+still contains16 records (1,325,000 extra physical steps /3,830 cost), and no
+unknown unlogged work is assumed zero. Training completion remains distinct
+from final scientific certification; historical parent/path limitations and
+all original gates remain unchanged.
+
+## Earlier continuation update: 2026-10-23 07:01 CST — Goal2031 confirmed
 
 **Goal-2031's first new A100 epoch is now confirmed**: PID1581960 continued
 from7,700,000 to **7,705,000 steps**, approximately **6.08 FPS**, with verified
