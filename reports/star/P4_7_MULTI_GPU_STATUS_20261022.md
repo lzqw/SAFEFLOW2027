@@ -1,6 +1,40 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest recovery update: 2026-10-23 07:23 CST — Button2031 epoch pending
+## Latest continuation update: 2026-10-23 07:35 CST — Button2031 confirmed
+
+**PointButton-2031 has completed its first new A100 epoch**: PID1679029
+advanced from7,650,000 to **7,655,000 steps**, approximately **6.04 FPS**.
+CUDA/MPS membership on GPU0 was verified alongside Goal2027/2031. The same
+worker was followed from launch, without a duplicate restart. Its [updated
+receipt](p4_7_training_receipts_20261022/point_button_2031_cold_to_a100_20261023.json)
+contains the complete source/archive/input identity and first-epoch proof.
+This CSV observation is not a claim that a new7.655M full checkpoint exists.
+
+There are now **six terminal training receipts, eleven continuing cells and
+three stopped cells**. A100 runs six (three per GPU),4080 runs five, and5080
+runs zero. The remaining stopped cells are Goal2028/2029/2030. All four relocated
+Point cells (Goal2027/2031 and Button2027/2031) have verified new A100 epochs;
+exclude them from any future5080 restart. The07:23 snapshot showed positive
+progress for the older workers and Goal2031 beyond its first epoch; the
+new Button epoch is separately confirmed at07:35.
+
+The completed-proof resource ledger now contains **17 records, at least
+1,345,000 extra physical steps /4,120 cost units**, including this recovery's
+20,000-step /290-cost logged rollback exactly once. Only the three remaining
+stopped incident tails are conditional: **75,000 steps /785 cost**, not added
+as executed recovery. Unknown unlogged work is not zero; physical-work totals
+remain separate from accepted-lineage learning curves.
+
+The last ordinary capacity snapshot remains07:23: A100 home19.61GiB free,
+4080 project264.75GiB, separate4T archive2527.18GiB. With A100 below its
+unchanged20GiB warning, no further cold-copy admissions are planned at this
+headroom. Existing training, half-hour monitoring, backups and receipt
+collection continue. No foreign job was paused, no5080 GPU job started, no
+additional scientific rollout or cell added, and no budget/configuration/final
+gate changed. Scientific certification is still pending, including the
+previously disclosed original-parent and path-resolution limitations.
+
+## Earlier recovery update: 2026-10-23 07:23 CST — Button2031 epoch pending
 
 The complete **3,015,931,202-byte PointButton-2031 container** has been copied
 to A100, its **7,650,000-step full input** matched to the incident inventory's
