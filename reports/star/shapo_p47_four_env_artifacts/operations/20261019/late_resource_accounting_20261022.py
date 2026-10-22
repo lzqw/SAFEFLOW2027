@@ -37,6 +37,31 @@ def resource_records(base):
         assert hashlib.sha256(helper.read_bytes()).hexdigest()==s['helper_sha256']
         # Storage-only proof accompanies the ledger without adding scientific
         # interactions or inventing a physical-work recovery record.
+    pinned=base/'remaining_goal_archive_inputs_20261023.json'
+    if pinned.exists():
+        p=read(pinned.name)
+        assert p['phase']=='existing_raw_archives_pinned_for_future_resource_admission'
+        assert p['source_commit']=='62ca7399357c10645a955dcbead7ed2153a82c69'
+        for key in ('new_data_transfers','model_or_tensor_loads','additional_evaluation_rollouts',
+                    'trainers_signalled','training_launched','new_scientific_cells'):
+            assert p[key]==0
+        assert p['training_authorized_by_this_receipt'] is False
+        assert p['scientific_parameters_changed'] is False and p['historical_2027_parent_gaps_repaired'] is False
+        assert {r['job'] for r in p['rows']}=={'point-goal-2028','point-goal-2029','point-goal-2030'}
+        inventory=read('incident_5080_2334_20261022_checkpoint_inventory.json')
+        for row in p['rows']:
+            original=next(r for r in inventory['rows'] if r['job']==row['job'])
+            assert row['checkpoint_sha256']==original['checkpoint_sha256']
+            assert row['counters_from_existing_incident_inventory']==original['counters']
+            assert row['resume_steps']==original['counters']['env_steps']
+            assert row['total_budget_steps']==10000000 and row['remaining_steps']==10000000-row['resume_steps']
+            assert row['conditional_repeated_steps_not_executed']==original['known_repeated_steps_if_resumed']
+            assert row['conditional_extra_cost_not_executed']==original['known_additional_training_cost_if_resumed']
+            assert row['blob_presence_and_sizes_checked'] is True and row['fresh_blob_content_hash_performed'] is False
+            assert len(row['manifest_sha256'])==64 and row['archived_raw_files']>0 and row['checkpoint_bytes']>0
+        helper=base/'pin_remaining_goal_archive_inputs_20261023.py'
+        assert hashlib.sha256(helper.read_bytes()).hexdigest()==p['helper_sha256']
+        # Pinning existing evidence is not execution of those three recoveries.
     accounting=base/'duplicate_branch_accounting_20261022.json'
     if accounting.exists():
         a=read(accounting.name)

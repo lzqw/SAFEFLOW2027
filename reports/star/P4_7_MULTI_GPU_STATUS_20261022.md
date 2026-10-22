@@ -1,6 +1,36 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-23 07:35 CST — Button2031 confirmed
+## Latest readiness update: 2026-10-23 07:47 CST — no new training launch
+
+The existing4080-4T raw-evidence archive already contains the recorded recovery
+inputs for all three still-stopped cells. Their immutable manifest identities
+are now pinned in a [recovery-location receipt](p4_7_training_receipts_20261022/remaining_goal_archive_inputs_20261023.json),
+so no redundant multi-GB transfer or new source snapshot was needed.
+
+| Planned cell | Recorded full input | Remaining fixed10M budget | Archived raw files |
+|---|---:|---:|---:|
+| Goal-2029 | 5.500M | 4.500M | 92 |
+| Goal-2028 | 6.300M | 3.700M | 109 |
+| Goal-2030 | 7.150M | 2.850M | 98 |
+
+This metadata-only preparation checked each small manifest's own SHA, its
+checkpoint identity against the existing incident inventory, and the presence
+and sizes of its recorded blobs. Raw bytes were previously SHA-verified at
+archive ingestion; **no fresh blob-content hash or tensor load was performed
+by this preparation**. Raw-manifest suffix coverage is not represented as a
+newly inventoried complete filesystem capsule or a final scientific audit.
+
+Future admission must recheck live placement, capacity and exact input bytes;
+these locations alone do not authorize or execute a launch. Priority is largest
+remaining fixed budget first, not selection by reward or safety outcome.
+No GPU job, data transfer, evaluation or scientific cell was added, and5080
+remains without training. Counts are unchanged: six trained, eleven continuing,
+three stopped. The physical-work ledger is still17 records /1,345,000 extra
+steps /4,120 cost; the three unconsumed incident tails are still conditional.
+No original2027 parent gap, path-locator issue or final gate was repaired,
+aliased or waived by pinning these later recovery inputs.
+
+## Earlier continuation update: 2026-10-23 07:35 CST — Button2031 confirmed
 
 **PointButton-2031 has completed its first new A100 epoch**: PID1679029
 advanced from7,650,000 to **7,655,000 steps**, approximately **6.04 FPS**.

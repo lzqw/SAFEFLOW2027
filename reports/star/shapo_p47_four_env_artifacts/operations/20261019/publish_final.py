@@ -1681,6 +1681,18 @@ def annotate_recovery(target):
             'receipt accompany the ledger; this storage move adds no rollout '
             'or training-cost record and repairs no historical parent gap.\n'
         )
+    if 'remaining_goal_archive_inputs_20261023.json' in late_resource_files:
+        disclosure += (
+            '\nExisting4080-4T raw manifests for the then-stopped Goal '
+            '2028/2029/2030 cells were pinned to their incident checkpoint '
+            'identities without another payload transfer or model load. '
+            'This preparation checked small-manifest hashes and blob '
+            'presence/sizes, relying on the archive\'s prior verified ingest; '
+            'it is not a fresh blob-content audit or execution of those '
+            'recoveries. Current placement, resources and exact input bytes '
+            'must be checked at actual admission. It adds no physical-work '
+            'interaction and repairs no missing2027 original parent.\n'
+        )
     if late_resource_records:
         disclosure += (
             '\nThe 22–23 October resource changes include excluded duplicate '
