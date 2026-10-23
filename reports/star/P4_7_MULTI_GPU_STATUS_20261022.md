@@ -1,6 +1,51 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest readiness update: 2026-10-23 07:47 CST — no new training launch
+## Latest storage update: 2026-10-23 09:13 CST — native archive cycles confirmed
+
+Future **temporary raw-evidence snapshots** now use the separate disks:
+
+| Origin | New temporary snapshot parent |
+|---|---|
+| A100 | `/storage_0/SAFEFLOW2027_lzqw_uid1007/evidence_staging` |
+| 4080 | `/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_source_staging` |
+
+Naturally scheduled manifests from active **Walker-2028 on A100** and
+**Walker-2029 on4080** confirm that these locations are on filesystems separate
+from training. Their small-manifest hashes and storage metadata accompany the
+[deployment/native-cycle receipt](p4_7_training_receipts_20261022/evidence_data_staging_deployment_20261023.json).
+No extra snapshot was invoked, and the same archive coordinator PID67233 was
+not restarted. Its existing background priority/affinity and half-hour cadence
+remain unchanged. The remote helpers were atomically replaced only after their
+old hashes matched; original versions remain beside them for inspection.
+
+This changes **only future temporary cache placement**. Canonical training
+containers, checkpoint inputs, existing archives, scientific source/configs,
+and path-resolution code were neither moved nor aliased. Both old home and new
+temporary locations remain accepted for safe cleanup of in-flight snapshots.
+New data-disk snapshot admission preserves100GiB for other users; insufficient
+cache space defers archiving, not scientific training. No trainer or foreign
+project was signalled, paused or reprioritized, and no model/evaluation was run
+to verify this change.
+
+The08:53 ordinary snapshot still showed **all eleven continuing cells with
+positive step deltas**, six terminal training receipts, and three stopped
+Goal cells with pinned4T recovery locations. A100 GPU totals were96%/95% and
+4080's90%, including shared foreign work.5080 had no training workers. Available
+space was A100 home19.11GiB,4080 project255.29GiB, and separate4T2526.11GiB.
+
+A one-time scoped size check measured this project's primary allocations at
+approximately31GiB on4080 and21GiB on A100. **The cause of the filesystem-wide
+free-space decline was not established**; no other project was inspected or
+modified. Moving future cache copies reduces transient primary-disk pressure,
+but is not claimed to cure that unexplained trend. Further cold admissions
+remain deferred at the current A100 headroom. Primary-space monitoring continues.
+
+This storage operation adds no scientific interaction: the physical-work ledger
+remains17 records /1,345,000 extra steps /4,120 cost. Full budgets and all final
+scientific gates remain unchanged, including unresolved original-parent and
+multi-hop path limitations. It is not final experiment certification.
+
+## Earlier readiness update: 2026-10-23 07:47 CST — no new training launch
 
 The existing4080-4T raw-evidence archive already contains the recorded recovery
 inputs for all three still-stopped cells. Their immutable manifest identities

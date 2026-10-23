@@ -1,0 +1,86 @@
+{
+  "phase": "deployed_and_natural_archive_cycles_confirmed",
+  "new_helper_sha256": "9993864b13b60ed4171bd3e6f9e7ac78b11ca05e0d9a60496b0da9020a4f184d",
+  "expected_old_remote_sha256": "1a7836ea0f36642a0c561c2ebd23f4c41970ba769a09690c13032db2b069fa11",
+  "coordinator_pid": 67233,
+  "coordinator_start_ticks": 2890445,
+  "coordinator_restarted": false,
+  "training_processes_signalled": 0,
+  "other_projects_paused": false,
+  "model_or_tensor_loads": 0,
+  "additional_scientific_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "canonical_training_paths_changed": false,
+  "existing_archives_moved_or_deleted": false,
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "hosts": {
+    "4080": {
+      "deployed_helper": "/home/carla/SAFEFLOW2027_4080/deploy/archive_scientific_evidence.py",
+      "old_helper_backup": "/home/carla/SAFEFLOW2027_4080/deploy/archive_scientific_evidence.py.before_data_staging_20261023",
+      "old_sha256": "1a7836ea0f36642a0c561c2ebd23f4c41970ba769a09690c13032db2b069fa11",
+      "new_sha256": "9993864b13b60ed4171bd3e6f9e7ac78b11ca05e0d9a60496b0da9020a4f184d",
+      "temporary_snapshot_parent": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_source_staging",
+      "mounted_filesystem": "/home/carla/4T",
+      "free_bytes_at_deployment": 2712387284992,
+      "imported_and_parent_selection_checked_without_snapshot": true,
+      "extra_snapshot_invocations": 0,
+      "deployed_at_unix": 1792717685.876212
+    },
+    "tjucta-a100": {
+      "deployed_helper": "/home/lzqw/SAFEFLOW2027_A100/deploy/archive_scientific_evidence.py",
+      "old_helper_backup": "/home/lzqw/SAFEFLOW2027_A100/deploy/archive_scientific_evidence.py.before_data_staging_20261023",
+      "old_sha256": "1a7836ea0f36642a0c561c2ebd23f4c41970ba769a09690c13032db2b069fa11",
+      "new_sha256": "9993864b13b60ed4171bd3e6f9e7ac78b11ca05e0d9a60496b0da9020a4f184d",
+      "temporary_snapshot_parent": "/storage_0/SAFEFLOW2027_lzqw_uid1007/evidence_staging",
+      "mounted_filesystem": "/storage_0",
+      "free_bytes_at_deployment": 160661200896,
+      "imported_and_parent_selection_checked_without_snapshot": true,
+      "extra_snapshot_invocations": 0,
+      "deployed_at_unix": 1792717687.1190553
+    }
+  },
+  "helper_sha256": "79cd2750aa6b2aee359a9eedff6ccaff19897144064a8e5e6a46f3528f159f15",
+  "updated_at_unix": 1792718026.4616146,
+  "coordinator_identity_unchanged": true,
+  "cadence_seconds": 1800,
+  "archive_scope_changed": false,
+  "compatibility": "Old home and new data-disk temporary stages both remain valid cleanup inputs; canonical training and evidence paths are unchanged.",
+  "natural_cycle_confirmation": {
+    "phase": "deployed_and_natural_archive_cycles_confirmed",
+    "rows": [
+      {
+        "host": "4080",
+        "job": "walker2d-2029",
+        "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/4080/walker2d-2029/1792717884647284761-c227197c4ed1500805c82f687dfc772c55d2c72c7ce4b242ddea490f995d29e1.json",
+        "expected_parent": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_source_staging",
+        "deployed_at_unix": 1792717685.876212,
+        "manifest_sha256": "c227197c4ed1500805c82f687dfc772c55d2c72c7ce4b242ddea490f995d29e1",
+        "manifest_created_at_ns": 1792717884647284700,
+        "temporary_snapshot_storage": {
+          "parent": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_source_staging",
+          "separate_from_training_filesystem": true,
+          "admission_reserve_bytes": 107374182400
+        },
+        "archived_raw_files": 68
+      },
+      {
+        "host": "tjucta-a100",
+        "job": "walker2d-2028",
+        "manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/tjucta-a100/walker2d-2028/1792717783594099313-d23cd647e99f297769d05da9638bf5805f90ee13036b91a490d8def9a0e2adb1.json",
+        "expected_parent": "/storage_0/SAFEFLOW2027_lzqw_uid1007/evidence_staging",
+        "deployed_at_unix": 1792717687.1190553,
+        "manifest_sha256": "d23cd647e99f297769d05da9638bf5805f90ee13036b91a490d8def9a0e2adb1",
+        "manifest_created_at_ns": 1792717783594099200,
+        "temporary_snapshot_storage": {
+          "parent": "/storage_0/SAFEFLOW2027_lzqw_uid1007/evidence_staging",
+          "separate_from_training_filesystem": true,
+          "admission_reserve_bytes": 107374182400
+        },
+        "archived_raw_files": 79
+      }
+    ],
+    "confirmed_at_unix": 1792718026.4616146,
+    "extra_snapshot_invocations": 0,
+    "model_or_tensor_loads": 0
+  }
+}

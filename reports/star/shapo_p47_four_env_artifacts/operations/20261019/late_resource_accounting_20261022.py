@@ -37,6 +37,36 @@ def resource_records(base):
         assert hashlib.sha256(helper.read_bytes()).hexdigest()==s['helper_sha256']
         # Storage-only proof accompanies the ledger without adding scientific
         # interactions or inventing a physical-work recovery record.
+    staging=base/'evidence_data_staging_deployment_20261023.json'
+    if staging.exists():
+        d=read(staging.name)
+        assert d['phase']=='deployed_and_natural_archive_cycles_confirmed'
+        for key in ('training_processes_signalled','model_or_tensor_loads','additional_scientific_rollouts'):
+            assert d[key]==0
+        for key in ('coordinator_restarted','other_projects_paused','scientific_parameters_changed',
+                    'canonical_training_paths_changed','existing_archives_moved_or_deleted','archive_scope_changed'):
+            assert d[key] is False
+        assert d['coordinator_identity_unchanged'] is True and d['cadence_seconds']==1800
+        expected={'4080':'/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_source_staging',
+                  'tjucta-a100':'/storage_0/SAFEFLOW2027_lzqw_uid1007/evidence_staging'}
+        assert set(d['hosts'])==set(expected)
+        proof=d['natural_cycle_confirmation']
+        assert proof['phase']==d['phase'] and proof['extra_snapshot_invocations']==proof['model_or_tensor_loads']==0
+        assert len(proof['rows'])==2 and {r['host'] for r in proof['rows']}==set(expected)
+        for row in proof['rows']:
+            host=row['host'];deploy=d['hosts'][host]
+            assert deploy['temporary_snapshot_parent']==expected[host]
+            assert deploy['extra_snapshot_invocations']==0
+            assert deploy['new_sha256']==d['new_helper_sha256']
+            assert row['manifest_created_at_ns']/1e9>=deploy['deployed_at_unix']
+            assert len(row['manifest_sha256'])==64 and row['archived_raw_files']>0
+            v=row['temporary_snapshot_storage']
+            assert v['parent']==expected[host] and v['separate_from_training_filesystem'] is True
+            assert v['admission_reserve_bytes']==100*1024**3
+        for name,sha in [('archive_scientific_evidence_data_staging_20261023.py',d['new_helper_sha256']),
+                         ('deploy_evidence_data_staging_20261023.py',d['helper_sha256'])]:
+            assert hashlib.sha256((base/name).read_bytes()).hexdigest()==sha
+        # Temporary archive-cache placement adds no scientific interaction.
     pinned=base/'remaining_goal_archive_inputs_20261023.json'
     if pinned.exists():
         p=read(pinned.name)

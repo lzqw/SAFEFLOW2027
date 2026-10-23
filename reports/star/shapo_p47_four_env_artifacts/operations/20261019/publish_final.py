@@ -1681,6 +1681,19 @@ def annotate_recovery(target):
             'receipt accompany the ledger; this storage move adds no rollout '
             'or training-cost record and repairs no historical parent gap.\n'
         )
+    if 'evidence_data_staging_deployment_20261023.json' in late_resource_files:
+        disclosure += (
+            '\nFuture raw-archive temporary snapshots on A100 and4080 '
+            'were redirected to their separate data/4T filesystems, with '
+            'the old temporary locations still accepted for safe cleanup. '
+            'Naturally scheduled archive manifests from active jobs on both '
+            'hosts confirmed the new locations; no extra snapshot, model '
+            'load, training signal or coordinator restart was introduced. '
+            'Canonical training, checkpoint and existing archive paths were '
+            'not moved or aliased. This reduces temporary project-disk '
+            'pressure but does not establish the cause of filesystem-wide '
+            'space decline, repair provenance gaps or waive a final gate.\n'
+        )
     if 'remaining_goal_archive_inputs_20261023.json' in late_resource_files:
         disclosure += (
             '\nExisting4080-4T raw manifests for the then-stopped Goal '
