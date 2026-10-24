@@ -1,6 +1,78 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 17:54 CST — all eleven continuing cells advance
+## Latest continuation update: 2026-10-24 18:55 CST — Walker five-seed native final results complete
+
+**Walker2028 completed its full5M-step budget and original final evaluation
+at18:55:37.** The18:54 monitor still saw its live worker and last4.995M CSV
+row; a targeted follow-up found that PID had just exited. Native receipt,
+training summary and5M evaluation then confirmed normal completion, clean
+frozen source62ca739 and no engineering hard-stop. It was not restarted.
+The [three native JSON files](shapo_p47_four_env_artifacts/partial_milestones/native_terminal_receipts/walker2d-2028/manifest.json)
+were copied from the A100 primary source to the local host without another
+rollout or model load. The final-epoch CSV pause was therefore not treated
+as proof of a training failure.
+
+**Walker2d is the first environment with all five native final-budget
+results available.** Each training seed2027–2031 ran5M training steps and
+used the fixed five evaluation seeds times20 episodes. The [complete
+five-seed summary](shapo_p47_four_env_artifacts/partial_milestones/walker2d_native_final_all5/summary.json),
+[per-training-seed CSV](shapo_p47_four_env_artifacts/partial_milestones/walker2d_native_final_all5/per_training_seed_metrics.csv)
+and byte-preserved evaluations accompany this report. Only local existing
+JSONs were summarized; no seed or checkpoint was selected by performance.
+
+| Walker native final metric | Mean ± sample SD across five training seeds |
+|---|---:|
+|Return|3986.00 ±2108.40|
+|Failure rate|29.8% ±32.8 percentage points|
+|Mean evaluation cost|0.298 ±0.328|
+|Per-seed CVaR-20|0.680 ±0.351|
+|Accepted-lineage training cumulative cost, per seed|4905.8 ±631.9|
+|High-risk20% normal/tangent variance ratio|0.7839 ±0.0803|
+|High-risk20% dangerous outward flow velocity|0.2579 ±0.0705|
+
+The five accepted-lineage training-cost counters sum to24,529; this is not
+the total physical recovery cost. The statistical unit above is the training
+seed, **not500 independent training replicates**. CVaR values are averaged
+across the five per-seed CVaRs, not recomputed from a pooled episode tail.
+Locomotion failure rate is not Point-task success rate.
+
+| Walker training seed | Final return | Failure rate | Cost | CVaR-20 | High-risk normal/tangent ratio |
+|---|---:|---:|---:|---:|---:|
+|2027|5672.55|3%|0.03|0.15|0.7881|
+|2028|6236.60|12%|0.12|0.60|0.6947|
+|2029|4209.48|37%|0.37|1.00|0.9136|
+|2030|1141.98|13%|0.13|0.65|0.7613|
+|2031|2669.40|84%|0.84|1.00|0.7617|
+
+**Both the stronger and weaker seeds are retained.** Cross-seed task/failure
+variation remains substantial. All five native high-risk variance ratios
+are below one (range0.695–0.914), showing normal-direction suppression in
+these diagnostics. This differs descriptively from the already terminal
+PointButton2030 ratio near0.996, but the tasks are not a matched control
+comparison. Neither geometric suppression nor these results alone establish
+causal safety improvement, statistical superiority or a final Pareto claim.
+No new scientific configuration or weight search is started.
+
+The full matrix now has **ten training-complete cells and ten remaining
+cells** (A100 six,4080 four). All ten other workers advanced in the18:54
+scheduled frame. Its global counters, updated only for Walker's confirmed
+native completion, account for131.075M/150M accepted-lineage steps (87.38%
+of the step budget, not a wall-clock estimate). The18:44 collector snapshot
+still reported nine terminal containers, before Walker's18:55 receipt;
+its next ordinary cycle can import the new completed container. The native
+completion above is not misrepresented as an already cached tenth container.
+
+At18:54, free space was A100 primary16.69GiB/data133.07GiB and4080 primary
+12.99GiB/4T2462.82GiB. No active canonical directory or other project was
+moved.5080 still has zero SAFEFLOW training workers and remains reserved
+until at least23:50; the proposed later Goal2030 migration still awaits
+permission. Full training budgets, fixed evaluation protocol and late-resource
+accounting are unchanged. Original-parent/multi-hop path limitations and all
+final scientific-certification requirements remain unresolved/unwaived.
+This is a complete **one-environment native result**, not completion of the
+full four-environment objective or of the strict final matrix audit.
+
+## Earlier continuation update: 2026-10-24 17:54 CST — all eleven continuing cells advance
 
 The ordinary17:54 monitoring frame confirms **nine training-complete cells
 and eleven continuing cells with positive logged deltas**, with the same

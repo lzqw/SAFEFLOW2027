@@ -1,0 +1,288 @@
+{
+  "kind": "descriptive_native_final_budget_one_environment_not_final_matrix_audit",
+  "assembled_at_utc": "2026-10-24T10:56:38.156061+00:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "environment": "Walker2d-v4",
+  "n_training_seeds": 5,
+  "milestone_steps": 5000000,
+  "evaluation_episodes_per_training_seed": 100,
+  "statistical_unit": "training_seed_not_individual_episode",
+  "descriptive_metrics": {
+    "mean_return": {
+      "n_valid_training_seeds": 5,
+      "mean": 3986.0020819732654,
+      "sample_sd": 2108.4039955058474,
+      "minimum": 1141.98148147134,
+      "maximum": 6236.5977019840575
+    },
+    "mean_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.298,
+      "sample_sd": 0.32813107137240144,
+      "minimum": 0.03,
+      "maximum": 0.84
+    },
+    "cost_cvar_20": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.68,
+      "sample_sd": 0.3510697936308392,
+      "minimum": 0.15,
+      "maximum": 1.0
+    },
+    "training_cumulative_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 4905.8,
+      "sample_sd": 631.8984886831112,
+      "minimum": 3971.0,
+      "maximum": 5752.0
+    },
+    "failure_rate": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.298,
+      "sample_sd": 0.32813107137240144,
+      "minimum": 0.03,
+      "maximum": 0.84
+    },
+    "high_risk_normal_tangent_variance_ratio": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.7838666081428528,
+      "sample_sd": 0.0802914809840366,
+      "minimum": 0.6947082877159119,
+      "maximum": 0.9135595560073853
+    },
+    "high_risk_dangerous_outward_velocity": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.25789245665073396,
+      "sample_sd": 0.07048838712516593,
+      "minimum": 0.15052197873592377,
+      "maximum": 0.3298811614513397
+    },
+    "high_risk_reliability": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.2136418789625168,
+      "sample_sd": 0.07906481142509021,
+      "minimum": 0.08620023727416992,
+      "maximum": 0.2996545433998108
+    },
+    "high_risk_safety_weight": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.8087698340415954,
+      "sample_sd": 0.22667176893892432,
+      "minimum": 0.5338101983070374,
+      "maximum": 0.9852657318115234
+    }
+  },
+  "records": [
+    {
+      "job": "walker2d-2027",
+      "environment": "Walker2d-v4",
+      "training_seed": 2027,
+      "milestone_steps": 5000000,
+      "input_provenance": {
+        "copy_manifest": "terminal_native_receipts_available8_20261024/manifest.json",
+        "copy_manifest_sha256": "d2431452507b901d5d3e7e0a51aa124e232a1f6982021641f3bd7184f1bd59c8",
+        "native_input_files": [
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2027/receipt.json",
+            "sha256": "8711b9949addcde962e6188361f0f578c41e328144a4ce2fdb1355eb8b4e86cd"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/training_summary.json",
+            "sha256": "bc93e64f1491a20edb54fb10ef0872a9c70229177dd248542788e3c0f0522b95"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/evaluation_step_5000000.json",
+            "sha256": "f551c261e6835b23e2b8c5883e3adb14e3a8b8439d7a8cb0edbea289531c4f33"
+          }
+        ]
+      },
+      "mean_return": 5672.552916737498,
+      "mean_cost": 0.03,
+      "cost_cvar_20": 0.15,
+      "training_cumulative_cost": 3971.0,
+      "failure_rate": 0.03,
+      "high_risk_normal_tangent_variance_ratio": 0.7880502939224243,
+      "high_risk_dangerous_outward_velocity": 0.23387598991394043,
+      "high_risk_reliability": 0.20448791980743408,
+      "high_risk_safety_weight": 0.5338101983070374,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2027/evaluation_step_5000000.json",
+        "sha256": "f551c261e6835b23e2b8c5883e3adb14e3a8b8439d7a8cb0edbea289531c4f33"
+      }
+    },
+    {
+      "job": "walker2d-2028",
+      "environment": "Walker2d-v4",
+      "training_seed": 2028,
+      "milestone_steps": 5000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/walker2d-2028/manifest.json",
+        "copy_manifest_sha256": "36700cf4105c1601a574acf8310a448b6761133cf1c9b5e8c831917b875c6afa",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/walker2d-2028/receipt.json",
+            "sha256": "f18c96253cb15dde15773fbfed1dd27639341618d6c2f638ccadf58a2a6062a2"
+          },
+          {
+            "relative_path": "native_terminal_receipts/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/training_summary.json",
+            "sha256": "90dd25a4122bbac114f9f56acad69fc098a2ac50fd76f33a5cf9bdf9ae08d8a1"
+          },
+          {
+            "relative_path": "native_terminal_receipts/walker2d-2028/training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/evaluation_step_5000000.json",
+            "sha256": "61f7c1331fe4d9bb87f31a1f35acf5aadd28feab367ba234d74e56bb871969e5"
+          }
+        ]
+      },
+      "mean_return": 6236.5977019840575,
+      "mean_cost": 0.12,
+      "cost_cvar_20": 0.6,
+      "training_cumulative_cost": 5752.0,
+      "failure_rate": 0.12,
+      "high_risk_normal_tangent_variance_ratio": 0.6947082877159119,
+      "high_risk_dangerous_outward_velocity": 0.15052197873592377,
+      "high_risk_reliability": 0.2996545433998108,
+      "high_risk_safety_weight": 0.5894690752029419,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2028/evaluation_step_5000000.json",
+        "sha256": "61f7c1331fe4d9bb87f31a1f35acf5aadd28feab367ba234d74e56bb871969e5"
+      }
+    },
+    {
+      "job": "walker2d-2029",
+      "environment": "Walker2d-v4",
+      "training_seed": 2029,
+      "milestone_steps": 5000000,
+      "input_provenance": {
+        "copy_manifest": "terminal_native_receipts_available8_20261024/manifest.json",
+        "copy_manifest_sha256": "d2431452507b901d5d3e7e0a51aa124e232a1f6982021641f3bd7184f1bd59c8",
+        "native_input_files": [
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2029/receipt.json",
+            "sha256": "ac47a7ae20efe6b994256d9f50a6e664b3d85e812a5c48f4df3cf85341d29591"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/training_summary.json",
+            "sha256": "dc395fee0a8c13498ab9303d3a53d21985fa501428b6e8aeaefc53622ae2480b"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/evaluation_step_5000000.json",
+            "sha256": "a9bc1e19b5b80c0b321e2a6067518adb3391d7e6e7173ad211c4eeedc1b3d51b"
+          }
+        ]
+      },
+      "mean_return": 4209.478123748327,
+      "mean_cost": 0.37,
+      "cost_cvar_20": 1.0,
+      "training_cumulative_cost": 4905.0,
+      "failure_rate": 0.37,
+      "high_risk_normal_tangent_variance_ratio": 0.9135595560073853,
+      "high_risk_dangerous_outward_velocity": 0.307874470949173,
+      "high_risk_reliability": 0.08620023727416992,
+      "high_risk_safety_weight": 0.9579877257347107,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2029/evaluation_step_5000000.json",
+        "sha256": "a9bc1e19b5b80c0b321e2a6067518adb3391d7e6e7173ad211c4eeedc1b3d51b"
+      }
+    },
+    {
+      "job": "walker2d-2030",
+      "environment": "Walker2d-v4",
+      "training_seed": 2030,
+      "milestone_steps": 5000000,
+      "input_provenance": {
+        "copy_manifest": "terminal_native_receipts_available8_20261024/manifest.json",
+        "copy_manifest_sha256": "d2431452507b901d5d3e7e0a51aa124e232a1f6982021641f3bd7184f1bd59c8",
+        "native_input_files": [
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2030/receipt.json",
+            "sha256": "4856bd741f5f71bda76b1ac571598005cf44b1ae60600af897aa32ff93ca041b"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/training_summary.json",
+            "sha256": "c90db02943178a8bd678ddcd3b86a91e8035c4785b4909aac0fcd274c1efc912"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/evaluation_step_5000000.json",
+            "sha256": "2a576d97e31b86b5db79f5a0f8dcd19322bba9c3bbb8a2b801aee81d188b4c94"
+          }
+        ]
+      },
+      "mean_return": 1141.98148147134,
+      "mean_cost": 0.13,
+      "cost_cvar_20": 0.65,
+      "training_cumulative_cost": 4910.0,
+      "failure_rate": 0.13,
+      "high_risk_normal_tangent_variance_ratio": 0.7613433599472046,
+      "high_risk_dangerous_outward_velocity": 0.26730868220329285,
+      "high_risk_reliability": 0.24000932276248932,
+      "high_risk_safety_weight": 0.9852657318115234,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2030/evaluation_step_5000000.json",
+        "sha256": "2a576d97e31b86b5db79f5a0f8dcd19322bba9c3bbb8a2b801aee81d188b4c94"
+      }
+    },
+    {
+      "job": "walker2d-2031",
+      "environment": "Walker2d-v4",
+      "training_seed": 2031,
+      "milestone_steps": 5000000,
+      "input_provenance": {
+        "copy_manifest": "terminal_native_receipts_available8_20261024/manifest.json",
+        "copy_manifest_sha256": "d2431452507b901d5d3e7e0a51aa124e232a1f6982021641f3bd7184f1bd59c8",
+        "native_input_files": [
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2031/receipt.json",
+            "sha256": "5c4b4708ea0c5dd6ce16178efa16b4e0b820e434c1cf5f2dee2d3877e423784c"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/training_summary.json",
+            "sha256": "b6cdcf7d9fd52fcb4fe195eace20ac7312d987ce324aa015113568a28e21a31a"
+          },
+          {
+            "relative_path": "terminal_native_receipts_available8_20261024/walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/evaluation_step_5000000.json",
+            "sha256": "8227a0fb969f313fd67a78c9f0ef360ef544dc59bfd67c6261378dbd949db57e"
+          }
+        ]
+      },
+      "mean_return": 2669.400185925104,
+      "mean_cost": 0.84,
+      "cost_cvar_20": 1.0,
+      "training_cumulative_cost": 4991.0,
+      "failure_rate": 0.84,
+      "high_risk_normal_tangent_variance_ratio": 0.7616715431213379,
+      "high_risk_dangerous_outward_velocity": 0.3298811614513397,
+      "high_risk_reliability": 0.2378573715686798,
+      "high_risk_safety_weight": 0.9773164391517639,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/walker2d-2031/evaluation_step_5000000.json",
+        "sha256": "8227a0fb969f313fd67a78c9f0ef360ef544dc59bfd67c6261378dbd949db57e"
+      }
+    }
+  ],
+  "helper_sha256": "5904d4d426bd5c3cb1e4eacf2a7b338f59ffebe7f679f04aadfd66784b88914f",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "remote_operations": 0,
+  "new_scientific_cells": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "inferential_test_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "caveats": [
+    "All five prespecified seeds at the final budget are required; no best-checkpoint or metric selection.",
+    "Means and sample SDs summarize five training seeds, not500 independent training replicates.",
+    "CVaR summaries average per-training-seed CVaR-20 values; episode pools are not merged.",
+    "Training cumulative costs are accepted-lineage counters, not total physical recovery work.",
+    "Optional diagnostic omissions are reported; no training seed is dropped.",
+    "Locomotion failure rate is not Point-task success rate.",
+    "Native receipts and JSON hashes do not establish the unchanged final scientific gates.",
+    "Known original-parent/path gaps remain unresolved; no matched-control or causal superiority claim is made."
+  ]
+}

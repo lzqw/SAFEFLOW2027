@@ -1,0 +1,43 @@
+{
+  "kind": "native_terminal_receipt_copy_not_final_scientific_audit",
+  "copied_at_utc": "2026-10-24T10:56:19.054035+00:00",
+  "source_host": "tjucta-a100",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "full_matrix_cells": 20,
+  "terminal_training_budget_steps": 5000000,
+  "source": {
+    "job": "walker2d-2028",
+    "source_container": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/walker2d-2028",
+    "files": [
+      {
+        "path": "receipt.json",
+        "sha256": "f18c96253cb15dde15773fbfed1dd27639341618d6c2f638ccadf58a2a6062a2",
+        "bytes": 5416,
+        "mtime_ns": 1792839337074480766
+      },
+      {
+        "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/training_summary.json",
+        "sha256": "90dd25a4122bbac114f9f56acad69fc098a2ac50fd76f33a5cf9bdf9ae08d8a1",
+        "bytes": 4156,
+        "mtime_ns": 1792839337022478300
+      },
+      {
+        "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/evaluation_step_5000000.json",
+        "sha256": "61f7c1331fe4d9bb87f31a1f35acf5aadd28feab367ba234d74e56bb871969e5",
+        "bytes": 23460,
+        "mtime_ns": 1792839336530454910
+      }
+    ]
+  },
+  "helper_sha256": "a0f18ad2b3a3c864c467083d709afec69e634eabe5d600756e5ce13ecb8cdc82",
+  "selection_rule": "Prespecified final-budget evaluation of the named cell, never best-checkpoint selection",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "training_processes_signalled": 0,
+  "remote_files_modified": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "caveat": "A passed native receipt is not a final60/80/60/120 scientific-gate pass; original-parent and path limitations remain unresolved."
+}
