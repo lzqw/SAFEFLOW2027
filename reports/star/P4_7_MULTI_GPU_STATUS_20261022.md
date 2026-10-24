@@ -57,10 +57,18 @@ The full matrix now has **ten training-complete cells and ten remaining
 cells** (A100 six,4080 four). All ten other workers advanced in the18:54
 scheduled frame. Its global counters, updated only for Walker's confirmed
 native completion, account for131.075M/150M accepted-lineage steps (87.38%
-of the step budget, not a wall-clock estimate). The18:44 collector snapshot
-still reported nine terminal containers, before Walker's18:55 receipt;
-its next ordinary cycle can import the new completed container. The native
-completion above is not misrepresented as an already cached tenth container.
+of the step budget, not a wall-clock estimate). The ordinary collector then
+reported **ten terminal containers collected at19:14:49**, including the
+new Walker2028 container; the earlier18:44 nine-container snapshot preceded
+its native completion. No second training or evaluation was started.
+
+A metadata-only inventory found Walker2028's evaluation JSON, counterfactual
+JSON, trajectory CSV and policy checkpoint at each of0.5M/2M/5M, in both the
+primary and collected containers. The initial verified migration manifests
+also list all four artifact types at all three milestones for the other four
+Walker seeds. No historical restoration or filename alias was needed. This
+is file-presence evidence, not a new full-model load, provenance audit or
+final scientific-gate pass.
 
 At18:54, free space was A100 primary16.69GiB/data133.07GiB and4080 primary
 12.99GiB/4T2462.82GiB. No active canonical directory or other project was
