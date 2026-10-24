@@ -1,6 +1,63 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 16:15 CST — Goal2030 continuing; eight native terminal results retained
+## Latest continuation update: 2026-10-24 16:24 CST — Goal2030 epoch confirmed; Button2030 terminal
+
+**Button2030 has completed its full10M-step training budget and original
+100-episode final evaluation.** Its native receipt and completed training
+summary were written at16:20:44; the16:24 monitor then observed its worker
+absent. Targeted metadata retrieval confirmed a passed native receipt, clean
+frozen source62ca739 and no engineering hard-stop. It was not restarted.
+The [native terminal files](shapo_p47_four_env_artifacts/partial_milestones/native_terminal_receipts/point-button-2030/manifest.json)
+have been copied to the local host with their original byte hashes, without
+another policy rollout or model load.
+
+| Prespecified native final metric | Button2030 at10M |
+|---|---:|
+|Mean return|-17.7141|
+|Success rate|4%|
+|Mean evaluation cost|5.38|
+|CVaR-20|23.95|
+|Accepted-lineage training cumulative cost|150,109|
+|Highest-risk20% normal/tangent variance ratio|0.995862|
+|Highest-risk20% dangerous outward velocity|0.028221|
+
+This is **one of five PointButton training seeds**, not the environment's
+final aggregate or a matched-control comparison. Task performance is weak
+for this seed. The recorded high-risk variance ratio remains close to one;
+the same native diagnostic gives mean safety weight0.902672 but reliability
+0.003154. These are diagnostic observations, not a scientific stopping gate
+or a demonstrated explanation of the outcome. The remaining seeds, frozen
+configuration, complete budgets and all final scientific gates are retained.
+
+**Goal2030's A100 GPU1 continuation is also confirmed.** The same PID2508133
+logged7,160,000 steps at approximately8.12 FPS, beyond its7.15M full input.
+The scheduled16:24 frame verified CUDA/MPS membership and the controller
+confirmed the same worker identity and no source duplicate. This is a logged
+counter, not a7.16M durable-checkpoint claim. Its [updated continuation
+receipt](p4_7_training_receipts_20261022/goal2030_from4t_toa100_gpu1_20261024.json)
+contains the complete scheduled new-epoch proof. The recovery ledger now
+accepts **19 records,1,395,000 known extra physical steps /4,412 cost units**,
+including its25,000-step /248-cost discarded source tail exactly once.
+Goal2028's25,000-step /493-cost tail remains conditional, not executed.
+
+Placement now accounts for all20 cells: **nine training-complete, ten running,
+one stopped** (Goal2028). A100 runs seven;4080 three;5080 none. The collector's
+16:13 cached count was still eight, before Button2030's native terminal
+receipt. Its next ordinary collection can import that completed container;
+the native completion above is not being misreported as an already cached
+ninth cell or as a strict final-audit pass.
+
+All nine older continuing workers advanced relative to15:54. The16:24 snapshot
+reports A100 primary16.69GiB free and total GPU utilization44%/45%;4080 primary
+15.08GiB, separate4T2467.11GiB and GPU56%. The fast4080 slot is free but its
+primary filesystem is below the16GiB admission reserve even before another
+capsule, so no additional bulk input is copied there now. No foreign project
+or active canonical checkpoint is moved. The5080 reservation remains in
+force until23:50; permission for an automatic post-reservation Goal2028 resume
+has been requested and is not assumed. Known original-parent/multi-hop path
+limitations and final scientific-certification requirements remain unresolved.
+
+## Earlier continuation update: 2026-10-24 16:15 CST — Goal2030 continuing; eight native terminal results retained
 
 The stopped **Goal2030** cell has now launched on shared A100 GPU1 from its
 **7,150,000-step full checkpoint**, retaining the original10M-step budget.

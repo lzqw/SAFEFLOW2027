@@ -1,5 +1,5 @@
 {
-  "phase": "same_target_running_await_scheduled_new_epoch",
+  "phase": "completed_new_target_epoch_from_raw_archive_source_preserved",
   "job": "point-goal-2030",
   "source_host": "5080",
   "target_host": "tjucta-a100",
@@ -88,7 +88,7 @@
   "placement_reason": "Fit the smaller stopped capsule on recovered A100 headroom while the larger Goal2028 awaits a fast4080 slot; no reward/cost selection",
   "minimum_post_copy_free_bytes": 17179869184,
   "extra_half_GiB_copy_slack_required": false,
-  "updated_at_unix": 1792828860.0286436,
+  "updated_at_unix": 1792830250.928246,
   "restoration": {
     "restored_scientific_files": 98,
     "copied_files": [
@@ -227,5 +227,76 @@
   "target_boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
   "target_pid": 2508133,
   "target_start_ticks": 43489986,
-  "launched_at_unix": 1792828860.0286405
+  "launched_at_unix": 1792828860.0286405,
+  "first_target_epoch": {
+    "csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/progress.csv",
+    "mtime_ns": 1792830162515636043,
+    "steps": 7160000,
+    "cost": 110773.0,
+    "fps": 8.12391471862793
+  },
+  "first_target_worker": {
+    "job": "point-goal-2030",
+    "pid": 2508133,
+    "start_ticks": 43489986,
+    "state": "R",
+    "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+    "device": "cuda:0",
+    "progress_status": "observed",
+    "steps": 7160000,
+    "last_epoch_fps": 8.12391471862793,
+    "progress_selection": "active_worker_logger_fd",
+    "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/progress.csv",
+    "progress_age_seconds": 86.6258327960968,
+    "cuda_execution_backend": "mps_verified",
+    "mps_connection": {
+      "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+      "status": "observed",
+      "server_pid": 2384685,
+      "client_pids": [
+        2508133,
+        333807,
+        1442660,
+        1086738
+      ],
+      "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+    },
+    "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+  },
+  "target_identity": {
+    "pid": 2508133,
+    "start_ticks": 43489986,
+    "state": "R",
+    "device": "cuda:0",
+    "cuda_visible_devices": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+    "args": [
+      "/home/lzqw/SAFEFLOW2027_A100/env/bin/python",
+      "/home/lzqw/SAFEFLOW2027_A100/operations/mps_training_bootstrap_20261020.py",
+      "scripts/star/train_star.py",
+      "--config",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/resolved_formal_config.yaml",
+      "--seed",
+      "2030",
+      "--steps",
+      "10000000",
+      "--device",
+      "cuda:0",
+      "--vector-envs",
+      "1",
+      "--batch-size",
+      "256",
+      "--replay-size",
+      "400000",
+      "--steps-per-epoch",
+      "5000",
+      "--log-dir",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/training",
+      "--result",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/receipt.json",
+      "--no-tensorboard",
+      "--resume",
+      "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-22-19-11-10/checkpoints/latest_full.pt"
+    ]
+  },
+  "confirming_scheduled_frame_unix": 1792830248.5727599
 }
