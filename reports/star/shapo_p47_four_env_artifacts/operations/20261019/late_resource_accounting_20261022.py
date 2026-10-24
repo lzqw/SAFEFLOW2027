@@ -106,11 +106,11 @@ def resource_records(base):
         for row in proof['entries']:
             archive=Path(row.get('archive_path',row.get('archive_directory','')))
             assert Path('/home/carla/4T/SAFEFLOW2027_4080/recovery_backups') in archive.parents
-            files=row['files'];assert len({r.get('path',r.get('name')) for r in files})==len(files)
-            assert sum(r.get('bytes',0) for r in files)==row['logical_bytes']
+            archive_files=row['files'];assert len({r.get('path',r.get('name')) for r in archive_files})==len(archive_files)
+            assert sum(r.get('bytes',0) for r in archive_files)==row['logical_bytes']
             expected=row.get('file_manifest_sha256',row.get('manifest_sha256'))
-            assert hashlib.sha256(json.dumps(files,sort_keys=True).encode()).hexdigest()==expected
-            for f in files:
+            assert hashlib.sha256(json.dumps(archive_files,sort_keys=True).encode()).hexdigest()==expected
+            for f in archive_files:
                 p=Path(f.get('path',f.get('name')));assert not p.is_absolute() and '..' not in p.parts
                 if f.get('kind')!='directory':assert len(f['sha256'])==64 and f['bytes']>=0
         if state_name.startswith('cold_'):

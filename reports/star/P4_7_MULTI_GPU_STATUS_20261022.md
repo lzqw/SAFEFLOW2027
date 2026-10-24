@@ -1,6 +1,41 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 — space recovered; Goal2029 epoch pending
+## Latest continuation update: 2026-10-24 14:24 CST — Goal2029 epoch confirmed
+
+**Goal-2029's new4080 epoch is now confirmed.** The same PID1831158 advanced
+from its5,500,000-step input to **5,545,000 logged steps**, with the observed
+epoch at approximately **25.16 FPS**. The scheduled14:24 frame verified its
+CUDA/MPS membership; the controller then confirmed the same worker identity
+and no source duplicate. This is a logged observation, not a claim of a new
+5.545M durable full checkpoint. The [updated continuation receipt](p4_7_training_receipts_20261022/goal2029_from4t_to4080_20261024.json)
+contains the exact full input, restored scientific-file scope, preserved old
+target and scheduled-epoch proof.
+
+Counts remain **eight training-complete cells, ten continuing cells, and two
+stopped cells** (Goal2028/2030). All nine older workers also had positive
+logged deltas in the14:24 snapshot. A100 runs six workers,4080 four, and5080
+none of this project's training. No seed or training budget was cut and no
+new scientific cell or evaluation was added.
+
+The raw-recovery record now adds its known **25,000 repeated physical steps
+/44 cost** exactly once. The complete metadata ledger passes with **18 records,
+at least1,370,000 extra physical steps /4,164 cost units**; the two remaining
+unconsumed incident tails are conditional (**50,000 steps /741 cost**).
+Unknown unlogged work remains unknown, not zero, and physical-work corrections
+are separate from accepted-lineage learning-curve costs. A metadata-only
+variable-name collision in the new storage-record reader was corrected before
+this successful ledger read; neither training nor any scientific gate changed.
+
+The14:24 capacity frame reports4080 primary **17.74GiB free**, its separate4T
+archive2471.54GiB, and A100 primary10.68GiB. Shared total GPU utilization was
+A10042%/35% and408067%; capacity is available, but primary storage is still
+constraining further bulk admissions. Only this project's verified cold data
+has been relocated. Approval to touch another project's idle archives has not
+been received and no such operation has been performed. Training, backups and
+half-hour observation continue; original-parent/path limitations and all final
+scientific-certification requirements remain unresolved and unwaived.
+
+## Earlier continuation update: 2026-10-24 — space recovered; Goal2029 epoch pending
 
 **Eight cells have now completed training**, including the newly collected
 Ant-2028 and Walker-2029 terminal receipts. These are training receipts, not
