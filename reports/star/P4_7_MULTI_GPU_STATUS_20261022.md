@@ -1,48 +1,51 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 20:24 CST — ten continuing cells advance; 5080 hold maintained
+## Latest continuation update: 2026-10-24 21:24 CST — ten continuing cells advance; 5080 hold maintained
 
 The ordinary half-hour monitor reports all ten remaining workers advancing,
 with unchanged worker identities: six on A100 and four on4080. The
-[unaltered scheduled observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261024_2024.json)
+[unaltered scheduled observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261024_2124.json)
 is included. No additional remote sampling wave, scientific evaluation,
 model load or training restart was performed for this update.
 
-| Host | Cell | Latest logged steps | Fixed full budget | Change since19:54 |
+| Host | Cell | Latest logged steps | Fixed full budget | Change since20:54 |
 |---|---|---:|---:|---:|
-|A100|Goal2027|9,525,000|10,000,000|+15,000|
-|A100|Ant2029|4,215,000|5,000,000|+10,000|
-|A100|Button2027|9,225,000|10,000,000|+15,000|
-|A100|Goal2031|8,665,000|10,000,000|+15,000|
-|A100|Button2031|8,600,000|10,000,000|+10,000|
-|A100|Goal2030|7,270,000|10,000,000|+10,000|
-|4080|Button2029|8,510,000|10,000,000|+45,000|
-|4080|Goal2029|6,085,000|10,000,000|+45,000|
-|4080|Goal2028|6,635,000|10,000,000|+45,000|
-|4080|Button2028|8,120,000|10,000,000|+45,000|
+|A100|Goal2027|9,555,000|10,000,000|+15,000|
+|A100|Ant2029|4,245,000|5,000,000|+15,000|
+|A100|Button2027|9,250,000|10,000,000|+10,000|
+|A100|Goal2031|8,690,000|10,000,000|+15,000|
+|A100|Button2031|8,630,000|10,000,000|+15,000|
+|A100|Goal2030|7,300,000|10,000,000|+15,000|
+|4080|Button2029|8,595,000|10,000,000|+45,000|
+|4080|Goal2029|6,175,000|10,000,000|+45,000|
+|4080|Goal2028|6,725,000|10,000,000|+45,000|
+|4080|Button2028|8,205,000|10,000,000|+45,000|
 
-The20:14 ordinary collector still reports ten native training-complete
+The21:14 ordinary collector still reports ten native training-complete
 containers. Those completed budgets plus the ten active CSV counters total
-131.85M/150M accepted-lineage steps (87.90% of the step budget, **not** of
+132.37M/150M accepted-lineage steps (88.25% of the step budget, **not** of
 wall-clock time). CSV counters are not newly verified durable-checkpoint
 counters. Walker's complete five-seed native final results remain below;
 there is no new completed environment or final strict scientific audit.
+The accepted-lineage total advanced520,000 logged steps since the preserved
+[20:24 observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261024_2024.json).
+The ordinary scientific-evidence archive also reports no pending backlog.
 
-Free space is A100 primary16.35GiB/data132.28GiB and4080
-primary13.53GiB/4T2458.94GiB. Primary filesystems remain below the20GiB
+Free space is A100 primary16.34GiB/data132.22GiB and4080
+primary13.49GiB/4T2456.91GiB. Primary filesystems remain below the20GiB
 warning level, while both separate archive/data filesystems exceed their
 100GiB alert threshold. No active canonical directory or other project's
 files were moved in this update.
 
 **5080 has zero SAFEFLOW training workers and remains reserved until at
-least2026-10-24 23:50 CST.** Its observed48% GPU utilization belongs to
-other work; it is not evidence of an unpaused SAFEFLOW trainer. No obsolete
+least2026-10-24 23:50 CST.** Other GPU work on this host is left untouched;
+it is not evidence of an unpaused SAFEFLOW trainer. No obsolete
 seven-worker resume script is replayed and no existing cell is duplicated.
 The proposed later Goal2030 migration still awaits permission. Full budgets,
 seeds, frozen scientific source and fixed evaluation protocol are unchanged;
 known original-parent/path-resolution limitations remain unresolved and no
 final scientific gate is waived. The next ordinary capacity frame is due
-around20:54.
+around21:54.
 
 ## Earlier continuation update: 2026-10-24 18:55 CST — Walker five-seed native final results complete
 
