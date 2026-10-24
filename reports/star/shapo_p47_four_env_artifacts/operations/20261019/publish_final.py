@@ -1855,6 +1855,26 @@ def annotate_recovery(target):
             'No method, seed, full budget, evaluation or final gate changed; '
             'different CUDA builds are recorded without a bitwise claim.\n'
         )
+    if 'goal2028_from4t_to4080_20261024_state.json' in late_resource_files:
+        disclosure += (
+            '\nGoal2028, the last stopped existing cell, continued on the '
+            'shared4080 slot freed by completed Button2030. Its109 recorded '
+            'scientific files were restored from the pinned4T capsule and '
+            'rehashed before launch from the6.3M full input; the5080 original '
+            'and immutable4T inputs were retained. For this replacement slot '
+            'only, the engineering post-copy primary-disk reserve was '
+            'explicitly adjusted from16GiB to12GiB, with13.14GiB observed '
+            'after copying the1.932GiB capsule. This is not a scientific '
+            'budget or validator-gate change. It retains a buffer exceeding '
+            'the whole capsule plus four simultaneous full-checkpoint '
+            'temporary files, while shared-filesystem growth remains '
+            'uncertain and half-hour disk monitoring continues. No active '
+            'source, other project, method, seed, evaluation or training '
+            'budget was modified. The source tail enters physical accounting '
+            'only after the scheduled new-epoch/MPS proof, not mere liveness. '
+            'No5080 GPU training or source signal was used and no historical '
+            'parent/path gap or final scientific gate was waived.\n'
+        )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
             '\nEarlier PointButton 2028/2030 training segments omitted from '

@@ -1,6 +1,60 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 16:24 CST — Goal2030 epoch confirmed; Button2030 terminal
+## Latest continuation update: 2026-10-24 16:35 CST — last stopped cell launched on4080;5080 stays free
+
+**Goal2028, the last stopped fixed-budget cell, has launched on4080** in the
+slot released by completed Button2030. It resumes the same seed2028 from its
+**6,300,000-step full input**, continuing to the original10M budget. All109
+recorded scientific files were restored from the pinned4T raw capsule into a
+previously absent canonical target, with their hashes checked before launch.
+This is the recorded suffix scope, not a complete filesystem clone. The5080
+original and immutable4T inputs remain intact; no5080 GPU job or source signal
+was used. The [continuation receipt](p4_7_training_receipts_20261022/goal2028_from4t_to4080_20261024.json)
+records its exact input, restored scope and resource checks.
+
+PID1902362 was dispatched at16:35:07 beside the three current4080 clients.
+**Its first new epoch is pending** the next ordinary16:54 monitoring frame.
+The controller waits on local scheduled JSON and never auto-relaunches if an
+observation is delayed. Process launch is not substituted for progress proof.
+The original20 cells are now accounted for as **nine training-complete and
+eleven dispatched continuing cells, with none left unassigned**. The new
+Goal2028 continuation is explicitly not yet epoch-confirmed; A100 has seven
+workers and4080 now has four dispatched workers.
+
+For this replacement slot, the **engineering post-copy primary-disk admission
+reserve was explicitly adjusted from16GiB to12GiB**. This is not a training
+budget, scientific parameter, evaluation threshold or final-validator change.
+The recorded capsule is1.932GiB; primary free space was about15.07GiB before
+copying and **13.141GiB after copying**. The retained buffer exceeds the whole
+capsule plus four simultaneous243MB full-checkpoint temporary files. Current
+raw-evidence staging and large archives already use4T, no active canonical
+path is moved or symlinked, the old20GiB storage-alert threshold remains, and
+half-hour monitoring continues. Shared-filesystem growth is still uncertain;
+this engineering adjustment is disclosed rather than represented as proof
+that another project's disk consumption is bounded.
+
+Admission verified the exact three existing MPS clients,57% total GPU use,
+13,772MiB free GPU memory and a separate8GiB GPU-memory reserve plus2GiB client
+allowance. No other project was paused, reprioritized or modified. The frozen
+source62ca739, full10M budget, batch256, replay400k and5000-step epochs remain
+unchanged. Source and target Torch versions are recorded without a bitwise
+equivalence claim.
+
+The recovery ledger correctly waits for Goal2028's scheduled new epoch before
+accepting its25,000-step /493-cost source tail. The last successful complete
+metadata read had19 records /1,395,000 known extra physical steps /4,412 cost;
+this in-flight tail is not yet reported as a confirmed twentieth record.
+No extra scientific evaluation or model-verification load was introduced.
+All original-parent/path limitations and final scientific gates remain intact.
+
+**5080 remains free of SAFEFLOW training until at least23:50.** Since all seven
+original Point cells now have owners on A100/4080, no automatic source resume
+is needed after that reservation. The earlier question about automatically
+resuming Goal2028 there is now superseded by this placement; even a late
+approval must not duplicate an already-owned cell. The dated hold/ownership
+note was updated both locally and in the5080 project operations directory.
+
+## Earlier continuation update: 2026-10-24 16:24 CST — Goal2030 epoch confirmed; Button2030 terminal
 
 **Button2030 has completed its full10M-step training budget and original
 100-episode final evaluation.** Its native receipt and completed training

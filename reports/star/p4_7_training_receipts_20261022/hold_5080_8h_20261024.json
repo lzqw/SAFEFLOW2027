@@ -10,7 +10,9 @@
   "foreign_processes_modified": false,
   "a100_training_workers_observed": 6,
   "4080_training_workers_observed": 4,
-  "resume_policy": "Do not start SAFEFLOW on this host before the hold expires. Afterwards inspect current user workloads and current cell ownership before selecting any remaining task. Never replay the obsolete seven-worker resume script; five of its cells now run on other hosts.",
+  "resume_policy": "Do not start SAFEFLOW on this host before the hold expires. All seven original Point cells now have owners on A100 or4080, including the Goal2028 launch awaiting scheduled epoch confirmation. Do not replay the obsolete seven-worker resume script or automatically duplicate any of those cells after23:50. A late answer approving resume is not permission to duplicate an already owned cell.",
+  "all_original_seven_cells_owned_elsewhere": true,
+  "last_cell_owner": "4080:point-goal-2028:PID1902362; launched from6.3M; scheduled first new epoch pending",
   "monitor_policy": "Existing read-only 1800-second capacity monitor remains active; it does not automatically launch training.",
   "automatic_resume_scheduled": false,
   "check_scope": "GPU/process state, current native CSV progress and filesystem free space only; no extra evaluation rollouts"

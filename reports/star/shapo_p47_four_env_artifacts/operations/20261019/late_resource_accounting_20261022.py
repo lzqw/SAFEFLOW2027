@@ -171,7 +171,8 @@ def resource_records(base):
         # All original native sources and the four remote originals are retained.
     for raw_name,raw_job,raw_target,raw_resume,raw_seed,raw_helper in [
         ('goal2029_from4t_to4080_20261024_state.json','point-goal-2029','4080',5500000,'2029','recover_goal2029_from_4t_on_4080_20261024.py'),
-        ('goal2030_from4t_toa100_gpu1_20261024_state.json','point-goal-2030','tjucta-a100',7150000,'2030','recover_goal2030_from4t_on_a100_gpu1_20261024.py')]:
+        ('goal2030_from4t_toa100_gpu1_20261024_state.json','point-goal-2030','tjucta-a100',7150000,'2030','recover_goal2030_from4t_on_a100_gpu1_20261024.py'),
+        ('goal2028_from4t_to4080_20261024_state.json','point-goal-2028','4080',6300000,'2028','recover_goal2028_from4t_on_4080_20261024.py')]:
         raw=base/raw_name
         if not raw.exists():continue
         s=read(raw.name)
@@ -182,6 +183,12 @@ def resource_records(base):
         assert s['new_experiment_cells']==s['source_signals_sent']==s['additional_evaluation_rollouts']==s['extra_verification_model_loads']==0
         assert s['scientific_parameters_changed'] is False and s['other_projects_paused'] is False
         assert s['source_original_preserved_in_place'] is True and s['training_launched_on_5080'] is False
+        if raw_job=='point-goal-2028':
+            assert s['engineering_admission_reserve_changed'] is True and s['scientific_gate_changed'] is False
+            assert s['minimum_post_copy_free_bytes']==12*1024**3 and s['previous_admission_reserve_bytes']==16*1024**3
+            assert s['restoration']['primary_free_after_bytes']>=s['minimum_post_copy_free_bytes']
+            assert s['restoration']['previous_target_absent'] is True
+            assert s['target_capacity_at_launch']['minimum_post_copy_free_bytes']==s['minimum_post_copy_free_bytes']
         inventory=read(s['inventory_file']);original=next(r for r in inventory['rows'] if r['job']==s['job'])
         pinned=read('remaining_goal_archive_inputs_20261023.json');pin=next(r for r in pinned['rows'] if r['job']==s['job'])
         assert original['full_replay_rng_optimizers_present'] is True
