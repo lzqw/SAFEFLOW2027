@@ -1,6 +1,60 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 16:54 CST — all remaining cells advancing; nine terminal results collected
+## Latest continuation update: 2026-10-24 17:54 CST — all eleven continuing cells advance
+
+The ordinary17:54 monitoring frame confirms **nine training-complete cells
+and eleven continuing cells with positive logged deltas**, with the same
+worker/logger identities. A100 still runs seven and4080 four;5080 has zero
+SAFEFLOW training workers and remains reserved until at least23:50. There
+was no extra remote sampling wave, policy evaluation or model-verification
+load. No seed, training budget, frozen source or scientific setting changed.
+
+| Host | Cell | Latest logged steps | Fixed full budget |
+|---|---|---:|---:|
+|A100|Walker2028|4,980,000|5,000,000|
+|A100|Ant2029|4,155,000|5,000,000|
+|A100|Goal2027|9,455,000|10,000,000|
+|A100|Button2027|9,155,000|10,000,000|
+|A100|Goal2031|8,590,000|10,000,000|
+|A100|Button2031|8,530,000|10,000,000|
+|A100|Goal2030|7,200,000|10,000,000|
+|4080|Button2029|8,290,000|10,000,000|
+|4080|Goal2029|5,860,000|10,000,000|
+|4080|Goal2028|6,415,000|10,000,000|
+|4080|Button2028|7,895,000|10,000,000|
+
+These are CSV counters, not a claim that every listed step is already a
+durable full checkpoint. The accepted-lineage counters plus nine completed
+budgets now total130.525M/150M steps (**87.02% of the step budget, not time**).
+Walker2028 has20,000 training steps remaining; the recent half-hour rate
+suggests roughly40 more minutes of training, followed by its original native
+evaluation. This is an estimate, not a completion receipt or a new stop rule.
+
+The collector reported nine terminal containers at17:44:43. Existing local
+backup metadata also acknowledged replication of the latest observed full
+checkpoint exports for all eleven active cells. Goal2028's17:39 backup
+observation specifically points to its new16:35 target logger's full
+checkpoint, written at17:09, rather than only its older resume input. That
+is an export/replication acknowledgment, not a fresh serialized-counter or
+cryptographic full-model audit; no CSV counter is relabelled as durable.
+
+Current free space is A100 primary **16.28GiB**, A100 data **133.07GiB**,
+4080 primary **13.25GiB**, and4080-4T **2463.58GiB**. Shared total GPU use
+was A10035%/46% and408066%; GPU-memory headroom is not an authorization to
+add new scientific cells. Primary-space monitoring and the existing archive
+and backup processes remain active; no active canonical path or other
+project was moved. The [scheduled capacity snapshot](shapo_p47_four_env_artifacts/operations/20261019/gpu_capacity_state.json)
+accompanies this status, and the exact [frozen training source](https://github.com/lzqw/SAFEFLOW2027/tree/62ca7399357c10645a955dcbead7ed2153a82c69)
+is reachable in the already uploaded branch history.
+
+Permission has been requested before moving long-tail Goal2030 to5080
+after the reservation; no approval is inferred from automatic goal
+continuations and no migration is scheduled or performed. The complete
+training budgets, missing-original-parent/path disclosures, late-resource
+accounting and all final scientific gates remain unchanged. The full
+objective is not yet complete.
+
+## Earlier continuation update: 2026-10-24 16:54 CST — all remaining cells advancing; nine terminal results collected
 
 **Goal2028's continuation is now epoch-confirmed.** The same PID1902362
 advanced from its6.3M full input to **6,325,000 logged steps**, with the
