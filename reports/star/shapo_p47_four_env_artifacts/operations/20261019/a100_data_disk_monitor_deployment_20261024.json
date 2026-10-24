@@ -1,0 +1,43 @@
+{
+  "phase": "deployed_and_natural_archive_disk_sample_confirmed",
+  "deployed_at": "2026-10-24T16:42:24+08:00",
+  "unit": "safeflow-gpu-capacity-watch.service",
+  "old_pid": 986,
+  "new_pid": 816699,
+  "base_helper": "watch_gpu_capacity.py",
+  "base_helper_sha256": "9756ae014bd9a98382a2da3361107d45d92c154aeacd14a903bcbb092411ec82",
+  "new_helper": "watch_gpu_capacity_data_disk_20261024.py",
+  "new_helper_sha256": "03a49dda31c517a34ae5d42206f6bfe6085c6874b293aff43727377c8e195abf",
+  "added_archive_disk_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007",
+  "new_storage_label": "archive_data_filesystem",
+  "archive_alert_below_free_gib": 100,
+  "unchanged_primary_alert_below_free_gib": 20,
+  "poll_seconds": 1800,
+  "last_predeployment_frame_unix": 1792830248.5727599,
+  "next_due_unix": 1792832048.5727599,
+  "old_monitor_source_retained": true,
+  "existing_observation_state_retained": true,
+  "extra_remote_sampling_waves": 0,
+  "training_processes_signalled": 0,
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "other_projects_modified": false,
+  "scientific_parameters_changed": false,
+  "frozen_validator_modified": false,
+  "automatic_training_restart_or_deletion_enabled": false,
+  "natural_cycle_confirmation_pending": false,
+  "natural_cycle_confirmation": {
+    "confirmed_at": "2026-10-24T16:54:53+08:00",
+    "observed_frame_unix": 1792832048.672686,
+    "source": "existing gpu_capacity_state.json; no extra remote observation",
+    "archive_storage_entry": {
+      "label": "archive_data_filesystem",
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007",
+      "warning_below_free_gib": 100,
+      "status": "ok",
+      "free_gib": 132.85,
+      "total_gib": 7211.99,
+      "separate_from_project_filesystem": true
+    }
+  }
+}

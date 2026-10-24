@@ -67,6 +67,27 @@ def resource_records(base):
                          ('deploy_evidence_data_staging_20261023.py',d['helper_sha256'])]:
             assert hashlib.sha256((base/name).read_bytes()).hexdigest()==sha
         # Temporary archive-cache placement adds no scientific interaction.
+    monitoring=base/'a100_data_disk_monitor_deployment_20261024.json'
+    if monitoring.exists():
+        m=read(monitoring.name)
+        assert m['phase']=='deployed_and_natural_archive_disk_sample_confirmed'
+        assert m['poll_seconds']==1800 and m['archive_alert_below_free_gib']==100
+        assert m['unchanged_primary_alert_below_free_gib']==20
+        for key in ('training_processes_signalled','additional_evaluation_rollouts','model_or_tensor_loads','extra_remote_sampling_waves'):
+            assert m[key]==0
+        for key in ('other_projects_modified','scientific_parameters_changed','frozen_validator_modified','automatic_training_restart_or_deletion_enabled'):
+            assert m[key] is False
+        assert m['old_monitor_source_retained'] is True and m['existing_observation_state_retained'] is True
+        assert m['natural_cycle_confirmation_pending'] is False
+        confirmation=m['natural_cycle_confirmation']
+        assert confirmation['observed_frame_unix']>=m['next_due_unix']==m['last_predeployment_frame_unix']+1800
+        entry=confirmation['archive_storage_entry']
+        assert entry['path']==m['added_archive_disk_path']=='/storage_0/SAFEFLOW2027_lzqw_uid1007'
+        assert entry['label']==m['new_storage_label']=='archive_data_filesystem'
+        assert entry['warning_below_free_gib']==100 and entry['separate_from_project_filesystem'] is True
+        for name,key in [(m['base_helper'],'base_helper_sha256'),(m['new_helper'],'new_helper_sha256')]:
+            assert Path(name).name==name and hashlib.sha256((base/name).read_bytes()).hexdigest()==m[key]
+        # Extending the existing read-only cadence adds no scientific interaction.
     pinned=base/'remaining_goal_archive_inputs_20261023.json'
     if pinned.exists():
         p=read(pinned.name)

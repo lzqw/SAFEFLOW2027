@@ -1712,6 +1712,18 @@ def annotate_recovery(target):
             'changed. These old exports do not replace a newer input or '
             'repair an original-parent gap and add no training interaction.\n'
         )
+    if 'a100_data_disk_monitor_deployment_20261024.json' in late_resource_files:
+        disclosure += (
+            '\nThe existing read-only half-hour capacity monitor was extended '
+            'to include A100\'s separate archive data disk, retaining the '
+            '100GiB archive alert and20GiB primary alert thresholds. A normal '
+            'scheduled frame confirmed the new separate-filesystem reading. '
+            'Only the idle owned monitor service was restarted; its prior '
+            'state and next due time were preserved, with no extra remote '
+            'sampling wave, trainer signal, file deletion or scientific '
+            'evaluation. This adds storage visibility, not a training or '
+            'scientific-gate change.\n'
+        )
     if 'terminal_result_cache_migration_20261024_receipt.json' in late_resource_files:
         disclosure += (
             '\nThe eight already terminal assembly copies were verified on '

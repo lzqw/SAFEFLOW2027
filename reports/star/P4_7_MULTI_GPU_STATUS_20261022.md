@@ -1,6 +1,73 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 16:35 CST — last stopped cell launched on4080;5080 stays free
+## Latest continuation update: 2026-10-24 16:54 CST — all remaining cells advancing; nine terminal results collected
+
+**Goal2028's continuation is now epoch-confirmed.** The same PID1902362
+advanced from its6.3M full input to **6,325,000 logged steps**, with the
+observed epoch at approximately24.72 FPS. The scheduled16:54 frame verified
+CUDA/MPS membership, and the controller confirmed the same target identity
+and no source duplicate. This is the first scheduled observation of a new
+epoch, not necessarily its first logged epoch or a6.325M durable checkpoint.
+The [updated continuation receipt](p4_7_training_receipts_20261022/goal2028_from4t_to4080_20261024.json)
+retains the exact full input and copied scientific-file scope.
+
+The original matrix now has **nine training-complete cells and eleven
+confirmed advancing cells**, with no stopped/unassigned cell. A100 runs seven
+and4080 four. All ten older workers also had positive logged deltas during
+this half-hour. Their accepted-lineage counters plus the nine terminal budgets
+sum to129.975M/150M steps (86.65%); this is a step-budget fraction, **not** a
+wall-clock completion estimate or a final-audit pass.
+
+| Host | Cell | Latest logged steps | Fixed full budget |
+|---|---|---:|---:|
+|A100|Walker2028|4,950,000|5,000,000|
+|A100|Ant2029|4,130,000|5,000,000|
+|A100|Goal2027|9,425,000|10,000,000|
+|A100|Button2027|9,125,000|10,000,000|
+|A100|Goal2031|8,565,000|10,000,000|
+|A100|Button2031|8,500,000|10,000,000|
+|A100|Goal2030|7,170,000|10,000,000|
+|4080|Button2029|8,205,000|10,000,000|
+|4080|Goal2029|5,770,000|10,000,000|
+|4080|Goal2028|6,325,000|10,000,000|
+|4080|Button2028|7,810,000|10,000,000|
+
+At16:44:39 the ordinary collector reported **nine terminal containers
+collected on A100's separate data disk**, including Button2030. This is a
+successful collection report, not a claim that all final scientific gates
+have passed. Its native terminal files were already preserved on the host
+and GitHub; no extra scientific evaluation was needed.
+
+The **late-resource accounting subset** now passes with20 records,
+**1,420,000 known extra physical steps /4,905 cost units**, including
+Goal2028's25,000-step /493-cost discarded source tail exactly once. These
+numbers refer to this late-resource subset: earlier interruption/recovery
+records are additionally accounted by the final publisher, and unknown
+unlogged work remains unknown, not zero. No unconsumed incident cell remains.
+Accepted-lineage costs are kept separate from physical recovery work.
+
+The existing half-hour read-only monitor was extended to A100's separate
+archive disk. Its [deployment and natural-cycle proof](p4_7_training_receipts_20261022/a100_data_disk_monitor_deployment_20261024.json)
+records that only the idle owned monitor service was restarted, the prior
+state/next due time were preserved and no extra SSH sampling wave or trainer
+signal was introduced. The first regular16:54 frame confirms the separate
+data volume and its100GiB alert threshold; the primary alert remains20GiB.
+
+Current free space is A100 primary **16.54GiB**, A100 data **132.85GiB**,
+4080 primary **13.19GiB**, and4080-4T **2466.07GiB**. The disclosed12GiB
+post-copy reserve applied only to the last4080 admission; no further bulk
+admission is performed. Primary space remains under observation. No active
+canonical training directory, other project, budget, method or evaluation
+setting is changed. Original-parent/path limitations and all final scientific
+certification gates remain unresolved/unwaived.
+
+**5080 still has zero SAFEFLOW training workers and remains reserved until
+at least23:50.** All seven old Point cells have confirmed owners elsewhere;
+the obsolete seven-worker resume must not be replayed or used to duplicate
+them. No new seed, extra rollout, scientific early stop or model-verification
+load was introduced by this continuation.
+
+## Earlier continuation update: 2026-10-24 16:35 CST — last stopped cell launched on4080;5080 stays free
 
 **Goal2028, the last stopped fixed-budget cell, has launched on4080** in the
 slot released by completed Button2030. It resumes the same seed2028 from its

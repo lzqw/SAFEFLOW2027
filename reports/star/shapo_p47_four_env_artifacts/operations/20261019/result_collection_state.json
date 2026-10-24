@@ -1,0 +1,15 @@
+{
+  "imported": [
+    "walker2d-2027",
+    "ant-2027",
+    "walker2d-2029",
+    "ant-2028",
+    "point-button-2030"
+  ],
+  "completed_runs": 9,
+  "observed_at": "2026-10-24T16:44:39.975518+08:00",
+  "training_completed_runs": 9,
+  "completion_stage": "training_receipts_collected_pending_final_strict_audit",
+  "terminal_cache_run_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env",
+  "primary_source_run_root": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env"
+}
