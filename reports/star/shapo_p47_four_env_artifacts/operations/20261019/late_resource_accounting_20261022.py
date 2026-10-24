@@ -95,6 +95,8 @@ def resource_records(base):
     for state_name,receipt_name,helper_name,phase in [
         ('cold_4080_directory_offload_20261024_state.json','cold_4080_directory_offload_20261024_receipt.json',
          'offload_cold_4080_directories_20261024.py','eight_cold_directories_relocated_all_original_paths_preserved'),
+        ('cold_a100_directory_offload_20261024_state.json','cold_a100_directory_offload_20261024_receipt.json',
+         'offload_cold_a100_directories_20261024.py','eight_cold_directories_relocated_all_original_paths_preserved'),
         ('inactive_4080_export_offload_20261024_state.json','inactive_4080_export_offload_20261024_receipt.json',
          'offload_inactive_4080_exports_20261024.py','three_inactive_export_copies_archived_and_primary_replicas_released')]:
         if not (base/state_name).exists():continue
@@ -105,7 +107,9 @@ def resource_records(base):
         assert proof['scientific_parameters_changed'] is False
         for row in proof['entries']:
             archive=Path(row.get('archive_path',row.get('archive_directory','')))
-            assert Path('/home/carla/4T/SAFEFLOW2027_4080/recovery_backups') in archive.parents
+            archive_parent=('/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups'
+                if state_name.startswith('cold_a100_') else '/home/carla/4T/SAFEFLOW2027_4080/recovery_backups')
+            assert Path(archive_parent) in archive.parents
             archive_files=row['files'];assert len({r.get('path',r.get('name')) for r in archive_files})==len(archive_files)
             assert sum(r.get('bytes',0) for r in archive_files)==row['logical_bytes']
             expected=row.get('file_manifest_sha256',row.get('manifest_sha256'))
@@ -123,6 +127,42 @@ def resource_records(base):
             assert proof['other_projects_modified'] is False and proof['original_export_parent_directories_preserved'] is True
             assert proof['distinct_original_bytes_removed_from_all_locations']==0
         # These verified archive transfers add no physical training record.
+    terminal=base/'terminal_result_cache_migration_20261024_state.json'
+    if terminal.exists():
+        s=read(terminal.name);p=read('terminal_result_cache_migration_20261024_receipt.json')
+        assert s['phase']=='completed_new_collector_started'
+        assert p['phase']=='terminal_cache_on_data_four_foreign_primary_replicas_released'
+        target='/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env'
+        source='/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env'
+        assert s['target_run_root']==p['target_run_root']==target
+        assert s['source_run_root']==p['source_run_root']==source
+        assert p['copied_terminal_jobs']==len(p['entries'])==8
+        assert p['native_primary_sources_moved']==p['foreign_original_sources_moved']==0
+        assert p['source_caches_released']==4 and p['original_native_sources_retained'] is True
+        foreign={'ant-2027','walker2d-2027','ant-2028','walker2d-2029'}
+        assert set(s['foreign_cache_jobs'])==foreign
+        assert {r['job'] for r in p['entries']}==set(s['terminal_jobs'])
+        for proof in (s,p):
+            assert proof['training_processes_signalled']==proof['additional_evaluation_rollouts']==proof['model_or_tensor_loads']==0
+            assert proof['frozen_validator_modified'] is False and proof['scientific_parameters_changed'] is False
+        assert s['other_projects_modified'] is False
+        for r in p['entries']:
+            assert r['source']==source+'/runs/'+r['job'] and r['target']==target+'/runs/'+r['job']
+            assert r['primary_replica_released']==(r['job'] in foreign)
+            expected=('preserved_existing_remote_collection_edge' if r['job'] in foreign
+                else 'added_storage_copy_edge_primary_source_preserved')
+            assert r['annotation']==expected
+            original_files=r['original_files']
+            assert len({f['path'] for f in original_files})==len(original_files)
+            assert hashlib.sha256(json.dumps(original_files,sort_keys=True).encode()).hexdigest()==r['original_manifest_sha256']
+            for f in original_files:
+                rel=Path(f['path']);assert not rel.is_absolute() and '..' not in rel.parts
+                if f['kind']=='file':assert len(f['sha256'])==64 and f['bytes']>=0
+        for name,key in [('migrate_terminal_result_cache_20261024.py','helper_sha256'),
+                         ('collect_results_data_cache_20261024.py','new_collector_sha256')]:
+            assert hashlib.sha256((base/name).read_bytes()).hexdigest()==s[key]
+        # This is a terminal assembly cache, not scientific gate certification.
+        # All original native sources and the four remote originals are retained.
     raw=base/'goal2029_from4t_to4080_20261024_state.json'
     if raw.exists():
         s=read(raw.name)

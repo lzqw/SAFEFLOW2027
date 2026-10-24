@@ -1691,6 +1691,29 @@ def annotate_recovery(target):
             'training containers were not moved. This is storage relocation, '
             'not a different-checkpoint alias or repair of a missing parent.\n'
         )
+    if 'cold_a100_directory_offload_20261024_receipt.json' in late_resource_files:
+        disclosure += (
+            '\nEight named inactive A100 directories were copied and rehashed '
+            'on the project\'s private separate data disk before releasing '
+            'their redundant primary copies. Seven are cold recovery archives; '
+            'the eighth is an old legacy Ant run, not a current formal-matrix '
+            'container. Same-content links preserve their old read paths and '
+            'retirement parents remain on the primary filesystem. No trainer, '
+            'other project, scientific setting or missing parent was changed.\n'
+        )
+    if 'terminal_result_cache_migration_20261024_receipt.json' in late_resource_files:
+        disclosure += (
+            '\nThe eight already terminal assembly copies were verified on '
+            'A100\'s separate data disk and the result collector now assembles '
+            'future terminal copies there. Only four redundant primary import '
+            'replicas were released; their original4080 containers and all '
+            'native A100 sources remain intact. Original file manifests and '
+            'relocation history are retained. The frozen final validator is '
+            'unchanged and receives the new cache root as an argument; this '
+            'does not solve earlier multi-hop path/original-parent gaps or '
+            'establish any final scientific gate. No rollout or trainer '
+            'signal was introduced by this storage-only operation.\n'
+        )
     if 'inactive_4080_export_offload_20261024_receipt.json' in late_resource_files:
         disclosure += (
             '\nThree obsolete4080 export sets, whose canonical containers '

@@ -1,0 +1,3112 @@
+{
+  "phase": "eight_cold_directories_relocated_all_original_paths_preserved",
+  "source_project": "/home/lzqw/SAFEFLOW2027_A100",
+  "archive_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024",
+  "entries": [
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_cpu_workers/ant-2031_cpu_handoff_4080_20261020_0851_1792458448988080133",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_cpu_workers/ant-2031_cpu_handoff_4080_20261020_0851_1792458448988080133",
+      "files": [
+        {
+          "path": "a100_gpu_cpu_rebalance_20261019_1550.json",
+          "kind": "file",
+          "bytes": 1467,
+          "mode": 436,
+          "mtime_ns": 1792396532420040573,
+          "sha256": "7f58a5606c6c898f38384f7ca9b4d5dc6d505068b628bd2303163a9c6fa3cf8b"
+        },
+        {
+          "path": "a100_gpu_cpu_rebalance_20261019_1550_state.json",
+          "kind": "file",
+          "bytes": 1854,
+          "mode": 436,
+          "mtime_ns": 1792397696029364777,
+          "sha256": "3dd9faee684aeaf2482b67d7a5aa894abe8b31fe37db4f120f67bfba7cff3baa"
+        },
+        {
+          "path": "a100_reboot_recovery_20261019.json",
+          "kind": "file",
+          "bytes": 1517,
+          "mode": 436,
+          "mtime_ns": 1792386719202796628,
+          "sha256": "39eb1fe16b512c402f9feb5fc7a444aa625d024f5a526505114ac5cee3785445"
+        },
+        {
+          "path": "a100_reboot_recovery_20261019_1512.json",
+          "kind": "file",
+          "bytes": 1488,
+          "mode": 436,
+          "mtime_ns": 1792394700135097593,
+          "sha256": "96c71ede0ddf3b345f198fae16d3bbdac5f1f8516b957bb3025c629a167fe1ab"
+        },
+        {
+          "path": "a100_reboot_recovery_20261019_1512_state.json",
+          "kind": "file",
+          "bytes": 567,
+          "mode": 436,
+          "mtime_ns": 1792395626761500104,
+          "sha256": "f15607a7ac05d0dc0d53c3bc83f1d269ef4724be1e7a20811fcf5caba7f53ba5"
+        },
+        {
+          "path": "a100_reboot_recovery_20261019_state.json",
+          "kind": "file",
+          "bytes": 558,
+          "mode": 436,
+          "mtime_ns": 1792387878095928601,
+          "sha256": "6f9d6abf39812afca7876c6b713c6b2e84710b4acf561a5dceee0d8b343688d3"
+        },
+        {
+          "path": "aborted_cpu_handoff_before_cuda_failure_20261016.json",
+          "kind": "file",
+          "bytes": 649,
+          "mode": 436,
+          "mtime_ns": 1792126740406055310,
+          "sha256": "12ef506edddcf2680f594e297d0e005ad4d6ea934e518474be161d1afa0e130f"
+        },
+        {
+          "path": "aborted_cpu_handoff_before_cuda_failure_20261016.log",
+          "kind": "file",
+          "bytes": 407,
+          "mode": 436,
+          "mtime_ns": 1792134615939871531,
+          "sha256": "05b2d747160c0bb34e8f710456a5d5116e23503f207dcfe267e157d2c7640e8d"
+        },
+        {
+          "path": "cuda_failure_recovery_20261016.json",
+          "kind": "file",
+          "bytes": 1802,
+          "mode": 436,
+          "mtime_ns": 1792135503485991329,
+          "sha256": "5a4e2cfaa14cc15d68ed59a917f1786ba77e48a35df660acf95222653d15f9e7"
+        },
+        {
+          "path": "cuda_failure_recovery_20261016_state.json",
+          "kind": "file",
+          "bytes": 464,
+          "mode": 436,
+          "mtime_ns": 1792136728955202460,
+          "sha256": "f375281db23f0fc2080142c4ab10b5fd7b77a2bc4ef9d12c5f5b71be875b30a2"
+        },
+        {
+          "path": "exit_code.before_cuda_recovery_20261016.txt",
+          "kind": "file",
+          "bytes": 2,
+          "mode": 436,
+          "mtime_ns": 1792134607511940716,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "exit_code.retired_gpu_a100_gpu_cpu_rebalance_20261019_1550.txt",
+          "kind": "file",
+          "bytes": 4,
+          "mode": 436,
+          "mtime_ns": 1792397694261341489,
+          "sha256": "0e55cbbc9d11449b186092d82905aa6974858df7a0b7d706ae51c4716c9461ef"
+        },
+        {
+          "path": "exit_code.txt",
+          "kind": "file",
+          "bytes": 4,
+          "mode": 436,
+          "mtime_ns": 1792458448560643348,
+          "sha256": "0e55cbbc9d11449b186092d82905aa6974858df7a0b7d706ae51c4716c9461ef"
+        },
+        {
+          "path": "materialize.json",
+          "kind": "file",
+          "bytes": 472,
+          "mode": 436,
+          "mtime_ns": 1791859271871319036,
+          "sha256": "d9e66516177dc4fd96b79548324f02d9b938ad5818e14fae46a2aecbfc38acc6"
+        },
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4094,
+          "mode": 436,
+          "mtime_ns": 1791859271871319036,
+          "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+        },
+        {
+          "path": "source_commit.txt",
+          "kind": "file",
+          "bytes": 41,
+          "mode": 436,
+          "mtime_ns": 1791859271795317744,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        },
+        {
+          "path": "train.log",
+          "kind": "file",
+          "bytes": 2434875,
+          "mode": 436,
+          "mtime_ns": 1792134606115952329,
+          "sha256": "160a792e2b08a43bc8024f3e304e894304e331090c74778ba78e3465c3782d0d"
+        },
+        {
+          "path": "train_a100_gpu_cpu_rebalance_20261019_1550_cpu.log",
+          "kind": "file",
+          "bytes": 627578,
+          "mode": 436,
+          "mtime_ns": 1792457624326550585,
+          "sha256": "9624db0b9d6931f379ee3dbb41fa2e95c1079eba502476e7f94d4bbfb8381388"
+        },
+        {
+          "path": "train_a100_reboot_recovery_20261019.log",
+          "kind": "file",
+          "bytes": 62872,
+          "mode": 436,
+          "mtime_ns": 1792392663342606114,
+          "sha256": "f87a5d4380795eccacabdf1bf42e75b58083fdc5526047758f313df56446f107"
+        },
+        {
+          "path": "train_a100_reboot_recovery_20261019_1512.log",
+          "kind": "file",
+          "bytes": 13680,
+          "mode": 436,
+          "mtime_ns": 1792395623509485740,
+          "sha256": "2e3307de2304c337f1a43924b53638e9bb1039062a74c30e10371ff7cfdf9c6a"
+        },
+        {
+          "path": "train_cuda_recovery_20261016_20261016_152504.log",
+          "kind": "file",
+          "bytes": 566422,
+          "mode": 436,
+          "mtime_ns": 1792190915144281060,
+          "sha256": "ca06a5bba8ab2c7e7d931b30968e5aa30f822c7b37f0cd16b465abc3a2114590"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 815,
+          "mode": 436,
+          "mtime_ns": 1789330796264608545,
+          "sha256": "daef3cf54f7465e5a073c15c1bc027a4d4c6f0ef1893a91ef27d6a01c9e6d6e3"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/counterfactual_step_2000000.json",
+          "kind": "file",
+          "bytes": 1554,
+          "mode": 436,
+          "mtime_ns": 1789330796212608094,
+          "sha256": "c6e0823232296672c4ac61756680c3d6e9993d872a80419c821a87b0d4eb3de6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/counterfactual_step_500000.json",
+          "kind": "file",
+          "bytes": 1558,
+          "mode": 436,
+          "mtime_ns": 1789039512595381988,
+          "sha256": "139f5dc16adf9815c99eac6b098865553c6ba6ebcd6548fc39339f0bfe6e9c5b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 1201045,
+          "mode": 436,
+          "mtime_ns": 1789651433460256233,
+          "sha256": "6fa2dacb7743c4a3fa8fcf24384f6ae296dcdcdf1eb9b8b01288646683bd0bda"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1713,
+          "mode": 436,
+          "mtime_ns": 1789330796216608129,
+          "sha256": "bccf6936898d95a961c418f58f1a37c9c99411b3a5af1ebd8dc56ea39d3db14e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_2000000.json",
+          "kind": "file",
+          "bytes": 26091,
+          "mode": 436,
+          "mtime_ns": 1789330796216608129,
+          "sha256": "85841f2d6e672f0db4d79a894f8db12c7e1cc080275a742ba0f9716f72292b46"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_500000.json",
+          "kind": "file",
+          "bytes": 26648,
+          "mode": 436,
+          "mtime_ns": 1789039512599382022,
+          "sha256": "634c3d9169fa714225690915b8a27eefad8db0c076f67f65a3fd764ba90f0570"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 138070,
+          "mode": 436,
+          "mtime_ns": 1789651433076251666,
+          "sha256": "9cbe0e16ae95dac6dd5cf307aca513b1055fb08677ae541713027aed17be6435"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 753,
+          "mode": 436,
+          "mtime_ns": 1789651433076251666,
+          "sha256": "2568510f8ded70e0f9c35e911eb078d6b0635d95c27f7f38700ff2e62a2612d7"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1788949037708418024,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/trajectory_step_2000000.csv",
+          "kind": "file",
+          "bytes": 902794,
+          "mode": 436,
+          "mtime_ns": 1789330796144607505,
+          "sha256": "09b213babbb8624ef33526ca3f5c6c8a30bfb6eb582e2794120490f76fa9a183"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/trajectory_step_500000.csv",
+          "kind": "file",
+          "bytes": 656254,
+          "mode": 436,
+          "mtime_ns": 1789039512571381784,
+          "sha256": "c42ef6df075dcc765289a928378fc3f5c5128c53ff74051ceaf25f65830b34e0"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2323,
+          "mode": 436,
+          "mtime_ns": 1789651433476256424,
+          "sha256": "78af7daaf30593e96f54a1985dbcc75d25727df8d30483a423d4b7bd259af4a4"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8849999,
+          "mode": 436,
+          "mtime_ns": 1789330796240608337,
+          "sha256": "0faed96840a3ad3b2ea82388ef5fe23383d6fc3e757ace1e6f945424603c7865"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146458805,
+          "mode": 436,
+          "mtime_ns": 1789649635054636534,
+          "sha256": "e29c031ef0a996eec5f2db5087604731c9511d66b662276b103aeea272d92afa"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints/milestone_0.pt",
+          "kind": "file",
+          "bytes": 4436709,
+          "mode": 436,
+          "mtime_ns": 1788949037724418121,
+          "sha256": "c8dd8128cb1092e57432b8bbd306c51616b447a787c108cff2aee53582cb77c3"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints/milestone_2000000.pt",
+          "kind": "file",
+          "bytes": 8850235,
+          "mode": 436,
+          "mtime_ns": 1789330796300608857,
+          "sha256": "7d86768d93133b03df7a43a3d824ee66998cc3b728c4db572a3d65d9faa7503d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/checkpoints/milestone_500000.pt",
+          "kind": "file",
+          "bytes": 8849999,
+          "mode": 436,
+          "mtime_ns": 1789039512651382465,
+          "sha256": "1f1781d61da71c46c02ea0bf47ea8ea3902a2b148f7f3f60f2a52db5ecde998b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/config.json",
+          "kind": "file",
+          "bytes": 9978,
+          "mode": 436,
+          "mtime_ns": 1788949037708418024,
+          "sha256": "5f3872cc7b04a2deee95d89fecf911b6f7258179e9c4010dc9b8c89772cd04f9"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-09-09-18-17-17/progress.csv",
+          "kind": "file",
+          "bytes": 1230986,
+          "mode": 436,
+          "mtime_ns": 1789651433432255901,
+          "sha256": "7855c89319e7161d6fd1ba1a9d22c601747f7cd0af9bdfff357c792d9fc941aa"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 418683,
+          "mode": 436,
+          "mtime_ns": 1792134418641968386,
+          "sha256": "dfb1f545687cef827872183b24fca5006afd027164c0d8982dba87e01aa93514"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 51688,
+          "mode": 436,
+          "mtime_ns": 1792134417913978210,
+          "sha256": "f2be43d514b2b1323b9756a74e55ac45cb48ed200a1f21bc6f6b616488223db8"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 753,
+          "mode": 436,
+          "mtime_ns": 1792134417913978210,
+          "sha256": "4aea24a227ecbcf0fec8a5acb3fd909270798e786b62df48ddfdedfee324d60c"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1791859288371598767,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4140,
+          "mode": 436,
+          "mtime_ns": 1792134606115952329,
+          "sha256": "5990fbff405ebb3e4ae3ed8623fe04531d4ae25d1b760d26dfd8c8dc7febea7e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2325,
+          "mode": 436,
+          "mtime_ns": 1792134418657968171,
+          "sha256": "93257ece01fd665d0dee1f07d78e86d5d35305f52bced24ecfad57a98057c7c9"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146462834,
+          "mode": 436,
+          "mtime_ns": 1792122773684211302,
+          "sha256": "9aaad039550227565fdcc4a265f6884fa88a5612306319dea5d72bff7cb2a3a5"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/config.json",
+          "kind": "file",
+          "bytes": 10270,
+          "mode": 436,
+          "mtime_ns": 1791859288371598767,
+          "sha256": "389d63f4e38a7358daec1ac34f64561bc8892128ba57f3cb2fd6ee780d582a2f"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-13-10-41-28/progress.csv",
+          "kind": "file",
+          "bytes": 423591,
+          "mode": 436,
+          "mtime_ns": 1792134418617968710,
+          "sha256": "d6aa2aad292fa6b212eb532906a38bd8a51ecbb57ab4d7dd49a051db3915eeb8"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 98914,
+          "mode": 436,
+          "mtime_ns": 1792190915144281060,
+          "sha256": "b3a8146426a5a0c6d38fe4d2e7ff79511d712a2a6fee083b280a45c2548c2942"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 12161,
+          "mode": 436,
+          "mtime_ns": 1792190915108281725,
+          "sha256": "78edb22151d1236a4ca142421602da1563231d272434f9de6771a34f619511ce"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 750,
+          "mode": 436,
+          "mtime_ns": 1792190915108281725,
+          "sha256": "1079aac1b4e60e029fbff2a2ae25ddec02c244b21c5c011bf12a2338bc20e305"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792135516266008084,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1792190915160280764,
+          "sha256": "a1ae7cf2ab953d4dd9f5c5f6b62dfed4c6b017da79f31bb1b872cc23b753b891"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146458533,
+          "mode": 436,
+          "mtime_ns": 1792183752981218006,
+          "sha256": "e0cb5a8b0ab19f775a0b16d0edcd5af123148ff5c52254a2b31d2f7bb9f99e0f"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/config.json",
+          "kind": "file",
+          "bytes": 10264,
+          "mode": 436,
+          "mtime_ns": 1792135516262008079,
+          "sha256": "d83ac249c329b765644dafc3dd6e35d355b58cce48b9102081b9052135f52e3b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-16-15-25-16/progress.csv",
+          "kind": "file",
+          "bytes": 100281,
+          "mode": 436,
+          "mtime_ns": 1792190915116281577,
+          "sha256": "f011a37abb5b3f2bd894e913c3a9a254c16471d43bf6b3eae91a194f76fcd9f6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 13901,
+          "mode": 436,
+          "mtime_ns": 1792392663342606114,
+          "sha256": "a3cec2754fdae1f5b054bca874ea4da2f875eecfa67df9286151de2de5b8fd9c"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 1635,
+          "mode": 436,
+          "mtime_ns": 1792392663306606257,
+          "sha256": "7ee16b6df9f573f973ffe6105cb544d1cb49859e7b0deeea0d1a05c8856a801f"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 748,
+          "mode": 436,
+          "mtime_ns": 1792392663310606241,
+          "sha256": "a4854b975735c9ddeea7da6493a39ec3e80ee73855a9b84de9749df41938604e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792386732838993770,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2319,
+          "mode": 436,
+          "mtime_ns": 1792392663366606019,
+          "sha256": "ca90cc98bdf37e82cd96bca5db9ac014b4505384302bb3117e9b534e3b72840a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/config.json",
+          "kind": "file",
+          "bytes": 10264,
+          "mode": 436,
+          "mtime_ns": 1792386732838993770,
+          "sha256": "7bcaf23ef3bfd9a4bdb47c810b50f475fb970fd1901db76c89c418519e4554db"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-13-12-12/progress.csv",
+          "kind": "file",
+          "bytes": 14080,
+          "mode": 436,
+          "mtime_ns": 1792392663318606209,
+          "sha256": "9b88b46ebbd0e60862cae3fe209f296f8b17b3bf996f68036bded23ad55605a3"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 5578,
+          "mode": 436,
+          "mtime_ns": 1792395623509485740,
+          "sha256": "d33464d8d7dc7ba4454e32273b254b23ea397587e9d01d5065e7f487aaa062ed"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 603,
+          "mode": 436,
+          "mtime_ns": 1792395623221484479,
+          "sha256": "1ac58a33d82f7dde2ae90bb0589d4b1054b73e1f61f1f5588228e3d0f05cd5d4"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 752,
+          "mode": 436,
+          "mtime_ns": 1792395623221484479,
+          "sha256": "391338f21afe7004adbe0f58430456d22ad51268259af3e99a27302a80ecc556"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792394714907720332,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2324,
+          "mode": 436,
+          "mtime_ns": 1792395623525485810,
+          "sha256": "6c5c5ae2a4fb866de0acb4a45fd60ec25de96e615192115b9962eec456ce9f1f"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/config.json",
+          "kind": "file",
+          "bytes": 10270,
+          "mode": 436,
+          "mtime_ns": 1792394714907720332,
+          "sha256": "07e54051d2966e3851cc07583815479e683c66264371cc58d2506cade57cf3da"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-25-14/progress.csv",
+          "kind": "file",
+          "bytes": 5589,
+          "mode": 436,
+          "mtime_ns": 1792395623481485617,
+          "sha256": "f15596f3a337cce90c15a5b5b30055fb32838f127352339f634d0fab91988b9a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 109405,
+          "mode": 436,
+          "mtime_ns": 1792457624330550611,
+          "sha256": "2eb06ddc6fe9747222073615f0b653f1f6d45eedc4407ad966c69fb2fd4c50a5"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 13593,
+          "mode": 436,
+          "mtime_ns": 1792457624294550379,
+          "sha256": "4bc4457523a07efaf46a841b8c4affa3f5f93aac09296d891e513627238f60ae"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 751,
+          "mode": 436,
+          "mtime_ns": 1792457624294550379,
+          "sha256": "480ba8bd2b5489bdddddf8a7de22022099a5af64a2c25ed4657c942069f8766b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792396544952270966,
+          "sha256": "ed022ba575c371aaa02869e4d0e256157dd094352eca2c1557f36a17f3f2d62d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2321,
+          "mode": 436,
+          "mtime_ns": 1792457624350550740,
+          "sha256": "34b2526fb3ebda0da53c2d7f31c9f1569bf8c298800de423282e17c366b6be53"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146458979,
+          "mode": 436,
+          "mtime_ns": 1792456464677182786,
+          "sha256": "618201d1edb54898471d2d0be94d39df3450247bd200b071c2f88aca34ef12bf"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/config.json",
+          "kind": "file",
+          "bytes": 10264,
+          "mode": 436,
+          "mtime_ns": 1792396544952270966,
+          "sha256": "7bcaf23ef3bfd9a4bdb47c810b50f475fb970fd1901db76c89c418519e4554db"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-19-15-55-44/progress.csv",
+          "kind": "file",
+          "bytes": 110857,
+          "mode": 436,
+          "mtime_ns": 1792457624302550430,
+          "sha256": "d04bae110a53e6ddecbedafc8619584b9d9d5571a5f74ce4317431c2236e3de6"
+        }
+      ],
+      "file_manifest_sha256": "74d4786023bfdf0b27a2ce4c06c04cff8dc22183418740e31d94c410c02d2a10",
+      "logical_bytes": 626236670,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers/point-button-2028_a100_to_4080_point2028_20261022",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_gpu_workers/point-button-2028_a100_to_4080_point2028_20261022",
+      "files": [
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4112,
+          "mode": 436,
+          "mtime_ns": 1792565478011013340,
+          "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 294866101,
+          "mode": 436,
+          "mtime_ns": 1792565501670983373,
+          "sha256": "0c78c2d4eb09872fc97fdfa46ca731d7d077901a35a8a0be37472aab7e77bba3"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 185813,
+          "mode": 436,
+          "mtime_ns": 1792641706238566039,
+          "sha256": "0487705f67fb701728880f8711ff076b8281f1b59ea9d48de450f73f31a98860"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 23185,
+          "mode": 436,
+          "mtime_ns": 1792641706186564722,
+          "sha256": "36be47f0c734c8480f0514e84b5182dbe590ad4747d3e52717cc8a82bcc9d4cd"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 751,
+          "mode": 436,
+          "mtime_ns": 1792641706186564722,
+          "sha256": "79df90c24ea730594d17c0e574d8ea3b659058addcdb41a809ded2556fc9101d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792565708094922489,
+          "sha256": "23d3bf3aca096056bc58c987f11eaf5332520b44f1131d3f0edf93644baa86a8"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4104,
+          "mode": 436,
+          "mtime_ns": 1792642415085034761,
+          "sha256": "ccbf31848691a293767be34612d3157f476fc72984aa3709409c5fa0bb82d7a8"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1792641706254566445,
+          "sha256": "75a1f607bfaff895859c6e5b672e9e2f715cf53bbde701e5d1ebb1f3cde468e6"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 294865842,
+          "mode": 436,
+          "mtime_ns": 1792634251976587231,
+          "sha256": "0995b6e3a1340b1b3550287cd49660c87a502f38b04514149747fe43ebd0aaa5"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/config.json",
+          "kind": "file",
+          "bytes": 10379,
+          "mode": 436,
+          "mtime_ns": 1792565708094922489,
+          "sha256": "6c60a5d6f8049f4ba657ca7ab295560102ceb2389f744b27b5fd610fa3322a79"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/progress.csv",
+          "kind": "file",
+          "bytes": 189541,
+          "mode": 436,
+          "mtime_ns": 1792641706210565330,
+          "sha256": "c64f8bf261b336c452cfc2aec65242664329ec8c444946e5e43b610584ec9afc"
+        }
+      ],
+      "file_manifest_sha256": "8a9aaa5cc37007d43f204b47e455bf623792f736be72dd4e4865f2aa1978bd97",
+      "logical_bytes": 590158447,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_gpu_workers/point-button-2030_a100_to_4080_point2030_20261022",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_gpu_workers/point-button-2030_a100_to_4080_point2030_20261022",
+      "files": [
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4112,
+          "mode": 436,
+          "mtime_ns": 1792565578430921427,
+          "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 294866165,
+          "mode": 436,
+          "mtime_ns": 1792565601906912414,
+          "sha256": "b12b74713ef0eb10e417c631e04bfcc01fe908dd49da67d00c2ef268bb0bbad5"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 189131,
+          "mode": 436,
+          "mtime_ns": 1792642751892633132,
+          "sha256": "750c351644de2de233f694c48b70cd4f5f28ab026e1935284d52e02ada0a293b"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 23534,
+          "mode": 436,
+          "mtime_ns": 1792642751824634053,
+          "sha256": "20ec372dae71fd705d65fe067b3f0c07919075ad72c9b7c490df8d299a815037"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 753,
+          "mode": 436,
+          "mtime_ns": 1792642751824634053,
+          "sha256": "ef3c300a2c13846c71e682a529db86eac5ea935ead19def9dd38f4f874b0618e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792565708226922549,
+          "sha256": "7bce555e4405b992ec959d2a245acc364b445c6ec71cba277e45ba7d0b3ad3cd"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4133,
+          "mode": 436,
+          "mtime_ns": 1792643759454621789,
+          "sha256": "f6c23e11f22824f060103b7bb0613a3dc050560c2a93747d56d0f7504f93d19e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1792642751916632807,
+          "sha256": "766bc70438a8ebd111898d4e1f37f228943abb944bfefc6d3ca11aac0795e5ff"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 294865906,
+          "mode": 436,
+          "mtime_ns": 1792642752556624169,
+          "sha256": "590463f51790119b9aff3deedbeace6211ad0ed337c2cc842334818ed92dc92d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/config.json",
+          "kind": "file",
+          "bytes": 10379,
+          "mode": 436,
+          "mtime_ns": 1792565708226922549,
+          "sha256": "ec1876dbe9cc120ec0abfef6607b9819cceeabbff10db4e31dc8c01f863f909c"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/progress.csv",
+          "kind": "file",
+          "bytes": 192901,
+          "mode": 436,
+          "mtime_ns": 1792642751856633619,
+          "sha256": "c00a3b9f80b60761e5e6d29688c88ecd391fde84dffb7016153dd778f9a1efca"
+        }
+      ],
+      "file_manifest_sha256": "23a94361bc4f46faa964bf8c4a6651d77d8306218533df2a585f0f75278a4efb",
+      "logical_bytes": 590165633,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_duplicate_branches_20261022/ant-2028",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_duplicate_branches_20261022/ant-2028",
+      "files": [
+        {
+          "path": "duplicate_branch_retirement_20261022.json",
+          "kind": "file",
+          "bytes": 558,
+          "mode": 436,
+          "mtime_ns": 1792639590150499118,
+          "sha256": "785c546b0fb3a671844eb214fff1013964d3473e0b882bb92f3402edd20e4b67"
+        },
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4094,
+          "mode": 436,
+          "mtime_ns": 1792579881540458622,
+          "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-20-22-55-00",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-20-22-55-00/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-20-22-55-00/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146464039,
+          "mode": 436,
+          "mtime_ns": 1792579892373068902,
+          "sha256": "0bd49797a4328cb2f99c597e3ee8e3ac2778306103deb3c777f2dfc487e1799b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 152378,
+          "mode": 436,
+          "mtime_ns": 1792638776233377348,
+          "sha256": "2a8089851470a17336b432ae7fb425b8731f82ab0bba34e6983dccd2def2d59a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 18685,
+          "mode": 436,
+          "mtime_ns": 1792638776165373741,
+          "sha256": "7f42d90339aeb2732a543a4561e8d4c1192c5666c2cf8779713a3f5a80568ce9"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 751,
+          "mode": 436,
+          "mtime_ns": 1792638776165373741,
+          "sha256": "ba5de2c5b507a74d2f0b6527440bd810f14bb52e95a19c26180492fb47e62f9b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792579998378511923,
+          "sha256": "5557f061abcf023764808a957fe12f7b2462a33765ccee3839c4c9779e28c9ac"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4139,
+          "mode": 436,
+          "mtime_ns": 1792639587934515816,
+          "sha256": "aa96c88d59c2f399206796b47bcf28e68031cad3efe7adce45f6c5317c70dfb5"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2319,
+          "mode": 436,
+          "mtime_ns": 1792638776261378833,
+          "sha256": "c7079fac050f5840fb816aa47944b125e98443ca6b33ecad9b04f4f9e7ce880a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146456693,
+          "mode": 436,
+          "mtime_ns": 1792637968246141947,
+          "sha256": "695e739d9d3a27fca44b4b7dd0030f854f31e5cd0acd0dbfbcc9f024b4b14b5a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/config.json",
+          "kind": "file",
+          "bytes": 10270,
+          "mode": 436,
+          "mtime_ns": 1792579998378511923,
+          "sha256": "fd2ef066a6745a3b1adfa8db3adc5ca71ceb1b6a8a7e6d6a9933f8db94f98c1d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-21-18-53-18/progress.csv",
+          "kind": "file",
+          "bytes": 154122,
+          "mode": 436,
+          "mtime_ns": 1792638776197375439,
+          "sha256": "81919e9b050958692a794eb4340e5718bf9fb8e471bf2f8bafc1e66b8027b741"
+        }
+      ],
+      "file_manifest_sha256": "2362e2785a611b018ddad3760a3d1a36420af60af59f1ad084f2f4b13242a7e2",
+      "logical_bytes": 293274345,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_duplicate_branches_20261022/walker2d-2028",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_duplicate_branches_20261022/walker2d-2028",
+      "files": [
+        {
+          "path": "duplicate_branch_retirement_20261022.json",
+          "kind": "file",
+          "bytes": 574,
+          "mode": 436,
+          "mtime_ns": 1792639590170498971,
+          "sha256": "b5fb2d6e5c542ac92ef0d71a99028f48c754bae4494a73ec17560e151e220fb3"
+        },
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4099,
+          "mode": 436,
+          "mtime_ns": 1792580101403003092,
+          "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-00-34-56",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-00-34-56/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-00-34-56/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 110905767,
+          "mode": 436,
+          "mtime_ns": 1792580109703335249,
+          "sha256": "03fc29f9fb34e7cf87cd038a388cbfaebdf4edc803a3c5f4547e25645330bad2"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 154481,
+          "mode": 436,
+          "mtime_ns": 1792639510499554132,
+          "sha256": "26c1c56c4466cdcb73dfdc439d6d8be811f4bdea1844a2c7a83701f7140c5e32"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 18730,
+          "mode": 436,
+          "mtime_ns": 1792639510427555554,
+          "sha256": "9201fdc6c92a400df65515fe6f73149055db7bbe7821c61c00ae0e2576f5dea8"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 746,
+          "mode": 436,
+          "mtime_ns": 1792639510427555554,
+          "sha256": "5027b3d7e12aea2a22e9e6049c4299e9cfb1bdc48086c59fa50824f0717b4807"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6302,
+          "mode": 436,
+          "mtime_ns": 1792580204174843058,
+          "sha256": "bd0313701ce118259c4dae7ff80db9812974c20a27f78038aae9717a148b6b36"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4136,
+          "mode": 436,
+          "mtime_ns": 1792639587934515816,
+          "sha256": "44d5a35cc50252d68ddfa0d9ea737b906ae4d715a0b9e7b45d89c2f56a30e363"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2318,
+          "mode": 436,
+          "mtime_ns": 1792639510527553580,
+          "sha256": "8cee590db88d0d373268ae3cf303dad0f84162bb3cc6b8daa5a5d921a677d27c"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 110905589,
+          "mode": 436,
+          "mtime_ns": 1792637873467596233,
+          "sha256": "22c9e5af45644703cbfa9f70ff96084ea627da99914d64f3c7194bdd449baed0"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/config.json",
+          "kind": "file",
+          "bytes": 10310,
+          "mode": 436,
+          "mtime_ns": 1792580204170842920,
+          "sha256": "f4161b99c56998fec124fc3e8d75556e940acdef270cb5498224dc083e6d1e07"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-18-56-44/progress.csv",
+          "kind": "file",
+          "bytes": 156249,
+          "mode": 436,
+          "mtime_ns": 1792639510463554843,
+          "sha256": "45b4e5419df9a3817678c19137482d3603c3ab3c0aefa5d72a2fc32ff7e8c058"
+        }
+      ],
+      "file_manifest_sha256": "cbe12f89da4f866f52173022b31e4388a03f3ffaf87e2db54ac5af6a6d56f3ad",
+      "logical_bytes": 222169301,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/retired_duplicate_branches_20261022/walker2d-2029",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/retired_duplicate_branches_20261022/walker2d-2029",
+      "files": [
+        {
+          "path": "duplicate_branch_retirement_20261022.json",
+          "kind": "file",
+          "bytes": 574,
+          "mode": 436,
+          "mtime_ns": 1792639590194498795,
+          "sha256": "8c358faf73ad89e08a7c5abda3f2e8fa4162ee0189c870baf4d381cff07b291c"
+        },
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4099,
+          "mode": 436,
+          "mtime_ns": 1792580123327871634,
+          "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-05-24-34",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-05-24-34/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-05-24-34/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 110910759,
+          "mode": 436,
+          "mtime_ns": 1792580131508188509,
+          "sha256": "e7c0a08ea1c8fa2f9e9c1c595953c1bfbd07f3e6a7970091059aee188e051fac"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 154393,
+          "mode": 436,
+          "mtime_ns": 1792639192092343458,
+          "sha256": "e19e26abf26ebb90d8522c177fc814292f7a601783baf60da612213d582d3384"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 18840,
+          "mode": 436,
+          "mtime_ns": 1792639192008354689,
+          "sha256": "77a1f33c41604ef76cbb91c13d8842e456dec78c62db0e5ee7e3879906f1eb54"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 746,
+          "mode": 436,
+          "mtime_ns": 1792639192020353085,
+          "sha256": "0cfd62bb414efea922c67c7e2b7b3e0b62f3406abca0330c78a182201dda9946"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6302,
+          "mode": 436,
+          "mtime_ns": 1792580204090840149,
+          "sha256": "d89b56be318105722fec85b5e4d1439992da2d4d68910a47baee9d259be00224"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4139,
+          "mode": 436,
+          "mtime_ns": 1792639587938515785,
+          "sha256": "f4bd0dfede3bcd4e1078d5fccf121842a0387b5334df27c6d71fab9d3b2a6be0"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2318,
+          "mode": 436,
+          "mtime_ns": 1792639192116340249,
+          "sha256": "1a479c739fc7ccb3bfb92d9e5d87fc97a2c18e7792ea4e1d5a94f5a25143b1c2"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 110914933,
+          "mode": 436,
+          "mtime_ns": 1792637596313462365,
+          "sha256": "e70fd11c1622452de1219d6b1a586bb4fc2bfa02e447facfdad9d7f16e8feeca"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/config.json",
+          "kind": "file",
+          "bytes": 10310,
+          "mode": 436,
+          "mtime_ns": 1792580204090840149,
+          "sha256": "18fb7c99e2a078f3a00c15678d882be4dae9482e88771b1b7165e4a1dd0cfc58"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-18-56-44/progress.csv",
+          "kind": "file",
+          "bytes": 156209,
+          "mode": 436,
+          "mtime_ns": 1792639192056348271,
+          "sha256": "f1038dbd49e517b4793f769e4e1593c6aeafff28f3630ef02690632b41810890"
+        }
+      ],
+      "file_manifest_sha256": "a14a7d8fc4093adfa844190cb022abd9f38fdea62e3473a9665d1bd6f08831d7",
+      "logical_bytes": 222183622,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/recovery_backups/historical_ant2029_4080_input_20261022",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/recovery_backups/historical_ant2029_4080_input_20261022",
+      "files": [
+        {
+          "path": "a100_reboot_recovery_20261019.json",
+          "kind": "file",
+          "bytes": 1514,
+          "mode": 436,
+          "mtime_ns": 1792386719000000000,
+          "sha256": "962b478787c73370c5cbf6aeb09359c9038bb088de55d4c67e38786196ac96f4"
+        },
+        {
+          "path": "a100_reboot_recovery_20261019_state.json",
+          "kind": "file",
+          "bytes": 558,
+          "mode": 436,
+          "mtime_ns": 1792387898000000000,
+          "sha256": "75e2181b4551e59bd631ac0ae0353e089305a0a653e8568458cdcc6af7c17b2e"
+        },
+        {
+          "path": "artifact_relocation.json",
+          "kind": "file",
+          "bytes": 298,
+          "mode": 436,
+          "mtime_ns": 1792509020000000000,
+          "sha256": "341096bb4a75c2f0ab0e45ab127eae75d020aef63d05253017eb49906748af42"
+        },
+        {
+          "path": "artifact_relocation.json.before_cpu_5080_to_4080_20261020_1792509020171250708",
+          "kind": "file",
+          "bytes": 300,
+          "mode": 436,
+          "mtime_ns": 1792396204000000000,
+          "sha256": "e3ab0bfa730d2e030c59d79cdd22f0daae41e70181a52c75bb09bfee3667eef4"
+        },
+        {
+          "path": "exit_code.txt",
+          "kind": "file",
+          "bytes": 4,
+          "mode": 436,
+          "mtime_ns": 1792579843000000000,
+          "sha256": "9d9b18720961e9b4689fd763b85e7b6f36160ccd3a8a1c9ddc5103bb0f66c396"
+        },
+        {
+          "path": "handoff_cpu_5080_to_4080_20261020_receipt.json",
+          "kind": "file",
+          "bytes": 7943,
+          "mode": 436,
+          "mtime_ns": 1792509020000000000,
+          "sha256": "fc23207a07ed7799e6255fc5c228c6db13140b9125b2c922092baa52c83d7226"
+        },
+        {
+          "path": "handoff_cpu_5080_to_4080_20261020_state.json",
+          "kind": "file",
+          "bytes": 10555,
+          "mode": 436,
+          "mtime_ns": 1792509783000000000,
+          "sha256": "4e887478bcd6ce8bb6b3f5b38533f88bef8de0b8dd17faca705400dc1bbc977a"
+        },
+        {
+          "path": "materialize.json",
+          "kind": "file",
+          "bytes": 472,
+          "mode": 436,
+          "mtime_ns": 1791864206000000000,
+          "sha256": "79a993368c880b668c8a575b211cc4aca9b556cf8fbce93a43abb5cc88adbe5d"
+        },
+        {
+          "path": "reboot_cpu_5080_20261019_1512.json",
+          "kind": "file",
+          "bytes": 1966,
+          "mode": 436,
+          "mtime_ns": 1792396204000000000,
+          "sha256": "47336a1758d7c170b4491d77c7d4ed24b5df6d0e27a77140a5ad7f12fab413f5"
+        },
+        {
+          "path": "reboot_cpu_5080_20261019_1512_state.json",
+          "kind": "file",
+          "bytes": 1410,
+          "mode": 436,
+          "mtime_ns": 1792397503000000000,
+          "sha256": "2041e8cf1ed002cc9a670ab9d67892cedc8acb7ae395e518314275157980d008"
+        },
+        {
+          "path": "resolved_formal_config.yaml",
+          "kind": "file",
+          "bytes": 4094,
+          "mode": 436,
+          "mtime_ns": 1791864206000000000,
+          "sha256": "9466ef6f1c6350ed45a6c4a33985e30de045f2b0a5084df0b005861b040f5cfa"
+        },
+        {
+          "path": "source_commit.txt",
+          "kind": "file",
+          "bytes": 41,
+          "mode": 436,
+          "mtime_ns": 1791864206000000000,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        },
+        {
+          "path": "train_a100_reboot_recovery_20261019.log",
+          "kind": "file",
+          "bytes": 63039,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "d993d30a3418363728d606bab0bdef2164ba74b8c0da3490d2d3b271f0c2e551"
+        },
+        {
+          "path": "train_cpu.log",
+          "kind": "file",
+          "bytes": 3370473,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "0b33e5accbfbe7911d6b5d23c40752788338b9a1315abd1974347fc5a54f64e4"
+        },
+        {
+          "path": "train_cpu_5080_to_4080_20261020.log",
+          "kind": "file",
+          "bytes": 1108623,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "aea58f09d05335bbfbfaa565dcf6664b6a83c2e0cc6012be733c59a0b65b6062"
+        },
+        {
+          "path": "train_reboot_cpu_5080_20261019_1512.log",
+          "kind": "file",
+          "bytes": 1857710,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "57e3be730283d243fa2b8b686396b26e508596dbf2d9647d2e4382553f05d733"
+        },
+        {
+          "path": "training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 815,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "632419ef1237525c63e4ec3fe0aa71fcf81c56309ce8c7f76fad3ddd9d01f418"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/counterfactual_step_500000.json",
+          "kind": "file",
+          "bytes": 1538,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "6191628bd3a48e7c71bdb8cb8ed9eb950a50ff562f7873184bacea24345c1b2a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 605797,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "bfb27f3378573639c2f10fe04119aeab3a9953a92cbdc53e7f6f2c8a45934c94"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1178,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "baf4600b7c6677428297784e949f1165e624d16836ab33411894a9df9736fef9"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+          "kind": "file",
+          "bytes": 24437,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 70835,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "e1aa832407a59cbea99255fc5aa0efe4355b7b16c7f2574a94812b4807b2792e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 752,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "aef97ede5173417a2b508cdbc81a7daebee03f089653e1116e4e9cd062e4b6f0"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1791864211000000000,
+          "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/trajectory_step_500000.csv",
+          "kind": "file",
+          "bytes": 1424070,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "037e57a28385486c5bc53e7045aec64afaab15e6bd9a093b409a8496fdded594"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "9e6d2f8a58afdd831574ac6c446c4630bb1be09c68d65bb860d431f20aef247e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8846673,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "755146039a5894ad6a692faa6dfdbae6e61b2735fd40461a3264d3636f319bb4"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146464997,
+          "mode": 436,
+          "mtime_ns": 1792184350000000000,
+          "sha256": "218b2dec55f285b661dc9459f233f895098b01153909b43e46cc2407f6197f4a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/milestone_0.pt",
+          "kind": "file",
+          "bytes": 4434861,
+          "mode": 436,
+          "mtime_ns": 1791864211000000000,
+          "sha256": "caf739c4ec10c777316fd1674761ef2da7ae8add6098fe689aef046cccc4f293"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/checkpoints/milestone_500000.pt",
+          "kind": "file",
+          "bytes": 8846673,
+          "mode": 436,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "8e25d43dd31c7de2020e0f1b7d8cd96bd7bddf64b6ce007ba4b09f7bbc9c425a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/config.json",
+          "kind": "file",
+          "bytes": 9972,
+          "mode": 436,
+          "mtime_ns": 1791864211000000000,
+          "sha256": "5183131608837d09363de0433b8784d001d3ba94d6eab26d8def5e831aef6d7c"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/progress.csv",
+          "kind": "file",
+          "bytes": 615515,
+          "mode": 436,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "c1c291b978a261ff4f497ba208175242e6643a8880c5fa5f1f26ad319388de0a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 13615,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "d247b928f2844c9a9c8d67142b15c541026ec10585eec929105190903c7136f1"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 1465,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "90c0b53f7d7b9f6eb06a0dd51f5b254849cb1e965a4e4d6499fc6be693a493ac"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 717,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "3811900fc2074c914a38b216b1f61ffeb8fb53907115b0e8e5cc7da0abe0f422"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792386732000000000,
+          "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2277,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "a69d9468638f4d71364388ccaeba29e1ccb15dfb227165df8e9418f2a7488ff1"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/config.json",
+          "kind": "file",
+          "bytes": 10264,
+          "mode": 436,
+          "mtime_ns": 1792386732000000000,
+          "sha256": "6616a5eb511102d03575d64abc61baaf0dec5f5a7ce8b65b424ea54b3a35174f"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/progress.csv",
+          "kind": "file",
+          "bytes": 13764,
+          "mode": 436,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "83c443c67c3440b9655c08cc24f31006d974e9d8f51e9c87551224968d6c694a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 817,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "cd66eed9f944fb7ff304e813145f9bf84148fc8b0011f8ea5579867191d608f7"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/counterfactual_step_2000000.json",
+          "kind": "file",
+          "bytes": 1540,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "2125a5b712c79b1507a86ff2e629ffa495878fa7e085c39b64a0924c6ca53ea3"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 318952,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "9c930bf821cf7d14cccc9ef7d4eb9ef2d5a40b6185ddac03b2ae1ab26eddc86d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1192,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "5055feae5949499bb9d37bad08ff1b13cfb301222a7bc01e76202e18096080af"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation_step_2000000.json",
+          "kind": "file",
+          "bytes": 23487,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 38205,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "ada74b3dc52f390c3a6ff0d35518a0a404a04338c5b25edd4fd8e3cfe8105590"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 754,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "54523427e1d8aca9adad5875bef171cc6bfe3e98b597ba363bae7c70417fa2bf"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792396211000000000,
+          "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/trajectory_step_2000000.csv",
+          "kind": "file",
+          "bytes": 1401497,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "df9e25d484b95ecd4cf085b04537d93e3ec7268aba5d32547cb9b01b547a0db9"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2318,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "9507ccedb8fd3e52661187a03d6202e50e7699b05ace3f28e45d9c71a8b60a10"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8846630,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "e508471b01d0e33da7465e1b3c35aab339c0109bc11cb1c7529748a3826827c1"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146464803,
+          "mode": 436,
+          "mtime_ns": 1792507540000000000,
+          "sha256": "5e20506d499075c5128b3f165dcb28f433caa2b06ad7f5fccc8efeb1d6eea3cd"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/checkpoints/milestone_2000000.pt",
+          "kind": "file",
+          "bytes": 8846865,
+          "mode": 436,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "7a01b551fa1ff1965c9294e100cef9c01552fb50264bca9cdcb205391dc77551"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/config.json",
+          "kind": "file",
+          "bytes": 10284,
+          "mode": 436,
+          "mtime_ns": 1792396211000000000,
+          "sha256": "e17e4bc8e360b42008adf7af8c8ecfa586b5019f73863705d539bae9a341727b"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/progress.csv",
+          "kind": "file",
+          "bytes": 323866,
+          "mode": 436,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "dfb9fb6dae99b349dbff62de0f1df9ebe445bca46a25d37074b4522f1224d1f6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 189129,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "ae013692ccc8750b14fb655d1a54a1be563fdebe596adcdedf12cd52a76b8dc1"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 22248,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "aa16749b62054000d4bd7787aff95b675cecad4b943789df180f2fa0cd65a0fc"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 747,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "7e8bc0419fab4aacd6ad8e6f278b7df1cd98ba349ffecba9aee3bd0ac3ae23c7"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6297,
+          "mode": 436,
+          "mtime_ns": 1792509028000000000,
+          "sha256": "a335e79e65b1f806ab44a2285070a7e8e06e70811e94c15fbfbc594dbce3165a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2305,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "eab218ced3136b82b92042544a1e92bfcbe7db83195842f2f1f5458275956edb"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146462887,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "ad81d3c7eccdca5bd4b0566405d85f886e05957a36af4f76e1cc613a4a492cab"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/config.json",
+          "kind": "file",
+          "bytes": 10268,
+          "mode": 436,
+          "mtime_ns": 1792509028000000000,
+          "sha256": "983a1d55017abde2d1ac3ac406504c4f095aa844b5a56350a67bbf53073c01fe"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/progress.csv",
+          "kind": "file",
+          "bytes": 191630,
+          "mode": 436,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "6a10dd034182f151cd098954a066a5f2606ba1538b0e6c501e979a963d004770"
+        }
+      ],
+      "file_manifest_sha256": "39d8a2dc3b41552b840376b6a6f34238b32e33a933fd4583693834adba7ded38",
+      "logical_bytes": 491007149,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    },
+    {
+      "original_path": "/home/lzqw/SAFEFLOW2027_A100/runs/ant",
+      "archive_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups/cold_directories_20261024/runs/ant",
+      "files": [
+        {
+          "path": "engineering_interrupted",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/train.log",
+          "kind": "file",
+          "bytes": 13664,
+          "mode": 436,
+          "mtime_ns": 1787833412154285583,
+          "sha256": "c0549e43f0b3da67095bcd93bd8a10579b2b343231094cc7e1c37c8b94d9748c"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 4976,
+          "mode": 436,
+          "mtime_ns": 1787833412154285583,
+          "sha256": "b309db41094984b9ae1e499f1a51d42092be6c0299b3cef545cb1acbdc451dc6"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 554,
+          "mode": 436,
+          "mtime_ns": 1787833412098285185,
+          "sha256": "e7416977a65bd825c67660e6e616ec7a25912b209ddaf1a65366a94bbf6a5552"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 705,
+          "mode": 436,
+          "mtime_ns": 1787833412098285185,
+          "sha256": "bf28a939f2b54c246522d6c0c5d0725fd3ffcc7e0f7c00b65c14f56464372937"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6258,
+          "mode": 436,
+          "mtime_ns": 1787833146456615872,
+          "sha256": "c3353e9bc2ed2c893e39d4cf376de97832f2f7bb43375b90bac23a3dc4d5ab74"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2235,
+          "mode": 436,
+          "mtime_ns": 1787833412158285611,
+          "sha256": "36d0476019a0b1b12235189a5561523c9e9b738dd1652372ae7b9e8fe1d229b3"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/milestone_0.pt",
+          "kind": "file",
+          "bytes": 4436538,
+          "mode": 436,
+          "mtime_ns": 1787833146472615957,
+          "sha256": "792c16a05e92a35c96edd86d24bcff0c51ec4c5f97b001b6cca05b9867f094be"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/config.json",
+          "kind": "file",
+          "bytes": 9859,
+          "mode": 436,
+          "mtime_ns": 1787833146456615872,
+          "sha256": "96e31161ea9e7939b4175430604a05ba5a74c989e32dbabdb4c890869fcefe41"
+        },
+        {
+          "path": "engineering_interrupted/C0-2029-first-launch-20260827-2019/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/progress.csv",
+          "kind": "file",
+          "bytes": 4992,
+          "mode": 436,
+          "mtime_ns": 1787833412126285384,
+          "sha256": "ad8df4de385043af1ed903f7f979e9e43a7cd430953d785a7c69394532f817b4"
+        },
+        {
+          "path": "runs",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/receipt.json",
+          "kind": "file",
+          "bytes": 5338,
+          "mode": 436,
+          "mtime_ns": 1788565124548199337,
+          "sha256": "a47fbfa0bb49e5164ad9117b5d62b6bc66befdb2456bde37f6f10ab54addffcf"
+        },
+        {
+          "path": "runs/C0-2027/recovery",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/recovery/step-1000000",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/recovery/step-1000000/latest_full.pt",
+          "kind": "file",
+          "bytes": 146462511,
+          "mode": 420,
+          "mtime_ns": 1788417599259996793,
+          "sha256": "8939e31a0e7e19f054d519539c74d223736908d259cc899218da5fd8f0e19d38"
+        },
+        {
+          "path": "runs/C0-2027/train.log",
+          "kind": "file",
+          "bytes": 2466304,
+          "mode": 436,
+          "mtime_ns": 1788565124556199413,
+          "sha256": "63c99f59602231c076cd05778d3f2e4ae0d3dffb390e7ca3c01e325931f0b447"
+        },
+        {
+          "path": "runs/C0-2027/training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 817,
+          "mode": 436,
+          "mtime_ns": 1788565123908193205,
+          "sha256": "18e54f4bc93bc2d9b99c2724c5d1e992dc06398ebc98965481da767560b60980"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/counterfactual_step_2000000.json",
+          "kind": "file",
+          "bytes": 1565,
+          "mode": 436,
+          "mtime_ns": 1788565123880192937,
+          "sha256": "b26ed28d2e03997f4fd17a27012b0a8931f20fe2cd48625d1501ecb0cd55482d"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 421062,
+          "mode": 436,
+          "mtime_ns": 1788565124020194278,
+          "sha256": "fc4f2f23c9e0463db038729426adadb5e9a76861489b0527e873644027faae1e"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1188,
+          "mode": 436,
+          "mtime_ns": 1788565123884192975,
+          "sha256": "b8163eaffd177128143d701da0b0fd374686aeb85145a623498abf5e6a8ee3ca"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/evaluation_step_2000000.json",
+          "kind": "file",
+          "bytes": 23132,
+          "mode": 436,
+          "mtime_ns": 1788565123884192975,
+          "sha256": "02d372969afc2956b5f276c2b5828a7b60f17ecb22487b107b7616c9a1cb0721"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 51629,
+          "mode": 436,
+          "mtime_ns": 1788565123972193818,
+          "sha256": "68add9475bf05fb3d57f08e4f75d22c6886b5a80133bd560607664254c28839e"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 753,
+          "mode": 436,
+          "mtime_ns": 1788565123972193818,
+          "sha256": "fac2fa4d24446bb552c443b935a9f1bd7eead6e9696ef530848d0ab667154cd2"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6258,
+          "mode": 436,
+          "mtime_ns": 1788429710113469544,
+          "sha256": "bb5230d39d83a4f0e541e3a392550e9055104c2e1985052050880af0da8c0fa4"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4131,
+          "mode": 436,
+          "mtime_ns": 1788565124536199221,
+          "sha256": "cc943e942ac841af0beb7fe1e1bfe2adb5a86c487020e9b0adf0342af4dc3999"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/trajectory_step_2000000.csv",
+          "kind": "file",
+          "bytes": 1425467,
+          "mode": 436,
+          "mtime_ns": 1788565123864192784,
+          "sha256": "05dbce48786a5d43ede59a800f4417890514095b84696d92f823ac6facb7bb57"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1788565124044194508,
+          "sha256": "9c029021afd6f73e3ec4441b89918ec798e722d057468efc5e8474e9c580e92d"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8850511,
+          "mode": 436,
+          "mtime_ns": 1788565123908193205,
+          "sha256": "84149ef300abbdb3626671ade4c8513741debbe1c3a67e2606c8141395c56c7e"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints/final_full.pt",
+          "kind": "file",
+          "bytes": 146460146,
+          "mode": 436,
+          "mtime_ns": 1788565124524199106,
+          "sha256": "0120c739a5dcf62f97699b6bb60757473b6fab3c46e7a831c27b0a3cace11a80"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146460405,
+          "mode": 436,
+          "mtime_ns": 1788565124236196348,
+          "sha256": "d5979ef01d0f65e4c2ba5e13abfd011f817cca1b8ce71cf1fd49fbe545fa164a"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/checkpoints/milestone_2000000.pt",
+          "kind": "file",
+          "bytes": 8850747,
+          "mode": 436,
+          "mtime_ns": 1788565123940193512,
+          "sha256": "b7f7898ac35b7b49553875ca172834ce3a44d5400e75d601f89b29b62c6cf6fb"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/config.json",
+          "kind": "file",
+          "bytes": 10033,
+          "mode": 436,
+          "mtime_ns": 1788429710109469500,
+          "sha256": "76f7e27504f8299d38f4a07b9d339a25570ee78719b7b852d8b430d43e5f032a"
+        },
+        {
+          "path": "runs/C0-2027/training/STAR-{Ant-v4}/seed-2027-2026-09-03-18-01-50/progress.csv",
+          "kind": "file",
+          "bytes": 426471,
+          "mode": 436,
+          "mtime_ns": 1788565124000194087,
+          "sha256": "e4ede433a803e73600ca0d9254814f04993559a8a3175566ac82b1ce005b4603"
+        },
+        {
+          "path": "runs/C0-2029",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/receipt.json",
+          "kind": "file",
+          "bytes": 5314,
+          "mode": 436,
+          "mtime_ns": 1788816058156615346,
+          "sha256": "7e8c21e82d8c50f735623a37002584f2c6fc6e26a5a49c2a6d56f5905163ac1c"
+        },
+        {
+          "path": "runs/C0-2029/train.log",
+          "kind": "file",
+          "bytes": 5681965,
+          "mode": 436,
+          "mtime_ns": 1788816058160615378,
+          "sha256": "4fa08eb529aaabe24b4acf01bd5e79485776ef08e949a143b9f029a3a9f76530"
+        },
+        {
+          "path": "runs/C0-2029/training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 813,
+          "mode": 436,
+          "mtime_ns": 1788015365327751827,
+          "sha256": "0da460e33d643523ce2a3d56b045ed0d635cb87ac94f65bd1254ecff5f01b243"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/counterfactual_step_500000.json",
+          "kind": "file",
+          "bytes": 1555,
+          "mode": 436,
+          "mtime_ns": 1788015365275751338,
+          "sha256": "e373bf3366cd365995b9c187077623ff7584861227b2a677f1045086ea0fc268"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 816828,
+          "mode": 436,
+          "mtime_ns": 1788420563979657285,
+          "sha256": "f7dba93affb1a97fdbd351b15ee2b889fbfcf0f924a152532865a395c47d44ef"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1189,
+          "mode": 436,
+          "mtime_ns": 1788015365279751375,
+          "sha256": "d0fdbfa4c0aa02f5e098c5eb52d7940e9e83e3e533e07331a5ddca8c11d7db30"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/evaluation_step_500000.json",
+          "kind": "file",
+          "bytes": 23025,
+          "mode": 436,
+          "mtime_ns": 1788015365279751375,
+          "sha256": "0b82c30340b398eeaa6009e62abe1fac22e36c33b93315dcf6bdb745eaab80a0"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 92971,
+          "mode": 436,
+          "mtime_ns": 1788420562851627883,
+          "sha256": "65ffb1044b8ba79df193d6852ae23816ca8a301a2aeffa9bf9b4d8cabc062c43"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 752,
+          "mode": 436,
+          "mtime_ns": 1788420562851627883,
+          "sha256": "4be6ae47c13a318ab55aef46cbf48c24fcf8c13f3376cf0baf4d67c1b11ba5b3"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6258,
+          "mode": 436,
+          "mtime_ns": 1787833552875331610,
+          "sha256": "c3353e9bc2ed2c893e39d4cf376de97832f2f7bb43375b90bac23a3dc4d5ab74"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4116,
+          "mode": 436,
+          "mtime_ns": 1788421353890135464,
+          "sha256": "6267874dd7ef7df0e00aa0321d5c770fdf9f3f15fe5c6d3ab839671029724ff6"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/trajectory_step_500000.csv",
+          "kind": "file",
+          "bytes": 1438015,
+          "mode": 436,
+          "mtime_ns": 1788015365195750585,
+          "sha256": "f81ba833ad61fd2a92788ec60824dd9fcdd7d9b55baf83269f189d2f9ecc496e"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2320,
+          "mode": 436,
+          "mtime_ns": 1788420563999657806,
+          "sha256": "0497b66359b175fd30192ea7ae2dadabfe2e4dc3633b9520424ffcc7359ef9e8"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8849635,
+          "mode": 436,
+          "mtime_ns": 1788015365327751827,
+          "sha256": "2c3b93b550db9e59800eaf4e715bdf99b0c0fcecaae1769a98b4c8ccc5ed6624"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146456370,
+          "mode": 436,
+          "mtime_ns": 1788396488807570157,
+          "sha256": "b72e0ce799fb840f424c83d45455d7f7972455a5fac8fd80c22c5df3c40e7fba"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/checkpoints/milestone_0.pt",
+          "kind": "file",
+          "bytes": 4436538,
+          "mode": 436,
+          "mtime_ns": 1787833552887331703,
+          "sha256": "143da9dd94efd7f0465c633624a634af54cd55bfef1234c0f89fa42d450377cb"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/checkpoints/milestone_500000.pt",
+          "kind": "file",
+          "bytes": 8849699,
+          "mode": 436,
+          "mtime_ns": 1788015365363752166,
+          "sha256": "21c163d8b11ffd1a31d0236b51c030b413439f6dcc3436969cf2ae13432b80f4"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/config.json",
+          "kind": "file",
+          "bytes": 9859,
+          "mode": 436,
+          "mtime_ns": 1787833552875331610,
+          "sha256": "96e31161ea9e7939b4175430604a05ba5a74c989e32dbabdb4c890869fcefe41"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-25-52/progress.csv",
+          "kind": "file",
+          "bytes": 841303,
+          "mode": 436,
+          "mtime_ns": 1788420563955656659,
+          "sha256": "88c5f407a8febaef56dd98660b175f997ac186a112c364e77b03187f5cf45b8b"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 101694,
+          "mode": 436,
+          "mtime_ns": 1788493200174871257,
+          "sha256": "bc68afde817e3d39dbbaa4d4fa902626bae15d1e59fdbcf189c20af0cbd66938"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 11784,
+          "mode": 436,
+          "mtime_ns": 1788493200054869833,
+          "sha256": "5b33906c4ff156a95c81b3eb5ff6c39b8c88fbd2fddaccde7a0f83a37fcda0a5"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 718,
+          "mode": 436,
+          "mtime_ns": 1788493200054869833,
+          "sha256": "246b9afb61d48c94b126a296a16618bef1e8a845fe91968ba8359351524d8bb5"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6258,
+          "mode": 436,
+          "mtime_ns": 1788457279153321759,
+          "sha256": "c3353e9bc2ed2c893e39d4cf376de97832f2f7bb43375b90bac23a3dc4d5ab74"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4068,
+          "mode": 436,
+          "mtime_ns": 1788493293759970863,
+          "sha256": "a6f30c17137514eaaed76b71d1a362ab51d94ee73a99bb575944632d1af950bc"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2277,
+          "mode": 436,
+          "mtime_ns": 1788493200190871447,
+          "sha256": "bfbff183325a8487fc69b762cfa77358b6b6dd6691dc487c96750b450aea1a7c"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/config.json",
+          "kind": "file",
+          "bytes": 10119,
+          "mode": 436,
+          "mtime_ns": 1788457279153321759,
+          "sha256": "9c71776effc92089c36d132eebf5b78ac4484ccdd00dba88bfe1215b0508fc65"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-04-01-41-19/progress.csv",
+          "kind": "file",
+          "bytes": 102787,
+          "mode": 436,
+          "mtime_ns": 1788493200138870830,
+          "sha256": "d37f48cc9785cd93ae76ef321ff20a81f7750a71410beda3161360e885b5ec99"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 817,
+          "mode": 436,
+          "mtime_ns": 1788816057368609261,
+          "sha256": "b70d899576110663026045a9e2302fcb77ba5f0e9ed9f43fdb6721e842eb9018"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/counterfactual_step_2000000.json",
+          "kind": "file",
+          "bytes": 1536,
+          "mode": 436,
+          "mtime_ns": 1788816057340609045,
+          "sha256": "f7e57f7aeb837efa1fd094bcef20aaa2688881bedfeac9cd3229802d170e1e85"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 108160,
+          "mode": 436,
+          "mtime_ns": 1788816057692611763,
+          "sha256": "4cb53fd35a4cd6f089e700ac744e4fec4aa209fe60eff9daff24ebdf3aad7630"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1188,
+          "mode": 436,
+          "mtime_ns": 1788816057340609045,
+          "sha256": "b33fc60f004382c1c1aa96758992c5c492a232782bae6bc3293985fff1ab4684"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/evaluation_step_2000000.json",
+          "kind": "file",
+          "bytes": 22997,
+          "mode": 436,
+          "mtime_ns": 1788816057340609045,
+          "sha256": "272def551c1a16e9be0f4da577e2313116ab181b6f322bce3ffb534df982e801"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 12489,
+          "mode": 436,
+          "mtime_ns": 1788816057448609879,
+          "sha256": "f7c26e7cdcb4efba8e2eb022fd71a40c72e573b7a47e95f4e31e3b5c18b34b3a"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 747,
+          "mode": 436,
+          "mtime_ns": 1788816057448609879,
+          "sha256": "b6ac19d72f8620bdba7e193437e694928151bd5407440246b20dbb9b0c1a84ab"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6258,
+          "mode": 436,
+          "mtime_ns": 1788745264481181330,
+          "sha256": "c3353e9bc2ed2c893e39d4cf376de97832f2f7bb43375b90bac23a3dc4d5ab74"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4108,
+          "mode": 436,
+          "mtime_ns": 1788816058112615007,
+          "sha256": "9a558a11369aa152a48ec3ac1d81700218937522f59d259b3fa61cfa59240294"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/trajectory_step_2000000.csv",
+          "kind": "file",
+          "bytes": 1451266,
+          "mode": 436,
+          "mtime_ns": 1788816057316608860,
+          "sha256": "f462fea02ebb2672545d7ab3f2a32313218d639a873538d24d2176eec246cbf7"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2305,
+          "mode": 436,
+          "mtime_ns": 1788816057708611886,
+          "sha256": "c8d46ef1a972f601948f31556618dc93cf6c76833f422de62a7984582f7bf02d"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8850511,
+          "mode": 436,
+          "mtime_ns": 1788816057368609261,
+          "sha256": "57b11183720114641c006e94df5869e3648e40bd2d12b77d111a71f3aa2c149f"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/checkpoints/final_full.pt",
+          "kind": "file",
+          "bytes": 146466418,
+          "mode": 436,
+          "mtime_ns": 1788816058100614915,
+          "sha256": "6694979d8c817c8d4a1a51c34173f1b020b77f2b0e47e8355b01f89c45546511"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146466677,
+          "mode": 436,
+          "mtime_ns": 1788816057892613307,
+          "sha256": "6450ae38360f6f419c2d27c825d25848dbd8101deb22baad6a411043ce84b668"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/checkpoints/milestone_2000000.pt",
+          "kind": "file",
+          "bytes": 8850747,
+          "mode": 436,
+          "mtime_ns": 1788816057396609478,
+          "sha256": "25d77cdee5ebf243f2672909ac123884d1bd42b2056bb4d2fd3952e1b4869199"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/config.json",
+          "kind": "file",
+          "bytes": 10119,
+          "mode": 436,
+          "mtime_ns": 1788745264481181330,
+          "sha256": "9c71776effc92089c36d132eebf5b78ac4484ccdd00dba88bfe1215b0508fc65"
+        },
+        {
+          "path": "runs/C0-2029/training/STAR-{Ant-v4}/seed-2029-2026-09-07-09-41-04/progress.csv",
+          "kind": "file",
+          "bytes": 109332,
+          "mode": 436,
+          "mtime_ns": 1788816057664611547,
+          "sha256": "a4762be0dfd41951c6d5c5da707488f403d13c000e97efe5a57872587dd4f6db"
+        },
+        {
+          "path": "runs/P47-2029",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/receipt.json",
+          "kind": "file",
+          "bytes": 5285,
+          "mode": 436,
+          "mtime_ns": 1788404096155281369,
+          "sha256": "b4735791cc09f9e0302f4f6f0c485d984882540c4fde486230a3b341eca1a37d"
+        },
+        {
+          "path": "runs/P47-2029/train.log",
+          "kind": "file",
+          "bytes": 4354333,
+          "mode": 436,
+          "mtime_ns": 1788404096179281562,
+          "sha256": "85618c433883cac57ce648642786d4b45bc752b9ee4a0a2fd1d5d0e4dbe252e5"
+        },
+        {
+          "path": "runs/P47-2029/training",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 813,
+          "mode": 436,
+          "mtime_ns": 1788015060132836036,
+          "sha256": "2504082edefbdd0383d2b4fe1e2ed1451ab819343da6bd8c72488e62ecf07c7b"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/counterfactual_step_500000.json",
+          "kind": "file",
+          "bytes": 1540,
+          "mode": 436,
+          "mtime_ns": 1788015060068835414,
+          "sha256": "d36dcc947c780cd0599314603fdb4ec8ebb5b91ea54b487ad761d44c9dbabd5b"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 335170,
+          "mode": 436,
+          "mtime_ns": 1788105917662991441,
+          "sha256": "d7ca312a4043f68e39388d027485d88b960a92d69e00eff7a475729ef098d127"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1187,
+          "mode": 436,
+          "mtime_ns": 1788015060072835453,
+          "sha256": "8601f354b7ca1a2c72e3fc45f6d7a724b487fae8a222ee46f05d93bcb464b01d"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/evaluation_step_500000.json",
+          "kind": "file",
+          "bytes": 23481,
+          "mode": 436,
+          "mtime_ns": 1788015060072835453,
+          "sha256": "981bac0e3832d3ff4f22b5898d32da2b52d4e1e4ae9e5bf2ed1b94855290024c"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 39738,
+          "mode": 436,
+          "mtime_ns": 1788105917146984200,
+          "sha256": "8567a0c801fa9b8307efa251f3ff9fb50653e7d223bf376f152d5956213137db"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 753,
+          "mode": 436,
+          "mtime_ns": 1788105917146984200,
+          "sha256": "acf148c5e33cdce8c6d2408e3b9a8fe6b151b4fdbf057b7073314822a7d1531c"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6256,
+          "mode": 436,
+          "mtime_ns": 1787833146776617571,
+          "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4110,
+          "mode": 436,
+          "mtime_ns": 1788107680194748396,
+          "sha256": "37e52788b0dc45f59d4f359831469a6e7f5a2c9759222d64ab1e613921529db5"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/trajectory_step_500000.csv",
+          "kind": "file",
+          "bytes": 1437315,
+          "mode": 436,
+          "mtime_ns": 1788015060012834869,
+          "sha256": "601ed9c9182c38122499b5635870a87d1ceccfcf3e8acbf3eb135f20017737f8"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2322,
+          "mode": 436,
+          "mtime_ns": 1788105917686991778,
+          "sha256": "b6b62ca3acc5294861631059c00e73e0e1c67b99bb17ea7a6de62f2704fe33d7"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8849699,
+          "mode": 436,
+          "mtime_ns": 1788015060132836036,
+          "sha256": "70f33cf8512a1240e9dc047c4e81bf6f3efd5cf4a1b8d966fe14a37dd6fbc0c7"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146467823,
+          "mode": 420,
+          "mtime_ns": 1788085522587220988,
+          "sha256": "e0da55fe333aa5a3a0ec1388dbc6f5c86f4371a542a2a91b7c5bfafe68ba93ce"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/latest_full.pt.pre-seeta-1m-upgrade-step750000",
+          "kind": "file",
+          "bytes": 146461042,
+          "mode": 436,
+          "mtime_ns": 1788097346503091756,
+          "sha256": "c3ec1cfcd913adf86cdab9eb89fac2410db721cdbd8d09dffb4bcf82100e9c0c"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/milestone_0.pt",
+          "kind": "file",
+          "bytes": 4436538,
+          "mode": 436,
+          "mtime_ns": 1787833146796617678,
+          "sha256": "d70fe53d82be7e1f97e89d2529545d31c90cca80812401bdc530a82004fab801"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/checkpoints/milestone_500000.pt",
+          "kind": "file",
+          "bytes": 8849699,
+          "mode": 436,
+          "mtime_ns": 1788015060172836425,
+          "sha256": "c05139377de4270e144d29905c3e322cb1a142da2bb3f332584bba5133d5abe6"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/config.json",
+          "kind": "file",
+          "bytes": 9857,
+          "mode": 436,
+          "mtime_ns": 1787833146776617571,
+          "sha256": "087d8257cb944fb81d6b64c190925e4fcde68f7397eba532c3d76b422af74906"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-27-20-19-06/progress.csv",
+          "kind": "file",
+          "bytes": 342748,
+          "mode": 436,
+          "mtime_ns": 1788105917634991048,
+          "sha256": "a2999e4d9ba4998a6f40ffb37e0bfd40518d2a77babd36b8c9d79b57353bec6d"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/best_safe_return_selection.json",
+          "kind": "file",
+          "bytes": 819,
+          "mode": 436,
+          "mtime_ns": 1788404094467267828,
+          "sha256": "c82590aa4d6e45b0551430ed3f2b3e8fc754f3eb94f35956de235c29193e25d9"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/counterfactual_step_2000000.json",
+          "kind": "file",
+          "bytes": 1536,
+          "mode": 436,
+          "mtime_ns": 1788404094439267603,
+          "sha256": "bfaf777965d07d12bf4ae7f561279b659c242166a10778bb17ee919de70dff99"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/diagnostics.csv",
+          "kind": "file",
+          "bytes": 422169,
+          "mode": 436,
+          "mtime_ns": 1788404095631277166,
+          "sha256": "973f574d585cb55122cb32c1818d0904995f230edc9f49dd3a951c9accbfebb1"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation.csv",
+          "kind": "file",
+          "bytes": 1190,
+          "mode": 436,
+          "mtime_ns": 1788404094439267603,
+          "sha256": "43670f08a0882c618d47b2e2df743a3cc252b064f08c2eb49503639524c02901"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/evaluation_step_2000000.json",
+          "kind": "file",
+          "bytes": 22991,
+          "mode": 436,
+          "mtime_ns": 1788404094439267603,
+          "sha256": "8fe4e68253533aa4b2dff492d1adac3087f032ddb26d7ba2a0f956c0c582581a"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/heldout_probability.csv",
+          "kind": "file",
+          "bytes": 51725,
+          "mode": 436,
+          "mtime_ns": 1788404094651269304,
+          "sha256": "7273071288d68eca47142c3b4c85e797074502c422424d746706f7948c255bff"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/heldout_probability_latest.json",
+          "kind": "file",
+          "bytes": 719,
+          "mode": 436,
+          "mtime_ns": 1788404094655269336,
+          "sha256": "f40dfd83048f8a4be2af86129267b568d19c8c6011451f717e98bd21723b69d0"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/run_manifest.json",
+          "kind": "file",
+          "bytes": 6256,
+          "mode": 436,
+          "mtime_ns": 1788107718747107310,
+          "sha256": "817861fa9330405347bbd1a0da8a4571c670f488b476052b2ab42c29978a2555"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/training_summary.json",
+          "kind": "file",
+          "bytes": 4077,
+          "mode": 436,
+          "mtime_ns": 1788404096123281113,
+          "sha256": "9e1ee070fe87ebea5ee22bb87d5db87110d7442a412f2b633ded2abd98b713e7"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/trajectory_step_2000000.csv",
+          "kind": "file",
+          "bytes": 1445891,
+          "mode": 436,
+          "mtime_ns": 1788404094363266993,
+          "sha256": "2becb6147fccada9a9d72c4c38367031b9b6d94527da075177e1a5a1287d315e"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/artifacts/warmup_status.json",
+          "kind": "file",
+          "bytes": 2279,
+          "mode": 436,
+          "mtime_ns": 1788404095647277294,
+          "sha256": "2eb2ac531668c15e1a77a63b1dcd220ff0338023727333048f728aec52bf029a"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints",
+          "kind": "directory",
+          "mode": 509
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/best_safe_return.pt",
+          "kind": "file",
+          "bytes": 8850511,
+          "mode": 436,
+          "mtime_ns": 1788404094467267828,
+          "sha256": "b5b67d03b86777a46d0baa0bd2ce73d5edc9d951a8809c9ab0f87d2dfe2e85d2"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/final_full.pt",
+          "kind": "file",
+          "bytes": 146462834,
+          "mode": 436,
+          "mtime_ns": 1788404096111281017,
+          "sha256": "0e71d019673d62eb5c48e66b681e9a0cf242a63f383ec8c47b9c6ccbd5b0ca12"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/latest_full.pt",
+          "kind": "file",
+          "bytes": 146463093,
+          "mode": 436,
+          "mtime_ns": 1788404095851278931,
+          "sha256": "0ab91dba1d52dcb6fb30e302dd615e7a8fcb12c411fc2916241c87d78be95dd2"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/checkpoints/milestone_2000000.pt",
+          "kind": "file",
+          "bytes": 8850747,
+          "mode": 436,
+          "mtime_ns": 1788404094499268085,
+          "sha256": "6c47cf42c9022b73ad83a89388e9839e9e39fbc723d8ec9fa3aa6e0fbf9d5ab4"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/config.json",
+          "kind": "file",
+          "bytes": 10119,
+          "mode": 436,
+          "mtime_ns": 1788107718747107310,
+          "sha256": "69ca3f2f174e6143eee6c064f2f3f29f64549b77fd828e924ad1390e8ad4ed5c"
+        },
+        {
+          "path": "runs/P47-2029/training/STAR-{Ant-v4}/seed-2029-2026-08-31-00-35-18/progress.csv",
+          "kind": "file",
+          "bytes": 427123,
+          "mode": 436,
+          "mtime_ns": 1788404095603276941,
+          "sha256": "8dbebcf0f83a5248605fda094993e4d64d26ddb4eb0d0580c9a20f2553cb9e34"
+        }
+      ],
+      "file_manifest_sha256": "3ffc23a95285a742cbfc6a6c4029538bdd312608f3306d5d03889b5ffcbc77ca",
+      "logical_bytes": 1591188264,
+      "source_redundant_copy_retained_at": null,
+      "phase": "relocated_primary_redundant_copy_released"
+    }
+  ],
+  "primary_free_before_bytes": 12003700736,
+  "canonical_training_containers_moved": 0,
+  "training_processes_signalled": 0,
+  "foreign_projects_modified": false,
+  "model_or_tensor_loads": 0,
+  "additional_evaluation_rollouts": 0,
+  "scientific_parameters_changed": false,
+  "future_retirement_parent_directories_preserved": true,
+  "original_paths_preserved_with_same_content_links": true,
+  "historical_parent_gaps_repaired": false,
+  "updated_at_unix": 1792824969.2054014,
+  "primary_free_current_bytes": 16079273984,
+  "primary_free_after_bytes": 16079273984,
+  "archive_free_after_bytes": 153486364672,
+  "free_counter_caveat": "Filesystem free counters include concurrent unrelated filesystem activity; shared hardlinks may retain some original inodes."
+}

@@ -1,0 +1,38 @@
+{
+  "phase": "completed_new_collector_started",
+  "source_run_root": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env",
+  "target_run_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env",
+  "terminal_jobs": [
+    "ant-2027",
+    "walker2d-2027",
+    "ant-2028",
+    "walker2d-2029",
+    "ant-2030",
+    "walker2d-2030",
+    "ant-2031",
+    "walker2d-2031"
+  ],
+  "foreign_cache_jobs": [
+    "ant-2027",
+    "ant-2028",
+    "walker2d-2027",
+    "walker2d-2029"
+  ],
+  "old_collector_pid": 41154,
+  "old_collector_start_ticks": 1636930,
+  "training_processes_signalled": 0,
+  "other_projects_modified": false,
+  "scientific_parameters_changed": false,
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "frozen_validator_modified": false,
+  "new_collector_sha256": "9eb892ec7d61b878187e4f2dfd62737bf1cca46035b63bd16a9f784b3c5914ff",
+  "helper_sha256": "6be5c78aa96714da503c9d01d25a21e2cd63aee20fd2785bdf96e5164a39a8d9",
+  "updated_at_unix": 1792827786.6726942,
+  "remote_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/terminal_cache_storage_migration_20261024.json",
+  "release": {
+    "phase": "terminal_cache_on_data_four_foreign_primary_replicas_released",
+    "primary_free_bytes": 17969127424
+  },
+  "new_collector_pid": 806643
+}

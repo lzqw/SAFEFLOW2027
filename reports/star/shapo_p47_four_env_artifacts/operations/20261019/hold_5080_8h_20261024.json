@@ -1,0 +1,17 @@
+{
+  "status": "reserved_no_safeflow_training_running",
+  "requested_action": "Keep SAFEFLOW off the 5080 for at least eight hours for the user's other work",
+  "checked_at": "2026-10-24T15:47:05+08:00",
+  "do_not_start_before": "2026-10-24T23:50:00+08:00",
+  "host": "5080",
+  "project_root": "/home/autodrive/LZQW/SAFEFLOW2027",
+  "safeflow_training_workers_observed": 0,
+  "training_processes_signalled": 0,
+  "foreign_processes_modified": false,
+  "a100_training_workers_observed": 6,
+  "4080_training_workers_observed": 4,
+  "resume_policy": "Do not start SAFEFLOW on this host before the hold expires. Afterwards inspect current user workloads and current cell ownership before selecting any remaining task. Never replay the obsolete seven-worker resume script; five of its cells now run on other hosts.",
+  "monitor_policy": "Existing read-only 1800-second capacity monitor remains active; it does not automatically launch training.",
+  "automatic_resume_scheduled": false,
+  "check_scope": "GPU/process state, current native CSV progress and filesystem free space only; no extra evaluation rollouts"
+}

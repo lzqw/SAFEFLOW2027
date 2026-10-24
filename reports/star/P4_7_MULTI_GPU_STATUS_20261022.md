@@ -1,6 +1,69 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 14:24 CST — Goal2029 epoch confirmed
+## Latest continuation update: 2026-10-24 15:47 CST — terminal cache on data disk;5080 reserved
+
+The20-cell matrix remains **eight training-complete, ten running, two stopped**.
+A fresh read-only process/native-CSV check confirmed six A100 workers and four
+4080 workers; every continuing cell advanced relative to the14:24 frame.
+These are logged training counters, not claims that each latest row is a durable
+full checkpoint or that final scientific certification has passed.
+
+| Host | Existing training cell | Latest logged steps | Fixed budget |
+|---|---|---:|---:|
+| A100 | Walker2028 |4,920,000|5,000,000|
+| A100 | Ant2029 |4,100,000|5,000,000|
+| A100 | Goal2027 |9,395,000|10,000,000|
+| A100 | Button2027 |9,095,000|10,000,000|
+| A100 | Goal2031 |8,535,000|10,000,000|
+| A100 | Button2031 |8,470,000|10,000,000|
+|4080|Button2029|8,105,000|10,000,000|
+|4080|Goal2029|5,670,000|10,000,000|
+|4080|Button2028|7,710,000|10,000,000|
+|4080|Button2030|9,965,000|10,000,000|
+
+Button2030's remaining training is approximately25 minutes at its observed
+23.95-step/s epoch rate, followed by its original native evaluation. This is
+an estimate, not a terminal receipt. Goal2028/2030 remain stopped with their
+previously pinned6.3M/7.15M full inputs; no extra seed or reduced budget is used.
+
+**5080 has no SAFEFLOW training worker.** A new user reservation keeps it free
+of this project's training until **2026-10-24 23:50 CST**, at least eight hours
+from the check. Its other workloads are untouched. The dated hold is recorded
+locally and on5080; no obsolete seven-worker resume script is scheduled, since
+five of those cells now run elsewhere. After the hold, cell ownership and
+current user workload must be checked before any placement. The existing
+read-only half-hour monitor is live and does not launch jobs automatically.
+
+Two storage-only operations are now complete:
+
+- [Eight inactive A100 directories](p4_7_training_receipts_20261022/cold_a100_directory_offload_20261024_receipt.json)
+  were copied and rehashed in the project's private separate-disk namespace.
+  Seven are cold recovery archives and one is a legacy Ant run, not a current
+  formal-matrix source. Exact old read paths remain same-content links; no
+  active canonical training directory was moved.
+- [Eight terminal assembly copies](p4_7_training_receipts_20261022/terminal_result_cache_migration_20261024_receipt.json)
+  now reside on A100's separate data disk. Only four redundant primary import
+  replicas were released after verification; their4080 originals and all
+  native A100 source containers remain intact. The replacement collector is
+  running and reports eight readable cached terminal cells. Future completed
+  imports target this data cache, not the primary training filesystem.
+
+The collector still calls the unchanged frozen final validator with a run-root
+argument. No validator fix, path alias, original-parent reconstruction, extra
+rollout, trainer signal or other-project file operation was introduced. Storage
+relocation is not final scientific certification and does not waive the known
+multi-hop/original-parent gaps. Metadata accounting remains **18 training records,
+1,370,000 known extra physical steps /4,164 cost**; these storage moves add zero.
+
+At15:47, primary free space was A100 **16.60GiB** and4080 **15.39GiB**;4080's
+separate4T archive had **2468.23GiB** free. Shared GPU utilization was A10040%/34%
+and408066%. Primary headroom still constrains new bulk admissions, even though
+GPU capacity exists. Only SAFEFLOW files have been handled; permission to move
+another project's old archives has not been assumed. The next placement will
+reuse a verified free slot with adequate disk headroom rather than duplicate a
+running cell. Full budgets and all final evidence gates remain unchanged.
+
+## Earlier continuation update: 2026-10-24 14:24 CST — Goal2029 epoch confirmed
 
 **Goal-2029's new4080 epoch is now confirmed.** The same PID1831158 advanced
 from its5,500,000-step input to **5,545,000 logged steps**, with the observed
