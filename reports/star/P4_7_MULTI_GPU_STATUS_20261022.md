@@ -1,6 +1,55 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 15:47 CST — terminal cache on data disk;5080 reserved
+## Latest continuation update: 2026-10-24 16:01 CST — Goal2030 launched on A100 GPU1
+
+The stopped **Goal2030** cell has now launched on shared A100 GPU1 from its
+**7,150,000-step full checkpoint**, retaining the original10M-step budget.
+The98 recorded scientific files were streamed directly from the pinned4080-4T
+raw archive to a previously absent A100 target and every file hash was checked
+before launch. This is the recorded scientific-suffix scope, not a complete
+filesystem clone. The5080 original remains intact; no5080 GPU task or source
+signal was used. Its [continuation receipt](p4_7_training_receipts_20261022/goal2030_from4t_toa100_gpu1_20261024.json)
+records the exact input, copied scope, launch and resource checks.
+
+**The first new epoch remains pending.** PID2508133 is live with the correct
+seed2030/full budget and has reached native STAR training initialization.
+The controller waits for the next ordinary half-hour progress observation;
+neither liveness nor successful file restoration substitutes for the new-epoch
+proof. It will not relaunch if that observation is delayed or times out.
+
+Placement is now **eight training-complete, eleven launched continuing workers,
+one still-stopped cell** (Goal2028,6.3M full input). A100 has seven workers;
+4080 four. The newly launched cell's first epoch is explicitly unconfirmed.
+5080 remains reserved until23:50 with no SAFEFLOW training. No new experiment,
+scientific configuration, evaluation or reduced training budget is introduced.
+
+Before admission, [six inactive A100 export sets](p4_7_training_receipts_20261022/inactive_a100_export_offload_20261024_receipt.json)
+were copied and rehashed on the private separate data disk. Their canonical
+containers were absent on A100. Only redundant old export copies were released;
+the real export directories keep dated location notes and may receive future
+fresh exports. Original training and all other projects were untouched. These
+six export sets include older host-local copies of cells now on4080, not new
+resume inputs. Primary free space recovered to17.915GiB before admission.
+
+The smaller Goal2030 capsule fits that headroom with the **16GiB post-copy
+primary reserve retained** (16.285GiB observed after restoration). Unlike the
+earlier4080 restoration helper, this controller does not require an additional
+half-GiB copy slack above that reserve. GPU1 had36% total utilization, about
+78.7GiB free GPU memory and the exact three expected owned clients at admission;
+it now shares that pool without pausing or reprioritizing another project.
+This smaller-capsule placement, ahead of the larger Goal2028 input, is based on
+available storage/resources, not reward, cost or scientific result selection.
+
+The metadata ledger deliberately refuses final recovery annotation until this
+same target produces the required scheduled new epoch. Its known consumed
+source tail is25,000 steps /248 cost; after confirmation it will be charged
+exactly once, separately from accepted-lineage learning costs. Goal2028's
+remaining conditional source tail is25,000 steps /493 cost. Unknown unlogged
+tails remain unknown, not zero. The source/target CUDA builds differ and are
+recorded without any bitwise-equivalence claim. All final scientific gates,
+original-parent gaps and pending multi-hop path limitations remain unchanged.
+
+## Earlier continuation update: 2026-10-24 15:47 CST — terminal cache on data disk;5080 reserved
 
 The20-cell matrix remains **eight training-complete, ten running, two stopped**.
 A fresh read-only process/native-CSV check confirmed six A100 workers and four

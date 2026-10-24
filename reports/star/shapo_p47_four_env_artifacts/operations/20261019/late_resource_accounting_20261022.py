@@ -97,18 +97,22 @@ def resource_records(base):
          'offload_cold_4080_directories_20261024.py','eight_cold_directories_relocated_all_original_paths_preserved'),
         ('cold_a100_directory_offload_20261024_state.json','cold_a100_directory_offload_20261024_receipt.json',
          'offload_cold_a100_directories_20261024.py','eight_cold_directories_relocated_all_original_paths_preserved'),
+        ('inactive_a100_export_offload_20261024_state.json','inactive_a100_export_offload_20261024_receipt.json',
+         'offload_inactive_a100_exports_20261024.py','six_inactive_export_copies_archived_and_primary_replicas_released'),
         ('inactive_4080_export_offload_20261024_state.json','inactive_4080_export_offload_20261024_receipt.json',
          'offload_inactive_4080_exports_20261024.py','three_inactive_export_copies_archived_and_primary_replicas_released')]:
         if not (base/state_name).exists():continue
         operation=read(state_name);proof=read(receipt_name)
         assert operation['phase']=='completed' and proof['phase']==phase
         assert hashlib.sha256((base/helper_name).read_bytes()).hexdigest()==operation['helper_sha256']
+        if 'base_helper_sha256' in operation:
+            assert hashlib.sha256((base/'offload_inactive_4080_exports_20261024.py').read_bytes()).hexdigest()==operation['base_helper_sha256']
         assert proof['training_processes_signalled']==proof['model_or_tensor_loads']==proof['additional_evaluation_rollouts']==0
         assert proof['scientific_parameters_changed'] is False
         for row in proof['entries']:
             archive=Path(row.get('archive_path',row.get('archive_directory','')))
             archive_parent=('/storage_0/SAFEFLOW2027_lzqw_uid1007/recovery_backups'
-                if state_name.startswith('cold_a100_') else '/home/carla/4T/SAFEFLOW2027_4080/recovery_backups')
+                if '_a100_' in state_name else '/home/carla/4T/SAFEFLOW2027_4080/recovery_backups')
             assert Path(archive_parent) in archive.parents
             archive_files=row['files'];assert len({r.get('path',r.get('name')) for r in archive_files})==len(archive_files)
             assert sum(r.get('bytes',0) for r in archive_files)==row['logical_bytes']
@@ -122,8 +126,10 @@ def resource_records(base):
             assert proof['foreign_projects_modified'] is False and proof['future_retirement_parent_directories_preserved'] is True
             assert proof['original_paths_preserved_with_same_content_links'] is True and proof['historical_parent_gaps_repaired'] is False
         else:
-            assert set(proof['jobs'])=={'point-button-2031','point-goal-2028','walker2d-2028'}
-            assert len(proof['entries'])==3 and proof['canonical_training_files_modified']==proof['active_export_files_modified']==0
+            expected_jobs=({'ant-2027','ant-2028','walker2d-2027','walker2d-2029','point-button-2028','point-button-2030'}
+                if '_a100_' in state_name else {'point-button-2031','point-goal-2028','walker2d-2028'})
+            assert set(proof['jobs'])==expected_jobs and len(proof['entries'])==len(expected_jobs)
+            assert proof['canonical_training_files_modified']==proof['active_export_files_modified']==0
             assert proof['other_projects_modified'] is False and proof['original_export_parent_directories_preserved'] is True
             assert proof['distinct_original_bytes_removed_from_all_locations']==0
         # These verified archive transfers add no physical training record.
@@ -163,11 +169,15 @@ def resource_records(base):
             assert hashlib.sha256((base/name).read_bytes()).hexdigest()==s[key]
         # This is a terminal assembly cache, not scientific gate certification.
         # All original native sources and the four remote originals are retained.
-    raw=base/'goal2029_from4t_to4080_20261024_state.json'
-    if raw.exists():
+    for raw_name,raw_job,raw_target,raw_resume,raw_seed,raw_helper in [
+        ('goal2029_from4t_to4080_20261024_state.json','point-goal-2029','4080',5500000,'2029','recover_goal2029_from_4t_on_4080_20261024.py'),
+        ('goal2030_from4t_toa100_gpu1_20261024_state.json','point-goal-2030','tjucta-a100',7150000,'2030','recover_goal2030_from4t_on_a100_gpu1_20261024.py')]:
+        raw=base/raw_name
+        if not raw.exists():continue
         s=read(raw.name)
         assert s['phase']=='completed_new_target_epoch_from_raw_archive_source_preserved','Await the same target epoch; never omit an in-flight recovery'
-        assert s['job']=='point-goal-2029' and s['source_host']=='5080' and s['target_host']=='4080'
+        assert s['job']==raw_job and s['source_host']=='5080' and s['target_host']==raw_target
+        assert hashlib.sha256((base/raw_helper).read_bytes()).hexdigest()==s['controller_sha256']
         assert s['source_commit']=='62ca7399357c10645a955dcbead7ed2153a82c69' and s['total_budget_steps']==10000000
         assert s['new_experiment_cells']==s['source_signals_sent']==s['additional_evaluation_rollouts']==s['extra_verification_model_loads']==0
         assert s['scientific_parameters_changed'] is False and s['other_projects_paused'] is False
@@ -176,14 +186,14 @@ def resource_records(base):
         pinned=read('remaining_goal_archive_inputs_20261023.json');pin=next(r for r in pinned['rows'] if r['job']==s['job'])
         assert original['full_replay_rng_optimizers_present'] is True
         assert s['checkpoint_sha256']==pin['checkpoint_sha256']==original['checkpoint_sha256']
-        assert s['counters']==original['counters'] and s['resume_steps']==5500000
+        assert s['counters']==original['counters'] and s['resume_steps']==raw_resume
         assert s['source_raw_manifest_sha256']==pin['manifest_sha256']
         assert s['restoration']['restored_scientific_files']==pin['archived_raw_files']
         assert s['first_target_epoch']['steps']>=s['resume_steps']+5000
         worker=s['first_target_worker'];assert worker['pid']==s['target_pid']==s['target_identity']['pid']
         assert worker['cuda_execution_backend']=='mps_verified' and worker['mps_gpu_uuid_verified']==s['target_capacity']['gpu_uuid']
         a=s['target_identity']['args']
-        for flag,value in {'--seed':'2029','--steps':'10000000','--device':'cuda:0','--vector-envs':'1',
+        for flag,value in {'--seed':raw_seed,'--steps':'10000000','--device':'cuda:0','--vector-envs':'1',
                 '--batch-size':'256','--replay-size':'400000','--steps-per-epoch':'5000','--resume':s['target_checkpoint']}.items():
             assert a[a.index(flag)+1]==value
         steps=s['last_logged_source_steps']-s['resume_steps'];cost=s['last_logged_source_cost']-s['resume_cumulative_training_cost']
@@ -191,7 +201,7 @@ def resource_records(base):
         assert cost==s['known_extra_training_cost_lower_bound']==original['known_additional_training_cost_if_resumed']
         assert s['unlogged_source_tail_unknown_not_zero'] is True
         records.append(dict(job=s['job'],kind='raw_archive_full_checkpoint_resource_recovery',proof_file=raw.name,
-            source_host='5080',target_host='4080',resume_steps=s['resume_steps'],checkpoint_sha256=s['checkpoint_sha256'],
+            source_host='5080',target_host=raw_target,resume_steps=s['resume_steps'],checkpoint_sha256=s['checkpoint_sha256'],
             known_additional_physical_steps=steps,known_additional_physical_training_cost=cost,unknown_unlogged_tail_not_zero=True))
     accounting=base/'duplicate_branch_accounting_20261022.json'
     if accounting.exists():

@@ -1701,6 +1701,17 @@ def annotate_recovery(target):
             'retirement parents remain on the primary filesystem. No trainer, '
             'other project, scientific setting or missing parent was changed.\n'
         )
+    if 'inactive_a100_export_offload_20261024_receipt.json' in late_resource_files:
+        disclosure += (
+            '\nSix inactive A100 export sets, whose canonical containers '
+            'were absent on that host, were copied to the project\'s separate '
+            'data disk and rehashed before releasing the redundant primary '
+            'export copies. The real export parent directories retain dated '
+            'location notes and remain suitable for later fresh exports. '
+            'No active export, native training source or other project was '
+            'changed. These old exports do not replace a newer input or '
+            'repair an original-parent gap and add no training interaction.\n'
+        )
     if 'terminal_result_cache_migration_20261024_receipt.json' in late_resource_files:
         disclosure += (
             '\nThe eight already terminal assembly copies were verified on '
@@ -1827,6 +1838,22 @@ def annotate_recovery(target):
             'new-epoch/MPS proof and consumed source tail accompany the '
             'physical-work ledger; no evaluation, seed, budget or method '
             'parameter was added or reduced.\n'
+        )
+    if 'goal2030_from4t_toa100_gpu1_20261024_state.json' in late_resource_files:
+        disclosure += (
+            '\nThe stopped Goal2030 cell continued on shared A100 GPU1 '
+            'from its SHA-matched7.15M full input. Its98 recorded scientific '
+            'files were streamed directly from the pinned4T archive into a '
+            'new, previously absent canonical target, with all file hashes '
+            'verified before launch. The smaller capsule fit recovered A100 '
+            'headroom with the16GiB post-copy primary reserve retained; no '
+            'additional half-GiB copy slack was required by this controller. '
+            'This is a resource-placement decision, not reward/cost selection. '
+            'The5080 original remained intact and no5080 GPU training or '
+            'source signal was used. Only the required scheduled new-epoch '
+            'proof permits its source tail into the physical-work ledger. '
+            'No method, seed, full budget, evaluation or final gate changed; '
+            'different CUDA builds are recorded without a bitwise claim.\n'
         )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (
