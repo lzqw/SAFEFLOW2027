@@ -1,0 +1,391 @@
+{
+  "phase": "same_target_running_await_scheduled_new_epoch",
+  "job": "point-goal-2029",
+  "source_host": "5080",
+  "target_host": "4080",
+  "source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "total_budget_steps": 10000000,
+  "resume_steps": 5500000,
+  "counters": {
+    "env_steps": 5500000,
+    "updates": 5498000,
+    "actor_updates": 2746000,
+    "reward_critic_updates": 10996000,
+    "utd_carry": 0,
+    "violations": 92336,
+    "cumulative_training_cost": 92336
+  },
+  "checkpoint_sha256": "7b99cadaecbd3096ae952b0bc8b43bd9220690606e462f134cb2fc3034fd286b",
+  "last_logged_source_steps": 5525000,
+  "last_logged_source_cost": 92380,
+  "resume_cumulative_training_cost": 92336,
+  "known_repeated_steps_lower_bound": 25000,
+  "known_extra_training_cost_lower_bound": 44,
+  "inventory_file": "incident_5080_2334_20261022_checkpoint_inventory.json",
+  "unlogged_source_tail_unknown_not_zero": true,
+  "source_original_preserved_in_place": true,
+  "source_signals_sent": 0,
+  "training_launched_on_5080": false,
+  "new_experiment_cells": 0,
+  "scientific_parameters_changed": false,
+  "additional_evaluation_rollouts": 0,
+  "other_projects_paused": false,
+  "extra_verification_model_loads": 0,
+  "bitwise_equivalence_claimed": false,
+  "source_torch_version": "2.7.1+cu128",
+  "target_torch_version": "2.7.1+cu118",
+  "expected_existing_clients": {
+    "1405139": {
+      "job": "point-button-2029",
+      "start_ticks": 16099990
+    },
+    "3265981": {
+      "job": "point-button-2028",
+      "start_ticks": 26805455
+    },
+    "3280815": {
+      "job": "point-button-2030",
+      "start_ticks": 26939956
+    }
+  },
+  "target_capacity": {
+    "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+    "free_gpu_MiB": 13722,
+    "total_gpu_utilization_percent": 56,
+    "owned_clients": [
+      1405139,
+      3265981,
+      3280815
+    ],
+    "MPS_server_pid": 1394075,
+    "GPU_reserve_MiB": 8192,
+    "client_allowance_MiB": 2048,
+    "load": [
+      3.43603515625,
+      3.57861328125,
+      3.6328125
+    ],
+    "memory_available_bytes": 50543505408,
+    "foreign_process_actions": 0
+  },
+  "source_raw_manifest": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/manifests/5080/point-goal-2029/1792712080640528804-60f354939592e79411e37c55f92051e46f94ef603057e890f2569796f1c9951a.json",
+  "source_raw_manifest_sha256": "60f354939592e79411e37c55f92051e46f94ef603057e890f2569796f1c9951a",
+  "prior_logger_names": [
+    "seed-2029-2026-10-13-12-03-37",
+    "seed-2029-2026-10-13-18-52-53",
+    "seed-2029-2026-10-14-23-54-27",
+    "seed-2029-2026-10-19-13-12-19",
+    "seed-2029-2026-10-19-14-57-21",
+    "seed-2029-2026-10-20-12-01-25",
+    "seed-2029-2026-10-22-19-11-10"
+  ],
+  "controller_sha256": "9f60f749d4050e88278da4ba45af99cd055517a93fccc76db935dd2374ab4976",
+  "updated_at_unix": 1792821050.4838378,
+  "restoration": {
+    "restored_scientific_files": 92,
+    "copied_files": [
+      "a100_reboot_recovery_20261019.json",
+      "a100_reboot_recovery_20261019_state.json",
+      "artifact_relocation.before_5080_1792393033657591426.json",
+      "artifact_relocation.json",
+      "exit_code.before_gpu_recovery_20261014_235408.txt",
+      "gpu_cpu_failure_recovery.json",
+      "handoff_5080_receipt.json",
+      "handoff_5080_state.json",
+      "mps_5080_20261020/completion_state.json",
+      "mps_5080_20261020/input/latest_full.pt",
+      "mps_5080_20261020/original_wrapper_exit_code.txt",
+      "train_5080_handoff_20261019.log",
+      "train_a100_reboot_recovery_20261019.log",
+      "train_gpu_cpu_failure_recovery_20261014_235408.log",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/best_safe_return_selection.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/counterfactual_step_1000000.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/evaluation.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/evaluation_step_1000000.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/trajectory_step_1000000.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/checkpoints/best_safe_return.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/checkpoints/milestone_1000000.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/progress.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/progress.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/progress.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/best_safe_return_selection.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/counterfactual_step_4000000.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/evaluation.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/evaluation_step_4000000.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/trajectory_step_4000000.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/checkpoints/best_safe_return.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/checkpoints/milestone_4000000.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/progress.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/training_summary.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/progress.csv"
+    ],
+    "reused_identical_files": [
+      "materialize.json",
+      "resolved_formal_config.yaml",
+      "source_commit.txt",
+      "train_cpu.log",
+      "train_cpu_migrated.log",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/checkpoints/milestone_0.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/progress.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/diagnostics.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/engineering_hard_stop.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/heldout_probability.csv",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/heldout_probability_latest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/run_manifest.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/training_summary.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/warmup_status.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/checkpoints/latest_full.pt",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/config.json",
+      "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/progress.csv"
+    ],
+    "old_target_backup": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/goal2029_from4t_to4080_20261024_target_before_restore",
+    "old_target_manifest": [
+      {
+        "path": "exit_code.txt",
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "bytes": 2,
+        "mtime_ns": 1791991967444176411,
+        "mode": 436
+      },
+      {
+        "path": "materialize.json",
+        "sha256": "4c4c753dc6467199eb96e521a40621136aac231575d62786c463b8f151c29a41",
+        "bytes": 492,
+        "mtime_ns": 1791864206000000000,
+        "mode": 436
+      },
+      {
+        "path": "resolved_formal_config.yaml",
+        "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41",
+        "bytes": 4110,
+        "mtime_ns": 1791864206000000000,
+        "mode": 436
+      },
+      {
+        "path": "source_commit.txt",
+        "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60",
+        "bytes": 41,
+        "mtime_ns": 1791864206000000000,
+        "mode": 436
+      },
+      {
+        "path": "train_cpu.log",
+        "sha256": "c5a16210363aa2dd60f431cfb16e9debfc017fe0fcc738762b886652ea55051a",
+        "bytes": 247362,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "train_cpu_migrated.log",
+        "sha256": "8488080a224a97a72792413914310ab42bfe5ee825a9d011d266186820f37e50",
+        "bytes": 1472498,
+        "mtime_ns": 1791991966628178123,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/diagnostics.csv",
+        "sha256": "f0587124367e9b09d515f62501dc9e5ad860a0454c86d1fb17e45ddb98d58dae",
+        "bytes": 43806,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/heldout_probability.csv",
+        "sha256": "db3a959bf9ce48d5e83e0ef8585943f05d28ce8c604ec00915531400256ec4b7",
+        "bytes": 5141,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/heldout_probability_latest.json",
+        "sha256": "6f9113fd8feb46aa2983e891be758b4386efa9b2175895d790d05a2bb42cfbaa",
+        "bytes": 749,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/run_manifest.json",
+        "sha256": "e80d485cd053e30f44232b5c32c40b1fd3e49840ac959e0b93cd58994df01104",
+        "bytes": 6295,
+        "mtime_ns": 1791864217000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/artifacts/warmup_status.json",
+        "sha256": "fa4cc3d2f44cff3b288a0fb70ae02e83cd4c264c1be64ce003c028ae0fac2eb0",
+        "bytes": 2300,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/checkpoints/latest_full.pt",
+        "sha256": "8346ce214a6e27a90849a18090bbec5c600cee08dc157a5343943a2c62ffd581",
+        "bytes": 68002661,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/checkpoints/milestone_0.pt",
+        "sha256": "1065eff822b324352b01c07799b3ffed7182d8083a55a217dc63bbe1403a4ef8",
+        "bytes": 4810413,
+        "mtime_ns": 1791864217000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/config.json",
+        "sha256": "12cd7ab972f30f5341f5987abb66954c81973fbf73b9c3147faf5b11608f4431",
+        "bytes": 10025,
+        "mtime_ns": 1791864217000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/progress.csv",
+        "sha256": "8becdb1e521c6ab4b5d2f7346d6746445fbe05980afb9112ca520093e741ecc9",
+        "bytes": 44955,
+        "mtime_ns": 1791888667000000000,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/diagnostics.csv",
+        "sha256": "e0dfd5d32401ccaa993eafad672c4955219e52e7c92446c8f1f722279dd2543d",
+        "bytes": 251967,
+        "mtime_ns": 1791991140685890662,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/engineering_hard_stop.json",
+        "sha256": "697dfa0c6cca265b706c168f2119a2fda14c3453af86e4c66b04f586d9b6df2f",
+        "bytes": 121,
+        "mtime_ns": 1791991966623178134,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/heldout_probability.csv",
+        "sha256": "acf3b0cf2a74dd18684a7188692253aeaa439649b65a643c031d90c32694bacf",
+        "bytes": 30998,
+        "mtime_ns": 1791991140668890752,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/heldout_probability_latest.json",
+        "sha256": "1f98eb69b3b9dadcf8a6b6b4168239d0962147bf0bce37a61bac66d001d428ea",
+        "bytes": 746,
+        "mtime_ns": 1791991140668890752,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/run_manifest.json",
+        "sha256": "e80d485cd053e30f44232b5c32c40b1fd3e49840ac959e0b93cd58994df01104",
+        "bytes": 6295,
+        "mtime_ns": 1791888773543496708,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/training_summary.json",
+        "sha256": "8c3cc3c297ebc8726bd9e6247a3cd5736dea2e9e6b26c4096a440e9f96538d08",
+        "bytes": 3832,
+        "mtime_ns": 1791991966627178126,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/artifacts/warmup_status.json",
+        "sha256": "6a2cf605f0316a84a24150d19749d8532bf5b0fdcd34b4b54f425a43eba75973",
+        "bytes": 2301,
+        "mtime_ns": 1791991140697890599,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/checkpoints/latest_full.pt",
+        "sha256": "633f9c5a415188ba4812915dde5da0024e8c4e859dcb1513c2e1afc0b26a18aa",
+        "bytes": 243202981,
+        "mtime_ns": 1791991140855889763,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/config.json",
+        "sha256": "a14b5205d1364fab32242116dffb7de23d1c42585c0573ea5288703a71c18943",
+        "bytes": 10361,
+        "mtime_ns": 1791888773543496708,
+        "mode": 436
+      },
+      {
+        "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/progress.csv",
+        "sha256": "36f06361a29131e2bd1fd5b5035d55d1376a44679d3df61ab00f861b519c8405",
+        "bytes": 258264,
+        "mtime_ns": 1791991140671890736,
+        "mode": 436
+      }
+    ],
+    "raw_scope": "All recorded scientific suffixes, not a complete filesystem clone",
+    "checkpoint": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/checkpoints/latest_full.pt",
+    "archive_resume_input": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/7b99cadaecbd3096ae952b0bc8b43bd9220690606e462f134cb2fc3034fd286b",
+    "primary_free_after_bytes": 18829893632
+  },
+  "target_checkpoint": "/home/carla/SAFEFLOW2027_4080/runs/shapo_p47_four_env/runs/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/checkpoints/latest_full.pt",
+  "archive_resume_input": "/home/carla/4T/SAFEFLOW2027_4080/scientific_evidence_archive/blobs/7b99cadaecbd3096ae952b0bc8b43bd9220690606e462f134cb2fc3034fd286b",
+  "target_capacity_at_launch": {
+    "gpu_uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+    "free_gpu_MiB": 13722,
+    "total_gpu_utilization_percent": 37,
+    "owned_clients": [
+      1405139,
+      3265981,
+      3280815
+    ],
+    "MPS_server_pid": 1394075,
+    "GPU_reserve_MiB": 8192,
+    "client_allowance_MiB": 2048,
+    "load": [
+      3.75048828125,
+      3.64208984375,
+      3.6533203125
+    ],
+    "memory_available_bytes": 50655694848,
+    "foreign_process_actions": 0
+  },
+  "target_boot_id": "3b362c03-4ed3-4e03-aea4-cf7339356026",
+  "target_pid": 1831158,
+  "target_start_ticks": 44696413,
+  "launched_at_unix": 1792821050.4838362
+}

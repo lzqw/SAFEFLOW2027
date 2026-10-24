@@ -1,0 +1,179 @@
+{
+  "phase": "three_inactive_export_copies_archived_and_primary_replicas_released",
+  "jobs": [
+    "point-button-2031",
+    "point-goal-2028",
+    "walker2d-2028"
+  ],
+  "entries": [
+    {
+      "job": "point-button-2031",
+      "original_export_directory": "/home/carla/SAFEFLOW2027_4080/recovery_backups/export/point-button-2031",
+      "archive_directory": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/inactive_exports_20261024/point-button-2031",
+      "files": [
+        {
+          "name": "latest_full.pt",
+          "bytes": 294864940,
+          "mtime_ns": 1792428350563679160,
+          "mode": 436,
+          "sha256": "48ac7d5ed8430d12c8deb8cea8765505a6ddec37431e1a10a15cdddb90bd6d65"
+        },
+        {
+          "name": "materialize.json",
+          "bytes": 496,
+          "mtime_ns": 1791859271000000000,
+          "mode": 436,
+          "sha256": "cf9a0ec7cc4d8caea97cb0438988cc70fd898a6f4068dd7a84ccc622ab443573"
+        },
+        {
+          "name": "previous_full.pt",
+          "bytes": 294864940,
+          "mtime_ns": 1792410990959351468,
+          "mode": 436,
+          "sha256": "3c139d960b691289094a4f4f64925c6f2f0ec663618b626b807ca437072d03c5"
+        },
+        {
+          "name": "resolved_formal_config.yaml",
+          "bytes": 4112,
+          "mtime_ns": 1791859271000000000,
+          "mode": 436,
+          "sha256": "4601d7b06f815d6a323e0d421043c388297636d38ff6e7619a2cf59993942dc2"
+        },
+        {
+          "name": "snapshot.json",
+          "bytes": 479,
+          "mtime_ns": 1792437532172026480,
+          "mode": 436,
+          "sha256": "4e4e7d269c24f344847784bafb06b1a89732c381ab9cf8c4aa7e7073fab5e36a"
+        },
+        {
+          "name": "source_commit.txt",
+          "bytes": 41,
+          "mtime_ns": 1791859271000000000,
+          "mode": 436,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "manifest_sha256": "e3f60349413173116c9075023b7be957c456a6055950c9544c15b36ec4a20d01",
+      "logical_bytes": 589735008,
+      "released_files": 6
+    },
+    {
+      "job": "point-goal-2028",
+      "original_export_directory": "/home/carla/SAFEFLOW2027_4080/recovery_backups/export/point-goal-2028",
+      "archive_directory": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/inactive_exports_20261024/point-goal-2028",
+      "files": [
+        {
+          "name": "latest_full.pt",
+          "bytes": 243203173,
+          "mtime_ns": 1792448524304323651,
+          "mode": 436,
+          "sha256": "754b15ee61bac6329c48615efb2d42b6c60d77a4475af595f6c822a239fbcb62"
+        },
+        {
+          "name": "materialize.json",
+          "bytes": 492,
+          "mtime_ns": 1791864206000000000,
+          "mode": 436,
+          "sha256": "cb4e0a87aed13fd95167a5a11e2bbee37a987f487820cde1cfd6eda944e2cdbe"
+        },
+        {
+          "name": "previous_full.pt",
+          "bytes": 243203173,
+          "mtime_ns": 1792440621421025446,
+          "mode": 436,
+          "sha256": "df14e0bb76dc003883b2da8b6432c3e45b910ccc44344e6adcfed0277f17b35f"
+        },
+        {
+          "name": "resolved_formal_config.yaml",
+          "bytes": 4110,
+          "mtime_ns": 1791864206000000000,
+          "mode": 436,
+          "sha256": "53f4fe03558e040ca13d551fbca165854add928d60870c9c201eedbf538e5e41"
+        },
+        {
+          "name": "snapshot.json",
+          "bytes": 413,
+          "mtime_ns": 1792456629740319764,
+          "mode": 436,
+          "sha256": "a8086b547ce276e5191fdd836e9b24b89f6b7ad396377e9f808b01a7be732930"
+        },
+        {
+          "name": "source_commit.txt",
+          "bytes": 41,
+          "mtime_ns": 1791864206000000000,
+          "mode": 436,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "manifest_sha256": "917ee46a5d3df87eed5d486cb5770f1a07a8093271587692f51f0aed4ff68810",
+      "logical_bytes": 486411402,
+      "released_files": 6
+    },
+    {
+      "job": "walker2d-2028",
+      "original_export_directory": "/home/carla/SAFEFLOW2027_4080/recovery_backups/export/walker2d-2028",
+      "archive_directory": "/home/carla/4T/SAFEFLOW2027_4080/recovery_backups/inactive_exports_20261024/walker2d-2028",
+      "files": [
+        {
+          "name": "latest_full.pt",
+          "bytes": 110913141,
+          "mtime_ns": 1792679340074912875,
+          "mode": 436,
+          "sha256": "c929fa5ca7271e849c7e0dc3e14b1502bfdd88b66c00d8268dc5a0553048c9a2"
+        },
+        {
+          "name": "materialize.json",
+          "bytes": 482,
+          "mtime_ns": 1791864206330061986,
+          "mode": 436,
+          "sha256": "167cf621cdb044167ebb059fd5a5e7240c564d1f9419dd72f67535dae9723e7a"
+        },
+        {
+          "name": "previous_full.pt",
+          "bytes": 110915573,
+          "mtime_ns": 1792676703528900906,
+          "mode": 436,
+          "sha256": "5c800522fa08de8efd149231cd7c6b5555591086f0912cb13dd6020473f3479a"
+        },
+        {
+          "name": "resolved_formal_config.yaml",
+          "bytes": 4099,
+          "mtime_ns": 1791864206330061986,
+          "mode": 436,
+          "sha256": "60ef4ab8f6899176387247381183613933bb7f76258442bb8b27a5d8ec8c276b"
+        },
+        {
+          "name": "snapshot.json",
+          "bytes": 464,
+          "mtime_ns": 1792679854794667066,
+          "mode": 436,
+          "sha256": "3e05f864eadd75183268fa35231d07e7d81198136681ca61d984bda67469605e"
+        },
+        {
+          "name": "source_commit.txt",
+          "bytes": 41,
+          "mtime_ns": 1791864206246060831,
+          "mode": 436,
+          "sha256": "5e1ec1462d03eae03668b466688b4042e33d61154987af62696b59ab45ba9b60"
+        }
+      ],
+      "manifest_sha256": "635d4e707565017da2c0489d5ffaf1376de7b3b6196b982ce29580cacda7bbb3",
+      "logical_bytes": 221833800,
+      "released_files": 6
+    }
+  ],
+  "primary_free_before_bytes": 18799190016,
+  "training_processes_signalled": 0,
+  "canonical_training_files_modified": 0,
+  "active_export_files_modified": 0,
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "other_projects_modified": false,
+  "scientific_parameters_changed": false,
+  "original_bytes_retained_on_separate_4T": true,
+  "updated_at_unix": 1792820508.795682,
+  "primary_free_after_bytes": 20097228800,
+  "original_export_parent_directories_preserved": true,
+  "distinct_original_bytes_removed_from_all_locations": 0
+}

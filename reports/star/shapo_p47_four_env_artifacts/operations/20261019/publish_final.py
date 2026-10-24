@@ -1681,6 +1681,26 @@ def annotate_recovery(target):
             'receipt accompany the ledger; this storage move adds no rollout '
             'or training-cost record and repairs no historical parent gap.\n'
         )
+    if 'cold_4080_directory_offload_20261024_receipt.json' in late_resource_files:
+        disclosure += (
+            '\nEight explicitly named cold4080 archive directories were '
+            'copied to4T and their contents rehashed before releasing the '
+            'redundant primary copies. Same-content directory links preserve '
+            'their original read paths; archive parent directories stay on '
+            'the primary filesystem for future retirement renames. Canonical '
+            'training containers were not moved. This is storage relocation, '
+            'not a different-checkpoint alias or repair of a missing parent.\n'
+        )
+    if 'inactive_4080_export_offload_20261024_receipt.json' in late_resource_files:
+        disclosure += (
+            '\nThree obsolete4080 export sets, whose canonical containers '
+            'were absent on that host, were separately verified on4T before '
+            'their primary replicas were released. Original export directories '
+            'remain real primary directories with historical-location notes; '
+            'fresh later exports may repopulate them. Active backups and '
+            'training were not altered, and old export bytes are not promoted '
+            'to newer active inputs or missing original parents.\n'
+        )
     if 'evidence_data_staging_deployment_20261023.json' in late_resource_files:
         disclosure += (
             '\nFuture raw-archive temporary snapshots on A100 and4080 '
@@ -1771,6 +1791,19 @@ def annotate_recovery(target):
             'No5080 GPU job, extra evaluation, new scientific cell or budget '
             'cut was introduced. Only its consumed source tail is counted '
             'in physical work, separately from accepted-lineage metrics.\n'
+        )
+    if 'goal2029_from4t_to4080_20261024_state.json' in late_resource_files:
+        disclosure += (
+            '\nGoal2029 continued on a shared4080 slot from its SHA-matched '
+            '5.5M full checkpoint. All92 recorded scientific-evidence files '
+            'were restored from the pinned4T raw manifest, reusing identical '
+            'historical prefixes and retaining a complete pre-restore target '
+            'backup. This is the recorded scientific suffix scope, not a '
+            'complete filesystem clone. The original5080 container stayed '
+            'intact and no source GPU job or signal was used. Its scheduled '
+            'new-epoch/MPS proof and consumed source tail accompany the '
+            'physical-work ledger; no evaluation, seed, budget or method '
+            'parameter was added or reduced.\n'
         )
     if 'historical_segment_restoration_20261022.json' in late_resource_files:
         disclosure += (

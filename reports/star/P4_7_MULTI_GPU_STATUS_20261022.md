@@ -1,6 +1,69 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest storage update: 2026-10-23 09:13 CST — native archive cycles confirmed
+## Latest continuation update: 2026-10-24 — space recovered; Goal2029 epoch pending
+
+**Eight cells have now completed training**, including the newly collected
+Ant-2028 and Walker-2029 terminal receipts. These are training receipts, not
+final strict scientific certification. The six A100 workers continued, while
+the4080 pool fell from five to three workers as those two jobs finished.
+
+The13:24 snapshot found only **6.43GiB free on4080's project filesystem**.
+Two storage-only operations have now preserved this project's cold data on
+the separate4T disk before releasing redundant primary copies:
+
+- [Eight named cold archive directories](p4_7_training_receipts_20261022/cold_4080_directory_offload_20261024_receipt.json)
+  were copied and rehashed; their original read paths remain same-content
+  directory links. The three archive parent directories remain real primary
+  directories, preserving future same-filesystem retirement renames.
+- [Three obsolete4080 export sets](p4_7_training_receipts_20261022/inactive_4080_export_offload_20261024_receipt.json)
+  were separately copied and verified. Their canonical containers were absent
+  on4080. Original export directories remain real primary directories with
+  historical-location notes for later fresh exports; no active export was
+  removed. Some same-named cells run elsewhere, so these are explicitly old
+  host-local copies, not the newer active inputs.
+
+Observed primary free space recovered to about **18.7GiB**. Complete archived
+contents and manifests remain recoverable on4T; only verified redundant primary
+replicas were removed. No canonical training container, active input, GPU task
+or other project was moved, stopped or reprioritized. Free counters include
+concurrent shared-filesystem activity; the cause of the broader space decline
+is still unproven. Approval has been requested before any transfer of another
+project's idle archives; no such transfer has been performed.
+
+**Goal-2029 has now launched on4080 from its5,500,000-step full checkpoint**,
+using the previously pinned raw4T archive. All92 recorded scientific-evidence
+files were restored, reusing identical historical checkpoint/CSV prefixes;
+the entire pre-restore target was independently backed up on4T first. Recorded
+scientific suffix coverage is not represented as a complete filesystem clone.
+The canonical target remains a real directory and its input SHA matches the
+original incident inventory. The original5080 container remains intact and no
+source GPU job was launched or signalled. The frozen source62ca739, seed2029,
+10M budget, batch256, replay400k and5000-step epochs are unchanged.
+
+The13:54 ordinary snapshot verifies new PID1831158's CUDA/MPS connection beside
+the three continuing4080 PointButton workers. **Its first new epoch remains
+pending**: process/GPU liveness is not substituted for that proof. The [in-flight
+recovery receipt](p4_7_training_receipts_20261022/goal2029_from4t_to4080_20261024.json)
+records input identity, restored files, preserved old target and launch state.
+The controller waits on the existing scheduled JSON, not repeated SSH checks;
+it will not auto-relaunch the worker if an observation window expires.
+
+Placement now accounts for all20 cells: **eight trained, ten live processes,
+two still stopped** (Goal2028/2030). A100 has six workers;4080 now has four;
+5080 has none of this project's training. Any future5080 recovery must exclude
+all five Point cells already running elsewhere, including this in-flight Goal.
+After restoring the missing files,4080 primary free space was about17.5GiB;
+further bulk admissions remain deferred at this headroom. A100 had10.80GiB in
+the13:24 snapshot and is also not admitting another capsule now.
+
+The final ledger explicitly waits for Goal2029's new-epoch proof. Its known
+25,000-step /44-cost source tail will then be counted exactly once. Storage
+copies add no training interactions or scientific evaluations. Full budgets,
+fixed evaluation protocol, and original final gates remain intact; historical
+original-parent and multi-hop path limitations are not repaired or waived by
+these storage and continuation operations.
+
+## Earlier storage update: 2026-10-23 09:13 CST — native archive cycles confirmed
 
 Future **temporary raw-evidence snapshots** now use the separate disks:
 
