@@ -1,0 +1,218 @@
+{
+  "kind": "existing_native_terminal_receipt_copy_not_final_scientific_audit",
+  "created_at_utc": "2026-10-24T08:15:12.455841+00:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "completed_training_cells": 8,
+  "full_matrix_cells": 20,
+  "files_copied": 24,
+  "selection_rule": "All eight terminal cells already present in the verified cache migration; no metric selection",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "training_processes_signalled": 0,
+  "remote_files_modified": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "helper_sha256": "f1b0b7e8640a5d547eebe4c3f752343b37376ea538c87d5832830cf764a99ef2",
+  "records": [
+    {
+      "job": "ant-2027",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2027",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "3e6985fa5f3d3180fcafa82b577b80a54e31c1a0ece6b3ddcd82d9e832028b98",
+          "bytes": 5393,
+          "local_relative_path": "ant-2027/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/training_summary.json",
+          "sha256": "9ad12e71b094d2905adc80da62a768469a9bc9faf05e64514724e951f0965f78",
+          "bytes": 4151,
+          "local_relative_path": "ant-2027/training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/evaluation_step_5000000.json",
+          "sha256": "478cbba9d322575aac0df08b2be18968bd81d8d31b7bde8e5ee5fc6c03def28e",
+          "bytes": 24601,
+          "local_relative_path": "ant-2027/training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "ant-2028",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2028",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "5fc16078efe4d1ac7689c7133cbb084b15311f45ccd76d07ca96c9ad7d63001a",
+          "bytes": 5383,
+          "local_relative_path": "ant-2028/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/training_summary.json",
+          "sha256": "d8c170b679a501262c62d10b8654b6d7f6b689bc5440e6489100b4295343ec37",
+          "bytes": 4148,
+          "local_relative_path": "ant-2028/training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/evaluation_step_5000000.json",
+          "sha256": "5b6eb40d18b8db206634474b73d7444d0406fbe8f69be927c19e212af7076afe",
+          "bytes": 24477,
+          "local_relative_path": "ant-2028/training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "ant-2030",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2030",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "c92b7e0b4be604382030b24d24a69bf1092bd9dd7736ec5cc561d025a3d33699",
+          "bytes": 5390,
+          "local_relative_path": "ant-2030/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/training_summary.json",
+          "sha256": "905a5798db1215428a1266d55deb62e6eeb6e89e94f68a3267f1bfb0a1f75e35",
+          "bytes": 4151,
+          "local_relative_path": "ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/evaluation_step_5000000.json",
+          "sha256": "6285ff19296cfee859c58df2cc5de6bdb54cdab9085b92466e8defb3c65d4d8c",
+          "bytes": 22681,
+          "local_relative_path": "ant-2030/training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "ant-2031",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2031",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "07af03fef4bce882ac301586766decd23fa801d4fb8fa1ae61868636b50109b6",
+          "bytes": 5381,
+          "local_relative_path": "ant-2031/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/training_summary.json",
+          "sha256": "c2dea3fc5384a8e3c8a404c01c9b059b2ee3075425317ac6489c31eb23edb5ab",
+          "bytes": 4145,
+          "local_relative_path": "ant-2031/training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/evaluation_step_5000000.json",
+          "sha256": "66e74c0512c208b66f7418ad02919a05e68b25765cf4f6ecd6ae87ade808f486",
+          "bytes": 27122,
+          "local_relative_path": "ant-2031/training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2027",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2027",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "8711b9949addcde962e6188361f0f578c41e328144a4ce2fdb1355eb8b4e86cd",
+          "bytes": 5364,
+          "local_relative_path": "walker2d-2027/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/training_summary.json",
+          "sha256": "bc93e64f1491a20edb54fb10ef0872a9c70229177dd248542788e3c0f0522b95",
+          "bytes": 4114,
+          "local_relative_path": "walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/evaluation_step_5000000.json",
+          "sha256": "f551c261e6835b23e2b8c5883e3adb14e3a8b8439d7a8cb0edbea289531c4f33",
+          "bytes": 22698,
+          "local_relative_path": "walker2d-2027/training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2029",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2029",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "ac47a7ae20efe6b994256d9f50a6e664b3d85e812a5c48f4df3cf85341d29591",
+          "bytes": 5413,
+          "local_relative_path": "walker2d-2029/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/training_summary.json",
+          "sha256": "dc395fee0a8c13498ab9303d3a53d21985fa501428b6e8aeaefc53622ae2480b",
+          "bytes": 4152,
+          "local_relative_path": "walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/evaluation_step_5000000.json",
+          "sha256": "a9bc1e19b5b80c0b321e2a6067518adb3391d7e6e7173ad211c4eeedc1b3d51b",
+          "bytes": 25541,
+          "local_relative_path": "walker2d-2029/training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2030",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2030",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "4856bd741f5f71bda76b1ac571598005cf44b1ae60600af897aa32ff93ca041b",
+          "bytes": 5408,
+          "local_relative_path": "walker2d-2030/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/training_summary.json",
+          "sha256": "c90db02943178a8bd678ddcd3b86a91e8035c4785b4909aac0fcd274c1efc912",
+          "bytes": 4151,
+          "local_relative_path": "walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/evaluation_step_5000000.json",
+          "sha256": "2a576d97e31b86b5db79f5a0f8dcd19322bba9c3bbb8a2b801aee81d188b4c94",
+          "bytes": 23555,
+          "local_relative_path": "walker2d-2030/training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2031",
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2031",
+      "files": [
+        {
+          "path": "receipt.json",
+          "sha256": "5c4b4708ea0c5dd6ce16178efa16b4e0b820e434c1cf5f2dee2d3877e423784c",
+          "bytes": 5354,
+          "local_relative_path": "walker2d-2031/receipt.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/training_summary.json",
+          "sha256": "b6cdcf7d9fd52fcb4fe195eace20ac7312d987ce324aa015113568a28e21a31a",
+          "bytes": 4102,
+          "local_relative_path": "walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/training_summary.json"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/evaluation_step_5000000.json",
+          "sha256": "8227a0fb969f313fd67a78c9f0ef360ef544dc59bfd67c6261378dbd949db57e",
+          "bytes": 29522,
+          "local_relative_path": "walker2d-2031/training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/evaluation_step_5000000.json"
+        }
+      ]
+    }
+  ],
+  "caveats": [
+    "Only the eight cells already terminal at cache migration are included; not all five seeds of either environment.",
+    "Native receipt status is not the final60/80/60/120 scientific gate result.",
+    "Known original-parent and multi-hop path limitations remain unresolved.",
+    "No performance superiority, significance or causal claim is made from this incomplete matrix."
+  ]
+}

@@ -1,6 +1,6 @@
 # P4.7 Multi-GPU Training Status
 
-## Latest continuation update: 2026-10-24 16:01 CST — Goal2030 launched on A100 GPU1
+## Latest continuation update: 2026-10-24 16:15 CST — Goal2030 continuing; eight native terminal results retained
 
 The stopped **Goal2030** cell has now launched on shared A100 GPU1 from its
 **7,150,000-step full checkpoint**, retaining the original10M-step budget.
@@ -35,7 +35,7 @@ The smaller Goal2030 capsule fits that headroom with the **16GiB post-copy
 primary reserve retained** (16.285GiB observed after restoration). Unlike the
 earlier4080 restoration helper, this controller does not require an additional
 half-GiB copy slack above that reserve. GPU1 had36% total utilization, about
-78.7GiB free GPU memory and the exact three expected owned clients at admission;
+78,674MiB free GPU memory and the exact three expected owned clients at admission;
 it now shares that pool without pausing or reprioritizing another project.
 This smaller-capsule placement, ahead of the larger Goal2028 input, is based on
 available storage/resources, not reward, cost or scientific result selection.
@@ -48,6 +48,34 @@ remaining conditional source tail is25,000 steps /493 cost. Unknown unlogged
 tails remain unknown, not zero. The source/target CUDA builds differ and are
 recorded without any bitwise-equivalence claim. All final scientific gates,
 original-parent gaps and pending multi-hop path limitations remain unchanged.
+
+The eight already cached terminal cells' **24 existing JSON files** (native
+receipt, training summary and5M evaluation for each cell) have now been copied
+back to the local host with their byte hashes. The [copy manifest and native
+files](shapo_p47_four_env_artifacts/partial_milestones/terminal_native_receipts_available8_20261024/manifest.json)
+retain the original results; no policy was evaluated again and no remote file
+was changed. These eight were selected solely as all cells already terminal
+at the cache migration, not by performance. They are not the full five-seed
+result for either environment and are not a final scientific certification.
+
+| Existing cell | Final budget | Native mean return | Failure rate | Native mean cost | CVaR-20 |
+|---|---:|---:|---:|---:|---:|
+|Ant2027|5M|-1027.77|27%|0.27|1.00|
+|Ant2028|5M|2994.90|25%|0.25|1.00|
+|Ant2030|5M|6526.60|4%|0.04|0.20|
+|Ant2031|5M|3673.26|57%|0.57|1.00|
+|Walker2027|5M|5672.55|3%|0.03|0.15|
+|Walker2029|5M|4209.48|37%|0.37|1.00|
+|Walker2030|5M|1141.98|13%|0.13|0.65|
+|Walker2031|5M|2669.40|84%|0.84|1.00|
+
+Each native final evaluation already contains the fixed five evaluation seeds
+times20 episodes (100 episodes per training seed). Locomotion failure is not
+Point-task success. **Seed-to-seed outcomes are heterogeneous**, including the
+negative Ant2027 return and high Walker2031 failure rate. These observations
+are retained without replacing a seed, switching to a best checkpoint or
+changing the frozen method. There is no matched C0 comparison or causal
+superiority claim here; the remaining cells still run their complete budgets.
 
 ## Earlier continuation update: 2026-10-24 15:47 CST — terminal cache on data disk;5080 reserved
 
