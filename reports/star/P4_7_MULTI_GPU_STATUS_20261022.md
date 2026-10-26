@@ -1,5 +1,33 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-26 20:25 CST — 17 terminal cells; three A100 cells continue
+
+The current scheduled monitor shows **17/20 training cells collected as
+terminal**. The four 4080 workers have finished; only three A100 workers
+remain active. This is a training-receipt count, not a claim that the final
+strict scientific audit has passed.
+
+| Host | Cell | Latest logged steps | Fixed full budget | State |
+|---|---|---:|---:|---|
+|A100|Goal2031|9,985,000|10,000,000|running|
+|A100|Button2031|9,910,000|10,000,000|running|
+|A100|Goal2030|8,595,000|10,000,000|running|
+|4080|all four remaining cells|—|—|training complete|
+
+The collector state at20:23 reports17 completed training runs and no pending
+result-collection backlog. A100 primary free space is15.64GiB and its
+separate archive disk has116.15GiB free. 4080 has246.25GiB free on the
+primary filesystem and about2.17TiB on its4T archive disk. The three
+remaining workers retain their full budgets; no scientific early stop,
+duplicate launch, or new evaluation was introduced.
+
+5080 has zero SAFEFLOW training workers. Its earlier eight-hour hold has
+expired, but no SAFEFLOW task was started there: the seven original Point
+cells already have owners elsewhere and are not duplicated. Other work on
+5080 remains untouched. The next action is simply to let the three A100
+workers finish, then collect their native receipts before the single final
+strict audit.
+
 ## Latest continuation update: 2026-10-24 21:24 CST — ten continuing cells advance; 5080 hold maintained
 
 The ordinary half-hour monitor reports all ten remaining workers advancing,
