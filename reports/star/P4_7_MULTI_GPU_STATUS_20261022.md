@@ -1,5 +1,19 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-27 12:25 CST — Goal2030 remains the only active cell
+
+The half-hour observation recorded **19/20 terminal training cells**. The only
+remaining SAFEFLOW worker is A100 `point-goal-2030`, now at **8,925,000 /
+10,000,000 steps** and still running with MPS verified. The 4080 and 5080 have
+no SAFEFLOW workers; their foreign jobs were left untouched. Storage remains
+healthy: A100 has about **65 GiB** on the project filesystem and **103 GiB** on
+the archive filesystem; 4080 has **214 GiB** plus **2.04 TiB** on its archive
+disk; 5080 has **136 GiB** free. No duplicate launch, early stop, or budget
+reduction was introduced. The collector remains at
+`training_receipts_collected_pending_final_strict_audit`; the final strict
+matrix audit must wait until Goal2030 reaches its full budget and its native
+receipt is collected.
+
 ## Latest continuation update: 2026-10-27 09:24 CST — 19 terminal cells; one A100 cell remains
 
 The current collector reports **19/20 training cells collected as terminal**.
