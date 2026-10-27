@@ -1,5 +1,17 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-27 12:55 CST — Goal2030 advances; archive space alert
+
+The scheduled observation recorded **19/20 terminal training cells**. A100
+`point-goal-2030` advanced to **8,935,000 / 10,000,000 steps** and remains
+running with MPS verified. The 4080 and 5080 still have no SAFEFLOW workers;
+foreign jobs remain untouched. A100 project space is about **40 GiB** free,
+while the separate archive filesystem has fallen to **78.7 GiB** and is now
+marked low-space by the observer. No automatic deletion, migration, budget
+reduction, or duplicate launch was performed. The collector remains at
+`training_receipts_collected_pending_final_strict_audit`; the strict matrix
+audit waits for Goal2030 to finish and for its native receipt to be collected.
+
 ## Latest continuation update: 2026-10-27 12:25 CST — Goal2030 remains the only active cell
 
 The half-hour observation recorded **19/20 terminal training cells**. The only
