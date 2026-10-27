@@ -1,5 +1,32 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-27 22:26 CST — Goal2030 reaches 9.10M
+
+The [scheduled observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261027_2226.json)
+shows the same A100 `point-goal-2030` worker running with verified MPS at
+**9,100,000 / 10,000,000 steps**. The collector still reports **19/20 terminal
+training cells**; this is not final scientific acceptance. The 4080 and 5080
+have no SAFEFLOW training workers. A100 free space is **28.62 GiB** on the
+project filesystem and **101.14 GiB** on the archive filesystem, both above
+their configured warning thresholds but with limited headroom. The half-hour
+observer and collector are both alive. No training restart, duplicate job,
+budget reduction, deletion, or foreign-job interruption was performed. Wait
+for the remaining full-budget training and native receipt before the final
+strict matrix audit; historical provenance limitations are unchanged.
+
+## Latest continuation update: 2026-10-27 14:25 CST — Goal2030 advances to 8.97M
+
+The scheduled observation recorded **19/20 terminal training cells**. A100
+`point-goal-2030` advanced to **8,970,000 / 10,000,000 steps** and remains
+running with MPS verified. The 4080 and 5080 still have no SAFEFLOW workers;
+foreign jobs remain untouched. A100 project space is about **40 GiB** free and
+the archive filesystem is back to **103 GiB** free, so the previous archive
+space warning is no longer active in this frame. No deletion, migration, early
+stop, budget reduction, or duplicate launch was performed. The collector remains
+at `training_receipts_collected_pending_final_strict_audit`; the final strict
+matrix audit waits for Goal2030 to finish and for its native receipt to be
+collected.
+
 ## Latest continuation update: 2026-10-27 12:55 CST — Goal2030 advances; archive space alert
 
 The scheduled observation recorded **19/20 terminal training cells**. A100
