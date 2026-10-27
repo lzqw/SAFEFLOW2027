@@ -1,5 +1,27 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-27 09:24 CST — 19 terminal cells; one A100 cell remains
+
+The current collector reports **19/20 training cells collected as terminal**.
+All four 4080 cells and all but one A100 cell are finished. The only active
+worker is:
+
+| Host | Cell | Latest logged steps | Fixed full budget | State |
+|---|---|---:|---:|---|
+|A100|Goal2030|8,875,000|10,000,000|running|
+
+The remaining cell has about1.125M logged steps left at the current observed
+rate. This is only a rough runtime indication; no early stop or budget
+reduction is being applied. The result collector has no reported training
+receipt backlog and remains at `training_receipts_collected_pending_final_strict_audit`.
+
+Current free space is A100 primary17.57GiB and separate archive data103.94GiB;
+4080 primary223.58GiB and4T archive2.04TiB. 5080 has zero SAFEFLOW workers.
+No new seed, duplicate job, scientific evaluation, or frozen-source change
+was introduced. After Goal2030 reaches its full budget, its native receipt
+will be collected and the one final strict matrix audit can be considered;
+the known provenance/path limitations remain unchanged and are not waived.
+
 ## Latest continuation update: 2026-10-26 20:25 CST — 17 terminal cells; three A100 cells continue
 
 The current scheduled monitor shows **17/20 training cells collected as
