@@ -1,5 +1,17 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-28 09:58 CST — Goal2030 reaches 9.24M
+
+The latest collector/observer state records **19/20 terminal training cells**.
+A100 `point-goal-2030` remains the only SAFEFLOW worker and has reached
+**9,240,000 / 10,000,000 steps** with MPS verified. The 4080 and 5080 have no
+SAFEFLOW workers, and foreign jobs remain untouched. Storage is currently
+about **28.8 GiB** free on A100's project filesystem and **100.8 GiB** on its
+archive filesystem; 4080 and 5080 also remain above their configured warning
+thresholds. The final strict matrix audit remains pending until Goal2030
+reaches its full budget and its native receipt is collected. No duplicate
+launch, early stop, deletion, migration, or budget change was performed.
+
 ## Latest continuation update: 2026-10-27 22:26 CST — Goal2030 reaches 9.10M
 
 The [scheduled observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261027_2226.json)
