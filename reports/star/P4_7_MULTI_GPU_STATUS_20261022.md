@@ -1,5 +1,17 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-10-29 14:00 CST — Goal2030 reaches 9.91M
+
+The scheduled observation records A100 `point-goal-2030` at **9,910,000 /
+10,000,000 steps** with MPS verified; only **90,000 steps remain**. The
+collector still reports **19/20 terminal training cells** because the native
+receipt has not yet been collected. A100 project free space is **21.28 GiB**
+and archive free space is **97.74 GiB** (archive warning remains active).
+4080/5080 have no SAFEFLOW workers. No duplicate launch, budget change,
+deletion, migration, or foreign-job interruption was performed. Once the
+worker reaches 10M, collect its native receipt and run the final strict matrix
+audit before claiming completion.
+
 ## Latest continuation update: 2026-10-29 09:27 CST — final worker reaches 97.85%
 
 The [scheduled observation](shapo_p47_four_env_artifacts/operations/20261019/capacity_progress_observation_20261029_0927.json)

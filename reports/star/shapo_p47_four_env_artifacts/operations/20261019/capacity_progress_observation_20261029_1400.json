@@ -1,0 +1,300 @@
+{
+  "observed_at_unix": 1793253434.0537112,
+  "poll_seconds": 1800,
+  "stable_seconds": 1800,
+  "hosts": {
+    "tjucta-a100": {
+      "observed_at_unix": 1793253434.3380802,
+      "gpus": [
+        {
+          "index": 0,
+          "uuid": "GPU-7b6a829b-7b56-af3e-cf56-1af815c62dbe",
+          "name": "NVIDIA A100 80GB PCIe",
+          "free_mib": 80998,
+          "total_mib": 81920,
+          "utilization_percent": 0,
+          "processes": [
+            {
+              "pid": 3633500,
+              "role": "safeflow",
+              "executable": "nvidia-cuda-mps-server",
+              "memory_mib": 30
+            }
+          ],
+          "safeflow_mps_client_pids": [],
+          "MPS_accounting_unproven": false,
+          "status": "available_for_rebalance",
+          "foreign_pids": [],
+          "safeflow_gpu_processes": 1,
+          "safeflow_gpu_os_processes": 1,
+          "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+          "reserve_mib": 16384,
+          "max_rebalance_utilization_percent": 85,
+          "candidate_since_unix": 1793249832.9797037,
+          "signature": [
+            "available_for_rebalance",
+            [],
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+          "name": "NVIDIA A100 80GB PCIe",
+          "free_mib": 80225,
+          "total_mib": 81920,
+          "utilization_percent": 18,
+          "processes": [
+            {
+              "pid": 2384685,
+              "role": "safeflow_mps_server",
+              "executable": "nvidia-cuda-mps-server",
+              "memory_mib": 30,
+              "raw_role_before_MPS_proof": "safeflow"
+            },
+            {
+              "pid": 2508133,
+              "role": "safeflow",
+              "executable": "python",
+              "memory_mib": 770
+            }
+          ],
+          "safeflow_mps_client_pids": [
+            2508133
+          ],
+          "MPS_accounting_unproven": false,
+          "status": "available_for_rebalance",
+          "foreign_pids": [],
+          "safeflow_gpu_processes": 1,
+          "safeflow_gpu_os_processes": 2,
+          "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+          "reserve_mib": 16384,
+          "max_rebalance_utilization_percent": 85,
+          "candidate_since_unix": 1793249832.9797037,
+          "signature": [
+            "available_for_rebalance",
+            [],
+            1
+          ]
+        }
+      ],
+      "storage": [
+        {
+          "label": "project_filesystem",
+          "path": "/home/lzqw/SAFEFLOW2027_A100",
+          "warning_below_free_gib": 20,
+          "status": "ok",
+          "free_gib": 21.28,
+          "total_gib": 1642.35,
+          "separate_from_project_filesystem": false
+        },
+        {
+          "label": "archive_data_filesystem",
+          "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007",
+          "warning_below_free_gib": 100,
+          "status": "low_space",
+          "free_gib": 97.74,
+          "total_gib": 7211.99,
+          "separate_from_project_filesystem": true
+        }
+      ],
+      "training": [
+        {
+          "job": "point-goal-2030",
+          "pid": 2508133,
+          "start_ticks": 43489986,
+          "state": "R",
+          "boot_id": "6928f333-1036-473c-92d5-4c482d5fef59",
+          "device": "cuda:0",
+          "progress_status": "observed",
+          "steps": 9910000,
+          "last_epoch_fps": 10.009026527404785,
+          "progress_selection": "active_worker_logger_fd",
+          "progress_csv": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/progress.csv",
+          "progress_age_seconds": 168.978045463562,
+          "cuda_execution_backend": "mps_verified",
+          "mps_connection": {
+            "pipe_directory": "/home/lzqw/SAFEFLOW2027_A100/operations/mps_formal_a100_gpu1_20261020",
+            "status": "observed",
+            "server_pid": 2384685,
+            "client_pids": [
+              2508133
+            ],
+            "gpu_uuid": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78"
+          },
+          "mps_gpu_uuid_verified": "GPU-164dfe85-4b4b-0f44-fcd8-99ca6d1e8b78",
+          "logged_step_delta": 20000,
+          "observation_interval_seconds": 1800.4279351234436,
+          "observed_logged_steps_per_second": 11.108470164138355
+        }
+      ],
+      "status": "observed"
+    },
+    "4080": {
+      "observed_at_unix": 1793253434.5574498,
+      "gpus": [
+        {
+          "index": 0,
+          "uuid": "GPU-66ed7e12-a0c3-9273-463d-56a5e5f0a4f7",
+          "name": "NVIDIA GeForce RTX 4080 SUPER",
+          "free_mib": 12431,
+          "total_mib": 16376,
+          "utilization_percent": 68,
+          "processes": [
+            {
+              "pid": 3011,
+              "role": "graphics",
+              "executable": "gnome-remote-desktop-daemon",
+              "memory_mib": 249
+            },
+            {
+              "pid": 1394075,
+              "role": "safeflow",
+              "executable": "nvidia-cuda-mps-server",
+              "memory_mib": 28
+            },
+            {
+              "pid": 2953655,
+              "role": "foreign_or_unknown",
+              "executable": "python",
+              "memory_mib": 1298
+            },
+            {
+              "pid": 2972717,
+              "role": "foreign_or_unknown",
+              "executable": "python",
+              "memory_mib": 1298
+            },
+            {
+              "pid": 3011883,
+              "role": "foreign_or_unknown",
+              "executable": "python",
+              "memory_mib": 516
+            }
+          ],
+          "safeflow_mps_client_pids": [],
+          "MPS_accounting_unproven": false,
+          "status": "occupied_or_insufficient_headroom",
+          "foreign_pids": [
+            2953655,
+            2972717,
+            3011883
+          ],
+          "safeflow_gpu_processes": 1,
+          "safeflow_gpu_os_processes": 1,
+          "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+          "reserve_mib": 8192,
+          "max_rebalance_utilization_percent": 85,
+          "candidate_since_unix": null,
+          "signature": [
+            "occupied_or_insufficient_headroom",
+            [
+              2953655,
+              2972717,
+              3011883
+            ],
+            1
+          ]
+        }
+      ],
+      "storage": [
+        {
+          "label": "project_filesystem",
+          "path": "/home/carla/SAFEFLOW2027_4080",
+          "warning_below_free_gib": 20,
+          "status": "ok",
+          "free_gib": 365.13,
+          "total_gib": 1340.24,
+          "separate_from_project_filesystem": false
+        },
+        {
+          "label": "archive_4t_filesystem",
+          "path": "/home/carla/4T/SAFEFLOW2027_4080",
+          "warning_below_free_gib": 100,
+          "status": "ok",
+          "free_gib": 1332.61,
+          "total_gib": 3666.45,
+          "separate_from_project_filesystem": true
+        }
+      ],
+      "training": [],
+      "status": "observed"
+    },
+    "5080": {
+      "observed_at_unix": 1793253434.4856944,
+      "gpus": [
+        {
+          "index": 0,
+          "uuid": "GPU-ac315b09-0bb7-2072-efd1-cdfc5fae96a5",
+          "name": "NVIDIA GeForce RTX 5080",
+          "free_mib": 11339,
+          "total_mib": 16303,
+          "utilization_percent": 57,
+          "processes": [
+            {
+              "pid": 215213,
+              "role": "safeflow",
+              "executable": "nvidia-cuda-mps-server",
+              "memory_mib": 52
+            },
+            {
+              "pid": 2295279,
+              "role": "foreign_or_unknown",
+              "executable": "awesun_desktop",
+              "memory_mib": 337
+            },
+            {
+              "pid": 2329022,
+              "role": "foreign_or_unknown",
+              "executable": "python",
+              "memory_mib": 3627
+            }
+          ],
+          "safeflow_mps_client_pids": [],
+          "MPS_accounting_unproven": false,
+          "status": "occupied_or_insufficient_headroom",
+          "foreign_pids": [
+            2295279,
+            2329022
+          ],
+          "safeflow_gpu_processes": 1,
+          "safeflow_gpu_os_processes": 1,
+          "safeflow_gpu_processes_semantics": "verified_training_clients_count_MPS_server_not_double_counted",
+          "reserve_mib": 8192,
+          "max_rebalance_utilization_percent": 85,
+          "candidate_since_unix": null,
+          "signature": [
+            "occupied_or_insufficient_headroom",
+            [
+              2295279,
+              2329022
+            ],
+            1
+          ]
+        }
+      ],
+      "storage": [
+        {
+          "label": "project_filesystem",
+          "path": "/home/autodrive/LZQW/SAFEFLOW2027",
+          "warning_below_free_gib": 20,
+          "status": "ok",
+          "free_gib": 130.13,
+          "total_gib": 1077.53,
+          "separate_from_project_filesystem": false
+        }
+      ],
+      "training": [],
+      "status": "observed"
+    }
+  },
+  "policy": {
+    "pause_foreign_jobs": false,
+    "reduce_training_steps": false,
+    "automatic_file_deletion": false,
+    "storage_alerts_only": true,
+    "change_training_source": false,
+    "matrix_cells": 20
+  },
+  "action": "Observe and notify only. The active goal agent handles any existing-job migration at a full checkpoint; no automatic termination, new seeds, or scientific evaluations."
+}
