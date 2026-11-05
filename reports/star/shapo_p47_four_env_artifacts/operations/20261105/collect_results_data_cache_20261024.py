@@ -247,11 +247,19 @@ def main():
             state['observed_at'] = datetime.datetime.now().astimezone().isoformat()
             save(state)
             if len(a100_done) == 20:
-                ensure_cache(BASE)
                 if not state.get('final_delivered'):
+                    if state.get('final_strict_audit_attempted_at'):
+                        raise RuntimeError('final strict audit already attempted; manual evidence review required, not an automatic rerun')
+                    state['final_strict_audit_attempted_at'] = datetime.datetime.now().astimezone().isoformat()
+                    state['completion_stage'] = 'final_strict_audit_running'
+                    save(state)
                     finalize()
                     state['final_delivered'] = str(HOST_FINAL)
                     save(state)
+                # Recovery-input materialization is for publication accounting,
+                # not the remote final audit. Do not restore gigabytes first
+                # when a missing original scientific artifact may block sealing.
+                ensure_cache(BASE)
                 publication = subprocess.run(
                     [sys.executable, str(BASE / 'publish_final.py')],
                     check=True, text=True, stdout=subprocess.PIPE,
@@ -269,6 +277,8 @@ def main():
             state['error_observed_at'] = datetime.datetime.now().astimezone().isoformat()
             if isinstance(error, subprocess.CalledProcessError) and error.stderr:
                 state['last_error_stderr'] = error.stderr[-8000:]
+            if state.get('completed_runs') == 20:
+                state['completion_stage'] = 'final_delivery_failed_requires_review'
             save(state)
             # Finalization is one final verification, not a repeatedly scheduled test.
             if state.get('completed_runs') == 20:

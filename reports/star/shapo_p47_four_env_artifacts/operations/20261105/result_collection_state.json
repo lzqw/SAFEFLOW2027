@@ -11,11 +11,14 @@
     "point-goal-2029"
   ],
   "completed_runs": 20,
-  "observed_at": "2026-11-05T14:46:08.733879+08:00",
+  "observed_at": "2026-11-05T14:51:11.600092+08:00",
   "training_completed_runs": 20,
-  "completion_stage": "training_receipts_collected_pending_final_strict_audit",
+  "completion_stage": "final_delivery_failed_requires_review",
   "terminal_cache_run_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env",
   "primary_source_run_root": "/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env",
   "pending_cache_runs": [],
-  "terminal_cache_reserve_gib": 32
+  "terminal_cache_reserve_gib": 100,
+  "final_strict_audit_attempted_at": "2026-11-05T14:51:11.602708+08:00",
+  "last_error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', 'tjucta-a100', 'test -f /storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/public_artifacts/finalization_complete || bash /home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/finalize_shapo_p47_formal.sh /home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013 /storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env /home/lzqw/SAFEFLOW2027_A100/env/bin/python /storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/public_artifacts >/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/finalization_recovered.log 2>&1']' returned non-zero exit status 1.",
+  "error_observed_at": "2026-11-05T14:51:19.219113+08:00"
 }

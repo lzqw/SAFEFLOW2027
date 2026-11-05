@@ -97,7 +97,49 @@ and source-file SHA-256 references back to copied native receipt manifests:
 - [Ant five-seed summary](shapo_p47_four_env_artifacts/partial_milestones/ant_native_final_all5/summary.json)
 - [Walker2d five-seed summary](shapo_p47_four_env_artifacts/partial_milestones/walker2d_native_final_all5/summary.json)
 
-The final strict audit remains distinct from these descriptive assemblies.
-Known original-parent and multi-hop path limitations are not repaired by a
-passed native receipt, copied archive or matching JSON checksum. They must
-not be waived, fabricated or relabelled as a complete formal evidence bundle.
+## Final strict audit: attempted once, failed
+
+At **2026-11-05 14:51 UTC+08:00**, the unchanged remote finalizer was run
+once after all 20 terminal containers were collected. It exited with status
+1 on the first PointGoal-2027 checkpoint provenance/path check. The
+[preserved traceback](shapo_p47_four_env_artifacts/operations/20261105/final_strict_audit_20261105.log)
+names this original parent:
+
+```text
+/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-10-19-30-03/checkpoints/latest_full.pt
+```
+
+The validator could not map it into the current container through the recorded
+relocation origin. A targeted read-only follow-up also found no file at that
+exact historical relative path in either the A100 primary container or its
+terminal archive copy. The archive has later checkpoints, which must not be
+substituted for this missing original. The current A100 account cannot inspect
+the retired server's `/root` path; this is not a statement that no external
+backup could exist. Earlier indexed-archive searches already document other
+unresolved original-parent identities in the
+[provenance decisions](shapo_p47_four_env_artifacts/operations/20261019/provenance_decisions/point_goal2027_parent_decision_refresh_20261020_1302.json).
+
+This attempt stops at the first failing cell; it is **not** evidence that the
+other 19 strict validations passed. No final complete-evidence seal or
+strictly accepted formal bundle was produced. Failed staging is retained at:
+
+```text
+/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/.shapo-p47-finalization.1HpceX
+```
+
+The collector now records the attempt durably and refuses automatic audit
+reruns until manual evidence review. Its
+[state](shapo_p47_four_env_artifacts/operations/20261105/result_collection_state.json)
+distinguishes 20/20 completed training runs from the failed final delivery.
+Publication-only recovery input restoration was moved after the remote audit;
+an in-progress local copy was interrupted and retained, not deleted. Original
+durable 4T/source checkpoints were not changed. The new collector invocation
+uses the ordinary 100 GiB reserve; the earlier 32 GiB exception was only for
+the final missing container copy and is preserved in commit `9ad5961`.
+
+The immediate deliverable is this clearly labelled all-20 **native-results
+report**, not a formally accepted matrix. Recovering authentic historical
+parent bytes and supporting relocation evidence could enable a later review;
+without them, relaxing the protocol or launching replacement experiments
+would be a separate scientific decision requiring user direction. No such
+change or additional compute campaign has been started.

@@ -12,8 +12,12 @@ scheduled observation. The [all-20 native results report](P4_7_ALL20_NATIVE_RESU
 contains all four five-seed final-budget summaries and the newly recovered
 native JSON evidence. PointGoal success is 4.6% and PointButton success 2.2%;
 these remain poor despite the completed budgets. Ant/Walker returns vary
-substantially across seeds. Final strict scientific acceptance is still
-separate and unproven; no additional training or evaluation is started.
+substantially across seeds. The final strict audit was attempted once at
+14:51 and failed on the first PointGoal-2027 historical parent/path check;
+the report preserves the traceback and limitations. Automatic audit reruns
+are guarded. No later checkpoint is aliased as the missing original, and no
+additional training or evaluation is started. Training completion and native
+results publication must not be reported as final strict scientific acceptance.
 
 ## Latest continuation update: 2026-10-29 14:00 CST — Goal2030 reaches 9.91M
 
