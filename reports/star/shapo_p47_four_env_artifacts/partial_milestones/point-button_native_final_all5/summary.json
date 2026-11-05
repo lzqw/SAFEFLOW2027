@@ -1,0 +1,288 @@
+{
+  "kind": "descriptive_native_final_budget_one_environment_not_final_matrix_audit",
+  "assembled_at_utc": "2026-11-05T06:46:35.909687+00:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "environment": "SafetyPointButton1-v0",
+  "n_training_seeds": 5,
+  "milestone_steps": 10000000,
+  "evaluation_episodes_per_training_seed": 100,
+  "statistical_unit": "training_seed_not_individual_episode",
+  "descriptive_metrics": {
+    "mean_return": {
+      "n_valid_training_seeds": 5,
+      "mean": -14.302374867421566,
+      "sample_sd": 2.575387264058648,
+      "minimum": -17.714138955685858,
+      "maximum": -10.621175957315279
+    },
+    "mean_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 7.292,
+      "sample_sd": 1.89622519759653,
+      "minimum": 5.24,
+      "maximum": 9.53
+    },
+    "cost_cvar_20": {
+      "n_valid_training_seeds": 5,
+      "mean": 30.77,
+      "sample_sd": 6.374225443142092,
+      "minimum": 23.75,
+      "maximum": 36.15
+    },
+    "training_cumulative_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 167320.2,
+      "sample_sd": 11738.582290890157,
+      "minimum": 150109.0,
+      "maximum": 180566.0
+    },
+    "success_rate": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.022000000000000002,
+      "sample_sd": 0.02280350850198276,
+      "minimum": 0.0,
+      "maximum": 0.05
+    },
+    "high_risk_normal_tangent_variance_ratio": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.9908350467681885,
+      "sample_sd": 0.0034148477784470646,
+      "minimum": 0.9874270558357239,
+      "maximum": 0.9958621263504028
+    },
+    "high_risk_dangerous_outward_velocity": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.03273261860013008,
+      "sample_sd": 0.014107704292716412,
+      "minimum": 0.021353857591748238,
+      "maximum": 0.05708298459649086
+    },
+    "high_risk_reliability": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.007074970798566937,
+      "sample_sd": 0.0026321555365337755,
+      "minimum": 0.0031540526542812586,
+      "maximum": 0.009632755070924759
+    },
+    "high_risk_safety_weight": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.962221646308899,
+      "sample_sd": 0.045439134571151424,
+      "minimum": 0.902672290802002,
+      "maximum": 0.9999182820320129
+    }
+  },
+  "records": [
+    {
+      "job": "point-button-2027",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2027,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-button-2027/manifest.json",
+        "copy_manifest_sha256": "b802ea44921c7d0df6a86541d872aad0d359b93abc1ac042bd14058c37b67daf",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-button-2027/receipt.json",
+            "sha256": "dd46959083162246cdbb69b6aaaa1afc3d83c2b4a664a71918769b505d7924c4"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-23-05-58-27/artifacts/training_summary.json",
+            "sha256": "a08b2770eda5a8868591873b5e7d8043b79f6bf0b27bbb36b1de35866c88c981"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2027/training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-23-05-58-27/artifacts/evaluation_step_10000000.json",
+            "sha256": "b985dafa005aa642aea8e67bc7c6ecdaff33093925ddb1201d53f6540c7cde5d"
+          }
+        ]
+      },
+      "mean_return": -14.933387058005184,
+      "mean_cost": 5.24,
+      "cost_cvar_20": 23.75,
+      "training_cumulative_cost": 174970.0,
+      "success_rate": 0.02,
+      "high_risk_normal_tangent_variance_ratio": 0.9874270558357239,
+      "high_risk_dangerous_outward_velocity": 0.05708298459649086,
+      "high_risk_reliability": 0.009632755070924759,
+      "high_risk_safety_weight": 0.9239238500595093,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-button-2027/evaluation_step_10000000.json",
+        "sha256": "b985dafa005aa642aea8e67bc7c6ecdaff33093925ddb1201d53f6540c7cde5d"
+      }
+    },
+    {
+      "job": "point-button-2028",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2028,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-button-2028/manifest.json",
+        "copy_manifest_sha256": "c37932684147e30f657a23c416c09555a23ff0e9ca9d129cc2d4fcbcb68d24aa",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-button-2028/receipt.json",
+            "sha256": "c96dc57364740c22a162b8e9347c9304f415635fb84c673054ecc1bf0cc513a6"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/artifacts/training_summary.json",
+            "sha256": "f36448f9ae0786f62af4ebfb1814dc61903f6838af1286835a3a6ae34beb0f9b"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2028/training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/artifacts/evaluation_step_10000000.json",
+            "sha256": "8bb668340e76469655422eb4b181e2f264bba5552498e8618ad112bc1649bb7a"
+          }
+        ]
+      },
+      "mean_return": -13.459931761050052,
+      "mean_cost": 8.25,
+      "cost_cvar_20": 36.0,
+      "training_cumulative_cost": 162814.0,
+      "success_rate": 0.0,
+      "high_risk_normal_tangent_variance_ratio": 0.9879375100135803,
+      "high_risk_dangerous_outward_velocity": 0.03146529942750931,
+      "high_risk_reliability": 0.009334140457212925,
+      "high_risk_safety_weight": 0.9951195120811462,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-button-2028/evaluation_step_10000000.json",
+        "sha256": "8bb668340e76469655422eb4b181e2f264bba5552498e8618ad112bc1649bb7a"
+      }
+    },
+    {
+      "job": "point-button-2029",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2029,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-button-2029/manifest.json",
+        "copy_manifest_sha256": "caee55763274b2277c8a65a8c750088e4d4191c7b4c465f18c3e660dc82778bd",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-button-2029/receipt.json",
+            "sha256": "d8cf799b54471e722aab7eb00a2069b0c3304eade884930332bc3dd26da25cc7"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/training_summary.json",
+            "sha256": "94a2093249388a32a0143a06df55a1b27d1d0926ee185be735926a47f0069875"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2029/training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_10000000.json",
+            "sha256": "cf5804abf19be3f53d6fe388b4aa9fd2b46cfd33cffc967b8c11063b172efb98"
+          }
+        ]
+      },
+      "mean_return": -14.783240605051454,
+      "mean_cost": 8.06,
+      "cost_cvar_20": 34.0,
+      "training_cumulative_cost": 168142.0,
+      "success_rate": 0.05,
+      "high_risk_normal_tangent_variance_ratio": 0.991996705532074,
+      "high_risk_dangerous_outward_velocity": 0.025540418922901154,
+      "high_risk_reliability": 0.006244968622922897,
+      "high_risk_safety_weight": 0.9894742965698242,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-button-2029/evaluation_step_10000000.json",
+        "sha256": "cf5804abf19be3f53d6fe388b4aa9fd2b46cfd33cffc967b8c11063b172efb98"
+      }
+    },
+    {
+      "job": "point-button-2030",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2030,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-button-2030/manifest.json",
+        "copy_manifest_sha256": "f8698b19e2e567843943770a4db612472329e06961b3888de932dc5ccdefba79",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-button-2030/receipt.json",
+            "sha256": "03216369aaec6057659cff955b5f0f539b1c15d314168df2514a0254afd461e3"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2030/training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-22-12-31-35/artifacts/training_summary.json",
+            "sha256": "f9413225fad4f2668c7eaa8043ddce9beb99ba6fc243d9c152e3fcd3b9044ac9"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2030/training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-22-12-31-35/artifacts/evaluation_step_10000000.json",
+            "sha256": "6696f371cd59b2c880daa5e2d2331f6f246fcf8fd25098ad9681fa218a84104e"
+          }
+        ]
+      },
+      "mean_return": -17.714138955685858,
+      "mean_cost": 5.38,
+      "cost_cvar_20": 23.95,
+      "training_cumulative_cost": 150109.0,
+      "success_rate": 0.04,
+      "high_risk_normal_tangent_variance_ratio": 0.9958621263504028,
+      "high_risk_dangerous_outward_velocity": 0.028220532462000847,
+      "high_risk_reliability": 0.0031540526542812586,
+      "high_risk_safety_weight": 0.902672290802002,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-button-2030/evaluation_step_10000000.json",
+        "sha256": "6696f371cd59b2c880daa5e2d2331f6f246fcf8fd25098ad9681fa218a84104e"
+      }
+    },
+    {
+      "job": "point-button-2031",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2031,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-button-2031/manifest.json",
+        "copy_manifest_sha256": "11c24085a0d6d09f315a0d9e1c8fabed1737edaa41b69f81e95fdae1d4c6bc12",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-button-2031/receipt.json",
+            "sha256": "585a87b5cb33622e777d3dc4ae94a48b701f07aa567b65ebca2f95e5980aefa3"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-23-07-21-16/artifacts/training_summary.json",
+            "sha256": "e9a83fac6c0f4ca0a6b8c22ca7a7e35f882b6537a6dffe86eaffd4902f5e4008"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-button-2031/training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-23-07-21-16/artifacts/evaluation_step_10000000.json",
+            "sha256": "514684f5a37316d4e14cd0d3e5f4564a4efe74b9ea7c1faa80408e7136f4a4b5"
+          }
+        ]
+      },
+      "mean_return": -10.621175957315279,
+      "mean_cost": 9.53,
+      "cost_cvar_20": 36.15,
+      "training_cumulative_cost": 180566.0,
+      "success_rate": 0.0,
+      "high_risk_normal_tangent_variance_ratio": 0.9909518361091614,
+      "high_risk_dangerous_outward_velocity": 0.021353857591748238,
+      "high_risk_reliability": 0.0070089371874928474,
+      "high_risk_safety_weight": 0.9999182820320129,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-button-2031/evaluation_step_10000000.json",
+        "sha256": "514684f5a37316d4e14cd0d3e5f4564a4efe74b9ea7c1faa80408e7136f4a4b5"
+      }
+    }
+  ],
+  "helper_sha256": "5904d4d426bd5c3cb1e4eacf2a7b338f59ffebe7f679f04aadfd66784b88914f",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "remote_operations": 0,
+  "new_scientific_cells": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "inferential_test_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "caveats": [
+    "All five prespecified seeds at the final budget are required; no best-checkpoint or metric selection.",
+    "Means and sample SDs summarize five training seeds, not500 independent training replicates.",
+    "CVaR summaries average per-training-seed CVaR-20 values; episode pools are not merged.",
+    "Training cumulative costs are accepted-lineage counters, not total physical recovery work.",
+    "Optional diagnostic omissions are reported; no training seed is dropped.",
+    "Locomotion failure rate is not Point-task success rate.",
+    "Native receipts and JSON hashes do not establish the unchanged final scientific gates.",
+    "Known original-parent/path gaps remain unresolved; no matched-control or causal superiority claim is made."
+  ]
+}

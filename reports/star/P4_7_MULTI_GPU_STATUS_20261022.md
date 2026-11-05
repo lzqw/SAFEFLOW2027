@@ -1,5 +1,20 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest continuation update: 2026-11-05 — all 20 training cells finished
+
+**Training is complete at the full 150M accepted-lineage step budget.** The
+collector's stale 19/20 display was caused by its 100 GiB archive-reserve
+guard, not an unfinished trainer. The final 2.11 GiB Goal2030 container is
+now cached, preserving its primary-source original and at least 32 GiB free
+space for this narrowly scoped last copy. No deletion or scientific change
+was made. All three hosts have no SAFEFLOW training workers in the latest
+scheduled observation. The [all-20 native results report](P4_7_ALL20_NATIVE_RESULTS_20261105.md)
+contains all four five-seed final-budget summaries and the newly recovered
+native JSON evidence. PointGoal success is 4.6% and PointButton success 2.2%;
+these remain poor despite the completed budgets. Ant/Walker returns vary
+substantially across seeds. Final strict scientific acceptance is still
+separate and unproven; no additional training or evaluation is started.
+
 ## Latest continuation update: 2026-10-29 14:00 CST — Goal2030 reaches 9.91M
 
 The scheduled observation records A100 `point-goal-2030` at **9,910,000 /

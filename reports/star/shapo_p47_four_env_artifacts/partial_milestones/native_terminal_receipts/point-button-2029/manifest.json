@@ -1,0 +1,43 @@
+{
+  "kind": "native_terminal_receipt_copy_not_final_scientific_audit",
+  "copied_at_utc": "2026-11-05T06:46:34.732893+00:00",
+  "source_host": "tjucta-a100",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "full_matrix_cells": 20,
+  "terminal_training_budget_steps": 10000000,
+  "source": {
+    "job": "point-button-2029",
+    "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2029",
+    "files": [
+      {
+        "path": "receipt.json",
+        "sha256": "d8cf799b54471e722aab7eb00a2069b0c3304eade884930332bc3dd26da25cc7",
+        "bytes": 5401,
+        "mtime_ns": 1792907561000000000
+      },
+      {
+        "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/training_summary.json",
+        "sha256": "94a2093249388a32a0143a06df55a1b27d1d0926ee185be735926a47f0069875",
+        "bytes": 4107,
+        "mtime_ns": 1792907560000000000
+      },
+      {
+        "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_10000000.json",
+        "sha256": "cf5804abf19be3f53d6fe388b4aa9fd2b46cfd33cffc967b8c11063b172efb98",
+        "bytes": 23626,
+        "mtime_ns": 1792907560000000000
+      }
+    ]
+  },
+  "helper_sha256": "a0f18ad2b3a3c864c467083d709afec69e634eabe5d600756e5ce13ecb8cdc82",
+  "selection_rule": "Prespecified final-budget evaluation of the named cell, never best-checkpoint selection",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "training_processes_signalled": 0,
+  "remote_files_modified": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "caveat": "A passed native receipt is not a final60/80/60/120 scientific-gate pass; original-parent and path limitations remain unresolved."
+}

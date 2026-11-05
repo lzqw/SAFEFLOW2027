@@ -1,0 +1,288 @@
+{
+  "kind": "descriptive_native_final_budget_one_environment_not_final_matrix_audit",
+  "assembled_at_utc": "2026-11-05T06:46:35.865384+00:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "environment": "SafetyPointGoal1-v0",
+  "n_training_seeds": 5,
+  "milestone_steps": 10000000,
+  "evaluation_episodes_per_training_seed": 100,
+  "statistical_unit": "training_seed_not_individual_episode",
+  "descriptive_metrics": {
+    "mean_return": {
+      "n_valid_training_seeds": 5,
+      "mean": -0.5278538429239342,
+      "sample_sd": 0.2828545386139336,
+      "minimum": -0.9188845780878266,
+      "maximum": -0.22276891015947378
+    },
+    "mean_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 8.192,
+      "sample_sd": 2.4251226773093357,
+      "minimum": 4.12,
+      "maximum": 10.55
+    },
+    "cost_cvar_20": {
+      "n_valid_training_seeds": 5,
+      "mean": 38.11,
+      "sample_sd": 9.880751489638833,
+      "minimum": 20.6,
+      "maximum": 44.7
+    },
+    "training_cumulative_cost": {
+      "n_valid_training_seeds": 5,
+      "mean": 152169.0,
+      "sample_sd": 6392.168919858111,
+      "minimum": 142793.0,
+      "maximum": 159994.0
+    },
+    "success_rate": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.046,
+      "sample_sd": 0.01816590212458495,
+      "minimum": 0.02,
+      "maximum": 0.07
+    },
+    "high_risk_normal_tangent_variance_ratio": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.96163911819458,
+      "sample_sd": 0.01718665106723627,
+      "minimum": 0.9407547116279602,
+      "maximum": 0.9822170734405518
+    },
+    "high_risk_dangerous_outward_velocity": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.11369993463158608,
+      "sample_sd": 0.052556775937094624,
+      "minimum": 0.061006251722574234,
+      "maximum": 0.18787263333797455
+    },
+    "high_risk_reliability": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.02895681671798229,
+      "sample_sd": 0.01301253362784341,
+      "minimum": 0.013491824269294739,
+      "maximum": 0.04535449296236038
+    },
+    "high_risk_safety_weight": {
+      "n_valid_training_seeds": 5,
+      "mean": 0.8209859490394592,
+      "sample_sd": 0.19192059747236012,
+      "minimum": 0.6061359643936157,
+      "maximum": 0.9999949336051941
+    }
+  },
+  "records": [
+    {
+      "job": "point-goal-2027",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2027,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-goal-2027/manifest.json",
+        "copy_manifest_sha256": "e92cf93d9f5aabc5ef7f42a4aa83b3a246372f269df23e2ec2dc61e7e5ba8bb6",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2027/receipt.json",
+            "sha256": "af9a8797d2f5004729a4145c761a62ecb4912cbb7bc71a0d0a1e5f63facd7bc3"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-23-03-47-13/artifacts/training_summary.json",
+            "sha256": "7ecc29365f363f981df95cd5578da472cbb4f86120c37acba6dd63d690c0c7be"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-23-03-47-13/artifacts/evaluation_step_10000000.json",
+            "sha256": "ad6d9f6adb5a6935b8711b3e96885f66111ed634edbe09bb5c6af3ba3f959ff7"
+          }
+        ]
+      },
+      "mean_return": -0.34205121311614467,
+      "mean_cost": 4.12,
+      "cost_cvar_20": 20.6,
+      "training_cumulative_cost": 153487.0,
+      "success_rate": 0.05,
+      "high_risk_normal_tangent_variance_ratio": 0.9763138890266418,
+      "high_risk_dangerous_outward_velocity": 0.18787263333797455,
+      "high_risk_reliability": 0.018233200535178185,
+      "high_risk_safety_weight": 0.6322351694107056,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-goal-2027/evaluation_step_10000000.json",
+        "sha256": "ad6d9f6adb5a6935b8711b3e96885f66111ed634edbe09bb5c6af3ba3f959ff7"
+      }
+    },
+    {
+      "job": "point-goal-2028",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2028,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-goal-2028/manifest.json",
+        "copy_manifest_sha256": "79224410eaa3c7039a79db2b8b141bd68ba957578057d70aa76097b45921f1a0",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2028/receipt.json",
+            "sha256": "b449c90ef8f28d17c88af35a167e029a450ad128252981f1906dcff4216cf809"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-24-16-35-15/artifacts/training_summary.json",
+            "sha256": "a6ead8bdd90508d639a5034a366b792adff97dea13e689093c4e56bd44a0cb3c"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2028/training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-24-16-35-15/artifacts/evaluation_step_10000000.json",
+            "sha256": "00a53fc6dc8fa00d6fd890da5cd1c636c7b5558ec4f60c72d49b2376619e9c5e"
+          }
+        ]
+      },
+      "mean_return": -0.7091911562159526,
+      "mean_cost": 10.55,
+      "cost_cvar_20": 44.7,
+      "training_cumulative_cost": 159994.0,
+      "success_rate": 0.02,
+      "high_risk_normal_tangent_variance_ratio": 0.953162670135498,
+      "high_risk_dangerous_outward_velocity": 0.061006251722574234,
+      "high_risk_reliability": 0.03563093766570091,
+      "high_risk_safety_weight": 0.9999949336051941,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-goal-2028/evaluation_step_10000000.json",
+        "sha256": "00a53fc6dc8fa00d6fd890da5cd1c636c7b5558ec4f60c72d49b2376619e9c5e"
+      }
+    },
+    {
+      "job": "point-goal-2029",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2029,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-goal-2029/manifest.json",
+        "copy_manifest_sha256": "de8035b9b4d3e2e22bbdcff0c402acf4693e45fa248cecd332211ed58735d9d7",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2029/receipt.json",
+            "sha256": "e7e7385d23cd99bd1f61db774ada21fd1edd5044be00705b812d0efca591d513"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-24-13-51-06/artifacts/training_summary.json",
+            "sha256": "c970122870d9d8b4e51671a03133f9e7528cc88749ac5676c8302bf01567f867"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2029/training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-24-13-51-06/artifacts/evaluation_step_10000000.json",
+            "sha256": "3960c3bab2847c2f36216f884b0879e6b7aa7dace7641ad03dcdd0cb2dbb6405"
+          }
+        ]
+      },
+      "mean_return": -0.9188845780878266,
+      "mean_cost": 9.15,
+      "cost_cvar_20": 41.45,
+      "training_cumulative_cost": 149782.0,
+      "success_rate": 0.04,
+      "high_risk_normal_tangent_variance_ratio": 0.9557472467422485,
+      "high_risk_dangerous_outward_velocity": 0.10477354377508163,
+      "high_risk_reliability": 0.03207362815737724,
+      "high_risk_safety_weight": 0.8689322471618652,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-goal-2029/evaluation_step_10000000.json",
+        "sha256": "3960c3bab2847c2f36216f884b0879e6b7aa7dace7641ad03dcdd0cb2dbb6405"
+      }
+    },
+    {
+      "job": "point-goal-2030",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2030,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-goal-2030/manifest.json",
+        "copy_manifest_sha256": "b793de481585f94229c86181e23e2212b96ed137c99389911e3dcd93345ba031",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2030/receipt.json",
+            "sha256": "34faccc0426c6c7f9a75b643edc67e8912cb5e1c96360007e27caecc9c5e972c"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/artifacts/training_summary.json",
+            "sha256": "e9f538d91cb93d9df3979cbd104edc700bfc8039af21eaacc98236e11681bda2"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2030/training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/artifacts/evaluation_step_10000000.json",
+            "sha256": "a90e01e235ce3cd4293bfcffd01409368bc7faa0e09e4e84715e5f008bf06499"
+          }
+        ]
+      },
+      "mean_return": -0.22276891015947378,
+      "mean_cost": 8.87,
+      "cost_cvar_20": 42.45,
+      "training_cumulative_cost": 154789.0,
+      "success_rate": 0.07,
+      "high_risk_normal_tangent_variance_ratio": 0.9407547116279602,
+      "high_risk_dangerous_outward_velocity": 0.0712837502360344,
+      "high_risk_reliability": 0.04535449296236038,
+      "high_risk_safety_weight": 0.9976314306259155,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-goal-2030/evaluation_step_10000000.json",
+        "sha256": "a90e01e235ce3cd4293bfcffd01409368bc7faa0e09e4e84715e5f008bf06499"
+      }
+    },
+    {
+      "job": "point-goal-2031",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2031,
+      "milestone_steps": 10000000,
+      "input_provenance": {
+        "copy_manifest": "native_terminal_receipts/point-goal-2031/manifest.json",
+        "copy_manifest_sha256": "764becff3388f72bd2ca4be0bf139419448406eae67452f15dda543c9537befb",
+        "native_input_files": [
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2031/receipt.json",
+            "sha256": "601f0da7c1a9a9a68f722d18684d4157bfa523a933393b07b1dad4354ec865ff"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/artifacts/training_summary.json",
+            "sha256": "6287bf1d087cf463222ccecfe15dc3f40a661b9be01461a3c1448a1a39b94f3c"
+          },
+          {
+            "relative_path": "native_terminal_receipts/point-goal-2031/training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/artifacts/evaluation_step_10000000.json",
+            "sha256": "5cd907e32dc286bf8166d221530435be72ca010672715fb30a043b17a60891e2"
+          }
+        ]
+      },
+      "mean_return": -0.4463733570402734,
+      "mean_cost": 8.27,
+      "cost_cvar_20": 41.35,
+      "training_cumulative_cost": 142793.0,
+      "success_rate": 0.05,
+      "high_risk_normal_tangent_variance_ratio": 0.9822170734405518,
+      "high_risk_dangerous_outward_velocity": 0.14356349408626556,
+      "high_risk_reliability": 0.013491824269294739,
+      "high_risk_safety_weight": 0.6061359643936157,
+      "missing_or_nonfinite_optional_diagnostics": [],
+      "native_evaluation": {
+        "relative_path": "native_evaluations/point-goal-2031/evaluation_step_10000000.json",
+        "sha256": "5cd907e32dc286bf8166d221530435be72ca010672715fb30a043b17a60891e2"
+      }
+    }
+  ],
+  "helper_sha256": "5904d4d426bd5c3cb1e4eacf2a7b338f59ffebe7f679f04aadfd66784b88914f",
+  "additional_evaluation_rollouts": 0,
+  "model_or_tensor_loads": 0,
+  "remote_operations": 0,
+  "new_scientific_cells": 0,
+  "scientific_parameters_changed": false,
+  "matched_control_comparison_performed": false,
+  "inferential_test_performed": false,
+  "full_checkpoint_provenance_audit_executed": false,
+  "strict_final_matrix_audit_executed": false,
+  "full_scientific_objective_complete": false,
+  "caveats": [
+    "All five prespecified seeds at the final budget are required; no best-checkpoint or metric selection.",
+    "Means and sample SDs summarize five training seeds, not500 independent training replicates.",
+    "CVaR summaries average per-training-seed CVaR-20 values; episode pools are not merged.",
+    "Training cumulative costs are accepted-lineage counters, not total physical recovery work.",
+    "Optional diagnostic omissions are reported; no training seed is dropped.",
+    "Locomotion failure rate is not Point-task success rate.",
+    "Native receipts and JSON hashes do not establish the unchanged final scientific gates.",
+    "Known original-parent/path gaps remain unresolved; no matched-control or causal superiority claim is made."
+  ]
+}
