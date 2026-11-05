@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 36, in resolve_run_path
+    path.resolve().relative_to(root)
+  File "/home/lzqw/anaconda3/lib/python3.11/pathlib.py", line 730, in relative_to
+    raise ValueError("{!r} is not in the subpath of {!r}"
+ValueError: '/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-10-19-30-03/checkpoints/latest_full.pt' is not in the subpath of '/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2027' OR one path is relative and the other is absolute.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 868, in <module>
+    main()
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 812, in main
+    validate_checkpoint_artifact(
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 572, in validate_checkpoint_artifact
+    resume_from = validate_checkpoint_resolved_config(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 141, in validate_checkpoint_resolved_config
+    resolve_run_path(container, observed_resume) if container is not None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_A100/code/controller-portable-20261013/scripts/star/validate_shapo_p47_run.py", line 51, in resolve_run_path
+    relative = path.relative_to(origin)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/anaconda3/lib/python3.11/pathlib.py", line 730, in relative_to
+    raise ValueError("{!r} is not in the subpath of {!r}"
+ValueError: '/root/autodl-tmp/SAFE/shapo_p47_four_env/formal/runs/point-goal-2027/training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-08-10-19-30-03/checkpoints/latest_full.pt' is not in the subpath of '/home/lzqw/SAFEFLOW2027_A100/runs/shapo_p47_four_env/runs/point-goal-2027' OR one path is relative and the other is absolute.
+SHAPO P4.7 finalization failed; staging retained at /storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/.shapo-p47-finalization.1HpceX
