@@ -1,5 +1,20 @@
 # P4.7 Multi-GPU Training Status
 
+## Latest user decision: 2026-11-05 — preserve results, diagnose, no additional training
+
+The user explicitly chose to retain the current results and diagnose effects
+without adding training. The [diagnosis report](P4_7_EFFECT_DIAGNOSIS_20261105.md)
+includes all 60 prespecified native evaluation points, per-seed milestone
+plots and final-segment diagnostics. Two early Ant2031 evaluations absent
+from the terminal cache were recovered from already published native backups
+with matching known hashes; no rollout or remote repair was performed.
+PointButton deteriorates in return and success in all five seeds despite
+lower evaluation costs. Point reliability is weak, while reward critic scale
+and high global safety multipliers warrant attention. These are descriptive
+findings and hypotheses, not causal proof. Historical provenance gaps remain
+disclosed and the strict audit remains failed. No replacement experiments,
+weight searches, scientific-source edits or additional evaluations are started.
+
 ## Latest continuation update: 2026-11-05 — all 20 training cells finished
 
 **Training is complete at the full 150M accepted-lineage step budget.** The

@@ -87,6 +87,12 @@ Pareto improvement. No superiority, significance or method-success claim is
 made. The current scientific configuration remains frozen; this report does
 not authorize a new method variant or another weight search.
 
+On Nov 5 the user explicitly chose to preserve these results, diagnose effects,
+and add no training. The [existing-results diagnosis](P4_7_EFFECT_DIAGNOSIS_20261105.md)
+adds all 60 prespecified native evaluation points, separate raw progress logs,
+and an evidence-based review of behavior, reliability, critic scale and dual
+pressure. It does not repair or waive the strict audit failure below.
+
 ## Native evidence
 
 Each environment summary contains per-seed metrics, native evaluation JSONs,

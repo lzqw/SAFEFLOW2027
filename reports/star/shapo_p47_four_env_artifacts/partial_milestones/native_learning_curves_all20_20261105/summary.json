@@ -1,0 +1,2071 @@
+{
+  "kind": "descriptive_native_three_milestone_curves_not_final_strict_audit",
+  "generated_at_utc": "2026-11-05T06:59:05.673832+00:00",
+  "scientific_source_commit": "62ca7399357c10645a955dcbead7ed2153a82c69",
+  "training_cells": 20,
+  "prespecified_evaluation_cells": 60,
+  "statistical_unit": "training_seed",
+  "evaluation_episodes_per_training_seed_per_milestone": 100,
+  "groups": [
+    {
+      "environment": "SafetyPointGoal1-v0",
+      "milestone_steps": 1000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -0.33431264476175404,
+          "sample_sd": 0.1701797255776418
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 11.05,
+          "sample_sd": 6.449806198638839
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 54.82,
+          "sample_sd": 31.673482599802632
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 17227.8,
+          "sample_sd": 2492.6069084394353
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.054,
+          "sample_sd": 0.019493588689617928
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.9099772214889527,
+          "sample_sd": 0.045483714029534106
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.20614181458950043,
+          "sample_sd": 0.01745314251576206
+        }
+      }
+    },
+    {
+      "environment": "SafetyPointGoal1-v0",
+      "milestone_steps": 4000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -0.37943595076002284,
+          "sample_sd": 0.2668616908255473
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 9.442,
+          "sample_sd": 2.5284125454521855
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 46.71,
+          "sample_sd": 11.972228280483128
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 69984.8,
+          "sample_sd": 3579.585269273523
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.046,
+          "sample_sd": 0.03577708763999663
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.9483772397041321,
+          "sample_sd": 0.010821812088367234
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.15723982751369475,
+          "sample_sd": 0.01923599601967947
+        }
+      }
+    },
+    {
+      "environment": "SafetyPointGoal1-v0",
+      "milestone_steps": 10000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -0.5278538429239342,
+          "sample_sd": 0.2828545386139336
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 8.192,
+          "sample_sd": 2.4251226773093357
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 38.11,
+          "sample_sd": 9.880751489638833
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 152169.0,
+          "sample_sd": 6392.168919858111
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.046,
+          "sample_sd": 0.01816590212458495
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.96163911819458,
+          "sample_sd": 0.01718665106723627
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.11369993463158608,
+          "sample_sd": 0.052556775937094624
+        }
+      }
+    },
+    {
+      "environment": "SafetyPointButton1-v0",
+      "milestone_steps": 1000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -1.285926982723826,
+          "sample_sd": 0.529902679210841
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 24.078,
+          "sample_sd": 4.140074878549903
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 86.22,
+          "sample_sd": 11.861102393959849
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 27344.6,
+          "sample_sd": 2161.817013532829
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.07,
+          "sample_sd": 0.0291547594742265
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.8766746997833252,
+          "sample_sd": 0.011610379742684555
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.1467960149049759,
+          "sample_sd": 0.006234296864680797
+        }
+      }
+    },
+    {
+      "environment": "SafetyPointButton1-v0",
+      "milestone_steps": 4000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -3.4850627984040585,
+          "sample_sd": 1.52966906460332
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 14.978,
+          "sample_sd": 1.8301010901040418
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 49.35,
+          "sample_sd": 6.054027585004879
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 94537.0,
+          "sample_sd": 6723.713148253723
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.038,
+          "sample_sd": 0.013038404810405297
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.9781473517417908,
+          "sample_sd": 0.006990259243855753
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.05079860463738441,
+          "sample_sd": 0.008739331650985218
+        }
+      }
+    },
+    {
+      "environment": "SafetyPointButton1-v0",
+      "milestone_steps": 10000000,
+      "task_metric_name": "success_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": -14.302374867421566,
+          "sample_sd": 2.575387264058648
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 7.292,
+          "sample_sd": 1.89622519759653
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 30.77,
+          "sample_sd": 6.374225443142092
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 167320.2,
+          "sample_sd": 11738.582290890157
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.022000000000000002,
+          "sample_sd": 0.02280350850198276
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.9908350467681885,
+          "sample_sd": 0.0034148477784470646
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.03273261860013008,
+          "sample_sd": 0.014107704292716412
+        }
+      }
+    },
+    {
+      "environment": "Ant-v4",
+      "milestone_steps": 500000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 4403.201902037614,
+          "sample_sd": 1206.8852240460117
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.254,
+          "sample_sd": 0.14741099009232655
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.91,
+          "sample_sd": 0.08944271909999157
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 309.4,
+          "sample_sd": 45.533504148044656
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.254,
+          "sample_sd": 0.14741099009232655
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.8715580940246582,
+          "sample_sd": 0.149259975315208
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.3652575612068176,
+          "sample_sd": 0.07580329502436853
+        }
+      }
+    },
+    {
+      "environment": "Ant-v4",
+      "milestone_steps": 2000000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 5635.325222928306,
+          "sample_sd": 1203.3681442915615
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.154,
+          "sample_sd": 0.16440802900101928
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.53,
+          "sample_sd": 0.325192250830182
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 573.4,
+          "sample_sd": 238.5650854588743
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.154,
+          "sample_sd": 0.16440802900101928
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.8162841677665711,
+          "sample_sd": 0.2117828155615723
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.28977283239364626,
+          "sample_sd": 0.08746861880973478
+        }
+      }
+    },
+    {
+      "environment": "Ant-v4",
+      "milestone_steps": 5000000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 3572.1824047328378,
+          "sample_sd": 2946.751645206223
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.24,
+          "sample_sd": 0.21142374511865972
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.71,
+          "sample_sd": 0.4006245124802026
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 1158.0,
+          "sample_sd": 693.1175946403323
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.24,
+          "sample_sd": 0.21142374511865972
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.8716128587722778,
+          "sample_sd": 0.2036188015621574
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.29571653306484225,
+          "sample_sd": 0.11770844117938306
+        }
+      }
+    },
+    {
+      "environment": "Walker2d-v4",
+      "milestone_steps": 500000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 3741.568993555557,
+          "sample_sd": 2101.2690407899704
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.37,
+          "sample_sd": 0.42643874120440795
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.6,
+          "sample_sd": 0.5255949010407159
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 1902.2,
+          "sample_sd": 229.04300906161708
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.37,
+          "sample_sd": 0.42643874120440795
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.6623732209205627,
+          "sample_sd": 0.0767769227118011
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.26813935935497285,
+          "sample_sd": 0.12990222848892155
+        }
+      }
+    },
+    {
+      "environment": "Walker2d-v4",
+      "milestone_steps": 2000000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 4741.195388684108,
+          "sample_sd": 1360.455613934377
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.376,
+          "sample_sd": 0.2707027890510181
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.81,
+          "sample_sd": 0.42485291572496003
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 2721.8,
+          "sample_sd": 380.7541201352915
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.376,
+          "sample_sd": 0.2707027890510181
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.7430083513259887,
+          "sample_sd": 0.08079668894240477
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.23591943085193634,
+          "sample_sd": 0.06537659926882455
+        }
+      }
+    },
+    {
+      "environment": "Walker2d-v4",
+      "milestone_steps": 5000000,
+      "task_metric_name": "failure_rate",
+      "metrics": {
+        "mean_return": {
+          "n": 5,
+          "mean": 3986.0020819732654,
+          "sample_sd": 2108.4039955058474
+        },
+        "mean_cost": {
+          "n": 5,
+          "mean": 0.298,
+          "sample_sd": 0.32813107137240144
+        },
+        "cost_cvar_20": {
+          "n": 5,
+          "mean": 0.68,
+          "sample_sd": 0.3510697936308392
+        },
+        "training_cumulative_cost": {
+          "n": 5,
+          "mean": 4905.8,
+          "sample_sd": 631.8984886831112
+        },
+        "task_metric": {
+          "n": 5,
+          "mean": 0.298,
+          "sample_sd": 0.32813107137240144
+        },
+        "high_risk_normal_to_tangent_variance_ratio": {
+          "n": 5,
+          "mean": 0.7838666081428528,
+          "sample_sd": 0.0802914809840366
+        },
+        "high_risk_dangerous_outward_velocity": {
+          "n": 5,
+          "mean": 0.25789245665073396,
+          "sample_sd": 0.07048838712516593
+        }
+      }
+    }
+  ],
+  "records": [
+    {
+      "job": "point-goal-2027",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2027,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2027",
+      "selected_evaluations": {
+        "1000000": "training/recovered-history/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-23-03-47-13/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5363,
+          "mtime_ns": 1792905812108885003,
+          "sha256": "af9a8797d2f5004729a4145c761a62ecb4912cbb7bc71a0d0a1e5f63facd7bc3"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_1000000.json",
+          "bytes": 23991,
+          "mtime_ns": 1786578825000000000,
+          "sha256": "28faafdb20e52733955ceed69e0bc203d44cd8738282888cbebbd36d3245fbb6"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+          "bytes": 23960,
+          "mtime_ns": 1787130109000000000,
+          "sha256": "0adb6cf6bdc48ed9055abe999d1a3bd242a88623d2da62b6eae393e36411adf7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-23-03-47-13/artifacts/evaluation_step_10000000.json",
+          "bytes": 23836,
+          "mtime_ns": 1792905811164877822,
+          "sha256": "ad6d9f6adb5a6935b8711b3e96885f66111ed634edbe09bb5c6af3ba3f959ff7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-13-15-34-03/progress.csv",
+          "bytes": 0,
+          "mtime_ns": 1791876843000000000,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-13-15-56-09/progress.csv",
+          "bytes": 485413,
+          "mtime_ns": 1792190783000000000,
+          "sha256": "48fe153b0f5e358fd06b0c9d43a2659364fd4cf112503b65a910d424ed9a3007"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-19-13-12-19/progress.csv",
+          "bytes": 9748,
+          "mtime_ns": 1792393375000000000,
+          "sha256": "a8c31862ef1ce142591d442928d16327a06487aac7bfbbb73843366ae5d9e6a7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-19-15-25-20/progress.csv",
+          "bytes": 193353,
+          "mtime_ns": 1792492823000000000,
+          "sha256": "3cabf4db66ef8009a77e0c2da353bc116dc3153a3240935afe6250feb25e40a8"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-20-19-08-51/progress.csv",
+          "bytes": 1076226,
+          "mtime_ns": 1792631675000000000,
+          "sha256": "9b4030e86eb2e2a133c513a2f4bf3cd56b509943872bbc9da38e52a4634126af"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-22-19-11-09/progress.csv",
+          "bytes": 118242,
+          "mtime_ns": 1792683137000000000,
+          "sha256": "fb7dde0d00a7bef33bed60be885d6b8645c3e713d2a3042679815f78d607a107"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2027-2026-10-23-03-47-13/progress.csv",
+          "bytes": 628551,
+          "mtime_ns": 1792905811260878553,
+          "sha256": "d7734a829964a8b63c95150151b6b0550e31445cae44544bc2c84d81dc8936f6"
+        }
+      ]
+    },
+    {
+      "job": "point-goal-2028",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2028,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2028",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-15-10-54-21/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-24-16-35-15/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5368,
+          "mtime_ns": 1792979605000000000,
+          "sha256": "b449c90ef8f28d17c88af35a167e029a450ad128252981f1906dcff4216cf809"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-15-10-54-21/artifacts/evaluation_step_1000000.json",
+          "bytes": 23980,
+          "mtime_ns": 1792036372000000000,
+          "sha256": "22da3eaf84c2d9f8369ced7f25b206b81a864eab5dd44fcf98a78a4e7994c09f"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/artifacts/evaluation_step_4000000.json",
+          "bytes": 23987,
+          "mtime_ns": 1792527322000000000,
+          "sha256": "86b0f7583d43fc335ff17d907253e1bf5091eaea1a1634da168c47dca32f88e9"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-24-16-35-15/artifacts/evaluation_step_10000000.json",
+          "bytes": 23822,
+          "mtime_ns": 1792979604000000000,
+          "sha256": "00a53fc6dc8fa00d6fd890da5cd1c636c7b5558ec4f60c72d49b2376619e9c5e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-13-12-03-38/progress.csv",
+          "bytes": 45320,
+          "mtime_ns": 1791888499000000000,
+          "sha256": "44658e53f77930726d991f01a103bbd55d6881fd57461b81af20a2bc941ce12d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-13-18-50-16/progress.csv",
+          "bytes": 364251,
+          "mtime_ns": 1792030901000000000,
+          "sha256": "ceb318c9a6d292835a92f33303db926a96a96146b53325e79364a66f302edb77"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-15-10-22-06/progress.csv",
+          "bytes": 0,
+          "mtime_ns": 1792030926000000000,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-15-10-54-21/progress.csv",
+          "bytes": 798871,
+          "mtime_ns": 1792160189000000000,
+          "sha256": "7e59583668ed46bee78b508911d16edbe3387deb72ee1c5deea96dfd7bed9239"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-09-57-35/progress.csv",
+          "bytes": 150379,
+          "mtime_ns": 1792422171000000000,
+          "sha256": "93cb73026bd8be0a7d27f72ecc1203a5394b0b39aa575fb6b053768bfccd15e4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-19-23-39-24/progress.csv",
+          "bytes": 81299,
+          "mtime_ns": 1792454001000000000,
+          "sha256": "3c4ca5eeac45e1d76075dfa421af2b89354cdda6cc841c976234f20b18dd35b1"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-08-29-32/progress.csv",
+          "bytes": 45387,
+          "mtime_ns": 1792470933000000000,
+          "sha256": "26b7f629a48288cadcd0ab24cca078263038cec5a27f74f5030c5c2e29a892fc"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-20-12-38-16/progress.csv",
+          "bytes": 1310738,
+          "mtime_ns": 1792631644000000000,
+          "sha256": "2ae130d8f676ef40b333d4bf5bcc7a2e5eb7fa1bdf9d114d2c39b69d6ed25009"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-22-19-11-10/progress.csv",
+          "bytes": 118397,
+          "mtime_ns": 1792683161000000000,
+          "sha256": "43d2af7ab925ecaaf3747b66dbe0702e31794d9cb9ee328b5d64c879a851b532"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2028-2026-10-24-16-35-15/progress.csv",
+          "bytes": 1546083,
+          "mtime_ns": 1792979604000000000,
+          "sha256": "70552838e52b5fe432af1a85153d0736be7c8243ceaa5a630d96e2c75d74162e"
+        }
+      ]
+    },
+    {
+      "job": "point-goal-2029",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2029,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2029",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-24-13-51-06/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5384,
+          "mtime_ns": 1793003837000000000,
+          "sha256": "e7e7385d23cd99bd1f61db774ada21fd1edd5044be00705b812d0efca591d513"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/artifacts/evaluation_step_1000000.json",
+          "bytes": 23993,
+          "mtime_ns": 1792080543000000000,
+          "sha256": "3da49b620c1caceed249c407f4f70b5a9e2c78fb357c76d5c7e12f20fbc2a70d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/artifacts/evaluation_step_4000000.json",
+          "bytes": 23908,
+          "mtime_ns": 1792566905000000000,
+          "sha256": "17577a803a41230abf887dad60d8c23e0a5f2178df018580db814529ef3282bd"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-24-13-51-06/artifacts/evaluation_step_10000000.json",
+          "bytes": 23802,
+          "mtime_ns": 1793003836000000000,
+          "sha256": "3960c3bab2847c2f36216f884b0879e6b7aa7dace7641ad03dcdd0cb2dbb6405"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-12-03-37/progress.csv",
+          "bytes": 44955,
+          "mtime_ns": 1791888667000000000,
+          "sha256": "8becdb1e521c6ab4b5d2f7346d6746445fbe05980afb9112ca520093e741ecc9"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-13-18-52-53/progress.csv",
+          "bytes": 258264,
+          "mtime_ns": 1791991140000000000,
+          "sha256": "36f06361a29131e2bd1fd5b5035d55d1376a44679d3df61ab00f861b519c8405"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-14-23-54-27/progress.csv",
+          "bytes": 350448,
+          "mtime_ns": 1792191107000000000,
+          "sha256": "9ec6dbd38fee94b4701b548b9c1d4d910e11bfef68fa40cc112712dccd306ed9"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-13-12-19/progress.csv",
+          "bytes": 7739,
+          "mtime_ns": 1792390619000000000,
+          "sha256": "74f03657a69c94c3c76731242f5fc5688275eb10ad34b770dd7d1e15d0e71be4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-19-14-57-21/progress.csv",
+          "bytes": 404661,
+          "mtime_ns": 1792468733000000000,
+          "sha256": "5b6f172066446dcb6212df29871967b5c640b5f86c460162dc963f99d2fac3ef"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-20-12-01-25/progress.csv",
+          "bytes": 1280172,
+          "mtime_ns": 1792631608000000000,
+          "sha256": "d6a29b027315c092d3bac1e08d95224510a36cea495e712bd0307829ed60ae0d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-22-19-11-10/progress.csv",
+          "bytes": 118768,
+          "mtime_ns": 1792683112000000000,
+          "sha256": "7d11a86cb1db1c00f0af5a9b489c99b4c785af71ecb28671c5d55f7e8c7c6a2a"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2029-2026-10-24-13-51-06/progress.csv",
+          "bytes": 1882687,
+          "mtime_ns": 1793003836000000000,
+          "sha256": "ef0f3efe8a68fe0b893cd4fe9247ffc231e1a451d324b23994193de791f9414a"
+        }
+      ]
+    },
+    {
+      "job": "point-goal-2030",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2030,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2030",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-09-09-18-17-22/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-06-24-08/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5367,
+          "mtime_ns": 1793266845359406219,
+          "sha256": "34faccc0426c6c7f9a75b643edc67e8912cb5e1c96360007e27caecc9c5e972c"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-09-09-18-17-22/artifacts/evaluation_step_1000000.json",
+          "bytes": 24001,
+          "mtime_ns": 1789137096094268725,
+          "sha256": "d1e132610bf1db3bb1c71281c14eabcd8382d80a2408dcb305497f0505784c26"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-06-24-08/artifacts/evaluation_step_4000000.json",
+          "bytes": 23918,
+          "mtime_ns": 1792466559396062945,
+          "sha256": "d6d78bd196bb3bdcb09582d865a6eee34b2f9b863b7cd362a0460b160f0cf703"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/artifacts/evaluation_step_10000000.json",
+          "bytes": 23766,
+          "mtime_ns": 1793266844331442321,
+          "sha256": "a90e01e235ce3cd4293bfcffd01409368bc7faa0e09e4e84715e5f008bf06499"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-09-09-18-17-22/progress.csv",
+          "bytes": 1167470,
+          "mtime_ns": 1789650476253340976,
+          "sha256": "700a3f457a4b614b47ff7c45f31b72ffa2fbe913658a14cef03a8dff02955e28"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-13-10-41-33/progress.csv",
+          "bytes": 548020,
+          "mtime_ns": 1792191035214343446,
+          "sha256": "970147b4da01da353451c61514cc9eb873f7950337b39d65bd5f222d8f63dcef"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-19-13-12-19/progress.csv",
+          "bytes": 9796,
+          "mtime_ns": 1792393390102881970,
+          "sha256": "6408bcface43cb565bf0298eccca22119a847b96d9fe9fc872196d27f2ffcb28"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-19-15-25-20/progress.csv",
+          "bytes": 22358,
+          "mtime_ns": 1792409846895925699,
+          "sha256": "2d1d7501e584073538068330bb6895d52b90ddfb967029facb53f11174e6f22b"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-19-19-53-31/progress.csv",
+          "bytes": 68525,
+          "mtime_ns": 1792447568492920173,
+          "sha256": "490073ed687fbbb5d7acf5e82f2a427faa88a710e01ff1765f7e29bbd23722f0"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-06-24-08/progress.csv",
+          "bytes": 69432,
+          "mtime_ns": 1792473610647592567,
+          "sha256": "b80439bf0062ac579d192690c321924f28f0e26406541bf8728942d770db1ac7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-20-13-26-20/progress.csv",
+          "bytes": 1198971,
+          "mtime_ns": 1792631640838540021,
+          "sha256": "9d6048aaafad9613eaa2a39fcecba7fa0325fd91d853080347b5dc4b5422ebf3"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-22-19-11-10/progress.csv",
+          "bytes": 118732,
+          "mtime_ns": 1792683098047551830,
+          "sha256": "096cf3ed57a70cd1ea2a038c45a52e9ea95b223759dfd6f8076aabdb8a5efdd1"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2030-2026-10-24-16-01-17/progress.csv",
+          "bytes": 1192084,
+          "mtime_ns": 1793266844455437956,
+          "sha256": "ac416bcb9b45c66622a1e2d2358b74d5631996d2a1ff3bab45c1d8d498d0ec19"
+        }
+      ]
+    },
+    {
+      "job": "point-goal-2031",
+      "environment": "SafetyPointGoal1-v0",
+      "training_seed": 2031,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-goal-2031",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-16-53-06/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5386,
+          "mtime_ns": 1793021251954312702,
+          "sha256": "601f0da7c1a9a9a68f722d18684d4157bfa523a933393b07b1dad4354ec865ff"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+          "bytes": 23994,
+          "mtime_ns": 1789135773000000000,
+          "sha256": "dac379660b2b20963ca2b7e87a2a320b618e6482230e2a7e4b3539edb3b960ea"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-16-53-06/artifacts/evaluation_step_4000000.json",
+          "bytes": 23961,
+          "mtime_ns": 1792414683000000000,
+          "sha256": "84fc282be31ad2af6c4536ad1a3b2719cd5be2473a242814ca9eaf55228ab041"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/artifacts/evaluation_step_10000000.json",
+          "bytes": 23785,
+          "mtime_ns": 1793021250994303878,
+          "sha256": "5cd907e32dc286bf8166d221530435be72ca010672715fb30a043b17a60891e2"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-09-09-18-17-23/progress.csv",
+          "bytes": 1203925,
+          "mtime_ns": 1789651455000000000,
+          "sha256": "84b51184e34fa40eed5f1cc4cedeef084d405bcfb96499995669aba8f8bbcce8"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-13-10-41-34/progress.csv",
+          "bytes": 516480,
+          "mtime_ns": 1792191317000000000,
+          "sha256": "3b94f31b032e2c16fd88a3d0a47f94f4c10e96313f81d46cb6a153566d9345f8"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-13-12-19/progress.csv",
+          "bytes": 7682,
+          "mtime_ns": 1792391042000000000,
+          "sha256": "1a3a042d3fcff8d697427e09c659fb8e78dcac7d4bfddf5d7883992248321bfb"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-15-25-20/progress.csv",
+          "bytes": 9800,
+          "mtime_ns": 1792398775000000000,
+          "sha256": "800d5a12d9beced52c292ca160cf9dd6c00bbdfae161edaf5c5a05328668f2cc"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-19-16-53-06/progress.csv",
+          "bytes": 397730,
+          "mtime_ns": 1792477759000000000,
+          "sha256": "7f86b4f919fea911a6dc1501a86600970b8b6e62d1e637f40270b7f9bd81f4d7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-20-14-33-54/progress.csv",
+          "bytes": 1183010,
+          "mtime_ns": 1792631715000000000,
+          "sha256": "9ef861b1676e946b302800293a3b2d9a70e789a55b94b98340509c3fbca8763c"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-22-19-11-10/progress.csv",
+          "bytes": 119000,
+          "mtime_ns": 1792683099000000000,
+          "sha256": "9371c916f1589f3b1f3a41f070646bb86b6bf0bccde87b6de763029b26b6e33b"
+        },
+        {
+          "path": "training/STAR-{SafetyPointGoal1-v0}/seed-2031-2026-10-23-06-47-09/progress.csv",
+          "bytes": 963979,
+          "mtime_ns": 1793021251090304760,
+          "sha256": "7b62711ad7b6253f41aa7b7ef02426a3a0b831d918a3dc593dc018043b395135"
+        }
+      ]
+    },
+    {
+      "job": "point-button-2027",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2027,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2027",
+      "selected_evaluations": {
+        "1000000": "training/recovered-history/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-23-05-58-27/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5394,
+          "mtime_ns": 1792947331594829262,
+          "sha256": "dd46959083162246cdbb69b6aaaa1afc3d83c2b4a664a71918769b505d7924c4"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_1000000.json",
+          "bytes": 23866,
+          "mtime_ns": 1786578825000000000,
+          "sha256": "01db805067bf50e62d32ab9df631a5303f274de34e0487f9bdb65f7fe2af764f"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_4000000.json",
+          "bytes": 23712,
+          "mtime_ns": 1787130346000000000,
+          "sha256": "cb5cba94fbddffbcaa51f2adc93d96a5dac4328abaa30e32b8bd15a025548bb0"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-23-05-58-27/artifacts/evaluation_step_10000000.json",
+          "bytes": 23661,
+          "mtime_ns": 1792947330454817412,
+          "sha256": "b985dafa005aa642aea8e67bc7c6ecdaff33093925ddb1201d53f6540c7cde5d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-13-15-34-03/progress.csv",
+          "bytes": 0,
+          "mtime_ns": 1791876843000000000,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-13-15-56-08/progress.csv",
+          "bytes": 369532,
+          "mtime_ns": 1792134881000000000,
+          "sha256": "75adb1d4306cdd6d9bddb5818d71e4535f68bb47c790416511bfd204fdd19e5e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-16-15-25-25/progress.csv",
+          "bytes": 105482,
+          "mtime_ns": 1792191062000000000,
+          "sha256": "51d09bbd4346018058fad7f56a14652ca85abbfce328dd8c7f62be60eb3c29db"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-19-13-12-20/progress.csv",
+          "bytes": 7657,
+          "mtime_ns": 1792391156000000000,
+          "sha256": "1e5ac7d4bd7961cac55353bb5cfbc466280f36147fac06ce2d3449ab1887d99f"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-19-15-25-21/progress.csv",
+          "bytes": 213805,
+          "mtime_ns": 1792503653000000000,
+          "sha256": "8a4757855a862a9fd79c91f4950be60be2b1d02fb6604456ab25c91a9f4989f4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-20-21-58-04/progress.csv",
+          "bytes": 1000770,
+          "mtime_ns": 1792631685000000000,
+          "sha256": "046da4311b96245817e0543ebc2a8e328ff4aef899b55899976980899c4634b2"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-22-19-11-10/progress.csv",
+          "bytes": 117421,
+          "mtime_ns": 1792683077000000000,
+          "sha256": "4bd968e22047421ff875d480c9c957f1fc0f6e5acf03dc6c16779c11619e1fad"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2027-2026-10-23-05-58-27/progress.csv",
+          "bytes": 740375,
+          "mtime_ns": 1792947330638819325,
+          "sha256": "9e1eeb09db997a15163ee25c41a07104f7b7a03c5d7cd62ecd1fa3278a07d488"
+        }
+      ]
+    },
+    {
+      "job": "point-button-2028",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2028,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2028",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5400,
+          "mtime_ns": 1792922293000000000,
+          "sha256": "c96dc57364740c22a162b8e9347c9304f415635fb84c673054ecc1bf0cc513a6"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/artifacts/evaluation_step_1000000.json",
+          "bytes": 23856,
+          "mtime_ns": 1792046599000000000,
+          "sha256": "fd7b1e7098555b2a964a5a02b69d75def07eff419c3c910c331ed64a4a477ef5"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/artifacts/evaluation_step_4000000.json",
+          "bytes": 23735,
+          "mtime_ns": 1792546145000000000,
+          "sha256": "efe585be6c10c0d79cd4510d55c39cbbe18e5631dfe809b52c7660e52b57bd04"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/artifacts/evaluation_step_10000000.json",
+          "bytes": 23611,
+          "mtime_ns": 1792922292000000000,
+          "sha256": "8bb668340e76469655422eb4b181e2f264bba5552498e8618ad112bc1649bb7a"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-12-03-38/progress.csv",
+          "bytes": 45109,
+          "mtime_ns": 1791888943000000000,
+          "sha256": "9afa8528f5b5a5e21b6faeb66a635f909b7fa0808d77d82e9db55b9807bcb1cb"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-13-19-00-53/progress.csv",
+          "bytes": 323191,
+          "mtime_ns": 1792034822000000000,
+          "sha256": "8909b851369c9fa54cf72b18c48e7b9df11fdc2717333eb56c77527f1060f2da"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-15-11-51-56/progress.csv",
+          "bytes": 736896,
+          "mtime_ns": 1792159845000000000,
+          "sha256": "08d2f2f4635c0d2557b9ad57adbeb384dd4a6e92f628795d29b94d7e2a0f52b4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-19-09-57-35/progress.csv",
+          "bytes": 148053,
+          "mtime_ns": 1792423582000000000,
+          "sha256": "b1288be74076731a87e09a36fa5df3b0bde067ed28e0d2d8051f04117a4d6ef1"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-00-13-05/progress.csv",
+          "bytes": 32773,
+          "mtime_ns": 1792444037000000000,
+          "sha256": "1c19f07bf673d243799f696dabdd9e3e40eccae94cdf55628d4e9e6e2f0db175"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-05-24-32/progress.csv",
+          "bytes": 87347,
+          "mtime_ns": 1792472974000000000,
+          "sha256": "49bedeacb496f18e0cab9a72c9ec4d13ce2e970c031fadfdc4fc074853b296c5"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-20-13-13-07/progress.csv",
+          "bytes": 382083,
+          "mtime_ns": 1792535482000000000,
+          "sha256": "dffa9db3abc64caae189a48d70ea562e391867e2b94c8a623730fe317a24a62c"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-06-44-06/progress.csv",
+          "bytes": 85364,
+          "mtime_ns": 1792548678000000000,
+          "sha256": "807c867ec85b45e2dd48bdc9139b1d6bcc3b67a8f681959ce6c50c0c462e955d"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-21-14-55-08/progress.csv",
+          "bytes": 189541,
+          "mtime_ns": 1792641706000000000,
+          "sha256": "c64f8bf261b336c452cfc2aec65242664329ec8c444946e5e43b610584ec9afc"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2028-2026-10-22-12-09-11/progress.csv",
+          "bytes": 2347802,
+          "mtime_ns": 1792922292000000000,
+          "sha256": "bde77360962ec6b585387828e4212bd6944f267248e2544474d5cb7c0715575f"
+        }
+      ]
+    },
+    {
+      "job": "point-button-2029",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2029,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2029",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-14-22-34-14/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5401,
+          "mtime_ns": 1792907561000000000,
+          "sha256": "d8cf799b54471e722aab7eb00a2069b0c3304eade884930332bc3dd26da25cc7"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-14-22-34-14/artifacts/evaluation_step_1000000.json",
+          "bytes": 23852,
+          "mtime_ns": 1792112234000000000,
+          "sha256": "7f0f300345c83a63ef290907b047416a821532eca0232780fee8bdf274b12d44"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_4000000.json",
+          "bytes": 23837,
+          "mtime_ns": 1792602936000000000,
+          "sha256": "b291e9dc71f523d05daedcd39c2761fdbf7372d9abb6ead4035cadfa7bda5933"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/artifacts/evaluation_step_10000000.json",
+          "bytes": 23626,
+          "mtime_ns": 1792907560000000000,
+          "sha256": "cf5804abf19be3f53d6fe388b4aa9fd2b46cfd33cffc967b8c11063b172efb98"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-13-12-03-38/progress.csv",
+          "bytes": 45270,
+          "mtime_ns": 1791888972000000000,
+          "sha256": "fa9bcd398199ee9a244a5c1877f705d617689cb304927fc51f72ec6d9b1ed664"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-13-19-03-47/progress.csv",
+          "bytes": 230363,
+          "mtime_ns": 1791984897000000000,
+          "sha256": "aeb4fecf9342b7b110bdb4ac23128fcb3c051b4417f857e6fecc5c7632e9303b"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-14-22-34-14/progress.csv",
+          "bytes": 325699,
+          "mtime_ns": 1792191115000000000,
+          "sha256": "bc269fa24b254515381f01fb4331d12dcdd3617c68a73401401e780b2d877b41"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-13-12-19/progress.csv",
+          "bytes": 7698,
+          "mtime_ns": 1792391153000000000,
+          "sha256": "a3dc92d3f20ac73c9131409b6fcbd1c2a11cf6ece919ed7a040b74961360fb15"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-19-15-02-27/progress.csv",
+          "bytes": 381072,
+          "mtime_ns": 1792465093000000000,
+          "sha256": "5e0f94397f47815f5a11d7aaa7993d03796c5ad920263435904c90f9071ee2ba"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-20-11-02-05/progress.csv",
+          "bytes": 401820,
+          "mtime_ns": 1792534446000000000,
+          "sha256": "99b190f2894a79f4748a061431fa9c551dc0d78ba031ea9f37d21b6d389b1dba"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2029-2026-10-21-06-24-55/progress.csv",
+          "bytes": 3186709,
+          "mtime_ns": 1792907560000000000,
+          "sha256": "c99cda1dc290003789b78dd2204c53cd85b7fe38bf4158c4e848ab9f36f7ec54"
+        }
+      ]
+    },
+    {
+      "job": "point-button-2030",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2030,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2030",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-22-12-31-35/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5399,
+          "mtime_ns": 1792830044000000000,
+          "sha256": "03216369aaec6057659cff955b5f0f539b1c15d314168df2514a0254afd461e3"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+          "bytes": 23896,
+          "mtime_ns": 1789140569000000000,
+          "sha256": "03bcf4fddcda28dbcac43893604e628b83db0bcb96abacc07e04145729898452"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/artifacts/evaluation_step_4000000.json",
+          "bytes": 23855,
+          "mtime_ns": 1792109770000000000,
+          "sha256": "d6d21ca0b3fce9f575ff6d474a53e07551452c98685b1a2c79358f0816f7dd8a"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-22-12-31-35/artifacts/evaluation_step_10000000.json",
+          "bytes": 23586,
+          "mtime_ns": 1792830042000000000,
+          "sha256": "6696f371cd59b2c880daa5e2d2331f6f246fcf8fd25098ad9681fa218a84104e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-09-09-18-17-23/progress.csv",
+          "bytes": 1137112,
+          "mtime_ns": 1789651175000000000,
+          "sha256": "f1dc9824a20bb6a542473a7f2e6c717674cc817c0baa3d8cb5cf0aacad182406"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-13-10-41-33/progress.csv",
+          "bytes": 274344,
+          "mtime_ns": 1792041195000000000,
+          "sha256": "e729c8d52999d8690d703faf3ca8e1609514ee3fabfb5bb2ff1ebb5db07992dd"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-15-13-15-08/progress.csv",
+          "bytes": 652077,
+          "mtime_ns": 1792159908000000000,
+          "sha256": "4c99c7c236fb601b1f04443a8c010c39a031cd3d6ad5304cf56d93285e423831"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-19-09-57-35/progress.csv",
+          "bytes": 154391,
+          "mtime_ns": 1792437561000000000,
+          "sha256": "d8d66924645d2cb24f46430f403cdc2fdf3e963117d66f10958fae3b29583e53"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-02-55-49/progress.csv",
+          "bytes": 0,
+          "mtime_ns": 1792436149000000000,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-04-24-28/progress.csv",
+          "bytes": 108712,
+          "mtime_ns": 1792475246000000000,
+          "sha256": "a70c3e3b6dd9aa0cfe069af6089d0dac91a0604239bd1f69a4b4bb7e02afa970"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-20-13-49-57/progress.csv",
+          "bytes": 360434,
+          "mtime_ns": 1792533697000000000,
+          "sha256": "d06c8e259c0c1b377dc25da1367243bbafcaf9b76aa5ad8e34c28e5a14f745ea"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-06-10-52/progress.csv",
+          "bytes": 111218,
+          "mtime_ns": 1792549578000000000,
+          "sha256": "ffab2c3d1dd95e39c7b006c04aaaf32065d55e66ebea11c5aad618cc250cfda2"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-21-14-55-08/progress.csv",
+          "bytes": 192901,
+          "mtime_ns": 1792642751000000000,
+          "sha256": "c00a3b9f80b60761e5e6d29688c88ecd391fde84dffb7016153dd778f9a1efca"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2030-2026-10-22-12-31-35/progress.csv",
+          "bytes": 1393360,
+          "mtime_ns": 1792830043000000000,
+          "sha256": "45d27cf014f554ad75c52583daae3ca63309409c296915015c91ab22dfa30f3d"
+        }
+      ]
+    },
+    {
+      "job": "point-button-2031",
+      "environment": "SafetyPointButton1-v0",
+      "training_seed": 2031,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/point-button-2031",
+      "selected_evaluations": {
+        "1000000": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+        "4000000": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-16-07-11-15/artifacts/evaluation_step_4000000.json",
+        "10000000": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-23-07-21-16/artifacts/evaluation_step_10000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5400,
+          "mtime_ns": 1793031911920651472,
+          "sha256": "585a87b5cb33622e777d3dc4ae94a48b701f07aa567b65ebca2f95e5980aefa3"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-09-09-18-17-23/artifacts/evaluation_step_1000000.json",
+          "bytes": 23884,
+          "mtime_ns": 1789139122000000000,
+          "sha256": "a050f1f6853d188b6c4bcf442273a1c7a59e3c7e3a51c8e34a1d7cfbb0c6a7e4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-16-07-11-15/artifacts/evaluation_step_4000000.json",
+          "bytes": 23763,
+          "mtime_ns": 1792157882000000000,
+          "sha256": "f902584fca9987c70314bf05625e43852e97f425d0a65fe98004dbc8a7271efd"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-23-07-21-16/artifacts/evaluation_step_10000000.json",
+          "bytes": 23610,
+          "mtime_ns": 1793031910748640745,
+          "sha256": "514684f5a37316d4e14cd0d3e5f4564a4efe74b9ea7c1faa80408e7136f4a4b5"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-09-09-18-17-23/progress.csv",
+          "bytes": 1172628,
+          "mtime_ns": 1789650938000000000,
+          "sha256": "c35f1128d3a7752204a2bbc349a211602290ce7b703d85a509c52817e16f5599"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-13-10-41-35/progress.csv",
+          "bytes": 107684,
+          "mtime_ns": 1791935652000000000,
+          "sha256": "df47f6b5aa756cbb6f38c464d0e8e22aed2fcff16b725c825a4137a8f240763a"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-14-08-18-42/progress.csv",
+          "bytes": 255761,
+          "mtime_ns": 1792105651000000000,
+          "sha256": "b8ede1a6639eaaa9b7bc31faa74b3622334e0fcc0dbe0739a6ffe213c4bc74d4"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-16-07-11-15/progress.csv",
+          "bytes": 257729,
+          "mtime_ns": 1792159724000000000,
+          "sha256": "e03003f4eb489bb873faa3cc722a933807383cc4b0c0e7eb0817f081d8c4936e"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-19-09-57-35/progress.csv",
+          "bytes": 152910,
+          "mtime_ns": 1792437578000000000,
+          "sha256": "d9948707ca7816da060b405649db3d3686516f8252d5877608436c77dcf80d7f"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-00-55-21/progress.csv",
+          "bytes": 0,
+          "mtime_ns": 1792428921000000000,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-03-27-46/progress.csv",
+          "bytes": 130570,
+          "mtime_ns": 1792476861000000000,
+          "sha256": "774fd8808efb32d75ecb7251bb00179802897766e0c451f7c062a5a0e25e2ad2"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-20-14-24-38/progress.csv",
+          "bytes": 1157631,
+          "mtime_ns": 1792631802000000000,
+          "sha256": "8f44606efa0f74aac34a876870318eb87bf18946be2ac1bd2c585b6c420d10df"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-22-19-11-09/progress.csv",
+          "bytes": 116173,
+          "mtime_ns": 1792683102000000000,
+          "sha256": "96183a56bb3c41af0a094050e788fe0fbd2da00f08d2fdfbffb6ffbd1ff390aa"
+        },
+        {
+          "path": "training/STAR-{SafetyPointButton1-v0}/seed-2031-2026-10-23-07-21-16/progress.csv",
+          "bytes": 987287,
+          "mtime_ns": 1793031910868641844,
+          "sha256": "3c9da3935a1852dde5bf5061acb7d6ba75163333ce8684d30b7862cf6697745a"
+        }
+      ]
+    },
+    {
+      "job": "ant-2027",
+      "environment": "Ant-v4",
+      "training_seed": 2027,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2027",
+      "selected_evaluations": {
+        "500000": "training/recovered-history/artifacts/evaluation_step_500000.json",
+        "2000000": "training/recovered-history/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5393,
+          "mtime_ns": 1792038867000000000,
+          "sha256": "3e6985fa5f3d3180fcafa82b577b80a54e31c1a0ece6b3ddcd82d9e832028b98"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_500000.json",
+          "bytes": 23821,
+          "mtime_ns": 1786578825000000000,
+          "sha256": "7fd1d2aca5911fe122b59aac8ca80a9c0dd05a3a5976009903c7dbe0d7100e42"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_2000000.json",
+          "bytes": 23294,
+          "mtime_ns": 1786739144000000000,
+          "sha256": "54dce88814b8e7072613cc17e50b3f5c38995f7ffdde34f63a55b5de07a76a24"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/artifacts/evaluation_step_5000000.json",
+          "bytes": 24601,
+          "mtime_ns": 1792038867000000000,
+          "sha256": "478cbba9d322575aac0df08b2be18968bd81d8d31b7bde8e5ee5fc6c03def28e"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-13-12-07-14/progress.csv",
+          "bytes": 269682,
+          "mtime_ns": 1792025788000000000,
+          "sha256": "7742934583a900286d35e7116ff847dc3284235d67d556db9f5da6713c5b37fd"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2027-2026-10-15-09-15-05/progress.csv",
+          "bytes": 109353,
+          "mtime_ns": 1792038867000000000,
+          "sha256": "e3c1a71b9a3fe29daea26fc597b85051798bf9ae32c47e8a6717228210545659"
+        }
+      ]
+    },
+    {
+      "job": "ant-2028",
+      "environment": "Ant-v4",
+      "training_seed": 2028,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2028",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Ant-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Ant-v4}/seed-2028-2026-10-19-15-39-27/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5383,
+          "mtime_ns": 1792760906000000000,
+          "sha256": "5fc16078efe4d1ac7689c7133cbb084b15311f45ccd76d07ca96c9ad7d63001a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+          "bytes": 23716,
+          "mtime_ns": 1791981175000000000,
+          "sha256": "1a42db66b30367aa041a13304420bcb40e7291e3d538a01a55d139df97669d2d"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-19-15-39-27/artifacts/evaluation_step_2000000.json",
+          "bytes": 22738,
+          "mtime_ns": 1792488969000000000,
+          "sha256": "9429144a433ccbbea9abef4375f43d05badcdf9b9f3f62acdd32a2c38c0cbaa5"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/artifacts/evaluation_step_5000000.json",
+          "bytes": 24477,
+          "mtime_ns": 1792760906000000000,
+          "sha256": "5b6eb40d18b8db206634474b73d7444d0406fbe8f69be927c19e212af7076afe"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-13-12-03-31/progress.csv",
+          "bytes": 620462,
+          "mtime_ns": 1792191595000000000,
+          "sha256": "4e1c65240393174444ab9c43b1ae992e3c686df8d90eda075329524c77878eda"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-19-13-12-13/progress.csv",
+          "bytes": 13944,
+          "mtime_ns": 1792392741000000000,
+          "sha256": "2968c03bde61ff74b930109fa36123731c359e6164f495e04ed3dc544f123f0c"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-19-15-39-27/progress.csv",
+          "bytes": 322703,
+          "mtime_ns": 1792507308000000000,
+          "sha256": "40dd273f096bc129dd9b3b20354e72245f0da9caaee9a2655c0700d78ad0dd9a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-20-22-55-00/progress.csv",
+          "bytes": 178829,
+          "mtime_ns": 1792579154000000000,
+          "sha256": "4d0304ecd656d1f98ab6de6783d3d74fbbe50aa95c891547fd9cfa41c79d5455"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2028-2026-10-22-05-54-00/progress.csv",
+          "bytes": 1060632,
+          "mtime_ns": 1792760906000000000,
+          "sha256": "265fe6bfa81a249afc51fbf022e0832bdaa463da3d66b0c9a03affc9b197dc8b"
+        }
+      ]
+    },
+    {
+      "job": "ant-2029",
+      "environment": "Ant-v4",
+      "training_seed": 2029,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2029",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Ant-v4}/seed-2029-2026-10-21-18-53-18/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5339,
+          "mtime_ns": 1792958444176840343,
+          "sha256": "943b111cb6fa1ff72e7c1d8ed90e9ddce09914652a6d7cf73c135ae2afe49c07"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+          "bytes": 24437,
+          "mtime_ns": 1791981099000000000,
+          "sha256": "cc1072273e7bd893a18a84ff68be02f1fd18d6bc5997dbe797d06dbfbb5cf2fa"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/artifacts/evaluation_step_2000000.json",
+          "bytes": 23487,
+          "mtime_ns": 1792488989000000000,
+          "sha256": "acb828b9ffff4fddc0e29c492283918c7ab1c8548fb9a4b0caafa2747e856dc4"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-21-18-53-18/artifacts/evaluation_step_5000000.json",
+          "bytes": 22973,
+          "mtime_ns": 1792958443504829664,
+          "sha256": "e1c21a4a8ad3bfcb339cc2dfc1618f7259ea24b0ab13bb66b8aa7194ef6829f0"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-13-12-03-31/progress.csv",
+          "bytes": 615515,
+          "mtime_ns": 1792190431000000000,
+          "sha256": "c1c291b978a261ff4f497ba208175242e6643a8880c5fa5f1f26ad319388de0a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-13-12-12/progress.csv",
+          "bytes": 13764,
+          "mtime_ns": 1792392681000000000,
+          "sha256": "83c443c67c3440b9655c08cc24f31006d974e9d8f51e9c87551224968d6c694a"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-19-15-50-11/progress.csv",
+          "bytes": 323866,
+          "mtime_ns": 1792508484000000000,
+          "sha256": "dfb9fb6dae99b349dbff62de0f1df9ebe445bca46a25d37074b4522f1224d1f6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-20-23-10-28/progress.csv",
+          "bytes": 191630,
+          "mtime_ns": 1792579374000000000,
+          "sha256": "6a10dd034182f151cd098954a066a5f2606ba1538b0e6c501e979a963d004770"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2029-2026-10-21-18-53-18/progress.csv",
+          "bytes": 1040321,
+          "mtime_ns": 1792958443688832588,
+          "sha256": "5ed05ac734571d0deeebb021aa8c043f882fc60994bdd9c324d7a82533397619"
+        }
+      ]
+    },
+    {
+      "job": "ant-2030",
+      "environment": "Ant-v4",
+      "training_seed": 2030,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2030",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5390,
+          "mtime_ns": 1792638153666951232,
+          "sha256": "c92b7e0b4be604382030b24d24a69bf1092bd9dd7736ec5cc561d025a3d33699"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json",
+          "bytes": 23888,
+          "mtime_ns": 1789040755083325118,
+          "sha256": "c31e282fb0d03a8feb1060224f493bb5c5204f321a8e7a0ba5792e7fde0d6994"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json",
+          "bytes": 22811,
+          "mtime_ns": 1789344469873866328,
+          "sha256": "c407a1e55e01a3c66fc1c0b0e176a6008651e6e6bef4bd9d0eaaaddd86a8c2f6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/artifacts/evaluation_step_5000000.json",
+          "bytes": 22681,
+          "mtime_ns": 1792638153014965268,
+          "sha256": "6285ff19296cfee859c58df2cc5de6bdb54cdab9085b92466e8defb3c65d4d8c"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-09-09-18-17-16/progress.csv",
+          "bytes": 1186339,
+          "mtime_ns": 1789649426406295113,
+          "sha256": "5ecb2a6f01eb5d0426849a96b9eda109542125cf3ddf5c853f74f7b7bce0b818"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-13-10-41-27/progress.csv",
+          "bytes": 446762,
+          "mtime_ns": 1792133227680822065,
+          "sha256": "31c1c9f0f2f1a9606a690ceb40b45ec31a4b561dd971b9b17af2aa7d98439a79"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-16-14-54-20/progress.csv",
+          "bytes": 104550,
+          "mtime_ns": 1792191529786491990,
+          "sha256": "235dc740da2681ce519e639972c3cbc75b9c0b0cb41e049dceadec8ad86271b1"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-19-13-12-12/progress.csv",
+          "bytes": 14020,
+          "mtime_ns": 1792392755266314721,
+          "sha256": "069a96dd5a825659f73f88c18449c42a2d54482b9fc679cba6b67e04a78c6679"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-19-15-25-15/progress.csv",
+          "bytes": 5594,
+          "mtime_ns": 1792395644825584412,
+          "sha256": "cb5fb24d556a07b973d241c0f07e01d4aadaef7383b5f637f8a97ab86893c098"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-19-15-55-44/progress.csv",
+          "bytes": 233952,
+          "mtime_ns": 1792525601474602556,
+          "sha256": "189864846f3dd1a18ff60204329eed1e9daf506ea6eeb480b5a105a5dce9a0df"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2030-2026-10-21-03-53-21/progress.csv",
+          "bytes": 278440,
+          "mtime_ns": 1792638153130962771,
+          "sha256": "1322aca92cc4a7aafa4d5d1dbbed75123c3f1d572b4da218f05001a656243687"
+        }
+      ]
+    },
+    {
+      "job": "ant-2031",
+      "environment": "Ant-v4",
+      "training_seed": 2031,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/ant-2031",
+      "selected_evaluations": {
+        "5000000": "training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/evaluation_step_5000000.json",
+        "500000": "local_published_backups/evaluation_step_500000.json",
+        "2000000": "local_published_backups/evaluation_step_2000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5381,
+          "mtime_ns": 1792606839447694683,
+          "sha256": "07af03fef4bce882ac301586766decd23fa801d4fb8fa1ae61868636b50109b6"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/artifacts/evaluation_step_5000000.json",
+          "bytes": 27122,
+          "mtime_ns": 1792606838815698411,
+          "sha256": "66e74c0512c208b66f7418ad02919a05e68b25765cf4f6ecd6ae87ade808f486"
+        },
+        {
+          "path": "training/STAR-{Ant-v4}/seed-2031-2026-10-21-18-58-25/progress.csv",
+          "bytes": 67348,
+          "mtime_ns": 1792606838907697868,
+          "sha256": "9b2609ae12517f69d3be84c16ec7baabad2f665391ba6b6b1cd9d55cfceae09d"
+        },
+        {
+          "path": "local_published_backups/evaluation_step_500000.json",
+          "sha256": "634c3d9169fa714225690915b8a27eefad8db0c076f67f65a3fd764ba90f0570",
+          "bytes": 26648,
+          "published_source": "first_milestone_20_cells_20261020/native_evaluations/ant-2031/evaluation_step_500000.json",
+          "origin": "existing_published_native_backup_not_remote_repair"
+        },
+        {
+          "path": "local_published_backups/evaluation_step_2000000.json",
+          "sha256": "85841f2d6e672f0db4d79a894f8db12c7e1cc080275a742ba0f9716f72292b46",
+          "bytes": 26091,
+          "published_source": "ant_2M_available5_20261020/native_evaluations/ant-2031/evaluation_step_2000000.json",
+          "origin": "existing_published_native_backup_not_remote_repair"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2027",
+      "environment": "Walker2d-v4",
+      "training_seed": 2027,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2027",
+      "selected_evaluations": {
+        "500000": "training/recovered-history/artifacts/evaluation_step_500000.json",
+        "2000000": "training/recovered-history/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5364,
+          "mtime_ns": 1792004366000000000,
+          "sha256": "8711b9949addcde962e6188361f0f578c41e328144a4ce2fdb1355eb8b4e86cd"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_500000.json",
+          "bytes": 22141,
+          "mtime_ns": 1786578825000000000,
+          "sha256": "24acc438ab6023aadd574a7394e42391e12eec695f60c0dea9ab9550d623a9cb"
+        },
+        {
+          "path": "training/recovered-history/artifacts/evaluation_step_2000000.json",
+          "bytes": 22548,
+          "mtime_ns": 1786739252000000000,
+          "sha256": "b8daa882b104962aa84edccdf29c80f640f6ac69a8619ae123b43364676becdd"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/artifacts/evaluation_step_5000000.json",
+          "bytes": 22698,
+          "mtime_ns": 1792004365000000000,
+          "sha256": "f551c261e6835b23e2b8c5883e3adb14e3a8b8439d7a8cb0edbea289531c4f33"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2027-2026-10-13-15-34-00/progress.csv",
+          "bytes": 364695,
+          "mtime_ns": 1792004366000000000,
+          "sha256": "b23e8c5b070354420f5e59da1c92e00c23b31ff31870284a501bbc6c8cf234ec"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2028",
+      "environment": "Walker2d-v4",
+      "training_seed": 2028,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2028",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-19-16-02-36/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5416,
+          "mtime_ns": 1792839337074480766,
+          "sha256": "f18c96253cb15dde15773fbfed1dd27639341618d6c2f638ccadf58a2a6062a2"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+          "bytes": 30039,
+          "mtime_ns": 1791977930000000000,
+          "sha256": "7a1a98f57c9eff5b3d4ba65d422257c18db2b2180814279769b96193ace4dedc"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-19-16-02-36/artifacts/evaluation_step_2000000.json",
+          "bytes": 28694,
+          "mtime_ns": 1792477753000000000,
+          "sha256": "3d6607aaecf6ef21e11d1262c8dd397980a58465dc468b7aeefd7f8804d3c8f4"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/artifacts/evaluation_step_5000000.json",
+          "bytes": 23460,
+          "mtime_ns": 1792839336530454910,
+          "sha256": "61f7c1331fe4d9bb87f31a1f35acf5aadd28feab367ba234d74e56bb871969e5"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-13-12-03-31/progress.csv",
+          "bytes": 634093,
+          "mtime_ns": 1792190546000000000,
+          "sha256": "1d1690a42a939a10968a905c47b6a71c51ff5c088d63e248a8e654a7b4b01ca3"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-19-13-12-12/progress.csv",
+          "bytes": 14123,
+          "mtime_ns": 1792392423000000000,
+          "sha256": "9efb51a96a336664b5d7cce65b020750112567862dc2f66b019900a518c14e08"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-19-16-02-36/progress.csv",
+          "bytes": 353649,
+          "mtime_ns": 1792513594000000000,
+          "sha256": "c16c30787b4a67e30b07dd0ce71065fc1ac77a5766f2ac081c5035764fec7dd2"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-21-00-34-56/progress.csv",
+          "bytes": 186030,
+          "mtime_ns": 1792579991000000000,
+          "sha256": "691112dfc0646f686f7ff79d4b9e613daa89a9a32e127276585796096ae58026"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-05-49-49/progress.csv",
+          "bytes": 555896,
+          "mtime_ns": 1792682419000000000,
+          "sha256": "8550e40a478da7271c1b5064358c31b45d8193deedb485bb326f6fc6da08d217"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2028-2026-10-22-23-27-47/progress.csv",
+          "bytes": 471011,
+          "mtime_ns": 1792839336642460235,
+          "sha256": "24a791505a6d6e56582337dabbb0a808a3c3158a16314d5c7fc91077ce690a9b"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2029",
+      "environment": "Walker2d-v4",
+      "training_seed": 2029,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2029",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-19-16-11-34/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5413,
+          "mtime_ns": 1792756615000000000,
+          "sha256": "ac47a7ae20efe6b994256d9f50a6e664b3d85e812a5c48f4df3cf85341d29591"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-13-12-03-31/artifacts/evaluation_step_500000.json",
+          "bytes": 24020,
+          "mtime_ns": 1791977892000000000,
+          "sha256": "0e129a66d10362c6bb8c73946a440e40a297fdb14107b4685a021f60686f2ac8"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-19-16-11-34/artifacts/evaluation_step_2000000.json",
+          "bytes": 25978,
+          "mtime_ns": 1792478143000000000,
+          "sha256": "f82eb564eb43cd7ce8d4ec64591aac2d72001aa4fda64f381079e39dbe8ef96b"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/artifacts/evaluation_step_5000000.json",
+          "bytes": 25541,
+          "mtime_ns": 1792756614000000000,
+          "sha256": "a9bc1e19b5b80c0b321e2a6067518adb3391d7e6e7173ad211c4eeedc1b3d51b"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-13-12-03-31/progress.csv",
+          "bytes": 645658,
+          "mtime_ns": 1792191079000000000,
+          "sha256": "ece70438959c056ee724e08fcd22b85bbe803c9dcfd1c7092fd238963ecad4fa"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-19-13-12-12/progress.csv",
+          "bytes": 14131,
+          "mtime_ns": 1792392487000000000,
+          "sha256": "36a46379a1973125789ca702611605d27b518697e6407678052fe84c48eb2940"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-19-16-11-34/progress.csv",
+          "bytes": 402278,
+          "mtime_ns": 1792530680000000000,
+          "sha256": "fb67d14cee7395ed52aaa6ab8d6c794e61edb5854c5aa06d3b269de4ef0ef21a"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-21-05-24-34/progress.csv",
+          "bytes": 133383,
+          "mtime_ns": 1792579414000000000,
+          "sha256": "7dd51ec01fc814776b622f9d633d7662fea860a4c323c0852990ff7209ea4428"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2029-2026-10-22-05-55-05/progress.csv",
+          "bytes": 1022317,
+          "mtime_ns": 1792756615000000000,
+          "sha256": "db7a94de580141b890b36511e0ba875ba17c97d955440e1a4b5fc5f10147bd57"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2030",
+      "environment": "Walker2d-v4",
+      "training_seed": 2030,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2030",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5408,
+          "mtime_ns": 1792633714892019096,
+          "sha256": "4856bd741f5f71bda76b1ac571598005cf44b1ae60600af897aa32ff93ca041b"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_500000.json",
+          "bytes": 28576,
+          "mtime_ns": 1789037803789206445,
+          "sha256": "27d168495a5964f6bcb6ae5ee787fe3be0ce3310b1d2fa0fcf00793bf9c5a4e3"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/artifacts/evaluation_step_2000000.json",
+          "bytes": 26098,
+          "mtime_ns": 1789328826642399052,
+          "sha256": "4e45b3ec2598d72412e1d4e5767005ff69b692d6e5f72dd3d1bb9a94c677b90f"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/artifacts/evaluation_step_5000000.json",
+          "bytes": 23555,
+          "mtime_ns": 1792633714208014161,
+          "sha256": "2a576d97e31b86b5db79f5a0f8dcd19322bba9c3bbb8a2b801aee81d188b4c94"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-09-09-18-17-16/progress.csv",
+          "bytes": 1195309,
+          "mtime_ns": 1789649566538428369,
+          "sha256": "b68d17af280290ceed6e326cb96504a9c05cd5ecc51a0d7b844976b229a6ac97"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-13-10-41-27/progress.csv",
+          "bytes": 471413,
+          "mtime_ns": 1792155446320585595,
+          "sha256": "ddea29c3e5cd328a377df1a7a770e648e27a0e5858e243dc9e51a0762d4f68ca"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-16-20-57-46/progress.csv",
+          "bytes": 67293,
+          "mtime_ns": 1792190733352436621,
+          "sha256": "c02a7f863047eaf1079491accdadb1dc6ca2562d3a6d531d30b6c7a67fc718fa"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-19-13-12-12/progress.csv",
+          "bytes": 14097,
+          "mtime_ns": 1792392488083614049,
+          "sha256": "ab9d8b019a2ee4e90220de241f1126dd8a8898b5fddfbbb5fed776fa37d0aab8"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-19-15-25-14/progress.csv",
+          "bytes": 5633,
+          "mtime_ns": 1792395634465535138,
+          "sha256": "8fa992d58fe662cfc2352c010954ab552f045c9899a9281dd5a7687bd6fa0b05"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-19-15-55-44/progress.csv",
+          "bytes": 239352,
+          "mtime_ns": 1792523475580445693,
+          "sha256": "13799b4fb4897dbc4f4e43f6424757bc6e1ae9314824b76d71f345c5de6d81d8"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2030-2026-10-21-03-22-44/progress.csv",
+          "bytes": 280004,
+          "mtime_ns": 1792633714344015142,
+          "sha256": "64c36c5be7d2c80620bd8cec72e52aad036bd492d5e6d338f88337622699ddc2"
+        }
+      ]
+    },
+    {
+      "job": "walker2d-2031",
+      "environment": "Walker2d-v4",
+      "training_seed": 2031,
+      "source_container": "/storage_0/SAFEFLOW2027_lzqw_uid1007/terminal_matrix_20261024/runs/shapo_p47_four_env/runs/walker2d-2031",
+      "selected_evaluations": {
+        "500000": "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_500000.json",
+        "2000000": "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_2000000.json",
+        "5000000": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/evaluation_step_5000000.json"
+      },
+      "files": [
+        {
+          "path": "receipt.json",
+          "bytes": 5354,
+          "mtime_ns": 1792625041221496798,
+          "sha256": "5c4b4708ea0c5dd6ce16178efa16b4e0b820e434c1cf5f2dee2d3877e423784c"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_500000.json",
+          "bytes": 22478,
+          "mtime_ns": 1789039218468915819,
+          "sha256": "6c679d1e91eefe2e4402bf5a0de2c0f57fee5caf2b34516a5f09d899de5f38f5"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/artifacts/evaluation_step_2000000.json",
+          "bytes": 24651,
+          "mtime_ns": 1789328700996992318,
+          "sha256": "b5e341b6810590c212b088ed0ca01ec930c4741ed818e4afce2a9a685a2a755c"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/artifacts/evaluation_step_5000000.json",
+          "bytes": 29522,
+          "mtime_ns": 1792625040645491483,
+          "sha256": "8227a0fb969f313fd67a78c9f0ef360ef544dc59bfd67c6261378dbd949db57e"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-09-09-18-17-17/progress.csv",
+          "bytes": 1233685,
+          "mtime_ns": 1789651235525913199,
+          "sha256": "df534fda0bcf3b4312b8769d6779850ffe488701234c9dfd72b1119c185be0a6"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-13-10-41-28/progress.csv",
+          "bytes": 422685,
+          "mtime_ns": 1792134384346450636,
+          "sha256": "b950edbeb5be81bdd47007cd7752ec6ba64ea24c18bb2bb90ba768f658e6db96"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-16-15-25-16/progress.csv",
+          "bytes": 101094,
+          "mtime_ns": 1792190856105450106,
+          "sha256": "27821fae4e226db1b803538eda603e512572b1a68f433fd60246c09755f663d5"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-19-13-12-12/progress.csv",
+          "bytes": 14175,
+          "mtime_ns": 1792392616798810657,
+          "sha256": "011d98a48a7f7a8ff88766983030ae3062ee57148a1343895cd4afd1c5b67e83"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-19-15-25-14/progress.csv",
+          "bytes": 7736,
+          "mtime_ns": 1792396522183851052,
+          "sha256": "695138ece915fc063fad1d12bfa517cf35a22957221bd7c00d475945ac811c77"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-19-15-55-45/progress.csv",
+          "bytes": 173720,
+          "mtime_ns": 1792486722701669121,
+          "sha256": "7c2ba91cc80dcfefcbcb4da10730c4b3904faf5cbf8edc89c73c558b31da87f2"
+        },
+        {
+          "path": "training/STAR-{Walker2d-v4}/seed-2031-2026-10-20-16-59-30/progress.csv",
+          "bytes": 343410,
+          "mtime_ns": 1792625040745492406,
+          "sha256": "b40f313f65f95593090c0be45f7507d83dd874fdba91134b7a8e076ff0aeaf50"
+        }
+      ]
+    }
+  ],
+  "helper_sha256": "e05c658ab2d3de7892a28ee34c5d1a111a820b37c85c7e19abd0eaed6e6138ae",
+  "scientific_parameters_changed": false,
+  "additional_rollouts": 0,
+  "checkpoint_payloads_loaded": 0,
+  "remote_files_modified": 0,
+  "final_strict_audit_passed": false,
+  "caveats": [
+    "Three prespecified evaluations are milestone curves, not dense held-out evaluations.",
+    "All raw progress segments are retained separately; no unverifiable lineage stitch or recovery-tail deduplication.",
+    "Latest modification time selects native evaluations, matching frozen newest() semantics, never performance.",
+    "Sample SD is across five training seeds, not individual evaluation episodes.",
+    "Training cumulative costs are native accepted-lineage counters, not total physical recovery costs.",
+    "Historical missing-parent and multi-hop lookup gaps remain unresolved; hashes are not provenance proof."
+  ]
+}
