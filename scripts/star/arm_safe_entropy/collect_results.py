@@ -21,17 +21,25 @@ def main():
                     args.host + ':' + args.remote_project.rstrip('/') + '/runs/' + args.phase + '/', str(target) + '/'],
                    check=True, timeout=120)
     rows, main_rows, seen_main_pairs = [], [], set()
+    main_freeze_record = None
     # Retain all mirrored versions: never drop weak runs or metric-select checkpoints.
     for phase in ['ability', 'obstacle_development', 'mechanism_control', 'main']:
         for config_path in sorted((report / phase).glob('*/run_config.json')):
             run = config_path.parent
             config = json.loads(config_path.read_text())
-            if phase == 'main':
+            is_main = config.get('stage') == 'main'
+            if phase == 'main' and not is_main:
+                raise ValueError('A development manifest in the main folder is not a formal result')
+            if is_main:
                 from scripts.star.arm_safe_entropy.run_protocol import resolve_phase, validate_main_freeze
                 resolve_phase(config['method'], config['training_seed'], config['total_transition_budget'],
                               config['evaluation_episodes'], phase='main')
                 validate_main_freeze(config.get('frozen_config') or {}, config['method'],
                                      config['training_seed'], config.get('reference_variance') or .04)
+                if main_freeze_record is None:
+                    main_freeze_record = config['frozen_config']
+                elif main_freeze_record != config['frozen_config']:
+                    raise ValueError('Do not combine different frozen configurations in one main comparison')
             receipt = json.loads((run / 'receipt.json').read_text()) if (run / 'receipt.json').exists() else {}
             progress = {}
             if (run / 'progress.csv').is_file():
@@ -56,13 +64,16 @@ def main():
                     training_violation_count=e.get('training_violation_count', progress.get(step, {}).get('training_violation_count', '')),
                     source_commit=config['source_commit'], run=str(run.relative_to(report)),
                     status='superseded_v1_engineering_pilot' if superseded else
-                           'fixed_final_frozen_main' if phase == 'main' and final else
+                           'fixed_final_frozen_main' if is_main and final else
                            'final_native_not_formal_matrix' if final else 'interim_native')
                 row['return'] = row.pop('return_')
-                if phase == 'main':
+                if is_main:
                     if final:
                         if step != 1000000 or e['episodes'] != 100:
                             raise ValueError('Main table is only the fixed final1M checkpoint,100 episodes per training seed')
+                        start = config['evaluation_layout_seed_start']
+                        if e['fixed_layout_seeds'] != list(range(start, start + 100)) or len(e['records']) != 100:
+                            raise ValueError('Final main evaluation must retain all100 fixed common-layout episodes')
                         pair = (config['method'], config['training_seed'])
                         if pair in seen_main_pairs:
                             raise ValueError('Duplicate final main method/seed: do not silently choose the better run')
