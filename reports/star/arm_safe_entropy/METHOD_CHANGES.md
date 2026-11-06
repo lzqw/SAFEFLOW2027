@@ -162,3 +162,30 @@ eigenvalues. This prepares the required conditional mechanism analysis, without
 changing default policy sampling or fabricating any mechanism result. Reference
 and endpoint covariances must both be projected onto a shared normal across
 methods, and must be estimated separately within each fixed state.
+
+The analysis runner now has two explicit modes: interim diagnosis may inspect
+currently available foundation/directional snapshots with their unequal ages
+visible; final-mechanism mode requires both2027/2028 fixed300k results from
+Iso/Oracle/Learned plus both mechanism controls. It balances256 distinct real
+visited states across contributing runs and clearance regions, uses128 actions
+per state, never pools states for covariance, and preserves undefined normals.
+Oracle policy sampling uses the SAME approximate/exact backend as its training;
+independent truth risk/normal queries use exact simulation. Random-Aniso is not
+assigned its unused learned-head direction as an active aligned normal. The
+final CSV links native episode evaluation, training violation counts, source
+commits, backend and valid comparison counts. The final mode was checked only
+for rejection of an incomplete cohort; full trained-cohort analysis is pending.
+
+Counterfactual Oracle intervals are model-information queries, not extra
+on-policy replay transitions: they never train the learned margin heads.
+Their counts are explicitly separate from collected-training-transition budgets
+in Oracle receipts. Evaluation transitions are recorded separately as well.
+Neither model-query compute nor privileged geometry should be omitted when
+describing the Oracle diagnostic's information/computational advantage.
+
+The5080 extension shares only read access to its existing PyTorch/CUDA install;
+new simulation dependencies live in a separate venv under LZQW. The new A/B
+seed2028 jobs have the same physics, observations, rewards, action scale, replay,
+UTD and update ratios as seed2027; later code adds metadata/control options but
+leaves their default behavior unchanged. Torch2.7.1+cu128 on5080 differs from
+Torch2.7.1+cu118 on A100 and is recorded, not claimed to be identical hardware.

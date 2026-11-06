@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and open work (2026-11-06 12:02 CST)
+## Current evidence and open work (2026-11-06 12:25 CST)
 
 The three required clips and minimum semantics checks passed:
 
@@ -69,8 +69,9 @@ single SAC5k–10k:111.30 transitions/s; with both learners running,
 SAC35k–45k:106.15/s and flow4k–8k:46.35/s, aggregate about152.50/s.
 The workloads and sample windows differ: this is an actual heterogeneous
 queue capacity comparison, **not** an algorithm speed comparison or a
-controlled same-workload scalability claim. Keep two independent learners,
-one per currently free A100; do not equate low VRAM use with permission to
+controlled same-workload scalability claim. Initially keep two independent learners,
+one per currently free A100; later use additional genuinely available host capacity.
+Do not equate low VRAM use with permission to
 duplicate scientific seeds or interrupt foreign jobs.
 
 ### Obstacle learning
@@ -87,12 +88,14 @@ Fresh, matched v2 learners use sourcece0d175, seed2027,300k budgets:
 
 | Method | Latest native checkpoint evaluation | Safe success | Violation | Status |
 |---|---:|---:|---:|---|
-| SAC-Lag | 200k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
+| SAC-Lag | 300k,30 common-layout episodes | 30/30 | 0/30 | Completed; fixed final checkpoint |
 | Safe-FLAC-Iso | 100k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
 
 At a matched100k budget, SAC's return was11.1936 and training violations97;
 Flow's return11.3359 and training violations137. SAC200k return11.4292,
-training violations162. These are single-development-seed checkpoints,
+training violations162. SAC300k return11.4191, total training violations219,
+native runtime4190.35s and298k learner/reward/actor updates. These are
+single-development-seed checkpoints,
 not cross-seed conclusions or proof of zero population risk. Flow's earlier
 stalling was followed by genuine learning, so it was not a reason to terminate
 the run or change several parameters prematurely. Foundation evidence now
@@ -130,17 +133,48 @@ was about2.0 transitions/s before final evaluation, not the cached arithmetic
 rate. The small-window end-to-end rate is not a full-run completion guarantee.
 Both tests are labelled engineering, not included as trained-method results.
 
-Two one-run dependency queues are live (sourcee792e45):
+One dependency queue has launched and one remains waiting (sourcee792e45):
 
-| Next diagnostic | Dependency before it starts | GPU | New budget |
+| Diagnostic | Status / dependency | A100 GPU | New budget |
 |---|---|---:|---:|
-| OracleDir, controller-linearization backend, seed2027 | SAC-Lag2027 completes300k | 0 | 300k |
-| LearnedDir, seed2027; no oracle calls by its actor | Flow-Iso2027 completes300k | 1 | 300k |
+| OracleDir, controller-linearization backend, seed2027 | Active PID270049; first2000 warmup transitions logged | 0 | 300k |
+| LearnedDir, seed2027; no oracle calls by its actor | Queue PID252096 waits for Flow-Iso2027 to complete300k | 1 | 300k |
 
-Queue PIDs251920/252096 were inspected alive, waiting; they are not training
-results or proof that their child learners have already started. Each rechecks
-shared GPU/CPU/disk headroom and launches only one run, not the entire matrix.
-Seed2028 and all later controls/formal/payload stages are not blindly enqueued.
+Queue251920 completed its one launch and exited; child270049 and its32
+single-threaded controller workers were inspected alive. Warmup is not evidence
+of learned Oracle efficacy; no held-out directional result exists yet. Each
+queue rechecks shared GPU/CPU/disk headroom and launches only one run, not the
+entire matrix. Later controls/formal/payload stages are not blindly enqueued.
+
+### Additional shared capacity:5080
+
+At12:14 the4080 remained98% utilized by foreign workloads, so it was left
+untouched. The5080 had spare capacity and approximately14GiB disk free. A new
+project lives under `/home/autodrive/LZQW/SAFEFLOW2027_ARM`, with its own venv;
+it read-only reuses the old SAFE conda environment's working PyTorch2.7.1+cu128
+instead of duplicating CUDA wheels. Panda-gym3.0.7, PyBullet3.2.7, Gymnasium1.2.3,
+NumPy1.24.3 and SB32.7.0 are installed in the new venv, not the old project.
+CUDA tensor execution and package versions were checked; no three-video
+revalidation or historical suite was repeated. Space remains about14GiB.
+
+The existing matrix's seed2028 A/B runs are now active there, source3c1b407:
+
+|5080 learner|PID|Latest mirrored progress|Budget|
+|---|---:|---:|---:|
+|SAC-Lag2028|3890030|21k|300k|
+|Flow-Iso2028|3890092|17k|300k|
+
+Both have productive optimizer updates, not just live startup processes. The
+first post-warmup7k→8k SAC and6k→7k flow windows yielded approximately100/s
+and83/s respectively; these are short throughput observations, not full-run
+ETAs or a controlled hardware benchmark. A foreign Isaac workload returned
+while setup was underway and remains running (~3GiB VRAM at the observation).
+Each new learner used~0.36GiB VRAM. The observed98% whole-card utilization
+includes that foreign job and must not be attributed entirely to this project.
+All sharing continues without stopping anyone else's work. Four scientific
+learners are currently active across A100+5080, without increasing budgets or
+claiming unobserved seed2028 success. Native runtime versions and GPU names
+are recorded in new run manifests; the5080 CUDA version differs from A100's11.8.
 
 One interim foundation diagnostic used256 shared genuinely visited states
 (128 with current-state clearance0–20mm above the safety threshold,128 farther
@@ -158,6 +192,16 @@ interval risk queries are retained in
 [foundation-sampling-v2](engineering/foundation-sampling-v2/diagnostic.json).
 This diagnostic collected zero new training transitions and does not populate
 the still-pending final mechanism table.
+
+The same analysis implementation now supports labelled interim directional
+diagnosis and a strict final-mechanism mode. Final mode requires the two-seed
+fixed300k directional/control cohort,256 distinct jointly visited states,
+shared exact normals,128 samples/state, reference/endpoint projections,
+normal validity counts, same-action normal cosines and legacy cost-weight
+factor distributions. It refuses an incomplete foundation-only cohort before
+creating output. The complete mechanism analysis has **not** been executed;
+the formal mechanism table remains empty. Server-resident replay may be
+streamed between servers for this analysis; it is not copied onto this host.
 
 Budget bookkeeping retains ability200k, flow engineering smoke/resume2600,
 oracle engineering smoke/resume2208 and v1 obstacle conservative upper bound140k.
