@@ -15,9 +15,15 @@ def strict_normals(gradient, minimum_norm=1e-7):
 
 class LocalMarginEnsemble(nn.Module):
     """Two small heads supervised on actual control-interval minimum distances."""
-    def __init__(self, obs_dim=25, width=64, temperature=.02):
+    def __init__(self, obs_dim=25, width=64, temperature=.02, activation='relu'):
         super().__init__()
+        if activation not in ['relu', 'silu']:
+            raise ValueError('Unknown local-margin activation')
         self.heads = nn.ModuleList([mlp(obs_dim + 3, 1, width) for _ in range(2)])
+        if activation == 'silu':
+            for head in self.heads:
+                head[1], head[3] = nn.SiLU(), nn.SiLU()
+        self.activation = activation
         self.temperature = temperature
 
     def forward(self, obs, action):
