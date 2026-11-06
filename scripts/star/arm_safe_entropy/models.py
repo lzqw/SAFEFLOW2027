@@ -51,6 +51,7 @@ class ArmFlowActor(nn.Module):
         clips = torch.zeros_like(energy)
         dt = 1. / self.num_steps
         reference_normals, reference_weights, reference_vn, reference_vt = [], [], [], []
+        reference_midpoints = []
         random_normal = random_valid = None
         if self.reference_control == 'random_aniso':
             if geometry is None:
@@ -77,6 +78,7 @@ class ArmFlowActor(nn.Module):
             vn = self.variance * (1. - weight * (1. - self.rho))
             vt = (3. * self.variance - vn) / 2.
             if return_reference:
+                reference_midpoints.append(midpoint.detach())
                 reference_normals.append(normal.detach())
                 reference_weights.append(weight.detach())
                 reference_vn.append(vn.detach())
@@ -91,6 +93,7 @@ class ArmFlowActor(nn.Module):
             action = proposal.clamp(-1, 1)
         if return_reference:
             return action, energy, clips, dict(normals=torch.stack(reference_normals, -2),
+                midpoints=torch.stack(reference_midpoints, -2),
                 weights=torch.stack(reference_weights, -1), vn=torch.stack(reference_vn, -1),
                 vt=torch.stack(reference_vt, -1), terminal_clipping_any=(proposal.abs() > 1).any(-1).float())
         return action, energy, clips
