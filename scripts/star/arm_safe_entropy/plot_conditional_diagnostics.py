@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--methods', nargs='+', help='Explicit display subset; full native JSON remains unchanged')
+    parser.add_argument('--only-covariance', action='store_true')
     args = parser.parse_args()
     payload = json.loads(args.input.read_text())
     summaries, records = payload['summaries'], payload['records']
@@ -25,6 +26,8 @@ def main():
     suffix = '-' + '-'.join(args.methods) if args.methods else ''
     milestone = payload.get('requested_checkpoint_steps')
     caption = f'Fixed {milestone:,}-transition policies' if milestone else 'Interim native snapshots (ages in JSON)'
+    if payload.get('sampling_intervention'):
+        caption += ' — frozen sampler intervention, not retrained'
     names = [f"{s['method']} seed{s['training_seed']}" for s in summaries]
     names = [name + (f" rho={s['normal_variance_ratio']:g}" if (s.get('normal_variance_ratio') or .25) != .25 else '')
              for name, s in zip(names, summaries)]
@@ -56,6 +59,10 @@ def main():
     fig.tight_layout(rect=(0, .11, 1, .96))
     fig.savefig(output/f'conditional-covariance{suffix}.png', dpi=150)
     plt.close(fig)
+    if args.only_covariance:
+        print(json.dumps(dict(source=str(args.input), training_transitions=0,
+                              plots=[f'conditional-covariance{suffix}.png'])))
+        return
 
     fig, ax = plt.subplots(figsize=(7,4))
     bins = np.linspace(-1,1,21)
