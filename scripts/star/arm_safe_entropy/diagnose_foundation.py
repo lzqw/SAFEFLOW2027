@@ -30,6 +30,7 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
         'clipping_rate', 'local_risk_increment', 'normal_cosine', 'source_commit', 'status',
         'valid_common_normal_states', 'valid_geometry_normal_comparisons', 'checkpoint_steps',
         'checkpoint_safe_success', 'checkpoint_violation_rate', 'training_violation_count',
+        'training_violation_count_scope',
         'reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean',
         'oracle_backend', 'state_pool', 'analysis_commit']
     with path.open('w', newline='') as stream:
@@ -57,6 +58,7 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
                     checkpoint_steps=run['training_steps'], checkpoint_safe_success=evaluation['safe_success'],
                     checkpoint_violation_rate=evaluation['violation'],
                     training_violation_count=evaluation['training_violation_count'],
+                    training_violation_count_scope=run['training_violation_count_scope'],
                     **{key: float(np.mean([r[key] for r in rows if r[key] is not None]))
                        if any(r[key] is not None for r in rows) else None
                        for key in ['reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean']},
@@ -103,6 +105,7 @@ def main():
     expected_config = asdict(TaskConfig())
     try:
         for run_index, (run, config) in enumerate(zip(args.runs, configs)):
+            lineage = json.loads((run / 'resume_lineage.json').read_text()) if (run / 'resume_lineage.json').exists() else None
             saved = torch.load(run / 'latest_full.pt', map_location='cpu', weights_only=False)
             if config['task_config'] != expected_config or saved['task_config'] != expected_config:
                 raise ValueError('Use a matched current obstacle task, never pool v1 and v2')
@@ -168,6 +171,9 @@ def main():
                 training_seed=config['training_seed'], oracle_backend=config.get('oracle_backend'),
                 reference_variance=config.get('reference_variance'),
                 reference_match_run=config.get('reference_match_run'),
+                resume_lineage=lineage,
+                training_violation_count_scope=('retained_checkpoint_lineage_only; lost_tail_not_included'
+                    if lineage and lineage.get('lost_tail_violation_count_unknown') else 'native_run_counter'),
                 native_evaluation_at_policy_step=json.loads((run / f'evaluation_{policy_steps}.json').read_text())
                     if (run / f'evaluation_{policy_steps}.json').exists() else None,
                 final_evaluation=json.loads((run / 'evaluation_300000.json').read_text()) if args.final_mechanism else None)))

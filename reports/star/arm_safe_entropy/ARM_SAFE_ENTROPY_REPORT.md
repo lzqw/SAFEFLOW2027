@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (2026-11-06 14:30 CST)
+## Current evidence and recovery (through 2026-11-06 15:35 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -63,7 +63,60 @@ The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
 
-### Matched100k conditional geometry, not a final mechanism result
+### Both-seed matched100k diagnosis (15:35, not a final mechanism result)
+
+Learned2027's first100k held-out evaluation obtained0/30 safe successes and0/30
+violations, return-1.6895, training violations74. This is safe stalling, not a
+task-preserving safety win against Iso2027's30/30 successes/137 training
+violations. By15:30 its ongoing116k run had begun recent training successes
+(25/100 completed episodes); this is not a replacement held-out evaluation.
+All four unfinished process PIDs were alive at that check. Full budgets remain.
+
+One additional analysis on the free4080 compared BOTH Iso and Learned seeds
+at the same100k policy milestone and replay prefix. The shared pool has256
+distinct visited states,128 near-boundary and128 safe-interior;180 valid exact
+common normals comprise114 near-boundary and66 safe-interior. All four policies
+use this same pool/axis and128 independent action samples per state. Large
+inputs remain on the4T disk. This is zero new training, not a new parameter run.
+
+| Near-boundary conditional variance | Ref normal | Ref tangent | Endpoint normal | Endpoint tangent |
+|---|---:|---:|---:|---:|
+| Iso2027 | .040000 | .040000 | .017134 | .020694 |
+| Learned2027 | .039797 | .040101 | .013150 | .011083 |
+| Iso2028 | .040000 | .040000 | .016647 | .014681 |
+| Learned2028 | .033231 | .043385 | .011014 | .016099 |
+
+Tangent is per dimension. Learned2027 loses23.3% normal but46.4% tangent
+endpoint variance versus its Iso seed: it does not preserve tangential
+exploration here. Learned2028 loses33.8% normal while gaining9.7% tangent.
+Mean same-state/action normal cosine near the boundary is.7778/.8336 for
+Learned2027/2028; signed cosines and undefined cases are retained. Since the
+diffusion uses an axis, cosine sign alone is not a safety-performance verdict.
+
+The distinction between eigenvalues along the learned axis and covariance
+along the COMMON true risk axis matters. For2027, near-boundary path-average
+q=.1543 and the raw reference eigenvalues are.035371/.042315, but the common-axis
+normal variance is.039797, almost isotropic. For2028 q=.3448, raw eigenvalues
+.029655/.045173, and common-axis normal variance.033231. Thus nonzero q and a
+changed native spectrum do not by themselves prove risk-aligned exploration.
+The fixed source-action cosine is not a measurement of true geometry at every
+internal flow midpoint, so this does not establish the precise causal error.
+
+Results depend on the visited-state pool: the earlier2028-only pair pool below
+showed tangent-3.7% near the boundary and-26.4% inside, whereas this expanded
+four-policy pool shows+9.7% near and+6.8% inside. Both native analyses remain
+visible, not selectively replaced. The more consistent observation is2028's
+near-boundary normal reduction; global tangent preservation and cross-seed
+efficacy remain unproven. Do not tune from a favorable subset of these states.
+
+See [both-seed native data](diagnostics/paired100k-bothseeds-v2/diagnostic.json),
+[cross-seed covariance](diagnostics/paired100k-bothseeds-v2/conditional-covariance-flow_learned.png)
+and [cross-seed normal agreement](diagnostics/paired100k-bothseeds-v2/normal-agreement-flow_learned.png).
+This localizes the next question to geometric activation/transmission stability,
+not a blind weight increase. Oracle held-out results and complete Learned
+learning curves are still pending; no scientific revision is launched yet.
+
+### Earlier two-policy100k pool, not a final mechanism result
 
 An interim analysis used the actual100k policy files for Iso2028 and LearnedDir2028,
 and only their first100k replay prefixes. Later full snapshots provided storage,

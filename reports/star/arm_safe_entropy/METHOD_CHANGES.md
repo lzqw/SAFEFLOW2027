@@ -275,3 +275,29 @@ head learning means numerical spectra are not yet proven matched; identical
 formula is not reported as achieved empirical matching. Both controls remain
 behind the useful-signal stage decision. This plan starts no training and adds
 no parameter sweep. Formal seeds2030/2031/2032 remain untouched.
+
+## Cross-seed100k failure diagnosis (2026-11-06 15:35)
+
+Learned2027's first100k evaluation stalled safely (0/30 success,0 violations),
+unlike Learned2028's28/30. All four Iso/Learned100k policies were therefore
+compared on one256-distinct-state visited pool, with114 valid near-boundary and
+66 valid interior shared exact normals,128 actions/state. No new training or
+parameter revision was used. Interim pool sampling now also excludes duplicate
+observations; the old252-distinct-state pair analysis remains unchanged.
+
+Near-boundary Learned2027 endpoint normal/tangent change is-23.3%/-46.4%
+relative to Iso2027; Learned2028 is-33.8%/+9.7% relative to Iso2028.2027's
+reference q=.1543 and native eigenvalues.035371/.042315 do NOT yield common-axis
+normal contraction (projected variance.039797 versus Iso.04).2028's stronger
+q=.3448 does (common normal.033231). The shared source-action cosines.7778/.8336
+do not prove alignment at all flow midpoints. This distinguishes native
+spectrum changes from actual risk-axis allocation, without claiming a complete
+causal diagnosis. Different source pools change tangent conclusions, including
+the earlier negative2028 interior result; both are retained. Full curves and
+Oracle results are needed before a targeted revision or formal freeze.
+
+Future main/mechanism exports also carry the training-counter scope and native
+resume-lineage caveat when present. The development recovery's unknown lost
+cost must not silently become an exact count in another table. Current main
+and final-mechanism files remain header-only; this metadata propagation is not
+a new evaluation, completed formal run, or repair of the missing tail.

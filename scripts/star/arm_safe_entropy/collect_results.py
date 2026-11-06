@@ -96,7 +96,7 @@ def main():
     temporary.replace(report / 'DEVELOPMENT_RESULTS.csv')
     main_columns = ['task_version', 'method', 'training_seed', 'transitions', 'evaluation_episodes',
                     'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
-                    'training_violation_count', 'source_commit', 'run', 'status']
+                    'training_violation_count', 'training_violation_count_scope', 'source_commit', 'run', 'status']
     temporary = report / 'MAIN_RESULTS.csv.tmp'
     with temporary.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=main_columns, extrasaction='ignore')
