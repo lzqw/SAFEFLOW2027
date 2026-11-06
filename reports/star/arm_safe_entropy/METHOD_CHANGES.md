@@ -189,3 +189,42 @@ seed2028 jobs have the same physics, observations, rewards, action scale, replay
 UTD and update ratios as seed2027; later code adds metadata/control options but
 leaves their default behavior unchanged. Torch2.7.1+cu128 on5080 differs from
 Torch2.7.1+cu118 on A100 and is recorded, not claimed to be identical hardware.
+
+## Development/main separation (main has not started)
+
+The runner now labels ability, obstacle-development, mechanism-control and main
+phases explicitly. Seeds2030/2031/2032 are rejected for development/engineering;
+main is restricted to the specified three methods,1M transitions and100-episode
+evaluation. `main_plan.json` is explicitly **not frozen**, so it cannot launch
+main runs. A later genuinely frozen config must record the method code commit,
+common settings and evaluation schedule. Default main layout seeds start62027,
+disjoint from development52027; changing a frozen schedule on resume is rejected.
+No main seed has been trained or used to select a parameter by these checks.
+
+Resume checks preserve training-seed identity; legacy checkpoints require their
+native run manifest when seed metadata is absent. Formal resumes must be from
+the same main seed/config, not a development checkpoint. This adds ordinary
+run-config checks, not a historical evidence repair or disaster-recovery system.
+
+The compact collector reads phase identity from native manifests, retains every
+development checkpoint (including weak ones), and writes only completed final1M,
+100-fixed-layout evaluations to MAIN_RESULTS.csv. It refuses duplicate formal
+method/seed rows or mixed frozen configs, rather than metric-selecting a run.
+Main results remain header-only:0/9 completed. Only lightweight protocol parsing
+and pure argument/config checks were performed; no new simulation validation,
+formal training, extra seed or long matrix was launched.
+
+On5080 a single replacement queue now waits for SAC-Lag2028's complete300k
+receipt before launching LearnedDir2028. It keeps the existing learner count,
+uses explicit>8GiB free VRAM/disk and CPU headroom, and permits shared busy GPU
+utilization instead of assuming exclusivity. Its source267e848 leaves the
+selected learner optimizer and task settings unchanged.
+
+Mechanism output now also records the actual path-reference normal/tangent
+eigenvalues, separately from covariance projected onto the shared safety normal.
+This distinction is essential for Random-Aniso: averaging random directions
+can make common-axis reference covariance isotropic even while each path has
+anisotropic eigenvalues. Matching must be checked from these measured spectra,
+not asserted from a shared formula alone. Full control matching and trained
+mechanism outcomes remain pending. Oracle curves explicitly label the
+controller-Jacobian backend so the figure alone does not imply an exact upper bound.

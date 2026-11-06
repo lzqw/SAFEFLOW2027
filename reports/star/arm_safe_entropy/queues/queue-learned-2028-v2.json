@@ -1,0 +1,12 @@
+{
+  "method": "flow_learned",
+  "seed": 2028,
+  "dependency": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/runs/obstacle_development/sac-lag-seed2028-v2-5080",
+  "output": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/runs/obstacle_development/flow-learned-seed2028-v2-5080",
+  "source_commit": "267e84871172e459881da83f5eb3a12a431fbe71",
+  "minimum_free_mib": 8192,
+  "maximum_gpu_utilization": 100.0,
+  "observed_at_unix": 1793940010.3210113,
+  "phase": "waiting_for_dependency_completion",
+  "queued_transitions": 300000
+}
