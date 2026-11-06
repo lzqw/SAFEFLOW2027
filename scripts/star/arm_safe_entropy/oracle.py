@@ -99,7 +99,7 @@ def _interval_jacobian_query(item):
     already-minimized zero-action distance, which can have a flat subgradient.
     This is a local first-order controller model, not exact risk at all actions.
     """
-    observation, epsilon, anchor = item
+    observation, epsilon, anchor, cell_radius = item
     restore_observation(_ENV, observation)
     snapshot = _ENV.client.saveState()
     def trace(action):
@@ -113,7 +113,17 @@ def _interval_jacobian_query(item):
             plus, minus = np.clip(anchor + offset, -1, 1), np.clip(anchor - offset, -1, 1)
             derivative[..., axis] = (trace(plus) - trace(minus)) / (plus[axis] - minus[axis])
         intercept = base - (derivative * anchor).sum(-1)
-        return np.concatenate([intercept[..., None], derivative], -1).reshape(-1, 4).astype(np.float32)
+        fields = np.concatenate([intercept[..., None], derivative], -1).reshape(-1, 4).astype(np.float32)
+        # Exact lower-envelope pruning for this numerical anchor's action cell.
+        # A plane whose lower bound exceeds another plane's global upper bound
+        # cannot be the minimum anywhere in the cell. This changes neither the
+        # modelled margin nor its selected gradient (except irrelevant ties).
+        center = fields[:, 0] + fields[:, 1:] @ anchor
+        lower_offset = np.clip(anchor-cell_radius, -1, 1) - anchor
+        upper_offset = np.clip(anchor+cell_radius, -1, 1) - anchor
+        low = center + np.minimum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
+        high = center + np.maximum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
+        return fields[low <= high.min() + 1e-7]
     finally:
         _ENV.client.restoreState(snapshot)
         _ENV.client.removeState(snapshot)
@@ -241,14 +251,20 @@ class ControllerJacobianOracle(SimulatorOracle):
             if key in self.cache:
                 self.cache_hits += 1
             elif key not in missing:
-                missing[key] = (obs, self.epsilon, anchor)
+                missing[key] = (obs, self.epsilon, anchor, self.action_grid_step / 2.)
         if missing:
             values = list(self.executor.map(_interval_jacobian_query, missing.values(),
                 chunksize=max(1, len(missing) // (self.workers * 4))))
             self.cache.update(zip(missing, values))
             self.unique_state_actions += len(missing)
             self.control_interval_queries += 7 * len(missing)
-        fields = np.stack([self.cache[key] for key in keys])
+        # Cache compact variable-sized plane sets; pad only this device batch.
+        # Sentinel planes cannot win a distance minimum.
+        planes = [self.cache[key] for key in keys]
+        fields = np.zeros((len(keys), max(len(p) for p in planes), 4), dtype=np.float32)
+        fields[..., 0] = 1e6
+        for index, value in enumerate(planes):
+            fields[index, :len(value)] = value
         for key in keys:
             self.cache.move_to_end(key)
         while len(self.cache) > self.cache_size:
@@ -301,5 +317,10 @@ class ControllerJacobianOracle(SimulatorOracle):
                       reference_rows=self.reference_rows,
                       reference_action='nearest numerical cache anchor, never an executed candidate',
                       action_anchor_spacing=self.action_grid_step, linearization_epsilon=self.epsilon,
-                      planes_per_state=210, exact_for_arbitrary_actions=False)
+                      original_planes_per_state_anchor=210,
+                      plane_pruning='lower bound exceeds best global upper bound within numerical action cell',
+                      cache_entry_limit=self.cache_size,
+                      cached_numeric_bytes=sum(value.nbytes for value in self.cache.values()),
+                      cached_planes=sum(len(value) for value in self.cache.values()),
+                      exact_for_arbitrary_actions=False)
         return result

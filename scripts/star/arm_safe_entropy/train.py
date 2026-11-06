@@ -92,6 +92,8 @@ def main():
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--smoke', action='store_true')
     parser.add_argument('--oracle-workers', type=int, default=8)
+    parser.add_argument('--oracle-backend', choices=['exact', 'controller_jacobian'], default='exact')
+    parser.add_argument('--oracle-cache-entries', type=int, default=12000000)
     args = parser.parse_args()
     assert args.steps % args.num_envs == 0
     assert not args.output.exists(), 'Do not overwrite another run'
@@ -105,8 +107,12 @@ def main():
     envs = [SafeReachEnv(config) for _ in range(args.num_envs)]
     oracle = None
     if args.method == 'flow_oracle':
-        from scripts.star.arm_safe_entropy.oracle import SimulatorOracle
-        oracle = SimulatorOracle(workers=args.oracle_workers)
+        from scripts.star.arm_safe_entropy.oracle import SimulatorOracle, ControllerJacobianOracle
+        if args.oracle_backend == 'exact':
+            oracle = SimulatorOracle(workers=args.oracle_workers)
+        else:
+            oracle = ControllerJacobianOracle(workers=args.oracle_workers,
+                                               cache_size=args.oracle_cache_entries)
     learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle)
     replay = Replay(300000, 25)
     steps, violations, episodes = 0, 0, 0
@@ -154,8 +160,12 @@ def main():
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
     manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
     manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_oracle': 'oracle'}.get(args.method, 'none')
-    manifest['oracle_information'] = 'known robot/controller/obstacle model, replica finite differences' if oracle else None
+    manifest['oracle_information'] = ('known robot/controller/obstacle model; exact simulator finite differences'
+        if args.oracle_backend == 'exact' else
+        'privileged first-order actual-controller interval-distance approximation; not an error-free upper bound') if oracle else None
     manifest['oracle_workers'] = args.oracle_workers if oracle else None
+    manifest['oracle_backend'] = args.oracle_backend if oracle else None
+    manifest['oracle_cache_entries'] = args.oracle_cache_entries if oracle else None
     atomic_json(args.output / 'run_config.json', manifest)
     fields = ['steps', 'elapsed_seconds', 'train_fps', 'episodes', 'training_violation_count',
               'recent_success', 'recent_return', 'reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha',
