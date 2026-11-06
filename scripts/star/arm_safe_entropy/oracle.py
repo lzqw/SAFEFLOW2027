@@ -81,6 +81,31 @@ def _query(item):
     return finite_difference_geometry(_ENV, action, epsilon)
 
 
+def _interval_jacobian_query(item):
+    """Differentiate every link/frame distance at zero commanded displacement.
+
+    Retaining individual frame/link planes avoids differentiating only the
+    already-minimized zero-action distance, which can have a flat subgradient.
+    This is a local first-order controller model, not exact risk at all actions.
+    """
+    observation, epsilon = item
+    restore_observation(_ENV, observation)
+    snapshot = _ENV.client.saveState()
+    def trace(action):
+        _ENV.client.restoreState(snapshot)
+        return _ENV._advance(action, distance_trace=True)[4]
+    try:
+        base = trace(np.zeros(3))
+        derivative = np.zeros((*base.shape, 3))
+        for axis in range(3):
+            offset = np.eye(3)[axis] * epsilon
+            derivative[..., axis] = (trace(offset) - trace(-offset)) / (2. * epsilon)
+        return np.concatenate([base[..., None], derivative], -1).reshape(-1, 4).astype(np.float32)
+    finally:
+        _ENV.client.restoreState(snapshot)
+        _ENV.client.removeState(snapshot)
+
+
 class SimulatorOracle:
     def __init__(self, workers=8, epsilon=.002, temperature=.02, cache_size=60000):
         if workers < 1 or epsilon <= 0 or temperature <= 0:
@@ -141,3 +166,83 @@ class SimulatorOracle:
 
     def close(self):
         self.executor.shutdown(wait=True)
+
+
+class ControllerJacobianOracle(SimulatorOracle):
+    """State-cached first-order approximation through the real IK/motor mapping.
+
+    Per-state 7 simulator intervals supply all 21-frame x10-link distance
+    intercepts/Jacobians. Every flow midpoint uses their lower distance envelope.
+    Exact finite-difference SimulatorOracle remains the independent diagnostic;
+    this approximation must never be presented as an error-free oracle bound.
+    """
+    def __init__(self, workers=8, epsilon=.05, temperature=.02, cache_size=360000):
+        super().__init__(workers, epsilon, temperature, cache_size)
+        self.device_batches = OrderedDict()
+        self.reference_rows = 0
+
+    def evaluate_fields_numpy(self, observations):
+        observations = np.asarray(observations, dtype=np.float32)
+        missing = OrderedDict()
+        keys = []
+        start = time.monotonic()
+        for obs in observations:
+            key = obs.tobytes()
+            keys.append(key)
+            if key in self.cache:
+                self.cache_hits += 1
+            elif key not in missing:
+                missing[key] = (obs, self.epsilon)
+        if missing:
+            values = list(self.executor.map(_interval_jacobian_query, missing.values(),
+                chunksize=max(1, len(missing) // (self.workers * 4))))
+            self.cache.update(zip(missing, values))
+            self.unique_state_actions += len(missing)
+            self.control_interval_queries += 7 * len(missing)
+        fields = np.stack([self.cache[key] for key in keys])
+        for key in keys:
+            self.cache.move_to_end(key)
+        while len(self.cache) > self.cache_size:
+            self.cache.popitem(last=False)
+        self.elapsed_query_seconds += time.monotonic() - start
+        return fields
+
+    def evaluate_numpy(self, observations, actions):
+        fields = self.evaluate_fields_numpy(observations)
+        actions = np.asarray(actions, dtype=np.float32)
+        distances = fields[..., 0] + np.einsum('bpc,bc->bp', fields[..., 1:], actions)
+        selected = distances.argmin(-1)
+        gradient = -fields[np.arange(len(actions)), selected, 1:]
+        norm = np.linalg.norm(gradient, axis=-1)
+        normal = gradient / np.where(norm > 1e-7, norm, 1.)[:, None]
+        normal[norm <= 1e-7] = 0.
+        return np.column_stack([.015 - distances.min(-1), normal, norm]).astype(np.float32)
+
+    def __call__(self, obs, action):
+        import torch
+        observations = obs.detach().cpu().numpy()
+        key = (observations.tobytes(), str(action.device), str(action.dtype))
+        if key not in self.device_batches:
+            fields = self.evaluate_fields_numpy(observations)
+            self.device_batches[key] = torch.as_tensor(fields, dtype=action.dtype, device=action.device)
+            while len(self.device_batches) > 4:
+                self.device_batches.popitem(last=False)
+        else:
+            self.device_batches.move_to_end(key)
+        fields = self.device_batches[key]
+        distances = fields[..., 0] + (fields[..., 1:] * action.detach()[:, None]).sum(-1)
+        minimum, selected = distances.min(-1)
+        gradient = -fields[torch.arange(len(action), device=action.device), selected, 1:]
+        norm = gradient.norm(dim=-1)
+        valid = norm > 1e-7
+        denominator = torch.where(valid, norm, torch.ones_like(norm))
+        normal = torch.where(valid[:, None], gradient / denominator[:, None], torch.zeros_like(gradient))
+        weight = torch.sigmoid((.015 - minimum) / self.temperature) * valid
+        self.reference_rows += len(action)
+        return normal.detach(), weight.detach()
+
+    def statistics(self):
+        return dict(**super().statistics(), backend='interval_distance_controller_jacobian',
+                    unique_states=self.unique_state_actions, reference_rows=self.reference_rows,
+                    reference_action=[0., 0., 0.], linearization_epsilon=self.epsilon,
+                    planes_per_state=210, exact_for_arbitrary_actions=False)

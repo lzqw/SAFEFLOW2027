@@ -62,12 +62,19 @@ class SafeReachEnv(gym.Env):
     def control_dt(self):
         return float(self.sim.dt)
 
-    def _distance(self):
+    def _distance(self, components=False):
         if not self.config.obstacle:
-            return 2.0, False
+            return (2.0, False, np.full(len(self.protected_links), 2.0)) if components else (2.0, False)
         points = self.client.getClosestPoints(self.body, self.obstacle_body, distance=2.)
         distances = [float(p[8]) for p in points if p[3] in self.protected_links]
         distance = min(distances, default=2.)
+        if components:
+            per_link = np.full(len(self.protected_links), 2.0)
+            for p in points:
+                if p[3] in self.protected_links:
+                    index = self.protected_links.index(p[3])
+                    per_link[index] = min(per_link[index], float(p[8]))
+            return distance, distance <= 0., per_link
         return distance, distance <= 0.
 
     def ee_position(self):
@@ -114,23 +121,31 @@ class SafeReachEnv(gym.Env):
         self._previous_distance = float(np.linalg.norm(self.ee_position() - self.goal))
         return self._obs(), {'task_version': self.config.version, 'minimum_distance': distance}
 
-    def _advance(self, action):
+    def _advance(self, action, distance_trace=False):
         action = np.clip(np.asarray(action, dtype=float), -1., 1.)
         proposed = self.ee_position() + action * self.config.displacement_scale
         target_position = np.clip(proposed, [-.45, -.35, .08], [.10, .35, .55])
         joints = self.robot.inverse_kinematics(link=self.robot.ee_link, position=target_position,
                                                orientation=np.array([1., 0., 0., 0.]))[:7]
         self.robot.control_joints(np.concatenate([joints, [0., 0.]]))
-        minimum, collision = self._distance()
+        traces = []
+        def distances():
+            if distance_trace:
+                distance, collision, components = self._distance(components=True)
+                traces.append(components)
+                return distance, collision
+            return self._distance()
+        minimum, collision = distances()
         violation = minimum < self.config.safety_distance or collision
         # Complete the fixed 40ms control interval and retain its minimum.
         # The first violating control step is terminal: no subsequent action.
         for _ in range(self.config.substeps):
             self.client.stepSimulation()
-            distance, contact = self._distance()
+            distance, contact = distances()
             minimum, collision = min(minimum, distance), collision or contact
             violation = violation or minimum < self.config.safety_distance or collision
-        return minimum, collision, violation, bool(np.any(np.abs(proposed - target_position) > 1e-8))
+        result = (minimum, collision, violation, bool(np.any(np.abs(proposed - target_position) > 1e-8)))
+        return (*result, np.stack(traces)) if distance_trace else result
 
     def step(self, action):
         if self._done:
