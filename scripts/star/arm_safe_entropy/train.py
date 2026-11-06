@@ -5,6 +5,8 @@ from dataclasses import asdict
 import csv
 import json
 import os
+import platform
+from importlib.metadata import version
 from pathlib import Path
 import random
 import time
@@ -180,6 +182,12 @@ def main():
     manifest['reference_match_definition'] = ('mean normal reference variance, NOT total trace' if args.method == 'flow_iso_low' else
         'same eigenvalue/trace formula and learned-q rule, independent direction; q need not numerically match a separately trained policy'
         if args.method == 'flow_random_aniso' else None)
+    manifest['run_host'] = platform.node()
+    manifest['gpu_name'] = torch.cuda.get_device_name(learner.device) if learner.device.type == 'cuda' else None
+    manifest['visible_devices'] = os.environ.get('CUDA_VISIBLE_DEVICES')
+    manifest['software'] = dict(python=platform.python_version(), torch=str(torch.__version__),
+        cuda=torch.version.cuda, numpy=np.__version__,
+        **{name: version(name) for name in ['panda-gym', 'pybullet', 'gymnasium']})
     manifest['oracle_information'] = ('known robot/controller/obstacle model; exact simulator finite differences'
         if args.oracle_backend == 'exact' else
         'privileged first-order actual-controller interval-distance approximation; not an error-free upper bound') if oracle else None

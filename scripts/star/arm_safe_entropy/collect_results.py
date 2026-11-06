@@ -9,6 +9,8 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--phase', choices=['ability', 'obstacle_development'], default='ability')
+    parser.add_argument('--host', default='tjucta-a100')
+    parser.add_argument('--remote-project', default='/home/lzqw/SAFEFLOW2027_ARM')
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     report = repo / 'reports/star/arm_safe_entropy'
@@ -16,7 +18,7 @@ def main():
     target.mkdir(parents=True, exist_ok=True)
     subprocess.run(['rsync', '-a', '--include=*/', '--include=*.json', '--include=progress.csv',
                     '--exclude=*', '-e', 'ssh -o BatchMode=yes -o ConnectTimeout=8',
-                    'tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/' + args.phase + '/', str(target) + '/'],
+                    args.host + ':' + args.remote_project.rstrip('/') + '/runs/' + args.phase + '/', str(target) + '/'],
                    check=True, timeout=120)
     rows = []
     # Retain all mirrored versions: never drop weak runs or metric-select checkpoints.
@@ -58,7 +60,8 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
     temporary.replace(report / 'DEVELOPMENT_RESULTS.csv')
-    print(json.dumps(dict(native_evaluations=len(rows), large_checkpoints_copied=0,
+    print(json.dumps(dict(host=args.host, remote_project=args.remote_project,
+                          native_evaluations=len(rows), large_checkpoints_copied=0,
                           rows=[{key: row[key] for key in ['method', 'training_seed', 'transitions', 'task_success', 'violation_rate', 'status']} for row in rows])))
 
 
