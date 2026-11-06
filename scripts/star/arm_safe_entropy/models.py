@@ -41,11 +41,12 @@ class ArmFlowActor(nn.Module):
     def velocity(self, obs, action, time):
         return 2. * torch.tanh(self.net(torch.cat([obs, action, time], -1)))
 
-    def forward(self, obs, deterministic=False, geometry=None):
+    def forward(self, obs, deterministic=False, geometry=None, return_reference=False):
         action = torch.zeros((*obs.shape[:-1], 3), device=obs.device, dtype=obs.dtype)
         energy = torch.zeros(obs.shape[:-1], device=obs.device)
         clips = torch.zeros_like(energy)
         dt = 1. / self.num_steps
+        reference_normals, reference_weights, reference_vn, reference_vt = [], [], [], []
         for index in range(self.num_steps):
             t = torch.full_like(action[..., :1], index * dt)
             midpoint = (action + .5 * dt * self.velocity(obs, action, t)).clamp(-1, 1)
@@ -58,6 +59,11 @@ class ArmFlowActor(nn.Module):
                 normal, weight = normal.detach(), weight.detach()
             vn = self.variance * (1. - weight * (1. - self.rho))
             vt = (3. * self.variance - vn) / 2.
+            if return_reference:
+                reference_normals.append(normal.detach())
+                reference_weights.append(weight.detach())
+                reference_vn.append(vn.detach())
+                reference_vt.append(vt.detach())
             vnormal = (velocity * normal).sum(-1)
             vtangent2 = (velocity.square().sum(-1) - vnormal.square()).clamp_min(0)
             energy = energy + .5 * dt * (vnormal.square() / vn + vtangent2 / vt)
@@ -66,6 +72,10 @@ class ArmFlowActor(nn.Module):
             proposal = action + dt * velocity + math.sqrt(dt) * increment
             clips = clips + (proposal.abs() > 1).float().mean(-1) / self.num_steps
             action = proposal.clamp(-1, 1)
+        if return_reference:
+            return action, energy, clips, dict(normals=torch.stack(reference_normals, -2),
+                weights=torch.stack(reference_weights, -1), vn=torch.stack(reference_vn, -1),
+                vt=torch.stack(reference_vt, -1), terminal_clipping_any=(proposal.abs() > 1).any(-1).float())
         return action, energy, clips
 
 

@@ -82,7 +82,7 @@ def _query(item):
 
 
 def _interval_jacobian_query(item):
-    """Differentiate every link/frame distance at zero commanded displacement.
+    """Differentiate every link/frame distance at a nearby numerical anchor.
 
     Retaining individual frame/link planes avoids differentiating only the
     already-minimized zero-action distance, which can have a flat subgradient.
@@ -173,7 +173,7 @@ class SimulatorOracle:
 class ControllerJacobianOracle(SimulatorOracle):
     """State-cached first-order approximation through the real IK/motor mapping.
 
-    Per-state 7 simulator intervals supply all 21-frame x10-link distance
+    Per-state/anchor 7 simulator intervals supply all 21-frame x10-link distance
     intercepts/Jacobians. Every flow midpoint uses their lower distance envelope.
     Exact finite-difference SimulatorOracle remains the independent diagnostic;
     this approximation must never be presented as an error-free oracle bound.

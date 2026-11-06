@@ -42,8 +42,11 @@ def main():
         both = actual_valid & predicted_valid
         cosine = (approx[both, 1:4] * truth[both, 1:4]).sum(-1)
         start = time.monotonic()
-        model.evaluate_numpy(observations, rng.uniform(-.8, .8, actions.shape).astype(np.float32))
+        model.evaluate_numpy(observations, actions)
         cached_seconds = time.monotonic() - start
+        start = time.monotonic()
+        model.evaluate_numpy(observations, rng.uniform(-.8, .8, actions.shape).astype(np.float32))
+        new_action_seconds = time.monotonic() - start
         payload = dict(kind='controller_jacobian_approximation_check_not_task_efficacy',
             task_version=TaskConfig().version, states=len(states), state_actions=len(actions),
             approximate_model_explicit=True, exact_backend='7 actual simulator control intervals per FD query',
@@ -57,6 +60,7 @@ def main():
                          percentile10_cosine=float(np.quantile(cosine,.1)) if len(cosine) else None),
             violation_sign_disagreements=int(((approx[:,0]>0)!=(truth[:,0]>0)).sum()),
             cached_field_queries_per_second=len(actions) / cached_seconds,
+            reused_states_new_action_queries_per_second=len(actions) / new_action_seconds,
             approximation_statistics=model.statistics(), exact_statistics=exact.statistics(),
             rows=[dict(observation=s.tolist(), action=a.tolist(), approximate=p.tolist(), exact=t.tolist())
                   for s,a,p,t in zip(observations,actions,approx,truth)],
