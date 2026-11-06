@@ -19,7 +19,7 @@ def demonstration(path, obstacle, detour):
         target = 0
         frames.append(env.render())
         for step in range(env.config.horizon):
-            position = env.robot.get_ee_position()
+            position = env.ee_position()
             if np.linalg.norm(position - waypoints[target]) < .04 and target < len(waypoints) - 1:
                 target += 1
             action = np.clip((waypoints[target] - position) / env.config.displacement_scale, -1., 1.)

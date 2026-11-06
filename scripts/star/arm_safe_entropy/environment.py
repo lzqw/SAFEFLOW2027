@@ -1,4 +1,4 @@
-"""SAFEFLOW Panda SafeReach-Obstacle-v1, a project panda-gym variant.
+"""SAFEFLOW Panda SafeReach-Obstacle-v2, a project panda-gym variant.
 
 Real PyBullet joint motors, fixed-gripper Cartesian displacement commands,
 signed closest distances on protected robot links, and interval-min labels.
@@ -15,7 +15,7 @@ from panda_gym.pybullet import PyBullet
 
 @dataclass
 class TaskConfig:
-    version: str = 'SafeReach-Obstacle-v1'
+    version: str = 'SafeReach-Obstacle-v2'
     obstacle: bool = True
     horizon: int = 100
     substeps: int = 20
@@ -70,10 +70,17 @@ class SafeReachEnv(gym.Env):
         distance = min(distances, default=2.)
         return distance, distance <= 0.
 
+    def ee_position(self):
+        # Default getLinkState can retain the pre-integration link cache while
+        # getJointState already exposes post-integration q/dq. Explicit FK gives
+        # one coherent current state, including after counterfactual restore.
+        return np.asarray(self.client.getLinkState(self.body, self.robot.ee_link,
+                          computeForwardKinematics=1)[0], dtype=float)
+
     def _obs(self):
         q = np.array([self.client.getJointState(self.body, j)[0] for j in range(7)])
         dq = np.array([self.client.getJointState(self.body, j)[1] for j in range(7)])
-        return np.concatenate([q / np.pi, dq / 4., self.robot.get_ee_position(), self.goal,
+        return np.concatenate([q / np.pi, dq / 4., self.ee_position(), self.goal,
                                self.obstacle_position, [self.config.obstacle_radius if self.config.obstacle else 0.],
                                [max(0., 1. - self._elapsed / self.config.horizon)]]).astype(np.float32)
 
@@ -104,26 +111,25 @@ class SafeReachEnv(gym.Env):
                 break
         else:
             raise RuntimeError('Could not sample a safe reachable start; do not train on invalid resets')
-        self._previous_distance = float(np.linalg.norm(self.robot.get_ee_position() - self.goal))
+        self._previous_distance = float(np.linalg.norm(self.ee_position() - self.goal))
         return self._obs(), {'task_version': self.config.version, 'minimum_distance': distance}
 
     def _advance(self, action):
         action = np.clip(np.asarray(action, dtype=float), -1., 1.)
-        proposed = self.robot.get_ee_position() + action * self.config.displacement_scale
+        proposed = self.ee_position() + action * self.config.displacement_scale
         target_position = np.clip(proposed, [-.45, -.35, .08], [.10, .35, .55])
         joints = self.robot.inverse_kinematics(link=self.robot.ee_link, position=target_position,
                                                orientation=np.array([1., 0., 0., 0.]))[:7]
         self.robot.control_joints(np.concatenate([joints, [0., 0.]]))
         minimum, collision = self._distance()
         violation = minimum < self.config.safety_distance or collision
-        # Every actual 2ms physics frame is checked. Stop at the first violation.
+        # Complete the fixed 40ms control interval and retain its minimum.
+        # The first violating control step is terminal: no subsequent action.
         for _ in range(self.config.substeps):
-            if violation:
-                break
             self.client.stepSimulation()
             distance, contact = self._distance()
             minimum, collision = min(minimum, distance), collision or contact
-            violation = minimum < self.config.safety_distance or collision
+            violation = violation or minimum < self.config.safety_distance or collision
         return minimum, collision, violation, bool(np.any(np.abs(proposed - target_position) > 1e-8))
 
     def step(self, action):
@@ -131,7 +137,7 @@ class SafeReachEnv(gym.Env):
             raise RuntimeError('Call reset after episode termination')
         minimum, collision, violation, workspace_clipped = self._advance(action)
         self._elapsed += 1
-        distance = float(np.linalg.norm(self.robot.get_ee_position() - self.goal))
+        distance = float(np.linalg.norm(self.ee_position() - self.goal))
         success = distance < self.config.success_distance and not violation
         horizon = self._elapsed >= self.config.horizon
         reward = self.config.progress_scale * (min(self._previous_distance, 1.) - min(distance, 1.)) - self.config.step_penalty

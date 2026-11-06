@@ -57,7 +57,7 @@ def restore_observation(env, observation):
     env.client.performCollisionDetection()
     env._elapsed = int(round((1. - observation[24]) * env.config.horizon))
     env._done = False
-    env._previous_distance = float(np.linalg.norm(env.robot.get_ee_position() - env.goal))
+    env._previous_distance = float(np.linalg.norm(env.ee_position() - env.goal))
 
 
 def finite_difference_geometry(env, action, epsilon=.002):
