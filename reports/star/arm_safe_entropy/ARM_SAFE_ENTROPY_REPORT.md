@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 04:00 CST)
+## Current evidence and recovery (through 2026-11-07 05:30 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -54,6 +54,29 @@ turn the earlier100k geometry signal or200k cost gap into a final Pareto claim.
 Learned2027 completed300k actual transitions without interruption in17173.49s,
 with298k learner,596k reward and149k actor updates. No bad seed was restarted or
 discarded, and no result was selected from its intermediate checkpoints.
+
+At05:30 Oracle2027 completed its fixed200k evaluation on the common30 layouts:
+30/30 safe successes,0/30 violations/collisions, return11.4436, and171 training
+violations. The matched-budget seed2027 comparison is:
+
+| Method, seed2027 at200k | Safe success | Evaluation violations | Return | Training violations |
+|---|---:|---:|---:|---:|
+| SAC-Lag | 30/30 | 0/30 | 11.4292 | 162 |
+| Flow-Iso | 30/30 | 0/30 | 11.4376 | 195 |
+| OracleDir, privileged controller approximation | 30/30 | 0/30 | 11.4436 | 171 |
+| LearnedDir | 30/30 | 0/30 | 11.4764 | 183 |
+
+Oracle's count is24 lower than Iso (12.3%) at matched safe success, but9 higher
+than SAC-Lag. This is a second positive milestone for one development seed,
+not an evaluation-risk improvement, a two-seed gain, or a final300k result.
+Learned2027's own earlier200k training-cost advantage disappeared by300k, so
+interim reductions must not be promoted into a frozen-method claim. Oracle2028
+has not yet reached200k; its retained100k evaluation remains0/30 successes.
+All four live PIDs were observed directly at05:30: original Oracle2027/2028
+at200k/180k, R1 at69k/80k. The compact capture contains30 native evaluations,
+with formal rows still0/9. No budget, configuration or queue expansion changed.
+A100 host memory remained34GiB available and disk60GiB free; this observation
+does not promise future capacity or authorize interference with foreign jobs.
 
 At19:00 Oracle2027/2028 were both live at78k, not yet at their first held-out
 100k evaluation. Available A100 RAM95GiB and disk60GiB show no present storage
@@ -215,12 +238,12 @@ At23:34 both R1 native checkpoints reached4000 steps with rho.5 in both full
 and learner state,2000 learner updates,4000 reward updates and1000 actor
 updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
 This confirms actual post-warmup learning and saving, not just startup rows.
-There is no held-out R1 result yet. The live matrix, updated at04:00, is:
+There is no held-out R1 result yet. The live matrix, observed at05:30, is:
 
 | Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
 |---|---:|---:|---:|---:|
-| Original rho.25 | 182k | 167k | 300k | 0 |
-| R1 rho.50 | 55k | 66k | 100k | 1 |
+| Original rho.25 | 200k | 180k | 300k | 0 |
+| R1 rho.50 | 69k | 80k | 100k | 1 |
 
 Source767357e records rho in native manifests, full checkpoints, policy state
 and analysis/export metadata, rejects reinterpreting rho.25 checkpoints as.5,
