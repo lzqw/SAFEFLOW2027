@@ -24,6 +24,8 @@ def main():
     parser.add_argument('--state', type=Path, required=True)
     parser.add_argument('--oracle-backend', choices=['exact', 'controller_jacobian'], default='exact')
     parser.add_argument('--oracle-workers', type=int, default=8)
+    parser.add_argument('--minimum-free-mib', type=int, default=12288)
+    parser.add_argument('--maximum-gpu-utilization', type=float, default=85.)
     args = parser.parse_args()
     assert not args.output.exists() and not args.state.exists()
     base = Path(__file__).resolve().parents[3]
@@ -32,6 +34,8 @@ def main():
     def record(**state):
         payload = dict(method=args.method, seed=args.seed, dependency=str(args.dependency),
                        output=str(args.output), source_commit=args.source_commit,
+                       minimum_free_mib=args.minimum_free_mib,
+                       maximum_gpu_utilization=args.maximum_gpu_utilization,
                        observed_at_unix=time.time(), **state)
         temporary = args.state.with_suffix('.tmp')
         temporary.write_text(json.dumps(payload, indent=2) + '\n')
@@ -55,7 +59,7 @@ def main():
         free, utilization = map(float, output.strip().split(','))
         cpu_headroom = os.getloadavg()[0] < .6 * len(os.sched_getaffinity(0))
         disk = os.statvfs(args.dependency.parent)
-        if free > 12 * 1024 and utilization < 85 and cpu_headroom and disk.f_bavail * disk.f_frsize > 8 * 1024**3:
+        if free > args.minimum_free_mib and utilization <= args.maximum_gpu_utilization and cpu_headroom and disk.f_bavail * disk.f_frsize > 8 * 1024**3:
             break
         record(phase='waiting_for_shared_capacity', free_mib=free, utilization=utilization)
         time.sleep(1800)
