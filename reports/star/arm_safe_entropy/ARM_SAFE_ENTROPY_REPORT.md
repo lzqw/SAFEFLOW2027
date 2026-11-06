@@ -27,7 +27,17 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and open work (2026-11-06 12:53 CST)
+## Current evidence and open work (2026-11-06 13:10 CST)
+
+Initial eight-run coverage is now2 completed,5 active,1 dependency-queued;
+this is launch coverage, **not** completion of the scientific comparison:
+
+| Method | Seed2027 | Seed2028 |
+|---|---|---|
+| SAC-Lag | Completed300k, A100 | Completed300k,5080 |
+| Flow-Iso | Active, A100 | Active,5080 |
+| OracleDir controller approximation | Active, A100 GPU0 | Active, same A100 GPU0 |
+| LearnedDir | Waits for Flow-Iso2027 completion | Active,5080 |
 
 The three required clips and minimum semantics checks passed:
 
@@ -91,9 +101,9 @@ changing the selected baseline optimizer/physics settings:
 | Method | Training seed | Latest native evaluation | Safe success | Violation | Status |
 |---|---:|---:|---:|---:|---|
 | SAC-Lag | 2027 | 300k,30 episodes | 30/30 | 0/30 | Completed; fixed final checkpoint |
-| SAC-Lag | 2028 | 200k,30 episodes | 30/30 | 0/30 | Learned later; continues to300k |
+| SAC-Lag | 2028 | 300k,30 episodes | 30/30 | 0/30 | Completed; retained earlier100k failure |
 | Safe-FLAC-Iso | 2027 | 200k,30 episodes | 30/30 | 0/30 | Continues to300k |
-| Safe-FLAC-Iso | 2028 | 100k,30 episodes | 30/30 | 0/30 | Continues to300k |
+| Safe-FLAC-Iso | 2028 | 200k,30 episodes | 30/30 | 0/30 | Continues to300k |
 
 For seed2027 at a matched100k budget, SAC's return was11.1936 and training violations97;
 Flow's return11.3359 and training violations137. SAC200k return11.4292,
@@ -106,6 +116,9 @@ evaluation; SAC's seed difference is retained, not hidden or treated as a final
 300k failure. At200k SAC2028 reached30/30 successes, return11.3890 and training
 violations119. Its earlier0/30 outcome remains in the table/curve, not discarded.
 Flow2027 at200k retained30/30 successes, return11.4376 and training violations195.
+SAC2028 finally completed300k with30/30 successes, return11.4195 and training
+violations152 (native2595.74s,298k learner/reward/actor updates). Flow2028 at200k
+also retained30/30 successes, return11.4408 and training violations244.
 This is evidence of later learning, not a basis for an early scientific stop
 or a premature multi-parameter change. These per-seed checkpoints do not prove zero population risk or
 a directional-method gain. Flow's earlier
@@ -149,7 +162,8 @@ One dependency queue has launched and one remains waiting (sourcee792e45):
 
 | Diagnostic | Status / dependency | A100 GPU | New budget |
 |---|---|---:|---:|
-| OracleDir, controller-linearization backend, seed2027 | Active PID270049;7k logged, post-warmup updates confirmed | 0 | 300k |
+| OracleDir, controller-linearization backend, seed2027 | Active PID270049;10k logged, checkpoint saved | 0 | 300k |
+| OracleDir, same backend, seed2028 | Active PID297991;3k logged, checkpoint saved | 0 | 300k |
 | LearnedDir, seed2027; no oracle calls by its actor | Queue PID252096 waits for Flow-Iso2027 to complete300k | 1 | 300k |
 
 Queue251920 completed its one launch and exited; child270049 and its32
@@ -159,6 +173,19 @@ This is an early cached-model window, not a guaranteed late-run rate or learned
 Oracle efficacy; no held-out directional result exists yet. Each
 queue rechecks shared GPU/CPU/disk headroom and launches only one run, not the
 entire matrix. Later controls/formal/payload stages are not blindly enqueued.
+
+At12:56 A100 CPU load was below3, GPU0 utilization3%, available RAM108GiB.
+The original matrix's Oracle2028 therefore started on the same mostly-waiting
+GPU0, source3fd8bbf,32 CPU model workers, with checkpoints every1000 transitions
+because model-derived geometry is slow. This changes save cadence, not the
+optimizer, task, reference or300k budget. Both scientific learners were checked
+alive and updating; the extra run is not a new seed/configuration. Partly
+overlapping productive windows were Oracle2027 8k→10k in556.33s (~3.59/s) and
+Oracle2028 2k→3k in334.24s (~2.99/s). These small, different cache/data windows
+are not a controlled scalability benchmark or guaranteed full-run throughput.
+After initialization, available RAM was98GiB and CPU load about6.8, retaining
+headroom; no other workload was stopped. At12:56 the4080 still showed95% foreign
+GPU usage and was left alone.
 
 ### Additional shared capacity:5080
 
@@ -171,12 +198,13 @@ NumPy1.24.3 and SB32.7.0 are installed in the new venv, not the old project.
 CUDA tensor execution and package versions were checked; no three-video
 revalidation or historical suite was repeated. Space remains about14GiB.
 
-The existing matrix's seed2028 A/B runs are now active there, source3c1b407:
+The existing matrix's seed2028 A/B runs use source3c1b407 there:
 
 |5080 learner|PID|Latest mirrored progress|Budget|
 |---|---:|---:|---:|
-|SAC-Lag2028|3890030|Past100k evaluation|300k|
-|Flow-Iso2028|3890092|Past100k evaluation|300k|
+|SAC-Lag2028|Completed; former3890030|Final300k evaluation|300k|
+|Flow-Iso2028|3890092|200k evaluation available|300k|
+|LearnedDir2028|3895948|9k, actual margin/critic/actor updates|300k|
 
 Both have productive optimizer updates, not just live startup processes. The
 first post-warmup7k→8k SAC and6k→7k flow windows yielded approximately100/s
@@ -185,20 +213,22 @@ ETAs or a controlled hardware benchmark. A foreign Isaac workload returned
 while setup was underway and remains running (~3GiB VRAM at the observation).
 Each new learner used~0.36GiB VRAM. The observed98% whole-card utilization
 includes that foreign job and must not be attributed entirely to this project.
-All sharing continues without stopping anyone else's work. Four scientific
+All sharing continues without stopping anyone else's work. Five scientific
 learners are currently active across A100+5080, without increasing budgets or
 claiming unobserved seed2028 success. Native runtime versions and GPU names
 are recorded in new run manifests; the5080 CUDA version differs from A100's11.8.
 
-Now that Flow-Iso2028 has30/30 held-out successes, one replacement queue on5080
-(PID3893413, source267e848) will launch LearnedDir2028 after SAC-Lag2028 finishes
-its full300k budget. It preserves two project learners on that shared card,
+After SAC-Lag2028 finished its full300k budget, replacement queue3893413
+(source267e848) launched LearnedDir2028 once, childPID3895948, and exited.
+The child was checked live, with finite margin/critic/actor updates through9k.
+It has not produced a100k held-out result yet; a small margin loss is not proof
+of an accurate normal or a directional gain. This preserves two project learners on that shared card,
 not a third concurrent addition. The explicit16GB-card checks are free VRAM>8GiB,
 CPU headroom and disk>8GiB; shared utilization up to100% is allowed, rather than
 waiting for an exclusive idle card contrary to the user's sharing choice. The
 project directory is about490MB; observed total disk free fluctuated12–14GiB.
-No foreign files were removed. Oracle2028 remains the last unqueued initial
-matrix member, to be placed when a productive slot/CPU capacity becomes available.
+No foreign files were removed. All eight original development runs are now
+completed, live or explicitly queued; no control/formal/payload expansion is implied.
 
 One interim foundation diagnostic used256 shared genuinely visited states
 (128 with current-state clearance0–20mm above the safety threshold,128 farther

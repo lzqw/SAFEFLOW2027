@@ -4,7 +4,7 @@
     {
       "run": "obstacle_development/flow-iso-seed2027-v2",
       "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
-      "latest_logged_transitions": 203000,
+      "latest_logged_transitions": 232000,
       "evaluation_milestones": [
         100000,
         200000
@@ -13,15 +13,28 @@
     {
       "run": "obstacle_development/flow-iso-seed2028-v2-5080",
       "source_commit": "3c1b407696a07a71704a65c0372c0c98fc18db5b",
-      "latest_logged_transitions": 165000,
+      "latest_logged_transitions": 239000,
       "evaluation_milestones": [
-        100000
+        100000,
+        200000
       ]
+    },
+    {
+      "run": "obstacle_development/flow-learned-seed2028-v2-5080",
+      "source_commit": "267e84871172e459881da83f5eb3a12a431fbe71",
+      "latest_logged_transitions": 9000,
+      "evaluation_milestones": []
     },
     {
       "run": "obstacle_development/flow-oracle-controller-seed2027-v2",
       "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
-      "latest_logged_transitions": 7000,
+      "latest_logged_transitions": 10000,
+      "evaluation_milestones": []
+    },
+    {
+      "run": "obstacle_development/flow-oracle-controller-seed2028-v2",
+      "source_commit": "3fd8bbfe9dc39bdca8d28e9cfb72fc95ff139ce7",
+      "latest_logged_transitions": 3000,
       "evaluation_milestones": []
     },
     {
@@ -37,10 +50,11 @@
     {
       "run": "obstacle_development/sac-lag-seed2028-v2-5080",
       "source_commit": "3c1b407696a07a71704a65c0372c0c98fc18db5b",
-      "latest_logged_transitions": 214000,
+      "latest_logged_transitions": 300000,
       "evaluation_milestones": [
         100000,
-        200000
+        200000,
+        300000
       ]
     }
   ],

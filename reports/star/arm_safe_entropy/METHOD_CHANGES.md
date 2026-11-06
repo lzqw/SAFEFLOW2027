@@ -214,8 +214,8 @@ Main results remain header-only:0/9 completed. Only lightweight protocol parsing
 and pure argument/config checks were performed; no new simulation validation,
 formal training, extra seed or long matrix was launched.
 
-On5080 a single replacement queue now waits for SAC-Lag2028's complete300k
-receipt before launching LearnedDir2028. It keeps the existing learner count,
+On5080 a single replacement queue waited for SAC-Lag2028's complete300k
+receipt, launched LearnedDir2028 once, and exited. It keeps the existing learner count,
 uses explicit>8GiB free VRAM/disk and CPU headroom, and permits shared busy GPU
 utilization instead of assuming exclusivity. Its source267e848 leaves the
 selected learner optimizer and task settings unchanged.
@@ -228,3 +228,12 @@ anisotropic eigenvalues. Matching must be checked from these measured spectra,
 not asserted from a shared formula alone. Full control matching and trained
 mechanism outcomes remain pending. Oracle curves explicitly label the
 controller-Jacobian backend so the figure alone does not imply an exact upper bound.
+
+Oracle2028 now shares A100 GPU0 with Oracle2027 after an actual free-capacity
+inspection. It uses the same controller approximation/settings and original300k
+budget, source3fd8bbf; only save cadence is1000 rather than10000 transitions.
+Both have productive updates and recovery checkpoints. LearnedDir2028's separate
+path has likewise produced finite local-margin/reward/cost/actor updates; unused
+oracle flags carried by the generic queue do not instantiate an oracle for that
+method (`geometry_source=learned_margin`, `oracle_backend=null` in its manifest).
+No held-out directional-method advantage or full mechanism validation is claimed.

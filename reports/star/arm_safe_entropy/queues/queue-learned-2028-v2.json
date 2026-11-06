@@ -6,7 +6,10 @@
   "source_commit": "267e84871172e459881da83f5eb3a12a431fbe71",
   "minimum_free_mib": 8192,
   "maximum_gpu_utilization": 100.0,
-  "observed_at_unix": 1793940010.3210113,
-  "phase": "waiting_for_dependency_completion",
-  "queued_transitions": 300000
+  "observed_at_unix": 1793941360.3490753,
+  "phase": "launched_one_development_run_only",
+  "pid": 3895948,
+  "log": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/logs/queue-learned-2028-v2.log",
+  "queued_transitions": 300000,
+  "oracle_backend": null
 }
