@@ -94,7 +94,7 @@ def main():
     parser.add_argument('--smoke', action='store_true')
     parser.add_argument('--oracle-workers', type=int, default=8)
     parser.add_argument('--oracle-backend', choices=['exact', 'controller_jacobian'], default='exact')
-    parser.add_argument('--oracle-cache-entries', type=int, default=12000000)
+    parser.add_argument('--oracle-cache-entries', type=int, default=40000000)
     parser.add_argument('--reference-variance', type=float)
     parser.add_argument('--reference-match-run', help='LearnedDir run used to measure Iso-Low normal reference noise')
     args = parser.parse_args()
