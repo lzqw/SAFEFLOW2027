@@ -170,9 +170,8 @@ def main():
         actor_objective_normalized_by_dual=False,
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
     manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
-    manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_oracle': 'oracle'}.get(args.method, 'none')
-    if args.method == 'flow_random_aniso':
-        manifest['geometry_source'] = 'learned_margin_weight_random_direction'
+    manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_random_aniso': 'learned_margin',
+                                   'flow_oracle': 'oracle'}.get(args.method, 'none')
     manifest['reference_control'] = ('global_low_variance' if args.method == 'flow_iso_low' else
                                      'random_direction_fixed_per_action' if args.method == 'flow_random_aniso' else None)
     manifest['reference_match_run'] = args.reference_match_run
