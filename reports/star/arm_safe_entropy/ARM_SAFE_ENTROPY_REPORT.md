@@ -46,6 +46,23 @@ LearnedDir2028 at its fixed100k evaluation reached28/30 safe successes,
 no demonstrated task-preserving safety improvement at this matched milestone.
 The two safe timeouts and the earlier SAC2028 failure remain in native evidence.
 
+At the15:00 process check all four unfinished runs were alive. The compact
+capture at15:02 recorded Oracle2027/2028 at35k/29k, Learned2027 at88k and the
+resumed Learned2028 at224k. No process was restarted or added at this check.
+The4080 was free again (5% GPU utilization,1.6TiB free disk); no unneeded
+training was launched merely to fill it.
+
+Learned2028's new fixed200k evaluation obtained29/30 safe successes and1/30
+clearance violations, with no contact collision. The failed common layout was
+seed52049, episode length18; return averaged10.7823. Iso2028 at the same200k
+milestone obtained30/30 safe successes and0/30 violations, return11.4408.
+Learned's retained-lineage training violation counter was167 versus Iso244,
+but this is **not** an exact actual-collection cost reduction: Learned's lost
+tail includes at least one additional violation and an unknown unlogged tail.
+The new evaluation is valid for the resumed policy but does not establish a
+Pareto gain, population safety, or the efficacy of a completed two-seed method.
+No scientific early stop or parameter change follows from one30-episode point.
+
 ### Matched100k conditional geometry, not a final mechanism result
 
 An interim analysis used the actual100k policy files for Iso2028 and LearnedDir2028,

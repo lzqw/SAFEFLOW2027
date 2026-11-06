@@ -62,9 +62,10 @@ def main():
     for axis in axes[1]:
         axis.set_xlabel('Retained training transitions (thousands)')
     if included:
-        axes[1, 0].legend(fontsize=8)
+        handles, labels = axes[1, 0].get_legend_handles_labels()
+        fig.legend(handles, labels, loc='lower center', ncol=2, fontsize=7)
     fig.suptitle(f'{args.task_version}: interim development, per seed; no smoothing or extrapolation', fontsize=11)
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, .18 if included else 0, 1, .96))
     destination = report / 'figures'
     destination.mkdir(exist_ok=True)
     fig.savefig(destination / f'{args.task_version}-learning.png', dpi=150)
