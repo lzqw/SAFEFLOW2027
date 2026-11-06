@@ -430,3 +430,22 @@ updates. Finite native loss/energy diagnostics confirm post-warmup progress;
 this supersedes the startup-only caveat without inventing an early evaluation.
 Both remain on the original100k revision budget; the original pair continues
 300k. Only compact data are mirrored through the host to GitHub.
+
+## Frozen-weight endpoint-anchor intervention, not an online revision (23:50)
+
+The internal-gradient diagnosis motivated one bounded sampler intervention:
+compute local geometry at the SAME actor's deterministic endpoint and hold that
+detached reference through the stochastic path. Actor/head parameters, q rule,
+rho and inverse-covariance energy formula remain unchanged; paired Gaussian
+increments isolate the reference-evaluation scheme. The anchor is never
+executed, scored against alternatives or used as a second behavior policy.
+
+On the existing256-state/128-actions pool, Learned2027/2028 near-boundary final
+normal variance changes+0.64%/+1.06%, tangent-0.19%/+0.04% versus native sampling.
+No useful improvement is established, so it is not promoted to training. The
+six samplers (two Iso, two native Learned, two counterfactual Learned) retain
+separate records; nothing overwrites native results. There are zero new
+environment steps, teacher queries or optimizer updates. Common axes are from
+the original pool actions, not newly queried anchor truth. This does not test
+retrained-anchor performance, episode risk, or the complete mechanism controls.
+The four existing Oracle jobs continue; no further short run is launched.

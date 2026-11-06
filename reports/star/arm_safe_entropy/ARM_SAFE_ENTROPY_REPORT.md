@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 23:34 CST)
+## Current evidence and recovery (through 2026-11-06 23:50 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -122,6 +122,36 @@ tail includes at least one additional violation and an unknown unlogged tail.
 The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
+
+### Frozen-weight geometry-anchor intervention: not adopted
+
+One sampling-only intervention tested whether moving local-geometry queries
+from stochastic flow midpoints to the same actor's deterministic endpoint,
+then holding that detached reference through the path, improves allocation.
+It uses the same saved300k parameters, learned heads/q rule and paired latent
+Gaussian increments; no second behavior network, candidate scoring/ranking,
+projection or executed anchor action is introduced. Native sampling and both
+Iso seeds are retained in the same diagnostic, on the existing256-state pool
+with128 actions/state and the same common exact source-action axes.
+
+| Learned seed, near boundary | Native endpoint normal | Anchor-CF endpoint normal | Native endpoint tangent | Anchor-CF endpoint tangent |
+|---|---:|---:|---:|---:|
+| 2027 | .012302 | .012380 | .012434 | .012410 |
+| 2028 | .012777 | .012913 | .013102 | .013107 |
+
+The normal changes are+0.64%/+1.06%, tangent-0.19%/+0.04%: no material selective
+improvement is demonstrated. These are paired frozen-sampler measurements,
+not a retrained policy, new success/violation evaluation or a claim about
+geometry truth at the anchors. No new teacher query, actor update or environment
+transition was collected. New Monte Carlo samples are not substituted for
+earlier native results. This negative intervention does not prove that every
+retrained anchor scheme fails, but provides no basis to promote one now.
+
+See [intervention data](diagnostics/frozen-geometry-anchor-cf-v2/diagnostic.json)
+and [covariance comparison](diagnostics/frozen-geometry-anchor-cf-v2/conditional-covariance-flow_learned-flow_learned_anchor_cf.png).
+It stays outside primary/mechanism result tables. No additional online
+revision follows: the original pair and the already declared R1 pair continue
+their budgets while the next fixed evaluations are pending.
 
 ### R1: one bounded normal-suppression revision, original budgets unchanged
 
