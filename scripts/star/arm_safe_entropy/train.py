@@ -47,11 +47,11 @@ class Replay:
             self.data[key][:self.count] = value
 
 
-def evaluate(learner, config, episodes=30):
+def evaluate(learner, config, episodes=30, seed_start=52027):
     env = SafeReachEnv(config)
     records = []
     try:
-        for seed in range(52027, 52027 + episodes):
+        for seed in range(seed_start, seed_start + episodes):
             obs, _ = env.reset(seed=seed)
             total = 0.
             for step in range(config.horizon):
@@ -64,7 +64,7 @@ def evaluate(learner, config, episodes=30):
                                 **{k: info[k] for k in ['safe_success', 'success', 'violation', 'collision', 'clearance_violation']}))
     finally:
         env.close()
-    return dict(episodes=episodes, fixed_layout_seeds=list(range(52027, 52027 + episodes)),
+    return dict(episodes=episodes, fixed_layout_seeds=list(range(seed_start, seed_start + episodes)),
                 policy_sampling='stochastic_same_behavior_policy',
                 **{key: float(np.mean([r[key] for r in records])) for key in
                    ['safe_success', 'success', 'violation', 'collision', 'clearance_violation', 'episode_return']},
@@ -90,6 +90,7 @@ def main():
     parser.add_argument('--resume', type=Path)
     parser.add_argument('--eval-every', type=int, default=25000)
     parser.add_argument('--eval-episodes', type=int, default=30)
+    parser.add_argument('--eval-seed-start', type=int, default=52027)
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--smoke', action='store_true')
     parser.add_argument('--oracle-workers', type=int, default=8)
@@ -150,6 +151,7 @@ def main():
         task_config=asdict(config), task_definition=envs[0].definition(),
         device=args.device, num_envs=args.num_envs, total_transition_budget=args.steps,
         initial_steps=initial_steps, transition_count='sum of actual train env.step calls',
+        evaluation_layout_seed_start=args.eval_seed_start, evaluation_episodes=args.eval_episodes,
         resume_path=str(args.resume) if args.resume else None,
         resume_episode_handling='new episode on learner/replay resume; partial prior episodes not claimed exact',
         batch_size=256, replay_capacity=300000, random_transitions=2000, utd=1.0,
@@ -243,7 +245,7 @@ def main():
             if evaluation_steps and steps >= evaluation_steps[0]:
                 milestone = evaluation_steps.pop(0)
                 result = dict(milestone_steps=steps, training_violation_count=violations,
-                              **evaluate(learner, config, args.eval_episodes))
+                              **evaluate(learner, config, args.eval_episodes, args.eval_seed_start))
                 result['evaluation_transitions'] = sum(row['length'] for row in result['records'])
                 atomic_json(args.output / f'evaluation_{milestone}.json', result)
                 torch.save(learner.state_dict(), args.output / f'policy_{milestone}.pt')
