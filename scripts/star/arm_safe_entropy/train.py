@@ -79,7 +79,8 @@ def atomic_json(path, payload):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--method', choices=['sac', 'flow', 'sac_lag', 'flow_iso', 'flow_oracle', 'flow_learned'], required=True)
+    parser.add_argument('--method', choices=['sac', 'flow', 'sac_lag', 'flow_iso', 'flow_oracle',
+                                           'flow_learned', 'flow_iso_low', 'flow_random_aniso'], required=True)
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--seed', type=int, default=2027)
     parser.add_argument('--num-envs', type=int, default=2)
@@ -94,7 +95,14 @@ def main():
     parser.add_argument('--oracle-workers', type=int, default=8)
     parser.add_argument('--oracle-backend', choices=['exact', 'controller_jacobian'], default='exact')
     parser.add_argument('--oracle-cache-entries', type=int, default=12000000)
+    parser.add_argument('--reference-variance', type=float)
+    parser.add_argument('--reference-match-run', help='LearnedDir run used to measure Iso-Low normal reference noise')
     args = parser.parse_args()
+    if args.method == 'flow_iso_low' and (args.reference_variance is None or not args.reference_match_run):
+        parser.error('Iso-Low requires explicitly measured --reference-variance and --reference-match-run')
+    variance = .04 if args.reference_variance is None else args.reference_variance
+    if not 0 < variance <= .04:
+        parser.error('Use a positive reference variance no larger than the fixed .04 development reference')
     assert args.steps % args.num_envs == 0
     assert not args.output.exists(), 'Do not overwrite another run'
     args.output.mkdir(parents=True)
@@ -113,12 +121,13 @@ def main():
         else:
             oracle = ControllerJacobianOracle(workers=args.oracle_workers,
                                                cache_size=args.oracle_cache_entries)
-    learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle)
+    learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle, variance=variance)
     replay = Replay(300000, 25)
     steps, violations, episodes = 0, 0, 0
     if args.resume:
         saved = torch.load(args.resume, map_location=args.device, weights_only=False)
         assert saved['method'] == args.method and saved['task_config'] == asdict(config)
+        assert saved.get('reference_variance', .04) == variance, 'Do not change reference noise on resume'
         if oracle:
             assert saved['oracle_backend'] == args.oracle_backend, 'Do not silently change oracle model on resume'
         learner.load_state_dict(saved['learner'])
@@ -150,9 +159,9 @@ def main():
         actor_target_polyak=.001 if learner.flow else None,
         reward_actor_sampling='half uniform + half recent10000' if learner.flow else 'uniform',
         geometry_source='none', directional_loss=False, inward_drift=False, action_projection=False,
-        reference_variance=.04 if learner.flow else None,
+        reference_variance=variance if learner.flow else None,
         kinetic_alpha_initial=.02 if learner.flow else None,
-        scaled_alpha_initial=.0008 if learner.flow else .1,
+        scaled_alpha_initial=variance * .02 if learner.flow else .1,
         kinetic_energy_target_per_action=.25 if learner.flow else None,
         initial_base_variance=0. if learner.flow else None,
         global_cost_critic='two sigmoid episode-risk Q heads' if learner.safety else None,
@@ -162,6 +171,14 @@ def main():
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
     manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
     manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_oracle': 'oracle'}.get(args.method, 'none')
+    if args.method == 'flow_random_aniso':
+        manifest['geometry_source'] = 'learned_margin_weight_random_direction'
+    manifest['reference_control'] = ('global_low_variance' if args.method == 'flow_iso_low' else
+                                     'random_direction_fixed_per_action' if args.method == 'flow_random_aniso' else None)
+    manifest['reference_match_run'] = args.reference_match_run
+    manifest['reference_match_definition'] = ('mean normal reference variance, NOT total trace' if args.method == 'flow_iso_low' else
+        'same eigenvalue/trace formula and learned-q rule, independent direction; q need not numerically match a separately trained policy'
+        if args.method == 'flow_random_aniso' else None)
     manifest['oracle_information'] = ('known robot/controller/obstacle model; exact simulator finite differences'
         if args.oracle_backend == 'exact' else
         'privileged first-order actual-controller interval-distance approximation; not an error-free upper bound') if oracle else None
@@ -186,6 +203,7 @@ def main():
             source_commit=args.source_commit, rng=dict(python=random.getstate(), numpy=np.random.get_state(),
                                                       torch=torch.get_rng_state(), cuda=torch.cuda.get_rng_state_all()))
         payload['oracle_backend'] = args.oracle_backend if oracle else None
+        payload['reference_variance'] = variance
         temporary = args.output / 'latest_full.tmp'
         torch.save(payload, temporary)
         temporary.replace(args.output / destination)

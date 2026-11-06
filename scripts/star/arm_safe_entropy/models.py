@@ -31,12 +31,16 @@ class GaussianActor(nn.Module):
 
 
 class ArmFlowActor(nn.Module):
-    def __init__(self, obs_dim, width=128, num_steps=4, variance=.04, rho=.25):
+    def __init__(self, obs_dim, width=128, num_steps=4, variance=.04, rho=.25,
+                 reference_control='aligned'):
         super().__init__()
         self.net = mlp(obs_dim + 4, 3, width)
         nn.init.uniform_(self.net[-1].weight, -1e-3, 1e-3)
         nn.init.zeros_(self.net[-1].bias)
         self.num_steps, self.variance, self.rho = num_steps, variance, rho
+        if reference_control not in ['aligned', 'random_aniso']:
+            raise ValueError('Unknown reference direction control')
+        self.reference_control = reference_control
 
     def velocity(self, obs, action, time):
         return 2. * torch.tanh(self.net(torch.cat([obs, action, time], -1)))
@@ -47,6 +51,15 @@ class ArmFlowActor(nn.Module):
         clips = torch.zeros_like(energy)
         dt = 1. / self.num_steps
         reference_normals, reference_weights, reference_vn, reference_vt = [], [], [], []
+        random_normal = random_valid = None
+        if self.reference_control == 'random_aniso':
+            if geometry is None:
+                raise ValueError('Random-Aniso needs the same margin-based q rule as LearnedDir')
+            draw = torch.randn_like(action)
+            norm = draw.norm(dim=-1)
+            random_valid = norm > 1e-7
+            random_normal = draw / torch.where(random_valid, norm, torch.ones_like(norm))[..., None]
+            random_normal = torch.where(random_valid[..., None], random_normal, torch.zeros_like(draw))
         for index in range(self.num_steps):
             t = torch.full_like(action[..., :1], index * dt)
             midpoint = (action + .5 * dt * self.velocity(obs, action, t)).clamp(-1, 1)
@@ -57,6 +70,10 @@ class ArmFlowActor(nn.Module):
             else:
                 normal, weight = geometry(obs, midpoint)
                 normal, weight = normal.detach(), weight.detach()
+            if random_normal is not None:
+                # One independent direction per generated action, held fixed
+                # at all quadrature points. Eigenvalues/q rule remain matched.
+                normal, weight = random_normal, weight * random_valid
             vn = self.variance * (1. - weight * (1. - self.rho))
             vt = (3. * self.variance - vn) / 2.
             if return_reference:
@@ -97,7 +114,9 @@ class ArmLearner:
         self.method, self.device = method, torch.device(device)
         self.flow = method.startswith('flow')
         self.safety = method not in ['sac', 'flow']
-        self.actor = (ArmFlowActor(obs_dim, width, variance=variance) if self.flow else GaussianActor(obs_dim, width)).to(self.device)
+        self.actor = (ArmFlowActor(obs_dim, width, variance=variance,
+            reference_control='random_aniso' if method == 'flow_random_aniso' else 'aligned')
+            if self.flow else GaussianActor(obs_dim, width)).to(self.device)
         self.target_actor = deepcopy(self.actor).requires_grad_(False)
         self.q = TwinQ(obs_dim, width).to(self.device)
         self.qt = deepcopy(self.q).requires_grad_(False)
@@ -120,7 +139,7 @@ class ArmLearner:
             self.cost_q = TwinQ(obs_dim, width, probability=True).to(self.device)
             self.cost_qt = deepcopy(self.cost_q).requires_grad_(False)
             self.cost_opt = torch.optim.Adam(self.cost_q.parameters(), lr=critic_lr)
-        if method == 'flow_learned':
+        if method in ['flow_learned', 'flow_random_aniso']:
             from scripts.star.arm_safe_entropy.geometry import LocalMarginEnsemble
             self.margin = LocalMarginEnsemble(obs_dim).to(self.device)
             self.margin_opt = torch.optim.Adam(self.margin.parameters(), lr=critic_lr)
