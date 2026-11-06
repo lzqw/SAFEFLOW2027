@@ -27,11 +27,14 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 15:35 CST)
+## Current evidence and recovery (through 2026-11-06 16:30 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
 not evidence of zero population risk. The direction comparison is still open.
+LearnedDir2028 has also now completed300k with30/30 safe successes and0/30
+violations/collisions. Thus five of the original eight v2 development runs
+are complete; two Oracle approximations and Learned2027 remain live.
 
 | Method | Seed | Fixed300k return | Training violations |
 |---|---:|---:|---:|
@@ -39,6 +42,31 @@ not evidence of zero population risk. The direction comparison is still open.
 | SAC-Lag | 2028 | 11.4195 | 152 |
 | Flow-Iso | 2027 | 11.4569 | 223 |
 | Flow-Iso | 2028 | 11.4770 | 274 |
+| LearnedDir | 2028 | 11.4718 | 206, retained lineage only |
+
+Learned2028's completed receipt records298k learner updates,596k reward updates,
+149k actor updates, and110k newly collected transitions after the190k restore.
+The resumed segment took6763.35s. Its final evaluation is from the fixed300k
+policy, not the best checkpoint. Both it and Iso2028 have0/30 final violations
+and almost identical returns; there is no demonstrated final evaluation-risk
+advantage. The206 retained-lineage training violations omit at least one
+known lost-tail violation and an unknown unlogged tail, so no exact actual-cost
+percentage improvement is claimed. Earlier100k and200k failures remain visible.
+
+At16:30 the remaining process PIDs270049/297991/329031 were alive and updating:
+Oracle2027/2028 at52k/49k, Learned2027 at178k. The latter's recent training
+success was99/100, but its next held-out node remains200k. Completing one seed
+does not establish cross-seed stability or authorize formal freezing. No
+scientific early stop, replacement seed or new training was introduced.
+
+Two [qualitative final-policy clips](qualitative/final300k-seed2028-layout52049/)
+use the fixed300k Iso/Learned2028 policies, layout52049 and fresh common sampling
+seed902027. Each was rendered once: Iso reached safely in18 steps, Learned in17,
+both cost0. The videos are3x slow playback, not extra training or primary
+evaluations. This layout was chosen because Learned's native200k evaluation
+had failed there; the new draws are **not** a reconstruction of that episode.
+One successful clip per method is not comparative efficacy evidence. Original
+three environment demonstration clips and all quantitative failures remain.
 
 LearnedDir2028 at its fixed100k evaluation reached28/30 safe successes,
 0/30 violations, return10.4282 and112 training violations. Iso2028 at100k had

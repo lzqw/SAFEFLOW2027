@@ -70,7 +70,8 @@ def main():
             render_source_commit=args.source_commit, policy_file=str(args.policy),
             layout_seed=args.layout_seed, sampling_seed=args.sampling_seed,
             policy_sampling='same single stochastic behavior actor; no filtering, retries or reranking',
-            layout_selection='fixed52049, known clearance-failure layout in native Learned2028 200k evaluation; new sampling is not a replay of that episode',
+            layout_selection=('fixed52049, known clearance-failure layout in native Learned2028 200k evaluation; new sampling is not a replay of that episode'
+                if args.layout_seed == 52049 else 'explicit CLI fixed layout; one rollout without retries'),
             device=args.device, torch=str(torch.__version__), cuda=torch.version.cuda,
             control_dt=.04, video_fps=25, playback_slowdown=args.slowdown,
             new_training_transitions=0, qualitative_rollout_transitions=len(records),

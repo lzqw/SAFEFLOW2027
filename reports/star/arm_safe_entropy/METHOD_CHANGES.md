@@ -301,3 +301,22 @@ resume-lineage caveat when present. The development recovery's unknown lost
 cost must not silently become an exact count in another table. Current main
 and final-mechanism files remain header-only; this metadata propagation is not
 a new evaluation, completed formal run, or repair of the missing tail.
+
+## First completed Learned seed and qualitative delivery (16:30)
+
+Learned2028 completed its fixed300k target,30/30 safe successes and0/30
+violations/collisions, return11.4718. Restored-lineage updates are298k learner,
+596k reward and149k actor; the new segment collected110k transitions. Its206
+training violations are retained-lineage-only and do not remove the unknown
+lost tail. Iso2028's final return11.4770 and zero violations remain the matched
+baseline. This single completed seed is not a formal freeze decision.
+
+The qualitative renderer loads only the same behavior actor/local geometry,
+without critic reranking, filtering, a second behavior policy or training.
+Two fixed300k policies were each rendered once on layout52049 with fresh common
+sampling seed902027, and3x video slowdown. Both succeeded safely (Iso18 control
+steps, Learned17), totaling35 qualitative transitions and zero training
+transitions. They are explicitly not a replay of the earlier200k failure or a
+replacement for native30-episode evaluation or future100-episode primary results.
+No repeated success search
+or environment revalidation was performed.
