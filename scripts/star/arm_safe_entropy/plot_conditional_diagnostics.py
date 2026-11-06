@@ -12,12 +12,17 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=Path, required=True)
+    parser.add_argument('--methods', nargs='+', help='Explicit display subset; full native JSON remains unchanged')
     args = parser.parse_args()
     payload = json.loads(args.input.read_text())
     summaries, records = payload['summaries'], payload['records']
+    if args.methods:
+        summaries = [s for s in summaries if s['method'] in args.methods]
+        records = [r for r in records if r['method'] in args.methods]
     if len(records) != 2 or len(summaries) != 2:
         parser.error('This focused figure shows one explicit two-policy comparison')
     output = args.input.parent
+    suffix = '-' + '-'.join(args.methods) if args.methods else ''
     milestone = payload.get('requested_checkpoint_steps')
     caption = f'Fixed {milestone:,}-transition policies' if milestone else 'Interim native snapshots (ages in JSON)'
     names = [f"{s['method']} seed{s['training_seed']}" for s in summaries]
@@ -44,7 +49,7 @@ def main():
     axes[0,0].legend(fontsize=8,loc='lower left')
     fig.suptitle(caption + '\nSame exact axis; per-state means in normalized action units, not pooled actions', fontsize=11)
     fig.tight_layout()
-    fig.savefig(output/'conditional-covariance.png', dpi=150)
+    fig.savefig(output/f'conditional-covariance{suffix}.png', dpi=150)
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(7,4))
@@ -58,7 +63,7 @@ def main():
                 continue
             comparisons += len(values)
             ax.hist(np.clip(values,-1,1), bins=bins, histtype='step', linewidth=2,
-                    label=f"{record['method']} {region.replace('_',' ')}: n={len(values)}, mean={np.mean(values):.3f}")
+                    label=f"{record['method']} seed{record['training_seed']} {region.replace('_',' ')}: n={len(values)}, mean={np.mean(values):.3f}")
     ax.set_xlim(-1,1)
     ax.set_xlabel('Signed cosine to exact simulator gradient at identical state/action')
     ax.set_ylabel('State records')
@@ -66,10 +71,10 @@ def main():
     ax.grid(alpha=.2)
     ax.set_title(caption + '\nUndefined normals retained in JSON, not assigned artificial directions', fontsize=10)
     fig.tight_layout()
-    fig.savefig(output/'normal-agreement.png', dpi=150)
+    fig.savefig(output/f'normal-agreement{suffix}.png', dpi=150)
     plt.close(fig)
     print(json.dumps(dict(source=str(args.input), training_transitions=0, normal_comparisons=comparisons,
-                          plots=['conditional-covariance.png','normal-agreement.png'],
+                          plots=[f'conditional-covariance{suffix}.png',f'normal-agreement{suffix}.png'],
                           note='Interim diagnosis, not final control matching or episode-performance evidence')))
 
 
