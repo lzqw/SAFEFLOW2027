@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 23:50 CST)
+## Current evidence and recovery (through 2026-11-07 00:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -171,6 +171,16 @@ of the at-most-four additional short policy runs, not a replacement matrix or
 formal/control launch. The upper-bound first-stage total becomes2,951,808
 actual training transitions including engineering/lost-tail overhead, below3M.
 See `configs/star/arm_safe_entropy/revision_r1_oracle_rho050.json`.
+
+The00:00 half-hour watchers confirmed all four real PIDs alive. Logged original
+progress was135k/130k, and R1 progress9k/10k. Across23:30..00:00 the logged
+aggregate increased by about24k transitions (11k original,13k R1); coarse log
+granularity, differing cache phases and workloads make this an operational
+capacity observation, not a controlled speedup benchmark or a full-run ETA.
+Both original targets remain300k and both R1 targets100k. No new evaluation
+node has been reached, so recent training success is not substituted for one.
+Only these four already declared jobs continue; no additional online trial is
+launched in response to the negative frozen-anchor intervention.
 
 At23:15 the4080 was97% foreign-GPU-utilized with2.3GiB free VRAM, and5080 had
 only9.7GiB disk free. Both R1 learners therefore started at23:19 on the idle
