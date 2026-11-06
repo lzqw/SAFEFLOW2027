@@ -133,14 +133,13 @@ def main():
             for region, mask in [('near_boundary', (clearance >= 0) & (clearance <= .02)),
                                  ('safe_interior', clearance > .02)]:
                 available = np.flatnonzero(mask)
-                if args.final_mechanism:
-                    unique_available, locally_seen = [], set(seen_states)
-                    for i in available:
-                        state_key = states[i].tobytes()
-                        if state_key not in locally_seen:
-                            unique_available.append(i)
-                            locally_seen.add(state_key)
-                    available = np.asarray(unique_available, dtype=int)
+                unique_available, locally_seen = [], set(seen_states)
+                for i in available:
+                    state_key = states[i].tobytes()
+                    if state_key not in locally_seen:
+                        unique_available.append(i)
+                        locally_seen.add(state_key)
+                available = np.asarray(unique_available, dtype=int)
                 if len(available) < quota:
                     raise RuntimeError(f'{run.name}: only {len(available)} genuine {region} states; do not fabricate balance')
                 for index in rng.choice(available, quota, replace=False):
@@ -174,8 +173,7 @@ def main():
                 final_evaluation=json.loads((run / 'evaluation_300000.json').read_text()) if args.final_mechanism else None)))
             del saved, replay, data
         assert len(pool) == 256
-        if args.final_mechanism:
-            assert len(seen_states) == 256, 'Final pool must have distinct recorded states'
+        assert len(seen_states) == 256, 'The shared pool must have distinct recorded states'
         observations = np.asarray([r['observation'] for r in pool], dtype=np.float32)
         reference_actions = np.asarray([r['reference_action'] for r in pool], dtype=np.float32)
         truth = oracle.evaluate_numpy(observations, reference_actions)
