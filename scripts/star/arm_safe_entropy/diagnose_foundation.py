@@ -169,6 +169,8 @@ def main():
                 training_seed=config['training_seed'], oracle_backend=config.get('oracle_backend'),
                 reference_variance=config.get('reference_variance'),
                 reference_match_run=config.get('reference_match_run'),
+                native_evaluation_at_policy_step=json.loads((run / f'evaluation_{policy_steps}.json').read_text())
+                    if (run / f'evaluation_{policy_steps}.json').exists() else None,
                 final_evaluation=json.loads((run / 'evaluation_300000.json').read_text()) if args.final_mechanism else None)))
             del saved, replay, data
         assert len(pool) == 256
