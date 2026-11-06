@@ -82,7 +82,8 @@ class TwinQ(nn.Module):
 
 class ArmLearner:
     def __init__(self, obs_dim, method, device='cuda:0', width=128, variance=.04,
-                 actor_lr=3e-4, critic_lr=3e-4, kinetic_alpha=.02, kinetic_target_per_action=.25):
+                 actor_lr=3e-4, critic_lr=3e-4, kinetic_alpha=.02, kinetic_target_per_action=.25,
+                 oracle_geometry=None):
         self.method, self.device = method, torch.device(device)
         self.flow = method.startswith('flow')
         self.safety = method not in ['sac', 'flow']
@@ -98,6 +99,10 @@ class ArmLearner:
         self.energy_target = 3. * kinetic_target_per_action / variance
         self.updates, self.reward_updates, self.actor_updates = 0, 0, 0
         self.geometry = None
+        if method == 'flow_oracle':
+            if oracle_geometry is None:
+                raise ValueError('OracleDir requires actual controller-space oracle geometry')
+            self.geometry = oracle_geometry
         self.cost_limit = .1
         self.safety_multiplier, self.episode_cost_ema = 0., None
         self.completed_safety_episodes = 0

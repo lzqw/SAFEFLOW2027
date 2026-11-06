@@ -79,7 +79,7 @@ def atomic_json(path, payload):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--method', choices=['sac', 'flow', 'sac_lag', 'flow_iso', 'flow_learned'], required=True)
+    parser.add_argument('--method', choices=['sac', 'flow', 'sac_lag', 'flow_iso', 'flow_oracle', 'flow_learned'], required=True)
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--seed', type=int, default=2027)
     parser.add_argument('--num-envs', type=int, default=2)
@@ -91,6 +91,7 @@ def main():
     parser.add_argument('--eval-episodes', type=int, default=30)
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--smoke', action='store_true')
+    parser.add_argument('--oracle-workers', type=int, default=8)
     args = parser.parse_args()
     assert args.steps % args.num_envs == 0
     assert not args.output.exists(), 'Do not overwrite another run'
@@ -102,7 +103,11 @@ def main():
     torch.cuda.manual_seed_all(args.seed)
     config = TaskConfig(obstacle=args.method not in ['sac', 'flow'])
     envs = [SafeReachEnv(config) for _ in range(args.num_envs)]
-    learner = ArmLearner(25, args.method, args.device)
+    oracle = None
+    if args.method == 'flow_oracle':
+        from scripts.star.arm_safe_entropy.oracle import SimulatorOracle
+        oracle = SimulatorOracle(workers=args.oracle_workers)
+    learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle)
     replay = Replay(300000, 25)
     steps, violations, episodes = 0, 0, 0
     if args.resume:
@@ -148,7 +153,9 @@ def main():
         actor_objective_normalized_by_dual=False,
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
     manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
-    manifest['geometry_source'] = 'learned_margin' if args.method == 'flow_learned' else 'none'
+    manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_oracle': 'oracle'}.get(args.method, 'none')
+    manifest['oracle_information'] = 'known robot/controller/obstacle model, replica finite differences' if oracle else None
+    manifest['oracle_workers'] = args.oracle_workers if oracle else None
     atomic_json(args.output / 'run_config.json', manifest)
     fields = ['steps', 'elapsed_seconds', 'train_fps', 'episodes', 'training_violation_count',
               'recent_success', 'recent_return', 'reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha',
@@ -217,7 +224,8 @@ def main():
             newly_collected_transitions=steps - initial_steps, training_violation_count=violations,
             source_commit=args.source_commit, elapsed_seconds=time.monotonic() - elapsed_start,
             learner_updates=learner.updates, reward_updates=learner.reward_updates, actor_updates=learner.actor_updates,
-            final_evaluation=f'evaluation_{steps}.json'))
+            final_evaluation=f'evaluation_{steps}.json',
+            oracle_statistics=oracle.statistics() if oracle else None))
         atomic_json(args.output / 'status.json', dict(state='completed', steps=steps))
     except BaseException as error:
         checkpoint(destination='interrupted_full.pt')
@@ -228,6 +236,8 @@ def main():
         stream.close()
         for env in envs:
             env.close()
+        if oracle is not None:
+            oracle.close()
 
 
 if __name__ == '__main__':
