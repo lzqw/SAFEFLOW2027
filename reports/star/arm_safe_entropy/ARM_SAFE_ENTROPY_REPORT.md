@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 03:00 CST)
+## Current evidence and recovery (through 2026-11-07 04:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -190,6 +190,19 @@ held-out node has been reached; native evaluation count remains29, formal
 rows0/9. All four predeclared budgets remain intact. There is no new parameter
 change, short-run addition, control matrix or formal launch during this wait.
 
+At04:00 both read-only half-hour watchers again confirmed all four native
+training PIDs alive. Original Oracle2027/2028 reached182k/167k, and the bounded
+R1 pair reached55k/66k. Original recent training successes were100/100 and98/100;
+R1's were13/100 and26/100. These are training-window observations, not fixed
+held-out evaluations or grounds to select, stop or extend a seed. The compact
+capture still contains29 native evaluations and0/9 formal rows. Original
+targets remain300k and R1 targets100k; no new trial or diagnostic was added.
+Whole-card A100 utilization was68%/59%, while4080 and5080 were75%/50%; these
+shared-device figures are not project-specific utilization or a throughput
+benchmark. Foreign workloads were left untouched. The next comparison awaits
+the original200k and R1 final100k nodes; original Oracle2028's failing100k
+result and all earlier negative Learned evidence remain visible.
+
 At23:15 the4080 was97% foreign-GPU-utilized with2.3GiB free VRAM, and5080 had
 only9.7GiB disk free. Both R1 learners therefore started at23:19 on the idle
 A100 GPU1 (92GiB available host RAM,60GiB disk free), two learners on that card;
@@ -202,12 +215,12 @@ At23:34 both R1 native checkpoints reached4000 steps with rho.5 in both full
 and learner state,2000 learner updates,4000 reward updates and1000 actor
 updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
 This confirms actual post-warmup learning and saving, not just startup rows.
-There is no held-out R1 result yet. The live matrix is:
+There is no held-out R1 result yet. The live matrix, updated at04:00, is:
 
 | Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
 |---|---:|---:|---:|---:|
-| Original rho.25 | 129k | 126k | 300k | 0 |
-| R1 rho.50 | 4k | 4k | 100k | 1 |
+| Original rho.25 | 182k | 167k | 300k | 0 |
+| R1 rho.50 | 55k | 66k | 100k | 1 |
 
 Source767357e records rho in native manifests, full checkpoints, policy state
 and analysis/export metadata, rejects reinterpreting rho.25 checkpoints as.5,
