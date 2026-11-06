@@ -37,13 +37,14 @@ def main():
                 e = json.loads(path.read_text())
                 step = e['milestone_steps']
                 final = step == config['total_transition_budget'] and receipt.get('status') == 'completed'
+                superseded = (run / 'engineering_stop.json').exists()
                 rows.append(dict(stage=config['stage'], task_version=config['task_config']['version'],
                     method=config['method'], training_seed=config['training_seed'], transitions=step,
                     evaluation_episodes=e['episodes'], safe_success=e['safe_success'], task_success=e['success'],
                     violation_rate=e['violation'], collision_rate=e['collision'], return_=e['episode_return'],
                     training_violation_count=progress.get(step, {}).get('training_violation_count', ''),
                     source_commit=config['source_commit'], run=str(run.relative_to(report)),
-                    status='final_native_not_formal_matrix' if final else 'interim_native'))
+                    status='superseded_v1_engineering_pilot' if superseded else 'final_native_not_formal_matrix' if final else 'interim_native'))
     columns = ['stage', 'task_version', 'method', 'training_seed', 'transitions', 'evaluation_episodes',
                'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
                'training_violation_count', 'source_commit', 'run', 'status']
