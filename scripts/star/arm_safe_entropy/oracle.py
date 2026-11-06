@@ -81,6 +81,17 @@ def _query(item):
     return finite_difference_geometry(_ENV, action, epsilon)
 
 
+def _margin_query(item):
+    observation, action = item
+    restore_observation(_ENV, observation)
+    return _ENV.oracle_margin(action)
+
+
+def _state_distance_query(observation):
+    restore_observation(_ENV, observation)
+    return _ENV._distance()[0]
+
+
 def _interval_jacobian_query(item):
     """Differentiate every link/frame distance at a nearby numerical anchor.
 
@@ -119,6 +130,27 @@ class SimulatorOracle:
                                             initializer=_initialize_worker)
         self.control_interval_queries = self.cache_hits = self.unique_state_actions = 0
         self.elapsed_query_seconds = 0.
+        self.margin_only_queries = self.static_distance_queries = 0
+
+    def margins_numpy(self, observations, actions):
+        """Independent true interval labels, without unnecessary gradient queries."""
+        observations = np.asarray(observations, dtype=np.float32)
+        actions = np.asarray(actions, dtype=np.float32)
+        if observations.shape != (len(actions), 25) or actions.shape != (len(actions), 3):
+            raise ValueError('Margin batch state/action shapes differ')
+        values = list(self.executor.map(_margin_query, zip(observations, actions),
+            chunksize=max(1, len(actions) // (self.workers * 4))))
+        self.margin_only_queries += len(actions)
+        return np.asarray(values, dtype=np.float32)
+
+    def state_distances_numpy(self, observations):
+        observations = np.asarray(observations, dtype=np.float32)
+        if observations.ndim != 2 or observations.shape[1] != 25:
+            raise ValueError('Distance batch requires shared 25-dimensional states')
+        values = list(self.executor.map(_state_distance_query, observations,
+            chunksize=max(1, len(observations) // (self.workers * 4))))
+        self.static_distance_queries += len(observations)
+        return np.asarray(values, dtype=np.float32)
 
     def evaluate_numpy(self, observations, actions):
         observations = np.asarray(observations, dtype=np.float32)
@@ -164,6 +196,8 @@ class SimulatorOracle:
                     unique_state_actions=self.unique_state_actions,
                     counterfactual_control_intervals=self.control_interval_queries,
                     cached_rows=self.cache_hits, query_seconds=self.elapsed_query_seconds,
+                    margin_only_queries=self.margin_only_queries,
+                    static_distance_queries=self.static_distance_queries,
                     learned_model_queries=0, candidate_actions_selected=0)
 
     def close(self):
