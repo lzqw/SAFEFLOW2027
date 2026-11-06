@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "steps": 300000,
+  "newly_collected_transitions": 300000,
+  "training_violation_count": 223,
+  "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
+  "elapsed_seconds": 8737.002730229171,
+  "learner_updates": 298000,
+  "reward_updates": 596000,
+  "actor_updates": 149000,
+  "final_evaluation": "evaluation_300000.json",
+  "oracle_statistics": null
+}

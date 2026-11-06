@@ -1,0 +1,16 @@
+{
+  "parent_run": "flow-learned-seed2028-v2-5080",
+  "parent_source_commit": "267e84871172e459881da83f5eb3a12a431fbe71",
+  "checkpoint_steps": 190000,
+  "checkpoint_training_violation_count": 165,
+  "parent_last_logged_steps": 196000,
+  "lost_collected_transitions_lower_bound": 6000,
+  "lost_collected_transitions_conservative_upper_bound": 7000,
+  "known_lost_tail_training_violations": 1,
+  "lost_tail_violation_count_unknown": true,
+  "training_violation_counter_scope": "restored 190k counter plus new transitions; excludes at least one lost-tail violation and any unlogged violations",
+  "physical_continuation": "new physical episodes; learner, optimizer, replay and RNG restored, not bitwise trajectory continuation",
+  "total_retained_training_target": 300000,
+  "scientific_hyperparameters_changed": false,
+  "engineering_change": "A100 instead of 5080; checkpoints every 1000 instead of 10000 transitions"
+}

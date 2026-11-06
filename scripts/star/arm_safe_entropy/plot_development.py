@@ -37,6 +37,10 @@ def main():
         if not progress:
             continue
         label = f"{config['method']} seed{config['training_seed']}"
+        if (run / 'resume_lineage.json').exists():
+            label += ' (resumed; lost-tail excluded)'
+        elif (run / 'engineering_interruption.json').exists():
+            label += ' (interrupted)'
         if config['method'] == 'flow_oracle':
             label += f" ({config.get('oracle_backend', 'exact')})"
         color = f'C{len(included)}'
@@ -56,7 +60,7 @@ def main():
         axis.set_ylim(-3, 103)
         axis.set_ylabel('%')
     for axis in axes[1]:
-        axis.set_xlabel('Actual training transitions (thousands)')
+        axis.set_xlabel('Retained training transitions (thousands)')
     if included:
         axes[1, 0].legend(fontsize=8)
     fig.suptitle(f'{args.task_version}: interim development, per seed; no smoothing or extrapolation', fontsize=11)

@@ -283,7 +283,10 @@ def main():
             entropy_definition='per-state Gaussian marginal covariance proxies; H_T is two-dimensional; H_N+H_T not claimed joint entropy',
             risk_definition='actual next-interval margin minus common replay-action margin, not episode risk',
             limitations=('Covariance/entropy proxies are conditional sample estimates, not guarantees. Normal cosine uses identical reference s,a; random control has no aligned normal. Oracle backend errors remain explicit.'
-                         if args.final_mechanism else 'interim different training ages; not an efficacy comparison or a completed directional experiment'),
+                         if args.final_mechanism else
+                         'interim matched policy milestone and replay prefix; full snapshot ages may differ; not a completed directional experiment'
+                         if args.checkpoint_steps is not None else
+                         'interim different training ages; not an efficacy comparison or a completed directional experiment'),
             summaries=summaries, records=all_records, oracle_statistics=oracle.statistics())
         (args.output / 'diagnostic.json').write_text(json.dumps(payload, indent=2, allow_nan=False) + '\n')
     finally:

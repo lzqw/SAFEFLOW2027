@@ -42,6 +42,7 @@ def main():
                 elif main_freeze_record != config['frozen_config']:
                     raise ValueError('Do not combine different frozen configurations in one main comparison')
             receipt = json.loads((run / 'receipt.json').read_text()) if (run / 'receipt.json').exists() else {}
+            lineage = json.loads((run / 'resume_lineage.json').read_text()) if (run / 'resume_lineage.json').exists() else {}
             progress = {}
             if (run / 'progress.csv').is_file():
                 with (run / 'progress.csv').open(newline='') as stream:
@@ -63,6 +64,8 @@ def main():
                     evaluation_episodes=e['episodes'], safe_success=e['safe_success'], task_success=e['success'],
                     violation_rate=e['violation'], collision_rate=e['collision'], return_=e['episode_return'],
                     training_violation_count=e.get('training_violation_count', progress.get(step, {}).get('training_violation_count', '')),
+                    training_violation_count_scope=('retained_checkpoint_lineage_only; lost_tail_not_included'
+                        if lineage.get('lost_tail_violation_count_unknown') else 'native_run_counter'),
                     source_commit=config['source_commit'], run=str(run.relative_to(report)),
                     status='superseded_v1_engineering_pilot' if superseded else
                            'fixed_final_frozen_main' if is_main and final else
@@ -84,7 +87,7 @@ def main():
                     rows.append(row)
     columns = ['stage', 'task_version', 'method', 'geometry_source', 'oracle_backend', 'training_seed', 'transitions', 'evaluation_episodes',
                'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
-               'training_violation_count', 'source_commit', 'run', 'status']
+               'training_violation_count', 'training_violation_count_scope', 'source_commit', 'run', 'status']
     temporary = report / 'DEVELOPMENT_RESULTS.csv.tmp'
     with temporary.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)

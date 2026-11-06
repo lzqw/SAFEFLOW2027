@@ -237,3 +237,26 @@ path has likewise produced finite local-margin/reward/cost/actor updates; unused
 oracle flags carried by the generic queue do not instantiate an oracle for that
 method (`geometry_source=learned_margin`, `oracle_backend=null` in its manifest).
 No held-out directional-method advantage or full mechanism validation is claimed.
+
+## Fixed100k direction diagnosis and engineering recovery (2026-11-06 14:30)
+
+The matched Iso/Learned seed2028 diagnostic explicitly loads `policy_100000.pt`
+and restricts replay to the first100k samples. The256-record interim pool has252
+distinct states and177 valid shared exact normals. Near-boundary endpoint normal
+variance decreases27.2% versus Iso, tangent3.7%, with mean normal cosine.9074.
+Safe-interior tangent also decreases26.4%; this negative finding is retained.
+Native100k success is28/30 versus Iso30/30, training violations112 versus107.
+Therefore the diagnosis supports reference-to-action transmission, not an
+overall method gain or readiness for formal freezing. No parameter revision
+or new training configuration follows from this partial result.
+
+Learned2028's5080 process then disappeared at196k, with a recoverable190k full
+checkpoint. No Python traceback or queried kernel OOM/Xid evidence establishes
+the cause. A100 GPU1 was chosen for recovery because4080 was busy and5080 disk
+was tight. Source65de8b0 preserves learning settings; checkpoint cadence is now
+1000. Seed/method/task/optimizer/replay/RNG identities are retained. New physical
+episodes are explicit, not claimed exact continuation. The original190k..196k
+tail is preserved in raw logs, with6000..7000 lost actual transitions and at
+least one lost violation. Unknown unlogged safety cost is not invented as zero.
+The collector labels resumed training counters as retained-lineage-only via a
+small sidecar; no new disaster-recovery framework or historical repair was added.

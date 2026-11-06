@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-06T14:25:41+08:00",
+  "state": "process_missing_without_completion_receipt",
+  "cause": "unknown; no Python error in project log and no OOM/Xid match in queried kernel journal",
+  "last_logged_steps": 196000,
+  "last_logged_training_violation_count": 166,
+  "recoverable_checkpoint_steps": 190000,
+  "recoverable_checkpoint_training_violation_count": 165,
+  "retained_original_files": true,
+  "recovery_run": "flow-learned-seed2028-v2-a100-resume"
+}

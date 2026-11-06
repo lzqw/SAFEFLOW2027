@@ -27,7 +27,94 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and open work (2026-11-06 13:10 CST)
+## Current evidence and recovery (2026-11-06 14:30 CST)
+
+All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
+Each final evaluation obtained30/30 safe successes and0/30 violations; this is
+not evidence of zero population risk. The direction comparison is still open.
+
+| Method | Seed | Fixed300k return | Training violations |
+|---|---:|---:|---:|
+| SAC-Lag | 2027 | 11.4191 | 219 |
+| SAC-Lag | 2028 | 11.4195 | 152 |
+| Flow-Iso | 2027 | 11.4569 | 223 |
+| Flow-Iso | 2028 | 11.4770 | 274 |
+
+LearnedDir2028 at its fixed100k evaluation reached28/30 safe successes,
+0/30 violations, return10.4282 and112 training violations. Iso2028 at100k had
+30/30 safe successes,0/30 violations and107 training violations. Thus there is
+no demonstrated task-preserving safety improvement at this matched milestone.
+The two safe timeouts and the earlier SAC2028 failure remain in native evidence.
+
+### Matched100k conditional geometry, not a final mechanism result
+
+An interim analysis used the actual100k policy files for Iso2028 and LearnedDir2028,
+and only their first100k replay prefixes. Later full snapshots provided storage,
+not later policy weights or later training data. The shared pool contains256
+records. The raw JSON retains an old generic `limitations` sentence about
+different ages; its explicit requested checkpoint and per-policy metadata are
+authoritative here: policy milestones and replay prefixes are matched, full
+snapshot ages differ. The generic sentence is corrected for future analyses.
+The shared pool contains256
+records (252 distinct states);177 have valid exact common normals:101 near-boundary
+and76 safe-interior. Undefined normals are retained, not replaced by an axis.
+Each policy contributes128 action samples per state; covariance is conditional
+on each state, never pooled across states.
+
+| Near-boundary conditional variance | Iso | LearnedDir |
+|---|---:|---:|
+| Reference normal | .040000 | .031820 |
+| Reference tangent, per dimension | .040000 | .044090 |
+| Endpoint normal | .018166 | .013223 |
+| Endpoint tangent, per dimension | .018275 | .017601 |
+
+Near-boundary endpoint normal variance falls27.2%, while tangent falls3.7%.
+Mean learned/exact normal cosine is.9074 in that region. This supports actual
+transmission of the directional reference to final sampled actions, not just
+a changed reference matrix. However, in safe-interior states tangent variance
+also falls26.4% (normal13.7%), an important limitation. Margin RMSE is2.59mm near
+the boundary and7.30mm inside on this visited-state pool, not a held-out fitting
+benchmark. Mixed-pool one-interval risk queries are not on-policy episode risk.
+
+See [conditional covariance](diagnostics/paired100k-seed2028-v2/conditional-covariance.png),
+[normal agreement](diagnostics/paired100k-seed2028-v2/normal-agreement.png) and
+[native diagnostic](diagnostics/paired100k-seed2028-v2/diagnostic.json).
+This collected no new training transitions. It does not populate the final
+MECHANISM_RESULTS table, prove superiority to Iso-Low, or justify freezing yet.
+
+### Engineering interruption and environment choice
+
+The5080 LearnedDir2028 process disappeared without a receipt; its last log was
+196k/166 violations, while the usable full checkpoint is190k/165 violations.
+There is no project Python traceback, and the queried kernel journal has no
+OOM/Xid match; the cause remains unknown. The old status file saying running
+is stale. Original files are preserved with an engineering-interruption note.
+
+At14:25 A100 had61GiB free disk and97GiB available RAM; its GPU1 had ample
+VRAM. The4080 had1.6TiB free on `/home/carla/4T`, but its GPU was96% utilized
+by other work. The5080 root had only13GiB free. Accordingly, the existing
+LearnedDir2028 run was resumed on A100 GPU1 from190k, targeting the original
+300k, not a new scientific run or changed hyperparameters. Learner, optimizer,
+replay and RNG were restored; physical episodes restart, so this is not bitwise
+trajectory continuation. The new run saves every1000 transitions.
+
+The discarded tail contains at least6000 actual transitions and one known
+violation; the conservative transition upper bound is7000, with an unknown
+unlogged violation tail. Resumed counters describe the retained checkpoint
+lineage only, not the total actual collected safety cost. This caveat is
+explicit in `resume_lineage.json` and the development CSV counter-scope field.
+Projected full first-stage collection including this engineering overhead is
+at most2,751,808 transitions, still under3M. Do not conceal the lost tail or
+count a repeated transition as free.
+
+Oracle2027/2028 and LearnedDir2027 remain active on A100. No foreign task was
+stopped; no controls, formal seeds, payload training or robustness expansion
+was launched. Configuration remains unfrozen. The4080 4T disk remains the
+preferred large-analysis/archive location when needed; no large replay is
+copied to GitHub or this host. The remainder below is an earlier execution log,
+not a claim that its old PIDs/statuses are current.
+
+## Earlier execution log (2026-11-06 13:10 CST)
 
 Initial eight-run coverage is now2 completed,5 active,1 dependency-queued;
 this is launch coverage, **not** completion of the scientific comparison:
