@@ -16,6 +16,7 @@ import torch
 
 from scripts.star.arm_safe_entropy.environment import SafeReachEnv, TaskConfig
 from scripts.star.arm_safe_entropy.models import ArmLearner
+from scripts.star.arm_safe_entropy.run_protocol import resolve_phase, validate_main_freeze, validate_resume_origin
 
 
 class Replay:
@@ -90,9 +91,9 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--resume', type=Path)
-    parser.add_argument('--eval-every', type=int, default=25000)
+    parser.add_argument('--eval-every', type=int)
     parser.add_argument('--eval-episodes', type=int, default=30)
-    parser.add_argument('--eval-seed-start', type=int, default=52027)
+    parser.add_argument('--eval-seed-start', type=int)
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--smoke', action='store_true')
     parser.add_argument('--oracle-workers', type=int, default=8)
@@ -100,12 +101,44 @@ def main():
     parser.add_argument('--oracle-cache-entries', type=int, default=40000000)
     parser.add_argument('--reference-variance', type=float)
     parser.add_argument('--reference-match-run', help='LearnedDir run used to measure Iso-Low normal reference noise')
+    parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'main'])
+    parser.add_argument('--frozen-config', type=Path, help='Required for main; must declare a genuinely frozen development configuration')
     args = parser.parse_args()
+    try:
+        phase = resolve_phase(args.method, args.seed, args.steps, args.eval_episodes, args.phase, args.smoke)
+    except ValueError as error:
+        parser.error(str(error))
+    args.eval_seed_start = args.eval_seed_start if args.eval_seed_start is not None else (62027 if phase == 'main' else 52027)
+    args.eval_every = args.eval_every if args.eval_every is not None else (25000 if phase == 'ability' else 100000)
     if args.method == 'flow_iso_low' and (args.reference_variance is None or not args.reference_match_run):
         parser.error('Iso-Low requires explicitly measured --reference-variance and --reference-match-run')
     variance = .04 if args.reference_variance is None else args.reference_variance
     if not 0 < variance <= .04:
         parser.error('Use a positive reference variance no larger than the fixed .04 development reference')
+    frozen_record = None
+    if phase == 'main':
+        if args.frozen_config is None:
+            parser.error('Main requires --frozen-config after useful directional development evidence')
+        frozen_record = json.loads(args.frozen_config.read_text())
+        try:
+            validate_main_freeze(frozen_record, args.method, args.seed, variance)
+        except ValueError as error:
+            parser.error(str(error))
+        if args.eval_seed_start != frozen_record['evaluation_layout_seed_start']:
+            parser.error('Use the frozen common main evaluation layout seeds')
+        if args.eval_every != frozen_record['evaluation_every']:
+            parser.error('Use the frozen main evaluation schedule')
+    resume_manifest = None
+    if args.resume:
+        origin = args.resume.parent / 'run_config.json'
+        if origin.exists():
+            resume_manifest = json.loads(origin.read_text())
+            try:
+                validate_resume_origin(args.seed, phase, resume_manifest)
+            except ValueError as error:
+                parser.error(str(error))
+            if phase == 'main' and resume_manifest.get('frozen_config') != frozen_record:
+                parser.error('Do not change the frozen main configuration on resume')
     assert args.steps % args.num_envs == 0
     assert not args.output.exists(), 'Do not overwrite another run'
     args.output.mkdir(parents=True)
@@ -130,6 +163,13 @@ def main():
     if args.resume:
         saved = torch.load(args.resume, map_location=args.device, weights_only=False)
         assert saved['method'] == args.method and saved['task_config'] == asdict(config)
+        if 'training_seed' in saved:
+            assert saved['training_seed'] == args.seed, 'Checkpoint seed cannot be relabelled'
+        else:
+            assert resume_manifest is not None, 'Legacy resume requires the accompanying native seed manifest'
+        if phase == 'main':
+            assert saved.get('stage', (resume_manifest or {}).get('stage')) == 'main'
+            assert saved.get('frozen_config', (resume_manifest or {}).get('frozen_config')) == frozen_record
         assert saved.get('reference_variance', .04) == variance, 'Do not change reference noise on resume'
         if oracle:
             assert saved['oracle_backend'] == args.oracle_backend, 'Do not silently change oracle model on resume'
@@ -147,13 +187,14 @@ def main():
     elapsed_start = time.monotonic()
     last_log = steps
     last_checkpoint = steps
-    # Explicit common initial configuration. Safety variants are not yet enabled.
+    # Optimization/physics are unchanged; phases make the evaluation protocol explicit.
     manifest = dict(stage='engineering_smoke' if args.smoke else 'unobstructed_ability',
         method=args.method, training_seed=args.seed, source_commit=args.source_commit,
         task_config=asdict(config), task_definition=envs[0].definition(),
         device=args.device, num_envs=args.num_envs, total_transition_budget=args.steps,
         initial_steps=initial_steps, transition_count='sum of actual train env.step calls',
         evaluation_layout_seed_start=args.eval_seed_start, evaluation_episodes=args.eval_episodes,
+        evaluation_every=args.eval_every,
         resume_path=str(args.resume) if args.resume else None,
         resume_episode_handling='new episode on learner/replay resume; partial prior episodes not claimed exact',
         batch_size=256, replay_capacity=300000, random_transitions=2000, utd=1.0,
@@ -173,7 +214,9 @@ def main():
         safety_dual_update='completed-episode EMA .05, projected lr .05 after random warmup, initial0, max100' if learner.safety else None,
         actor_objective_normalized_by_dual=False,
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
-    manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
+    manifest['stage'] = ('engineering_smoke' if args.smoke else
+                         'unobstructed_ability' if phase == 'ability' else phase)
+    manifest['frozen_config'] = frozen_record
     manifest['geometry_source'] = {'flow_learned': 'learned_margin', 'flow_random_aniso': 'learned_margin',
                                    'flow_oracle': 'oracle'}.get(args.method, 'none')
     manifest['reference_control'] = ('global_low_variance' if args.method == 'flow_iso_low' else
@@ -213,6 +256,9 @@ def main():
                                                       torch=torch.get_rng_state(), cuda=torch.cuda.get_rng_state_all()))
         payload['oracle_backend'] = args.oracle_backend if oracle else None
         payload['reference_variance'] = variance
+        payload['training_seed'] = args.seed
+        payload['stage'] = manifest['stage']
+        payload['frozen_config'] = frozen_record
         temporary = args.output / 'latest_full.tmp'
         torch.save(payload, temporary)
         temporary.replace(args.output / destination)

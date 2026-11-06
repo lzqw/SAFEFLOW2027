@@ -1,0 +1,19 @@
+{
+  "frozen": false,
+  "status": "awaiting_useful_directional_evidence_do_not_launch",
+  "frozen_method_code_commit": null,
+  "methods": ["sac_lag", "flow_iso", "flow_learned"],
+  "training_seeds": [2030, 2031, 2032],
+  "steps_per_seed": 1000000,
+  "evaluation_episodes": 100,
+  "evaluation_every": 100000,
+  "evaluation_layout_seed_start": 62027,
+  "primary_checkpoint": "fixed_final",
+  "reference_variance": 0.04,
+  "normal_variance_ratio": 0.25,
+  "cost_limit": 0.1,
+  "directional_loss": false,
+  "inward_drift": false,
+  "action_projection": false,
+  "no_automatic_launch": true
+}
