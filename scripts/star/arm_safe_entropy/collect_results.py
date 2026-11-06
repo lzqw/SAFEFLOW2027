@@ -37,7 +37,8 @@ def main():
                               config['evaluation_episodes'], phase='main')
                 validate_main_freeze(config.get('frozen_config') or {}, config['method'],
                                      config['training_seed'], config.get('reference_variance') or .04,
-                                     config.get('normal_variance_ratio') or .25)
+                                     config.get('normal_variance_ratio') or
+                                     (config.get('frozen_config') or {}).get('normal_variance_ratio') or .25)
                 if main_freeze_record is None:
                     main_freeze_record = config['frozen_config']
                 elif main_freeze_record != config['frozen_config']:

@@ -44,17 +44,20 @@ def main():
         if config['method'] == 'flow_oracle':
             label += f" ({config.get('oracle_backend', 'exact')})"
         if config.get('revision_id'):
-            label += f" [{config['revision_id']}, rho={config.get('normal_variance_ratio', .25):g}]"
-        color = f'C{len(included)}'
+            label += f" [R1 rho={config.get('normal_variance_ratio', .25):g}]"
+        base_color = {'flow_iso': 0, 'flow_learned': 2, 'flow_oracle': 4, 'sac_lag': 6}.get(config['method'], 8)
+        color = f'C{base_color + int(config["training_seed"] == 2028)}'
+        style = '--' if config.get('revision_id') else '-'
+        marker = 's' if config.get('revision_id') else 'o'
         x = [row['steps'] / 1000 for row in progress]
-        axes[1, 0].plot(x, [r['recent_success'] * 100 for r in progress], color=color, label=label)
-        axes[1, 1].plot(x, [r['training_violation_count'] for r in progress], color=color)
+        axes[1, 0].plot(x, [r['recent_success'] * 100 for r in progress], color=color, linestyle=style, label=label)
+        axes[1, 1].plot(x, [r['training_violation_count'] for r in progress], color=color, linestyle=style)
         evaluations = sorted([json.loads(p.read_text()) for p in run.glob('evaluation_*.json')],
                              key=lambda e: e['milestone_steps'])
         for axis, key in zip(axes[0], ['safe_success', 'violation']):
             if evaluations:
                 axis.plot([e['milestone_steps'] / 1000 for e in evaluations],
-                          [e[key] * 100 for e in evaluations], 'o-', color=color, label=label)
+                          [e[key] * 100 for e in evaluations], marker=marker, linestyle=style, color=color, label=label)
         included.append(dict(run=str(run.relative_to(report)), source_commit=config['source_commit'],
             latest_logged_transitions=int(progress[-1]['steps']),
             evaluation_milestones=[e['milestone_steps'] for e in evaluations]))

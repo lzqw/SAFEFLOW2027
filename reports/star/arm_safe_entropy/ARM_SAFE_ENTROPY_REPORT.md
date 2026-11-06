@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 21:50 CST)
+## Current evidence and recovery (through 2026-11-06 23:22 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -122,6 +122,42 @@ tail includes at least one additional violation and an unknown unlogged tail.
 The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
+
+### R1: one bounded normal-suppression revision, original budgets unchanged
+
+The first supported online revision changes **only rho_N:.25 to.50** in the
+Oracle controller-approximation condition. Oracle2027 has a positive100k
+signal, while Oracle2028 still stalls through116k; this tests the task-loss /
+over-strong-normal-suppression branch of the supplied plan. This is not a claim
+that the approximation is perfect or that rho explains all failures. The
+negative offline activation candidate is not installed. No geometry, reference
+trace, energy target, actor/critic learning rate, dual, reward or task change
+is bundled into R1.
+
+Both development seeds receive fresh, predeclared100k short runs,30 fixed-layout
+evaluation episodes at the final100k node, no best-seed/checkpoint selection.
+The original rho.25 Oracle runs retain their complete300k budgets. R1 is two
+of the at-most-four additional short policy runs, not a replacement matrix or
+formal/control launch. The upper-bound first-stage total becomes2,951,808
+actual training transitions including engineering/lost-tail overhead, below3M.
+See `configs/star/arm_safe_entropy/revision_r1_oracle_rho050.json`.
+
+At23:15 the4080 was97% foreign-GPU-utilized with2.3GiB free VRAM, and5080 had
+only9.7GiB disk free. Both R1 learners therefore started at23:19 on the idle
+A100 GPU1 (92GiB available host RAM,60GiB disk free), two learners on that card;
+the original pair stays on GPU0. Each uses32 controller workers and2 envs.
+At23:21 native PIDs454684/454738 were alive with2000 warmup transitions each;
+these initial rows are not evidence of productive post-warmup learning yet.
+No foreign task was stopped, and no new environment installation was needed.
+
+Source767357e records rho in native manifests, full checkpoints, policy state
+and analysis/export metadata, rejects reinterpreting rho.25 checkpoints as.5,
+and keeps main-freeze identity explicit. A CPU-only contract fixture verified
+rho.5 actor/target checkpoint restoration, rejection of mismatched rho,
+positive fixed-trace covariance and the paired inverse-covariance path energy
+on a constant-velocity example. It collected zero environment transitions;
+no environment demo or historical suite was repeated. A separate read-only
+half-hour watcher follows both R1 PIDs without restarting them automatically.
 
 ### First Oracle100k evaluations, not final Oracle results
 

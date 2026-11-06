@@ -400,3 +400,26 @@ new default prematurely. Both retain their full300k budgets and all native
 episode records. The approximation's privileged model access and earlier
 accuracy limitations still apply. The direction mechanism is not declared
 proved across seeds and the formal plan is not frozen.
+
+## R1 online revision: rho.25 to.50 only (23:19 launch)
+
+The supplied conservative-Oracle branch motivates two fresh100k short runs,
+seeds2027/2028, with gentler normal suppression. All other scientific settings
+remain unchanged, including the privileged controller approximation, fixed
+trace.12, paired energy, task, UTD, replay, dual and learning rates. Each short
+run completes its predeclared100k budget; original Oracle seeds continue300k.
+This adds200k actual transitions, projected upper bound2,951,808 for the first
+stage. No automatic extension, primary control launch or formal freeze follows.
+
+Both run on A100 GPU1, source767357e, with2 envs/32 model workers. GPU0 retains
+the original pair. The4080 is busy with foreign work and5080 disk is tight;
+neither is cleared or altered. PIDs454684/454738 are real native processes,
+but initial2000-step warmup rows alone are not a post-warmup completion check.
+
+Rho is now explicitly passed, saved and restored in native learner/full state,
+manifests and diagnostic loaders. Legacy defaults remain.25; mismatched rho
+cannot silently reinterpret weights. The main frozen-config check also requires
+the actual rho. The one CPU-only algebra/state fixture checks positive trace.12,
+paired energy and rho.5 restore/rejection with zero new environment steps.
+Result columns/plots distinguish R1 from the original method/seed instead of
+averaging or replacing it. The earlier SiLU prototype remains unpromoted.
