@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 20:00 CST)
+## Current evidence and recovery (through 2026-11-06 21:50 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -122,6 +122,32 @@ tail includes at least one additional violation and an unknown unlogged tail.
 The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
+
+### First Oracle100k evaluations, not final Oracle results
+
+Both controller-Jacobian Oracle approximations have reached their first fixed
+100k evaluation. They use privileged controller/robot geometry and are not an
+error-free exact-model upper bound. The native records are retained for both
+seeds, including stalling:
+
+| Training seed | Iso100k safe success / training violations | Oracle100k safe success / training violations | Oracle return |
+|---|---|---|---:|
+| 2027 | 30/30 /137 | 30/30 /104 | 11.3601 |
+| 2028 | 30/30 /107 | 0/30 /66 | -2.1947 |
+
+Both Oracle evaluations had0/30 violations/collisions. For2027 the training
+count is24.1% below Iso at matched perfect success (Iso return11.3359), a useful
+single-seed signal. For2028 the lower training count accompanies safe stalling,
+not a task-preserving improvement. This is not a stable two-seed Oracle gain,
+and does not establish a final comparison. The earlier Learned2027 stall later
+resolved, so neither an early failure nor a lower cost alone justifies stopping
+the original300k budgets or selecting the favorable seed.
+
+The21:30 watcher confirmed both actual Oracle PIDs alive; the21:49 native
+capture records109k progress for both. They continue the original budgets.
+No formal/control run is launched from these mixed interim results. Current
+code, configs, compact native evaluations, diagnostics and reports are delivered
+on branch `codex/arm-safe-entropy-v1`; full checkpoints/replay remain on servers.
 
 ### Internal-flow geometry probe and one bounded offline candidate
 

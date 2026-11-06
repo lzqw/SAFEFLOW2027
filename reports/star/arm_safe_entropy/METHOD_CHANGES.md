@@ -388,3 +388,15 @@ both probes add zero. Offline head files remain on the server. A read-only
 half-hour resource watcher observes the two existing Oracle PIDs and three
 GPUs while analysis proceeds; it performs no automatic interventions or new
 launches and exits after both watched completion receipts exist.
+
+## First Oracle100k results retained for both seeds (21:50)
+
+Controller-Jacobian Oracle2027 obtains30/30 safe successes,0/30 violations,
+return11.3601,104 training violations versus Iso137 (24.1% fewer). Oracle2028
+obtains0/30 safe successes,0/30 violations, return-2.1947,66 training violations
+versus Iso107; this is safe stalling, not a beneficial safety/performance
+tradeoff. Neither the successful seed nor its opposite is used to select a
+new default prematurely. Both retain their full300k budgets and all native
+episode records. The approximation's privileged model access and earlier
+accuracy limitations still apply. The direction mechanism is not declared
+proved across seeds and the formal plan is not frozen.
