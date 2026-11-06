@@ -48,8 +48,8 @@ class LocalMarginEnsemble(nn.Module):
             gnorm = gradients.detach().mean(0).norm(dim=-1)
             return normal, q, dict(safety_weight=safety_weight, agreement=agreement.detach(),
                 gradient_valid=valid, gradient_norm=gnorm,
-                legacy_gradient_factor=gnorm / (gnorm + .005),
-                legacy_numerical_disagreement_factor=torch.exp(-margins.detach().std(0, unbiased=False) / .05))
+                margin_gradient_factor_if_old_rule=gnorm / (gnorm + .005),
+                margin_disagreement_factor_if_old_rule=torch.exp(-margins.detach().std(0, unbiased=False) / .05))
         return normal, q
 
 
@@ -59,3 +59,35 @@ def reference_variances(weight, reference_variance=.04, rho=.25):
     vn = reference_variance * (1. - weight.clamp(0, 1) * (1. - rho))
     vt = (3. * reference_variance - vn) / 2.
     return vn, vt
+
+
+def old_cost_weight_diagnostics(cost_critic, obs, action, budget=.1,
+                                cost_scale=1., temperature=.02):
+    """Old-style factor products on the ARM long-horizon cost critic only.
+
+    This is not Std(local margin), not a reconstruction of old navigation
+    outcomes, and never the active LearnedDir weight. It permits the required
+    same-state/action factor comparison without another behavior policy.
+    """
+    flags = [p.requires_grad for p in cost_critic.parameters()]
+    cost_critic.requires_grad_(False)
+    try:
+        with torch.enable_grad():
+            local_action = action.detach().requires_grad_(True)
+            heads = cost_critic(obs.detach(), local_action) / cost_scale
+            mean = heads.mean(0)
+            gradient = torch.autograd.grad(mean.sum(), local_action)[0]
+    finally:
+        for parameter, flag in zip(cost_critic.parameters(), flags):
+            parameter.requires_grad_(flag)
+    margin = mean.detach() - budget / cost_scale
+    gradient_factor = gradient.detach().norm(dim=-1)
+    gradient_factor = gradient_factor / (gradient_factor + .005)
+    numerical_factor = torch.exp(-heads.detach().std(0, unbiased=False) / .05)
+    single_sided = torch.sigmoid(margin / temperature)
+    gaussian = torch.exp(-.5 * (margin / temperature).square())
+    return dict(cost_margin=margin, cost_gradient_factor=gradient_factor,
+                cost_ensemble_numeric_factor=numerical_factor,
+                single_sided_weight=single_sided, gaussian_band_weight=gaussian,
+                old_style_one_sided_product=single_sided * gradient_factor * numerical_factor,
+                old_style_gaussian_product=gaussian * gradient_factor * numerical_factor)
