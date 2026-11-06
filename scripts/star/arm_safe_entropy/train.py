@@ -100,6 +100,9 @@ def main():
     parser.add_argument('--oracle-backend', choices=['exact', 'controller_jacobian'], default='exact')
     parser.add_argument('--oracle-cache-entries', type=int, default=40000000)
     parser.add_argument('--reference-variance', type=float)
+    parser.add_argument('--normal-variance-ratio', type=float, default=.25)
+    parser.add_argument('--revision-id')
+    parser.add_argument('--revision-reason')
     parser.add_argument('--reference-match-run', help='LearnedDir run used to measure Iso-Low normal reference noise')
     parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'main'])
     parser.add_argument('--frozen-config', type=Path, help='Required for main; must declare a genuinely frozen development configuration')
@@ -115,13 +118,17 @@ def main():
     variance = .04 if args.reference_variance is None else args.reference_variance
     if not 0 < variance <= .04:
         parser.error('Use a positive reference variance no larger than the fixed .04 development reference')
+    if not 0 < args.normal_variance_ratio <= 1:
+        parser.error('Normal variance ratio must be in (0,1]')
+    if args.normal_variance_ratio != .25 and phase != 'main' and not (args.revision_id and args.revision_reason):
+        parser.error('A targeted revision must record its id and reason')
     frozen_record = None
     if phase == 'main':
         if args.frozen_config is None:
             parser.error('Main requires --frozen-config after useful directional development evidence')
         frozen_record = json.loads(args.frozen_config.read_text())
         try:
-            validate_main_freeze(frozen_record, args.method, args.seed, variance)
+            validate_main_freeze(frozen_record, args.method, args.seed, variance, args.normal_variance_ratio)
         except ValueError as error:
             parser.error(str(error))
         if args.eval_seed_start != frozen_record['evaluation_layout_seed_start']:
@@ -139,6 +146,8 @@ def main():
                 parser.error(str(error))
             if phase == 'main' and resume_manifest.get('frozen_config') != frozen_record:
                 parser.error('Do not change the frozen main configuration on resume')
+            if resume_manifest.get('revision_id') != args.revision_id:
+                parser.error('Resume the same revision identity')
     assert args.steps % args.num_envs == 0
     assert not args.output.exists(), 'Do not overwrite another run'
     args.output.mkdir(parents=True)
@@ -157,7 +166,8 @@ def main():
         else:
             oracle = ControllerJacobianOracle(workers=args.oracle_workers,
                                                cache_size=args.oracle_cache_entries)
-    learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle, variance=variance)
+    learner = ArmLearner(25, args.method, args.device, oracle_geometry=oracle,
+                         variance=variance, rho=args.normal_variance_ratio)
     replay = Replay(300000, 25)
     steps, violations, episodes = 0, 0, 0
     if args.resume:
@@ -171,6 +181,8 @@ def main():
             assert saved.get('stage', (resume_manifest or {}).get('stage')) == 'main'
             assert saved.get('frozen_config', (resume_manifest or {}).get('frozen_config')) == frozen_record
         assert saved.get('reference_variance', .04) == variance, 'Do not change reference noise on resume'
+        if learner.flow:
+            assert saved.get('normal_variance_ratio', .25) == args.normal_variance_ratio, 'Do not change normal ratio on resume'
         if oracle:
             assert saved['oracle_backend'] == args.oracle_backend, 'Do not silently change oracle model on resume'
         learner.load_state_dict(saved['learner'])
@@ -205,6 +217,8 @@ def main():
         reward_actor_sampling='half uniform + half recent10000' if learner.flow else 'uniform',
         geometry_source='none', directional_loss=False, inward_drift=False, action_projection=False,
         reference_variance=variance if learner.flow else None,
+        normal_variance_ratio=args.normal_variance_ratio if learner.flow else None,
+        revision_id=args.revision_id, revision_reason=args.revision_reason,
         kinetic_alpha_initial=.02 if learner.flow else None,
         scaled_alpha_initial=variance * .02 if learner.flow else .1,
         kinetic_energy_target_per_action=.25 if learner.flow else None,
@@ -256,6 +270,7 @@ def main():
                                                       torch=torch.get_rng_state(), cuda=torch.cuda.get_rng_state_all()))
         payload['oracle_backend'] = args.oracle_backend if oracle else None
         payload['reference_variance'] = variance
+        payload['normal_variance_ratio'] = args.normal_variance_ratio if learner.flow else None
         payload['training_seed'] = args.seed
         payload['stage'] = manifest['stage']
         payload['frozen_config'] = frozen_record

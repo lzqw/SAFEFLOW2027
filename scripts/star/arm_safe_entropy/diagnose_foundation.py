@@ -32,7 +32,7 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
         'checkpoint_safe_success', 'checkpoint_violation_rate', 'training_violation_count',
         'training_violation_count_scope',
         'reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean',
-        'oracle_backend', 'state_pool', 'analysis_commit']
+        'oracle_backend', 'normal_variance_ratio', 'state_pool', 'analysis_commit']
     with path.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()
@@ -62,7 +62,8 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
                     **{key: float(np.mean([r[key] for r in rows if r[key] is not None]))
                        if any(r[key] is not None for r in rows) else None
                        for key in ['reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean']},
-                    oracle_backend=run['oracle_backend'], state_pool=pool_file, analysis_commit=analysis_commit))
+                    oracle_backend=run['oracle_backend'], normal_variance_ratio=run['normal_variance_ratio'],
+                    state_pool=pool_file, analysis_commit=analysis_commit))
 
 
 def main():
@@ -77,10 +78,13 @@ def main():
     parser.add_argument('--workers', type=int, default=8)
     args = parser.parse_args()
     configs = [json.loads((run / 'run_config.json').read_text()) for run in args.runs]
-    pairs = [(c['method'], c['training_seed']) for c in configs]
+    pairs = [(c['method'], c['training_seed'], c.get('normal_variance_ratio') or .25,
+              c.get('reference_variance') or .04) for c in configs]
     if not 2 <= len(configs) <= 128 or len(set(pairs)) != len(pairs):
         parser.error('Use at least two distinct method/seed runs; never duplicate a selected checkpoint')
     if args.final_mechanism:
+        if len({(c['method'], c['training_seed']) for c in configs}) != len(configs):
+            parser.error('Final mechanism mode cannot include multiple revisions of one method/seed')
         if args.checkpoint_steps not in [None, 300000]:
             parser.error('Final mechanism mode cannot select an earlier checkpoint')
         required = {'flow_iso', 'flow_oracle', 'flow_learned', 'flow_iso_low', 'flow_random_aniso'}
@@ -162,7 +166,8 @@ def main():
                                    else SimulatorOracle(workers=args.workers))
                 behavior_oracles.append(behavior_oracle)
             learner = ArmLearner(25, saved['method'], args.device,
-                                 variance=config.get('reference_variance') or .04, oracle_geometry=behavior_oracle)
+                                 variance=config.get('reference_variance') or .04, oracle_geometry=behavior_oracle,
+                                 rho=config.get('normal_variance_ratio') or .25)
             learner.load_state_dict(policy_state)
             policies.append((learner, dict(run=str(run), method=saved['method'],
                 source_commit=saved['source_commit'], training_steps=policy_steps,
@@ -170,6 +175,9 @@ def main():
                 checkpoint_selection='explicit_common_milestone' if args.checkpoint_steps else 'native_latest_at_snapshot',
                 training_seed=config['training_seed'], oracle_backend=config.get('oracle_backend'),
                 reference_variance=config.get('reference_variance'),
+                normal_variance_ratio=(config.get('normal_variance_ratio') or .25)
+                    if saved['method'].startswith('flow') else None,
+                revision_id=config.get('revision_id'),
                 reference_match_run=config.get('reference_match_run'),
                 resume_lineage=lineage,
                 training_violation_count_scope=('retained_checkpoint_lineage_only; lost_tail_not_included'

@@ -47,7 +47,8 @@ def main():
             state = torch.load(run / 'policy_300000.pt', map_location=args.device, weights_only=False)
             if receipt['status'] != 'completed' or receipt['steps'] != 300000 or state['updates'] != 298000:
                 raise ValueError('Use the fixed completed300k policy, not an earlier selected milestone')
-            actor = ArmFlowActor(25, variance=config['reference_variance']).to(args.device)
+            actor = ArmFlowActor(25, variance=config['reference_variance'],
+                                 rho=config.get('normal_variance_ratio') or .25).to(args.device)
             margin = LocalMarginEnsemble().to(args.device)
             actor.load_state_dict(state['actor'])
             margin.load_state_dict(state['margin'])

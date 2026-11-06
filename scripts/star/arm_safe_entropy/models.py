@@ -113,11 +113,11 @@ class TwinQ(nn.Module):
 class ArmLearner:
     def __init__(self, obs_dim, method, device='cuda:0', width=128, variance=.04,
                  actor_lr=3e-4, critic_lr=3e-4, kinetic_alpha=.02, kinetic_target_per_action=.25,
-                 oracle_geometry=None):
+                 oracle_geometry=None, rho=.25):
         self.method, self.device = method, torch.device(device)
         self.flow = method.startswith('flow')
         self.safety = method not in ['sac', 'flow']
-        self.actor = (ArmFlowActor(obs_dim, width, variance=variance,
+        self.actor = (ArmFlowActor(obs_dim, width, variance=variance, rho=rho,
             reference_control='random_aniso' if method == 'flow_random_aniso' else 'aligned')
             if self.flow else GaussianActor(obs_dim, width)).to(self.device)
         self.target_actor = deepcopy(self.actor).requires_grad_(False)
@@ -265,11 +265,18 @@ class ArmLearner:
             names += ['margin', 'margin_opt']
         return {key: getattr(self, key).state_dict() for key in names} | dict(
             log_alpha=self.log_alpha.detach(), updates=self.updates,
+            reference_variance=self.actor.variance if self.flow else None,
+            normal_variance_ratio=self.actor.rho if self.flow else None,
             reward_updates=self.reward_updates, actor_updates=self.actor_updates,
             safety_multiplier=self.safety_multiplier, episode_cost_ema=self.episode_cost_ema,
             completed_safety_episodes=self.completed_safety_episodes)
 
     def load_state_dict(self, state):
+        if self.flow:
+            if state.get('normal_variance_ratio', .25) != self.actor.rho:
+                raise ValueError('Restore the native normal-variance ratio, never reinterpret a policy')
+            if 'reference_variance' in state and state['reference_variance'] != self.actor.variance:
+                raise ValueError('Restore the native reference variance')
         names = ['actor', 'target_actor', 'q', 'qt', 'actor_opt', 'q_opt', 'alpha_opt']
         if self.safety:
             names += ['cost_q', 'cost_qt', 'cost_opt']

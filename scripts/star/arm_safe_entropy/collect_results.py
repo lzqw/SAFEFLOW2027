@@ -36,7 +36,8 @@ def main():
                 resolve_phase(config['method'], config['training_seed'], config['total_transition_budget'],
                               config['evaluation_episodes'], phase='main')
                 validate_main_freeze(config.get('frozen_config') or {}, config['method'],
-                                     config['training_seed'], config.get('reference_variance') or .04)
+                                     config['training_seed'], config.get('reference_variance') or .04,
+                                     config.get('normal_variance_ratio') or .25)
                 if main_freeze_record is None:
                     main_freeze_record = config['frozen_config']
                 elif main_freeze_record != config['frozen_config']:
@@ -60,6 +61,9 @@ def main():
                 row = dict(stage=config['stage'], task_version=config['task_config']['version'],
                     method=config['method'], geometry_source=config.get('geometry_source', 'none'),
                     oracle_backend=config.get('oracle_backend') or '',
+                    normal_variance_ratio=(config.get('normal_variance_ratio') or .25)
+                        if config['method'].startswith('flow') else '',
+                    revision_id=config.get('revision_id') or '',
                     training_seed=config['training_seed'], transitions=step,
                     evaluation_episodes=e['episodes'], safe_success=e['safe_success'], task_success=e['success'],
                     violation_rate=e['violation'], collision_rate=e['collision'], return_=e['episode_return'],
@@ -87,7 +91,8 @@ def main():
                     rows.append(row)
     columns = ['stage', 'task_version', 'method', 'geometry_source', 'oracle_backend', 'training_seed', 'transitions', 'evaluation_episodes',
                'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
-               'training_violation_count', 'training_violation_count_scope', 'source_commit', 'run', 'status']
+               'training_violation_count', 'training_violation_count_scope', 'normal_variance_ratio',
+               'revision_id', 'source_commit', 'run', 'status']
     temporary = report / 'DEVELOPMENT_RESULTS.csv.tmp'
     with temporary.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
@@ -96,7 +101,8 @@ def main():
     temporary.replace(report / 'DEVELOPMENT_RESULTS.csv')
     main_columns = ['task_version', 'method', 'training_seed', 'transitions', 'evaluation_episodes',
                     'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
-                    'training_violation_count', 'training_violation_count_scope', 'source_commit', 'run', 'status']
+                    'training_violation_count', 'training_violation_count_scope', 'normal_variance_ratio',
+                    'revision_id', 'source_commit', 'run', 'status']
     temporary = report / 'MAIN_RESULTS.csv.tmp'
     with temporary.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=main_columns, extrasaction='ignore')

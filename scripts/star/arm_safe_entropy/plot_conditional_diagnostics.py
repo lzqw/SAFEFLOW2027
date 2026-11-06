@@ -26,6 +26,8 @@ def main():
     milestone = payload.get('requested_checkpoint_steps')
     caption = f'Fixed {milestone:,}-transition policies' if milestone else 'Interim native snapshots (ages in JSON)'
     names = [f"{s['method']} seed{s['training_seed']}" for s in summaries]
+    names = [name + (f" rho={s['normal_variance_ratio']:g}" if (s.get('normal_variance_ratio') or .25) != .25 else '')
+             for name, s in zip(names, summaries)]
     fig, axes = plt.subplots(2, 2, figsize=(10, 6.5))
     for row, region in enumerate(['safe_interior', 'near_boundary']):
         for col, prefix in enumerate(['reference_', '']):

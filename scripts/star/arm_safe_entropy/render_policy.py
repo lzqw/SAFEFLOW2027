@@ -34,7 +34,8 @@ def main():
     if state['updates'] != max(0, args.checkpoint_steps - 2000):
         parser.error('Policy update count does not match the explicit milestone')
     flow = manifest['method'].startswith('flow')
-    actor = (ArmFlowActor(25, variance=manifest['reference_variance']) if flow
+    actor = (ArmFlowActor(25, variance=manifest['reference_variance'],
+                          rho=manifest.get('normal_variance_ratio') or .25) if flow
              else GaussianActor(25)).to(args.device)
     actor.load_state_dict(state['actor'])
     geometry = None

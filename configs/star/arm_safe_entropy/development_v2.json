@@ -24,6 +24,8 @@
   "learned2028_lost_tail_transition_lower_bound": 6000,
   "learned2028_lost_tail_transition_conservative_upper_bound": 7000,
   "projected_budget_including_recovery_conservative_upper_bound": 2751808,
+  "targeted_revision_R1_additional_transitions": 200000,
+  "projected_budget_including_R1_conservative_upper_bound": 2951808,
   "learned2028_resume_training_cost_counter_excludes_unknown_lost_tail": true,
   "further_training_requires_foundation_signal": true,
   "oracle_exact_controller_backend_available": true,

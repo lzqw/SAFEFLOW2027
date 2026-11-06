@@ -19,13 +19,13 @@ def resolve_phase(method, seed, steps, evaluation_episodes, phase=None, smoke=Fa
     return phase
 
 
-def validate_main_freeze(record, method, seed, variance):
+def validate_main_freeze(record, method, seed, variance, rho=.25):
     if not record.get('frozen'):
         raise ValueError('Development configuration is not frozen; do not launch main training')
     if method not in record['methods'] or seed not in record['training_seeds']:
         raise ValueError('Method/seed is absent from the frozen configuration')
     required = dict(steps_per_seed=1000000, evaluation_episodes=100,
-                    reference_variance=variance, normal_variance_ratio=.25, cost_limit=.1,
+                    reference_variance=variance, normal_variance_ratio=rho, cost_limit=.1,
                     directional_loss=False, inward_drift=False, action_projection=False)
     for key, expected in required.items():
         if record.get(key) != expected:

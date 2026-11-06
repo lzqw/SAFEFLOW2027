@@ -43,6 +43,8 @@ def main():
             label += ' (interrupted)'
         if config['method'] == 'flow_oracle':
             label += f" ({config.get('oracle_backend', 'exact')})"
+        if config.get('revision_id'):
+            label += f" [{config['revision_id']}, rho={config.get('normal_variance_ratio', .25):g}]"
         color = f'C{len(included)}'
         x = [row['steps'] / 1000 for row in progress]
         axes[1, 0].plot(x, [r['recent_success'] * 100 for r in progress], color=color, label=label)
