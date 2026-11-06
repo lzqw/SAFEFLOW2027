@@ -88,19 +88,21 @@ def _interval_jacobian_query(item):
     already-minimized zero-action distance, which can have a flat subgradient.
     This is a local first-order controller model, not exact risk at all actions.
     """
-    observation, epsilon = item
+    observation, epsilon, anchor = item
     restore_observation(_ENV, observation)
     snapshot = _ENV.client.saveState()
     def trace(action):
         _ENV.client.restoreState(snapshot)
         return _ENV._advance(action, distance_trace=True)[4]
     try:
-        base = trace(np.zeros(3))
+        base = trace(anchor)
         derivative = np.zeros((*base.shape, 3))
         for axis in range(3):
             offset = np.eye(3)[axis] * epsilon
-            derivative[..., axis] = (trace(offset) - trace(-offset)) / (2. * epsilon)
-        return np.concatenate([base[..., None], derivative], -1).reshape(-1, 4).astype(np.float32)
+            plus, minus = np.clip(anchor + offset, -1, 1), np.clip(anchor - offset, -1, 1)
+            derivative[..., axis] = (trace(plus) - trace(minus)) / (plus[axis] - minus[axis])
+        intercept = base - (derivative * anchor).sum(-1)
+        return np.concatenate([intercept[..., None], derivative], -1).reshape(-1, 4).astype(np.float32)
     finally:
         _ENV.client.restoreState(snapshot)
         _ENV.client.removeState(snapshot)
@@ -176,23 +178,36 @@ class ControllerJacobianOracle(SimulatorOracle):
     Exact finite-difference SimulatorOracle remains the independent diagnostic;
     this approximation must never be presented as an error-free oracle bound.
     """
-    def __init__(self, workers=8, epsilon=.05, temperature=.02, cache_size=360000):
+    def __init__(self, workers=8, epsilon=.05, temperature=.02, cache_size=4000000,
+                 action_grid_step=.5):
         super().__init__(workers, epsilon, temperature, cache_size)
+        if action_grid_step <= 0:
+            raise ValueError('The local action anchor spacing must be positive')
+        self.action_grid_step = action_grid_step
         self.device_batches = OrderedDict()
         self.reference_rows = 0
+        self.states_seen = set()
 
-    def evaluate_fields_numpy(self, observations):
+    def anchors_numpy(self, actions):
+        anchors = np.clip(np.round(actions / self.action_grid_step) * self.action_grid_step, -1, 1).astype(np.float32)
+        anchors[anchors == 0] = 0.  # canonical positive zero in numerical cache keys
+        return anchors
+
+    def evaluate_fields_numpy(self, observations, actions):
         observations = np.asarray(observations, dtype=np.float32)
+        anchors = self.anchors_numpy(np.asarray(actions, dtype=np.float32))
         missing = OrderedDict()
         keys = []
         start = time.monotonic()
-        for obs in observations:
-            key = obs.tobytes()
+        for obs, anchor in zip(observations, anchors):
+            state_key = obs.tobytes()
+            self.states_seen.add(state_key)
+            key = state_key + anchor.tobytes()
             keys.append(key)
             if key in self.cache:
                 self.cache_hits += 1
             elif key not in missing:
-                missing[key] = (obs, self.epsilon)
+                missing[key] = (obs, self.epsilon, anchor)
         if missing:
             values = list(self.executor.map(_interval_jacobian_query, missing.values(),
                 chunksize=max(1, len(missing) // (self.workers * 4))))
@@ -208,7 +223,7 @@ class ControllerJacobianOracle(SimulatorOracle):
         return fields
 
     def evaluate_numpy(self, observations, actions):
-        fields = self.evaluate_fields_numpy(observations)
+        fields = self.evaluate_fields_numpy(observations, actions)
         actions = np.asarray(actions, dtype=np.float32)
         distances = fields[..., 0] + np.einsum('bpc,bc->bp', fields[..., 1:], actions)
         selected = distances.argmin(-1)
@@ -221,9 +236,11 @@ class ControllerJacobianOracle(SimulatorOracle):
     def __call__(self, obs, action):
         import torch
         observations = obs.detach().cpu().numpy()
-        key = (observations.tobytes(), str(action.device), str(action.dtype))
+        actions = action.detach().cpu().numpy()
+        anchors = self.anchors_numpy(actions)
+        key = (observations.tobytes(), anchors.tobytes(), str(action.device), str(action.dtype))
         if key not in self.device_batches:
-            fields = self.evaluate_fields_numpy(observations)
+            fields = self.evaluate_fields_numpy(observations, actions)
             self.device_batches[key] = torch.as_tensor(fields, dtype=action.dtype, device=action.device)
             while len(self.device_batches) > 4:
                 self.device_batches.popitem(last=False)
@@ -246,7 +263,9 @@ class ControllerJacobianOracle(SimulatorOracle):
         result.pop('unique_state_actions')
         result.update(oracle_kind='first_order_controller_distance_oracle',
                       backend='interval_distance_controller_jacobian',
-                      unique_states=self.unique_state_actions, reference_rows=self.reference_rows,
-                      reference_action=[0., 0., 0.], linearization_epsilon=self.epsilon,
+                      unique_states=len(self.states_seen), unique_state_anchors=self.unique_state_actions,
+                      reference_rows=self.reference_rows,
+                      reference_action='nearest numerical cache anchor, never an executed candidate',
+                      action_anchor_spacing=self.action_grid_step, linearization_epsilon=self.epsilon,
                       planes_per_state=210, exact_for_arbitrary_actions=False)
         return result
