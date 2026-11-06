@@ -1,6 +1,6 @@
 # Arm safe entropy: implementation and development changes
 
-Starting branch commit: `a251b7a` (P4.7 code plus all20 native results and
+Starting branch commit: `a251b7af4864212c7191e2ff80393d0f62936805` (P4.7 code plus all20 native results and
 diagnosis). New branch: `codex/arm-safe-entropy-v1`. The user's dirty source
 worktree and all historical navigation results are preserved. No rollback,
 navigation resume or historical provenance repair is a prerequisite.

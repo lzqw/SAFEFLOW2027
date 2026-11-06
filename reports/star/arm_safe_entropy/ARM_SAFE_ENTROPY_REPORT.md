@@ -1,6 +1,6 @@
 # Arm safe entropy — development in progress
 
-Start date: 2026-11-06. Starting commit `a251b7a`; independent branch
+Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
 navigation matrix. Old outcomes remain unchanged. Current success targets are
 development aims, not fabricated results or scientific stopping gates.
@@ -44,10 +44,12 @@ No all-history validation or new disaster-recovery system was introduced.
 
 As of the initial Nov6 update, the first two ability learners are live:
 
-- SAC seed2027, source0eba984, A100 GPU0: **30/30 successes at25k and50k**,
-  fixed common layout seeds52027–52056, stochastic policy evaluation.
-- Reward-only flow seed2027, sourcefc6b3c0, A100 GPU1: training continues
-  toward100k; no held-out checkpoint result is claimed before it is written.
+- SAC seed2027, source0eba984, A100 GPU0: completed100k training transitions,
+  **30/30 successes at25k,50k,75k and100k**, fixed common layout seeds52027–52056,
+  stochastic policy evaluation. Native end-to-end runtime913.35s,98k learner
+  updates and98k reward/actor updates; full replay remains on A100.
+- Reward-only flow seed2027, sourcefc6b3c0, A100 GPU1: **30/30 successes at25k**;
+  continues toward the original100k budget. An interim result is not its final result.
 
 These are **unobstructed ability** results, not obstacle safety or a formal
 seed comparison. The full100k budgets continue despite early successes;
@@ -64,11 +66,13 @@ controlled same-workload scalability claim. Keep two independent learners,
 one per currently free A100; do not equate low VRAM use with permission to
 duplicate scientific seeds or interrupt foreign jobs.
 
-After the SAC100k ability run completes, one SAC-Lag2027 obstacle baseline
-can fill that card,300k steps, with a fresh capacity/space check. This is a
-specific queued baseline justified by the observed ability trend, not an
-automatic direction matrix or a success-threshold gate. Flow-Iso scheduling
-waits for flow ability evidence; Oracle/Learned training is not launched yet.
+The SAC100k run has completed and the specific SAC-Lag2027 obstacle baseline
+filled GPU0 after a fresh capacity/space check (source6c64aeb,300k budget).
+The first native status snapshot is21k steps, but **no held-out obstacle
+result is claimed before100k**. Following flow's25k30/30 ability evidence,
+one Flow-Iso2027 baseline is queued for GPU1 after its ability run reaches100k.
+Both are narrow queue decisions, not a full direction matrix or a programmed
+success-threshold gate. Oracle/Learned training is not launched yet.
 
 Cost-Q/dual, learned-margin and detached-geometry components are implemented,
 but obstacle safety learning, Oracle integration, controls, formal runs,

@@ -1,3 +1,6 @@
 stage,task_version,method,training_seed,transitions,evaluation_episodes,safe_success,task_success,violation_rate,collision_rate,return,training_violation_count,source_commit,run,status
+unobstructed_ability,SafeReach-Obstacle-v1,flow,2027,25000,30,1.0,1.0,0.0,0.0,11.460144095648385,0,fc6b3c0553e08817c0d9b67a0ff8428f75b5a11c,ability/flow-seed2027-v1,interim_native
+unobstructed_ability,SafeReach-Obstacle-v1,sac,2027,100000,30,1.0,1.0,0.0,0.0,11.484652544592004,0,0eba984abd66e348f900df4664f46ff63e3b2be7,ability/sac-seed2027-v1,final_native_not_formal_matrix
 unobstructed_ability,SafeReach-Obstacle-v1,sac,2027,25000,30,1.0,1.0,0.0,0.0,11.455869177502622,0,0eba984abd66e348f900df4664f46ff63e3b2be7,ability/sac-seed2027-v1,interim_native
 unobstructed_ability,SafeReach-Obstacle-v1,sac,2027,50000,30,1.0,1.0,0.0,0.0,11.460620319129905,0,0eba984abd66e348f900df4664f46ff63e3b2be7,ability/sac-seed2027-v1,interim_native
+unobstructed_ability,SafeReach-Obstacle-v1,sac,2027,75000,30,1.0,1.0,0.0,0.0,11.487598140314443,0,0eba984abd66e348f900df4664f46ff63e3b2be7,ability/sac-seed2027-v1,interim_native
