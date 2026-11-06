@@ -1,6 +1,6 @@
 """Common-state conditional sampling; no new training or tuning loop.
 
-Default: interim SAC/flow foundation diagnosis. --final-mechanism requires
+Default: interim foundation/directional diagnosis. --final-mechanism requires
 the completed two-seed directional/control cohort, not selected checkpoints.
 Native snapshots and all undefined normals remain explicit. Run on the server.
 """
@@ -69,16 +69,13 @@ def main():
     parser.add_argument('--workers', type=int, default=8)
     args = parser.parse_args()
     configs = [json.loads((run / 'run_config.json').read_text()) for run in args.runs]
-    if not args.final_mechanism:
-        if len(configs) != 2 or {c['method'] for c in configs} != {'sac_lag', 'flow_iso'}:
-            parser.error('Interim mode compares exactly the two foundation methods')
-    else:
+    pairs = [(c['method'], c['training_seed']) for c in configs]
+    if not 2 <= len(configs) <= 128 or len(set(pairs)) != len(pairs):
+        parser.error('Use at least two distinct method/seed runs; never duplicate a selected checkpoint')
+    if args.final_mechanism:
         required = {'flow_iso', 'flow_oracle', 'flow_learned', 'flow_iso_low', 'flow_random_aniso'}
         if not required <= {c['method'] for c in configs}:
             parser.error('Final mechanism mode includes the directional methods AND both required controls')
-        pairs = [(c['method'], c['training_seed']) for c in configs]
-        if len(set(pairs)) != len(pairs):
-            parser.error('Do not duplicate/select runs for a method and training seed')
         for method in {c['method'] for c in configs}:
             if {c['training_seed'] for c in configs if c['method'] == method} != {2027, 2028}:
                 parser.error(f'{method}: retain BOTH development seeds, not only the stronger seed')
@@ -184,7 +181,7 @@ def main():
                     for i in range(len(pool)):
                         if truth[i, 4] > 1e-7 and np.linalg.norm(predicted[i]) > 1e-7:
                             geometry_cosines[i] = float(predicted[i] @ truth[i, 1:4])
-            if hasattr(learner, 'cost_q') and args.final_mechanism:
+            if hasattr(learner, 'cost_q') and (args.final_mechanism or learner.geometry is not None):
                 from scripts.star.arm_safe_entropy.geometry import old_cost_weight_diagnostics
                 legacy = old_cost_weight_diagnostics(learner.cost_q, shared_obs, shared_actions)
                 geometry_diagnostics = dict(geometry_diagnostics or {},
@@ -231,7 +228,7 @@ def main():
         if args.final_mechanism:
             write_mechanism_csv(args.output / 'mechanism_results.csv', all_records, 'state_pool.json', args.source_commit)
         payload = dict(kind='final_checkpoint_conditional_mechanism' if args.final_mechanism else
-                           'interim_foundation_conditional_sampling_not_final_mechanism_result',
+                           'interim_conditional_sampling_not_final_mechanism_result',
             source_commit=args.source_commit, task_config=expected_config, training_transitions=0,
             state_pool='state_pool.json', states=256, actions_per_state=128,
             common_normal='exact interval-margin gradient at each source replay action, shared across methods',
