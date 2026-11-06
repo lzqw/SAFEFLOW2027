@@ -115,7 +115,10 @@ class ArmLearner:
         if not self.safety:
             return
         self.episode_cost_ema = float(episode_cost) if self.episode_cost_ema is None else .95 * self.episode_cost_ema + .05 * float(episode_cost)
-        self.safety_multiplier = min(100., max(0., self.safety_multiplier + .5 * (self.episode_cost_ema - self.cost_limit)))
+        # Random warmup costs are counted but cannot drive the dual to its cap
+        # before a learned behavior policy/critic has taken any update.
+        if self.updates > 0:
+            self.safety_multiplier = min(100., max(0., self.safety_multiplier + .05 * (self.episode_cost_ema - self.cost_limit)))
         self.completed_safety_episodes += 1
 
     @torch.no_grad()

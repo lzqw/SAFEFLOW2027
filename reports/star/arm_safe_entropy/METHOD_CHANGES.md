@@ -31,10 +31,15 @@ Before the first ability run, two explicit design corrections:
 Ability implementation has geometry_source=none, no global cost optimization
 and no obstacle. Separate obstacle paths now implement two sigmoid cost Q
 heads for the binary episode event, projected completed-episode EMA dual
-(budget .10, initial0, lr.5, EMA.05, cap100), and an unnormalized
+(budget .10, initial0, lr.05, EMA.05, cap100), and an unnormalized
 `alpha_E*E - Q_R + lambda_C*Q_C` actor objective, without the legacy
 division by `1+lambda_C`. All actor/reward samples are uniform+recent,
 independent of any safety-prioritized state distribution (none used initially).
+Random-warmup violations remain counted, but dual updates begin only once
+learning has started, to avoid saturating the multiplier on short random
+failure episodes before any learned policy exists. These are initial safety
+settings, not a retrospectively improved result: no obstacle learner had run
+under the earlier draft dual settings.
 
 Two64-unit local-margin heads and strictly normalized first-order action
 gradients are implemented. Active q=sigmoid(mean margin/.02)*positive cosine

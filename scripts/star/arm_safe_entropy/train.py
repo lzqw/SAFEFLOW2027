@@ -144,7 +144,7 @@ def main():
         initial_base_variance=0. if learner.flow else None,
         global_cost_critic='two sigmoid episode-risk Q heads' if learner.safety else None,
         safety_budget=.1 if learner.safety else None,
-        safety_dual_update='completed-episode EMA .05, projected lr .5, initial0, max100' if learner.safety else None,
+        safety_dual_update='completed-episode EMA .05, projected lr .05 after random warmup, initial0, max100' if learner.safety else None,
         actor_objective_normalized_by_dual=False,
         safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
     manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
