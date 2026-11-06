@@ -1,0 +1,13 @@
+{
+  "kind": "mechanism_control_algebra_only_not_trained_efficacy",
+  "random_direction_fixed_across_action_generation": true,
+  "random_directions_independent_of_safety": true,
+  "random_aniso_reference_trace": 0.12,
+  "reference_noise_and_inverse_energy_paired": true,
+  "iso_low_normal_variance_not_total_trace_matching": true,
+  "iso_low_energy_rescaling_checked": true,
+  "iso_low_variance_used_for_algebra_only": 0.015,
+  "experiment_variance_not_selected": true,
+  "new_training_transitions": 0,
+  "trained_control_results": false
+}

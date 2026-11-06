@@ -54,7 +54,9 @@ and not a real-world permission. Oracle uses counterfactual PyBullet state
 save/restore with the actual action-to-IK-to-motor mapping, not an unconverted
 task-space normal. Its exact finite-difference implementation is diagnostic;
 its query throughput is not learner throughput. An approximate cached controller
-Jacobian is under development, explicitly labelled and not yet used for training.
+Jacobian is available, explicitly labelled, and has completed only a short
+engineering train/restore so far. Its rare wrong directions are retained in the
+accuracy report; the queued scientific variant is not an error-free upper bound.
 
 ## Version correction and retained evidence
 

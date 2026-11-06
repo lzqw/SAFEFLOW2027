@@ -1,0 +1,10 @@
+{
+  "method": "flow_learned",
+  "seed": 2027,
+  "dependency": "/home/lzqw/SAFEFLOW2027_ARM/runs/obstacle_development/flow-iso-seed2027-v2",
+  "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/obstacle_development/flow-learned-seed2027-v2",
+  "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
+  "observed_at_unix": 1793937715.1996844,
+  "phase": "waiting_for_dependency_completion",
+  "queued_transitions": 300000
+}

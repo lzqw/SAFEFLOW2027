@@ -81,7 +81,7 @@ failure causally by the API bug without evidence. On v2, SAC-Lag2027 at100k
 obtained30/30 safe successes and0/30 violations; it is still an interim,
 single-seed result, not a directional-method gain.
 
-## Controller-Jacobian acceleration prototypes: not yet qualified for training
+## Controller-Jacobian approximation: accuracy limits and an explicit training path
 
 Retain actual interval-distance planes for all21 frames and10 protected links.
 Numerical controller derivatives construct local first-order models, not a
@@ -97,14 +97,65 @@ backend, preserving invalid gradients and mismatch rows:
 Each comparison used the same bounded12-state/48-action probe, not a trained
 policy evaluation. The first model missed11 exact-valid gradients. The second
 missed2 and added2 spurious-valid gradients, but one direction was slightly
-opposed to the exact normal. Neither has established adequate direction quality
-for an Oracle upper-bound experiment. Both had zero violation-sign disagreements
+opposed to the exact normal. Neither establishes an error-free Oracle upper
+bound. Both had zero violation-sign disagreements
 in this small probe, which does not certify safety or repair the cosine issue.
 The local model's113k/s fully cached arithmetic and383/s reused-state/new-action
 rate exclude learner work and must not be advertised as training throughput.
 Native details are in engineering/oracle-linearization-v2.json and
 engineering/oracle-local-anchor-v2.json. The exact backend remains the truth
-diagnostic; no approximate-Oracle training result is claimed.
+diagnostic; no trained-method efficacy result is claimed.
+
+The more relevant common visited pool subsequently compared256 actual replay
+state/actions,128 near-boundary and128 safe-interior, without dropping any case.
+Of199 exact-valid normals,195 were valid in both models,4 were missed,4 extra
+model-valid normals appeared. Mean cosine was0.97147, near-boundary mean0.96531,
+near-boundary10th percentile0.96562; minimum near-boundary cosine was-0.32428.
+Mean margin error0.0895mm, maximum0.8815mm, sign disagreements0/256. This supports
+using a **labelled privileged-controller approximation as an experimental
+diagnostic**, not declaring its occasional wrong direction solved. In particular,
+a negative result with this backend alone cannot rule out a perfect-direction
+mechanism. Exact simulation remains the independent truth comparison.
+
+To make this diagnostic runnable, discard only distance planes provably unable
+to win the lower envelope throughout their numerical action cell (a plane's
+lower bound exceeds the smallest global upper bound). The linearized model is
+unchanged, not replaced with a new margin fit. Variable-sized plane sets are
+cached and only padded per GPU batch. In the200-transition resumed short run,
+46,900 cached state/anchors used11.0MB numeric plane storage rather than157.6MB
+for all210 planes. Full training's explicit40M-entry cap is an entry bound, not
+a claim that Python overhead or late-run memory is zero; inspect actual memory.
+
+An engineering run collected2008 transitions (8 post-warmup learner updates),
+then restored learner/replay/RNG and collected200 more;2008+200=2208 new train
+transitions, not4216. Restored counters reached208 learner updates,416 reward
+updates and104 actor updates; backend identity is checked on resume. Both
+runs saved and evaluated successfully; their two-episode engineering outputs
+are not included in development efficacy tables. The resumed200 transitions
+took100.22s before final evaluation (~2.0 transitions/s) and114.23s including
+evaluation/save (~1.75/s), with32 CPU oracle workers. This small replay/cold-cache
+window does not establish full300k throughput. Do not quote the warmup-inflated
+first-run FPS as an Oracle training speed. Compact receipts are retained under
+engineering/oracle-training-v2-{smoke,resume}/.
+
+## Implemented mechanism controls (not yet trained)
+
+`flow_iso_low` requires an explicit scalar variance measured from LearnedDir's
+mean normal reference and records the source run; no arbitrary variance is
+silently selected. It matches normal noise, not total trace. Its noise/energy
+pair uses alpha_D=nu_low*alpha_kin and target_D=target_kin/nu_low. No geometry
+head is needed for the scalar control.
+
+`flow_random_aniso` uses the same local-margin q rule and eigenvalue/trace
+formula as LearnedDir but an independent random unit normal, sampled once per
+generated action and held throughout all midpoint steps. Each separately
+trained method has its own margin heads, so q values need not numerically match
+across trained checkpoints; measured reference eigenvalues must be reported,
+not assumed identical merely from the formula. No new behavior policy exists.
+One algebra-only check confirms fixed-in-action random normals, matching trace,
+paired inverse energy, and Iso-Low rescaling. Its illustrative0.015 variance is
+not an experimental selection. Do not launch the control matrix before useful
+directional evidence or populate mechanism results from this engineering check.
 
 Flow sampling can optionally return per-midpoint reference normal, weight and
 eigenvalues. This prepares the required conditional mechanism analysis, without

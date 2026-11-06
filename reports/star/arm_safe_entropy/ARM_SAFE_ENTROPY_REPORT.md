@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and open work (2026-11-06 11:37 CST)
+## Current evidence and open work (2026-11-06 12:02 CST)
 
 The three required clips and minimum semantics checks passed:
 
@@ -87,14 +87,16 @@ Fresh, matched v2 learners use sourcece0d175, seed2027,300k budgets:
 
 | Method | Latest native checkpoint evaluation | Safe success | Violation | Status |
 |---|---:|---:|---:|---|
-| SAC-Lag | 100k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
-| Safe-FLAC-Iso | Not yet at100k evaluation | — | — | About50k; recent training success0% |
+| SAC-Lag | 200k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
+| Safe-FLAC-Iso | 100k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
 
-SAC's return at100k was11.1936 and its training violation count97. This is
-one development seed/checkpoint, not a cross-seed conclusion or proof of zero
-population risk. Flow's training statistic is not substituted for held-out
-evaluation. Do not expand the direction matrix until Flow foundation evidence
-is available; if A learns but B does not, repair the flow backbone first.
+At a matched100k budget, SAC's return was11.1936 and training violations97;
+Flow's return11.3359 and training violations137. SAC200k return11.4292,
+training violations162. These are single-development-seed checkpoints,
+not cross-seed conclusions or proof of zero population risk. Flow's earlier
+stalling was followed by genuine learning, so it was not a reason to terminate
+the run or change several parameters prematurely. Foundation evidence now
+supports moving to the two direction variants while retaining full A/B budgets.
 The native [learning curves](figures/SafeReach-Obstacle-v2-learning.png)
 separate held-out evaluations from recent training statistics; missing
 evaluations are not plotted as zeros.
@@ -111,6 +113,34 @@ with one slightly opposed normal and2 missed/2 spurious-valid gradients.
 **This approximation is not qualified as an accurate Oracle upper bound.**
 No Oracle/Learned training gain is claimed; all mismatch rows are retained.
 See [method changes](METHOD_CHANGES.md) for the limited probes and their scope.
+
+On256 actually visited common state/actions, the local model's mean cosine
+was0.97147 (near-boundary0.96531),195/199 exact-valid directions were valid in
+both, with4 misses and4 extras. Minimum near-boundary cosine remained-0.32428;
+all rows, not just successful ones, are retained. Mean margin error0.0895mm,
+sign disagreements0/256. The runnable training variant is explicitly a
+**privileged controller-linearization approximation**, not an error-free
+model bound. A negative result from it alone cannot disprove a perfect-direction
+mechanism. Exact simulator finite differences remain the independent diagnostic.
+
+Pruning provably inactive distance planes compresses the same local linear
+model, rather than changing its predictions. Oracle2008-transition smoke and
+200-new-transition restoration completed; actual resumed learner throughput
+was about2.0 transitions/s before final evaluation, not the cached arithmetic
+rate. The small-window end-to-end rate is not a full-run completion guarantee.
+Both tests are labelled engineering, not included as trained-method results.
+
+Two one-run dependency queues are live (sourcee792e45):
+
+| Next diagnostic | Dependency before it starts | GPU | New budget |
+|---|---|---:|---:|
+| OracleDir, controller-linearization backend, seed2027 | SAC-Lag2027 completes300k | 0 | 300k |
+| LearnedDir, seed2027; no oracle calls by its actor | Flow-Iso2027 completes300k | 1 | 300k |
+
+Queue PIDs251920/252096 were inspected alive, waiting; they are not training
+results or proof that their child learners have already started. Each rechecks
+shared GPU/CPU/disk headroom and launches only one run, not the entire matrix.
+Seed2028 and all later controls/formal/payload stages are not blindly enqueued.
 
 One interim foundation diagnostic used256 shared genuinely visited states
 (128 with current-state clearance0–20mm above the safety threshold,128 farther
@@ -129,14 +159,18 @@ interval risk queries are retained in
 This diagnostic collected zero new training transitions and does not populate
 the still-pending final mechanism table.
 
-Budget bookkeeping retains ability200k, engineering smoke/resume2600 and v1
-obstacle conservative upper bound140k. A full matched eight-run v2 matrix
-would bring the projected first-stage total to2,742,600 transitions, below3M.
+Budget bookkeeping retains ability200k, flow engineering smoke/resume2600,
+oracle engineering smoke/resume2208 and v1 obstacle conservative upper bound140k.
+A full matched eight-run v2 matrix would bring the projected first-stage total
+to2,744,808 transitions, below3M.
 This is a ceiling projection, not a command to launch uninformative runs.
 
 Cost-Q/dual, learned-margin and detached-geometry components are implemented.
-Flow obstacle learning, accurate efficient Oracle training, directional-method
-evidence, controls, formal runs, payload and robustness remain open. The full
+Flow obstacle learning now has a positive first held-out result. Longer-run
+stability, Oracle approximation limits, directional-method evidence, trained
+controls, formal runs, payload and robustness remain open. Mechanism controls
+are implemented and algebra-checked, but have not been trained or assigned an
+arbitrary Iso-Low variance. The full
 requested objective is not complete. A100 project storage has about61GiB free
 at the current check. Large checkpoint/replay files remain there; compact native
 JSON, progress and videos are copied through this host to the new GitHub branch.

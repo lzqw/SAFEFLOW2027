@@ -1,0 +1,39 @@
+{
+  "milestone_steps": 2208,
+  "training_violation_count": 31,
+  "episodes": 2,
+  "fixed_layout_seeds": [
+    52027,
+    52028
+  ],
+  "policy_sampling": "stochastic_same_behavior_policy",
+  "safe_success": 0.0,
+  "success": 0.0,
+  "violation": 0.0,
+  "collision": 0.0,
+  "clearance_violation": 0.0,
+  "episode_return": -3.5522987398949386,
+  "records": [
+    {
+      "seed": 52027,
+      "episode_return": -3.4532054264489767,
+      "length": 100,
+      "safe_success": false,
+      "success": false,
+      "violation": false,
+      "collision": false,
+      "clearance_violation": false
+    },
+    {
+      "seed": 52028,
+      "episode_return": -3.651392053340901,
+      "length": 100,
+      "safe_success": false,
+      "success": false,
+      "violation": false,
+      "collision": false,
+      "clearance_violation": false
+    }
+  ],
+  "evaluation_transitions": 200
+}

@@ -4,15 +4,18 @@
     {
       "run": "obstacle_development/flow-iso-seed2027-v2",
       "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
-      "latest_logged_transitions": 63000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 100000,
+      "evaluation_milestones": [
+        100000
+      ]
     },
     {
       "run": "obstacle_development/sac-lag-seed2027-v2",
       "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
-      "latest_logged_transitions": 130000,
+      "latest_logged_transitions": 206000,
       "evaluation_milestones": [
-        100000
+        100000,
+        200000
       ]
     }
   ],
