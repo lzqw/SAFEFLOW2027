@@ -1,4 +1,4 @@
-# SafeReach-Obstacle-v1 (simulation only)
+# SafeReach-Obstacle-v2 (simulation only)
 
 Project task variant using panda-gym 3.0.7 and PyBullet 3.2.7; it is not
 reported as an unmodified PandaReachDense or Safe-Panda benchmark.
@@ -28,8 +28,10 @@ not only the proposed learner.
 
 Protected robot links: PyBullet link indices 2–11, including arm, wrist,
 hand and fingers; table/base support contact is not an obstacle violation.
-Every physics frame queries true signed robot-link/sphere closest distance.
-At the first distance below 0.015 m OR contact, terminate and emit cost 1.
+Every physics frame queries true signed robot-link/sphere closest distance,
+including the initial frame. Complete the full twenty-frame control interval;
+if its minimum is below 0.015 m OR contact occurs, terminate that control step
+and emit cost 1. No subsequent control action is executed after a violation.
 Other steps cost 0, so episode cost is binary. Contact and clearance violations
 are reported separately. Clearance termination often precedes actual contact;
 low contact rate alone must not be reported as low overall violation rate.
@@ -50,8 +52,28 @@ per-step rewards. The same reward applies to every method.
 Budget d_C=.10 means a target 10% **episode** violation rate, not cost limit10
 and not a real-world permission. Oracle uses counterfactual PyBullet state
 save/restore with the actual action-to-IK-to-motor mapping, not an unconverted
-task-space normal. Its initial finite-difference implementation is diagnostic;
-its training throughput must be measured before scheduling OracleDir runs.
+task-space normal. Its exact finite-difference implementation is diagnostic;
+its query throughput is not learner throughput. An approximate cached controller
+Jacobian is under development, explicitly labelled and not yet used for training.
+
+## Version correction and retained evidence
+
+v1 read Bullet's default link-state cache while q/dq could already reflect the
+next integrated frame; moving states differed by approximately 0.3–0.4 mm after
+counterfactual restoration. v2 explicitly recomputes forward kinematics for every
+EE observation/control/reward use. v1 also stopped physics at the violating
+substep; v2 defines and labels a consistent complete 40 ms interval. Geometry,
+reward, action scale, layout distribution and cost budget are otherwise unchanged.
+All obstacle comparisons must share v2. v1 pilots and their weak outcomes remain
+in the archive, marked superseded, never pooled with v2 efficacy results. These
+API corrections do not establish the cause of any v1 learning failure.
+
+The old unobstructed 100k SAC/flow policies each obtained 30/30 successes when
+evaluated zero-shot on v2; no additional ability training was used for this check.
+The three v2 clips take 16, 2 and 33 control steps respectively; see
+[environment_v2](environment_v2/). The exact controller replica check found maximum
+margin difference 3.7253e-8 m and normal cosine 1.0 for its six valid comparisons;
+this is a bounded interface check, not proof of global oracle accuracy or efficacy.
 
 Upstream platform references:
 [panda-gym](https://github.com/qgallouedec/panda-gym),

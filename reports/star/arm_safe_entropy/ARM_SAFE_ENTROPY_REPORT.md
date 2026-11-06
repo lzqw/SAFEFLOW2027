@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and open work
+## Current evidence and open work (2026-11-06 11:37 CST)
 
 The three required clips and minimum semantics checks passed:
 
@@ -35,27 +35,34 @@ The three required clips and minimum semantics checks passed:
 |---|---:|---:|---:|
 | Unobstructed reach | 16 | yes | 0 |
 | Straight path, obstacle present | 2 | no | 1 |
-| Collision-free detour | 34 | yes | 0 |
+| Collision-free detour | 33 | yes | 0 |
 
-Videos and native step records are in [environment_v1](environment_v1/).
+Primary v2 videos and native step records are in [environment_v2](environment_v2/).
+Historical [environment_v1](environment_v1/) evidence remains unchanged; the
+v1 detour took34 steps. v2 fixes a stale EE pose cache and completes every full
+control interval before returning terminal. All new obstacle comparisons use
+v2; geometry, reward, action scale and layout distribution are unchanged.
 True horizon is terminal (no bootstrap), and cost is binary. Geometry/energy
 and one flow save/resume check passed; see [method changes](METHOD_CHANGES.md).
 No all-history validation or new disaster-recovery system was introduced.
 
-As of the initial Nov6 update, the first two ability learners are live:
+Both first ability learners have completed:
 
 - SAC seed2027, source0eba984, A100 GPU0: completed100k training transitions,
   **30/30 successes at25k,50k,75k and100k**, fixed common layout seeds52027–52056,
   stochastic policy evaluation. Native end-to-end runtime913.35s,98k learner
   updates and98k reward/actor updates; full replay remains on A100.
-- Reward-only flow seed2027, sourcefc6b3c0, A100 GPU1: **30/30 successes at25k**;
-  continues toward the original100k budget. An interim result is not its final result.
+- Reward-only flow seed2027, sourcefc6b3c0, A100 GPU1: completed100k transitions,
+  **30/30 successes at25k,50k,75k and100k**; runtime2126.68s,98k learner updates,
+  196k reward updates and49k actor updates.
 
 These are **unobstructed ability** results, not obstacle safety or a formal
-seed comparison. The full100k budgets continue despite early successes;
+seed comparison. The full100k budgets were retained despite early successes;
 80% is not a programmatic early-stop rule. Both remain the sole behavior
 policy of their learner. [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv)
-labels interim checkpoints explicitly; other result files remain header-only.
+labels interim checkpoints explicitly; formal/mechanism/robustness result files
+remain header-only. A zero-shot API compatibility check evaluated both100k
+ability policies on unobstructed v2: each again succeeded30/30, with no retraining.
 
 One scheduling comparison uses actual productive post-warmup progress:
 single SAC5k–10k:111.30 transitions/s; with both learners running,
@@ -66,22 +73,76 @@ controlled same-workload scalability claim. Keep two independent learners,
 one per currently free A100; do not equate low VRAM use with permission to
 duplicate scientific seeds or interrupt foreign jobs.
 
-The SAC100k run has completed and the specific SAC-Lag2027 obstacle baseline
-filled GPU0 after a fresh capacity/space check (source6c64aeb,300k budget).
-The first native status snapshot is21k steps, but **no held-out obstacle
-result is claimed before100k**. Following flow's25k30/30 ability evidence,
-one Flow-Iso2027 baseline is queued for GPU1 after its ability run reaches100k.
-Both are narrow queue decisions, not a full direction matrix or a programmed
-success-threshold gate. Oracle/Learned training is not launched yet.
+### Obstacle learning
 
-Cost-Q/dual, learned-margin and detached-geometry components are implemented,
-but obstacle safety learning, Oracle integration, controls, formal runs,
-payload extension and robustness remain pending. The full requested objective
-is not complete. Large checkpoint/replay files remain on A100; compact native
+The v1 SAC-Lag2027 pilot obtained0/30 successes and0/30 violations at100k:
+safe stalling, not task mastery. For a coherent Oracle/baseline interface,
+both v1 pilots were stopped and preserved after the API correction described
+above: SAC last logged124k (unlogged conservative bound125k), Flow-Iso14k
+(upper bound15k). Original statuses/progress, checkpoints and stop markers
+remain intact; no completion receipt was invented. This is not evidence that
+the API bug caused poor v1 learning. v1 and v2 efficacy must not be pooled.
+
+Fresh, matched v2 learners use sourcece0d175, seed2027,300k budgets:
+
+| Method | Latest native checkpoint evaluation | Safe success | Violation | Status |
+|---|---:|---:|---:|---|
+| SAC-Lag | 100k,30 common-layout episodes | 30/30 | 0/30 | Training continues to300k |
+| Safe-FLAC-Iso | Not yet at100k evaluation | — | — | About50k; recent training success0% |
+
+SAC's return at100k was11.1936 and its training violation count97. This is
+one development seed/checkpoint, not a cross-seed conclusion or proof of zero
+population risk. Flow's training statistic is not substituted for held-out
+evaluation. Do not expand the direction matrix until Flow foundation evidence
+is available; if A learns but B does not, repair the flow backbone first.
+The native [learning curves](figures/SafeReach-Obstacle-v2-learning.png)
+separate held-out evaluations from recent training statistics; missing
+evaluations are not plotted as zeros.
+
+### Oracle and pending work
+
+The exact simulator-replica oracle is integrated and a bounded interface check
+passed: max margin discrepancy3.7253e-8m, minimum normal cosine1.0 among six
+valid comparisons; live state unchanged. Exact queries are too costly to
+launch the full repeated-target training path without acceleration work.
+Two explicit controller-Jacobian approximations were examined. Nearby action
+anchors reduced mean margin error to0.091mm but direction cosine averaged0.888,
+with one slightly opposed normal and2 missed/2 spurious-valid gradients.
+**This approximation is not qualified as an accurate Oracle upper bound.**
+No Oracle/Learned training gain is claimed; all mismatch rows are retained.
+See [method changes](METHOD_CHANGES.md) for the limited probes and their scope.
+
+One interim foundation diagnostic used256 shared genuinely visited states
+(128 with current-state clearance0–20mm above the safety threshold,128 farther
+inside),128 independent actions per state, and the exact common normal at
+each source replay action. Normal-valid states199/256; undefined directions
+remain null, never replaced by a convenient axis. SAC120k and Flow60k had
+mean conditional action covariance traces0.05645 and0.04903 respectively.
+This does not support diagnosing Flow as effectively deterministic from these
+states. Flow hard-clipping averaged7.18% per path-coordinate-step on this
+mixed state pool; this differs from on-policy training clipping and includes
+states visited by SAC. The policies are at different training ages: neither
+relative efficacy nor a directional entropy benefit follows. Actual per-state
+covariances, Gaussian marginal entropy proxies, reference covariances and true
+interval risk queries are retained in
+[foundation-sampling-v2](engineering/foundation-sampling-v2/diagnostic.json).
+This diagnostic collected zero new training transitions and does not populate
+the still-pending final mechanism table.
+
+Budget bookkeeping retains ability200k, engineering smoke/resume2600 and v1
+obstacle conservative upper bound140k. A full matched eight-run v2 matrix
+would bring the projected first-stage total to2,742,600 transitions, below3M.
+This is a ceiling projection, not a command to launch uninformative runs.
+
+Cost-Q/dual, learned-margin and detached-geometry components are implemented.
+Flow obstacle learning, accurate efficient Oracle training, directional-method
+evidence, controls, formal runs, payload and robustness remain open. The full
+requested objective is not complete. A100 project storage has about61GiB free
+at the current check. Large checkpoint/replay files remain there; compact native
 JSON, progress and videos are copied through this host to the new GitHub branch.
 
 See [task definition](TASK_DEFINITION.md), [method changes](METHOD_CHANGES.md)
-and configs/star/arm_safe_entropy/development_v1.json for current settings.
+and configs/star/arm_safe_entropy/development_v2.json for current settings.
 All primary evaluations will use fixed final checkpoints, common layouts and
 per-training-seed statistics. An unsuccessful experiment will be reported as
 such, not replaced by a claim that finishing a budget proves effectiveness.

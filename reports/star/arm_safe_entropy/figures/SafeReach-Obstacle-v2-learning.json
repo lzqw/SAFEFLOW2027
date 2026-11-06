@@ -1,0 +1,20 @@
+{
+  "task_version": "SafeReach-Obstacle-v2",
+  "runs": [
+    {
+      "run": "obstacle_development/flow-iso-seed2027-v2",
+      "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
+      "latest_logged_transitions": 63000,
+      "evaluation_milestones": []
+    },
+    {
+      "run": "obstacle_development/sac-lag-seed2027-v2",
+      "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
+      "latest_logged_transitions": 130000,
+      "evaluation_milestones": [
+        100000
+      ]
+    }
+  ],
+  "note": "Top panels: stochastic held-out evaluation only. Bottom panels: training statistics, not held-out performance. Missing checkpoints are not assigned zeros."
+}
