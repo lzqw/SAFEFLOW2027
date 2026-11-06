@@ -37,6 +37,8 @@ def main():
         if not progress:
             continue
         label = f"{config['method']} seed{config['training_seed']}"
+        if config['method'] == 'flow_oracle':
+            label += f" ({config.get('oracle_backend', 'exact')})"
         color = f'C{len(included)}'
         x = [row['steps'] / 1000 for row in progress]
         axes[1, 0].plot(x, [r['recent_success'] * 100 for r in progress], color=color, label=label)

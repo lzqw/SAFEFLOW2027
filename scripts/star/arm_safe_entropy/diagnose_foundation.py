@@ -30,6 +30,7 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
         'clipping_rate', 'local_risk_increment', 'normal_cosine', 'source_commit', 'status',
         'valid_common_normal_states', 'valid_geometry_normal_comparisons', 'checkpoint_steps',
         'checkpoint_safe_success', 'checkpoint_violation_rate', 'training_violation_count',
+        'reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean',
         'oracle_backend', 'state_pool', 'analysis_commit']
     with path.open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
@@ -56,6 +57,9 @@ def write_mechanism_csv(path, records, pool_file, analysis_commit):
                     checkpoint_steps=run['training_steps'], checkpoint_safe_success=evaluation['safe_success'],
                     checkpoint_violation_rate=evaluation['violation'],
                     training_violation_count=evaluation['training_violation_count'],
+                    **{key: float(np.mean([r[key] for r in rows if r[key] is not None]))
+                       if any(r[key] is not None for r in rows) else None
+                       for key in ['reference_eigenvalue_n_mean', 'reference_eigenvalue_t_mean']},
                     oracle_backend=run['oracle_backend'], state_pool=pool_file, analysis_commit=analysis_commit))
 
 
@@ -206,6 +210,8 @@ def main():
                     endpoint=endpoint_metrics(actions, shared['common_normal']), reference=reference,
                     geometry_normal_cosine_at_reference_action=geometry_cosines[index],
                     reference_q_mean=float(trace['weights'].mean()) if learner.flow else None,
+                    reference_eigenvalue_n_mean=float(trace['vn'].mean()) if learner.flow else None,
+                    reference_eigenvalue_t_mean=float(trace['vt'].mean()) if learner.flow else None,
                     clipping_rate=clipping, action_bound_saturation_rate=float((np.abs(actions) > .999).mean()),
                     mean_interval_margin_m=float(margins.mean()),
                     local_risk_increment_m=float(margins.mean() - shared['reference_interval_margin_m']),
