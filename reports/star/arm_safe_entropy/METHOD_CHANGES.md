@@ -260,3 +260,18 @@ tail is preserved in raw logs, with6000..7000 lost actual transitions and at
 least one lost violation. Unknown unlogged safety cost is not invented as zero.
 The collector labels resumed training counters as retained-lineage-only via a
 small sidecar; no new disaster-recovery framework or historical repair was added.
+
+## Mechanism-control measurement plan (not launched)
+
+`mechanism_control_plan.json` predeclares how the Iso-Low scalar will be measured
+from both fixed300k LearnedDir seeds, not selected from control returns or the
+more favorable100k seed. A shared256-distinct-state calibration pool uses128
+near-boundary/128 safe-interior states and128 samples per state. The global
+scalar matches the exact-common-normal reference variance averaged over valid
+near-boundary states, with equal weighting of the two seeds; it does not match
+total trace or every state's variance. The scalar remains null until measured.
+Random-Aniso's nominal fixed-trace/eigenvalue rule is implemented, but own-data
+head learning means numerical spectra are not yet proven matched; identical
+formula is not reported as achieved empirical matching. Both controls remain
+behind the useful-signal stage decision. This plan starts no training and adds
+no parameter sweep. Formal seeds2030/2031/2032 remain untouched.
