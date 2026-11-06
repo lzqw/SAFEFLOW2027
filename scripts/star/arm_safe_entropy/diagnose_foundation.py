@@ -67,6 +67,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--runs', nargs='+', type=Path, required=True)
     parser.add_argument('--final-mechanism', action='store_true')
+    parser.add_argument('--checkpoint-steps', type=int,
+                        help='Compare an explicit common milestone using policy_N.pt and its replay prefix, never the best checkpoint')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--device', default='cuda:0')
@@ -77,6 +79,8 @@ def main():
     if not 2 <= len(configs) <= 128 or len(set(pairs)) != len(pairs):
         parser.error('Use at least two distinct method/seed runs; never duplicate a selected checkpoint')
     if args.final_mechanism:
+        if args.checkpoint_steps not in [None, 300000]:
+            parser.error('Final mechanism mode cannot select an earlier checkpoint')
         required = {'flow_iso', 'flow_oracle', 'flow_learned', 'flow_iso_low', 'flow_random_aniso'}
         if not required <= {c['method'] for c in configs}:
             parser.error('Final mechanism mode includes the directional methods AND both required controls')
@@ -107,6 +111,18 @@ def main():
             quota = 128 // len(args.runs) + int(run_index < 128 % len(args.runs))
             replay = saved['replay']
             n = replay['count']
+            policy_steps = saved['steps']
+            policy_state = saved['learner']
+            if args.checkpoint_steps is not None:
+                if args.checkpoint_steps <= 0 or saved['steps'] < args.checkpoint_steps:
+                    raise ValueError('The explicit milestone has not yet been reached')
+                if saved['steps'] > replay['capacity']:
+                    raise ValueError('The requested early replay prefix has been overwritten; use an earlier native full snapshot')
+                policy_steps = args.checkpoint_steps
+                policy_state = torch.load(run / f'policy_{policy_steps}.pt', map_location='cpu', weights_only=False)
+                if policy_state['updates'] != max(0, policy_steps - 2000):
+                    raise ValueError('Policy update counters do not match the requested fixed milestone')
+                n = min(n, policy_steps)
             data = replay['data']
             # Preferential candidate coverage near recorded risky transitions;
             # final stratification uses TRUE current-state distances, not labels.
@@ -135,7 +151,8 @@ def main():
                         state_clearance_m=float(clearance[index]), region=region,
                         source_run=str(run), source_replay_index=native_index,
                         source_method=config['method'], source_training_seed=config['training_seed'],
-                        source_training_steps=saved['steps']))
+                        source_training_steps=policy_steps, replay_prefix_transitions=n,
+                        source_full_snapshot_steps=saved['steps']))
             behavior_oracle = None
             if saved['method'] == 'flow_oracle':
                 backend = config.get('oracle_backend', 'exact')
@@ -144,9 +161,11 @@ def main():
                 behavior_oracles.append(behavior_oracle)
             learner = ArmLearner(25, saved['method'], args.device,
                                  variance=config.get('reference_variance') or .04, oracle_geometry=behavior_oracle)
-            learner.load_state_dict(saved['learner'])
+            learner.load_state_dict(policy_state)
             policies.append((learner, dict(run=str(run), method=saved['method'],
-                source_commit=saved['source_commit'], training_steps=saved['steps'],
+                source_commit=saved['source_commit'], training_steps=policy_steps,
+                source_full_snapshot_steps=saved['steps'], replay_prefix_transitions=n,
+                checkpoint_selection='explicit_common_milestone' if args.checkpoint_steps else 'native_latest_at_snapshot',
                 training_seed=config['training_seed'], oracle_backend=config.get('oracle_backend'),
                 reference_variance=config.get('reference_variance'),
                 reference_match_run=config.get('reference_match_run'),
@@ -176,6 +195,15 @@ def main():
                     normal, weight, factors = learner.margin.geometry(shared_obs, shared_actions, return_diagnostics=True)
                     geometry_diagnostics = {k: v.detach().cpu().tolist() for k, v in factors.items()}
                     geometry_diagnostics['active_q_at_reference_action'] = weight.cpu().tolist()
+                    with torch.no_grad():
+                        head_margins = learner.margin(shared_obs, shared_actions).cpu().numpy()
+                    errors = head_margins.mean(0) - truth[:, 0]
+                    geometry_diagnostics.update(predicted_head_margins_m=head_margins.tolist(),
+                        exact_reference_margins_m=truth[:, 0].tolist(),
+                        common_pool_margin_rmse_m=float(np.sqrt(np.mean(errors**2))),
+                        margin_rmse_by_region={region:float(np.sqrt(np.mean(errors[
+                            np.asarray([r['region']==region for r in pool])]**2)))
+                            for region in ['near_boundary', 'safe_interior']})
                 else:
                     normal, weight = learner.geometry(shared_obs, shared_actions)
                     geometry_diagnostics = dict(active_q_at_reference_action=weight.cpu().tolist())
@@ -224,10 +252,19 @@ def main():
                 one_interval_violation_probability=float(np.mean([r['one_interval_violation_probability'] for r in per_state])))
             for region in ['safe_interior', 'near_boundary']:
                 valid = [r for r in per_state if r['region'] == region and r['common_normal_valid']]
+                region_rows = [r for r in per_state if r['region'] == region]
+                normal_cosines = [r['geometry_normal_cosine_at_reference_action'] for r in region_rows
+                                  if r['geometry_normal_cosine_at_reference_action'] is not None]
                 summary[region] = dict(states=sum(r['region'] == region for r in per_state),
                     valid_normal_states=len(valid),
+                    geometry_normal_comparisons=len(normal_cosines),
+                    geometry_normal_cosine=float(np.mean(normal_cosines)) if normal_cosines else None,
+                    reference_vn=mean_defined(valid, 'reference', 'vn'),
+                    reference_vt=mean_defined(valid, 'reference', 'vt'),
                     **{key: float(np.mean([r['endpoint'][key] for r in valid])) if valid else None
                        for key in ['vn', 'vt', 'gaussian_proxy_hn', 'gaussian_proxy_ht']})
+            if geometry_diagnostics and 'common_pool_margin_rmse_m' in geometry_diagnostics:
+                summary['common_pool_margin_rmse_m'] = geometry_diagnostics['common_pool_margin_rmse_m']
             all_records.append(dict(**provenance, states=per_state, geometry_diagnostics=geometry_diagnostics))
             summaries.append(summary)
             print(json.dumps(summary), flush=True)
@@ -236,6 +273,7 @@ def main():
         payload = dict(kind='final_checkpoint_conditional_mechanism' if args.final_mechanism else
                            'interim_conditional_sampling_not_final_mechanism_result',
             source_commit=args.source_commit, task_config=expected_config, training_transitions=0,
+            requested_checkpoint_steps=args.checkpoint_steps,
             state_pool='state_pool.json', states=256, actions_per_state=128,
             common_normal='exact interval-margin gradient at each source replay action, shared across methods',
             state_regions='128 states with current static clearance0..20mm above safety threshold;128 above20mm',
