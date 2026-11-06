@@ -28,10 +28,32 @@ Before the first ability run, two explicit design corrections:
    kinetic maximum2 per coordinate at max velocity2, so it is not carried over.
    The original log-space automatic energy-dual update is retained.
 
-Initial ability implementation has geometry_source=none, no global cost
-optimization and no obstacle. Safety cost critic/margin heads and the full
-Oracle/Learned matrix are **not yet implemented or claimed complete**.
+Ability implementation has geometry_source=none, no global cost optimization
+and no obstacle. Separate obstacle paths now implement two sigmoid cost Q
+heads for the binary episode event, projected completed-episode EMA dual
+(budget .10, initial0, lr.5, EMA.05, cap100), and an unnormalized
+`alpha_E*E - Q_R + lambda_C*Q_C` actor objective, without the legacy
+division by `1+lambda_C`. All actor/reward samples are uniform+recent,
+independent of any safety-prioritized state distribution (none used initially).
+
+Two64-unit local-margin heads and strictly normalized first-order action
+gradients are implemented. Active q=sigmoid(mean margin/.02)*positive cosine
+agreement, detached; near-zero head/mean gradients disable geometry. The
+legacy gradient/numeric-disagreement factors are diagnostic-only. No learned
+policy calls the oracle. This path has not yet produced trained-method evidence.
+Oracle training integration, controls and the full matrix are still pending.
 Directional loss, inward drift and safety projection stay off in arm-v1.
+
+One necessary initial-policy reference check measured covariance diagonal
+[.00996,.05410,.05447] against [.010,.055,.055], using a fixed known normal
+at one state. It also checked zero-gradient handling and geometry stop-gradient.
+This is an engineering check, not evidence about a trained policy or task gains.
+
+One2400-transition engineering flow run and a200-new-transition save/resume
+were completed. The first restoration exposed CUDA RNG byte tensors moved
+by map_location; restore now explicitly moves generator-state bytes to CPU.
+Failed preflight output is retained and was not relabelled a scientific run.
+Engineering training total so far2600; all large replay stays on the server.
 
 Minimum validation only: three task clips and reset/cost/true-terminal checks,
 unit-normal/trace/stop-gradient checks when geometry is implemented, and one

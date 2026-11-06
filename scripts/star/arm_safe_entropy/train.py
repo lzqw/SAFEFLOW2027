@@ -79,7 +79,7 @@ def atomic_json(path, payload):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--method', choices=['sac', 'flow'], required=True)
+    parser.add_argument('--method', choices=['sac', 'flow', 'sac_lag', 'flow_iso', 'flow_learned'], required=True)
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--seed', type=int, default=2027)
     parser.add_argument('--num-envs', type=int, default=2)
@@ -100,7 +100,7 @@ def main():
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
-    config = TaskConfig(obstacle=False)
+    config = TaskConfig(obstacle=args.method not in ['sac', 'flow'])
     envs = [SafeReachEnv(config) for _ in range(args.num_envs)]
     learner = ArmLearner(25, args.method, args.device)
     replay = Replay(300000, 25)
@@ -141,10 +141,18 @@ def main():
         kinetic_alpha_initial=.02 if learner.flow else None,
         scaled_alpha_initial=.0008 if learner.flow else .1,
         kinetic_energy_target_per_action=.25 if learner.flow else None,
-        initial_base_variance=0. if learner.flow else None)
+        initial_base_variance=0. if learner.flow else None,
+        global_cost_critic='two sigmoid episode-risk Q heads' if learner.safety else None,
+        safety_budget=.1 if learner.safety else None,
+        safety_dual_update='completed-episode EMA .05, projected lr .5, initial0, max100' if learner.safety else None,
+        actor_objective_normalized_by_dual=False,
+        safety_replay_sampling='uniform+recent same batch; no safety priority controls actor')
+    manifest['stage'] = 'engineering_smoke' if args.smoke else 'obstacle_development' if learner.safety else 'unobstructed_ability'
+    manifest['geometry_source'] = 'learned_margin' if args.method == 'flow_learned' else 'none'
     atomic_json(args.output / 'run_config.json', manifest)
     fields = ['steps', 'elapsed_seconds', 'train_fps', 'episodes', 'training_violation_count',
-              'recent_success', 'recent_return', 'reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha']
+              'recent_success', 'recent_return', 'reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha',
+              'cost_loss', 'margin_loss', 'safety_multiplier']
     stream = (args.output / 'progress.csv').open('w', newline='')
     writer = csv.DictWriter(stream, fieldnames=fields)
     writer.writeheader()
@@ -153,14 +161,14 @@ def main():
     latest = {k: 0. for k in fields[7:]}
     latest['alpha'] = float(learner.log_alpha.detach().exp())
 
-    def checkpoint():
+    def checkpoint(destination='latest_full.pt'):
         payload = dict(method=args.method, task_config=asdict(config), learner=learner.state_dict(),
             replay=replay.state_dict(), steps=steps, violations=violations, episodes=episodes,
             source_commit=args.source_commit, rng=dict(python=random.getstate(), numpy=np.random.get_state(),
                                                       torch=torch.get_rng_state(), cuda=torch.cuda.get_rng_state_all()))
         temporary = args.output / 'latest_full.tmp'
         torch.save(payload, temporary)
-        temporary.replace(args.output / 'latest_full.pt')
+        temporary.replace(args.output / destination)
 
     try:
         while steps < args.steps:
@@ -173,6 +181,7 @@ def main():
                 episode_returns[index] += reward
                 if done or truncated:
                     recent.append((float(episode_returns[index]), float(info['success'])))
+                    learner.record_episode(info['cost'])
                     episodes += 1
                     episode_returns[index] = 0.
                     next_obs, _ = env.reset()
@@ -196,7 +205,9 @@ def main():
                 last_log = steps
             if evaluation_steps and steps >= evaluation_steps[0]:
                 milestone = evaluation_steps.pop(0)
-                result = dict(milestone_steps=steps, **evaluate(learner, config, args.eval_episodes))
+                result = dict(milestone_steps=steps, training_violation_count=violations,
+                              **evaluate(learner, config, args.eval_episodes))
+                result['evaluation_transitions'] = sum(row['length'] for row in result['records'])
                 atomic_json(args.output / f'evaluation_{milestone}.json', result)
                 torch.save(learner.state_dict(), args.output / f'policy_{milestone}.pt')
             if steps - last_checkpoint >= args.checkpoint_every or steps == args.steps:
@@ -209,7 +220,7 @@ def main():
             final_evaluation=f'evaluation_{steps}.json'))
         atomic_json(args.output / 'status.json', dict(state='completed', steps=steps))
     except BaseException as error:
-        checkpoint()
+        checkpoint(destination='interrupted_full.pt')
         atomic_json(args.output / 'status.json', dict(state='engineering_interruption', steps=steps,
                                                       error_type=type(error).__name__, error=str(error)))
         raise

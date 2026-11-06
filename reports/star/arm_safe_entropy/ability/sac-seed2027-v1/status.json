@@ -1,0 +1,16 @@
+{
+  "state": "running",
+  "steps": 62000,
+  "elapsed_seconds": 559.8963905249257,
+  "train_fps": 110.73477352099462,
+  "episodes": 2966,
+  "training_violation_count": 0,
+  "recent_success": 1.0,
+  "recent_return": 11.481133760970167,
+  "reward_td": 0.028221627697348595,
+  "reward_q_abs_max": 10.092464447021484,
+  "actor_loss": -9.773557662963867,
+  "energy": 0.0,
+  "clipping_rate": 0.0,
+  "alpha": 0.002553608501330018
+}

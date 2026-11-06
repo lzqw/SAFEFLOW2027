@@ -85,6 +85,7 @@ class ArmLearner:
                  actor_lr=3e-4, critic_lr=3e-4, kinetic_alpha=.02, kinetic_target_per_action=.25):
         self.method, self.device = method, torch.device(device)
         self.flow = method.startswith('flow')
+        self.safety = method not in ['sac', 'flow']
         self.actor = (ArmFlowActor(obs_dim, width, variance=variance) if self.flow else GaussianActor(obs_dim, width)).to(self.device)
         self.target_actor = deepcopy(self.actor).requires_grad_(False)
         self.q = TwinQ(obs_dim, width).to(self.device)
@@ -97,6 +98,25 @@ class ArmLearner:
         self.energy_target = 3. * kinetic_target_per_action / variance
         self.updates, self.reward_updates, self.actor_updates = 0, 0, 0
         self.geometry = None
+        self.cost_limit = .1
+        self.safety_multiplier, self.episode_cost_ema = 0., None
+        self.completed_safety_episodes = 0
+        if self.safety:
+            self.cost_q = TwinQ(obs_dim, width, probability=True).to(self.device)
+            self.cost_qt = deepcopy(self.cost_q).requires_grad_(False)
+            self.cost_opt = torch.optim.Adam(self.cost_q.parameters(), lr=critic_lr)
+        if method == 'flow_learned':
+            from scripts.star.arm_safe_entropy.geometry import LocalMarginEnsemble
+            self.margin = LocalMarginEnsemble(obs_dim).to(self.device)
+            self.margin_opt = torch.optim.Adam(self.margin.parameters(), lr=critic_lr)
+            self.geometry = self.margin.geometry
+
+    def record_episode(self, episode_cost):
+        if not self.safety:
+            return
+        self.episode_cost_ema = float(episode_cost) if self.episode_cost_ema is None else .95 * self.episode_cost_ema + .05 * float(episode_cost)
+        self.safety_multiplier = min(100., max(0., self.safety_multiplier + .5 * (self.episode_cost_ema - self.cost_limit)))
+        self.completed_safety_episodes += 1
 
     @torch.no_grad()
     def action(self, obs, deterministic=False):
@@ -111,6 +131,31 @@ class ArmLearner:
         obs, action, reward, next_obs, done = [batch[k] for k in ['obs', 'action', 'reward', 'next_obs', 'done']]
         alpha = self.log_alpha.detach().exp()
         q_loss = td = torch.zeros((), device=self.device)
+        cost_loss = margin_loss = torch.zeros((), device=self.device)
+        if hasattr(self, 'margin'):
+            predicted_margin = self.margin(obs, action)
+            # Independent bootstrap masks; labels are actual recorded interval minima.
+            mask = (torch.rand_like(predicted_margin) < .8).float()
+            margin_loss = ((predicted_margin - batch['margin']).square() * mask).sum() / mask.sum().clamp_min(1.)
+            self.margin_opt.zero_grad()
+            margin_loss.backward()
+            nn.utils.clip_grad_norm_(self.margin.parameters(), 10.)
+            self.margin_opt.step()
+        if self.safety:
+            with torch.no_grad():
+                if self.flow:
+                    a_cost, _, _ = self.actor(next_obs, geometry=self.geometry)
+                else:
+                    a_cost, _ = self.actor(next_obs)
+                cost_target = batch['cost'] + (1. - done) * self.cost_qt(next_obs, a_cost).mean(0)
+            cost_loss = (self.cost_q(obs, action) - cost_target).square().mean()
+            self.cost_opt.zero_grad()
+            cost_loss.backward()
+            nn.utils.clip_grad_norm_(self.cost_q.parameters(), 10.)
+            self.cost_opt.step()
+            with torch.no_grad():
+                for p, pt in zip(self.cost_q.parameters(), self.cost_qt.parameters()):
+                    pt.lerp_(p, .005)
         for _ in range(2 if self.flow else 1):
             with torch.no_grad():
                 if self.flow:
@@ -136,20 +181,28 @@ class ArmLearner:
         actor_loss = energy_mean = clipping = torch.zeros((), device=self.device)
         if not self.flow or self.updates % 2 == 0:
             self.q.requires_grad_(False)
+            if self.safety:
+                self.cost_q.requires_grad_(False)
             if self.flow:
                 a, energy, clip = self.actor(obs, geometry=self.geometry)
-                actor_loss = (alpha * energy - self.q(obs, a).min(0).values).mean()
+                actor_objective = alpha * energy - self.q(obs, a).min(0).values
                 alpha_loss = self.log_alpha * (self.energy_target - energy.detach().mean())
                 energy_mean, clipping = energy.mean(), clip.mean()
             else:
                 a, logp = self.actor(obs)
-                actor_loss = (alpha * logp - self.q(obs, a).min(0).values).mean()
+                actor_objective = alpha * logp - self.q(obs, a).min(0).values
                 alpha_loss = -(self.log_alpha * (logp.detach() - 3.)).mean()
+            if self.safety:
+                # No legacy /(1+lambda) rescaling: exactly the arm-v1 objective.
+                actor_objective = actor_objective + self.safety_multiplier * self.cost_q(obs, a).mean(0)
+            actor_loss = actor_objective.mean()
             self.actor_opt.zero_grad()
             actor_loss.backward()
             nn.utils.clip_grad_norm_(self.actor.parameters(), 10.)
             self.actor_opt.step()
             self.q.requires_grad_(True)
+            if self.safety:
+                self.cost_q.requires_grad_(True)
             self.alpha_opt.zero_grad()
             alpha_loss.backward()
             self.alpha_opt.step()
@@ -159,18 +212,35 @@ class ArmLearner:
                     pt.lerp_(p, .001)
             self.actor_updates += 1
         values = torch.stack([td, prediction.detach().abs().max(), actor_loss.detach(),
-                              energy_mean.detach(), clipping.detach(), self.log_alpha.detach().exp()]).cpu().tolist()
-        return dict(zip(['reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha'], values))
+                              energy_mean.detach(), clipping.detach(), self.log_alpha.detach().exp(),
+                              cost_loss.detach(), margin_loss.detach()]).cpu().tolist()
+        return dict(zip(['reward_td', 'reward_q_abs_max', 'actor_loss', 'energy', 'clipping_rate', 'alpha',
+                         'cost_loss', 'margin_loss'], values)) | dict(safety_multiplier=self.safety_multiplier)
 
     def state_dict(self):
-        return {key: getattr(self, key).state_dict() for key in ['actor', 'target_actor', 'q', 'qt', 'actor_opt', 'q_opt', 'alpha_opt']} | dict(
+        names = ['actor', 'target_actor', 'q', 'qt', 'actor_opt', 'q_opt', 'alpha_opt']
+        if self.safety:
+            names += ['cost_q', 'cost_qt', 'cost_opt']
+        if hasattr(self, 'margin'):
+            names += ['margin', 'margin_opt']
+        return {key: getattr(self, key).state_dict() for key in names} | dict(
             log_alpha=self.log_alpha.detach(), updates=self.updates,
-            reward_updates=self.reward_updates, actor_updates=self.actor_updates)
+            reward_updates=self.reward_updates, actor_updates=self.actor_updates,
+            safety_multiplier=self.safety_multiplier, episode_cost_ema=self.episode_cost_ema,
+            completed_safety_episodes=self.completed_safety_episodes)
 
     def load_state_dict(self, state):
-        for key in ['actor', 'target_actor', 'q', 'qt', 'actor_opt', 'q_opt', 'alpha_opt']:
+        names = ['actor', 'target_actor', 'q', 'qt', 'actor_opt', 'q_opt', 'alpha_opt']
+        if self.safety:
+            names += ['cost_q', 'cost_qt', 'cost_opt']
+        if hasattr(self, 'margin'):
+            names += ['margin', 'margin_opt']
+        for key in names:
             getattr(self, key).load_state_dict(state[key])
         with torch.no_grad():
             self.log_alpha.copy_(state['log_alpha'])
         for key in ['updates', 'reward_updates', 'actor_updates']:
             setattr(self, key, state[key])
+        for key in ['safety_multiplier', 'episode_cost_ema', 'completed_safety_episodes']:
+            if key in state:
+                setattr(self, key, state[key])
