@@ -114,7 +114,7 @@ def main():
         random.setstate(saved['rng']['python'])
         np.random.set_state(saved['rng']['numpy'])
         torch.set_rng_state(saved['rng']['torch'].cpu())
-        torch.cuda.set_rng_state_all(saved['rng']['cuda'])
+        torch.cuda.set_rng_state_all([state.cpu() for state in saved['rng']['cuda']])
     initial_steps = steps
     obs = np.stack([env.reset(seed=args.seed + 997 * index)[0] for index, env in enumerate(envs)])
     episode_returns = np.zeros(args.num_envs)
