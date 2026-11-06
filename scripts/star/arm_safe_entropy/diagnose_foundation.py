@@ -269,7 +269,8 @@ def main():
                 summary['common_pool_margin_rmse_m'] = geometry_diagnostics['common_pool_margin_rmse_m']
             all_records.append(dict(**provenance, states=per_state, geometry_diagnostics=geometry_diagnostics))
             summaries.append(summary)
-            print(json.dumps(summary), flush=True)
+            print(json.dumps({k:v for k,v in summary.items()
+                              if k not in ['native_evaluation_at_policy_step', 'final_evaluation']}), flush=True)
         if args.final_mechanism:
             write_mechanism_csv(args.output / 'mechanism_results.csv', all_records, 'state_pool.json', args.source_commit)
         payload = dict(kind='final_checkpoint_conditional_mechanism' if args.final_mechanism else
