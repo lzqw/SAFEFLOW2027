@@ -320,3 +320,14 @@ transitions. They are explicitly not a replay of the earlier200k failure or a
 replacement for native30-episode evaluation or future100-episode primary results.
 No repeated success search
 or environment revalidation was performed.
+
+## Learned2027 reaches its second fixed evaluation (17:00)
+
+Without any parameter change after the100k stall, Learned2027 at200k obtained
+30/30 safe successes,0/30 violations/collisions, return11.4764,183 training
+violations. Matched Iso2027 has30/30 safe successes,0/30 violations, return11.4376,
+195 training violations. The12-count (6.2%) reduction is exact for this
+uninterrupted seed, but small and interim, not a final population-risk claim.
+The300k budget continues. Oracle2027/2028 remain live at58k/54k and have no100k
+held-out results yet. No scientific revision, extra seed or formal freeze was
+introduced in response to the new checkpoint.

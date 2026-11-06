@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 16:30 CST)
+## Current evidence and recovery (through 2026-11-06 17:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -67,6 +67,21 @@ evaluations. This layout was chosen because Learned's native200k evaluation
 had failed there; the new draws are **not** a reconstruction of that episode.
 One successful clip per method is not comparative efficacy evidence. Original
 three environment demonstration clips and all quantitative failures remain.
+
+At17:00 Learned2027 reached its fixed200k evaluation:30/30 safe successes,
+0/30 violations/collisions, return11.4764 and183 training violations. Iso2027
+at the same200k budget had30/30 safe successes,0/30 violations, return11.4376
+and195 training violations. This seed therefore has a small, exact training
+count reduction of12 (6.2%) at matched task success, not an evaluation-risk
+advantage or a final two-seed gain. Its earlier100k failure is learning delay,
+not evidence that it never learns; both checkpoints remain in the curve.
+It continues through the full300k budget without a hyperparameter change.
+
+All three unfinished process PIDs remained alive at17:00: Learned2027 at209k,
+Oracle2027/2028 at58k/54k. The Oracle methods have not yet reached their first
+held-out100k node, so their low training costs/success rates are not a result
+table or a scientifically justified early-stop reason. Controls remain untrained
+and the formal plan remains unfrozen. No extra training matrix was launched.
 
 LearnedDir2028 at its fixed100k evaluation reached28/30 safe successes,
 0/30 violations, return10.4282 and112 training violations. Iso2028 at100k had
