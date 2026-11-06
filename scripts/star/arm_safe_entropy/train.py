@@ -119,6 +119,8 @@ def main():
     if args.resume:
         saved = torch.load(args.resume, map_location=args.device, weights_only=False)
         assert saved['method'] == args.method and saved['task_config'] == asdict(config)
+        if oracle:
+            assert saved['oracle_backend'] == args.oracle_backend, 'Do not silently change oracle model on resume'
         learner.load_state_dict(saved['learner'])
         replay.load_state_dict(saved['replay'])
         steps, violations, episodes = saved['steps'], saved['violations'], saved['episodes']
@@ -183,6 +185,7 @@ def main():
             replay=replay.state_dict(), steps=steps, violations=violations, episodes=episodes,
             source_commit=args.source_commit, rng=dict(python=random.getstate(), numpy=np.random.get_state(),
                                                       torch=torch.get_rng_state(), cuda=torch.cuda.get_rng_state_all()))
+        payload['oracle_backend'] = args.oracle_backend if oracle else None
         temporary = args.output / 'latest_full.tmp'
         torch.save(payload, temporary)
         temporary.replace(args.output / destination)

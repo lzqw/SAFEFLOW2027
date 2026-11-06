@@ -92,6 +92,16 @@ def _state_distance_query(observation):
     return _ENV._distance()[0]
 
 
+def prune_interval_planes(fields, anchor, cell_radius):
+    """Remove only planes provably unable to attain the local lower envelope."""
+    center = fields[:, 0] + fields[:, 1:] @ anchor
+    lower_offset = np.clip(anchor-cell_radius, -1, 1) - anchor
+    upper_offset = np.clip(anchor+cell_radius, -1, 1) - anchor
+    low = center + np.minimum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
+    high = center + np.maximum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
+    return fields[low <= high.min() + 1e-7]
+
+
 def _interval_jacobian_query(item):
     """Differentiate every link/frame distance at a nearby numerical anchor.
 
@@ -118,12 +128,7 @@ def _interval_jacobian_query(item):
         # A plane whose lower bound exceeds another plane's global upper bound
         # cannot be the minimum anywhere in the cell. This changes neither the
         # modelled margin nor its selected gradient (except irrelevant ties).
-        center = fields[:, 0] + fields[:, 1:] @ anchor
-        lower_offset = np.clip(anchor-cell_radius, -1, 1) - anchor
-        upper_offset = np.clip(anchor+cell_radius, -1, 1) - anchor
-        low = center + np.minimum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
-        high = center + np.maximum(fields[:, 1:]*lower_offset, fields[:, 1:]*upper_offset).sum(-1)
-        return fields[low <= high.min() + 1e-7]
+        return prune_interval_planes(fields, anchor, cell_radius)
     finally:
         _ENV.client.restoreState(snapshot)
         _ENV.client.removeState(snapshot)
