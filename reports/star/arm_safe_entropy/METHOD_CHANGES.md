@@ -358,3 +358,33 @@ by seed and valid near-boundary states. The value is measured, not tuned to
 returns, and matches neither total trace nor every state's noise. The plan
 still forbids automatic launch: useful final benefit is not established.
 Oracle2027/2028 remain active at78k; their first held-out results are pending.
+
+## Internal-point geometry and a bounded offline activation probe (19:50)
+
+A16-state/four-path/four-midpoint diagnostic exposes the actual geometry-use
+locations without changing actor sampling. The exact teacher is invoked only
+after Learned paths are generated. Its valid-point cosine averages.4510/.6151,
+versus.7266/.8182 at source actions of the same16 states. Teacher-inactive
+points103/91 out of256 per seed still receive mean learned q=.2807/.1024.
+Value error remains small (2.31/1.39mm); good scalar fitting is not sufficient
+evidence of a correct action derivative. Active/inactive predicted norm ranges
+overlap, so no unsupported numerical-floor increase is applied.
+
+One fixed5000-update offline ReLU/SiLU comparison uses actual replay labels,
+identical initial parameters/batches/masks per seed and excludes exact probe
+observations. Teacher data are evaluation-only. SiLU's axis-cosine-squared and
+value RMSE do not improve over matched fresh ReLU students in this budget;
+signed-cosine improvement alone is not meaningful for a sign-invariant
+diffusion axis. Both are less fitted than the native online heads, so this is
+not a universal activation claim. The candidate is not promoted: no new
+policy training, parameter sweep or main-seed use follows. The default ReLU
+implementation remains numerically unchanged. Extra midpoint trace output is
+diagnostic-only and does not alter behavior or path energy.
+
+These512 midpoint rows (416 unique finite-difference queries,2912 cloned
+controller intervals) and20000 offline auxiliary optimizer steps are reported
+separately from actual environment transitions:
+both probes add zero. Offline head files remain on the server. A read-only
+half-hour resource watcher observes the two existing Oracle PIDs and three
+GPUs while analysis proceeds; it performs no automatic interventions or new
+launches and exits after both watched completion receipts exist.

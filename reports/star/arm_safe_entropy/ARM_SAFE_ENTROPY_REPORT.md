@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 19:00 CST)
+## Current evidence and recovery (through 2026-11-06 20:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -122,6 +122,65 @@ tail includes at least one additional violation and an unknown unlogged tail.
 The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
+
+### Internal-flow geometry probe and one bounded offline candidate
+
+The final policies were probed on16 randomly fixed near-boundary states from
+the existing pool, four generated paths per state and four actual flow
+midpoints per path. Learned sampling was unchanged. Only after those paths
+were generated did an independent exact-simulator finite-difference teacher
+evaluate their margins/normals; it was never a Learned behavior callback or
+training target. The512 queried midpoint rows contain416 unique state/actions,
+requiring2912 cloned controller intervals (7 per finite difference), and zero
+new training transitions. This is not another policy evaluation or a256-state
+covariance estimate.
+
+| Learned seed | Same16 source-action cosine | Internal-midpoint cosine | Internal margin RMSE | Teacher-gradient-inactive points |
+|---|---:|---:|---:|---:|
+| 2027 | .7266 | .4510 | 2.31mm | 103/256 |
+| 2028 | .8182 | .6151 | 1.39mm | 91/256 |
+
+Midpoint cosine uses153/165 valid comparisons respectively. Under the teacher's
+finite-difference resolution and1e-7 validity floor, inactive gradients receive
+no normal. Learned still applies mean q=.2807/.1024 on those inactive points.
+Predicted gradient norm distributions on active/inactive teacher points overlap,
+so simply raising a numerical norm threshold is not an established repair.
+These observations show why good margin values and source-action cosine do
+not guarantee correct geometry where the SDE actually uses it. The small
+selected-state probe and changing valid-gradient support do not establish a
+complete causal diagnosis or disjoint-layout generalization.
+
+One ReLU-versus-SiLU local-head prototype was then fitted offline, using only
+actual retained replay interval-margin labels. Each activation received fresh
+identical weights within each seed, the same draws/bootstrap masks and exactly
+5000 fitting updates; both heads stayed width64. The16 probe observations were
+excluded from fitting (2/4 matching native replay rows). Exact teacher labels
+were evaluation-only. No actor, critic, dual or native policy was changed.
+
+| Offline activation | Seed2027 axis cosine squared | Seed2027 RMSE | Seed2028 axis cosine squared | Seed2028 RMSE |
+|---|---:|---:|---:|---:|
+| ReLU | .3827 | 9.81mm | .4294 | 5.87mm |
+| SiLU | .3166 | 24.92mm | .3773 | 20.90mm |
+
+For diffusion the normal sign is immaterial; a higher signed cosine alone is
+not a successful axis repair. Within this deliberately small, fixed offline
+budget, SiLU is not supported: axis agreement and value fitting did not improve.
+Both fresh offline students also underperform the fully trained native heads;
+this is not proof about SiLU after unlimited fitting. No epoch was selected or
+extended to obtain a favorable outcome. The default remains ReLU; the optional
+activation is used only by the isolated comparison, not a promoted online
+method revision. Offline weights stay on A100 and do not replace run artifacts.
+
+See [internal-point records](diagnostics/final300k-learned-path-geometry-v2/diagnostic.json)
+and [fixed-budget comparison](diagnostics/offline-margin-relu-silu-v2/comparison.json).
+Both analyses have zero new environment training transitions. Oracle2027/2028
+remain live (87k/88k at19:50). A read-only resource watcher now records the three
+GPUs and actual Oracle PIDs on half-hour clock boundaries; it never restarts
+jobs, changes parameters or stops foreign work. Formal/control launch gates
+remain unmet pending useful evidence and a supported targeted repair.
+The20:00 watcher observation confirmed both Oracle PIDs alive at89k, before
+their first fixed100k evaluation. No process was restarted on an observation
+timeout or because another GPU became free.
 
 ### Fixed300k policy geometry and control calibration (not the full mechanism table)
 
