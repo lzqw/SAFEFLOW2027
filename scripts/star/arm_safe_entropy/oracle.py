@@ -242,7 +242,11 @@ class ControllerJacobianOracle(SimulatorOracle):
         return normal.detach(), weight.detach()
 
     def statistics(self):
-        return dict(**super().statistics(), backend='interval_distance_controller_jacobian',
-                    unique_states=self.unique_state_actions, reference_rows=self.reference_rows,
-                    reference_action=[0., 0., 0.], linearization_epsilon=self.epsilon,
-                    planes_per_state=210, exact_for_arbitrary_actions=False)
+        result = super().statistics()
+        result.pop('unique_state_actions')
+        result.update(oracle_kind='first_order_controller_distance_oracle',
+                      backend='interval_distance_controller_jacobian',
+                      unique_states=self.unique_state_actions, reference_rows=self.reference_rows,
+                      reference_action=[0., 0., 0.], linearization_epsilon=self.epsilon,
+                      planes_per_state=210, exact_for_arbitrary_actions=False)
+        return result
