@@ -331,3 +331,30 @@ uninterrupted seed, but small and interim, not a final population-risk claim.
 The300k budget continues. Oracle2027/2028 remain live at58k/54k and have no100k
 held-out results yet. No scientific revision, extra seed or formal freeze was
 introduced in response to the new checkpoint.
+
+## Completed Learned comparison and final-policy diagnosis (19:00)
+
+Learned2027 completed300k with30/30 safe successes,0/30 violations/collisions,
+return11.4663 and223 training violations, exactly Iso2027's final training
+cost. Its small200k cost advantage did not persist. Learned2028 also completed
+with30/30 safe successes, but its206 counter remains incomplete for actual
+collection because of the lost tail. No stable final safety advantage or
+formal-freeze condition is inferred from task mastery alone.
+
+A fixed300k four-policy analysis uses256 distinct shared visited states,
+128 actions/state and211 valid exact common normals (115 near,96 interior).
+Near-boundary endpoint normal/tangent changes versus each Iso seed are
+-2.1%/+5.4% for2027 and-10.5%/-11.2% for2028; interior tangent also contracts
+for both. Normal cosines.7951/.8108 and margin RMSE1.46/1.35mm do not establish
+accurate pathwise geometry. This preserves the distinction between reference
+eigenvalues, covariance along a shared actual risk axis and final actions.
+It is not the final control-inclusive mechanism table; no extra training was
+collected. Exact simulator geometry is diagnostic only, never used by the
+Learned actor during its own training or evaluation.
+
+The previously declared calibration rule yields Iso-Low variance.0358835181
+from the two final Learned seeds' common-normal reference means, equal weighting
+by seed and valid near-boundary states. The value is measured, not tuned to
+returns, and matches neither total trace nor every state's noise. The plan
+still forbids automatic launch: useful final benefit is not established.
+Oracle2027/2028 remain active at78k; their first held-out results are pending.

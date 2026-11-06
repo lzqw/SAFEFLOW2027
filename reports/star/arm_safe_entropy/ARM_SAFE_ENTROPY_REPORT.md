@@ -27,14 +27,14 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 17:00 CST)
+## Current evidence and recovery (through 2026-11-06 19:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
 not evidence of zero population risk. The direction comparison is still open.
-LearnedDir2028 has also now completed300k with30/30 safe successes and0/30
-violations/collisions. Thus five of the original eight v2 development runs
-are complete; two Oracle approximations and Learned2027 remain live.
+Both LearnedDir seeds have also completed300k with30/30 safe successes and0/30
+violations/collisions. Thus six of the original eight v2 development runs
+are complete; the two Oracle approximations remain live.
 
 | Method | Seed | Fixed300k return | Training violations |
 |---|---:|---:|---:|
@@ -42,7 +42,24 @@ are complete; two Oracle approximations and Learned2027 remain live.
 | SAC-Lag | 2028 | 11.4195 | 152 |
 | Flow-Iso | 2027 | 11.4569 | 223 |
 | Flow-Iso | 2028 | 11.4770 | 274 |
+| LearnedDir | 2027 | 11.4663 | 223 |
 | LearnedDir | 2028 | 11.4718 | 206, retained lineage only |
+
+**The completed Learned comparison does not yet demonstrate a stable gain.**
+Learned2027's final training cost223 is exactly Iso2027's223: the12-count
+advantage at200k did not persist through300k. All four Iso/Learned final
+evaluations have30/30 safe successes and0/30 violations, with almost identical
+returns. Learned2028's206 counter still excludes an unknown lost tail. Do not
+turn the earlier100k geometry signal or200k cost gap into a final Pareto claim.
+Learned2027 completed300k actual transitions without interruption in17173.49s,
+with298k learner,596k reward and149k actor updates. No bad seed was restarted or
+discarded, and no result was selected from its intermediate checkpoints.
+
+At19:00 Oracle2027/2028 were both live at78k, not yet at their first held-out
+100k evaluation. Available A100 RAM95GiB and disk60GiB show no present storage
+or memory pressure. Final Iso/Learned inputs are backed up on the4080's4T disk;
+original server files are retained. Main remains unfrozen and no new training
+configuration, control matrix or formal seed was launched.
 
 Learned2028's completed receipt records298k learner updates,596k reward updates,
 149k actor updates, and110k newly collected transitions after the190k restore.
@@ -105,6 +122,52 @@ tail includes at least one additional violation and an unknown unlogged tail.
 The new evaluation is valid for the resumed policy but does not establish a
 Pareto gain, population safety, or the efficacy of a completed two-seed method.
 No scientific early stop or parameter change follows from one30-episode point.
+
+### Fixed300k policy geometry and control calibration (not the full mechanism table)
+
+The completed Iso/Learned2027/2028 policies were compared on one new shared
+pool of256 distinct visited states (128 near-boundary,128 interior),128 samples
+per state, with211 valid exact common normals:115 near-boundary and96 interior.
+This uses the fixed final300k weights and full retained replay, not a favorable
+earlier checkpoint. Undefined normals and the2028 resume-cost caveat remain in
+the native JSON. It collected zero new training transitions.
+
+| Near-boundary, final300k | Reference normal | Reference tangent | Endpoint normal | Endpoint tangent |
+|---|---:|---:|---:|---:|
+| Iso2027 | .040000 | .040000 | .012629 | .011886 |
+| Learned2027 | .036149 | .041925 | .012366 | .012533 |
+| Iso2028 | .040000 | .040000 | .014345 | .014981 |
+| Learned2028 | .035618 | .042191 | .012838 | .013297 |
+
+Tangent is per dimension. Relative to its Iso seed, Learned2027's endpoint
+normal decreases2.1% and tangent increases5.4%; Learned2028's normal decreases
+10.5% but tangent also decreases11.2%. In the interior both seeds contract
+tangent variance (-8.1%/-13.4%). Native reference trace remains.12; near-boundary
+path-average q=.2609/.2584 and raw learned-axis eigenvalues are approximately
+.0322/.0439. The shared true-axis reference allocation and the final sampled
+actions are not the same object. The final result does **not** establish
+stable selective normal suppression with tangential exploration preserved.
+
+Same-state/action near-boundary learned/exact normal cosine is.7951/.8108;
+common-pool margin RMSE is1.46/1.35mm. Low value error does not prove accurate
+action gradients or correct transmission through every internal flow point.
+The current evidence does not isolate which issue is causal. Marginal Gaussian
+entropy proxies, clipping and counterfactual interval risks remain in the JSON;
+those mixed-pool risks are not on-policy episode violation rates.
+
+The predeclared equal-seed, valid-near-state common-normal reference average
+gives an Iso-Low scalar of**.0358835181**, not total-trace matching. It is now
+recorded in `mechanism_control_plan.json`, without looking at control returns.
+Measurement is not a successful method result or permission to launch another
+long matrix: the useful-signal gate remains unmet. Random-Aniso numerical
+matching, trained controls, Oracle conclusions and formal freezing remain open.
+MAIN_RESULTS and MECHANISM_RESULTS remain header-only, rather than relabeling
+this incomplete directional cohort as the complete mechanism experiment.
+
+See [fixed300k native data](diagnostics/paired300k-bothseeds-v2/diagnostic.json),
+[all-four covariance](diagnostics/paired300k-bothseeds-v2/conditional-covariance.png)
+and [normal agreement](diagnostics/paired300k-bothseeds-v2/normal-agreement.png).
+Earlier100k pools and their positive/negative findings below are preserved.
 
 ### Both-seed matched100k diagnosis (15:35, not a final mechanism result)
 

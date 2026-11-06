@@ -24,10 +24,11 @@
     {
       "run": "obstacle_development/flow-learned-seed2027-v2",
       "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
-      "latest_logged_transitions": 209000,
+      "latest_logged_transitions": 300000,
       "evaluation_milestones": [
         100000,
-        200000
+        200000,
+        300000
       ]
     },
     {
@@ -50,13 +51,13 @@
     {
       "run": "obstacle_development/flow-oracle-controller-seed2027-v2",
       "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
-      "latest_logged_transitions": 58000,
+      "latest_logged_transitions": 78000,
       "evaluation_milestones": []
     },
     {
       "run": "obstacle_development/flow-oracle-controller-seed2028-v2",
       "source_commit": "3fd8bbfe9dc39bdca8d28e9cfb72fc95ff139ce7",
-      "latest_logged_transitions": 54000,
+      "latest_logged_transitions": 78000,
       "evaluation_milestones": []
     },
     {

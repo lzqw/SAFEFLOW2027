@@ -23,8 +23,12 @@
     "undefined_normal_handling": "exclude only from normal projections; retain records and report counts",
     "iso_low_scalar_definition": "mean LearnedDir common-normal reference variance over valid near-boundary states, first equal-weight states per seed, then equal-weight the two training seeds",
     "iso_low_scalar_scope": "one global scalar; matches calibration-pool near-boundary average normal noise, not total trace or every state",
-    "iso_low_variance": null,
-    "measured_from_diagnostic": null,
+    "iso_low_variance": 0.035883518056867805,
+    "measured_from_diagnostic": "reports/star/arm_safe_entropy/diagnostics/paired300k-bothseeds-v2/diagnostic.json",
+    "measurement_analysis_commit": "b7933dc2f73c4cadff07e47759599c6b0ef29398",
+    "valid_near_boundary_states_per_policy": 115,
+    "source_seed_reference_normal_variance": {"2027": 0.03614910577010321, "2028": 0.035617930343632406},
+    "measurement_does_not_pass_useful_signal_launch_gate": true,
     "not_selected_using_control_returns": true
   },
   "random_aniso": {
