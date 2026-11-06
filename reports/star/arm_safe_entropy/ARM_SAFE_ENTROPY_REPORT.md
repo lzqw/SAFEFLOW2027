@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-06 23:22 CST)
+## Current evidence and recovery (through 2026-11-06 23:34 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -149,6 +149,17 @@ the original pair stays on GPU0. Each uses32 controller workers and2 envs.
 At23:21 native PIDs454684/454738 were alive with2000 warmup transitions each;
 these initial rows are not evidence of productive post-warmup learning yet.
 No foreign task was stopped, and no new environment installation was needed.
+
+At23:34 both R1 native checkpoints reached4000 steps with rho.5 in both full
+and learner state,2000 learner updates,4000 reward updates and1000 actor
+updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
+This confirms actual post-warmup learning and saving, not just startup rows.
+There is no held-out R1 result yet. The live matrix is:
+
+| Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
+|---|---:|---:|---:|---:|
+| Original rho.25 | 129k | 126k | 300k | 0 |
+| R1 rho.50 | 4k | 4k | 100k | 1 |
 
 Source767357e records rho in native manifests, full checkpoints, policy state
 and analysis/export metadata, rejects reinterpreting rho.25 checkpoints as.5,

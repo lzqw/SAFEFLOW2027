@@ -423,3 +423,10 @@ the actual rho. The one CPU-only algebra/state fixture checks positive trace.12,
 paired energy and rho.5 restore/rejection with zero new environment steps.
 Result columns/plots distinguish R1 from the original method/seed instead of
 averaging or replacing it. The earlier SiLU prototype remains unpromoted.
+
+At23:34 both real R1 full checkpoints load at4000 transitions, rho.5 in outer
+and learner state,2000 learner updates,4000 reward updates and1000 actor
+updates. Finite native loss/energy diagnostics confirm post-warmup progress;
+this supersedes the startup-only caveat without inventing an early evaluation.
+Both remain on the original100k revision budget; the original pair continues
+300k. Only compact data are mirrored through the host to GitHub.
