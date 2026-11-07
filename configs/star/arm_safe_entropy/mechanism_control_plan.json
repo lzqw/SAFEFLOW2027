@@ -1,5 +1,5 @@
 {
-  "status": "measurement_protocol_only_not_launch_authorization",
+  "status": "stage_evidence_reviewed_ready_for_requested_bounded_controls_not_main",
   "task_version": "SafeReach-Obstacle-v2",
   "simulation_only": true,
   "training_seeds": [2027, 2028],
@@ -10,6 +10,34 @@
   "evaluation_layout_seed_start": 52027,
   "launch_requires_useful_directional_evidence": true,
   "no_automatic_launch": true,
+  "stage_evidence_review": {
+    "time": "2026-11-07T15:30:00+08:00",
+    "original_development_runs_completed": 8,
+    "bounded_R1_runs_completed": 2,
+    "stage1_training_conservative_upper_bound": 2951808,
+    "all_original_final_safe_successes_per_seed": "30/30",
+    "original_oracle_final_training_violations": [210, 231],
+    "matched_iso_final_training_violations": [223, 274],
+    "oracle_native_sources": [
+      "e792e45ae5d2fbcff518814e4617f1312ecc390a",
+      "3fd8bbfe9dc39bdca8d28e9cfb72fc95ff139ce7"
+    ],
+    "native_final_evaluations": [
+      "reports/star/arm_safe_entropy/obstacle_development/flow-oracle-controller-seed2027-v2/evaluation_300000.json",
+      "reports/star/arm_safe_entropy/obstacle_development/flow-oracle-controller-seed2028-v2/evaluation_300000.json"
+    ],
+    "reason": "Learnable shared task plus modest privileged-direction training-count signal warrants the explicitly requested bounded global-noise and random-direction controls; Learned superiority remains unproven",
+    "limitations": [
+      "Oracle2028 learned later; cumulative count reduction is not a clean task-engagement-adjusted or episode-rate effect",
+      "Oracle is a privileged controller approximation, not a Learned policy or perfect upper bound",
+      "Clean Learned2027 final cost ties Iso; Learned2028 lost-tail cost is unknown",
+      "No evaluation-risk advantage and no formal-method freeze"
+    ],
+    "control_stage_transitions_separate_from_closed_first_stage": 1200000,
+    "controls_started": false,
+    "main_frozen": false,
+    "not_a_new_hyperparameter_sweep": true
+  },
   "calibration": {
     "policy_checkpoint": "fixed_final_300000",
     "source_methods": ["flow_iso", "flow_learned"],

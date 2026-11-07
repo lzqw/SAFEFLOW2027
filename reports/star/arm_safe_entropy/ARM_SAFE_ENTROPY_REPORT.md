@@ -1,4 +1,4 @@
-# Arm safe entropy — development in progress
+# Arm safe entropy — development complete, mechanism comparison pending
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -27,14 +27,16 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 14:30 CST)
+## Current evidence and recovery (through 2026-11-07 15:30 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
 not evidence of zero population risk. The direction comparison is still open.
 Both LearnedDir seeds have also completed300k with30/30 safe successes and0/30
-violations/collisions. Oracle2027 has now also completed300k. Thus seven of the
-original eight v2 development runs are complete; only Oracle2028 remains live.
+violations/collisions. Both original Oracle runs have now also completed300k.
+All eight original v2 development runs and both bounded R1 runs are complete.
+This is completion of the development budgets, not completion of the requested
+mechanism evidence or proof that the learned directional method is effective.
 
 | Method | Seed | Fixed300k return | Training violations |
 |---|---:|---:|---:|
@@ -43,6 +45,7 @@ original eight v2 development runs are complete; only Oracle2028 remains live.
 | Flow-Iso | 2027 | 11.4569 | 223 |
 | Flow-Iso | 2028 | 11.4770 | 274 |
 | OracleDir, privileged controller approximation | 2027 | 11.4664 | 210 |
+| OracleDir, privileged controller approximation | 2028 | 11.4182 | 231 |
 | LearnedDir | 2027 | 11.4663 | 223 |
 | LearnedDir | 2028 | 11.4718 | 206, retained lineage only |
 
@@ -55,6 +58,63 @@ turn the earlier100k geometry signal or200k cost gap into a final Pareto claim.
 Learned2027 completed300k actual transitions without interruption in17173.49s,
 with298k learner,596k reward and149k actor updates. No bad seed was restarted or
 discarded, and no result was selected from its intermediate checkpoints.
+
+### Completed development: what is and is not established
+
+Oracle2028's native fixed300k result is30/30 safe successes,0/30
+violations/collisions, return11.4182 and231 training violations. Its receipt
+records300000 newly collected transitions,298000 learner,596000 reward and
+149000 actor updates, elapsed94199.16s. The69574190 cloned controller intervals
+are privileged approximate-model queries, not training environment transitions.
+At15:30 neither original Oracle PID remained and both completion receipts were
+present; the read-only watcher exited normally. Compact evidence now contains
+35 native evaluations and0/9 formal rows. No original or R1 trainer remains live.
+
+1. **The simulated task is learned.** All eight original final300k evaluations
+   have30/30 safe successes and0/30 violations/collisions on the common layouts.
+   Earlier failures remain in the curves;30 episodes do not prove zero risk.
+2. **Oracle direction has a modest training-count signal, not a proven entropy
+   mechanism.** Counts210/231 versus Iso223/274 are5.8%/15.7% lower, aggregate
+   441 versus497 (11.3%). Final success is matched, but evaluation violations
+   are tied at zero. Oracle2028 learned later, so fewer training violations may
+   partly reflect delayed risky task engagement; counts are not episode rates
+   or a clean causal decomposition. SAC's aggregate371 is lower than Oracle's
+   441. Geometry is privileged and approximate, not an error-free upper bound.
+3. **Learned direction has not reliably retained the gain.** Its clean2027
+   training count equals Iso's223, and2028's206 is only a retained-lineage
+   counter with an unknown lost tail. No exact pooled cost improvement is
+   reported. Final evaluation success and risk do not distinguish it from Iso.
+4. **Tangent preservation is not yet established.** On the fixed shared final
+   pool, Learned's near-boundary terminal tangent variance changed+5.4%/-11.2%
+   against Iso for the two seeds. Reference eigenvalues and fixed trace alone
+   do not establish the final-action claim. Iso-Low/Random-Aniso training and
+   the full common-state mechanism comparison are still outstanding.
+5. **The bounded revision is mixed, and the offline candidates were negative.**
+   R1 rho.50 removed2028's100k stall but its Iso-relative training counts improved
+   in one seed and worsened in the other. The offline activation comparison
+   and frozen-anchor intervention were not promoted into trained policies.
+
+### Next bounded stage, not an automatic formal expansion
+
+The first-stage conservative training upper bound is2951808 transitions,
+including both R1 runs and the possible interrupted tail; this stage is now
+closed. No additional weight search or extra development trial is added.
+The user-requested **Iso-Low and Random-Aniso controls** are the next separate
+mechanism stage: two seeds2027/2028 per method,300k per seed,1.2M transitions
+total, fixed100k/200k/300k common30-episode evaluations. These are the four
+explicitly requested mechanism runs, not four new hyperparameter candidates.
+
+The completed learnable foundation and modest privileged-direction training
+signal justify this limited comparison of directional allocation versus global
+noise reduction; they do not justify claiming Learned superiority or freezing
+formal settings. The predeclared Iso-Low scalar remains0.035883518056867805,
+measured from the existing shared final pool, not tuned using control returns.
+Random-Aniso keeps a direction fixed within one action generation; its actual
+reference spectrum must still be measured on the common states, not assumed
+identical across independently trained geometry heads. The plan is evidence-
+reviewed, but no control has been launched at this report capture. Main remains
+unfrozen,0/9; payload and robustness stages are not silently omitted or declared
+complete. They remain downstream of resolving the first-task method evidence.
 
 **The first original Oracle fixed300k result is now available.** Seed2027
 obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210
@@ -331,12 +391,12 @@ and learner state,2000 learner updates,4000 reward updates and1000 actor
 updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
 This confirms actual post-warmup learning and saving, not just startup rows.
 At that23:34 startup check no held-out R1 result existed. The matrix below is
-updated to14:30, when Oracle2027 and both R1 seeds have completed their fixed
+updated to15:30, when both original Oracle and both R1 seeds have completed their fixed
 final evaluations:
 
 | Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
 |---|---:|---:|---:|---:|
-| Original rho.25 | 300k, completed | 291k | 300k | 0 |
+| Original rho.25 | 300k, completed | 300k, completed | 300k | 0, finished |
 | R1 rho.50 | 100k, completed | 100k, completed | 100k | 1, finished |
 
 Source767357e records rho in native manifests, full checkpoints, policy state

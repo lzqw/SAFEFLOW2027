@@ -61,10 +61,11 @@
     {
       "run": "obstacle_development/flow-oracle-controller-seed2028-v2",
       "source_commit": "3fd8bbfe9dc39bdca8d28e9cfb72fc95ff139ce7",
-      "latest_logged_transitions": 293000,
+      "latest_logged_transitions": 300000,
       "evaluation_milestones": [
         100000,
-        200000
+        200000,
+        300000
       ]
     },
     {
