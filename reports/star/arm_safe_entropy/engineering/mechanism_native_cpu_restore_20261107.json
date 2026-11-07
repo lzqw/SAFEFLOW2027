@@ -1,0 +1,42 @@
+{
+  "kind": "native_mechanism_checkpoint_cpu_restore_only",
+  "observed_after_native_watch": "2026-11-07T16:00:00+08:00",
+  "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+  "new_environment_transitions": 0,
+  "optimizer_steps": 0,
+  "training_processes_interrupted": false,
+  "training_resume_executed": false,
+  "scope": "One CPU restore of each native model/target/optimizer state and replay; not a physical simulator continuation, policy evaluation or new environment validation",
+  "records": [
+    {
+      "method": "flow_iso_low",
+      "training_seed": 2027,
+      "checkpoint_path": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-iso-low-seed2027-v2/latest_full.pt",
+      "checkpoint_steps": 40000,
+      "reference_variance": 0.035883518056867805,
+      "normal_variance_ratio": 0.25,
+      "learner_updates": 38000,
+      "reward_updates": 76000,
+      "actor_updates": 19000,
+      "replay_count": 40000,
+      "learner_optimizer_state_exact_after_cpu_restore": true,
+      "replay_contents_exact_after_restore": true,
+      "reference_control": "aligned"
+    },
+    {
+      "method": "flow_random_aniso",
+      "training_seed": 2027,
+      "checkpoint_path": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-random-aniso-seed2027-v2/latest_full.pt",
+      "checkpoint_steps": 20000,
+      "reference_variance": 0.04,
+      "normal_variance_ratio": 0.25,
+      "learner_updates": 18000,
+      "reward_updates": 36000,
+      "actor_updates": 9000,
+      "replay_count": 20000,
+      "learner_optimizer_state_exact_after_cpu_restore": true,
+      "replay_contents_exact_after_restore": true,
+      "reference_control": "random_aniso"
+    }
+  ]
+}

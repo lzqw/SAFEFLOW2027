@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 15:38 CST)
+## Current evidence and recovery (through 2026-11-07 16:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -143,6 +143,20 @@ table is fabricated from these startup rows. Compact manifests/progress are
 mirrored server-to-host; checkpoints/replay stay on the server. The read-only
 half-hour watcher follows actual queue/native PIDs and all three GPUs, without
 restarting a process on a transient observation failure.
+
+At16:00 the watcher directly observed both native trainer PIDs and both waiting
+queue PIDs alive. Iso-Low2027 reached42k and Random-Aniso2027 reached24k; these
+are training progress, not fixed held-out results. Both have now saved native
+full checkpoints. One [CPU restore check](engineering/mechanism_native_cpu_restore_20261107.json)
+loaded the actual40k/20k checkpoints without interrupting either job: all learner,
+target and optimizer state matched exactly after restore, and replay contents
+matched at40000/20000 rows. Update counts were38000/18000 learner,
+76000/36000 reward and19000/9000 actor, with the original reference variance
+and rho preserved. This supersedes the startup-only checkpoint caveat above.
+It performs zero optimizer/environment steps and is not a claim of bitwise
+physical-simulator continuation. No environment suite or extra scientific
+diagnostic was repeated. Native evaluation count remains35, formal rows0/9;
+both100k control evaluations remain pending.
 
 **The first original Oracle fixed300k result is now available.** Seed2027
 obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210
