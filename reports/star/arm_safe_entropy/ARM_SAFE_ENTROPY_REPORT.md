@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 16:54 CST)
+## Current evidence and recovery (through 2026-11-07 17:32 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -189,6 +189,42 @@ predeclared nominal methods and controls; the original development figure
 continues to retain both R1 runs separately. This plotting-only extension
 changes no training code, reference setting or evaluation protocol. Queued
 methods without native progress are not drawn as measured zero-step outcomes.
+
+### Both controls now have a first checkpoint; direction specificity remains open
+
+Random-Aniso2027's fixed100k evaluation obtained30/30 safe successes,0/30
+violations/collisions, return11.3747 and128 training violations. This is9 below
+Iso2027's137 (6.6%) at matched success, despite the independent random direction.
+Learned2027's same100k policy had0/30 success and74 violations; its low count
+cannot be called a task-preserving gain. The random control's positive interim
+count difference is retained, not discarded or treated as an aligned-direction
+success. This one-seed result means an Iso-relative gap alone is insufficient
+evidence for correct normal alignment; actual spectra, learning histories and final outcomes
+still need the complete two-seed comparison.
+
+Iso-Low2027 has also reached fixed200k:30/30 safe successes,0/30
+violations/collisions, return11.4748 and188 training violations. At the same
+budget Iso2027 had195 and Learned2027 had183, all30/30 safe success. Iso-Low's
+7-count reduction against Iso (3.6%) and Learned's5-count edge over Iso-Low
+are small one-seed interim differences, not a final directional-exploration
+advantage. Oracle's171 and SAC's162 at200k remain in the original comparison.
+No evaluation-risk advantage is established by the tied zero-violation samples.
+
+The17:30 watcher directly observed both trainer PIDs and both waiting queue
+PIDs alive at199k/109k; the subsequent compact capture reached202k/111k and
+contains38 native evaluations, formal rows0/9. Both controls retain full300k
+budgets. No scientific early stop, seed substitution or parameter adjustment
+was introduced in response to these mixed outcomes.
+
+For the eventual required final mechanism analysis, the two completed original
+Oracle300k inputs were copied to the existing4080 corpus at
+`/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/final300k-calibration-20261106/`.
+Each added run includes its96MiB full checkpoint, final policy and native
+config/evaluation/receipt/progress. The SSH-to-host-to-SSH stream completed
+successfully; no large checkpoint was stored on the host or uploaded to GitHub,
+and A100 originals were not removed. The4T mount has1.6TiB free. This only
+prepares inputs alongside the existing Iso/Learned data; it adds no environment
+steps, teacher queries, duplicate environment checks or new scientific probe.
 
 **The first original Oracle fixed300k result is now available.** Seed2027
 obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210
