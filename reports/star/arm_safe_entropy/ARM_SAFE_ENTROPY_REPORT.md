@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 08:00 CST)
+## Current evidence and recovery (through 2026-11-07 09:00 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -54,6 +54,38 @@ turn the earlier100k geometry signal or200k cost gap into a final Pareto claim.
 Learned2027 completed300k actual transitions without interruption in17173.49s,
 with298k learner,596k reward and149k actor updates. No bad seed was restarted or
 discarded, and no result was selected from its intermediate checkpoints.
+
+**R1 is now complete for both seeds at its predeclared100k endpoint.** At09:00
+both native completion receipts were present and neither R1 PID remained.
+Each final evaluation used the same30 common layouts and stochastic behavior
+policy. The rho.50 revision did not replace either original rho.25 run:
+
+| Method at100k | Seed2027 safe success / train violations | Seed2028 safe success / train violations | Mean return |
+|---|---|---|---:|
+| Flow-Iso | 30/30 /137 | 30/30 /107 | 11.3492 |
+| Original Oracle rho.25 | 30/30 /104 | 0/30 /66 | 4.5827 |
+| R1 Oracle rho.50 | 30/30 /117 | 30/30 /117 | 11.3961 |
+
+All six evaluations have0/30 violations/collisions; original Oracle2028's zero
+success is safe stalling, not a safety win. R1 removes that seed's early stall
+but does not establish a robust Iso-relative safety advantage. Compared with
+Iso, seed2027's training count is14.6% lower, while seed2028's is9.3% higher.
+The aggregate234 versus244 is only4.1% lower and is not consistent across
+seeds. No significance, population-risk, final300k or Learned-policy gain is
+inferred from this short pair. Both R1 policies remain fixed final100k results;
+there is no best-checkpoint selection or automatic extension to300k.
+
+R1 seed2027 collected100000 new transitions in33887.09s, with98000 learner,
+196000 reward and49000 actor updates. Its23523318 cloned controller intervals
+are model-query overhead, not collected training transitions. The first-stage
+conservative projected total remains2951808 transitions including the original
+eight complete budgets, the two bounded R1 runs, prior engineering pilots and
+the possible7000-step interrupted tail. Only the two original Oracle processes
+remain live, observed at240k/218k at09:00. The R1 watcher exited normally after
+confirming both completion receipts; the original-pair half-hour watcher
+continues. Native evaluations now total33, formal rows remain0/9 and no method
+is frozen. No further trial, mechanism control or new diagnostic was launched
+while awaiting the original fixed300k endpoints.
 
 **New fixed200k evidence now covers both original Oracle seeds.** Oracle2028
 recovered from its retained0/30 success at100k to30/30 safe success,0/30
@@ -278,12 +310,12 @@ and learner state,2000 learner updates,4000 reward updates and1000 actor
 updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
 This confirms actual post-warmup learning and saving, not just startup rows.
 At that23:34 startup check no held-out R1 result existed. The matrix below is
-updated to08:00, when seed2028 has completed its fixed final evaluation:
+updated to09:00, when both R1 seeds have completed their fixed final evaluations:
 
 | Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
 |---|---:|---:|---:|---:|
-| Original rho.25 | 229k | 205k | 300k | 0 |
-| R1 rho.50 | 93k | 100k, completed | 100k | 1 |
+| Original rho.25 | 240k | 218k | 300k | 0 |
+| R1 rho.50 | 100k, completed | 100k, completed | 100k | 1, finished |
 
 Source767357e records rho in native manifests, full checkpoints, policy state
 and analysis/export metadata, rejects reinterpreting rho.25 checkpoints as.5,
