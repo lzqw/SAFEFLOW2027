@@ -27,14 +27,14 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 09:00 CST)
+## Current evidence and recovery (through 2026-11-07 14:30 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
 not evidence of zero population risk. The direction comparison is still open.
 Both LearnedDir seeds have also completed300k with30/30 safe successes and0/30
-violations/collisions. Thus six of the original eight v2 development runs
-are complete; the two Oracle approximations remain live.
+violations/collisions. Oracle2027 has now also completed300k. Thus seven of the
+original eight v2 development runs are complete; only Oracle2028 remains live.
 
 | Method | Seed | Fixed300k return | Training violations |
 |---|---:|---:|---:|
@@ -42,6 +42,7 @@ are complete; the two Oracle approximations remain live.
 | SAC-Lag | 2028 | 11.4195 | 152 |
 | Flow-Iso | 2027 | 11.4569 | 223 |
 | Flow-Iso | 2028 | 11.4770 | 274 |
+| OracleDir, privileged controller approximation | 2027 | 11.4664 | 210 |
 | LearnedDir | 2027 | 11.4663 | 223 |
 | LearnedDir | 2028 | 11.4718 | 206, retained lineage only |
 
@@ -54,6 +55,26 @@ turn the earlier100k geometry signal or200k cost gap into a final Pareto claim.
 Learned2027 completed300k actual transitions without interruption in17173.49s,
 with298k learner,596k reward and149k actor updates. No bad seed was restarted or
 discarded, and no result was selected from its intermediate checkpoints.
+
+**The first original Oracle fixed300k result is now available.** Seed2027
+obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210
+training violations. Compared with Iso2027's223 at the same final budget, this
+is13 fewer violations (5.8%) at matched success, not an evaluation-risk gain.
+It is also9 below SAC2027's219, although a single development seed cannot
+establish a robust ranking. The earlier24.1% reduction at100k and12.3% at200k
+have narrowed; neither should be reported as the final effect size. Learned2027
+still has223 violations and has not inherited this Oracle gain.
+
+The native receipt records300000 newly collected transitions,298000 learner,
+596000 reward and149000 actor updates, elapsed92509.26s. Its47045565 cloned
+controller intervals are privileged approximate-model-query overhead, not
+training environment transitions. The14:30 watcher observed the original2027
+PID absent with its completion receipt, while original2028 PID297991 was live
+at291k; the subsequent compact capture reached293k. Seven original development
+runs and both bounded R1 runs are complete, with34 native evaluations and0/9
+formal rows. The remaining original seed continues to its fixed300k endpoint;
+no seed is replaced, budget extended, method frozen or additional matrix
+launched from this one final Oracle result.
 
 **R1 is now complete for both seeds at its predeclared100k endpoint.** At09:00
 both native completion receipts were present and neither R1 PID remained.
@@ -310,11 +331,12 @@ and learner state,2000 learner updates,4000 reward updates and1000 actor
 updates each. Actor losses.2864/.3520 and energies22.67/18.41 were finite.
 This confirms actual post-warmup learning and saving, not just startup rows.
 At that23:34 startup check no held-out R1 result existed. The matrix below is
-updated to09:00, when both R1 seeds have completed their fixed final evaluations:
+updated to14:30, when Oracle2027 and both R1 seeds have completed their fixed
+final evaluations:
 
 | Live Oracle group | Seed2027 progress | Seed2028 progress | Predeclared target per seed | A100 GPU |
 |---|---:|---:|---:|---:|
-| Original rho.25 | 240k | 218k | 300k | 0 |
+| Original rho.25 | 300k, completed | 291k | 300k | 0 |
 | R1 rho.50 | 100k, completed | 100k, completed | 100k | 1, finished |
 
 Source767357e records rho in native manifests, full checkpoints, policy state
