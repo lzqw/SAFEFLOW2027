@@ -1,0 +1,112 @@
+{
+  "task_version": "SafeReach-Obstacle-v2",
+  "phases": [
+    "obstacle_development",
+    "mechanism_control"
+  ],
+  "runs": [
+    {
+      "run": "obstacle_development/flow-iso-seed2027-v2",
+      "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-iso-seed2028-v2-5080",
+      "source_commit": "3c1b407696a07a71704a65c0372c0c98fc18db5b",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-learned-seed2027-v2",
+      "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-learned-seed2028-v2-5080",
+      "source_commit": "267e84871172e459881da83f5eb3a12a431fbe71",
+      "latest_logged_transitions": 196000,
+      "evaluation_milestones": [
+        100000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-learned-seed2028-v2-a100-resume",
+      "source_commit": "65de8b032ebc1bb8d3c8a9937f2d316feb2f74f4",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-oracle-controller-seed2027-v2",
+      "source_commit": "e792e45ae5d2fbcff518814e4617f1312ecc390a",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/flow-oracle-controller-seed2028-v2",
+      "source_commit": "3fd8bbfe9dc39bdca8d28e9cfb72fc95ff139ce7",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/sac-lag-seed2027-v2",
+      "source_commit": "ce0d175709adeece12f04f1f4afb9a705e0e7c74",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "obstacle_development/sac-lag-seed2028-v2-5080",
+      "source_commit": "3c1b407696a07a71704a65c0372c0c98fc18db5b",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "mechanism_control/flow-iso-low-seed2027-v2",
+      "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+      "latest_logged_transitions": 136000,
+      "evaluation_milestones": [
+        100000
+      ]
+    },
+    {
+      "run": "mechanism_control/flow-random-aniso-seed2027-v2",
+      "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+      "latest_logged_transitions": 76000,
+      "evaluation_milestones": []
+    }
+  ],
+  "comparison_scope": "Nominal methods and requested controls; R1 retained separately in the default development figure",
+  "note": "Top panels: stochastic held-out evaluation only. Bottom panels: training statistics, not held-out performance. Missing checkpoints are not assigned zeros."
+}

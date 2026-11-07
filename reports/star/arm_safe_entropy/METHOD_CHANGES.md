@@ -469,3 +469,10 @@ receipt. No foreign task is interrupted. The closed first-stage conservative
 upper bound remains2951808; the separately requested mechanism stage adds at
 most1.2M transitions, with no automatic9M main expansion. Main remains unfrozen.
 Native startup logs confirm post-warmup SGD, not trained control efficacy.
+
+The plotting helper now has an optional `--include-controls` mode that writes
+a separate nominal-method/control figure and JSON provenance. The original
+development output and its R1 comparisons remain available; nominal inclusion
+is predeclared, not selected by return. No training, geometry or budget changes
+are made. Iso-Low2027's first100k result is retained even though its training
+violation count140 is slightly above Iso137 at matched30/30 safe success.

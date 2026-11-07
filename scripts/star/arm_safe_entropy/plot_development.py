@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--task-version', default='SafeReach-Obstacle-v2')
+    parser.add_argument('--include-controls', action='store_true',
+                        help='Separate nominal-method/control figure; original R1 curves remain in the default development figure')
     args = parser.parse_args()
     report = Path(__file__).resolve().parents[3] / 'reports/star/arm_safe_entropy'
     fig, axes = plt.subplots(2, 2, figsize=(10, 6.5), sharex=True)
@@ -21,11 +23,15 @@ def main():
         axis.set_title(title, fontsize=10)
         axis.grid(alpha=.2)
     included = []
-    for config_path in sorted((report / 'obstacle_development').glob('*/run_config.json')):
+    phases = ['obstacle_development', 'mechanism_control'] if args.include_controls else ['obstacle_development']
+    config_paths = [path for phase in phases for path in sorted((report / phase).glob('*/run_config.json'))]
+    for config_path in config_paths:
         config = json.loads(config_path.read_text())
         run = config_path.parent
         if config['task_config']['version'] != args.task_version or (run / 'engineering_stop.json').exists():
             continue
+        if args.include_controls and config.get('revision_id'):
+            continue  # Predeclared nominal control comparison, not selection by outcome.
         with (run / 'progress.csv').open(newline='') as stream:
             progress = []
             for row in csv.DictReader(stream):
@@ -45,8 +51,10 @@ def main():
             label += f" ({config.get('oracle_backend', 'exact')})"
         if config.get('revision_id'):
             label += f" [R1 rho={config.get('normal_variance_ratio', .25):g}]"
-        base_color = {'flow_iso': 0, 'flow_learned': 2, 'flow_oracle': 4, 'sac_lag': 6}.get(config['method'], 8)
-        color = f'C{base_color + int(config["training_seed"] == 2028)}'
+        base_color = {'flow_iso': 0, 'flow_learned': 2, 'flow_oracle': 4, 'sac_lag': 6,
+                      'flow_iso_low': 8, 'flow_random_aniso': 10}.get(config['method'], 12)
+        color_index = base_color + int(config['training_seed'] == 2028)
+        color = plt.get_cmap('tab20')(color_index) if args.include_controls else f'C{color_index}'
         style = '--' if config.get('revision_id') else '-'
         marker = 's' if config.get('revision_id') else 'o'
         x = [row['steps'] / 1000 for row in progress]
@@ -69,14 +77,18 @@ def main():
     if included:
         handles, labels = axes[1, 0].get_legend_handles_labels()
         fig.legend(handles, labels, loc='lower center', ncol=2, fontsize=7)
-    fig.suptitle(f'{args.task_version}: interim development, per seed; no smoothing or extrapolation', fontsize=11)
+    scope = 'nominal development + mechanism controls' if args.include_controls else 'interim development'
+    fig.suptitle(f'{args.task_version}: {scope}, per seed; no smoothing or extrapolation',
+                 fontsize=10 if args.include_controls else 11)
     fig.tight_layout(rect=(0, .18 if included else 0, 1, .96))
     destination = report / 'figures'
     destination.mkdir(exist_ok=True)
-    fig.savefig(destination / f'{args.task_version}-learning.png', dpi=150)
+    stem = f'{args.task_version}-mechanism-learning' if args.include_controls else f'{args.task_version}-learning'
+    fig.savefig(destination / f'{stem}.png', dpi=150)
     plt.close(fig)
-    (destination / f'{args.task_version}-learning.json').write_text(json.dumps(dict(
-        task_version=args.task_version, runs=included,
+    (destination / f'{stem}.json').write_text(json.dumps(dict(
+        task_version=args.task_version, phases=phases, runs=included,
+        comparison_scope='Nominal methods and requested controls; R1 retained separately in the default development figure' if args.include_controls else 'All development variants, including R1',
         note='Top panels: stochastic held-out evaluation only. Bottom panels: training statistics, not held-out performance. Missing checkpoints are not assigned zeros.'), indent=2) + '\n')
     print(json.dumps(dict(task_version=args.task_version, plotted_runs=included)))
 
