@@ -34,9 +34,29 @@
       "No evaluation-risk advantage and no formal-method freeze"
     ],
     "control_stage_transitions_separate_from_closed_first_stage": 1200000,
-    "controls_started": false,
+    "controls_started": true,
     "main_frozen": false,
     "not_a_new_hyperparameter_sweep": true
+  },
+  "execution": {
+    "started_at": "2026-11-07T15:36:22+08:00",
+    "host": "tjucta-a100",
+    "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+    "gpu_index": 1,
+    "maximum_concurrent_learners": 2,
+    "num_envs_per_learner": 2,
+    "checkpoint_every": 10000,
+    "seed_order_per_method": [2027, 2028],
+    "run_names": [
+      "flow-iso-low-seed2027-v2", "flow-iso-low-seed2028-v2",
+      "flow-random-aniso-seed2027-v2", "flow-random-aniso-seed2028-v2"
+    ],
+    "startup_native_training_pids": {"flow_iso_low_2027": 564938, "flow_random_aniso_2027": 564939},
+    "seed2028_waiting_queue_pids": {"flow_iso_low": 564933, "flow_random_aniso": 564929},
+    "queue_scope": "each invocation launches exactly one predeclared300k run after its native dependency receipt and shared capacity check",
+    "scientific_early_stopping": false,
+    "automatic_restart_or_extension": false,
+    "foreign_workloads_interrupted": false
   },
   "calibration": {
     "policy_checkpoint": "fixed_final_300000",

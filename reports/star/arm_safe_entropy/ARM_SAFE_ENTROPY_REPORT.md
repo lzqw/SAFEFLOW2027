@@ -1,4 +1,4 @@
-# Arm safe entropy — development complete, mechanism comparison pending
+# Arm safe entropy — development complete, bounded mechanism controls running
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 15:30 CST)
+## Current evidence and recovery (through 2026-11-07 15:38 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -112,9 +112,37 @@ measured from the existing shared final pool, not tuned using control returns.
 Random-Aniso keeps a direction fixed within one action generation; its actual
 reference spectrum must still be measured on the common states, not assumed
 identical across independently trained geometry heads. The plan is evidence-
-reviewed, but no control has been launched at this report capture. Main remains
+reviewed. At15:30 no control had yet been launched; the bounded stage started
+at15:36 as described below. Main remains
 unfrozen,0/9; payload and robustness stages are not silently omitted or declared
 complete. They remain downstream of resolving the first-task method evidence.
+
+### Mechanism-control execution, no efficacy result yet
+
+The A100 has102GiB available host RAM,60GiB disk free and ample GPU memory at
+the stage handoff. Both original and R1 pairs are terminal with native receipts;
+no foreign task was stopped. The existing single-run queue was extended only
+to accept the two requested controls, require the evidence-reviewed plan and
+enforce the already measured Iso-Low scalar/artifact. It still launches one
+300k run per explicit invocation, never a main matrix or a tuning sweep.
+
+Source645e19ecc61aea1f42831ded9c56e8f6cb32e23d was pushed and deployed as an
+immutable snapshot before launch. On A100 GPU1, Iso-Low2027 PID564938 and
+Random-Aniso2027 PID564939 are actually running, each with2 envs and unchanged
+UTD/reward/actor update ratios. Their2028 queues PIDs564933/564929 respectively
+wait for the same-method2027 completion receipt, maintaining two learners at
+most. Every run has a fixed300k budget and100k/200k/300k common30-episode
+evaluations, with full checkpoints every10k. No scientific early stop, automatic
+restart, method addition or budget extension is enabled.
+
+At15:38 native logs reached5k/3k transitions, past the2k random warmup, with
+finite actor losses.5909/-.1802 and energies18.03/44.33. This is actual SGD,
+not just a queued intent or warmup count. Neither run is yet at its scheduled
+10k full checkpoint or100k evaluation. No control efficacy or complete mechanism
+table is fabricated from these startup rows. Compact manifests/progress are
+mirrored server-to-host; checkpoints/replay stay on the server. The read-only
+half-hour watcher follows actual queue/native PIDs and all three GPUs, without
+restarting a process on a transient observation failure.
 
 **The first original Oracle fixed300k result is now available.** Seed2027
 obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210

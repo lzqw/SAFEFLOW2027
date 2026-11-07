@@ -449,3 +449,23 @@ environment steps, teacher queries or optimizer updates. Common axes are from
 the original pool actions, not newly queried anchor truth. This does not test
 retrained-anchor performance, episode risk, or the complete mechanism controls.
 The four existing Oracle jobs continue; no further short run is launched.
+
+## Requested mechanism controls after completed development (2026-11-07 15:36)
+
+All eight original300k development runs and the two bounded R1 runs are complete.
+No actor, critic, geometry head, reward, task layout or learned-method setting
+is changed for this stage. The next four runs are the user-requested Iso-Low
+and Random-Aniso controls, seeds2027/2028,300k each, not another weight search.
+Iso-Low uses the predeclared measured variance0.035883518056867805 with paired
+energy rescaling; Random-Aniso retains.04/rho.25, its own actual-transition
+margin heads/q rule and one independent direction fixed per action generation.
+Actual common-state spectra must be reported rather than assumed identical
+across independently trained heads.
+
+Queue source645e19e adds only control method choices, fixed calibration/plan
+argument checks and stage metadata to the existing one-run queue. On A100 GPU1
+two2027 learners start together, with each2028 run waiting for its own2027
+receipt. No foreign task is interrupted. The closed first-stage conservative
+upper bound remains2951808; the separately requested mechanism stage adds at
+most1.2M transitions, with no automatic9M main expansion. Main remains unfrozen.
+Native startup logs confirm post-warmup SGD, not trained control efficacy.

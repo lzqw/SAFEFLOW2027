@@ -1,0 +1,18 @@
+{
+  "method": "flow_random_aniso",
+  "seed": 2027,
+  "dependency": "/home/lzqw/SAFEFLOW2027_ARM/runs/obstacle_development/flow-oracle-controller-seed2027-v2",
+  "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-random-aniso-seed2027-v2",
+  "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+  "stage": "mechanism_control",
+  "reference_variance": null,
+  "reference_match_run": null,
+  "minimum_free_mib": 12288,
+  "maximum_gpu_utilization": 85.0,
+  "observed_at_unix": 1794036982.226594,
+  "phase": "launched_one_mechanism_control_run_only",
+  "pid": 564939,
+  "log": "/home/lzqw/SAFEFLOW2027_ARM/queues/control-random-aniso-2027-v2.log",
+  "queued_transitions": 300000,
+  "oracle_backend": null
+}

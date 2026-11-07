@@ -1,0 +1,15 @@
+{
+  "method": "flow_random_aniso",
+  "seed": 2028,
+  "dependency": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-random-aniso-seed2027-v2",
+  "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-random-aniso-seed2028-v2",
+  "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+  "stage": "mechanism_control",
+  "reference_variance": null,
+  "reference_match_run": null,
+  "minimum_free_mib": 12288,
+  "maximum_gpu_utilization": 85.0,
+  "observed_at_unix": 1794036982.2038283,
+  "phase": "waiting_for_dependency_completion",
+  "queued_transitions": 300000
+}
