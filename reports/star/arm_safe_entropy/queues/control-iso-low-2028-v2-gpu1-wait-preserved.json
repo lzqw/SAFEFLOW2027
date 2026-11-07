@@ -1,0 +1,16 @@
+{
+  "method": "flow_iso_low",
+  "seed": 2028,
+  "dependency": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-iso-low-seed2027-v2",
+  "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/mechanism_control/flow-iso-low-seed2028-v2",
+  "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+  "stage": "mechanism_control",
+  "reference_variance": 0.035883518056867805,
+  "reference_match_run": "reports/star/arm_safe_entropy/diagnostics/paired300k-bothseeds-v2/diagnostic.json",
+  "minimum_free_mib": 12288,
+  "maximum_gpu_utilization": 85.0,
+  "observed_at_unix": 1794049072.3592544,
+  "phase": "waiting_for_shared_capacity",
+  "free_mib": 78409.0,
+  "utilization": 94.0
+}

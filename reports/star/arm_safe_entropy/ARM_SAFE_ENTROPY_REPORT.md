@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 17:32 CST)
+## Current evidence and recovery (through 2026-11-07 19:08 CST)
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is
@@ -225,6 +225,51 @@ successfully; no large checkpoint was stored on the host or uploaded to GitHub,
 and A100 originals were not removed. The4T mount has1.6TiB free. This only
 prepares inputs alongside the existing Iso/Learned data; it adds no environment
 steps, teacher queries, duplicate environment checks or new scientific probe.
+
+### First final control: no clean-seed Learned advantage over global low noise
+
+Iso-Low2027 completed its fixed300k budget with30/30 safe successes,0/30
+violations/collisions, return11.4724 and213 training violations. Its native
+receipt records300000 collected transitions,298000 learner,596000 reward and
+149000 actor updates in10280.69s. At the same final budget Iso2027 and
+Learned2027 each had223 violations, so this global low-noise control has10
+fewer (4.5%) than either, with matched final success. Oracle2027 had210 and
+SAC2027 had219. These are one-seed outcomes, not statistical significance,
+population-risk claims or the completed two-seed entropy-mechanism result.
+Learned has not beaten global low noise in this clean final-seed comparison.
+
+Random-Aniso2027's fixed200k evaluation also has30/30 safe successes,0/30
+violations/collisions, return11.4681 and199 training violations. Iso2027 had195
+and Learned2027 had183 at200k. Thus the random control is now4 above Iso
+(2.1%), reversing its earlier100k count advantage; the favorable early node
+must not be selected as its final effect. Its complete300k budget is retained.
+
+The waiting Iso-Low2028 queue was found self-blocked at the85% whole-card
+utilization guard on GPU1, which already hosted the project's Random-Aniso
+learner. Read-only inspection confirmed88GiB available RAM,60GiB disk free,
+78GiB free GPU1 memory and94% GPU1 utilization, while GPU0 had about79GiB free
+and only12% utilization. Only the still-unstarted queue PID564933 was stopped
+after checking its command, waiting state and absent native output. Its JSON
+record was preserved as `control-iso-low-2028-v2-gpu1-wait-preserved.json`.
+The identical source645e19e queue was reissued on GPU0, retaining the85% guard,
+12GiB minimum-free guard, seed, calibration and full300k budget. This is a
+placement correction, not a scientific restart, shortened run or extra trial.
+No active learner or foreign task was interrupted; no data was deleted.
+
+New native Iso-Low2028 PID584259 is actually running with visible device0,
+already at5k with finite post-warmup loss/energy. The19:08 capture is:
+
+| Control | Seed | A100 GPU | Observed state/progress | Fixed target |
+|---|---:|---:|---|---:|
+| Iso-Low | 2027 | 1 | completed300k | 300k |
+| Iso-Low | 2028 | 0 | running5k | 300k |
+| Random-Aniso | 2027 | 1 | running206k | 300k |
+| Random-Aniso | 2028 | 1 | queued, not started | 300k |
+
+The latter still waits for its own2027 receipt. Concurrency remains at most
+two native learners, now using both A100 cards. One of four requested controls
+is complete; native evaluations total40 and formal rows remain0/9. The
+half-hour watcher reads the current queue/native PIDs and remains live.
 
 **The first original Oracle fixed300k result is now available.** Seed2027
 obtained30/30 safe successes,0/30 violations/collisions, return11.4664 and210
