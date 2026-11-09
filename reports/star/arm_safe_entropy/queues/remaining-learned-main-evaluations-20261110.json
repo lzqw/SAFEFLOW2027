@@ -1,0 +1,33 @@
+{
+  "stage": "resource_only_frozen_evaluation_handoff",
+  "native_and_evaluation_host": "tjucta-a100",
+  "observed_at_local": "2026-11-10 06:19 Asia/Taipei",
+  "status_at_observation": "pending_native_1M_not_evaluated_yet",
+  "evaluation_source_commit": "498535af5633796234df5b65af755207b8e6a996",
+  "gpu": 0,
+  "interval_seconds": 1800,
+  "maximum_checks": 48,
+  "additional_training_transitions": 0,
+  "automatic_training_restart": false,
+  "overwrite_or_retry_failed_evaluation": false,
+  "algorithm_or_task_changed": false,
+  "foreign_workloads_changed": false,
+  "jobs": [
+    {
+      "method": "flow_learned",
+      "seed": 2030,
+      "native_pid": 857627,
+      "run": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2030-v3",
+      "output": "/home/lzqw/SAFEFLOW2027_ARM/analysis/main_robustness/flow_learned-seed2030-v3",
+      "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-robustness-flow_learned-seed2030-v3.log"
+    },
+    {
+      "method": "flow_learned",
+      "seed": 2032,
+      "native_pid": 947125,
+      "run": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2032-v3-a100-fresh",
+      "output": "/home/lzqw/SAFEFLOW2027_ARM/analysis/main_robustness/flow_learned-seed2032-v3",
+      "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-robustness-flow_learned-seed2032-v3.log"
+    }
+  ]
+}
