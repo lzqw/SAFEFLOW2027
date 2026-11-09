@@ -47,7 +47,7 @@ def main():
         try:
             resolve_phase(args.method, args.seed, budget, 100, phase='main')
             validate_main_freeze(frozen, args.method, args.seed, .04,
-                                 frozen.get('normal_variance_ratio'), frozen['task_version'])
+                                 task_version=frozen['task_version'])
         except ValueError as error:
             parser.error(str(error))
     elif control:
