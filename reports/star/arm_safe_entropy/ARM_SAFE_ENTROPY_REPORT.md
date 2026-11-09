@@ -555,6 +555,17 @@ episodes, and interruption can occur inside an update. Existing trajectories
 and counters were preserved rather than claiming an exact migration that the
 code does not implement. The read-only half-hour watcher remains active.
 
+At05:13, a one-shot dependency handoff directly confirmed the still-running
+Iso2032 PID738207 at956k and began waiting for its completed1M receipt. It
+will then stream the four fixed policies/native evaluations from4080 to a
+fresh A100 input directory and launch the existing frozen test on GPU0.
+This makes the useful evaluation handoff independent of the next health
+check, without a new trainer, physical diagnostic, checkpoint selection or
+interruption. Missing native identity, a failed transfer or an existing
+output is an error, never an automatic restart/overwrite. The
+[handoff snapshot](queues/formal-main-flow_iso-seed2032-v3-a100-evaluation-handoff.json)
+records this pending resource action; it is not a completed-evaluation claim.
+
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
 and [MAIN_ROBUSTNESS_STATUS.json](MAIN_ROBUSTNESS_STATUS.json). These are
