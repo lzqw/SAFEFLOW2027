@@ -50,11 +50,12 @@
     "monitor_actions": "read actual native PID identity and completion receipts; no automatic restart, new method or budget extension",
     "foreign_workloads_changed": false,
     "latest_half_hour_capture": {
-      "observed_at": "2026-11-09T16:24:35+08:00",
-      "native_pids_alive": [746585, 746586, 746587],
+      "observed_at": "2026-11-09T16:54:35+08:00",
+      "native_pids_alive": [746586, 746587],
+      "completed_native_pid_absent_with_receipt": 746585,
       "method_order": ["sac_lag", "flow_iso", "flow_learned"],
-      "observed_transitions": [284000, 178000, 100000],
-      "subsequent_compact_capture_transitions": [285000, 179000, 100000],
+      "observed_transitions": [300000, 238000, 131000],
+      "subsequent_compact_capture_transitions": [300000, 240000, 132000],
       "sac_fixed100k_safe_successes_of30": 19,
       "sac_fixed100k_violation_episodes_of30": 0,
       "sac_fixed100k_training_violations": 108,
@@ -70,9 +71,16 @@
       "sac_fixed200k_safe_successes_of30": 30,
       "sac_fixed200k_violation_episodes_of30": 0,
       "sac_fixed200k_training_violations": 164,
-      "completed_screening_runs": 0,
+      "iso_fixed200k_safe_successes_of30": 30,
+      "iso_fixed200k_violation_episodes_of30": 0,
+      "iso_fixed200k_training_violations": 225,
+      "sac_fixed300k_final_safe_successes_of30": 30,
+      "sac_fixed300k_final_violation_episodes_of30": 0,
+      "sac_fixed300k_final_training_violations": 190,
+      "completed_screening_runs": 1,
+      "sac_final_archive": "/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/relative-layout-screen-v3-20261109/sac-lag-seed2027-v3",
       "completed_formal_runs": 0,
-      "next_scheduled_check_approx": "2026-11-09T16:54:35+08:00"
+      "next_scheduled_check_approx": "2026-11-09T17:24:35+08:00"
     }
   }
 }

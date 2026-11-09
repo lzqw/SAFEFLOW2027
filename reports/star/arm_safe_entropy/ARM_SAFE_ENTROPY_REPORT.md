@@ -27,11 +27,11 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current screening evidence — 2026-11-09 16:24–16:25 CST
+## Current screening evidence — 2026-11-09 16:54–16:55 CST
 
-The scheduled half-hour watcher directly confirmed all three original v3
-trainer PIDs alive at284k/178k/100k transitions (SAC/Iso/Learned). The compact
-capture shortly afterwards reached285k/179k/100k. No process was restarted,
+The scheduled half-hour watcher confirmed SAC's native PID absent with its
+normal300k completion receipt; Iso/Learned PIDs remain alive at238k/131k.
+The compact capture reached300k/240k/132k (SAC/Iso/Learned). No process was restarted,
 configuration changed, seed replaced or budget expanded.
 
 **All three methods now have their predeclared fixed100k evaluation** on
@@ -58,21 +58,41 @@ an **early, one-seed task-acquisition signal** (+40 percentage points success,
 evaluation violation versus Iso's0; this is not a clean evaluation-risk Pareto
 gain. SAC still has higher100k success19/30 with0/30 violations. The signal
 does not establish a final300k gain, cross-seed stability or readiness for9M.
-All methods continue through the original300k, with no scientific early stop.
+Each run retains its original300k endpoint, with no scientific early stop;
+SAC has now reached that endpoint and the two flow runs continue unchanged.
 
-SAC's fixed200k result is also available:30/30 safe successes,0/30
-violations/contact collisions, return11.4412 and164 training violations.
-Mean time-to-goal is .8773s over all30 successes. Iso/Learned200k results are
-still pending, so this is not a matched200k method ranking or a final result.
+### First completed screen and matched200k foundation results
 
-There are51 native development/ability/control/screen evaluations in the
-combined CSV, including four new v3 checkpoints; the original47 remain
-intact. Robustness rows remain40 and formal completed rows0/9. All three
-screening runs retain their fixed300k endpoints. Recent10k-transition speeds
-are51.6/31.5/18.1 transitions/s; approximate remaining times are0.1/1.1/3.1h
+| Fixed checkpoint | Safe success | Violation/contact-collision episodes | Return | Training violations | Successful time-to-goal |
+|---|---:|---:|---:|---:|---:|
+| SAC-Lag200k | 30/30 | 0/30 /0/30 | 11.4412 | 164 | .8773s,30 successes |
+| Flow-Iso200k | 30/30 | 0/30 /0/30 | 11.4818 | 225 | .7720s,30 successes |
+| SAC-Lag300k, final | 30/30 | 0/30 /0/30 | 11.4594 | 190 | .8160s,30 successes |
+
+Iso recovered from its retained100k safe stall to full safe success at200k;
+the early failure is not its final outcome. Its training count225 versus
+SAC's164 at matched200k is higher, despite slightly higher return/shorter
+successful time. Learned's200k result is still pending; neither its100k result
+nor current training success is substituted for that missing milestone.
+SAC's native receipt records300000 newly collected transitions,298000 learner,
+reward and actor updates each, in5793.14s. This is one completed screening run,
+not completion of all0.9M or a formal-seed result.
+
+The completed SAC final policy, full-resume checkpoint and compact native
+evidence were copied by successful SSH stream to
+`/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/relative-layout-screen-v3-20261109/sac-lag-seed2027-v3/`.
+The4T mount has1.5TiB free. A100 originals remain intact; no large checkpoint
+was written to the host or uploaded to GitHub. The active flow checkpoints
+were not copied mid-write or interrupted.
+
+There are53 native development/ability/control/screen evaluations in the
+combined CSV, including six new v3 checkpoints; the original47 remain
+intact. Robustness rows remain40 and formal completed rows0/9. Screening
+completion is1/3. Recent10k-transition speeds are51.6/33.6/17.7 transitions/s;
+approximate remaining times are0/0.5/2.6h
 respectively, conditional on unchanged resource sharing. This is a throughput
 projection, not a completion promise. The next scheduled native-PID check is
-approximately16:54. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
+approximately17:24. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
 retains all three native curves without extrapolated evaluation points.
 
 ## Stage decision — zero-shot obstacle evaluation, 2026-11-09
