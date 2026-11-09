@@ -16,7 +16,8 @@ import torch
 
 from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
 from scripts.star.arm_safe_entropy.models import ArmLearner
-from scripts.star.arm_safe_entropy.run_protocol import resolve_phase, validate_main_freeze, validate_resume_origin
+from scripts.star.arm_safe_entropy.run_protocol import (
+    evaluation_schedule, resolve_phase, validate_main_freeze, validate_resume_origin)
 
 
 class Replay:
@@ -55,20 +56,31 @@ def evaluate(learner, config, episodes=30, seed_start=52027):
     records = []
     try:
         for seed in range(seed_start, seed_start + episodes):
-            obs, _ = env.reset(seed=seed)
+            obs, initial = env.reset(seed=seed)
             total = 0.
+            minimum = initial['minimum_distance']
             for step in range(config.horizon):
                 action = learner.action(obs[None])[0]
                 obs, reward, done, truncated, info = env.step(action)
                 total += reward
+                minimum = min(minimum, info['minimum_distance'])
                 if done or truncated:
                     break
             records.append(dict(seed=seed, episode_return=total, length=step + 1,
-                                **{k: info[k] for k in ['safe_success', 'success', 'violation', 'collision', 'clearance_violation']}))
+                minimum_distance_m=minimum,
+                time_to_goal_seconds=(step+1)*env.control_dt if info['safe_success'] else None,
+                time_to_goal_capped_seconds=((step+1) if info['safe_success'] else config.horizon)*env.control_dt,
+                **{k: info[k] for k in ['safe_success', 'success', 'violation', 'collision',
+                                      'clearance_violation', 'true_horizon_terminal']}))
     finally:
         env.close()
+    successful_times = [r['time_to_goal_seconds'] for r in records if r['safe_success']]
     return dict(episodes=episodes, fixed_layout_seeds=list(range(seed_start, seed_start + episodes)),
                 policy_sampling='stochastic_same_behavior_policy',
+                time_to_goal_seconds=float(np.mean(successful_times)) if successful_times else None,
+                time_to_goal_successes=len(successful_times),
+                time_to_goal_capped_seconds=float(np.mean([r['time_to_goal_capped_seconds'] for r in records])),
+                minimum_distance_m=float(np.mean([r['minimum_distance_m'] for r in records])),
                 **{key: float(np.mean([r[key] for r in records])) for key in
                    ['safe_success', 'success', 'violation', 'collision', 'clearance_violation', 'episode_return']},
                 records=records)
@@ -91,7 +103,10 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--resume', type=Path)
-    parser.add_argument('--eval-every', type=int)
+    evaluation_options = parser.add_mutually_exclusive_group()
+    evaluation_options.add_argument('--eval-every', type=int)
+    evaluation_options.add_argument('--eval-steps', type=int, nargs='+',
+                                    help='Explicit fixed milestones; formal runs use100k/300k/600k/1M')
     parser.add_argument('--eval-episodes', type=int, default=30)
     parser.add_argument('--eval-seed-start', type=int)
     parser.add_argument('--checkpoint-every', type=int, default=10000)
@@ -113,10 +128,16 @@ def main():
         phase = resolve_phase(args.method, args.seed, args.steps, args.eval_episodes, args.phase, args.smoke)
     except ValueError as error:
         parser.error(str(error))
-    if (phase == 'relative_layout_screening') != (args.task_version == 'SafeReach-RelativeLayout-v3'):
-        parser.error('The new relative-layout task is only the explicitly bounded screening stage')
+    if phase == 'relative_layout_screening' and args.task_version != 'SafeReach-RelativeLayout-v3':
+        parser.error('Relative-layout screening must retain its explicitly named task')
+    if args.task_version == 'SafeReach-RelativeLayout-v3' and phase not in {'relative_layout_screening', 'main'}:
+        parser.error('The relative-layout task is only for its screening stage or a genuinely frozen main stage')
     args.eval_seed_start = args.eval_seed_start if args.eval_seed_start is not None else (62027 if phase == 'main' else 52027)
     args.eval_every = args.eval_every if args.eval_every is not None else (25000 if phase == 'ability' else 100000)
+    try:
+        declared_evaluation_steps = evaluation_schedule(args.steps, args.eval_every, args.eval_steps, args.num_envs)
+    except ValueError as error:
+        parser.error(str(error))
     if args.method == 'flow_iso_low' and (args.reference_variance is None or not args.reference_match_run):
         parser.error('Iso-Low requires explicitly measured --reference-variance and --reference-match-run')
     variance = .04 if args.reference_variance is None else args.reference_variance
@@ -132,12 +153,13 @@ def main():
             parser.error('Main requires --frozen-config after useful directional development evidence')
         frozen_record = json.loads(args.frozen_config.read_text())
         try:
-            validate_main_freeze(frozen_record, args.method, args.seed, variance, args.normal_variance_ratio)
+            validate_main_freeze(frozen_record, args.method, args.seed, variance,
+                                 args.normal_variance_ratio, args.task_version)
         except ValueError as error:
             parser.error(str(error))
         if args.eval_seed_start != frozen_record['evaluation_layout_seed_start']:
             parser.error('Use the frozen common main evaluation layout seeds')
-        if args.eval_every != frozen_record['evaluation_every']:
+        if declared_evaluation_steps != frozen_record['evaluation_steps']:
             parser.error('Use the frozen main evaluation schedule')
     resume_manifest = None
     if args.resume:
@@ -210,7 +232,8 @@ def main():
         device=args.device, num_envs=args.num_envs, total_transition_budget=args.steps,
         initial_steps=initial_steps, transition_count='sum of actual train env.step calls',
         evaluation_layout_seed_start=args.eval_seed_start, evaluation_episodes=args.eval_episodes,
-        evaluation_every=args.eval_every,
+        evaluation_every=args.eval_every if args.eval_steps is None else None,
+        evaluation_steps=declared_evaluation_steps,
         resume_path=str(args.resume) if args.resume else None,
         resume_episode_handling='new episode on learner/replay resume; partial prior episodes not claimed exact',
         batch_size=256, replay_capacity=300000, random_transitions=2000, utd=1.0,
@@ -262,8 +285,7 @@ def main():
     stream = (args.output / 'progress.csv').open('w', newline='')
     writer = csv.DictWriter(stream, fieldnames=fields)
     writer.writeheader()
-    evaluation_steps = sorted(set(range(args.eval_every, args.steps + 1, args.eval_every)) | {args.steps})
-    evaluation_steps = [s for s in evaluation_steps if s > steps]
+    evaluation_steps = [s for s in declared_evaluation_steps if s > steps]
     latest = {k: 0. for k in fields[7:]}
     latest['alpha'] = float(learner.log_alpha.detach().exp())
 

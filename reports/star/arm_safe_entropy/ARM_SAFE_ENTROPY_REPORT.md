@@ -95,6 +95,15 @@ projection, not a completion promise. The next scheduled native-PID check is
 approximately17:24. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
 retains all three native curves without extrapolated evaluation points.
 
+While waiting, local **protocol-only preparation** adds the requested future
+100k/300k/600k/1M main milestones, explicit frozen-task-version matching and
+time-to-goal/minimum-distance reductions from the same native episodes. The
+old100k/200k/300k screening schedule is unchanged; existing trainers remain on
+immutable95ab831. The planned independent main layouts start92027. The main
+plan still has frozen=false and null task/method freeze; no formal run,
+additional rollout or algorithm module was introduced. This removes an
+execution-interface gap without treating current interim results as a freeze.
+
 ## Stage decision — zero-shot obstacle evaluation, 2026-11-09
 
 The new user instruction supersedes the earlier pending-stage question: keep

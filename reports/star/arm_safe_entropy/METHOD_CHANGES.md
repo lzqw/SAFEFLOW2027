@@ -537,3 +537,25 @@ explicit. SAC-Lag/Iso/Learned are each fresh-seed2027,300k, total0.9M; a separat
 results. Core models, geometry heads, optimizers and update ratios are unchanged.
 The existing collector and plot helper accept the new named task phase; no
 additional validation framework or old-history repair is introduced.
+
+## Formal protocol preparation while the bounded screen runs
+
+The local runner now accepts explicit evaluation milestones, mutually
+exclusive with an interval. The default screening schedule is unchanged:
+100k/200k/300k. A future frozen main run must match100k/300k/600k/1M exactly,
+use100 episodes and explicitly record the selected task version. The v3 task
+can enter main only through that frozen protocol; it cannot be relabelled as
+ability or another development phase. `main_plan.json` still has frozen=false,
+null task-version/method freeze,0launched runs and an explicit preparation-only
+flag. Independent planned main layout seeds start92027, not the development
+or robustness layouts. This preparation does not choose a scientific outcome.
+
+Future native evaluations additionally retain the interval minimum distance,
+successful time-to-goal with coverage, and horizon-capped time including
+failures; these are reductions of the same episodes, not extra rollouts.
+Main exports include these fields alongside success/risk/return/training cost.
+A single stdlib schedule check confirms the old screening schedule, requested
+four-node formal schedule and rejection of the still-unfrozen plan, with
+0physics/0SGD. No model, optimizer, geometry, task-layout or reward change is
+introduced. Active trainers continue their immutable95ab831 snapshot and never
+read these local preparation edits. No formal job is launched by this change.

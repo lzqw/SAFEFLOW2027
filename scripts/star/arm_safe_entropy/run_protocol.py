@@ -2,6 +2,21 @@
 MAIN_SEEDS = {2030, 2031, 2032}
 MAIN_METHODS = {'sac_lag', 'flow_iso', 'flow_learned'}
 CONTROL_METHODS = {'flow_iso_low', 'flow_random_aniso'}
+MAIN_EVALUATION_STEPS = [100000, 300000, 600000, 1000000]
+
+
+def evaluation_schedule(steps, every=None, milestones=None, num_envs=2):
+    if milestones is None:
+        if every is None or every <= 0:
+            raise ValueError('Use a positive evaluation interval or explicit milestones')
+        result = sorted(set(range(every, steps+1, every)) | {steps})
+    else:
+        result = list(milestones)
+        if not result or result != sorted(set(result)) or result[-1] != steps:
+            raise ValueError('Explicit milestones must be increasing, unique and end at the fixed final budget')
+    if any(step <= 0 or step > steps or step % num_envs for step in result):
+        raise ValueError('Every evaluation milestone must be reachable by actual transition counting')
+    return result
 
 
 def resolve_phase(method, seed, steps, evaluation_episodes, phase=None, smoke=False):
@@ -22,12 +37,13 @@ def resolve_phase(method, seed, steps, evaluation_episodes, phase=None, smoke=Fa
     return phase
 
 
-def validate_main_freeze(record, method, seed, variance, rho=.25):
+def validate_main_freeze(record, method, seed, variance, rho=.25, task_version='SafeReach-Obstacle-v2'):
     if not record.get('frozen'):
         raise ValueError('Development configuration is not frozen; do not launch main training')
     if method not in record['methods'] or seed not in record['training_seeds']:
         raise ValueError('Method/seed is absent from the frozen configuration')
     required = dict(steps_per_seed=1000000, evaluation_episodes=100,
+                    task_version=task_version, evaluation_steps=MAIN_EVALUATION_STEPS,
                     reference_variance=variance, normal_variance_ratio=rho, cost_limit=.1,
                     directional_loss=False, inward_drift=False, action_projection=False)
     for key, expected in required.items():

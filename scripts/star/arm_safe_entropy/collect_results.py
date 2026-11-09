@@ -57,7 +57,8 @@ def main():
                 validate_main_freeze(config.get('frozen_config') or {}, config['method'],
                                      config['training_seed'], config.get('reference_variance') or .04,
                                      config.get('normal_variance_ratio') or
-                                     (config.get('frozen_config') or {}).get('normal_variance_ratio') or .25)
+                                     (config.get('frozen_config') or {}).get('normal_variance_ratio') or .25,
+                                     task_version=config['task_config']['version'])
                 if main_freeze_record is None:
                     main_freeze_record = config['frozen_config']
                 elif main_freeze_record != config['frozen_config']:
@@ -96,6 +97,9 @@ def main():
                            'final_native_not_formal_matrix' if final else 'interim_native')
                 row['return'] = row.pop('return_')
                 if is_main:
+                    row.update({key: e.get(key) for key in
+                        ['time_to_goal_seconds', 'time_to_goal_successes',
+                         'time_to_goal_capped_seconds', 'minimum_distance_m']})
                     if final:
                         if step != 1000000 or e['episodes'] != 100:
                             raise ValueError('Main table is only the fixed final1M checkpoint,100 episodes per training seed')
@@ -121,6 +125,8 @@ def main():
     temporary.replace(report / 'DEVELOPMENT_RESULTS.csv')
     main_columns = ['task_version', 'method', 'training_seed', 'transitions', 'evaluation_episodes',
                     'safe_success', 'task_success', 'violation_rate', 'collision_rate', 'return',
+                    'time_to_goal_seconds', 'time_to_goal_successes', 'time_to_goal_capped_seconds',
+                    'minimum_distance_m',
                     'training_violation_count', 'training_violation_count_scope', 'normal_variance_ratio',
                     'revision_id', 'source_commit', 'run', 'status']
     temporary = report / 'MAIN_RESULTS.csv.tmp'
