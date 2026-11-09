@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 03:19 check and four completed formal tests
+## Current frozen-main execution — 2026-11-10 03:49 check and four completed formal tests
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four completed runs account for the rest of the nine-run frozen cohort.
@@ -38,16 +38,16 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | running713k,PID857626 | running391k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | running773k,PID857626 | running422k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | running330k,PID749852 | running382k,PID738207 | running250k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | running505k,PID749852 | running529k,PID738207 | running280k,A100 GPU1,PID947125 |
 
-The03:18:57 watcher directly confirmed all five live native PIDs and all four
+The03:48:58 watcher directly confirmed all five live native PIDs and all four
 native1M completion receipts; those four trainers have exited normally.
 The table uses the subsequent compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total6.066M/9M primary transitions
-(67.4% of the fixed budget).
+The nine accepted native counters now total6.509M/9M primary transitions
+(72.3% of the fixed budget).
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Four full runs
 and80/180 formal condition rows are complete; partial steps are not completion.
@@ -92,6 +92,10 @@ This is one completed held-out training seed, not proof of cross-seed
 robustness, lower training cost, superiority to a v3 Iso-Low control (none was
 requested), or completion of the nine-run formal objective. The remaining
 five runs and their required fixed tests continue without new modules or tuning.
+No additional fixed evaluation or1M completion was available in this03:49
+capture. The full formal table remains80/180 condition rows and4/9 completed
+run evaluations; progress above is actual training, not fabricated evaluation
+points or a claim that the whole experiment is72.3% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -454,6 +458,11 @@ remaining trainers. A100 utilization was21%/91%,4080 utilization95%; the now
 available A100 GPU0 also executed the required SAC2030 frozen test. There
 are no unstarted jobs to add, and no extra training was introduced beyond
 the nine predeclared runs merely to change a utilization display.
+The03:48:58 observation again confirmed all five remaining trainers and all
+four completed receipts. A100 utilization was21%/95%,4080 utilization95%.
+A100 GPU0 now has only the already-running Iso2030 learner; all other planned
+runs have already started on their assigned devices. No new scientific job,
+configuration change or additional physical diagnostic was introduced.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
