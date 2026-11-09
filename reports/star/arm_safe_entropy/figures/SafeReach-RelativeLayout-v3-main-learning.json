@@ -40,10 +40,11 @@
     {
       "run": "main/flow-learned-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 575000,
+      "latest_logged_transitions": 603000,
       "evaluation_milestones": [
         100000,
-        300000
+        300000,
+        600000
       ]
     },
     {
@@ -60,7 +61,7 @@
     {
       "run": "main/flow-learned-seed2032-v3-a100-fresh",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 431000,
+      "latest_logged_transitions": 459000,
       "evaluation_milestones": [
         100000,
         300000
