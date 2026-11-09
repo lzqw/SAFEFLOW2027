@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 00:47–00:49 CST
+## Current frozen-main execution — 2026-11-10 01:17–01:19 CST
 
 Six native main trainers are directly confirmed alive and past random warmup;
 two actual waiting queue processes and one completed run account for the
@@ -37,16 +37,16 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running579k,PID857625 | running418k,PID857626 | running236k,PID857627 |
-| 2031 /4080,4T | running470k,PID665494 | completed1M,native receipt | running716k,PID518591 |
-| 2032 /A100+4080 | queued4080 after new Iso,PID551582 | queued4080 after2031 SAC,PID551580 | running96k,A100 GPU1,PID947125 |
+| 2030 / A100 | running669k,PID857625 | running476k,PID857626 | running267k,PID857627 |
+| 2031 /4080,4T | running676k,PID665494 | completed1M,native receipt | running799k,PID518591 |
+| 2032 /A100+4080 | queued4080 after2031 Learned,PID715848 | queued4080 after2031 SAC,PID551580 | running126k,A100 GPU1,PID947125 |
 
-The00:47 watcher directly confirmed all six live native and two queue PIDs,
+The01:17 watcher directly confirmed all six live native and two queue PIDs,
 plus Iso2031's normal1M completion receipt; its trainer has exited normally.
 The table uses the subsequent compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The seven accepted native counters now total3.515M/9M primary transitions
-(39.1% of the fixed budget), with two unstarted queued jobs contributing zero.
+The seven accepted native counters now total4.013M/9M primary transitions
+(44.6% of the fixed budget), with two unstarted queued jobs contributing zero.
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. One full run
 and20/180 formal condition rows are complete; partial steps are not completion.
@@ -127,21 +127,34 @@ do not compare this600k recovery with Iso's1M failure as a matched ranking.
 SAC2031 at100k has92/100 safe successes,0/100 violations,return10.2820,
 102 training violations and1.3935s successful-only time over92 successes
 (1.602s horizon-capped over100). All earlier adverse points remain visible.
-The full same-seed2031,300k triple is now available (100 fixed nominal episodes
+The full same-seed2031,300k/600k triples are now available (100 fixed nominal episodes
 per policy). All these intermediate results remain separate from the1M primary:
 
-| Method at300k,seed2031 | Safe success | Violation rate | Training violations | Horizon-capped time-to-goal |
-|---|---:|---:|---:|---:|
-| SAC-Lag | 99% | 0% | 167 | .8136s |
-| Flow-Iso | 100% | 0% | 238 | .7684s |
-| LearnedDir | 95% | 5% | 230 | .8732s |
+| Checkpoint,seed2031 | Method | Safe success | Violation rate | Training violations | Horizon-capped time-to-goal |
+|---|---|---:|---:|---:|---:|
+| 300k | SAC-Lag | 99% | 0% | 167 | .8136s |
+| 300k | Flow-Iso | 100% | 0% | 238 | .7684s |
+| 300k | LearnedDir | 95% | 5% | 230 | .8732s |
+| 600k | SAC-Lag | 100% | 0% | 242 | .7124s |
+| 600k | Flow-Iso | 100% | 0% | 320 | .7572s |
+| 600k | LearnedDir | 100% | 0% | 352 | .7532s |
 
 Learned has37.7% more training violations than SAC at this checkpoint, as well
 as lower observed safe success and higher evaluation risk. Its early Iso-relative
 count advantage is therefore not evidence of general task-level superiority.
 This is one intermediate seed/budget comparison, not a final cross-seed verdict;
 all runs retain the same fixed1M endpoint regardless of these outcomes.
-There are fourteen main milestone evaluations
+At600k, with identical observed100/100 success and0/100 risk, Learned has
+45.5% more training violations than SAC (352 versus242); Iso has32.2% more.
+This matched intermediate comparison does not support a Learned task-level
+safety advantage, despite its much earlier count reduction relative to Iso.
+SAC2030 at600k is also100/100 with0/100 risk,177 training violations,
+return11.5352 and .7016s time-to-goal. Learned2032's first100k result is94/100
+safe successes,1/100 violations,return10.5919 and117 training violations;
+successful-only time is .8528s over94 successes and capped time1.0416s.
+Its corresponding2032 baselines have not started, so this is not a matched
+comparison. No failure is dropped or used to modify its fixed training budget.
+There are seventeen main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table, which now contains the first1M result below.
 
@@ -242,6 +255,21 @@ The00:47 observation again confirmed these live handles, with A100 utilization
 82%/91% and4080 utilization89%. No dispatch change or additional experiment
 was made; the remaining two frozen-cohort queues continue to wait for their
 existing resource dependencies.
+
+At01:17–01:19 the remaining4080 resource dependency was improved without
+launching an additional scientific job: because Learned2032 has already moved
+to A100, Learned2031's future1M completion will release a separate4080 slot.
+The unstarted SAC2032 queue PID551582 was identity-checked and stopped, with
+no native output directory or transitions. Replacement queue PID715848 now
+waits for this declared same-frozen-cohort Learned2031 completion, not for
+Iso2032 to finish as well. Iso2032 still waits for SAC2031. The two existing
+1M jobs can therefore use the two released slots independently; original GPU
+admission limits and the two-project-learners/card ceiling are unchanged.
+Old queue metadata and resource-update history are retained, no weights or
+seeds are transferred, and no scientific configuration or budget is changed.
+The replacement watcher directly confirmed all nine current run/queue entries
+at01:18, including the new waiting PID, with A100 utilization78%/91% and4080
+utilization80%. The table retains the immediately preceding compact capture.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)

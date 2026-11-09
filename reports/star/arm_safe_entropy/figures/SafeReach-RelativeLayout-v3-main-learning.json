@@ -7,7 +7,7 @@
     {
       "run": "main/flow-iso-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 418000,
+      "latest_logged_transitions": 476000,
       "evaluation_milestones": [
         100000,
         300000
@@ -27,7 +27,7 @@
     {
       "run": "main/flow-learned-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 236000,
+      "latest_logged_transitions": 267000,
       "evaluation_milestones": [
         100000
       ]
@@ -35,7 +35,7 @@
     {
       "run": "main/flow-learned-seed2031-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 716000,
+      "latest_logged_transitions": 799000,
       "evaluation_milestones": [
         100000,
         300000,
@@ -45,25 +45,29 @@
     {
       "run": "main/flow-learned-seed2032-v3-a100-fresh",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 96000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 126000,
+      "evaluation_milestones": [
+        100000
+      ]
     },
     {
       "run": "main/sac-lag-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 579000,
+      "latest_logged_transitions": 669000,
       "evaluation_milestones": [
         100000,
-        300000
+        300000,
+        600000
       ]
     },
     {
       "run": "main/sac-lag-seed2031-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 470000,
+      "latest_logged_transitions": 676000,
       "evaluation_milestones": [
         100000,
-        300000
+        300000,
+        600000
       ]
     }
   ],
