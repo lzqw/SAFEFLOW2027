@@ -50,12 +50,12 @@
     "monitor_actions": "read actual native PID identity and completion receipts; no automatic restart, new method or budget extension",
     "foreign_workloads_changed": false,
     "latest_half_hour_capture": {
-      "observed_at": "2026-11-09T17:54:36+08:00",
+      "observed_at": "2026-11-09T18:24:36+08:00",
       "native_pids_alive": [746587],
       "completed_native_pids_absent_with_receipts": [746585, 746586],
       "method_order": ["sac_lag", "flow_iso", "flow_learned"],
-      "observed_transitions": [300000, 300000, 194000],
-      "subsequent_compact_capture_transitions": [300000, 300000, 195000],
+      "observed_transitions": [300000, 300000, 226000],
+      "subsequent_compact_capture_transitions": [300000, 300000, 226000],
       "sac_fixed100k_safe_successes_of30": 19,
       "sac_fixed100k_violation_episodes_of30": 0,
       "sac_fixed100k_training_violations": 108,
@@ -74,6 +74,10 @@
       "iso_fixed200k_safe_successes_of30": 30,
       "iso_fixed200k_violation_episodes_of30": 0,
       "iso_fixed200k_training_violations": 225,
+      "learned_fixed200k_safe_successes_of30": 30,
+      "learned_fixed200k_violation_episodes_of30": 0,
+      "learned_fixed200k_training_violations": 155,
+      "learned_fixed200k_interpretation": "31.1percent fewer training violations than matched Iso at equal30/30 success and0/30 evaluation violations;one-seed interim,not final/cross-seed evidence",
       "sac_fixed300k_final_safe_successes_of30": 30,
       "sac_fixed300k_final_violation_episodes_of30": 0,
       "sac_fixed300k_final_training_violations": 190,
@@ -84,7 +88,7 @@
       "sac_final_archive": "/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/relative-layout-screen-v3-20261109/sac-lag-seed2027-v3",
       "iso_final_archive": "/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/relative-layout-screen-v3-20261109/flow-iso-seed2027-v3",
       "completed_formal_runs": 0,
-      "next_scheduled_check_approx": "2026-11-09T18:24:36+08:00"
+      "next_scheduled_check_approx": "2026-11-09T18:54:36+08:00"
     }
   }
 }

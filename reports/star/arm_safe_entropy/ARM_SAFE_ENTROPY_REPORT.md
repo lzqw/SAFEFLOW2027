@@ -27,11 +27,11 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current screening evidence — 2026-11-09 17:54–17:55 CST
+## Current screening evidence — 2026-11-09 18:24–18:25 CST
 
 The scheduled half-hour watcher confirmed both SAC/Iso native PIDs absent with
-normal300k completion receipts; Learned's PID remains alive at194k. The compact
-capture reached300k/300k/195k (SAC/Iso/Learned). No process was restarted,
+normal300k completion receipts; Learned's PID remains alive at226k. The compact
+capture reached300k/300k/226k (SAC/Iso/Learned). No process was restarted,
 configuration changed, seed replaced or budget expanded.
 
 **All three methods now have their predeclared fixed100k evaluation** on
@@ -67,21 +67,29 @@ SAC and Iso have reached that endpoint; Learned continues unchanged.
 |---|---:|---:|---:|---:|---:|
 | SAC-Lag200k | 30/30 | 0/30 /0/30 | 11.4412 | 164 | .8773s,30 successes |
 | Flow-Iso200k | 30/30 | 0/30 /0/30 | 11.4818 | 225 | .7720s,30 successes |
+| LearnedDir200k | 30/30 | 0/30 /0/30 | 11.4587 | 155 | .8240s,30 successes |
 | SAC-Lag300k, final | 30/30 | 0/30 /0/30 | 11.4594 | 190 | .8160s,30 successes |
 | Flow-Iso300k, final | 30/30 | 0/30 /0/30 | 11.4759 | 279 | .7813s,30 successes |
 
 Iso recovered from its retained100k safe stall to full safe success at200k;
 the early failure is not its final outcome. Its training count225 versus
 SAC's164 at matched200k is higher, despite slightly higher return/shorter
-successful time. Learned's200k result is still pending; neither its100k result
-nor current training success is substituted for that missing milestone.
+successful time. Learned's fixed200k now also has30/30 safe successes and0/30
+violations/contact collisions. Its155 training violations versus Iso's225
+is **31.1% lower at matched evaluation success and risk**; versus SAC's164 it
+is5.5% lower. This is a useful one-development-seed, matched-budget safety-
+exploration signal on the independently varied layout task. Its return/time
+are close to, not uniformly better than, both baselines. The result does not
+establish population zero risk, cross-seed stability or the still-pending
+fixed300k Learned outcome. No favorable milestone is selected as the final
+result; the earlier100k clearance failure remains in the native evidence.
 SAC's native receipt records300000 newly collected transitions,298000 learner,
 reward and actor updates each, in5793.14s. Iso's records300000 new transitions,
 298000 learner/596000 reward/149000 actor updates in9120.29s. Iso's final
 training count279 exceeds SAC's190; matched final success does not imply
 matched training safety. These are two completed screening runs, not completion
-of all0.9M or formal-seed results. Learned's195k current training count150 and
-recent success1.0 are not substituted for its pending fixed200k/300k evaluations.
+of all0.9M or formal-seed results. Learned's226k current training count165 and
+recent success1.0 are not substituted for its pending fixed300k evaluation.
 
 The completed SAC/Iso final policies, full-resume checkpoints and compact native
 evidence were copied by successful SSH stream to
@@ -91,14 +99,14 @@ The4T mount has1.5TiB free. A100 originals remain intact; no large checkpoint
 was written to the host or uploaded to GitHub. The active Learned checkpoint
 was not copied mid-write or interrupted.
 
-There are54 native development/ability/control/screen evaluations in the
-combined CSV, including seven new v3 checkpoints; the original47 remain
+There are55 native development/ability/control/screen evaluations in the
+combined CSV, including eight new v3 checkpoints; the original47 remain
 intact. Robustness rows remain40 and formal completed rows0/9. Screening
-completion is2/3. The active Learned recent10k-transition speed is17.4/s;
-approximate remaining time is1.7h,
+completion is2/3. The active Learned recent10k-transition speed is17.3/s;
+approximate remaining time is1.2h,
 conditional on unchanged resource sharing. This is a throughput
 projection, not a completion promise. The next scheduled native-PID check is
-approximately18:24. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
+approximately18:54. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
 retains all three native curves without extrapolated evaluation points.
 
 While waiting, local **protocol-only preparation** adds the requested future

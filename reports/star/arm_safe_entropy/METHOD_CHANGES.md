@@ -586,3 +586,8 @@ run's four fixed policies are evaluated together, without checkpoint selection.
 The plan must be frozen identically into its native training config before
 either layout preparation or policy evaluation can start. For now all freeze
 flags remain false/preparation-only, with0formal training/evaluation episodes.
+
+The qualitative renderer now uses the same recorded-task environment factory
+as the training/evaluation runner, so a requested v3 clip cannot silently use
+the old common-translation reset. No additional clip or episode is generated
+by this compatibility correction.

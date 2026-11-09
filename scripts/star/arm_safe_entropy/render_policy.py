@@ -7,7 +7,7 @@ import imageio.v2 as imageio
 import numpy as np
 import torch
 
-from scripts.star.arm_safe_entropy.environment import SafeReachEnv, TaskConfig
+from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
 from scripts.star.arm_safe_entropy.models import ArmFlowActor, GaussianActor
 
 
@@ -49,7 +49,7 @@ def main():
     torch.manual_seed(args.sampling_seed)
     np.random.seed(args.sampling_seed)
     args.output.mkdir(parents=True)
-    env = SafeReachEnv(TaskConfig(**manifest['task_config']))
+    env = make_environment(TaskConfig(**manifest['task_config']))
     records, frames = [], []
     try:
         obs, _ = env.reset(seed=args.layout_seed)
