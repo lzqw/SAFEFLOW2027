@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-09 21:42–21:49 CST
+## Current frozen-main execution — 2026-11-09 22:42–22:43 CST
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four actual waiting queue processes complete the nine-run frozen cohort. No
@@ -37,12 +37,12 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running135k,PID857625 | running117k,PID857626 | running71k,PID857627 |
-| 2031 /4080,4T | queued after Iso,PID518589 | running469k,PID518590 | running247k,PID518591 |
+| 2030 / A100 | running200k,PID857625 | running180k,PID857626 | running108k,PID857627 |
+| 2031 /4080,4T | queued after Iso,PID518589 | running714k,PID518590 | running375k,PID518591 |
 | 2032 /4080,4T | queued after new Iso,PID551582 | queued after2031 SAC,PID551580 | queued after2031 Learned,PID551581 |
 
-The21:42 watcher directly confirmed all five native and four queue PIDs;
-the table uses the subsequent21:49 compact progress capture. These are observed
+The22:42 watcher directly confirmed all five native and four queue PIDs;
+the table uses the subsequent22:43 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
 The2032 jobs are queued fresh1M runs on4080; none has started yet. Cross-seed
 dependencies release a resource slot only: they do not change a training seed,
@@ -82,9 +82,27 @@ Additional fixed milestones are now available: Iso2030 at100k has99/100 safe
 successes and1/100 violations, with136 training violations and .8198s mean
 time-to-goal among99 successes. Iso2031 at300k has100/100 safe successes,
 0/100 violations,238 training violations and .7684s over100 successes.
-Learned2030 has not reached100k and Learned2031 has not reached300k in this
-capture; do not substitute their training statistics or an earlier policy for
-these missing matched checkpoints. There are five main milestone evaluations
+Iso2031 at600k again has100/100 safe successes and0/100 violations, with320
+training violations and .7572s time-to-goal over100 successes.
+
+The newly available matched results are **mixed/negative, not a stable safety
+improvement**. At100k, Learned2030 has89/100 safe successes,0/100 violations,
+111 training violations and1.0135s time-to-goal over89 successes. Its11 failures
+are true-horizon safe stalls; Iso2030 at the same100k has99/100 successes,
+1/100 violations and136 training violations. The lower training count is not
+a matched-task-performance win.
+
+At300k seed2031, Learned has95/100 safe successes,5/100 clearance violations
+(no contact collisions), return10.4368 and230 training violations, versus
+Iso100/100,0/100,return11.5073 and238 training violations. Its .7086s
+successful-only time covers95 episodes; the horizon-capped time is .8732s,
+versus Iso .7684s over all100. Do not present the faster successful subset as
+an overall task-performance win or the3.4% lower training count as a Pareto
+improvement. The five failed layout seeds92088/92093/92103/92114/92117 remain
+in the native records and curves, with terminal lengths10/12/15/11/10.
+No parameter adjustment, scientific stop, seed replacement or extra budget
+is made in response. The100k positive signal on this seed remains visible
+alongside its subsequent regression. There are eight main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table, which remains0/9.
 
@@ -111,6 +129,11 @@ Iso146k,Learned89k). Concurrent foreign workloads changed during this interval;
 project/foreign SM activity is time-varying, so the earlier per-process shares
 are not a reservation. No foreign process was stopped and no additional
 learner was launched merely to consume free memory.
+At22:42 A100 utilization was93%/95%; a single4080 sample was38%, but three
+follow-up1s process samples showed its two native learners jointly using
+85%/86%/86% SM activity, both with about99% CPU. A foreign process holds
+about4.7GiB without observed SM activity in those samples; it is not changed.
+The isolated low-utilization point does not establish persistent spare compute.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
