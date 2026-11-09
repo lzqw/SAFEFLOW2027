@@ -27,7 +27,34 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Latest stage decision — zero-shot obstacle evaluation, 2026-11-09
+## Current screening evidence — 2026-11-09 15:24–15:25 CST
+
+The scheduled half-hour watcher directly confirmed all three original v3
+trainer PIDs alive at100k/63k/35k transitions (SAC/Iso/Learned). The compact
+capture shortly afterwards reached102k/64k/36k. No process was restarted,
+configuration changed, seed replaced or budget expanded.
+
+**SAC-Lag's first fixed100k evaluation is available:**19/30 safe successes,
+0/30 violation/contact-collision episodes, return6.4996 and108 cumulative
+training violations. The11 non-successes end safely at the true horizon, not
+by collision. Mean time-to-goal among the19 successes is2.1074s; successful
+coverage is explicit, not an all-episode speed claim. Its native checkpoint
+uses the predeclared common layouts82027..82056. Iso/Learned have not yet
+reached their first100k evaluation: their recent training success is not a
+held-out result, and their smaller current violation counts cannot be compared
+to SAC's100k count as a matched-budget safety gain.
+
+There are48 native development/ability/control/screen evaluations in the
+combined CSV, including this one new v3 checkpoint; the original47 remain
+intact. Robustness rows remain40 and formal completed rows0/9. All three
+screening runs retain their fixed300k endpoints. Recent10k-transition speeds
+are49.8/32.0/18.0 transitions/s; approximate remaining times are1.1/2.1/4.1h
+respectively, conditional on unchanged resource sharing. This is a throughput
+projection, not a completion promise. The next scheduled native-PID check is
+approximately15:54. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
+retains all three native curves without extrapolated evaluation points.
+
+## Stage decision — zero-shot obstacle evaluation, 2026-11-09
 
 The new user instruction supersedes the earlier pending-stage question: keep
 the algorithm unchanged, evaluate frozen300k policies first, and use the
@@ -131,7 +158,9 @@ All eight original development runs, both bounded100k R1 runs and all four
 also complete. There are47 native evaluation records in
 [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv),30 conditional diagnostic
 rows in [MECHANISM_RESULTS.csv](MECHANISM_RESULTS.csv), and **0/9 formal main
-results**. No original development/control trainer remains active; the new v3
+results**. Those47 records are the original cohort; the same CSV separately
+retains the new v3 screening phase as its native evaluations become available.
+No original development/control trainer remains active; the new v3
 screen above is a separate authorized stage. No bad seed or
 final failure was replaced, and no scientific early stopping was used.
 

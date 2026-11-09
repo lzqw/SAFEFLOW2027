@@ -7,20 +7,22 @@
     {
       "run": "relative_layout_screening/flow-iso-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 3000,
+      "latest_logged_transitions": 64000,
       "evaluation_milestones": []
     },
     {
       "run": "relative_layout_screening/flow-learned-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 2000,
+      "latest_logged_transitions": 36000,
       "evaluation_milestones": []
     },
     {
       "run": "relative_layout_screening/sac-lag-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 4000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 102000,
+      "evaluation_milestones": [
+        100000
+      ]
     }
   ],
   "comparison_scope": "All development variants, including R1",
