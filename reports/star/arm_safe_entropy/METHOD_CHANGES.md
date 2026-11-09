@@ -559,3 +559,11 @@ four-node formal schedule and rejection of the still-unfrozen plan, with
 0physics/0SGD. No model, optimizer, geometry, task-layout or reward change is
 introduced. Active trainers continue their immutable95ab831 snapshot and never
 read these local preparation edits. No formal job is launched by this change.
+
+The existing one-run queue also accepts an explicit frozen-main config. It
+still starts only one caller-selected job, never creates a matrix, and rejects
+an unfrozen/unnamed task before any queue/output directory is created. A queued
+formal replacement must follow a completed1M dependency with the identical
+frozen record and training seed. Resource checks and1800s capacity waits remain;
+no foreign job is stopped and no failure automatically restarts training. No
+such queue is instantiated while the screening configuration remains unfrozen.

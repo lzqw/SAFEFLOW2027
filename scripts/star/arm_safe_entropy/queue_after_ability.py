@@ -1,4 +1,4 @@
-"""One explicitly queued development/control run; never launches the full matrix.
+"""One explicitly queued development/control/frozen-main run, never a full matrix.
 
 Historical filename retained; dependency budget is explicit for later stages.
 The caller makes the scientific foundation decision before adding a run.
@@ -28,11 +28,29 @@ def main():
     parser.add_argument('--minimum-free-mib', type=int, default=12288)
     parser.add_argument('--maximum-gpu-utilization', type=float, default=85.)
     parser.add_argument('--mechanism-plan', type=Path)
+    parser.add_argument('--frozen-config', type=Path,
+                        help='Optional main mode: exactly one predeclared held-out run after a same-seed main dependency')
     parser.add_argument('--reference-variance', type=float)
     parser.add_argument('--reference-match-run')
     args = parser.parse_args()
     control = args.method in {'flow_iso_low', 'flow_random_aniso'}
-    if control:
+    formal = args.frozen_config is not None
+    frozen = None
+    budget = 1000000 if formal else 300000
+    if formal:
+        from scripts.star.arm_safe_entropy.run_protocol import resolve_phase, validate_main_freeze
+        if control or args.mechanism_plan or args.reference_variance is not None or args.reference_match_run:
+            parser.error('Do not mix a frozen main run with mechanism-control calibration')
+        frozen = json.loads(args.frozen_config.read_text())
+        if frozen.get('task_version') not in {'SafeReach-Obstacle-v2', 'SafeReach-RelativeLayout-v3'}:
+            parser.error('Freeze an explicit supported task version before queuing main')
+        try:
+            resolve_phase(args.method, args.seed, budget, 100, phase='main')
+            validate_main_freeze(frozen, args.method, args.seed, .04,
+                                 frozen.get('normal_variance_ratio'), frozen['task_version'])
+        except ValueError as error:
+            parser.error(str(error))
+    elif control:
         if args.mechanism_plan is None:
             parser.error('A control requires the evidence-reviewed bounded mechanism plan')
         plan = json.loads(args.mechanism_plan.read_text())
@@ -55,7 +73,8 @@ def main():
     def record(**state):
         payload = dict(method=args.method, seed=args.seed, dependency=str(args.dependency),
                        output=str(args.output), source_commit=args.source_commit,
-                       stage='mechanism_control' if control else 'obstacle_development',
+                       stage='main' if formal else 'mechanism_control' if control else 'obstacle_development',
+                       frozen_config=frozen,
                        reference_variance=args.reference_variance,
                        reference_match_run=args.reference_match_run,
                        minimum_free_mib=args.minimum_free_mib,
@@ -65,7 +84,7 @@ def main():
         temporary.write_text(json.dumps(payload, indent=2) + '\n')
         temporary.replace(args.state)
 
-    record(phase='waiting_for_dependency_completion', queued_transitions=300000)
+    record(phase='waiting_for_dependency_completion', queued_transitions=budget)
     while not (args.dependency / 'receipt.json').exists():
         if (args.dependency / 'engineering_stop.json').exists():
             record(phase='dependency_superseded_no_restart')
@@ -77,6 +96,12 @@ def main():
         time.sleep(30)
     receipt = json.loads((args.dependency / 'receipt.json').read_text())
     assert receipt['status'] == 'completed' and receipt['steps'] == args.dependency_steps
+    if formal:
+        dependency = json.loads((args.dependency / 'run_config.json').read_text())
+        if (dependency['stage'] != 'main' or dependency['training_seed'] != args.seed
+                or dependency.get('frozen_config') != frozen or args.dependency_steps != budget):
+            record(phase='dependency_not_the_same_frozen_main_seed_no_launch')
+            return
     while True:
         output = subprocess.check_output(['nvidia-smi', '-i', str(args.gpu),
             '--query-gpu=memory.free,utilization.gpu', '--format=csv,noheader,nounits'], text=True)
@@ -90,10 +115,17 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     log = args.state.with_suffix('.log')
     command = [sys.executable, '-u', '-m', 'scripts.star.arm_safe_entropy.train',
-        '--method', args.method, '--steps', '300000', '--seed', str(args.seed), '--num-envs', '2',
-        '--eval-every', '100000', '--eval-episodes', '30', '--eval-seed-start', '52027',
+        '--method', args.method, '--steps', str(budget), '--seed', str(args.seed), '--num-envs', '2',
         '--output', str(args.output), '--source-commit', args.source_commit,
         '--oracle-backend', args.oracle_backend, '--oracle-workers', str(args.oracle_workers)]
+    if formal:
+        command += ['--phase', 'main', '--task-version', frozen['task_version'],
+                    '--frozen-config', str(args.frozen_config), '--eval-episodes', '100',
+                    '--eval-seed-start', str(frozen['evaluation_layout_seed_start']),
+                    '--normal-variance-ratio', str(frozen['normal_variance_ratio']),
+                    '--eval-steps', *map(str, frozen['evaluation_steps'])]
+    else:
+        command += ['--eval-every', '100000', '--eval-episodes', '30', '--eval-seed-start', '52027']
     if control:
         command += ['--phase', 'mechanism_control']
     if args.reference_variance is not None:
@@ -103,8 +135,9 @@ def main():
         process = subprocess.Popen(command, cwd=base, stdin=subprocess.DEVNULL,
             stdout=stream, stderr=subprocess.STDOUT, start_new_session=True,
             env={**os.environ, 'CUDA_VISIBLE_DEVICES': str(args.gpu), 'OMP_NUM_THREADS': '1', 'MKL_NUM_THREADS': '1'})
-    record(phase='launched_one_mechanism_control_run_only' if control else 'launched_one_development_run_only',
-           pid=process.pid, log=str(log), queued_transitions=300000,
+    record(phase='launched_one_frozen_main_run_only' if formal else
+                 'launched_one_mechanism_control_run_only' if control else 'launched_one_development_run_only',
+           pid=process.pid, log=str(log), queued_transitions=budget,
            oracle_backend=args.oracle_backend if args.method == 'flow_oracle' else None)
 
 
