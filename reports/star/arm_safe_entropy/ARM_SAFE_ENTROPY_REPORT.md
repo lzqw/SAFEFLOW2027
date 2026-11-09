@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 04:49 check and four completed formal tests
+## Current frozen-main execution — 2026-11-10 05:00 check and four completed formal tests
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four completed runs account for the rest of the nine-run frozen cohort.
@@ -38,16 +38,16 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | running893k,PID857626 | running483k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | running912k,PID857626 | running492k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | running895k,PID749852 | running836k,PID738207 | running339k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | running956k,PID749852 | running884k,PID738207 | running349k,A100 GPU1,PID947125 |
 
 The04:48:59 watcher directly confirmed all five live native PIDs and all four
 native1M completion receipts; those four trainers have exited normally.
-The table uses the subsequent compact progress capture. These are observed
+The table uses the subsequent05:00 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total7.446M/9M primary transitions
-(82.7% of the fixed budget).
+The nine accepted native counters now total7.593M/9M primary transitions
+(84.4% of the fixed budget).
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Four full runs
 and80/180 formal condition rows are complete; partial steps are not completion.
@@ -92,10 +92,10 @@ This is one completed held-out training seed, not proof of cross-seed
 robustness, lower training cost, superiority to a v3 Iso-Low control (none was
 requested), or completion of the nine-run formal objective. The remaining
 five runs and their required fixed tests continue without new modules or tuning.
-No additional1M completion or fixed evaluation was available in this04:49
+No additional1M completion or fixed evaluation was available in this05:00
 capture. The29 native milestones remain retained, and the full formal table
 remains80/180 condition rows and4/9 completed run evaluations. Progress above
-is actual training, not a claim that the whole experiment is82.7% complete in wall time.
+is actual training, not a claim that the whole experiment is84.4% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -506,6 +506,20 @@ The04:48:59 observation again directly confirmed all five active trainers,
 with A100 utilization20%/91% and4080 utilization98%. The near-final SAC2032
 counter is still a partial run, not a substituted1M evaluation. No restart,
 affinity adjustment, new experiment or scientific budget change occurred.
+
+At04:58, responding to the renewed A100 priority request, one resource/status
+sample found A100 GPU0/GPU1 at21%/91% and4080 at83%. GPU0 has Iso2030;
+GPU1 has Learned2030 and Learned2032;4080 has Iso2032 and SAC2032. All nine
+planned runs have already started, with no untouched training job to schedule
+on GPU0. Required frozen-model tests will use GPU0 as runs finish. This is
+useful evaluation work, not an additional training experiment or a claim of
+sustained100% utilization. The training loop performs synchronous action
+generation, simulation and updates; free VRAM alone does not establish unused
+end-to-end throughput. No live trainer was interrupted to migrate cards:
+the current resume path restores learner/replay/RNG but resets physical
+episodes, and interruption can occur inside an update. Existing trajectories
+and counters were preserved rather than claiming an exact migration that the
+code does not implement. The read-only half-hour watcher remains active.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
