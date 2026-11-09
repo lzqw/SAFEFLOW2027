@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-09 23:47–23:49 CST
+## Current frozen-main execution — 2026-11-10 00:17–00:18 CST
 
 Six native main trainers are directly confirmed alive and past random warmup;
 two actual waiting queue processes and one completed run account for the
@@ -37,14 +37,19 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running396k,PID857625 | running303k,PID857626 | running174k,PID857627 |
-| 2031 /4080,4T | running61k,PID665494 | completed1M,native receipt | running552k,PID518591 |
-| 2032 /A100+4080 | queued4080 after new Iso,PID551582 | queued4080 after2031 SAC,PID551580 | running35k,A100 GPU1,PID947125 |
+| 2030 / A100 | running485k,PID857625 | running359k,PID857626 | running204k,PID857627 |
+| 2031 /4080,4T | running265k,PID665494 | completed1M,native receipt | running632k,PID518591 |
+| 2032 /A100+4080 | queued4080 after new Iso,PID551582 | queued4080 after2031 SAC,PID551580 | running65k,A100 GPU1,PID947125 |
 
-The23:47 watcher directly confirmed all six live native and two queue PIDs,
+The00:17 watcher directly confirmed all six live native and two queue PIDs,
 plus Iso2031's normal1M completion receipt; its trainer has exited normally.
-The table uses the subsequent23:48 compact progress capture. These are observed
+The table uses the subsequent00:18 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
+The seven accepted native counters now total3.010M/9M primary transitions
+(33.4% of the fixed budget), with two unstarted queued jobs contributing zero.
+This sum excludes the original failed5080 deployments, rather than silently
+adding their partial counters to the fresh accepted2032 runs. One full run
+and20/180 formal condition rows are complete; partial steps are not completion.
 The2032 Iso/SAC jobs remain queued fresh1M runs on4080; Learned has started
 fresh on A100 after confirmed capacity became available. Cross-seed
 dependencies release a resource slot only: they do not change a training seed,
@@ -112,7 +117,17 @@ Iso2030 at300k now has98/100 safe successes and2/100 clearance violations,
 return11.0856,214 training violations and .6988s successful-only time over98
 episodes (.7648s horizon-capped over100). Its same-seed SAC300k comparison
 is available, but Learned300k remains pending; do not rank incomplete triples.
-There are eleven main milestone evaluations
+The next native milestones are mixed rather than a sustained advantage:
+Learned2031 at600k recovers from its300k regression to100/100 safe successes,
+0/100 violations,return11.5129 and .7532s time-to-goal over100 successes.
+Its training violation count352 is now10% **higher** than Iso's320 at the
+same600k/matched100/100 success and0/100 risk. The earlier23.3% count advantage
+at100k therefore did not persist through600k. Its1M result is still pending;
+do not compare this600k recovery with Iso's1M failure as a matched ranking.
+SAC2031 at100k has92/100 safe successes,0/100 violations,return10.2820,
+102 training violations and1.3935s successful-only time over92 successes
+(1.602s horizon-capped over100). All earlier adverse points remain visible.
+There are thirteen main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table, which now contains the first1M result below.
 
@@ -206,6 +221,9 @@ without an observed per-run throughput loss, not a controlled speedup claim.
 The4080 queue handed its released slot to SAC2031 automatically, with its
 actual child PID now665494; the watcher follows this child rather than the
 exited waiting wrapper PID518589.
+The00:17 resource observation found A100 total utilization81%/93% and4080
+utilization99%, all six learners/two remaining queues alive. No additional
+run, scientific budget or foreign-process change was made at this check.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
