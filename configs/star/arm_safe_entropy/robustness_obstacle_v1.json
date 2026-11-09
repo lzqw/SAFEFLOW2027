@@ -24,6 +24,7 @@
   "algorithm_changes": false,
   "reward_or_violation_definition_changes": false,
   "layout_validity": "one predeclared overhead detour per condition/layout proves a safe start and feasible path; invalid conditions fail visibly, never remove failed policy episodes or adapt stress using policy returns",
+  "constructive_path_engineering_note": "Initial direct ascent proved219/250 layouts;31 radius8cm layouts violated on the first interval, before any policy evaluation. Preserve those records; retry only these31 using a retreat-first overhead path. No radius/offset/layout/reward/policy is changed or discarded.",
   "time_to_goal": "seconds among safe successes, with coverage; additionally report horizon-capped time for all episodes",
   "stage_decision": {
     "A": "Consistent useful task-level robustness improvement over Iso and Iso-Low across both training seeds without a material violation tradeoff: freeze unchanged algorithm and launch requested3methods x3new seeds x1M, test nominal and these fixed perturbations at100k/300k/600k/1M on independent layouts",

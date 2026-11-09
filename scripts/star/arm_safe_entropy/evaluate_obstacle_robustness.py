@@ -53,10 +53,11 @@ def physics_worker(connection):
             elif command == 'detour_action':
                 position = env.ee_position()
                 # One fixed constructive path, not a teacher for any learned policy.
-                waypoints = [env.start + np.array([.03, 0., .20]),
+                waypoints = [env.start + np.array([0., -.07, 0.]),
+                             env.start + np.array([.03, -.07, .20]),
                              env.goal + np.array([.03, 0., .20]), env.goal]
                 target = payload
-                if np.linalg.norm(position - waypoints[target]) < .04 and target < 2:
+                if np.linalg.norm(position - waypoints[target]) < .025 and target < 3:
                     target += 1
                 action = np.clip((waypoints[target] - position) / env.config.displacement_scale, -1., 1.)
                 result = (action, target)
@@ -185,6 +186,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--device', default='cuda:0')
+    parser.add_argument('--previous-layout-validity', type=Path,
+                        help='Reuse already successful physical detours; retry only layouts lacking a constructive proof')
     args = parser.parse_args()
     import torch
     torch.set_num_threads(1)
@@ -210,13 +213,28 @@ def main():
         batches = [list(range(start, min(start+plan['action_batch_size'], 50)))
                    for start in range(0, 50, plan['action_batch_size'])]
         validity = []
+        if args.previous_layout_validity:
+            previous = json.loads(args.previous_layout_validity.read_text())
+            validity = [r for r in previous['records'] if r['safe_success']]
+            expected_layouts = {(c['name'], seed) for c in plan['conditions']
+                                for seed in range(plan['layout_seed_start'], plan['layout_seed_start']+50)}
+            if {(r['condition'], r['layout_seed']) for r in previous['records']} != expected_layouts:
+                raise ValueError('Previous validity evidence is not the identical condition/layout set')
+        reused = {(r['condition'], r['layout_seed']) for r in validity}
+        validation_transitions = 0
         for condition in plan['conditions']:
             for indices in batches:
+                indices = [index for index in indices if (condition['name'], plan['layout_seed_start']+index) not in reused]
+                if not indices:
+                    continue
                 rows = rollout_wave(pipes, condition, indices, plan)
+                validation_transitions += sum(r['length'] for r in rows)
                 validity.extend([dict(condition=condition['name'], **r) for r in rows])
         atomic_json(args.output / 'layout_validity.json', dict(records=validity,
             safe_detours=sum(r['safe_success'] for r in validity), expected_layouts=250,
-            validation_transitions=sum(r['length'] for r in validity), training_transitions=0))
+            validation_transitions_this_invocation=validation_transitions, training_transitions=0,
+            reused_safe_detours=len(reused), previous_artifact=str(args.previous_layout_validity),
+            source_commit=args.source_commit))
         if not all(r['safe_success'] for r in validity):
             raise RuntimeError('The fixed detour did not establish every layout; do not run or select policy comparisons yet')
         fixed_layouts = {(r['condition'], r['layout_seed']): r['layout'] for r in validity}
@@ -246,7 +264,8 @@ def main():
         atomic_json(args.output / 'receipt.json', dict(status='completed', policy_episodes=2000,
                     completed_conditions=40, training_transitions=0, adaptation_updates=0,
                     evaluation_transitions=sum(r['evaluation_transitions'] for r in results),
-                    validation_transitions=sum(r['length'] for r in validity),
+                    validation_transitions_this_invocation=validation_transitions,
+                    reused_validity_artifact=str(args.previous_layout_validity),
                     plan=plan, source_commit=args.source_commit, device=args.device,
                     elapsed_seconds=time.monotonic()-started))
         atomic_json(args.output / 'status.json', dict(state='completed', completed_conditions=40))
