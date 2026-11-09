@@ -1,0 +1,33 @@
+{
+  "stage": "frozen_main_obstacle_robustness",
+  "preparation_only": true,
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "training_methods": ["sac_lag", "flow_iso", "flow_learned"],
+  "training_seeds": [2030, 2031, 2032],
+  "evaluation_steps": [100000, 300000, 600000, 1000000],
+  "episodes_per_condition_per_training_seed": 100,
+  "layout_seed_start": 92027,
+  "action_sampling_seed": 1970027,
+  "action_batch_size": 25,
+  "conditions": [
+    {"name": "nominal", "family": "nominal", "severity": "nominal", "radius_m": 0.06, "lateral_offset_m": 0.0},
+    {"name": "radius_070", "family": "obstacle_size", "severity": "medium", "radius_m": 0.07, "lateral_offset_m": 0.0},
+    {"name": "radius_080", "family": "obstacle_size", "severity": "strong", "radius_m": 0.08, "lateral_offset_m": 0.0},
+    {"name": "lateral_030", "family": "obstacle_position", "severity": "medium", "radius_m": 0.06, "lateral_offset_m": 0.03},
+    {"name": "lateral_060", "family": "obstacle_position", "severity": "strong", "radius_m": 0.06, "lateral_offset_m": 0.06}
+  ],
+  "nominal": "reuse the exact100 native training-time evaluation records at each milestone; never rerun nominal and select a result",
+  "perturbations": "frozen native stochastic actors and margin heads; no adaptation; same four conditions fixed before formal outcomes",
+  "lateral_sign_rule": "even episode index negative,odd positive;50 per side",
+  "lateral_axis": "horizontal unit vector perpendicular to each sampled start-to-goal line; exactly world_x on the original v2 task",
+  "layout_admissibility": "v3 shift is applied before the shared safe-start and safe-goal reset checks; accepted layouts can differ between conditions,never between methods; save and compare actual poses",
+  "constructive_path": "retreat_both_ends",
+  "layout_validity": "one shared500-layout physical path proof,not repeated per policy/checkpoint; a failed proof is visible and does not cause failed learned episodes to be removed",
+  "expected_main_condition_rows": 180,
+  "expected_policy_episodes": 18000,
+  "native_nominal_episodes_reused": 3600,
+  "new_frozen_stress_episodes": 14400,
+  "training_transitions": 0,
+  "adaptation_updates": 0,
+  "no_adaptive_conditions_or_checkpoint_selection": true
+}

@@ -567,3 +567,22 @@ formal replacement must follow a completed1M dependency with the identical
 frozen record and training seed. Resource checks and1800s capacity waits remain;
 no foreign job is stopped and no failure automatically restarts training. No
 such queue is instantiated while the screening configuration remains unfrozen.
+
+Formal perturbation evaluation now has a preparation-only protocol using the
+same5 condition magnitudes, independent100 common layouts92027..92126, both
+offset sides balanced50/50, and all four declared checkpoints. On the relative
+task the lateral axis is perpendicular to the sampled start-goal line, applied
+before shared reset admissibility. Original completed v2 placement semantics
+are retained; no historical episode is rerun or reinterpreted by this change.
+
+The evaluator reuses the exact native nominal records rather than generating
+another nominal stochastic outcome. Only the four stress conditions require
+new frozen-policy episodes. Native main episodes also save their actual
+layouts, enabling common-layout comparisons against one shared physical path
+proof, not a proof repeated for every policy/checkpoint. The future full matrix
+is180 condition rows/18000 episodes, of which3600 nominal episodes are reused
+and14400 stress episodes are new evaluation, never training. A completed main
+run's four fixed policies are evaluated together, without checkpoint selection.
+The plan must be frozen identically into its native training config before
+either layout preparation or policy evaluation can start. For now all freeze
+flags remain false/preparation-only, with0formal training/evaluation episodes.

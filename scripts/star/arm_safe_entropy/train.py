@@ -57,6 +57,9 @@ def evaluate(learner, config, episodes=30, seed_start=52027):
     try:
         for seed in range(seed_start, seed_start + episodes):
             obs, initial = env.reset(seed=seed)
+            layout = dict(start=env.start.tolist(), goal=env.goal.tolist(),
+                          obstacle=env.obstacle_position.tolist(), radius_m=config.obstacle_radius,
+                          initial_minimum_distance_m=initial['minimum_distance'])
             total = 0.
             minimum = initial['minimum_distance']
             for step in range(config.horizon):
@@ -66,7 +69,7 @@ def evaluate(learner, config, episodes=30, seed_start=52027):
                 minimum = min(minimum, info['minimum_distance'])
                 if done or truncated:
                     break
-            records.append(dict(seed=seed, episode_return=total, length=step + 1,
+            records.append(dict(seed=seed, episode_return=total, length=step + 1, layout=layout,
                 minimum_distance_m=minimum,
                 time_to_goal_seconds=(step+1)*env.control_dt if info['safe_success'] else None,
                 time_to_goal_capped_seconds=((step+1) if info['safe_success'] else config.horizon)*env.control_dt,

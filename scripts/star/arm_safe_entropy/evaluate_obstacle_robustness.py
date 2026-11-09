@@ -13,6 +13,7 @@ import time
 import numpy as np
 
 from scripts.star.arm_safe_entropy.environment import SafeReachEnv, TaskConfig
+from scripts.star.arm_safe_entropy.relative_layout import RelativeLayoutReach
 
 
 def atomic_json(path, payload):
@@ -21,11 +22,25 @@ def atomic_json(path, payload):
     temporary.replace(path)
 
 
-class PerturbedReach(SafeReachEnv):
+class ConditionReset:
+    def _sample_layout(self, fixed):
+        start, goal, obstacle = super()._sample_layout(fixed)
+        if self.config.version == 'SafeReach-RelativeLayout-v3':
+            # New formal task: include the fixed shift in shared reset
+            # admissibility, before safe-start and safe-goal checks.
+            segment = goal-start
+            lateral = np.array([segment[1], -segment[0], 0.])
+            lateral /= np.linalg.norm(lateral)
+            obstacle = obstacle + self._condition_offset*lateral
+        return start, goal, obstacle
+
     def reset_condition(self, seed, offset):
+        self._condition_offset = offset
         _, info = super().reset(seed=seed)
-        self.obstacle_position = self.obstacle_position + np.array([offset, 0., 0.])
-        self.sim.set_base_pose('obstacle', self.obstacle_position, np.array([0., 0., 0., 1.]))
+        if self.config.version == 'SafeReach-Obstacle-v2':
+            # Preserve the already completed v2 experiment's exact semantics.
+            self.obstacle_position = self.obstacle_position + np.array([offset, 0., 0.])
+            self.sim.set_base_pose('obstacle', self.obstacle_position, np.array([0., 0., 0., 1.]))
         minimum, collision = self._distance()
         if collision or minimum <= self.config.safety_distance + .005:
             raise RuntimeError(f'Unsafe perturbed initial layout seed={seed}, offset={offset}: {minimum}')
@@ -33,6 +48,14 @@ class PerturbedReach(SafeReachEnv):
                       obstacle=self.obstacle_position.tolist(), radius_m=self.config.obstacle_radius,
                       initial_minimum_distance_m=minimum)
         return self._obs(), layout
+
+
+class PerturbedReach(ConditionReset, SafeReachEnv):
+    pass
+
+
+class PerturbedRelativeReach(ConditionReset, RelativeLayoutReach):
+    pass
 
 
 def physics_worker(connection):
@@ -43,10 +66,12 @@ def physics_worker(connection):
             if command == 'close':
                 break
             if command == 'reset':
-                if env is None or env.config.obstacle_radius != payload['radius_m']:
+                task_version = payload.get('task_version', TaskConfig().version)
+                if env is None or env.config.obstacle_radius != payload['radius_m'] or env.config.version != task_version:
                     if env is not None:
                         env.close()
-                    env = PerturbedReach(replace(TaskConfig(), obstacle_radius=payload['radius_m']))
+                    cls = PerturbedRelativeReach if task_version == 'SafeReach-RelativeLayout-v3' else PerturbedReach
+                    env = cls(replace(TaskConfig(), version=task_version, obstacle_radius=payload['radius_m']))
                 result = env.reset_condition(payload['seed'], payload['offset_m'])
             elif command == 'step':
                 result = env.step(payload)
@@ -56,8 +81,13 @@ def physics_worker(connection):
                 waypoints = [env.start + np.array([0., -.07, 0.]),
                              env.start + np.array([.03, -.07, .20]),
                              env.goal + np.array([.03, 0., .20]), env.goal]
-                target = payload
-                if np.linalg.norm(position - waypoints[target]) < .025 and target < 3:
+                target = payload['target'] if isinstance(payload, dict) else payload
+                if isinstance(payload, dict) and payload.get('retreat_both_ends'):
+                    waypoints = [env.start + np.array([0., -.07, 0.]),
+                                 env.start + np.array([.03, -.07, .20]),
+                                 env.goal + np.array([.03, .07, .20]),
+                                 env.goal + np.array([0., .07, 0.]), env.goal]
+                if np.linalg.norm(position - waypoints[target]) < .025 and target < len(waypoints)-1:
                     target += 1
                 action = np.clip((waypoints[target] - position) / env.config.displacement_scale, -1., 1.)
                 result = (action, target)
@@ -81,19 +111,35 @@ def receive(connection):
     return result
 
 
-def load_policy(run, device):
+def load_policy(run, device, checkpoint_steps=300000, frozen_record=None):
     import torch
     from scripts.star.arm_safe_entropy.models import ArmFlowActor, GaussianActor
     config = json.loads((run / 'run_config.json').read_text())
     receipt = json.loads((run / 'receipt.json').read_text())
-    if receipt['status'] != 'completed' or receipt['steps'] != 300000 or config['total_transition_budget'] != 300000:
-        raise ValueError('Use the fixed final300k native run, never selected milestones')
-    if config['task_config'] != TaskConfig().__dict__:
+    budget = 1000000 if frozen_record is not None else 300000
+    if receipt['status'] != 'completed' or receipt['steps'] != budget or config['total_transition_budget'] != budget:
+        raise ValueError('Use a completed native run with its predeclared checkpoint policies')
+    version = TaskConfig().version
+    if frozen_record is not None:
+        from scripts.star.arm_safe_entropy.run_protocol import validate_main_freeze
+        version = frozen_record['task_version']
+        validate_main_freeze(frozen_record, config['method'], config['training_seed'],
+                             config.get('reference_variance') or .04, task_version=version)
+        if (config['stage'] != 'main' or config.get('frozen_config') != frozen_record
+                or checkpoint_steps not in frozen_record['evaluation_steps']):
+            raise ValueError('Use the same frozen main identity and all declared milestones')
+    elif checkpoint_steps != 300000:
+        raise ValueError('Development robustness retains the fixed final300k checkpoint')
+    if config['task_config'] != TaskConfig(version=version).__dict__:
         raise ValueError('Do not pool other task versions or changed nominal physics')
-    state = torch.load(run / 'policy_300000.pt', map_location=device, weights_only=False)
-    if state['updates'] != 298000:
+    policy_path = run / f'policy_{checkpoint_steps}.pt'
+    state = torch.load(policy_path, map_location=device, weights_only=False)
+    if state['updates'] != checkpoint_steps-2000:
         raise ValueError('Unexpected final policy update count')
     flow = config['method'].startswith('flow')
+    if flow and (state.get('reference_variance') != config['reference_variance'] or
+                 state.get('normal_variance_ratio', .25) != (config.get('normal_variance_ratio') or .25)):
+        raise ValueError('Do not reinterpret a frozen policy with a different reference covariance')
     actor = (ArmFlowActor(25, variance=config['reference_variance'],
                           rho=config.get('normal_variance_ratio') or .25) if flow
              else GaussianActor(25)).to(device)
@@ -107,8 +153,8 @@ def load_policy(run, device):
         margin.eval().requires_grad_(False)
     lineage_path = run / 'resume_lineage.json'
     return actor, margin, dict(method=config['method'], training_seed=config['training_seed'],
-        policy_source_commit=config['source_commit'], checkpoint_steps=300000,
-        run=str(run), checkpoint=str(run / 'policy_300000.pt'),
+        policy_source_commit=config['source_commit'], checkpoint_steps=checkpoint_steps,
+        run=str(run), checkpoint=str(policy_path),
         reference_variance=config.get('reference_variance'),
         normal_variance_ratio=config.get('normal_variance_ratio'),
         resume_lineage=json.loads(lineage_path.read_text()) if lineage_path.exists() else None)
@@ -121,6 +167,7 @@ def rollout_wave(pipes, condition, indices, plan, actor=None, margin=None, train
     for pipe, index in zip(connections, indices):
         sign = -1 if index % 2 == 0 else 1
         pipe.send(('reset', dict(seed=plan['layout_seed_start'] + index,
+                                task_version=plan.get('task_version', TaskConfig().version),
                                 radius_m=condition['radius_m'], offset_m=sign*condition['lateral_offset_m'])))
     initial = [receive(pipe) for pipe in connections]
     observations = np.stack([value[0] for value in initial])
@@ -135,7 +182,10 @@ def rollout_wave(pipes, condition, indices, plan, actor=None, margin=None, train
     for step in range(TaskConfig().horizon):
         if actor is None:
             for index in np.flatnonzero(active):
-                connections[index].send(('detour_action', int(targets[index])))
+                target = int(targets[index])
+                if plan.get('constructive_path') == 'retreat_both_ends':
+                    target = dict(target=target, retreat_both_ends=True)
+                connections[index].send(('detour_action', target))
             actions = np.zeros((len(indices), 3))
             for index in np.flatnonzero(active):
                 actions[index], targets[index] = receive(connections[index])

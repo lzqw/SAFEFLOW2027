@@ -4,6 +4,7 @@
   "frozen_method_code_commit": null,
   "task_version": null,
   "candidate_task_version": "SafeReach-RelativeLayout-v3",
+  "candidate_robustness_protocol": "configs/star/arm_safe_entropy/formal_robustness_plan.json",
   "methods": ["sac_lag", "flow_iso", "flow_learned"],
   "training_seeds": [2030, 2031, 2032],
   "steps_per_seed": 1000000,

@@ -110,6 +110,16 @@ plan still has frozen=false and null task/method freeze; no formal run,
 additional rollout or algorithm module was introduced. This removes an
 execution-interface gap without treating current interim results as a freeze.
 
+The preparation-only formal perturbation runner also reuses the exact native
+nominal episodes at all four milestones, rather than rerunning nominal and
+choosing a stochastic outcome. Its candidate protocol retains the same five
+condition magnitudes,100 independent shared layouts per condition,50/50
+lateral signs, and one shared layout-feasibility artifact. On v3, lateral means
+perpendicular to each independently sampled start-goal line and the offset is
+included in shared reset admissibility. A native main config must embed the
+identical frozen protocol before any of this can execute. No main model,
+formal layout proof or new formal episode has yet been generated.
+
 ## Stage decision — zero-shot obstacle evaluation, 2026-11-09
 
 The new user instruction supersedes the earlier pending-stage question: keep
