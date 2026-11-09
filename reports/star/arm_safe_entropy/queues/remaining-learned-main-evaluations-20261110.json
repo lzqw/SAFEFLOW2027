@@ -1,5 +1,18 @@
 {
   "stage": "resource_only_frozen_evaluation_handoff",
+  "deployment": {
+    "host": "tjucta-a100",
+    "pid": 1062526,
+    "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-remaining-frozen-evaluations-20261110-e0138c9.log",
+    "script": "/home/lzqw/SAFEFLOW2027_ARM/operations/e0138c9cb0bccc4bfcd47230ed717180c19e39d1/scripts/star/arm_safe_entropy/queue_main_evaluations.py",
+    "jobs": "/home/lzqw/SAFEFLOW2027_ARM/operations/e0138c9cb0bccc4bfcd47230ed717180c19e39d1/reports/star/arm_safe_entropy/queues/remaining-learned-main-evaluations-20261110.json",
+    "dispatcher_code_commit": "e0138c9cb0bccc4bfcd47230ed717180c19e39d1",
+    "evaluator_source_commit": "498535af5633796234df5b65af755207b8e6a996",
+    "interval_seconds": 1800,
+    "maximum_checks": 48,
+    "gpu": 0,
+    "training_processes_changed": false
+  },
   "native_and_evaluation_host": "tjucta-a100",
   "observed_at_local": "2026-11-10 06:19 Asia/Taipei",
   "status_at_observation": "pending_native_1M_not_evaluated_yet",
