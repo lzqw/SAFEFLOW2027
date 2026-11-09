@@ -36,7 +36,16 @@ class ConditionReset:
 
     def reset_condition(self, seed, offset):
         self._condition_offset = offset
-        _, info = super().reset(seed=seed)
+        batches = 10 if self.config.version == 'SafeReach-RelativeLayout-v3' else 1
+        for batch in range(batches):
+            try:
+                _, info = super().reset(seed=seed if batch == 0 else None)
+                break
+            except RuntimeError as error:
+                if 'Could not sample a safe reachable start' not in str(error) or batch == batches-1:
+                    raise
+                # Continue the SAME seeded proposal stream, not another layout
+                # seed. Every admissibility test and physical limit is unchanged.
         if self.config.version == 'SafeReach-Obstacle-v2':
             # Preserve the already completed v2 experiment's exact semantics.
             self.obstacle_position = self.obstacle_position + np.array([offset, 0., 0.])
@@ -46,7 +55,7 @@ class ConditionReset:
             raise RuntimeError(f'Unsafe perturbed initial layout seed={seed}, offset={offset}: {minimum}')
         layout = dict(start=self.start.tolist(), goal=self.goal.tolist(),
                       obstacle=self.obstacle_position.tolist(), radius_m=self.config.obstacle_radius,
-                      initial_minimum_distance_m=minimum)
+                      initial_minimum_distance_m=minimum, reset_proposal_batches=batch+1)
         return self._obs(), layout
 
 
@@ -95,7 +104,7 @@ def physics_worker(connection):
                 raise ValueError(command)
             connection.send(result)
     except BaseException as error:
-        connection.send({'worker_error': f'{type(error).__name__}: {error}'})
+        connection.send({'worker_error': f'{type(error).__name__}: {error}; command={command}, payload={payload}'})
     finally:
         if env is not None:
             env.close()

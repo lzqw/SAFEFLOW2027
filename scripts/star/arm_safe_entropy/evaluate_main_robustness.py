@@ -119,6 +119,10 @@ def main():
                     for indices in batches:
                         records.extend(dict(condition=condition['name'], **row)
                                        for row in rollout_wave(pipes, condition, indices, plan))
+                        atomic_json(args.output / 'layout_validity.json', dict(plan=plan, records=records,
+                            safe_detours=sum(r['safe_success'] for r in records),
+                            validation_transitions=sum(r['length'] for r in records),
+                            source_commit=args.source_commit, training_transitions=0, adaptation_updates=0))
                 proof = dict(plan=plan, records=records, safe_detours=sum(r['safe_success'] for r in records),
                     validation_transitions=sum(r['length'] for r in records), source_commit=args.source_commit,
                     training_transitions=0, adaptation_updates=0)

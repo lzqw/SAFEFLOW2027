@@ -123,6 +123,8 @@
     "lateral_sign_rule": "even episode index negative,odd positive;50 per side",
     "lateral_axis": "horizontal unit vector perpendicular to each sampled start-to-goal line; exactly world_x on the original v2 task",
     "layout_admissibility": "v3 shift is applied before the shared safe-start and safe-goal reset checks; accepted layouts can differ between conditions,never between methods; save and compare actual poses",
+    "evaluation_reset_maximum_proposals": 300,
+    "evaluation_reset_continuation": "up to10batches of the existing30proposal reset; continue the identical seeded proposal stream after an admissibility failure,never replace a fixed layout seed; training resets remain unchanged",
     "constructive_path": "retreat_both_ends",
     "layout_validity": "one shared500-layout physical path proof,not repeated per policy/checkpoint; a failed proof is visible and does not cause failed learned episodes to be removed",
     "expected_main_condition_rows": 180,
@@ -202,6 +204,14 @@
       "Learned beats SAC training count by only2;no strong SAC-superiority claim",
       "Original v2 zero-shot robustness comparison remains negative;v3 formal robustness is unmeasured",
       "No v3 Iso-Low run was requested or used;do not transfer a low-noise dominance claim across tasks"
-    ]
+    ],
+    "pre_training_engineering_amendment": {
+      "failed_preflight_source": "5e98e1a2330d88bf03a026fb488a40b8d8610a3f",
+      "failure": "30proposal safe-start/goal rejection limit exhausted before any formal model or training was launched",
+      "repair": "Only the evaluation wrapper continues the same fixed-seed proposal stream for up to300proposals; original safety tests and all500 condition/seed identities retained",
+      "training_or_algorithm_change": false,
+      "formal_training_transitions_before_amendment": 0,
+      "formal_policy_episodes_before_amendment": 0
+    }
   }
 }
