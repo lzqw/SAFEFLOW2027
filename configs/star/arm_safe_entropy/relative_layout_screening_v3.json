@@ -50,11 +50,11 @@
     "monitor_actions": "read actual native PID identity and completion receipts; no automatic restart, new method or budget extension",
     "foreign_workloads_changed": false,
     "latest_half_hour_capture": {
-      "observed_at": "2026-11-09T15:54:34+08:00",
+      "observed_at": "2026-11-09T16:24:35+08:00",
       "native_pids_alive": [746585, 746586, 746587],
       "method_order": ["sac_lag", "flow_iso", "flow_learned"],
-      "observed_transitions": [192000, 121000, 68000],
-      "subsequent_compact_capture_transitions": [194000, 122000, 68000],
+      "observed_transitions": [284000, 178000, 100000],
+      "subsequent_compact_capture_transitions": [285000, 179000, 100000],
       "sac_fixed100k_safe_successes_of30": 19,
       "sac_fixed100k_violation_episodes_of30": 0,
       "sac_fixed100k_training_violations": 108,
@@ -62,10 +62,17 @@
       "iso_fixed100k_violation_episodes_of30": 0,
       "iso_fixed100k_training_violations": 142,
       "iso_fixed100k_interpretation": "all30 safe horizon failures,not a safety gain",
-      "learned_first_evaluation": "pending100k,not fabricated from training logs",
+      "learned_fixed100k_safe_successes_of30": 12,
+      "learned_fixed100k_violation_episodes_of30": 1,
+      "learned_fixed100k_training_violations": 56,
+      "learned_fixed100k_failure_layout": 82034,
+      "learned_fixed100k_interpretation": "Early task-acquisition signal vs Iso,not a clean risk Pareto gain or final/cross-seed evidence",
+      "sac_fixed200k_safe_successes_of30": 30,
+      "sac_fixed200k_violation_episodes_of30": 0,
+      "sac_fixed200k_training_violations": 164,
       "completed_screening_runs": 0,
       "completed_formal_runs": 0,
-      "next_scheduled_check_approx": "2026-11-09T16:24:34+08:00"
+      "next_scheduled_check_approx": "2026-11-09T16:54:35+08:00"
     }
   }
 }

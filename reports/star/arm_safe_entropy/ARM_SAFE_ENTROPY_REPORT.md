@@ -27,40 +27,52 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current screening evidence — 2026-11-09 15:54–15:55 CST
+## Current screening evidence — 2026-11-09 16:24–16:25 CST
 
 The scheduled half-hour watcher directly confirmed all three original v3
-trainer PIDs alive at192k/121k/68k transitions (SAC/Iso/Learned). The compact
-capture shortly afterwards reached194k/122k/68k. No process was restarted,
+trainer PIDs alive at284k/178k/100k transitions (SAC/Iso/Learned). The compact
+capture shortly afterwards reached285k/179k/100k. No process was restarted,
 configuration changed, seed replaced or budget expanded.
 
-**Both SAC-Lag and Iso now have their predeclared fixed100k evaluation** on
+**All three methods now have their predeclared fixed100k evaluation** on
 common layouts82027..82056:
 
 | Method at100k | Safe success | Violation/contact-collision episodes | Return | Training violations |
 |---|---:|---:|---:|---:|
 | SAC-Lag | 19/30 | 0/30 /0/30 | 6.4996 | 108 |
 | Flow-Iso | 0/30 | 0/30 /0/30 | -1.9416 | 142 |
-| LearnedDir | pending | pending | pending | pending |
+| LearnedDir | 12/30 | 1/30 /0/30 | 3.0036 | 56 |
 
 Iso's30 failed episodes all end safely at the100-step true horizon: this is
 safe stalling, **not** a safety advantage over SAC. SAC's11 non-successes
 also end at that horizon. Mean time-to-goal among SAC's19 successes is2.1074s;
-Iso's successful time-to-goal is undefined, not zero. Successful coverage is
-explicit, not an all-episode speed claim. The current matched100k evidence
-shows slower Iso task acquisition and more training violations, not a final
-method ranking. Learned has not yet reached its first100k evaluation; its
-smaller current violation count at68k is not a matched-budget safety result.
+Iso's successful time-to-goal is undefined, not zero. Learned's mean is2.2467s
+among12 successes, with17 safe horizon failures and one first-interval
+clearance failure on layout82034. This failure has no physical contact and is
+retained, not removed as an inconvenient layout. Successful coverage is
+explicit, not an all-episode speed claim.
+
+Learned's12 successes versus Iso's0 and56 training violations versus142 are
+an **early, one-seed task-acquisition signal** (+40 percentage points success,
+60.6% fewer training violations at the same100k budget). But it also has one
+evaluation violation versus Iso's0; this is not a clean evaluation-risk Pareto
+gain. SAC still has higher100k success19/30 with0/30 violations. The signal
+does not establish a final300k gain, cross-seed stability or readiness for9M.
 All methods continue through the original300k, with no scientific early stop.
 
-There are49 native development/ability/control/screen evaluations in the
-combined CSV, including these two new v3 checkpoints; the original47 remain
+SAC's fixed200k result is also available:30/30 safe successes,0/30
+violations/contact collisions, return11.4412 and164 training violations.
+Mean time-to-goal is .8773s over all30 successes. Iso/Learned200k results are
+still pending, so this is not a matched200k method ranking or a final result.
+
+There are51 native development/ability/control/screen evaluations in the
+combined CSV, including four new v3 checkpoints; the original47 remain
 intact. Robustness rows remain40 and formal completed rows0/9. All three
 screening runs retain their fixed300k endpoints. Recent10k-transition speeds
-are51.0/32.2/17.4 transitions/s; approximate remaining times are0.6/1.5/3.7h
+are51.6/31.5/18.1 transitions/s; approximate remaining times are0.1/1.1/3.1h
 respectively, conditional on unchanged resource sharing. This is a throughput
 projection, not a completion promise. The next scheduled native-PID check is
-approximately16:24. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
+approximately16:54. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
 retains all three native curves without extrapolated evaluation points.
 
 ## Stage decision — zero-shot obstacle evaluation, 2026-11-09
