@@ -7,10 +7,11 @@
     {
       "run": "main/flow-iso-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 593000,
+      "latest_logged_transitions": 651000,
       "evaluation_milestones": [
         100000,
-        300000
+        300000,
+        600000
       ]
     },
     {
@@ -27,13 +28,15 @@
     {
       "run": "main/flow-iso-seed2032-v3-4080-fresh",
       "source_commit": "f059d4db606e244ad4dba7d40c8831375b4c0f73",
-      "latest_logged_transitions": 57000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 222000,
+      "evaluation_milestones": [
+        100000
+      ]
     },
     {
       "run": "main/flow-learned-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 328000,
+      "latest_logged_transitions": 359000,
       "evaluation_milestones": [
         100000,
         300000
@@ -42,17 +45,18 @@
     {
       "run": "main/flow-learned-seed2031-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 967000,
+      "latest_logged_transitions": 1000000,
       "evaluation_milestones": [
         100000,
         300000,
-        600000
+        600000,
+        1000000
       ]
     },
     {
       "run": "main/flow-learned-seed2032-v3-a100-fresh",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 187000,
+      "latest_logged_transitions": 218000,
       "evaluation_milestones": [
         100000
       ]
@@ -60,7 +64,7 @@
     {
       "run": "main/sac-lag-seed2030-v3",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 854000,
+      "latest_logged_transitions": 948000,
       "evaluation_milestones": [
         100000,
         300000,
@@ -76,6 +80,14 @@
         300000,
         600000,
         1000000
+      ]
+    },
+    {
+      "run": "main/sac-lag-seed2032-v3-4080-fresh",
+      "source_commit": "f059d4db606e244ad4dba7d40c8831375b4c0f73",
+      "latest_logged_transitions": 138000,
+      "evaluation_milestones": [
+        100000
       ]
     }
   ],

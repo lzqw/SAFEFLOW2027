@@ -1,9 +1,9 @@
 {
-  "condition_rows": 40,
+  "condition_rows": 60,
   "expected_condition_rows": 180,
-  "completed_run_evaluations": 2,
+  "completed_run_evaluations": 3,
   "expected_run_evaluations": 9,
-  "policy_episodes": 4000,
+  "policy_episodes": 6000,
   "expected_policy_episodes": 18000,
   "training_transitions": 0,
   "adaptation_updates": 0,
