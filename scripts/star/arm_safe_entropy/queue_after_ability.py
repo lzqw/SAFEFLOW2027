@@ -18,6 +18,8 @@ def main():
     parser.add_argument('--method', choices=['sac_lag', 'flow_iso', 'flow_oracle', 'flow_learned',
                                             'flow_iso_low', 'flow_random_aniso'], required=True)
     parser.add_argument('--dependency-steps', type=int, default=100000)
+    parser.add_argument('--dependency-seed', type=int,
+                        help='Explicit frozen-cohort seed owning a released resource slot; default is the new run seed')
     parser.add_argument('--seed', type=int, default=2027)
     parser.add_argument('--gpu', type=int, required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -44,12 +46,16 @@ def main():
         frozen = json.loads(args.frozen_config.read_text())
         if frozen.get('task_version') not in {'SafeReach-Obstacle-v2', 'SafeReach-RelativeLayout-v3'}:
             parser.error('Freeze an explicit supported task version before queuing main')
+        if args.dependency_seed is not None and args.dependency_seed not in frozen['training_seeds']:
+            parser.error('A cross-seed dependency may only release a slot within this exact frozen cohort')
         try:
             resolve_phase(args.method, args.seed, budget, 100, phase='main')
             validate_main_freeze(frozen, args.method, args.seed, .04,
                                  task_version=frozen['task_version'])
         except ValueError as error:
             parser.error(str(error))
+    elif args.dependency_seed is not None:
+        parser.error('Cross-seed resource dependencies are only for the frozen main cohort')
     elif control:
         if args.mechanism_plan is None:
             parser.error('A control requires the evidence-reviewed bounded mechanism plan')
@@ -75,6 +81,7 @@ def main():
                        output=str(args.output), source_commit=args.source_commit,
                        stage='main' if formal else 'mechanism_control' if control else 'obstacle_development',
                        frozen_config=frozen,
+                       dependency_seed=args.dependency_seed if args.dependency_seed is not None else args.seed,
                        reference_variance=args.reference_variance,
                        reference_match_run=args.reference_match_run,
                        minimum_free_mib=args.minimum_free_mib,
@@ -98,9 +105,10 @@ def main():
     assert receipt['status'] == 'completed' and receipt['steps'] == args.dependency_steps
     if formal:
         dependency = json.loads((args.dependency / 'run_config.json').read_text())
-        if (dependency['stage'] != 'main' or dependency['training_seed'] != args.seed
+        dependency_seed = args.seed if args.dependency_seed is None else args.dependency_seed
+        if (dependency['stage'] != 'main' or dependency['training_seed'] != dependency_seed
                 or dependency.get('frozen_config') != frozen or args.dependency_steps != budget):
-            record(phase='dependency_not_the_same_frozen_main_seed_no_launch')
+            record(phase='dependency_not_the_declared_frozen_main_seed_no_launch')
             return
     while True:
         output = subprocess.check_output(['nvidia-smi', '-i', str(args.gpu),
