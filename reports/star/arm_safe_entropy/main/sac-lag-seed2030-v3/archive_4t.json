@@ -1,0 +1,22 @@
+{
+  "host": "4080",
+  "archive": "/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/formal_main_archive/sac-lag-seed2030-v3",
+  "full_checkpoint_bytes": 100333839,
+  "files": 13,
+  "steps": 1000000,
+  "training_violations": 240,
+  "original_preserved_on_a100": true,
+  "large_files_saved_on_local_host": false,
+  "source_host": "tjucta-a100",
+  "source_run": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2030-v3",
+  "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+  "observed_at_utc": "2026-11-09 19:23:45 UTC",
+  "policy_checkpoint_steps": [
+    100000,
+    300000,
+    600000,
+    1000000
+  ],
+  "checkpoint_file": "latest_full.pt",
+  "scope": "Full native run copied server-to-server through a host pipe; original retained; no large file persisted on this host or GitHub"
+}
