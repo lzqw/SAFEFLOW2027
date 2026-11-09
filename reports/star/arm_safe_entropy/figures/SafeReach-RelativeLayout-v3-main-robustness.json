@@ -2,12 +2,16 @@
   "task_version": "SafeReach-RelativeLayout-v3",
   "source": "MAIN_ROBUSTNESS_RESULTS.csv",
   "complete": false,
-  "completed_run_evaluations": 5,
+  "completed_run_evaluations": 6,
   "expected_run_evaluations": 9,
   "plotted_method_seeds": [
     {
       "method": "flow_iso",
       "training_seed": 2031
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2032
     },
     {
       "method": "flow_learned",
@@ -32,10 +36,6 @@
       "training_seed": 2030
     },
     {
-      "method": "flow_iso",
-      "training_seed": 2032
-    },
-    {
       "method": "flow_learned",
       "training_seed": 2030
     },
@@ -44,7 +44,7 @@
       "training_seed": 2032
     }
   ],
-  "complete_condition_rows": 100,
+  "complete_condition_rows": 120,
   "excluded_incomplete_condition_rows": 0,
   "excluded_incomplete_scope": "Only receipt completion determines inclusion,never reward or violation outcome; raw incomplete rows remain in the canonical CSV",
   "evaluation_steps": [
@@ -135,6 +135,50 @@
       "safe_success": 0.0,
       "violation_rate": 0.0075,
       "time_to_goal_capped_seconds": 4.0
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2032,
+      "checkpoint_steps": 100000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 0,
+      "time_to_goal_seconds": null,
+      "safe_success": 0.0,
+      "violation_rate": 0.0075,
+      "time_to_goal_capped_seconds": 4.0
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2032,
+      "checkpoint_steps": 300000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 304,
+      "time_to_goal_seconds": 0.7684210526315788,
+      "safe_success": 0.76,
+      "violation_rate": 0.2325,
+      "time_to_goal_capped_seconds": 1.5440000000000003
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2032,
+      "checkpoint_steps": 600000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 365,
+      "time_to_goal_seconds": 0.7290958904109589,
+      "safe_success": 0.9125,
+      "violation_rate": 0.0875,
+      "time_to_goal_capped_seconds": 1.0153
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2032,
+      "checkpoint_steps": 1000000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 373,
+      "time_to_goal_seconds": 0.714745308310992,
+      "safe_success": 0.9325,
+      "violation_rate": 0.0675,
+      "time_to_goal_capped_seconds": 0.9365000000000001
     },
     {
       "method": "flow_learned",
