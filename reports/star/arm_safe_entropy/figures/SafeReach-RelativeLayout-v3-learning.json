@@ -7,19 +7,21 @@
     {
       "run": "relative_layout_screening/flow-iso-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 64000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 122000,
+      "evaluation_milestones": [
+        100000
+      ]
     },
     {
       "run": "relative_layout_screening/flow-learned-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 36000,
+      "latest_logged_transitions": 68000,
       "evaluation_milestones": []
     },
     {
       "run": "relative_layout_screening/sac-lag-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 102000,
+      "latest_logged_transitions": 194000,
       "evaluation_milestones": [
         100000
       ]

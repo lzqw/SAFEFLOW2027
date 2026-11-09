@@ -27,31 +27,40 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current screening evidence — 2026-11-09 15:24–15:25 CST
+## Current screening evidence — 2026-11-09 15:54–15:55 CST
 
 The scheduled half-hour watcher directly confirmed all three original v3
-trainer PIDs alive at100k/63k/35k transitions (SAC/Iso/Learned). The compact
-capture shortly afterwards reached102k/64k/36k. No process was restarted,
+trainer PIDs alive at192k/121k/68k transitions (SAC/Iso/Learned). The compact
+capture shortly afterwards reached194k/122k/68k. No process was restarted,
 configuration changed, seed replaced or budget expanded.
 
-**SAC-Lag's first fixed100k evaluation is available:**19/30 safe successes,
-0/30 violation/contact-collision episodes, return6.4996 and108 cumulative
-training violations. The11 non-successes end safely at the true horizon, not
-by collision. Mean time-to-goal among the19 successes is2.1074s; successful
-coverage is explicit, not an all-episode speed claim. Its native checkpoint
-uses the predeclared common layouts82027..82056. Iso/Learned have not yet
-reached their first100k evaluation: their recent training success is not a
-held-out result, and their smaller current violation counts cannot be compared
-to SAC's100k count as a matched-budget safety gain.
+**Both SAC-Lag and Iso now have their predeclared fixed100k evaluation** on
+common layouts82027..82056:
 
-There are48 native development/ability/control/screen evaluations in the
-combined CSV, including this one new v3 checkpoint; the original47 remain
+| Method at100k | Safe success | Violation/contact-collision episodes | Return | Training violations |
+|---|---:|---:|---:|---:|
+| SAC-Lag | 19/30 | 0/30 /0/30 | 6.4996 | 108 |
+| Flow-Iso | 0/30 | 0/30 /0/30 | -1.9416 | 142 |
+| LearnedDir | pending | pending | pending | pending |
+
+Iso's30 failed episodes all end safely at the100-step true horizon: this is
+safe stalling, **not** a safety advantage over SAC. SAC's11 non-successes
+also end at that horizon. Mean time-to-goal among SAC's19 successes is2.1074s;
+Iso's successful time-to-goal is undefined, not zero. Successful coverage is
+explicit, not an all-episode speed claim. The current matched100k evidence
+shows slower Iso task acquisition and more training violations, not a final
+method ranking. Learned has not yet reached its first100k evaluation; its
+smaller current violation count at68k is not a matched-budget safety result.
+All methods continue through the original300k, with no scientific early stop.
+
+There are49 native development/ability/control/screen evaluations in the
+combined CSV, including these two new v3 checkpoints; the original47 remain
 intact. Robustness rows remain40 and formal completed rows0/9. All three
 screening runs retain their fixed300k endpoints. Recent10k-transition speeds
-are49.8/32.0/18.0 transitions/s; approximate remaining times are1.1/2.1/4.1h
+are51.0/32.2/17.4 transitions/s; approximate remaining times are0.6/1.5/3.7h
 respectively, conditional on unchanged resource sharing. This is a throughput
 projection, not a completion promise. The next scheduled native-PID check is
-approximately15:54. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
+approximately16:24. The [v3 learning figure](figures/SafeReach-RelativeLayout-v3-learning.png)
 retains all three native curves without extrapolated evaluation points.
 
 ## Stage decision — zero-shot obstacle evaluation, 2026-11-09
