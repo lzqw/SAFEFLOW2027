@@ -31,5 +31,23 @@
   "flow_actor_update_interval": 2,
   "full_checkpoint_every": 10000,
   "formal_held_out_seeds_untouched": [2030,2031,2032],
-  "main_frozen": false
+  "main_frozen": false,
+  "execution": {
+    "host": "tjucta-a100",
+    "code_snapshot": "/home/lzqw/SAFEFLOW2027_ARM/code/relative-layout-screen-v3",
+    "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+    "placement_reason": "Both A100 cards were idle; run the three-method one-seed screen on identical GPU/software hardware rather than confounding each method with a different host",
+    "observed_at": "2026-11-09T14:54:34+08:00",
+    "native_runs": [
+      {"method": "sac_lag", "pid": 746585, "gpu": 0, "observed_steps": 6000, "native_pid_alive": true},
+      {"method": "flow_iso", "pid": 746586, "gpu": 0, "observed_steps": 4000, "native_pid_alive": true},
+      {"method": "flow_learned", "pid": 746587, "gpu": 1, "observed_steps": 3000, "native_pid_alive": true}
+    ],
+    "shared_layout_validity": "reports/star/arm_safe_entropy/relative_layout_screening/environment/layout_validity.json",
+    "safe_physical_detours": "30/30",
+    "straight_segments_intersect_inflated_obstacle": "30/30,geometric indicator not executed straight-line rollouts",
+    "monitor_interval_seconds": 1800,
+    "monitor_actions": "read actual native PID identity and completion receipts; no automatic restart, new method or budget extension",
+    "foreign_workloads_changed": false
+  }
 }

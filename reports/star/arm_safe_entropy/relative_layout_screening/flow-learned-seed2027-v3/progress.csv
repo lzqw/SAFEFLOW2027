@@ -1,0 +1,3 @@
+steps,elapsed_seconds,train_fps,episodes,training_violation_count,recent_success,recent_return,reward_td,reward_q_abs_max,actor_loss,energy,clipping_rate,alpha,cost_loss,margin_loss,safety_multiplier
+1000,2.8255823189392686,353.9093493391489,21,15,0.0,-8.779718601419535,0.0,0.0,0.0,0.0,0.0,0.0007999999215826392,0.0,0.0,0.0
+2000,5.610682496102527,356.462872634355,41,29,0.0,-8.688975799252523,0.0,0.0,0.0,0.0,0.0,0.0007999999215826392,0.0,0.0,0.0

@@ -1,0 +1,773 @@
+{
+  "task_definition": {
+    "version": "SafeReach-RelativeLayout-v3",
+    "obstacle": true,
+    "horizon": 100,
+    "substeps": 20,
+    "displacement_scale": 0.025,
+    "safety_distance": 0.015,
+    "success_distance": 0.035,
+    "obstacle_radius": 0.06,
+    "progress_scale": 5.0,
+    "success_bonus": 10.0,
+    "failure_penalty": 10.0,
+    "timeout_penalty": 2.0,
+    "step_penalty": 0.01,
+    "randomize_layout": true,
+    "control_dt": 0.04,
+    "protected_links": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "observations": [
+      "q/pi",
+      "qdot/4",
+      "ee_world_xyz",
+      "goal_world_xyz",
+      "obstacle_world_xyz",
+      "obstacle_radius",
+      "remaining_time"
+    ],
+    "relative_layout_distribution": {
+      "start_center": [
+        -0.25,
+        -0.17,
+        0.25
+      ],
+      "start_jitter_halfwidth": [
+        0.04,
+        0.02,
+        0.03
+      ],
+      "goal_center": [
+        -0.25,
+        0.17,
+        0.25
+      ],
+      "goal_jitter_halfwidth": [
+        0.05,
+        0.02,
+        0.03
+      ],
+      "obstacle_center": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "obstacle_jitter_halfwidth": [
+        0.045,
+        0.015,
+        0.025
+      ],
+      "sampling": "independent uniform coordinates and independent start/goal/obstacle draws; no shared translation",
+      "rejection": "same initial protected-link clearance plus a kinematic safe/reachable goal; no policy-return selection"
+    },
+    "algorithm_change": false,
+    "reward_or_cost_change": false
+  },
+  "safe_detours": 30,
+  "layouts": 30,
+  "validation_transitions": 1210,
+  "training_transitions": 0,
+  "policy_evaluations": 0,
+  "records": [
+    {
+      "layout_seed": 82027,
+      "start": [
+        -0.21883841796250647,
+        -0.1514644757371574,
+        0.27412473452695646
+      ],
+      "goal": [
+        -0.2924579580210232,
+        0.17099426800196446,
+        0.22914422727326514
+      ],
+      "obstacle": [
+        -0.2649748926935557,
+        -0.010508349890974843,
+        0.22886555121515967
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 39,
+      "minimum_distance_m": 0.04970465762913992,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82028,
+      "start": [
+        -0.231106740705599,
+        -0.16378699957881063,
+        0.27259700334632553
+      ],
+      "goal": [
+        -0.23193510952200821,
+        0.18952363031866667,
+        0.25717850815995796
+      ],
+      "obstacle": [
+        -0.24957505543406228,
+        -0.009209885778830725,
+        0.24178977416507386
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.04886796784186728,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82029,
+      "start": [
+        -0.27452539072000914,
+        -0.15132288033250177,
+        0.25731957744021966
+      ],
+      "goal": [
+        -0.29646437071669773,
+        0.16870332490493326,
+        0.25804550992937375
+      ],
+      "obstacle": [
+        -0.23139850242232018,
+        0.010560740940834906,
+        0.24928535728549858
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 39,
+      "minimum_distance_m": 0.032715030125989225,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82030,
+      "start": [
+        -0.21149008269086117,
+        -0.15575446534660073,
+        0.24798654604852124
+      ],
+      "goal": [
+        -0.23400941378560527,
+        0.18255149974600293,
+        0.250326205739548
+      ],
+      "obstacle": [
+        -0.23078624972037992,
+        -0.003695201760870879,
+        0.24598684109470847
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.028469013303135157,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82031,
+      "start": [
+        -0.24701765184309268,
+        -0.16067531207870236,
+        0.2703153473702847
+      ],
+      "goal": [
+        -0.23102834400311378,
+        0.16838424933444054,
+        0.27055337671500757
+      ],
+      "obstacle": [
+        -0.23236139352224283,
+        -0.008347567750091316,
+        0.2521761886437082
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.033436538777037936,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82032,
+      "start": [
+        -0.26276399851553267,
+        -0.15675869933581846,
+        0.2683751256842529
+      ],
+      "goal": [
+        -0.22784586285098626,
+        0.1843753245145346,
+        0.25567203621674617
+      ],
+      "obstacle": [
+        -0.2893415825115367,
+        0.012584645429087337,
+        0.26223250824497735
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.04655119618634594,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82033,
+      "start": [
+        -0.24426728583665575,
+        -0.17496278785965802,
+        0.24761617294883598
+      ],
+      "goal": [
+        -0.2531365912437419,
+        0.170982334642152,
+        0.2463559225752014
+      ],
+      "obstacle": [
+        -0.2503439640728162,
+        -0.012006235202398097,
+        0.22927837193779688
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.044260795289535484,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82034,
+      "start": [
+        -0.2753014724926154,
+        -0.18299608860981714,
+        0.22090020802488686
+      ],
+      "goal": [
+        -0.2296836734275882,
+        0.18292016434181552,
+        0.2217849467462748
+      ],
+      "obstacle": [
+        -0.25352510770068076,
+        -0.012121246743215342,
+        0.26325920283660975
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.026630065451938897,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82035,
+      "start": [
+        -0.27210371027786445,
+        -0.18752349433426727,
+        0.2628377880651147
+      ],
+      "goal": [
+        -0.20437194495706967,
+        0.1854889981845106,
+        0.2682242623201613
+      ],
+      "obstacle": [
+        -0.2616640068245599,
+        0.013854916203618187,
+        0.24459505490621916
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 42,
+      "minimum_distance_m": 0.06420506883207985,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82036,
+      "start": [
+        -0.2397882819070681,
+        -0.1630241141017421,
+        0.2707917000233771
+      ],
+      "goal": [
+        -0.22557956714381303,
+        0.1841667624410305,
+        0.22301783107579426
+      ],
+      "obstacle": [
+        -0.29494370191866676,
+        -0.004755700905314287,
+        0.26769039946937834
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.046033927632510685,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82037,
+      "start": [
+        -0.2819928286453981,
+        -0.17220677991163952,
+        0.222911144049494
+      ],
+      "goal": [
+        -0.2268555866393425,
+        0.15124165926937685,
+        0.26663088962191317
+      ],
+      "obstacle": [
+        -0.270372491522852,
+        -0.009694548427078176,
+        0.2372203645160051
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 39,
+      "minimum_distance_m": 0.02490478301600947,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82038,
+      "start": [
+        -0.21694778390175332,
+        -0.1837378191319263,
+        0.23246626885962648
+      ],
+      "goal": [
+        -0.20228131876841798,
+        0.1586533780325652,
+        0.2704427584775876
+      ],
+      "obstacle": [
+        -0.2606348802542443,
+        -0.003040586772426518,
+        0.23420284256596235
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.05864905231857455,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82039,
+      "start": [
+        -0.23922828292725526,
+        -0.16849305786760072,
+        0.24008291206095356
+      ],
+      "goal": [
+        -0.22653847788682072,
+        0.17251040636514742,
+        0.2532225012542535
+      ],
+      "obstacle": [
+        -0.2536805963224147,
+        -0.009629303322957573,
+        0.2527645611597462
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.02659570665058171,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82040,
+      "start": [
+        -0.23881718679565458,
+        -0.1877713648750125,
+        0.2739819442275407
+      ],
+      "goal": [
+        -0.2991290709689712,
+        0.16407576022070622,
+        0.26903313833686965
+      ],
+      "obstacle": [
+        -0.27326991997051847,
+        -0.009622469733951804,
+        0.26614371737260956
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.044405805846902596,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82041,
+      "start": [
+        -0.2100370472918451,
+        -0.15543231355761641,
+        0.24139492951082792
+      ],
+      "goal": [
+        -0.2516669666961778,
+        0.1881026767180262,
+        0.23707997416539053
+      ],
+      "obstacle": [
+        -0.24701496072930867,
+        -0.00185558989369841,
+        0.23708974077434466
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.0378297217114984,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82042,
+      "start": [
+        -0.2513203841180082,
+        -0.18824251094535982,
+        0.26586751366308314
+      ],
+      "goal": [
+        -0.21640391999225878,
+        0.18821220168352343,
+        0.2727616189339132
+      ],
+      "obstacle": [
+        -0.2522529275461173,
+        0.012565950651033594,
+        0.2278787601972873
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 42,
+      "minimum_distance_m": 0.0768649552428623,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82043,
+      "start": [
+        -0.2303736491499366,
+        -0.1750798380484867,
+        0.26494098595432075
+      ],
+      "goal": [
+        -0.2979957194054344,
+        0.1798936635504207,
+        0.25878384150882633
+      ],
+      "obstacle": [
+        -0.24596164982807467,
+        -0.014062913322283592,
+        0.24735522992264206
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.04460539655991359,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82044,
+      "start": [
+        -0.2679478483477832,
+        -0.1650121717855963,
+        0.2549974351144125
+      ],
+      "goal": [
+        -0.20369341944196978,
+        0.18509852621600395,
+        0.2401209400197305
+      ],
+      "obstacle": [
+        -0.2106350705859405,
+        0.004258785517154414,
+        0.23719955221049535
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.04651893635090118,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82045,
+      "start": [
+        -0.2871088207204776,
+        -0.16182611438486572,
+        0.25434522538893145
+      ],
+      "goal": [
+        -0.2242904145394496,
+        0.16277858249191648,
+        0.255200497480326
+      ],
+      "obstacle": [
+        -0.2802407916779127,
+        -0.009362353623843401,
+        0.2452841918539999
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 39,
+      "minimum_distance_m": 0.028907826521554242,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82046,
+      "start": [
+        -0.23448077295622355,
+        -0.1597732476447103,
+        0.23586658740847255
+      ],
+      "goal": [
+        -0.21822816728113587,
+        0.17331559847848313,
+        0.23956547784327728
+      ],
+      "obstacle": [
+        -0.250871431700513,
+        -0.0015740398417624455,
+        0.24358962922653007
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.028351572188100402,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82047,
+      "start": [
+        -0.26232105729295224,
+        -0.18551233913761378,
+        0.2379573244254845
+      ],
+      "goal": [
+        -0.263627047315219,
+        0.1711128867354687,
+        0.2753282768075559
+      ],
+      "obstacle": [
+        -0.2459428245092631,
+        -0.011264716005253255,
+        0.24935135368159397
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.0363677890672993,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82048,
+      "start": [
+        -0.22230561968053866,
+        -0.15906358395672032,
+        0.2726165623311924
+      ],
+      "goal": [
+        -0.21350137774281336,
+        0.1886700638879267,
+        0.25731599177324094
+      ],
+      "obstacle": [
+        -0.27395418511654046,
+        -0.012723449282281559,
+        0.24393897514487475
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.05489831505665543,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82049,
+      "start": [
+        -0.26557669300648057,
+        -0.16464801261489048,
+        0.2540926834835588
+      ],
+      "goal": [
+        -0.20361177127901797,
+        0.18949131525490148,
+        0.24679967141016923
+      ],
+      "obstacle": [
+        -0.2531437686314647,
+        0.005252439449557975,
+        0.23328218915328164
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.04853042990847779,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82050,
+      "start": [
+        -0.2587537891054776,
+        -0.17487057929261335,
+        0.2561250975365877
+      ],
+      "goal": [
+        -0.24777396679069305,
+        0.17334409085283128,
+        0.2595530541531947
+      ],
+      "obstacle": [
+        -0.22053914665327895,
+        0.011679019282834262,
+        0.24017263172006342
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.047452958253767455,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82051,
+      "start": [
+        -0.2418656095561323,
+        -0.1807160809705615,
+        0.24773286126915428
+      ],
+      "goal": [
+        -0.20607969599327197,
+        0.15542749402704803,
+        0.26711172235952435
+      ],
+      "obstacle": [
+        -0.23613778927071838,
+        -0.011709711147261877,
+        0.24837721769127374
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 40,
+      "minimum_distance_m": 0.03654279605454418,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82052,
+      "start": [
+        -0.2477673693768064,
+        -0.16712430294415806,
+        0.270672708458125
+      ],
+      "goal": [
+        -0.2687794609387278,
+        0.18258510523532526,
+        0.24311720096347672
+      ],
+      "obstacle": [
+        -0.27582298317603987,
+        -0.008060690662749677,
+        0.2731689628918035
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.03745121453331651,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82053,
+      "start": [
+        -0.2490929755534082,
+        -0.1667440377892305,
+        0.26900834068001606
+      ],
+      "goal": [
+        -0.2021186945279294,
+        0.18910573621825508,
+        0.2513206011684658
+      ],
+      "obstacle": [
+        -0.286504636094173,
+        0.011274902095681941,
+        0.23548093253189328
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.07409058567199528,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82054,
+      "start": [
+        -0.24909643452479485,
+        -0.16132284457678564,
+        0.237916506266577
+      ],
+      "goal": [
+        -0.27328462631419187,
+        0.1898103051378813,
+        0.23870554828660834
+      ],
+      "obstacle": [
+        -0.27158377305903747,
+        -0.01284990822202522,
+        0.24394147495261467
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.024690424043869466,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82055,
+      "start": [
+        -0.23838812214636676,
+        -0.18687876943743434,
+        0.27135228850289156
+      ],
+      "goal": [
+        -0.20406565182196873,
+        0.16575151067187854,
+        0.23375541393362032
+      ],
+      "obstacle": [
+        -0.26339987642355656,
+        0.006336823266824745,
+        0.23375493772414413
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 41,
+      "minimum_distance_m": 0.04098038545779881,
+      "straight_segment_intersects_inflated_sphere": true
+    },
+    {
+      "layout_seed": 82056,
+      "start": [
+        -0.22638726316306904,
+        -0.15316521167707162,
+        0.26178093063297897
+      ],
+      "goal": [
+        -0.2457342409138542,
+        0.17112101515743539,
+        0.2525186832676062
+      ],
+      "obstacle": [
+        -0.2069556652854859,
+        0.0025582885344184146,
+        0.2344059061971686
+      ],
+      "safe_success": true,
+      "violation": false,
+      "length": 39,
+      "minimum_distance_m": 0.04084394424014946,
+      "straight_segment_intersects_inflated_sphere": true
+    }
+  ]
+}

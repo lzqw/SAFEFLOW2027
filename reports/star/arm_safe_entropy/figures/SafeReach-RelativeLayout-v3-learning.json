@@ -1,0 +1,28 @@
+{
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "phases": [
+    "relative_layout_screening"
+  ],
+  "runs": [
+    {
+      "run": "relative_layout_screening/flow-iso-seed2027-v3",
+      "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+      "latest_logged_transitions": 3000,
+      "evaluation_milestones": []
+    },
+    {
+      "run": "relative_layout_screening/flow-learned-seed2027-v3",
+      "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+      "latest_logged_transitions": 2000,
+      "evaluation_milestones": []
+    },
+    {
+      "run": "relative_layout_screening/sac-lag-seed2027-v3",
+      "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+      "latest_logged_transitions": 4000,
+      "evaluation_milestones": []
+    }
+  ],
+  "comparison_scope": "All development variants, including R1",
+  "note": "Top panels: stochastic held-out evaluation only. Bottom panels: training statistics, not held-out performance. Missing checkpoints are not assigned zeros."
+}

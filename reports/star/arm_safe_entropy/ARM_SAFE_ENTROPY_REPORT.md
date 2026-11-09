@@ -70,6 +70,15 @@ retain inactive rows only for random-stream stability; **no physical step**
 is taken after an episode ends. Actual layouts are saved and checked against
 the common layout set, with no discarded failed policy episodes.
 
+The original environment's safe-start rejection remains active. At radius8cm,
+40/50 reset seeds accept a different shared translation from nominal to avoid
+an unsafe initial robot pose; the7cm/position conditions retain the nominal
+translations. Every method and both training seeds use exactly the same
+accepted layout within each condition. Thus the8cm result is a comparison on
+a common **valid stressed distribution**, not a strictly identical-start paired
+radius intervention. This limitation is visible in the saved layouts and is
+not repaired by removing failures or rerunning conditions until favorable.
+
 Initial direct-ascent constructive paths proved219/250 condition/layouts but
 violated on the first interval for31 radius8cm layouts. This happened before
 any policy evaluation. The [initial evidence](engineering/robustness_initial_detour_20261109/)
@@ -89,6 +98,32 @@ This is task screening, not a new formal result or a promoted algorithm module.
 New formal seeds2030..2032 remain untouched. No stronger perturbations or
 additional conditions are added to search for a favorable robustness result.
 
+### Relative-layout screen actually started, not merely queued
+
+Immutable training source95ab831 runs all three fresh models on the previously
+idle A100, keeping method/hardware/software comparable for this single-seed
+screen. SAC-Lag/Iso share physical GPU0; Learned uses GPU1. No foreign process
+was paused or killed. At14:54:34 the read-only watcher directly confirmed:
+
+| New v3 screening run | Native PID | Actual transitions | Fixed target |
+|---|---:|---:|---:|
+| SAC-Lag seed2027 | 746585 | 6000 | 300000 |
+| Flow-Iso seed2027 | 746586 | 4000 | 300000 |
+| LearnedDir seed2027 | 746587 | 3000 | 300000 |
+
+All have passed the2000-step random warmup; these are not efficacy results or
+substitutes for the fixed100k/200k/300k common30-episode evaluations. Each keeps
+2 environments, actual-transition counting, original UTD/batch/actor/reward
+update ratios and native10k full checkpoints. Before launch, a single fixed
+retreat/overhead route completed all30 new common layouts safely; all30 direct
+EE line segments intersect the inflated sphere (geometric indicator, not an
+extra straight-line physics evaluation). This bounded check used1210 validity
+transitions,0training transitions, no learned policy and no parameter search.
+The [actual layout evidence](relative_layout_screening/environment/layout_validity.json)
+records independent relative poses and unchanged task units/costs. A read-only
+1800-second watcher follows these exact PIDs/receipts, with no automatic restart
+or additional runs. Completion of this0.9M screen remains pending.
+
 ## Completed development/mechanism result — fixed endpoints, not a superiority claim
 
 All eight original development runs, both bounded100k R1 runs and all four
@@ -96,7 +131,8 @@ All eight original development runs, both bounded100k R1 runs and all four
 also complete. There are47 native evaluation records in
 [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv),30 conditional diagnostic
 rows in [MECHANISM_RESULTS.csv](MECHANISM_RESULTS.csv), and **0/9 formal main
-results**. No project trainer remains active at this handoff. No bad seed or
+results**. No original development/control trainer remains active; the new v3
+screen above is a separate authorized stage. No bad seed or
 final failure was replaced, and no scientific early stopping was used.
 
 ### Final nominal task results, common30 layouts per policy
