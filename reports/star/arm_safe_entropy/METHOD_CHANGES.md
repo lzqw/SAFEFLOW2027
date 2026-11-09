@@ -611,3 +611,29 @@ independent92027..92126 layouts. Shared feasible-layout evidence and actual
 resource admission precede any formal job; they are not fabricated by setting
 the frozen flag. Every formal invocation is one predeclared run, not an
 unbounded auto-expansion or a new hyperparameter search.
+
+## Formal startup and user-requested5080 exclusion
+
+The shared500-layout preparation initially exhausted30 proposal attempts in a
+large-obstacle reset, before any main training or model evaluation. Only the
+evaluation wrapper now continues the same seeded proposal stream up to300;
+training reset/actor/task sources remain unchanged. The second preparation
+proved500/500 safe paths; just five8cm cases needed31–60 proposals, while all
+nominal cases stayed within30. Original failed-preparation status is retained.
+
+Formal startup used immutable498535a with7 native jobs and2 dependency queues.
+Two5080 jobs then disappeared before100k with no established cause. On the
+user's instruction to stop using5080, only its unstarted project queue was
+stopped, both partial runs/checkpoints were preserved, and the entire2032
+group was reassigned to4080 after existing cohort slots complete. A small
+explicit --dependency-seed option allows a declared frozen-cohort predecessor
+to release capacity without relabelling the new run's seed or transferring
+weights. Codef059d4d changes scheduling only, not the frozen scientific record.
+
+The replacement2032 runs will be fresh complete1M trials. Since neither failed
+deployment reached evaluation, this is an engineering repair, not a response
+to unfavorable scientific outcomes; no old data are deleted. Approximately
+54k–56k deployment transitions and at least88 logged violations remain separate
+engineering overhead, not silently missing from claimed primary costs. Current
+live cohort is5 native learners/4 waiting processes on A100 and4080;5080 is
+excluded until the user authorizes otherwise. No foreign workload is stopped.

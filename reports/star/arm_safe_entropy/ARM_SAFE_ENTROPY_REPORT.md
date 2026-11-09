@@ -1,4 +1,4 @@
-# Arm safe entropy — relative-layout screen complete, configuration frozen
+# Arm safe entropy — frozen main running on A100/4080;5080 excluded by user
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -26,6 +26,68 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 `/home/lzqw/SAFEFLOW2027_ARM/env`; server root initially about60GiB free.
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
+
+## Current frozen-main execution — 2026-11-09 21:12 CST
+
+Five native main trainers are directly confirmed alive and past random warmup;
+four actual waiting queue processes complete the nine-run frozen cohort. No
+formal1M run is complete yet: MAIN_RESULTS.csv has0/9 final rows. All native
+configs record fresh initial_steps=0, the same frozen v3 method/task and the
+requested100k/300k/600k/1M evaluation milestones,100 episodes each.
+
+| Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
+|---|---|---|---|
+| 2030 / A100 | running104k,PID857625 | running77k,PID857626 | running43k,PID857627 |
+| 2031 /4080,4T | queued after Iso,PID518589 | running278k,PID518590 | running147k,PID518591 |
+| 2032 /4080,4T | queued after new Iso,PID551582 | queued after2031 SAC,PID551580 | queued after2031 Learned,PID551581 |
+
+These are observed progress/queue states, not extrapolated evaluation values.
+The2032 jobs are queued fresh1M runs on4080; none has started yet. Cross-seed
+dependencies release a resource slot only: they do not change a training seed,
+transfer weights or alter the frozen configuration. At most two learners share
+the4080; A100 has the two-card assignment recorded in
+[main_launch_plan.json](main_launch_plan.json). Other-project loads are not
+paused or killed. A read-only1800s watcher now follows only A100/4080 and the
+actual native/queue PID identities, including future queued-child handoffs.
+
+**5080 is no longer used for training, per the user's instruction.** Its Iso/
+Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
+Logs contain finite diagnostics but no Python traceback; filtered kernel logs
+did not establish OOM/Xid/segfault. The cause remains unknown, not an algorithm
+failure claim. The waiting SAC2032 queue PID371633 was identity-checked and
+stopped; it must not silently restart there. Original files remain, and both
+native recovery checkpoints (30k/10k) were copied to4080's4T archive. No foreign
+process was changed. [Engineering evidence](engineering/main5080_interruption_20261109.json)
+retains both attempted runs and at least88 logged training violations.
+
+To keep primary formal training counts complete, the replacement2032 group
+will start fresh on4080 with identical seeds/parameters, not resume an unknown
+lost tail or select a favorable checkpoint. The original attempted35k/19k
+segments remain engineering interruptions, with approximately54k–56k actual
+transitions consumed in addition to the9M primary scientific cohort. This
+overhead and its incomplete cost tail are explicitly separate; no exact9M
+total including failed deployment is claimed. No scientific outcome was
+available from either interrupted run before this resource repair.
+
+The first available main milestones are still **interim**, not final:
+seed2031 Iso/Learned100k both obtain100/100 safe successes and0/100 violations,
+with163/125 training violations (Learned23.3% lower at this same seed/budget).
+SAC2030 at100k has9/100 safe successes and0/100 violations, mostly safe stalling;
+do not compare it to a different seed as a matched method ranking. Main
+parameters remain frozen despite these observations; all runs retain1M.
+
+The shared formal-layout preparation succeeded on500/500 fixed condition/seed
+pairs with23008 validity transitions and0training/model-evaluation episodes.
+The initial30-proposal reset limit failed before any formal training began;
+only the evaluation wrapper's same-seed proposal continuation was extended to
+300. Exactly five radius8cm cases used a second30-proposal batch; every other
+case, including all100 nominal layouts, passed within the original limit.
+No safety threshold, level, fixed seed or failed policy episode was removed.
+[Complete layout proof](formal_layout_validity/layout_validity.json) and the
+[initial stopped preparation](engineering/formal_initial_reset_limit_20261109/)
+remain available. Frozen actor/task math is95ab831; initial formal runtime is
+498535a and the resource-slot queue extension isf059d4d. The full old negative
+v2 robustness data and the positive one-seed v3 screen are both retained below.
 
 ## Final relative-layout screen and freeze decision — 2026-11-09 19:54 CST
 

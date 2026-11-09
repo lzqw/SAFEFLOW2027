@@ -1,0 +1,7 @@
+{
+  "status": "stopped_before_first_evaluation_engineering_not_primary",
+  "reason": "Native PID disappeared without completion receipt;user subsequently excluded5080",
+  "replacement": "Fresh same-seed frozen-config run on4080;original artifacts retained",
+  "evidence": "engineering/main5080_interruption_20261109.json",
+  "automatic_restart": false
+}

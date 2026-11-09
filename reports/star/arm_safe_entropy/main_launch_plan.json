@@ -1,0 +1,300 @@
+{
+  "stage": "frozen_main_v3",
+  "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+  "frozen_method_and_task_code_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+  "observed_at_utc": "2026-11-09 12:25:50 UTC",
+  "total_training_transitions": 9000000,
+  "steps_per_run": 1000000,
+  "main_seeds": [
+    2030,
+    2031,
+    2032
+  ],
+  "methods": [
+    "sac_lag",
+    "flow_iso",
+    "flow_learned"
+  ],
+  "native_initially_launched": 7,
+  "dependency_queues_initially_launched": 2,
+  "evaluation_steps": [
+    100000,
+    300000,
+    600000,
+    1000000
+  ],
+  "episodes_per_condition": 100,
+  "layout_seed_start": 92027,
+  "resource_admission": {
+    "minimum_free_gpu_mib": 6144,
+    "maximum_gpu_utilization_percent": 85,
+    "maximum_host_load_fraction": 0.6,
+    "minimum_disk_free_gib": 8
+  },
+  "placement": "One entire training-seed group per host;SAC queued after same-seed Iso on single-card hosts;at most2learners per card",
+  "formal_layout_validity": "formal_layout_validity/layout_validity.json",
+  "foreign_workloads_changed": false,
+  "scientific_early_stopping": false,
+  "automatic_restart_or_extension": false,
+  "hosts": [
+    {
+      "host": "tjucta-a100",
+      "project": "/home/lzqw/SAFEFLOW2027_ARM",
+      "source": "/home/lzqw/SAFEFLOW2027_ARM/code/498535af5633796234df5b65af755207b8e6a996",
+      "training_seed": 2030,
+      "jobs": [
+        {
+          "method": "sac_lag",
+          "seed": 2030,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2030-v3",
+          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2030-v3.json",
+          "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2030-v3.log",
+          "pid": 857625
+        },
+        {
+          "method": "flow_iso",
+          "seed": 2030,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2030-v3",
+          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2030-v3.json",
+          "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2030-v3.log",
+          "pid": 857626
+        },
+        {
+          "method": "flow_learned",
+          "seed": 2030,
+          "gpu": 1,
+          "launch_kind": "native",
+          "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2030-v3",
+          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2030-v3.json",
+          "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2030-v3.log",
+          "pid": 857627
+        }
+      ]
+    },
+    {
+      "host": "4080",
+      "project": "/home/carla/4T/SAFEFLOW2027_ARM",
+      "source": "/home/carla/4T/SAFEFLOW2027_ARM/code/498535af5633796234df5b65af755207b8e6a996",
+      "training_seed": 2031,
+      "jobs": [
+        {
+          "method": "sac_lag",
+          "seed": 2031,
+          "gpu": 0,
+          "launch_kind": "dependency_queue",
+          "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2031-v3",
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2031-v3.json",
+          "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2031-v3.log",
+          "pid": 518589
+        },
+        {
+          "method": "flow_iso",
+          "seed": 2031,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2031-v3",
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2031-v3.json",
+          "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2031-v3.log",
+          "pid": 518590
+        },
+        {
+          "method": "flow_learned",
+          "seed": 2031,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2031-v3",
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2031-v3.json",
+          "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2031-v3.log",
+          "pid": 518591
+        }
+      ]
+    },
+    {
+      "host": "5080",
+      "project": "/home/autodrive/LZQW/SAFEFLOW2027_ARM",
+      "source": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/code/498535af5633796234df5b65af755207b8e6a996",
+      "training_seed": 2032,
+      "jobs": [
+        {
+          "method": "sac_lag",
+          "seed": 2032,
+          "gpu": 0,
+          "launch_kind": "dependency_queue",
+          "output": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2032-v3",
+          "state": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2032-v3.json",
+          "log": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2032-v3.log",
+          "pid": 371633
+        },
+        {
+          "method": "flow_iso",
+          "seed": 2032,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2032-v3",
+          "state": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2032-v3.json",
+          "log": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2032-v3.log",
+          "pid": 371634
+        },
+        {
+          "method": "flow_learned",
+          "seed": 2032,
+          "gpu": 0,
+          "launch_kind": "native",
+          "output": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2032-v3",
+          "state": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2032-v3.json",
+          "log": "/home/autodrive/LZQW/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2032-v3.log",
+          "pid": 371635
+        }
+      ]
+    }
+  ],
+  "resource_update": {
+    "observed_at_utc": "2026-11-09 13:19:06 UTC",
+    "user_instruction": "先不用5080跑",
+    "excluded_training_hosts": [
+      "5080"
+    ],
+    "stopped_unstarted5080_queue_pid": 371633,
+    "original5080_native_pids_missing": [
+      371634,
+      371635
+    ],
+    "native_training_runs_confirmed_live": 5,
+    "waiting_queue_handles_confirmed_live": 4,
+    "current_dispatch": [
+      {
+        "host": "tjucta-a100",
+        "project": "/home/lzqw/SAFEFLOW2027_ARM",
+        "source": "/home/lzqw/SAFEFLOW2027_ARM/code/498535af5633796234df5b65af755207b8e6a996",
+        "training_seed": 2030,
+        "jobs": [
+          {
+            "method": "sac_lag",
+            "seed": 2030,
+            "gpu": 0,
+            "launch_kind": "native",
+            "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2030-v3",
+            "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2030-v3.json",
+            "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2030-v3.log",
+            "pid": 857625
+          },
+          {
+            "method": "flow_iso",
+            "seed": 2030,
+            "gpu": 0,
+            "launch_kind": "native",
+            "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2030-v3",
+            "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2030-v3.json",
+            "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2030-v3.log",
+            "pid": 857626
+          },
+          {
+            "method": "flow_learned",
+            "seed": 2030,
+            "gpu": 1,
+            "launch_kind": "native",
+            "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2030-v3",
+            "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2030-v3.json",
+            "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2030-v3.log",
+            "pid": 857627
+          }
+        ]
+      },
+      {
+        "host": "4080",
+        "project": "/home/carla/4T/SAFEFLOW2027_ARM",
+        "source": "/home/carla/4T/SAFEFLOW2027_ARM/code/498535af5633796234df5b65af755207b8e6a996",
+        "training_seed": 2031,
+        "jobs": [
+          {
+            "method": "sac_lag",
+            "seed": 2031,
+            "gpu": 0,
+            "launch_kind": "dependency_queue",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2031-v3",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2031-v3.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2031-v3.log",
+            "pid": 518589
+          },
+          {
+            "method": "flow_iso",
+            "seed": 2031,
+            "gpu": 0,
+            "launch_kind": "native",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2031-v3",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2031-v3.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2031-v3.log",
+            "pid": 518590
+          },
+          {
+            "method": "flow_learned",
+            "seed": 2031,
+            "gpu": 0,
+            "launch_kind": "native",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2031-v3",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2031-v3.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2031-v3.log",
+            "pid": 518591
+          }
+        ]
+      },
+      {
+        "host": "4080",
+        "project": "/home/carla/4T/SAFEFLOW2027_ARM",
+        "source": "/home/carla/4T/SAFEFLOW2027_ARM/code/f059d4db606e244ad4dba7d40c8831375b4c0f73",
+        "training_seed": 2032,
+        "jobs": [
+          {
+            "method": "flow_iso",
+            "dependency": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2031-v3",
+            "dependency_seed": 2031,
+            "seed": 2032,
+            "gpu": 0,
+            "launch_kind": "dependency_queue",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2032-v3-4080-fresh",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_iso-seed2032-v3-4080-fresh.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_iso-seed2032-v3-4080-fresh-queue.log",
+            "pid": 551580
+          },
+          {
+            "method": "flow_learned",
+            "dependency": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2031-v3",
+            "dependency_seed": 2031,
+            "seed": 2032,
+            "gpu": 0,
+            "launch_kind": "dependency_queue",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-learned-seed2032-v3-4080-fresh",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-flow_learned-seed2032-v3-4080-fresh.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-flow_learned-seed2032-v3-4080-fresh-queue.log",
+            "pid": 551581
+          },
+          {
+            "method": "sac_lag",
+            "dependency": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/flow-iso-seed2032-v3-4080-fresh",
+            "dependency_seed": 2032,
+            "seed": 2032,
+            "gpu": 0,
+            "launch_kind": "dependency_queue",
+            "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/main/sac-lag-seed2032-v3-4080-fresh",
+            "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/main-sac_lag-seed2032-v3-4080-fresh.json",
+            "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/main-sac_lag-seed2032-v3-4080-fresh-queue.log",
+            "pid": 551582
+          }
+        ]
+      }
+    ],
+    "repair": "Preserve pre-evaluation failed deployment artifacts;restart2032 cleanly on4080 only after frozen-cohort resource slots are released;no parameter/seed change",
+    "engineering_evidence": "engineering/main5080_interruption_20261109.json",
+    "engineering_training_transitions_estimated_range": [
+      54000,
+      56000
+    ],
+    "primary_scientific_training_transitions": 9000000,
+    "exact_total_with_engineering_not_claimed": true,
+    "foreign_workloads_changed": false
+  }
+}

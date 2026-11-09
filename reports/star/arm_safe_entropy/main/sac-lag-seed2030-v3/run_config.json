@@ -1,0 +1,377 @@
+{
+  "stage": "main",
+  "method": "sac_lag",
+  "training_seed": 2030,
+  "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+  "task_config": {
+    "version": "SafeReach-RelativeLayout-v3",
+    "obstacle": true,
+    "horizon": 100,
+    "substeps": 20,
+    "displacement_scale": 0.025,
+    "safety_distance": 0.015,
+    "success_distance": 0.035,
+    "obstacle_radius": 0.06,
+    "progress_scale": 5.0,
+    "success_bonus": 10.0,
+    "failure_penalty": 10.0,
+    "timeout_penalty": 2.0,
+    "step_penalty": 0.01,
+    "randomize_layout": true
+  },
+  "task_definition": {
+    "version": "SafeReach-RelativeLayout-v3",
+    "obstacle": true,
+    "horizon": 100,
+    "substeps": 20,
+    "displacement_scale": 0.025,
+    "safety_distance": 0.015,
+    "success_distance": 0.035,
+    "obstacle_radius": 0.06,
+    "progress_scale": 5.0,
+    "success_bonus": 10.0,
+    "failure_penalty": 10.0,
+    "timeout_penalty": 2.0,
+    "step_penalty": 0.01,
+    "randomize_layout": true,
+    "control_dt": 0.04,
+    "protected_links": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "observations": [
+      "q/pi",
+      "qdot/4",
+      "ee_world_xyz",
+      "goal_world_xyz",
+      "obstacle_world_xyz",
+      "obstacle_radius",
+      "remaining_time"
+    ],
+    "relative_layout_distribution": {
+      "start_center": [
+        -0.25,
+        -0.17,
+        0.25
+      ],
+      "start_jitter_halfwidth": [
+        0.04,
+        0.02,
+        0.03
+      ],
+      "goal_center": [
+        -0.25,
+        0.17,
+        0.25
+      ],
+      "goal_jitter_halfwidth": [
+        0.05,
+        0.02,
+        0.03
+      ],
+      "obstacle_center": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "obstacle_jitter_halfwidth": [
+        0.045,
+        0.015,
+        0.025
+      ],
+      "sampling": "independent uniform coordinates and independent start/goal/obstacle draws; no shared translation",
+      "rejection": "same initial protected-link clearance plus a kinematic safe/reachable goal; no policy-return selection"
+    },
+    "algorithm_change": false,
+    "reward_or_cost_change": false
+  },
+  "device": "cuda:0",
+  "num_envs": 2,
+  "total_transition_budget": 1000000,
+  "initial_steps": 0,
+  "transition_count": "sum of actual train env.step calls",
+  "evaluation_layout_seed_start": 92027,
+  "evaluation_episodes": 100,
+  "evaluation_every": null,
+  "evaluation_steps": [
+    100000,
+    300000,
+    600000,
+    1000000
+  ],
+  "resume_path": null,
+  "resume_episode_handling": "new episode on learner/replay resume; partial prior episodes not claimed exact",
+  "batch_size": 256,
+  "replay_capacity": 300000,
+  "random_transitions": 2000,
+  "utd": 1.0,
+  "reward_critic_updates_per_update": 1,
+  "actor_update_interval": 1,
+  "reward_target_samples": 1,
+  "actor_lr": 0.0003,
+  "critic_lr": 0.0003,
+  "reward_target_polyak": 0.005,
+  "actor_target_polyak": null,
+  "reward_actor_sampling": "uniform",
+  "geometry_source": "none",
+  "directional_loss": false,
+  "inward_drift": false,
+  "action_projection": false,
+  "reference_variance": null,
+  "normal_variance_ratio": null,
+  "revision_id": null,
+  "revision_reason": null,
+  "kinetic_alpha_initial": null,
+  "scaled_alpha_initial": 0.1,
+  "kinetic_energy_target_per_action": null,
+  "initial_base_variance": null,
+  "global_cost_critic": "two sigmoid episode-risk Q heads",
+  "safety_budget": 0.1,
+  "safety_dual_update": "completed-episode EMA .05, projected lr .05 after random warmup, initial0, max100",
+  "actor_objective_normalized_by_dual": false,
+  "safety_replay_sampling": "uniform+recent same batch; no safety priority controls actor",
+  "frozen_config": {
+    "frozen": true,
+    "status": "frozen_v3_after_completed_B_screening_selected_for_heldout_confirmation",
+    "frozen_method_code_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "candidate_task_version": "SafeReach-RelativeLayout-v3",
+    "candidate_robustness_protocol": "configs/star/arm_safe_entropy/formal_robustness_plan.json",
+    "methods": [
+      "sac_lag",
+      "flow_iso",
+      "flow_learned"
+    ],
+    "training_seeds": [
+      2030,
+      2031,
+      2032
+    ],
+    "steps_per_seed": 1000000,
+    "evaluation_episodes": 100,
+    "evaluation_every": null,
+    "evaluation_steps": [
+      100000,
+      300000,
+      600000,
+      1000000
+    ],
+    "evaluation_layout_seed_start": 92027,
+    "preparation_only_not_a_freeze": false,
+    "primary_checkpoint": "fixed_final",
+    "reference_variance": 0.04,
+    "normal_variance_ratio": 0.25,
+    "cost_limit": 0.1,
+    "directional_loss": false,
+    "inward_drift": false,
+    "action_projection": false,
+    "no_automatic_launch": false,
+    "historical_pre_robustness_evidence_review": {
+      "date": "2026-11-09",
+      "original_development_runs_complete": 8,
+      "bounded_R1_runs_complete": 2,
+      "mechanism_control_runs_complete": 4,
+      "fixed_final_conditional_mechanism_analysis_complete": true,
+      "near_boundary_tangent_variance_gain_learned_vs_low_percent": [
+        6.2,
+        14.7
+      ],
+      "learned_task_performance_advantage_established": false,
+      "main_completed_rows": 0,
+      "main_runs_launched": 0,
+      "user_stage_choice_requested": true,
+      "reason_not_automatic": "The local directional allocation signal has not translated into superior safe task performance or stable training-cost gains; do not silently expand to9M more transitions",
+      "evidence": "reports/star/arm_safe_entropy/ARM_SAFE_ENTROPY_REPORT.md"
+    },
+    "frozen_task_code_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
+    "no_unbounded_launch": true,
+    "total_new_training_transitions": 9000000,
+    "fresh_initialization": true,
+    "scientific_early_stopping": false,
+    "automatic_restart_or_extension": false,
+    "robustness_plan": {
+      "stage": "frozen_main_obstacle_robustness",
+      "preparation_only": false,
+      "task_version": "SafeReach-RelativeLayout-v3",
+      "training_methods": [
+        "sac_lag",
+        "flow_iso",
+        "flow_learned"
+      ],
+      "training_seeds": [
+        2030,
+        2031,
+        2032
+      ],
+      "evaluation_steps": [
+        100000,
+        300000,
+        600000,
+        1000000
+      ],
+      "episodes_per_condition_per_training_seed": 100,
+      "layout_seed_start": 92027,
+      "action_sampling_seed": 1970027,
+      "action_batch_size": 25,
+      "conditions": [
+        {
+          "name": "nominal",
+          "family": "nominal",
+          "severity": "nominal",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0
+        },
+        {
+          "name": "radius_070",
+          "family": "obstacle_size",
+          "severity": "medium",
+          "radius_m": 0.07,
+          "lateral_offset_m": 0
+        },
+        {
+          "name": "radius_080",
+          "family": "obstacle_size",
+          "severity": "strong",
+          "radius_m": 0.08,
+          "lateral_offset_m": 0
+        },
+        {
+          "name": "lateral_030",
+          "family": "obstacle_position",
+          "severity": "medium",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0.03
+        },
+        {
+          "name": "lateral_060",
+          "family": "obstacle_position",
+          "severity": "strong",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0.06
+        }
+      ],
+      "nominal": "reuse the exact100 native training-time evaluation records at each milestone; never rerun nominal and select a result",
+      "perturbations": "frozen native stochastic actors and margin heads; no adaptation; same four conditions fixed before formal outcomes",
+      "lateral_sign_rule": "even episode index negative,odd positive;50 per side",
+      "lateral_axis": "horizontal unit vector perpendicular to each sampled start-to-goal line; exactly world_x on the original v2 task",
+      "layout_admissibility": "v3 shift is applied before the shared safe-start and safe-goal reset checks; accepted layouts can differ between conditions,never between methods; save and compare actual poses",
+      "evaluation_reset_maximum_proposals": 300,
+      "evaluation_reset_continuation": "up to10batches of the existing30proposal reset; continue the identical seeded proposal stream after an admissibility failure,never replace a fixed layout seed; training resets remain unchanged",
+      "constructive_path": "retreat_both_ends",
+      "layout_validity": "one shared500-layout physical path proof,not repeated per policy/checkpoint; a failed proof is visible and does not cause failed learned episodes to be removed",
+      "expected_main_condition_rows": 180,
+      "expected_policy_episodes": 18000,
+      "native_nominal_episodes_reused": 3600,
+      "new_frozen_stress_episodes": 14400,
+      "training_transitions": 0,
+      "adaptation_updates": 0,
+      "no_adaptive_conditions_or_checkpoint_selection": true
+    },
+    "historical_v2_robustness_stage_decision": {
+      "date": "2026-11-09",
+      "policy_episodes": 2000,
+      "evaluation_source_commit": "81dc9d503b110f88d8ebc40c1ec9a998a2d82442",
+      "learned_perturbed_safe_success": [
+        0.56,
+        0.675
+      ],
+      "iso_low_perturbed_safe_success": [
+        0.57,
+        0.725
+      ],
+      "iso_perturbed_safe_success": [
+        0.84,
+        0.665
+      ],
+      "consistent_learned_robustness_advantage": false,
+      "selected_user_branch": "B",
+      "next_bounded_stage": "relative_layout_screening_v3.json,3methods xseed2027 x300k,fresh initialization,unchanged algorithm",
+      "no_formal_runs_launched": true,
+      "supersedes_previous_pending_stage_question": true
+    },
+    "freeze_review": {
+      "observed_at_utc": "2026-11-09 11:57:29 UTC",
+      "selected_user_branch": "B, complete0.9M task screen then new-seed formal comparison on the selected relative-layout task, not another nominal-v2 extension",
+      "completed_screening_runs": 3,
+      "actual_screening_transitions": 900000,
+      "development_training_seed": 2027,
+      "all_fixed_final_safe_successes_of30": [
+        30,
+        30,
+        30
+      ],
+      "method_order": [
+        "sac_lag",
+        "flow_iso",
+        "flow_learned"
+      ],
+      "fixed_final_training_violations": [
+        190,
+        279,
+        188
+      ],
+      "fixed_final_return": [
+        11.4593842007581,
+        11.475932125110123,
+        11.510504956608836
+      ],
+      "learned_training_count_reduction_vs_iso_percent": 32.61648745519713,
+      "matched_final_evaluation_violation_episodes_of30": [
+        0,
+        0,
+        0
+      ],
+      "method_geometry_and_task_sources_unchanged_from_recorded_commit": true,
+      "source_files_compared": [
+        "models.py",
+        "geometry.py",
+        "environment.py",
+        "relative_layout.py"
+      ],
+      "evidence": "reports/star/arm_safe_entropy/relative_layout_screening",
+      "decision": "Freeze the single predeclared viable task configuration and unchanged algorithm; confirm or refute its one-seed task-preserving training-cost signal on all three held-out seeds",
+      "limitations": [
+        "One development training seed;not evidence of cross-seed stability",
+        "Thirty final episodes per policy do not establish population zero risk",
+        "Learned beats SAC training count by only2;no strong SAC-superiority claim",
+        "Original v2 zero-shot robustness comparison remains negative;v3 formal robustness is unmeasured",
+        "No v3 Iso-Low run was requested or used;do not transfer a low-noise dominance claim across tasks"
+      ],
+      "pre_training_engineering_amendment": {
+        "failed_preflight_source": "5e98e1a2330d88bf03a026fb488a40b8d8610a3f",
+        "failure": "30proposal safe-start/goal rejection limit exhausted before any formal model or training was launched",
+        "repair": "Only the evaluation wrapper continues the same fixed-seed proposal stream for up to300proposals; original safety tests and all500 condition/seed identities retained",
+        "training_or_algorithm_change": false,
+        "formal_training_transitions_before_amendment": 0,
+        "formal_policy_episodes_before_amendment": 0
+      }
+    }
+  },
+  "reference_control": null,
+  "reference_match_run": null,
+  "reference_match_definition": null,
+  "run_host": "CTAlab",
+  "gpu_name": "NVIDIA A100 80GB PCIe",
+  "visible_devices": "0",
+  "software": {
+    "python": "3.11.5",
+    "torch": "2.7.1+cu118",
+    "cuda": "11.8",
+    "numpy": "1.24.3",
+    "panda-gym": "3.0.7",
+    "pybullet": "3.2.7",
+    "gymnasium": "1.2.3"
+  },
+  "oracle_information": null,
+  "oracle_workers": null,
+  "oracle_backend": null,
+  "oracle_cache_entries": null
+}

@@ -1,0 +1,39 @@
+{
+  "classification": "engineering_deployment_interruption_before_first_evaluation",
+  "host": "5080",
+  "native_pids_missing": [
+    371634,
+    371635
+  ],
+  "waiting_queue_pid_stopped_by_user_request": 371633,
+  "observed_last_steps": {
+    "flow_iso": 35000,
+    "flow_learned": 19000
+  },
+  "latest_full_checkpoint_steps": {
+    "flow_iso": 30000,
+    "flow_learned": 10000
+  },
+  "last_logged_training_violations": {
+    "flow_iso": 51,
+    "flow_learned": 37
+  },
+  "checkpoint_training_violations": {
+    "flow_iso": 47,
+    "flow_learned": 36
+  },
+  "first_evaluation_reached": false,
+  "python_traceback_found": false,
+  "kernel_oom_xid_or_segfault_record_found": false,
+  "termination_cause": "unknown; absence of trace does not establish a cause",
+  "user_instruction": "先不用5080跑",
+  "selected_repair": "Preserve all partial artifacts;do not restart5080;queue fresh full-budget2032 runs on4080 after existing frozen-cohort resource slots finish",
+  "seed_or_algorithm_change": false,
+  "checkpoint_warm_start_for_replacement": false,
+  "estimated_total_original_engineering_transitions_lower_bound": 54000,
+  "estimated_total_original_engineering_transitions_upper_bound": 56000,
+  "engineering_training_violations_lower_bound": 88,
+  "engineering_cost_complete": false,
+  "scientific_primary_cohort_transitions": 9000000,
+  "exact_total_including_engineering_overhead_not_claimed": true
+}
