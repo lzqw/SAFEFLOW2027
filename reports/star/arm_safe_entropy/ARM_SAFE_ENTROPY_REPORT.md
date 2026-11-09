@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 06:49 check and seven completed formal tests
+## Current frozen-main execution — 2026-11-10 07:19 check and seven completed formal tests
 
 Two native main runs remain unfinished and past random warmup;
 seven completed runs account for the rest of the nine-run frozen cohort.
@@ -38,17 +38,22 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | completed1M,native receipt | running603k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | completed1M,native receipt | running634k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running459k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running490k,A100 GPU1,PID947125 |
 
-The06:49:02 half-hour observation directly confirmed both remaining native
-Learned PIDs alive at602k/458k and all seven completed1M receipts. Iso2030's
+The07:19:03 half-hour observation directly confirmed both remaining native
+Learned PIDs alive at633k/489k and all seven completed1M receipts. Iso2030's
 required full20-case test had completed after its05:44 native handoff.
-The table uses the subsequent06:50 compact progress capture. These are observed
+The table uses the subsequent07:20 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total8.062M/9M primary transitions
-(89.6% of the fixed budget).
+The nine accepted native counters now total8.124M/9M primary transitions
+(90.3% of the fixed budget).
+This percentage is not a wall-time forecast. During the latest observed30
+minutes each remaining Learned run advanced31k transitions; at unchanged
+shared-resource throughput the slowest remaining training run needs roughly
+8–9 more hours. Resource admission for final tests and artifact delivery are
+additional; no completion deadline or future evaluation score is inferred.
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Seven full runs
 and140/180 formal condition rows are complete; partial steps are not completion.
@@ -96,7 +101,7 @@ two Learned runs and their required fixed tests continue without new modules or 
 Iso2030 is now the seventh completed1M result and full20-case test, as detailed
 below. All33 native milestones remain retained; the formal table now has
 140/180 condition rows and7/9 completed run evaluations. Progress above
-is actual training, not a claim that the whole experiment is89.6% complete in wall time.
+is actual training, not a claim that the whole experiment is90.3% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -691,6 +696,12 @@ and4080 was13%,with no outstanding native SAFEFLOW job on either free device.
 The original planned Learned2030 nominal600k evaluation was collected without
 an extra rollout; no new formal stress test,scientific revision,training
 restart or budget extension was introduced at this observation.
+The07:19:03 observation again directly confirmed both remaining native
+handles,with A100 utilization0%/93% and4080 at16%. Dispatcher PID1062526 was
+also alive and its log retained the next scheduled pair of native-wait
+events. No extra GPU scan was performed by that dispatcher while the1M
+completion dependencies were unmet; all33 native fixed milestones and the
+140 formal condition rows remain unchanged at this check.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
