@@ -637,3 +637,17 @@ to unfavorable scientific outcomes; no old data are deleted. Approximately
 engineering overhead, not silently missing from claimed primary costs. Current
 live cohort is5 native learners/4 waiting processes on A100 and4080;5080 is
 excluded until the user authorizes otherwise. No foreign workload is stopped.
+
+## Formal learning-curve export, no additional evaluation
+
+`plot_development --phase main --task-version SafeReach-RelativeLayout-v3`
+writes a separate100-episode, per-seed figure and MAIN_LEARNING_RESULTS.csv
+containing every available predeclared milestone. MAIN_RESULTS.csv remains
+fixed-final1M only. No missing milestone/queued job is drawn as a measured zero,
+and seed-specific styles avoid silently averaging away unstable learning.
+The two5080 deployments that stopped before any evaluation are retained as
+engineering evidence and explicitly excluded from the primary plot provenance;
+no unfavorable scientific evaluation is removed. This helper reads existing
+JSON/progress and adds0physics/0SGD. It does not modify deployed498535a trainers
+or their frozen method/task. The original development/control plots remain
+separate and unchanged.

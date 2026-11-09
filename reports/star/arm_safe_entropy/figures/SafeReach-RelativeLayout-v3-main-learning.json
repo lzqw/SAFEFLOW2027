@@ -1,0 +1,61 @@
+{
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "phases": [
+    "main"
+  ],
+  "runs": [
+    {
+      "run": "main/flow-iso-seed2030-v3",
+      "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+      "latest_logged_transitions": 117000,
+      "evaluation_milestones": [
+        100000
+      ]
+    },
+    {
+      "run": "main/flow-iso-seed2031-v3",
+      "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+      "latest_logged_transitions": 469000,
+      "evaluation_milestones": [
+        100000,
+        300000
+      ]
+    },
+    {
+      "run": "main/flow-learned-seed2030-v3",
+      "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+      "latest_logged_transitions": 71000,
+      "evaluation_milestones": []
+    },
+    {
+      "run": "main/flow-learned-seed2031-v3",
+      "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+      "latest_logged_transitions": 247000,
+      "evaluation_milestones": [
+        100000
+      ]
+    },
+    {
+      "run": "main/sac-lag-seed2030-v3",
+      "source_commit": "498535af5633796234df5b65af755207b8e6a996",
+      "latest_logged_transitions": 135000,
+      "evaluation_milestones": [
+        100000
+      ]
+    }
+  ],
+  "excluded_engineering_runs": [
+    {
+      "run": "main/flow-iso-seed2032-v3",
+      "marker": "main/flow-iso-seed2032-v3/engineering_interruption.json",
+      "reason": "Pre-evaluation deployment interruption; raw data retained, not a scientific result"
+    },
+    {
+      "run": "main/flow-learned-seed2032-v3",
+      "marker": "main/flow-learned-seed2032-v3/engineering_interruption.json",
+      "reason": "Pre-evaluation deployment interruption; raw data retained, not a scientific result"
+    }
+  ],
+  "comparison_scope": "Frozen held-out main runs; native fixed milestones only, original engineering attempts retained separately",
+  "note": "Top panels: stochastic held-out evaluation only. Bottom panels: training statistics, not held-out performance. Missing checkpoints are not assigned zeros."
+}

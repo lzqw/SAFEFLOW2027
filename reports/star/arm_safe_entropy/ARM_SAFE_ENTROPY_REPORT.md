@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-09 21:12 CST
+## Current frozen-main execution — 2026-11-09 21:42–21:49 CST
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four actual waiting queue processes complete the nine-run frozen cohort. No
@@ -37,11 +37,13 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running104k,PID857625 | running77k,PID857626 | running43k,PID857627 |
-| 2031 /4080,4T | queued after Iso,PID518589 | running278k,PID518590 | running147k,PID518591 |
+| 2030 / A100 | running135k,PID857625 | running117k,PID857626 | running71k,PID857627 |
+| 2031 /4080,4T | queued after Iso,PID518589 | running469k,PID518590 | running247k,PID518591 |
 | 2032 /4080,4T | queued after new Iso,PID551582 | queued after2031 SAC,PID551580 | queued after2031 Learned,PID551581 |
 
-These are observed progress/queue states, not extrapolated evaluation values.
+The21:42 watcher directly confirmed all five native and four queue PIDs;
+the table uses the subsequent21:49 compact progress capture. These are observed
+progress/queue states, not extrapolated evaluation values.
 The2032 jobs are queued fresh1M runs on4080; none has started yet. Cross-seed
 dependencies release a resource slot only: they do not change a training seed,
 transfer weights or alter the frozen configuration. At most two learners share
@@ -75,6 +77,33 @@ with163/125 training violations (Learned23.3% lower at this same seed/budget).
 SAC2030 at100k has9/100 safe successes and0/100 violations, mostly safe stalling;
 do not compare it to a different seed as a matched method ranking. Main
 parameters remain frozen despite these observations; all runs retain1M.
+
+Additional fixed milestones are now available: Iso2030 at100k has99/100 safe
+successes and1/100 violations, with136 training violations and .8198s mean
+time-to-goal among99 successes. Iso2031 at300k has100/100 safe successes,
+0/100 violations,238 training violations and .7684s over100 successes.
+Learned2030 has not reached100k and Learned2031 has not reached300k in this
+capture; do not substitute their training statistics or an earlier policy for
+these missing matched checkpoints. There are five main milestone evaluations
+in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
+fixed-final-only primary table, which remains0/9.
+
+The [formal learning figure](figures/SafeReach-RelativeLayout-v3-main-learning.png)
+uses separate training-seed line styles and native100-episode observations,
+with no smoothing, extrapolated final points or fabricated queued zeros. The
+two pre-evaluation5080 deployment attempts remain in the engineering archive
+and are explicitly listed as excluded engineering runs in figure provenance;
+their early partial curves are not silently pooled with the fresh primary2032
+runs. This reporting-only helper changes no active trainer or frozen setting.
+
+In response to the user's A100 utilization request, a21:40 read-only sample
+found total GPU utilization100%/97%, with the project's SAC/Iso using about
+16%/33% SM activity on GPU0 and Learned about65% on GPU1. Other projects use
+the remaining compute; they are not paused. The large free VRAM is not proof
+of idle compute. Existing useful work is kept running and resource openings
+are reserved for the fixed cohort/evaluation, not extra experiments or changed
+UTD/batches merely to raise an occupancy display. Half-hour monitoring continues
+on A100/4080 only;5080 remains excluded by the user's instruction.
 
 The shared formal-layout preparation succeeded on500/500 fixed condition/seed
 pairs with23008 validity transitions and0training/model-evaluation episodes.
