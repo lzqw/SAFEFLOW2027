@@ -105,6 +105,25 @@ are reserved for the fixed cohort/evaluation, not extra experiments or changed
 UTD/batches merely to raise an occupancy display. Half-hour monitoring continues
 on A100/4080 only;5080 remains excluded by the user's instruction.
 
+A22:18 resource sample again found100%/100% total utilization on the two
+A100 cards and88% on4080. All three A100 learners continue (SAC158k,
+Iso146k,Learned89k). Concurrent foreign workloads changed during this interval;
+project/foreign SM activity is time-varying, so the earlier per-process shares
+are not a reservation. No foreign process was stopped and no additional
+learner was launched merely to consume free memory.
+
+The reporting-only `collect_main_robustness` helper now mirrors compact
+per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
+and [MAIN_ROBUSTNESS_STATUS.json](MAIN_ROBUSTNESS_STATUS.json). These are
+separate from the original40-row negative v2 robustness table, which is not
+overwritten. Current formal robustness progress is0/180 condition rows,
+0/9 completed run evaluations: there is no fabricated zero-performance row
+for an untested policy. The helper launches no episodes or training. Partial
+invocations remain explicitly partial; `--require-complete` refuses final
+acceptance until all nine runs retain all four checkpoints and five conditions
+(18000 episodes). Nominal records must match the native milestone records
+verbatim, rather than replace an unfavorable stochastic evaluation.
+
 The shared formal-layout preparation succeeded on500/500 fixed condition/seed
 pairs with23008 validity transitions and0training/model-evaluation episodes.
 The initial30-proposal reset limit failed before any formal training began;
