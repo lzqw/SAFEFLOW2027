@@ -2,9 +2,13 @@
   "task_version": "SafeReach-RelativeLayout-v3",
   "source": "MAIN_ROBUSTNESS_RESULTS.csv",
   "complete": false,
-  "completed_run_evaluations": 6,
+  "completed_run_evaluations": 7,
   "expected_run_evaluations": 9,
   "plotted_method_seeds": [
+    {
+      "method": "flow_iso",
+      "training_seed": 2030
+    },
     {
       "method": "flow_iso",
       "training_seed": 2031
@@ -32,10 +36,6 @@
   ],
   "pending_method_seeds": [
     {
-      "method": "flow_iso",
-      "training_seed": 2030
-    },
-    {
       "method": "flow_learned",
       "training_seed": 2030
     },
@@ -44,7 +44,7 @@
       "training_seed": 2032
     }
   ],
-  "complete_condition_rows": 120,
+  "complete_condition_rows": 140,
   "excluded_incomplete_condition_rows": 0,
   "excluded_incomplete_scope": "Only receipt completion determines inclusion,never reward or violation outcome; raw incomplete rows remain in the canonical CSV",
   "evaluation_steps": [
@@ -92,6 +92,50 @@
     }
   ],
   "stress_curve_points": [
+    {
+      "method": "flow_iso",
+      "training_seed": 2030,
+      "checkpoint_steps": 100000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 379,
+      "time_to_goal_seconds": 0.8567810026385225,
+      "safe_success": 0.9475,
+      "violation_rate": 0.05,
+      "time_to_goal_capped_seconds": 1.0218
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2030,
+      "checkpoint_steps": 300000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 344,
+      "time_to_goal_seconds": 0.7084883720930233,
+      "safe_success": 0.86,
+      "violation_rate": 0.135,
+      "time_to_goal_capped_seconds": 1.1693
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2030,
+      "checkpoint_steps": 600000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 379,
+      "time_to_goal_seconds": 0.7263324538258574,
+      "safe_success": 0.9475,
+      "violation_rate": 0.0475,
+      "time_to_goal_capped_seconds": 0.8982000000000002
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2030,
+      "checkpoint_steps": 1000000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 0,
+      "time_to_goal_seconds": null,
+      "safe_success": 0.0,
+      "violation_rate": 0.0,
+      "time_to_goal_capped_seconds": 4.0
+    },
     {
       "method": "flow_iso",
       "training_seed": 2031,
