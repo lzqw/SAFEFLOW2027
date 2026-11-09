@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 04:19 check and four completed formal tests
+## Current frozen-main execution — 2026-11-10 04:49 check and four completed formal tests
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four completed runs account for the rest of the nine-run frozen cohort.
@@ -38,16 +38,16 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | running830k,PID857626 | running451k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | running893k,PID857626 | running483k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | running684k,PID749852 | running674k,PID738207 | running308k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | running895k,PID749852 | running836k,PID738207 | running339k,A100 GPU1,PID947125 |
 
-The04:18:58 watcher directly confirmed all five live native PIDs and all four
+The04:48:59 watcher directly confirmed all five live native PIDs and all four
 native1M completion receipts; those four trainers have exited normally.
 The table uses the subsequent compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total6.947M/9M primary transitions
-(77.2% of the fixed budget).
+The nine accepted native counters now total7.446M/9M primary transitions
+(82.7% of the fixed budget).
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Four full runs
 and80/180 formal condition rows are complete; partial steps are not completion.
@@ -92,10 +92,10 @@ This is one completed held-out training seed, not proof of cross-seed
 robustness, lower training cost, superiority to a v3 Iso-Low control (none was
 requested), or completion of the nine-run formal objective. The remaining
 five runs and their required fixed tests continue without new modules or tuning.
-No additional1M completion was available in this04:19 capture. New native
-300k/600k milestones are retained below, but the full formal table remains
-80/180 condition rows and4/9 completed run evaluations. Progress above is
-actual training, not a claim that the whole experiment is77.2% complete in wall time.
+No additional1M completion or fixed evaluation was available in this04:49
+capture. The29 native milestones remain retained, and the full formal table
+remains80/180 condition rows and4/9 completed run evaluations. Progress above
+is actual training, not a claim that the whole experiment is82.7% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -493,6 +493,19 @@ The04:18:58 observation again found all five remaining trainers live, with
 A100 utilization21%/85% and4080 utilization97%. No trainer was restarted,
 paused or extended; the originally declared native evaluations produced the
 three newly available checkpoints without any extra physical diagnostic.
+At04:26 a single read-only A100 topology inspection tested a possible
+resource-level improvement: both GPUs and all128 allowed CPUs belong to
+NUMA node0, with no cross-NUMA GPU/CPU mismatch identified. The three current
+training PIDs857626/857627/947125 were running, each at about99% CPU, with
+CUDA_VISIBLE_DEVICES0/1/1 respectively, four threads each and CPU affinity
+0–127; host load was2.83. No affinity, thread count, algorithm or training
+process was changed because this specific placement issue was not present.
+This is not a claim that all conceivable performance optimizations have been
+exhausted, nor a reason to add unrequested training to fill spare GPU memory.
+The04:48:59 observation again directly confirmed all five active trainers,
+with A100 utilization20%/91% and4080 utilization98%. The near-final SAC2032
+counter is still a partial run, not a substituted1M evaluation. No restart,
+affinity adjustment, new experiment or scientific budget change occurred.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
