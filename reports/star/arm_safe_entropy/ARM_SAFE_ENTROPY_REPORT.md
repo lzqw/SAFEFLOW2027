@@ -27,24 +27,25 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-09 22:42–22:43 CST
+## Current frozen-main execution — 2026-11-09 23:17–23:18 CST
 
-Five native main trainers are directly confirmed alive and past random warmup;
-four actual waiting queue processes complete the nine-run frozen cohort. No
+Six native main trainers are directly confirmed alive and past random warmup;
+three actual waiting queue processes complete the nine-run frozen cohort. No
 formal1M run is complete yet: MAIN_RESULTS.csv has0/9 final rows. All native
 configs record fresh initial_steps=0, the same frozen v3 method/task and the
 requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running200k,PID857625 | running180k,PID857626 | running108k,PID857627 |
-| 2031 /4080,4T | queued after Iso,PID518589 | running714k,PID518590 | running375k,PID518591 |
-| 2032 /4080,4T | queued after new Iso,PID551582 | queued after2031 SAC,PID551580 | queued after2031 Learned,PID551581 |
+| 2030 / A100 | running303k,PID857625 | running245k,PID857626 | running143k,PID857627 |
+| 2031 /4080,4T | queued after Iso,PID518589 | running889k,PID518590 | running468k,PID518591 |
+| 2032 /A100+4080 | queued4080 after new Iso,PID551582 | queued4080 after2031 SAC,PID551580 | running3k,A100 GPU1,PID947125 |
 
-The22:42 watcher directly confirmed all five native and four queue PIDs;
-the table uses the subsequent22:43 compact progress capture. These are observed
+The23:17 watcher directly confirmed all six native and three queue PIDs;
+the table uses the subsequent23:18 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The2032 jobs are queued fresh1M runs on4080; none has started yet. Cross-seed
+The2032 Iso/SAC jobs remain queued fresh1M runs on4080; Learned has started
+fresh on A100 after confirmed capacity became available. Cross-seed
 dependencies release a resource slot only: they do not change a training seed,
 transfer weights or alter the frozen configuration. At most two learners share
 the4080; A100 has the two-card assignment recorded in
@@ -63,8 +64,8 @@ process was changed. [Engineering evidence](engineering/main5080_interruption_20
 retains both attempted runs and at least88 logged training violations.
 
 To keep primary formal training counts complete, the replacement2032 group
-will start fresh on4080 with identical seeds/parameters, not resume an unknown
-lost tail or select a favorable checkpoint. The original attempted35k/19k
+uses fresh initialization on4080/A100 with identical seeds/parameters. It does
+not resume an unknown lost tail or select a favorable checkpoint. The original attempted35k/19k
 segments remain engineering interruptions, with approximately54k–56k actual
 transitions consumed in addition to the9M primary scientific cohort. This
 overhead and its incomplete cost tail are explicitly separate; no exact9M
@@ -102,7 +103,11 @@ improvement. The five failed layout seeds92088/92093/92103/92114/92117 remain
 in the native records and curves, with terminal lengths10/12/15/11/10.
 No parameter adjustment, scientific stop, seed replacement or extra budget
 is made in response. The100k positive signal on this seed remains visible
-alongside its subsequent regression. There are eight main milestone evaluations
+alongside its subsequent regression. SAC2030 has now reached300k and obtains
+100/100 safe successes,0/100 violations,return11.5192,125 training violations
+and .7268s time-to-goal over100 successes. Its100k stalling outcome is retained;
+do not compare this300k result with another method's100k as a matched ranking.
+There are nine main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table, which remains0/9.
 
@@ -134,6 +139,23 @@ follow-up1s process samples showed its two native learners jointly using
 85%/86%/86% SM activity, both with about99% CPU. A foreign process holds
 about4.7GiB without observed SM activity in those samples; it is not changed.
 The isolated low-utilization point does not establish persistent spare compute.
+
+At23:12 the foreign A100 GPU1 workload had released its slot. Three subsequent
+samples showed only Learned2030 using about18% SM on that card, with about80GiB
+free VRAM, low host load and56GiB free disk. This is a genuine new dispatch
+opportunity, unlike the earlier fully busy samples. The still-unstarted
+Learned2032 queue on4080 (PID551581) was identity-checked and stopped while
+its native output directory did not exist; it consumed0 transitions.
+The exact same predeclared seed/method1M job was launched fresh on A100 GPU1,
+PID947125, using the existing498535a immutable runtime. Its manifest confirms
+initial_steps=0 and all four fixed evaluation milestones. No weights were
+transferred, original failed5080 artifacts remain, and no extra experiment
+or budget was added. The23:17 observation found all six learners and three
+remaining queues alive, A100 total utilization85%/92% and4080 utilization97%.
+The updated1800s watcher follows this actual placement; consult
+`latest_resource_update` in [main_launch_plan.json](main_launch_plan.json),
+not the earlier deployment history. Foreign workloads and frozen parameters
+were not changed; at most two project learners occupy each card.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
