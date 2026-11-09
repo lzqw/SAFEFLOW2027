@@ -27,31 +27,31 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 01:49–01:51 CST
+## Current frozen-main execution — 2026-11-10 02:19–02:22 CST
 
 Six native main trainers are directly confirmed alive and past random warmup;
-two actual waiting queue processes and one completed run account for the
-nine-run frozen cohort. MAIN_RESULTS.csv now has1/9 fixed-final rows. All native
+one actual waiting queue process and two completed runs account for the
+nine-run frozen cohort. MAIN_RESULTS.csv now has2/9 fixed-final rows. All native
 configs record fresh initial_steps=0, the same frozen v3 method/task and the
 requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | running767k,PID857625 | running537k,PID857626 | running299k,PID857627 |
-| 2031 /4080,4T | running881k,PID665494 | completed1M,native receipt | running886k,PID518591 |
-| 2032 /A100+4080 | queued4080 after2031 Learned,PID715848 | queued4080 after2031 SAC,PID551580 | running159k,A100 GPU1,PID947125 |
+| 2030 / A100 | running854k,PID857625 | running593k,PID857626 | running328k,PID857627 |
+| 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | running967k,PID518591 |
+| 2032 /A100+4080 | queued4080 after2031 Learned,PID715848 | running57k,PID738207 | running187k,A100 GPU1,PID947125 |
 
-The01:48:55 watcher directly confirmed all six live native and two queue PIDs,
-plus Iso2031's normal1M completion receipt; its trainer has exited normally.
+The02:18:55 watcher directly confirmed all six live native and one queue PID,
+plus SAC2031/Iso2031's normal1M completion receipts; both trainers have exited.
 The table uses the subsequent compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The seven accepted native counters now total4.529M/9M primary transitions
-(50.3% of the fixed budget), with two unstarted queued jobs contributing zero.
+The eight accepted native counters now total4.986M/9M primary transitions
+(55.4% of the fixed budget), with one unstarted queued job contributing zero.
 This sum excludes the original failed5080 deployments, rather than silently
-adding their partial counters to the fresh accepted2032 runs. One full run
-and20/180 formal condition rows are complete; partial steps are not completion.
-The2032 Iso/SAC jobs remain queued fresh1M runs on4080; Learned has started
-fresh on A100 after confirmed capacity became available. Cross-seed
+adding their partial counters to the fresh accepted2032 runs. Two full runs
+and40/180 formal condition rows are complete; partial steps are not completion.
+The2032 SAC job remains queued fresh1M on4080; Iso has now started there after
+SAC2031 released its slot, and Learned runs on A100. Cross-seed
 dependencies release a resource slot only: they do not change a training seed,
 transfer weights or alter the frozen configuration. At most two learners share
 the4080; A100 has the two-card assignment recorded in
@@ -154,13 +154,19 @@ safe successes,1/100 violations,return10.5919 and117 training violations;
 successful-only time is .8528s over94 successes and capped time1.0416s.
 Its corresponding2032 baselines have not started, so this is not a matched
 comparison. No failure is dropped or used to modify its fixed training budget.
-There are seventeen main milestone evaluations
+Learned2030 at300k is now100/100 safe successes,0/100 violations,return11.4860,
+211 training violations and .7756s time-to-goal over100 successes. Its same-seed
+Iso300k is98/100,2/100 risk,214 training violations; this is a small positive
+observed task/risk change with only1.4% fewer training violations, not the
+development seed's32.6% reduction. SAC2030 at the same300k is100/100,0/100,
+125 training violations and .7268s; Learned's training count is68.8% higher
+than this matched SAC baseline. Do not pool the favorable Iso-relative
+comparison with another seed's or budget's outcome.
+There are nineteen main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
-fixed-final-only primary table, which now contains the first1M result below.
-No new fixed evaluation was available in this compact capture: Learned2030
-is at299k, not a completed300k evaluation. Its training progress is not used
-to fill the missing held-out result, and no near-final policy is substituted
-for SAC2031's or Learned2031's still-pending1M primary.
+fixed-final-only primary table, which now contains two1M results below.
+Learned2031 remains short of1M in this capture: its967k training progress
+is not substituted for its pending fixed-final evaluation.
 
 ### First fixed-final main result and full five-condition test
 
@@ -196,8 +202,41 @@ these are one method/seed's learning trajectory, not cross-method rankings.
 The final policy has zero successes in all500 fixed condition episodes;
 three lateral6cm episodes violate clearance and the rest stall. A zero-risk
 nominal policy that never reaches the goal is not a safety/task improvement.
-Eight main run evaluations and their corresponding final comparisons remain;
+Seven main run evaluations and their corresponding final comparisons remain;
 the whole formal objective is not complete.
+
+### Second fixed-final result: SAC2031 also shows late regression
+
+SAC-Lag2031 completed exactly1M transitions and310 cumulative training
+violations. Its final nominal policy has79/100 safe successes,0/100 violations,
+return8.6706 and .6927s successful-only time over79 successes. Horizon-capped
+time is1.3872s over100 episodes: the faster successful subset is not an
+overall performance gain. The600k policy had100/100 safe successes and .7124s
+capped time; its observed final regression is retained rather than replacing
+the1M result with600k. Late deterioration is therefore not unique to Flow-Iso
+in the currently observed seed, but its cause and cross-seed extent are not
+established. Learned2031's final result remains pending.
+
+The same four-checkpoint/five-condition test completed on A100 in37.9s,
+with400 exact native nominal episodes reused,1600 new stress episodes,
+46694 new physical evaluation transitions and zero training/adaptation updates.
+All20 cases are in [main_robustness/sac_lag-seed2031-v3](main_robustness/sac_lag-seed2031-v3/).
+As above, entries are safe-success% / violation%,100 episodes each:
+
+| Fixed SAC2031 checkpoint | Nominal | Radius7cm | Radius8cm | Lateral3cm | Lateral6cm |
+|---|---:|---:|---:|---:|---:|
+| 100k | 92/0 | 97/1 | 98/0 | 88/0 | 70/1 |
+| 300k | 99/0 | 99/1 | 99/1 | 97/0 | 86/0 |
+| 600k | 100/0 | 97/3 | 93/7 | 98/0 | 98/0 |
+| 1M, primary | 79/0 | 81/4 | 28/59 | 74/1 | 62/1 |
+
+At the declared1M primary, the four stress conditions jointly have245/400
+safe successes (61.25%) and65/400 violations (16.25%); radius8cm alone has
+28% safe success and59% violation. Iso2031's lower final stress risk does not
+make it task-superior: its final successes are zero in every condition.
+No intermediate policy or favorable stress condition replaces either final
+result. This is still only one training seed's completed baseline pair, not
+a final verdict on all three methods/seeds.
 
 The [formal learning figure](figures/SafeReach-RelativeLayout-v3-main-learning.png)
 uses separate training-seed line styles and native100-episode observations,
@@ -279,13 +318,18 @@ handles live, with A100 utilization79%/86% and4080 utilization87%. The revised
 waiting queues are intact; no additional job or budget was introduced during
 this half-hour interval. Formal tests remain20/180 rows, not complete merely
 because more than half of the planned training transitions have been collected.
+The02:18:55 watcher confirmed SAC2031's completed native receipt and the
+automatic Iso2032 child PID738207, not just its exited waiting wrapper551580.
+All six current learners and the remaining SAC2032 queue were live; A100
+utilization was81%/93%,4080 utilization90%. The resource-only queue handed
+off its slot without changing any seed, method, budget or frozen setting.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
 and [MAIN_ROBUSTNESS_STATUS.json](MAIN_ROBUSTNESS_STATUS.json). These are
 separate from the original40-row negative v2 robustness table, which is not
-overwritten. Current formal robustness progress is20/180 condition rows,
-1/9 completed run evaluations; the missing160 rows are not filled with
+overwritten. Current formal robustness progress is40/180 condition rows,
+2/9 completed run evaluations; the missing140 rows are not filled with
 fabricated zeros. The measured1M zeros above remain valid outcomes.
 The helper launches no episodes or training. Partial
 invocations remain explicitly partial; `--require-complete` refuses final
