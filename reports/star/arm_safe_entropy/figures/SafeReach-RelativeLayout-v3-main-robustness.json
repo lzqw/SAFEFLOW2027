@@ -2,7 +2,7 @@
   "task_version": "SafeReach-RelativeLayout-v3",
   "source": "MAIN_ROBUSTNESS_RESULTS.csv",
   "complete": false,
-  "completed_run_evaluations": 4,
+  "completed_run_evaluations": 5,
   "expected_run_evaluations": 9,
   "plotted_method_seeds": [
     {
@@ -20,6 +20,10 @@
     {
       "method": "sac_lag",
       "training_seed": 2031
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2032
     }
   ],
   "pending_method_seeds": [
@@ -38,13 +42,9 @@
     {
       "method": "flow_learned",
       "training_seed": 2032
-    },
-    {
-      "method": "sac_lag",
-      "training_seed": 2032
     }
   ],
-  "complete_condition_rows": 80,
+  "complete_condition_rows": 100,
   "excluded_incomplete_condition_rows": 0,
   "excluded_incomplete_scope": "Only receipt completion determines inclusion,never reward or violation outcome; raw incomplete rows remain in the canonical CSV",
   "evaluation_steps": [
@@ -267,6 +267,50 @@
       "safe_success": 0.6125,
       "violation_rate": 0.1625,
       "time_to_goal_capped_seconds": 1.9707
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2032,
+      "checkpoint_steps": 100000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 246,
+      "time_to_goal_seconds": 2.2245528455284553,
+      "safe_success": 0.615,
+      "violation_rate": 0.1575,
+      "time_to_goal_capped_seconds": 2.9081
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2032,
+      "checkpoint_steps": 300000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 396,
+      "time_to_goal_seconds": 0.7943434343434344,
+      "safe_success": 0.99,
+      "violation_rate": 0.01,
+      "time_to_goal_capped_seconds": 0.8264
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2032,
+      "checkpoint_steps": 600000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 393,
+      "time_to_goal_seconds": 0.8960814249363869,
+      "safe_success": 0.9825,
+      "violation_rate": 0.005,
+      "time_to_goal_capped_seconds": 0.9504
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2032,
+      "checkpoint_steps": 1000000,
+      "stress_episodes": 400,
+      "time_to_goal_successes": 309,
+      "time_to_goal_seconds": 0.7058899676375404,
+      "safe_success": 0.7725,
+      "violation_rate": 0.215,
+      "time_to_goal_capped_seconds": 1.4553
     }
   ],
   "artifacts": [
