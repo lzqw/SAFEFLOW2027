@@ -1,20 +1,63 @@
 {
   "stage": "frozen_main_obstacle_robustness",
-  "preparation_only": true,
+  "preparation_only": false,
   "task_version": "SafeReach-RelativeLayout-v3",
-  "training_methods": ["sac_lag", "flow_iso", "flow_learned"],
-  "training_seeds": [2030, 2031, 2032],
-  "evaluation_steps": [100000, 300000, 600000, 1000000],
+  "training_methods": [
+    "sac_lag",
+    "flow_iso",
+    "flow_learned"
+  ],
+  "training_seeds": [
+    2030,
+    2031,
+    2032
+  ],
+  "evaluation_steps": [
+    100000,
+    300000,
+    600000,
+    1000000
+  ],
   "episodes_per_condition_per_training_seed": 100,
   "layout_seed_start": 92027,
   "action_sampling_seed": 1970027,
   "action_batch_size": 25,
   "conditions": [
-    {"name": "nominal", "family": "nominal", "severity": "nominal", "radius_m": 0.06, "lateral_offset_m": 0.0},
-    {"name": "radius_070", "family": "obstacle_size", "severity": "medium", "radius_m": 0.07, "lateral_offset_m": 0.0},
-    {"name": "radius_080", "family": "obstacle_size", "severity": "strong", "radius_m": 0.08, "lateral_offset_m": 0.0},
-    {"name": "lateral_030", "family": "obstacle_position", "severity": "medium", "radius_m": 0.06, "lateral_offset_m": 0.03},
-    {"name": "lateral_060", "family": "obstacle_position", "severity": "strong", "radius_m": 0.06, "lateral_offset_m": 0.06}
+    {
+      "name": "nominal",
+      "family": "nominal",
+      "severity": "nominal",
+      "radius_m": 0.06,
+      "lateral_offset_m": 0
+    },
+    {
+      "name": "radius_070",
+      "family": "obstacle_size",
+      "severity": "medium",
+      "radius_m": 0.07,
+      "lateral_offset_m": 0
+    },
+    {
+      "name": "radius_080",
+      "family": "obstacle_size",
+      "severity": "strong",
+      "radius_m": 0.08,
+      "lateral_offset_m": 0
+    },
+    {
+      "name": "lateral_030",
+      "family": "obstacle_position",
+      "severity": "medium",
+      "radius_m": 0.06,
+      "lateral_offset_m": 0.03
+    },
+    {
+      "name": "lateral_060",
+      "family": "obstacle_position",
+      "severity": "strong",
+      "radius_m": 0.06,
+      "lateral_offset_m": 0.06
+    }
   ],
   "nominal": "reuse the exact100 native training-time evaluation records at each milestone; never rerun nominal and select a result",
   "perturbations": "frozen native stochastic actors and margin heads; no adaptation; same four conditions fixed before formal outcomes",

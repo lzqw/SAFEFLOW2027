@@ -591,3 +591,23 @@ The qualitative renderer now uses the same recorded-task environment factory
 as the training/evaluation runner, so a requested v3 clip cannot silently use
 the old common-translation reset. No additional clip or episode is generated
 by this compatibility correction.
+
+## Freeze after the complete relative-layout screen
+
+The three native receipts prove900000 actual transitions, no screen restarts,
+and all fixed100k/200k/300k evaluations. At final300k all three methods have
+30/30 safe success and0/30 violations; training counts are190/279/188 for
+SAC/Iso/Learned. Learned's32.6% Iso-relative count reduction is retained at the
+fixed final policy, not selected from200k. The2-count SAC difference is small;
+one-seed results and original negative v2 robustness remain explicit limits.
+
+This is the B-route configuration-selection evidence for the user-requested
+new-seed comparison. Freeze task/algorithm95ab831, variance.04/rho.25 and all
+existing update ratios; no additional module or task candidate is introduced.
+`main_plan.json` now records this review and embeds the exact formal robustness
+protocol. The three held-out seeds remain untrained at the freeze commit.
+Native main intervals are the four specified checkpoints,100 episodes and
+independent92027..92126 layouts. Shared feasible-layout evidence and actual
+resource admission precede any formal job; they are not fabricated by setting
+the frozen flag. Every formal invocation is one predeclared run, not an
+unbounded auto-expansion or a new hyperparameter search.

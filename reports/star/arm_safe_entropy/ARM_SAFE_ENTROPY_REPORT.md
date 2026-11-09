@@ -1,4 +1,4 @@
-# Arm safe entropy — development and mechanism controls complete
+# Arm safe entropy — relative-layout screen complete, configuration frozen
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -27,7 +27,58 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current screening evidence — 2026-11-09 18:24–18:25 CST
+## Final relative-layout screen and freeze decision — 2026-11-09 19:54 CST
+
+All three predeclared runs completed exactly300000 new transitions each,
+**900000 total**, with native completion receipts and all nine scheduled
+30-episode evaluations retained. No restart, lost tail, scientific early stop,
+extra method or budget extension occurred in this screen. The watcher found
+all three trainer PIDs absent with their normal receipts and exited normally.
+Final policies are the fixed300k checkpoints, not the best intermediate result.
+
+| Final300k, development seed2027 | Safe success | Violation/contact-collision episodes | Return | Training violations | Time-to-goal |
+|---|---:|---:|---:|---:|---:|
+| SAC-Lag | 30/30 | 0/30 /0/30 | 11.4594 | 190 | .8160s |
+| Flow-Iso | 30/30 | 0/30 /0/30 | 11.4759 | 279 | .7813s |
+| LearnedDir | 30/30 | 0/30 /0/30 | 11.5105 | 188 | .7200s |
+
+All time-to-goal means cover30 successes. Learned retains a **32.6% lower
+training violation count than Iso**, with matched final success and observed
+episode risk; its return/time are also modestly better on this common set.
+Against SAC the count advantage is only2 (1.1%), so do not claim a strong
+SAC-relative safety gain. This is one development training seed, not cross-seed
+confirmation, statistical significance or proof of zero population risk.
+The100k failure and earlier stalls remain in the curves and native JSON.
+
+This resolves the user-requested B screen without another task/parameter
+search. **Freeze SafeReach-RelativeLayout-v3 and the unchanged algorithm for
+the new-seed formal comparison.** It is not a9M extension of the saturated v2
+task. The original v2 zero-shot comparison remains negative, and no v3
+Iso-Low-dominance or robustness advantage is claimed without measurement.
+The actor, local geometry and task source files match95ab831 exactly; later
+source changes are evaluation/queue/recording interfaces, not a new loss,
+critic, selector, drift, projection, dual or activation.
+
+The frozen protocol is SAC-Lag/Iso/Learned x2030/2031/2032, fresh initialization,
+1M actual training transitions each (9M total), fixed100k/300k/600k/1M
+evaluation points and100 episodes per condition. Independent main layouts are
+92027..92126. The five conditions keep nominal/radius7cm/radius8cm/balanced
+position3cm/position6cm; no stronger conditions are introduced. Native nominal
+records are reused, not rerun and selected; four stress conditions use frozen
+policies without adaptation. One shared physical-layout proof is required
+before those new formal comparisons. At this freeze handoff it has **not yet
+run**, and formal training has **not yet started**. Planned dispatch assigns
+one full training-seed group per host for within-seed method/hardware parity:
+A1002030,4080/4T2031,5080/LZQW2032, respecting shared resources and leaving
+foreign jobs untouched. Actual launch evidence will be reported separately.
+
+The full three-run final input corpus is on4080's4T disk under
+`analysis_inputs/relative-layout-screen-v3-20261109/`; A100 originals remain.
+No checkpoint/replay is uploaded to GitHub. The combined development CSV now
+contains56 native evaluations (47 original plus9 v3 screen); formal main rows
+remain0/9 and the original40 zero-shot robustness rows are retained.
+
+## Screening checkpoint history — 2026-11-09 18:24–18:25 CST
 
 The scheduled half-hour watcher confirmed both SAC/Iso native PIDs absent with
 normal300k completion receipts; Learned's PID remains alive at226k. The compact

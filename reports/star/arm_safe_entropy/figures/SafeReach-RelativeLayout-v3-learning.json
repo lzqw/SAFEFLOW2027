@@ -17,10 +17,11 @@
     {
       "run": "relative_layout_screening/flow-learned-seed2027-v3",
       "source_commit": "95ab831694a74673ae1350e6f7546694f8d99c57",
-      "latest_logged_transitions": 226000,
+      "latest_logged_transitions": 300000,
       "evaluation_milestones": [
         100000,
-        200000
+        200000,
+        300000
       ]
     },
     {
