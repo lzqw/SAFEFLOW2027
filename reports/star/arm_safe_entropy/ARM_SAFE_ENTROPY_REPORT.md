@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 03:49 check and four completed formal tests
+## Current frozen-main execution — 2026-11-10 04:19 check and four completed formal tests
 
 Five native main trainers are directly confirmed alive and past random warmup;
 four completed runs account for the rest of the nine-run frozen cohort.
@@ -38,16 +38,16 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | running773k,PID857626 | running422k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | running830k,PID857626 | running451k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | running505k,PID749852 | running529k,PID738207 | running280k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | running684k,PID749852 | running674k,PID738207 | running308k,A100 GPU1,PID947125 |
 
-The03:48:58 watcher directly confirmed all five live native PIDs and all four
+The04:18:58 watcher directly confirmed all five live native PIDs and all four
 native1M completion receipts; those four trainers have exited normally.
 The table uses the subsequent compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total6.509M/9M primary transitions
-(72.3% of the fixed budget).
+The nine accepted native counters now total6.947M/9M primary transitions
+(77.2% of the fixed budget).
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Four full runs
 and80/180 formal condition rows are complete; partial steps are not completion.
@@ -92,10 +92,10 @@ This is one completed held-out training seed, not proof of cross-seed
 robustness, lower training cost, superiority to a v3 Iso-Low control (none was
 requested), or completion of the nine-run formal objective. The remaining
 five runs and their required fixed tests continue without new modules or tuning.
-No additional fixed evaluation or1M completion was available in this03:49
-capture. The full formal table remains80/180 condition rows and4/9 completed
-run evaluations; progress above is actual training, not fabricated evaluation
-points or a claim that the whole experiment is72.3% complete in wall time.
+No additional1M completion was available in this04:19 capture. New native
+300k/600k milestones are retained below, but the full formal table remains
+80/180 condition rows and4/9 completed run evaluations. Progress above is
+actual training, not a claim that the whole experiment is77.2% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -199,10 +199,14 @@ All2032 methods retain their1M budget; these are early, not final, outcomes.
 Iso2030 at600k is100/100 with0/100 risk,329 training violations and .7204s
 time-to-goal over100 successes; its Learned600k comparison remains pending.
 No failure is dropped or used to modify a fixed training budget.
-At300k seed2032 the newly available SAC/Iso pair is100/100 safe successes
-and0/100 violations for both, with188/335 training violations and .8032s/.7436s
-time-to-goal respectively. Learned2032 has not yet reached300k in this capture,
-so these two results do not establish a complete matched three-method ranking.
+At300k seed2032 the complete SAC/Iso/Learned triple is now100/100 safe
+successes and0/100 violations for all three, with188/335/226 training
+violations and .8032s/.7436s/.7212s time-to-goal. Learned has32.5% fewer
+training violations than Iso with matched observed task/risk and slightly
+faster goal completion, but20.2% more training violations than SAC. This is
+one genuine favorable Iso-relative intermediate point, not general superiority.
+At600k the2032 SAC/Iso pair is also100/100 and0/100 risk, with235/421
+training violations and .9788s/.7244s time-to-goal; Learned600k remains pending.
 Learned2030 at300k is now100/100 safe successes,0/100 violations,return11.4860,
 211 training violations and .7756s time-to-goal over100 successes. Its same-seed
 Iso300k is98/100,2/100 risk,214 training violations; this is a small positive
@@ -211,11 +215,33 @@ development seed's32.6% reduction. SAC2030 at the same300k is100/100,0/100,
 125 training violations and .7268s; Learned's training count is68.8% higher
 than this matched SAC baseline. Do not pool the favorable Iso-relative
 comparison with another seed's or budget's outcome.
-There are twenty-six main milestone evaluations
+There are twenty-nine main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table, which now contains all three seed2031 primary
 results and SAC2030. No near-final training progress or earlier better checkpoint replaces
 any of these declared1M outcomes.
+
+### Balanced300k snapshot across all three held-out training seeds, not the final primary
+
+All nine nominal300k evaluations are now available on the same fixed100
+layouts per policy. The following rates are means across training seeds
+2030/2031/2032; the cost SD is the sample SD of the three native training
+counters, not an episode-level confidence interval. None of these intermediate
+statistics replaces the predeclared1M primary or its required stress tests.
+
+| Method at300k,3 seeds | Mean safe success | Mean violation rate | Training violations,mean ± seed SD | Mean capped time-to-goal |
+|---|---:|---:|---:|---:|
+| SAC-Lag | 99.67% | 0% | 160.0 ±32.1 | .7812s |
+| Flow-Iso | 99.33% | .67% | 262.3 ±64.1 | .7589s |
+| LearnedDir | 98.33% | 1.67% | 222.3 ±10.0 | .7900s |
+
+Learned's mean training count is15.2% below Iso but39.0% above SAC.
+Against Iso, its average safe success is1 percentage point lower and risk
+1 percentage point higher; the count reduction is not a matched-task/risk
+Pareto improvement for the whole snapshot. The larger seed2032 gain must not
+erase seed2031's five failed300k episodes or the earlier safe-stalling phases.
+These are descriptive three-seed intermediate results, not a significance
+claim, an adaptive stopping gate or a reason to tune the frozen configuration.
 
 ### First fixed-final main result and full five-condition test
 
@@ -463,6 +489,10 @@ four completed receipts. A100 utilization was21%/95%,4080 utilization95%.
 A100 GPU0 now has only the already-running Iso2030 learner; all other planned
 runs have already started on their assigned devices. No new scientific job,
 configuration change or additional physical diagnostic was introduced.
+The04:18:58 observation again found all five remaining trainers live, with
+A100 utilization21%/85% and4080 utilization97%. No trainer was restarted,
+paused or extended; the originally declared native evaluations produced the
+three newly available checkpoints without any extra physical diagnostic.
 
 The reporting-only `collect_main_robustness` helper now mirrors compact
 per-run JSON and writes [MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv)
@@ -489,6 +519,17 @@ No safety threshold, level, fixed seed or failed policy episode was removed.
 remain available. Frozen actor/task math is95ab831; initial formal runtime is
 498535a and the resource-slot queue extension isf059d4d. The full old negative
 v2 robustness data and the positive one-seed v3 screen are both retained below.
+
+A single source review during the03:55 wait confirmed the unchanged-algorithm
+contract without new training or physics. `models.py` (including ArmLearner)
+and `geometry.py` are identical from pre-B81dc9d5 to task-freeze95ab831.
+Models/geometry/environment/relative-layout sources are identical from that
+freeze to the actual498535a runtime. The reviewed training-driver diff adds
+only explicit evaluation scheduling, manifest validation and saved evaluation
+reductions; Replay and the optimization loop are unchanged. Between498535a
+andf059d4d, all those files including `train.py` remain identical; the only
+arm source change is the resource queue's explicit dependency-seed handling.
+Later report/export/plot commits do not replace the active immutable runtime.
 
 ## Final relative-layout screen and freeze decision — 2026-11-09 19:54 CST
 
