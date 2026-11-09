@@ -105,16 +105,31 @@
     {
       "run": "mechanism_control/flow-iso-low-seed2028-v2",
       "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
-      "latest_logged_transitions": 5000,
-      "evaluation_milestones": []
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
     },
     {
       "run": "mechanism_control/flow-random-aniso-seed2027-v2",
       "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
-      "latest_logged_transitions": 206000,
+      "latest_logged_transitions": 300000,
       "evaluation_milestones": [
         100000,
-        200000
+        200000,
+        300000
+      ]
+    },
+    {
+      "run": "mechanism_control/flow-random-aniso-seed2028-v2",
+      "source_commit": "645e19ecc61aea1f42831ded9c56e8f6cb32e23d",
+      "latest_logged_transitions": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
       ]
     }
   ],

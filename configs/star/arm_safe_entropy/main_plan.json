@@ -1,6 +1,6 @@
 {
   "frozen": false,
-  "status": "awaiting_useful_directional_evidence_do_not_launch",
+  "status": "development_and_controls_complete_partial_mechanism_signal_awaiting_stage_decision",
   "frozen_method_code_commit": null,
   "methods": ["sac_lag", "flow_iso", "flow_learned"],
   "training_seeds": [2030, 2031, 2032],
@@ -15,5 +15,19 @@
   "directional_loss": false,
   "inward_drift": false,
   "action_projection": false,
-  "no_automatic_launch": true
+  "no_automatic_launch": true,
+  "latest_evidence_review": {
+    "date": "2026-11-09",
+    "original_development_runs_complete": 8,
+    "bounded_R1_runs_complete": 2,
+    "mechanism_control_runs_complete": 4,
+    "fixed_final_conditional_mechanism_analysis_complete": true,
+    "near_boundary_tangent_variance_gain_learned_vs_low_percent": [6.2, 14.7],
+    "learned_task_performance_advantage_established": false,
+    "main_completed_rows": 0,
+    "main_runs_launched": 0,
+    "user_stage_choice_requested": true,
+    "reason_not_automatic": "The local directional allocation signal has not translated into superior safe task performance or stable training-cost gains; do not silently expand to9M more transitions",
+    "evidence": "reports/star/arm_safe_entropy/ARM_SAFE_ENTROPY_REPORT.md"
+  }
 }

@@ -1,4 +1,4 @@
-# Arm safe entropy — development complete, bounded mechanism controls running
+# Arm safe entropy — development and mechanism controls complete
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -27,7 +27,153 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current evidence and recovery (through 2026-11-07 19:08 CST)
+## Current result — 2026-11-09, fixed endpoints, not a superiority claim
+
+All eight original development runs, both bounded100k R1 runs and all four
+300k mechanism-control runs are complete. The final common-state analysis is
+also complete. There are47 native evaluation records in
+[DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv),30 conditional diagnostic
+rows in [MECHANISM_RESULTS.csv](MECHANISM_RESULTS.csv), and **0/9 formal main
+results**. No project trainer remains active at this handoff. No bad seed or
+final failure was replaced, and no scientific early stopping was used.
+
+### Final nominal task results, common30 layouts per policy
+
+| Method | Seed | Safe success | Violation episodes | Return | Training violations |
+|---|---:|---:|---:|---:|---:|
+| SAC-Lag | 2027 | 30/30 | 0/30 | 11.4191 | 219 |
+| SAC-Lag | 2028 | 30/30 | 0/30 | 11.4195 | 152 |
+| Flow-Iso | 2027 | 30/30 | 0/30 | 11.4569 | 223 |
+| Flow-Iso | 2028 | 30/30 | 0/30 | 11.4770 | 274 |
+| OracleDir, privileged approximation | 2027 | 30/30 | 0/30 | 11.4664 | 210 |
+| OracleDir, privileged approximation | 2028 | 30/30 | 0/30 | 11.4182 | 231 |
+| LearnedDir | 2027 | 30/30 | 0/30 | 11.4663 | 223 |
+| LearnedDir | 2028 | 30/30 | 0/30 | 11.4718 | 206, retained lineage only |
+| Iso-Low | 2027 | 30/30 | 0/30 | 11.4724 | 213 |
+| Iso-Low | 2028 | 30/30 | 0/30 | 11.4491 | 171 |
+| Random-Aniso | 2027 | 28/30 | 2/30 | 10.0831 | 238 |
+| Random-Aniso | 2028 | 30/30 | 0/30 | 11.4823 | 206 |
+
+All final evaluations have0/30 actual contact collisions; the two Random2027
+failures are clearance violations on layouts52039/52048, both at17 steps.
+Task success equals safe success for these native evaluations. Thirty common
+layouts do not establish zero population risk or statistical superiority.
+All policies above use fixed final300k checkpoints, not selected milestones.
+
+Iso-Low's aggregate384 training violations versus Iso's497 is22.7% lower,
+but seed2028 had **0/30 success at100k**, so this is not a clean engagement-
+adjusted safety effect or a claim of learning-curve dominance. Learned's clean
+seed2027 count223 ties Iso and exceeds Iso-Low's213; seed2028's retained206
+already exceeds Low's171. Its unknown lost tail still prevents an exact pooled
+Learned training-cost comparison. The lost segment contained at least one
+known violation; it must never be repaired by treating206 as an exact actual
+cost. Oracle's441 versus Iso497 (11.3% lower) is modest, privileged and also
+affected by seed2028's early safe stall; SAC's aggregate371 is lower still.
+Random's favorable100k result did not persist: its final2027 policy fails2/30.
+
+### Final mechanism: a local allocation signal, not the full evidence chain
+
+The [native final diagnostic](diagnostics/final300k-full-control-cohort-v2-20261109/diagnostic.json)
+uses all10 final flow policies, both seeds for each of Iso/Oracle/Learned/Low/
+Random, on one shared pool of256 distinct recorded states,128 near-boundary
+and128 safe-interior states, with128 sampled actions per state. The exact
+interval-gradient axis is evaluated at the source replay action and reused
+across methods. There are195 valid common normals:113 near,82 interior.
+Undefined normals remain null and are excluded only from directional projections.
+Covariance is estimated separately within each state, never from pooled actions.
+
+| Near-boundary final actions | Seed | V_N | V_T, per tangent dimension | H_T, 2D Gaussian proxy |
+|---|---:|---:|---:|---:|
+| LearnedDir | 2027 | .012775 | .012652 | -1.6780 |
+| Iso-Low | 2027 | .013051 | .011916 | -1.7875 |
+| LearnedDir | 2028 | .012985 | .013696 | -1.7632 |
+| Iso-Low | 2028 | .013396 | .011943 | -1.8283 |
+
+Relative to Low, Learned's final normal variance is2.1%/3.1% lower while
+tangent variance is6.2%/14.7% higher. H_T is higher by .1095/.0651 nats.
+This is a useful **two-seed conditional allocation signal**: unlike global
+noise reduction, the directional sampler retains more tangent exploration.
+It is not proof of higher safe success: both methods have30/30 final successes,
+and Learned has more recorded training violations. Against Iso, Learned's
+terminal near-boundary V_T changes+6.8%/-16.1%; tangent preservation relative
+to the full-noise baseline is still not consistent across seeds.
+
+The full-pool one-interval violation probabilities are .05472/.04117 for
+Learned and .06781/.05066 for Low (19.3%/18.7% lower). These are cloned
+single-interval counterfactual probabilities at the shared states, **not
+episode violation rates**. The separate CSV `local_risk_increment` is the
+actual next-interval margin minus the source replay-action margin, in metres,
+not this probability. Near-boundary means are -.002190/-.002494 for Learned
+and -.001825/-.002137 for Low. Clipping rates and both marginal Gaussian
+entropy proxies are retained for every region in the CSV. H_N+H_T is not
+claimed to equal the joint entropy, and no entropy proxy is a safety guarantee.
+
+Control matching is approximate, not hidden. Low's scalar .035883518056867805
+was fixed before training from the earlier shared Iso/Learned calibration pool;
+on the new10-policy pool Learned's common-normal reference V_N is
+.035310/.035335 versus Low's .035884, a1.6%/1.5% difference. Low matches an
+average normal-noise scale, not trace or every state. Random retains the same
+fixed-trace .12 eigenvalue formula but its independently learned q heads yield
+raw near-boundary normal eigenvalue means .030650/.030505, versus Learned's
+.032179/.032282. Thus this trained Random control does **not** provide an
+exact numerical-spectrum-matched isolation of normal alignment. Its common-
+safety-axis reference V_N/V_T are approximately .04/.04, as expected for
+random orientations; this must not be confused with its own eigenvalues.
+
+Learned's signed normal cosine on the common near-boundary reference actions
+is .833/.834; Oracle's privileged controller approximation is .935/.935 with
+108 valid geometry comparisons, not a perfect upper bound. The earlier actual
+flow-midpoint Learned cosines .451/.615 remain a counterexample to treating
+reference-action alignment as on-path reliability. Earlier pool-dependent
+diagnostics, negative offline ReLU/SiLU fitting and negative frozen-anchor
+sampling interventions are retained, not superseded by selectively positive
+numbers from the final pool.
+
+Focused figures: [Learned versus Low covariance](diagnostics/final300k-full-control-cohort-v2-20261109/conditional-covariance-flow_learned-flow_iso_low.png),
+[Oracle versus Learned covariance](diagnostics/final300k-full-control-cohort-v2-20261109/conditional-covariance-flow_oracle-flow_learned.png),
+[signed normal agreement](diagnostics/final300k-full-control-cohort-v2-20261109/normal-agreement-flow_oracle-flow_learned.png),
+and the [complete nominal learning curves](figures/SafeReach-Obstacle-v2-mechanism-learning.png).
+Display subsets are explicit; all10 policies and all30 region rows remain in
+the native JSON/CSV. No extra training was used for these figures or analysis.
+
+### Stage boundary and delivery
+
+The first-stage conservative upper bound remains2951808 actual transitions,
+including ability, pilots, R1 and the possible interrupted tail. It is closed.
+The four separately requested controls added exactly1.2M; they are not an
+unreported hyperparameter sweep. Final analysis source is
+`645e19ecc61aea1f42831ded9c56e8f6cb32e23d`; it samples frozen policies and
+performs no optimizer updates or new training transitions. All server originals
+remain intact, with the10-policy final input corpus on4080's4T disk. Only
+compact results, diagnostic samples, plots and source are delivered to GitHub;
+checkpoint/replay files are not uploaded.
+
+Analysis ran once on A100 GPU0 with32 simulator workers using the existing
+`diagnose_foundation --final-mechanism --checkpoint-steps300000` path. The
+native JSON records every actual run path and checkpoint identity. Iso2028's
+final input was staged from the4T corpus; its optional historical progress.csv
+is absent there, while its required full checkpoint, final policy, config,
+evaluation and receipt are present. No historical log was reconstructed, no
+training was restarted, and the analyzer does not use that progress file.
+
+**The task is learned and local directional allocation is observable, but the
+chain “more tangent exploration -> better safe task performance” is not yet
+established.** The formal1M x3methods x3held-out-seeds stage remains unfrozen
+and unstarted, rather than being silently launched from a local diagnostic.
+The user's stage decision has been requested after this mixed result; no
+additional parameter approval is needed within an authorized stage. Payload
+and the two zero-shot perturbation families remain conditional, unimplemented
+downstream work, not completed deliverables or hidden scope removal.
+
+The half-hour control watcher exited normally when all four native receipts
+were present. At the November9 resource check all three hosts were reachable;
+foreign GPU tasks were left untouched. There is no remaining control-training
+ETA: that bounded stage is done. Further ETA depends on the stage decision,
+not on pretending completed jobs are still running.
+
+## Historical execution log — observations below are dated, not current status
+
+### Evidence and recovery as of 2026-11-07 19:08 CST
 
 All four v2 SAC-Lag/Flow-Iso development runs completed their fixed300k budgets.
 Each final evaluation obtained30/30 safe successes and0/30 violations; this is

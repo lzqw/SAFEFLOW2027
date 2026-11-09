@@ -12,9 +12,28 @@ def main():
     parser.add_argument('--host', default='tjucta-a100')
     parser.add_argument('--remote-project', default='/home/lzqw/SAFEFLOW2027_ARM')
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--mechanism-analysis', type=Path,
+                        help='Export an already collected native mechanism CSV; no SSH or new evaluation')
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     report = repo / 'reports/star/arm_safe_entropy'
+    if args.mechanism_analysis is not None:
+        analysis = args.mechanism_analysis.resolve()
+        with (analysis / 'mechanism_results.csv').open(newline='') as stream:
+            reader = csv.DictReader(stream)
+            columns = reader.fieldnames
+            mechanism_rows = list(reader)
+        for row in mechanism_rows:
+            row['state_pool'] = str((analysis / row['state_pool']).relative_to(report))
+        temporary = report / 'MECHANISM_RESULTS.csv.tmp'
+        with temporary.open('w', newline='') as stream:
+            writer = csv.DictWriter(stream, fieldnames=columns)
+            writer.writeheader()
+            writer.writerows(mechanism_rows)
+        temporary.replace(report / 'MECHANISM_RESULTS.csv')
+        print(json.dumps(dict(mechanism_rows=len(mechanism_rows), source=str(analysis),
+                              training_transitions=0, new_evaluations=0)))
+        return
     target = report / args.phase
     target.mkdir(parents=True, exist_ok=True)
     subprocess.run(['rsync', '-a', '--include=*/', '--include=*.json', '--include=progress.csv',

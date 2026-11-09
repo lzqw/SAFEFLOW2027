@@ -54,9 +54,19 @@ and not a real-world permission. Oracle uses counterfactual PyBullet state
 save/restore with the actual action-to-IK-to-motor mapping, not an unconverted
 task-space normal. Its exact finite-difference implementation is diagnostic;
 its query throughput is not learner throughput. An approximate cached controller
-Jacobian is available, explicitly labelled, and has completed only a short
-engineering train/restore so far. Its rare wrong directions are retained in the
-accuracy report; the queued scientific variant is not an error-free upper bound.
+Jacobian is available and explicitly labelled. Both original development seeds
+have completed300k and the bounded rho.50 revision has completed100k per seed.
+Its errors are retained in the accuracy reports; it is not an error-free upper
+bound. On the final10-policy shared pool, its mean signed cosine to the exact
+interval-gradient axis is .935 near the boundary (108 valid comparisons), not1.
+
+The existing Gym-style `SafeReachEnv.reset/step/close` boundary is the reserved
+control-adapter interface. `step` accepts normalized world-frame EE commands;
+the simulation adapter alone implements the mapping and interval labels above.
+A future hardware adapter must supply independently calibrated limits, workspace,
+contact-force monitoring and emergency stop under explicit hardware permission.
+Neither this interface reservation nor the nominal .625m/s command scale is
+permission to execute exploration on a real robot.
 
 ## Version correction and retained evidence
 

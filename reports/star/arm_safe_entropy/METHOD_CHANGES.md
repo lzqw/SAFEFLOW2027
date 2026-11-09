@@ -5,6 +5,12 @@ diagnosis). New branch: `codex/arm-safe-entropy-v1`. The user's dirty source
 worktree and all historical navigation results are preserved. No rollback,
 navigation resume or historical provenance repair is a prerequisite.
 
+Current status (2026-11-09): all original development, bounded R1 and four
+mechanism-control runs are complete. Final mechanism results are exported,
+not header-only. The dated sections below retain the original decision history;
+the current evidence is at the front of ARM_SAFE_ENTROPY_REPORT.md. No formal
+seed has been launched or used for selection; the formal plan remains unfrozen.
+
 New independent arm runtime follows the existing bounded midpoint flow,
 target-flow reward backups (4 stochastic target samples), two reward critic
 updates, actor interval2, target actor/reward Polyak .001 and uniform+recent
@@ -476,3 +482,35 @@ development output and its R1 comparisons remain available; nominal inclusion
 is predeclared, not selected by return. No training, geometry or budget changes
 are made. Iso-Low2027's first100k result is retained even though its training
 violation count140 is slightly above Iso137 at matched30/30 safe success.
+
+## Final mechanism reporting, no algorithm revision (2026-11-09)
+
+All four requested controls completed their original300k budgets, adding
+exactly1.2M transitions outside the already closed first-stage cap. Their
+native100k/200k/300k evaluations are retained, including Low2028's early safe
+stall and Random2027's two final clearance failures. Learned2028 retains its
+interruption scope; no report treats the missing tail as zero actual cost.
+
+One final analysis from immutable source645e19e evaluates all10 fixed300k
+flow policies on256 shared distinct visited states and128 actions per state.
+The common exact normals are valid for113 near-boundary and82 interior states;
+undefined axes stay null. The canonical mechanism CSV exports the native30
+method/seed/region rows with a report-relative state-pool path, not synthetic
+summary rows. `collect_results --mechanism-analysis` is a local stdlib-only
+export of existing artifacts, with no SSH, optimizer update or new evaluation.
+The existing plotting helper generates explicit two-method, two-seed views;
+its final/interim caption now follows the native diagnostic kind.
+
+Learned preserves6.2%/14.7% more final tangent variance than Low, with2.1%/3.1%
+lower normal variance, but has not improved final task success or recorded
+training violation counts over Low. Random and Learned use the same reference
+trace/formula yet their own q heads do not produce identical numerical spectra;
+the measured mismatch is explicit rather than labelled a perfectly matched
+direction-only control. No new head, loss, candidate-action mechanism, fitted
+activation, sampler intervention or rho revision was promoted from this result.
+
+The future control-adapter boundary is documented using the existing public
+Gym reset/step/close interface, without introducing unused hardware code.
+No real robot execution or SSH/CI change is performed. Formal9M training,
+payload and perturbation stages are not auto-launched from this partial local
+mechanism signal; the user's stage choice is requested after delivery.

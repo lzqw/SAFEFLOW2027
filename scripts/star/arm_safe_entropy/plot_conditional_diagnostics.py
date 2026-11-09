@@ -87,7 +87,10 @@ def main():
     plt.close(fig)
     print(json.dumps(dict(source=str(args.input), training_transitions=0, normal_comparisons=comparisons,
                           plots=[f'conditional-covariance{suffix}.png',f'normal-agreement{suffix}.png'],
-                          note='Interim diagnosis, not final control matching or episode-performance evidence')))
+                          note=('Fixed final-policy conditional diagnostics; empirical control matching '
+                                'and episode performance require the accompanying report'
+                                if payload.get('kind') == 'final_checkpoint_conditional_mechanism'
+                                else 'Interim diagnosis, not final control matching or episode-performance evidence'))))
 
 
 if __name__ == '__main__':
