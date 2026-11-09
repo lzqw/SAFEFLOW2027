@@ -1,6 +1,6 @@
 {
   "frozen": false,
-  "status": "development_and_controls_complete_partial_mechanism_signal_awaiting_stage_decision",
+  "status": "zero_shot_robustness_complete_decision_B_relative_layout_screening_before_formal",
   "frozen_method_code_commit": null,
   "methods": ["sac_lag", "flow_iso", "flow_learned"],
   "training_seeds": [2030, 2031, 2032],
@@ -16,7 +16,20 @@
   "inward_drift": false,
   "action_projection": false,
   "no_automatic_launch": true,
-  "latest_evidence_review": {
+  "robustness_stage_decision": {
+    "date": "2026-11-09",
+    "policy_episodes": 2000,
+    "evaluation_source_commit": "81dc9d503b110f88d8ebc40c1ec9a998a2d82442",
+    "learned_perturbed_safe_success": [0.56, 0.675],
+    "iso_low_perturbed_safe_success": [0.57, 0.725],
+    "iso_perturbed_safe_success": [0.84, 0.665],
+    "consistent_learned_robustness_advantage": false,
+    "selected_user_branch": "B",
+    "next_bounded_stage": "relative_layout_screening_v3.json,3methods xseed2027 x300k,fresh initialization,unchanged algorithm",
+    "no_formal_runs_launched": true,
+    "supersedes_previous_pending_stage_question": true
+  },
+  "historical_pre_robustness_evidence_review": {
     "date": "2026-11-09",
     "original_development_runs_complete": 8,
     "bounded_R1_runs_complete": 2,

@@ -8,7 +8,7 @@ import subprocess
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'main'], default='ability')
+    parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'relative_layout_screening', 'main'], default='ability')
     parser.add_argument('--host', default='tjucta-a100')
     parser.add_argument('--remote-project', default='/home/lzqw/SAFEFLOW2027_ARM')
     parser.add_argument('--verbose', action='store_true')
@@ -43,7 +43,7 @@ def main():
     rows, main_rows, seen_main_pairs = [], [], set()
     main_freeze_record = None
     # Retain all mirrored versions: never drop weak runs or metric-select checkpoints.
-    for phase in ['ability', 'obstacle_development', 'mechanism_control', 'main']:
+    for phase in ['ability', 'obstacle_development', 'mechanism_control', 'relative_layout_screening', 'main']:
         for config_path in sorted((report / phase).glob('*/run_config.json')):
             run = config_path.parent
             config = json.loads(config_path.read_text())

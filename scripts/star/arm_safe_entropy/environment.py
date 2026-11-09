@@ -91,16 +91,22 @@ class SafeReachEnv(gym.Env):
                                self.obstacle_position, [self.config.obstacle_radius if self.config.obstacle else 0.],
                                [max(0., 1. - self._elapsed / self.config.horizon)]]).astype(np.float32)
 
+    def _sample_layout(self, fixed):
+        jitter = np.zeros(3) if fixed else self.np_random.uniform([-.025, -.015, -.025], [.025, .015, .025])
+        start = np.array([-.25, -.17, .25]) + jitter
+        goal = np.array([-.25, .17, .25]) + jitter
+        return start, goal, (start + goal) / 2
+
+    def _additional_layout_validity(self):
+        return True
+
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
         self._elapsed, self._done = 0, False
         options = options or {}
         fixed = bool(options.get('fixed_layout', False)) or not self.config.randomize_layout
         for _ in range(30):
-            jitter = np.zeros(3) if fixed else self.np_random.uniform([-.025, -.015, -.025], [.025, .015, .025])
-            self.start = np.array([-.25, -.17, .25]) + jitter
-            self.goal = np.array([-.25, .17, .25]) + jitter
-            self.obstacle_position = (self.start + self.goal) / 2
+            self.start, self.goal, self.obstacle_position = self._sample_layout(fixed)
             if not self.config.obstacle:
                 self.obstacle_position = np.array([2., 2., 2.])
             self.sim.set_base_pose('target', self.goal, np.array([0., 0., 0., 1.]))
@@ -114,7 +120,7 @@ class SafeReachEnv(gym.Env):
             for _ in range(20):
                 self.client.stepSimulation()
             distance, collision = self._distance()
-            if not collision and distance > self.config.safety_distance + .005:
+            if not collision and distance > self.config.safety_distance + .005 and self._additional_layout_validity():
                 break
         else:
             raise RuntimeError('Could not sample a safe reachable start; do not train on invalid resets')
@@ -209,3 +215,10 @@ class SafeReachEnv(gym.Env):
         return dict(**asdict(self.config), control_dt=self.control_dt, protected_links=self.protected_links,
                     observations=['q/pi', 'qdot/4', 'ee_world_xyz', 'goal_world_xyz',
                                   'obstacle_world_xyz', 'obstacle_radius', 'remaining_time'])
+
+
+def make_environment(config):
+    if config.version == 'SafeReach-RelativeLayout-v3':
+        from scripts.star.arm_safe_entropy.relative_layout import RelativeLayoutReach
+        return RelativeLayoutReach(config)
+    return SafeReachEnv(config)

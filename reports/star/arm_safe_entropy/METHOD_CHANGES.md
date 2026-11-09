@@ -5,9 +5,11 @@ diagnosis). New branch: `codex/arm-safe-entropy-v1`. The user's dirty source
 worktree and all historical navigation results are preserved. No rollback,
 navigation resume or historical provenance repair is a prerequisite.
 
-Current status (2026-11-09): all original development, bounded R1 and four
-mechanism-control runs are complete. Final mechanism results are exported,
-not header-only. The dated sections below retain the original decision history;
+Current status (2026-11-09): original development, R1, all four mechanism
+controls and the new2000-episode frozen-checkpoint robustness evaluation are
+complete. Mechanism and robustness CSVs are populated, not header-only. The
+robustness result selects the user-authorized0.9M relative-layout task screening,
+without an algorithm revision or9M formal launch. The dated sections below retain the original decision history;
 the current evidence is at the front of ARM_SAFE_ENTROPY_REPORT.md. No formal
 seed has been launched or used for selection; the formal plan remains unfrozen.
 
@@ -514,3 +516,24 @@ Gym reset/step/close interface, without introducing unused hardware code.
 No real robot execution or SSH/CI change is performed. Formal9M training,
 payload and perturbation stages are not auto-launched from this partial local
 mechanism signal; the user's stage choice is requested after delivery.
+
+## Zero-shot result and task-only continuation (2026-11-09)
+
+New user instructions replace the earlier pending-stage question with an A/B
+plan. Four methods x2training seeds x5fixed conditions x50 episodes completed
+with0training transitions/0adaptation updates. All conditions, sampling and
+the two-sided offset balance were committed before outcomes. Native stochastic
+weights and local margin heads are frozen. Final checkpoints and all failed
+episodes are retained. The native result supports branch B, not a robustness
+gain: Learned's perturbed success56%/67.5% is below Low57%/72.5% in both seeds.
+
+The only next change is SafeReach-RelativeLayout-v3: independent start, goal
+and obstacle proposals with the same state/action/controller/reward/cost and
+6cm sphere. Reset-layout validity adds a saved/restored kinematic safe-goal
+test shared by every method. No query occurs in Learned behavior sampling.
+Small virtual layout hooks preserve original v2 draws and make the new task
+explicit. SAC-Lag/Iso/Learned are each fresh-seed2027,300k, total0.9M; a separate
+`relative_layout_screening` phase prevents accidental pooling as formal/v2
+results. Core models, geometry heads, optimizers and update ratios are unchanged.
+The existing collector and plot helper accept the new named task phase; no
+additional validation framework or old-history repair is introduced.

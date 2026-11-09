@@ -23,7 +23,9 @@ def main():
         axis.set_title(title, fontsize=10)
         axis.grid(alpha=.2)
     included = []
-    phases = ['obstacle_development', 'mechanism_control'] if args.include_controls else ['obstacle_development']
+    phases = (['obstacle_development', 'mechanism_control'] if args.include_controls else ['obstacle_development'])
+    if args.task_version == 'SafeReach-RelativeLayout-v3':
+        phases = ['relative_layout_screening']
     config_paths = [path for phase in phases for path in sorted((report / phase).glob('*/run_config.json'))]
     for config_path in config_paths:
         config = json.loads(config_path.read_text())

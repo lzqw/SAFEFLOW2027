@@ -27,7 +27,69 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current result — 2026-11-09, fixed endpoints, not a superiority claim
+## Latest stage decision — zero-shot obstacle evaluation, 2026-11-09
+
+The new user instruction supersedes the earlier pending-stage question: keep
+the algorithm unchanged, evaluate frozen300k policies first, and use the
+predefined A/B continuation. The complete2000-episode evaluation is now done,
+with no training/adaptation updates. All four methods and both training seeds
+are retained on nominal, radius7cm/8cm, and balanced lateral offsets3cm/6cm;
+each condition has50 common layout seeds72027..72076. Positive and negative
+offsets each have25 episodes. These levels were fixed before policy outcomes.
+
+| Method | Seed2027 perturbed safe success / violation | Seed2028 perturbed safe success / violation |
+|---|---:|---:|
+| SAC-Lag | 74.5% /25.5% | 85.0% /15.0% |
+| Flow-Iso | 84.0% /16.0% | 66.5% /33.5% |
+| Iso-Low | 57.0% /43.0% | 72.5% /27.5% |
+| LearnedDir | 56.0% /44.0% | 67.5% /32.5% |
+
+These are equal-weight results across the four **predeclared perturbed**
+conditions,200 episodes per method/training seed; nominal is reported
+separately, not silently included. Nominal success is50/50 except Iso-Low2027
+at49/50. Learned is1/5 percentage points below Low and28 points below/1 point
+above Iso across the two seeds: **no stable robustness advantage**. Every
+unsuccessful policy episode in this comparison is a clearance violation,
+not safe stalling; contact collisions are still recorded separately.
+Both Learned policies fail50/50 at radius8cm, although a safe physical route
+has been demonstrated on every layout. SAC2028 succeeds29/50 and Iso2027
+18/50 there. The zero-shot failure is not evidence of an impossible task.
+
+[All40 condition rows](ROBUSTNESS_RESULTS.csv), [per-episode native results](robustness/obstacle-v1-20261109/),
+and the [fixed-condition figure](robustness/obstacle-v1-20261109/obstacle-robustness.png)
+retain safe success, episode violations, successful time-to-goal with its
+success coverage, horizon-capped time including failures, return and minimum
+clearance. Horizon-capped time is not failed-episode duration: failures receive
+the full4s horizon. This avoids reporting early collision as fast arrival.
+
+The unchanged native stochastic actors and Learned margin heads were loaded
+from their exact final policies with frozen parameters; no learner update is
+called. Geometry, reward, controller, observations and termination are the
+same as nominal. The evaluator source is81dc9d5. Fixed25-row action batches
+retain inactive rows only for random-stream stability; **no physical step**
+is taken after an episode ends. Actual layouts are saved and checked against
+the common layout set, with no discarded failed policy episodes.
+
+Initial direct-ascent constructive paths proved219/250 condition/layouts but
+violated on the first interval for31 radius8cm layouts. This happened before
+any policy evaluation. The [initial evidence](engineering/robustness_initial_detour_20261109/)
+is preserved; only these31 were retried with a retreat-first overhead route,
+proving250/250 safe feasible paths. No perturbation level, layout, reward or
+policy was changed to produce a favorable comparison. The completed invocation
+collected32299 **evaluation**,1240 additional **validity**, and0 **training**
+transitions; earlier constructive-check transitions remain in their original
+artifact. Runtime19.48s excludes the earlier failed constructive-path invocation.
+
+**Decision B applies.** Do not launch the9M nominal formal matrix. The next
+authorized stage is a single independently varied relative-layout task,
+SAC-Lag/Iso/Learned, development seed2027,300k each (0.9M total), all fresh
+initializations, unchanged algorithm. Its explicit configuration is
+`configs/star/arm_safe_entropy/relative_layout_screening_v3.json`.
+This is task screening, not a new formal result or a promoted algorithm module.
+New formal seeds2030..2032 remain untouched. No stronger perturbations or
+additional conditions are added to search for a favorable robustness result.
+
+## Completed development/mechanism result — fixed endpoints, not a superiority claim
 
 All eight original development runs, both bounded100k R1 runs and all four
 300k mechanism-control runs are complete. The final common-state analysis is
@@ -160,8 +222,10 @@ training was restarted, and the analyzer does not use that progress file.
 chain “more tangent exploration -> better safe task performance” is not yet
 established.** The formal1M x3methods x3held-out-seeds stage remains unfrozen
 and unstarted, rather than being silently launched from a local diagnostic.
-The user's stage decision has been requested after this mixed result; no
-additional parameter approval is needed within an authorized stage. Payload
+The subsequent user instruction and completed zero-shot comparison select
+bounded relative-layout screening as described at the top; the earlier stage
+question is no longer pending. No additional parameter approval is needed
+within that authorized stage. Payload
 and the two zero-shot perturbation families remain conditional, unimplemented
 downstream work, not completed deliverables or hidden scope removal.
 

@@ -90,3 +90,30 @@ this is a bounded interface check, not proof of global oracle accuracy or effica
 Upstream platform references:
 [panda-gym](https://github.com/qgallouedec/panda-gym),
 [Panda Cartesian control](https://panda-gym.readthedocs.io/en/stable/robots/panda.html).
+
+## Bounded relative-layout screening: SafeReach-RelativeLayout-v3
+
+After the complete frozen-model obstacle evaluation showed no consistent
+Learned robustness advantage, the new user instruction selects a task-only
+extension, not9M more nominal training. Start, goal and obstacle positions are
+drawn independently before shared feasibility rejection:
+
+| Object | Center xyz (m) | Independent uniform jitter halfwidth xyz (m) |
+|---|---|---|
+| Start | (-.25,-.17,.25) | (.04,.02,.03) |
+| Goal | (-.25,.17,.25) | (.05,.02,.03) |
+| Obstacle | (-.25,0,.25) | (.045,.015,.025) |
+
+These are not a shared scene translation or a midpoint-constrained obstacle.
+Accepted layouts condition these proposals on the existing safe-start test
+and a reachable, safe kinematic goal. The goal test saves/restores simulation
+state during reset only; it is not an action filter, extra learned policy,
+behavior-time oracle, reward change or teacher label. All methods use the same
+sampler and costs. The25-state observation, 6cm sphere, first-violation full
+interval, controller and100-step horizon remain unchanged. The original v2
+sampler's random draw order and semantics remain unchanged by the layout hooks.
+
+The single screening configuration uses fresh SAC-Lag/Iso/Learned models,
+seed2027,300k each, total0.9M, common30 layouts82027..82056 at100k/200k/300k.
+No new algorithm module, weight search, scientific early stop or automatic
+budget extension is introduced. Formal seeds2030..2032 remain reserved.

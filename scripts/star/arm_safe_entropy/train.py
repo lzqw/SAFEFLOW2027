@@ -14,7 +14,7 @@ import time
 import numpy as np
 import torch
 
-from scripts.star.arm_safe_entropy.environment import SafeReachEnv, TaskConfig
+from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
 from scripts.star.arm_safe_entropy.models import ArmLearner
 from scripts.star.arm_safe_entropy.run_protocol import resolve_phase, validate_main_freeze, validate_resume_origin
 
@@ -51,7 +51,7 @@ class Replay:
 
 
 def evaluate(learner, config, episodes=30, seed_start=52027):
-    env = SafeReachEnv(config)
+    env = make_environment(config)
     records = []
     try:
         for seed in range(seed_start, seed_start + episodes):
@@ -104,13 +104,17 @@ def main():
     parser.add_argument('--revision-id')
     parser.add_argument('--revision-reason')
     parser.add_argument('--reference-match-run', help='LearnedDir run used to measure Iso-Low normal reference noise')
-    parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'main'])
+    parser.add_argument('--phase', choices=['ability', 'obstacle_development', 'mechanism_control', 'relative_layout_screening', 'main'])
+    parser.add_argument('--task-version', choices=['SafeReach-Obstacle-v2', 'SafeReach-RelativeLayout-v3'],
+                        default='SafeReach-Obstacle-v2')
     parser.add_argument('--frozen-config', type=Path, help='Required for main; must declare a genuinely frozen development configuration')
     args = parser.parse_args()
     try:
         phase = resolve_phase(args.method, args.seed, args.steps, args.eval_episodes, args.phase, args.smoke)
     except ValueError as error:
         parser.error(str(error))
+    if (phase == 'relative_layout_screening') != (args.task_version == 'SafeReach-RelativeLayout-v3'):
+        parser.error('The new relative-layout task is only the explicitly bounded screening stage')
     args.eval_seed_start = args.eval_seed_start if args.eval_seed_start is not None else (62027 if phase == 'main' else 52027)
     args.eval_every = args.eval_every if args.eval_every is not None else (25000 if phase == 'ability' else 100000)
     if args.method == 'flow_iso_low' and (args.reference_variance is None or not args.reference_match_run):
@@ -156,8 +160,8 @@ def main():
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
-    config = TaskConfig(obstacle=args.method not in ['sac', 'flow'])
-    envs = [SafeReachEnv(config) for _ in range(args.num_envs)]
+    config = TaskConfig(version=args.task_version, obstacle=args.method not in ['sac', 'flow'])
+    envs = [make_environment(config) for _ in range(args.num_envs)]
     oracle = None
     if args.method == 'flow_oracle':
         from scripts.star.arm_safe_entropy.oracle import SimulatorOracle, ControllerJacobianOracle

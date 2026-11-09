@@ -1,0 +1,79 @@
+{
+  "policy_episodes": 2000,
+  "training_transitions": 0,
+  "summaries": [
+    {
+      "method": "sac_lag",
+      "training_seed": 2027,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.745,
+      "perturbed_violation_rate": 0.255,
+      "perturbed_horizon_capped_time_seconds": 1.6605999999999999
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 2028,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.85,
+      "perturbed_violation_rate": 0.15000000000000002,
+      "perturbed_horizon_capped_time_seconds": 1.2752
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2027,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.84,
+      "perturbed_violation_rate": 0.16,
+      "perturbed_horizon_capped_time_seconds": 1.2621999999999998
+    },
+    {
+      "method": "flow_iso",
+      "training_seed": 2028,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.665,
+      "perturbed_violation_rate": 0.335,
+      "perturbed_horizon_capped_time_seconds": 1.8212000000000002
+    },
+    {
+      "method": "flow_iso_low",
+      "training_seed": 2027,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 0.98,
+      "perturbed_safe_success": 0.57,
+      "perturbed_violation_rate": 0.42999999999999994,
+      "perturbed_horizon_capped_time_seconds": 2.1236
+    },
+    {
+      "method": "flow_iso_low",
+      "training_seed": 2028,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.725,
+      "perturbed_violation_rate": 0.275,
+      "perturbed_horizon_capped_time_seconds": 1.6533999999999998
+    },
+    {
+      "method": "flow_learned",
+      "training_seed": 2027,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.56,
+      "perturbed_violation_rate": 0.43999999999999995,
+      "perturbed_horizon_capped_time_seconds": 2.1642
+    },
+    {
+      "method": "flow_learned",
+      "training_seed": 2028,
+      "perturbed_episodes": 200,
+      "nominal_safe_success": 1.0,
+      "perturbed_safe_success": 0.6749999999999999,
+      "perturbed_violation_rate": 0.325,
+      "perturbed_horizon_capped_time_seconds": 1.7843999999999998
+    }
+  ],
+  "caution": "Equal-weight predeclared conditions; two development seeds, not independent formal-seed evidence; no adaptive stronger conditions"
+}

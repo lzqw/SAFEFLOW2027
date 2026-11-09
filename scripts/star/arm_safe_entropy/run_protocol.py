@@ -12,6 +12,9 @@ def resolve_phase(method, seed, steps, evaluation_episodes, phase=None, smoke=Fa
             raise ValueError('Main uses SAC-Lag/Iso/Learned, held-out seeds2030/2031/2032,1M transitions and100 evaluation episodes')
     elif seed in MAIN_SEEDS:
         raise ValueError('Seeds2030/2031/2032 are reserved for frozen main runs, not development')
+    if phase == 'relative_layout_screening':
+        if method not in MAIN_METHODS or seed != 2027 or steps != 300000 or evaluation_episodes != 30 or smoke:
+            raise ValueError('Relative-layout screening is only SAC-Lag/Iso/Learned,seed2027,300k each,30 evaluation episodes')
     if phase == 'ability' and method not in {'sac', 'flow'}:
         raise ValueError('Ability phase is the unobstructed SAC/reward-only flow check')
     if phase == 'mechanism_control' and method not in CONTROL_METHODS:

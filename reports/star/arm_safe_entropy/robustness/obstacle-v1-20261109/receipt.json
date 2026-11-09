@@ -1,0 +1,86 @@
+{
+  "status": "completed",
+  "policy_episodes": 2000,
+  "completed_conditions": 40,
+  "training_transitions": 0,
+  "adaptation_updates": 0,
+  "evaluation_transitions": 32299,
+  "validation_transitions_this_invocation": 1240,
+  "reused_validity_artifact": "/home/lzqw/SAFEFLOW2027_ARM/analysis/robustness-obstacle-v1-20261109/layout_validity.json",
+  "plan": {
+    "stage": "frozen_300k_zero_shot_obstacle_evaluation",
+    "task_version": "SafeReach-Obstacle-v2",
+    "training_methods": [
+      "sac_lag",
+      "flow_iso",
+      "flow_iso_low",
+      "flow_learned"
+    ],
+    "training_seeds": [
+      2027,
+      2028
+    ],
+    "checkpoint_steps": 300000,
+    "episodes_per_condition_per_training_seed": 50,
+    "layout_seed_start": 72027,
+    "action_sampling_seed": 970027,
+    "action_batch_size": 25,
+    "conditions": [
+      {
+        "name": "nominal",
+        "family": "nominal",
+        "severity": "nominal",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.0
+      },
+      {
+        "name": "radius_070",
+        "family": "obstacle_size",
+        "severity": "medium",
+        "radius_m": 0.07,
+        "lateral_offset_m": 0.0
+      },
+      {
+        "name": "radius_080",
+        "family": "obstacle_size",
+        "severity": "strong",
+        "radius_m": 0.08,
+        "lateral_offset_m": 0.0
+      },
+      {
+        "name": "lateral_030",
+        "family": "obstacle_position",
+        "severity": "medium",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.03
+      },
+      {
+        "name": "lateral_060",
+        "family": "obstacle_position",
+        "severity": "strong",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.06
+      }
+    ],
+    "lateral_axis": "world_x, perpendicular to the nominal start-to-goal world_y line",
+    "lateral_sign_rule": "even episode index negative, odd positive;25 each side per condition",
+    "layout_pairing": "same50 reset seeds, same radius/offset and sign for every method and both training seeds; save actual layouts",
+    "sampling": "native stochastic policy, frozen weights; fixed25-row action batches with inactive rows retained for RNG stability; common sampling seed per training-seed/wave across conditions",
+    "training_transitions": 0,
+    "adaptation_updates": 0,
+    "algorithm_changes": false,
+    "reward_or_violation_definition_changes": false,
+    "layout_validity": "one predeclared overhead detour per condition/layout proves a safe start and feasible path; invalid conditions fail visibly, never remove failed policy episodes or adapt stress using policy returns",
+    "constructive_path_engineering_note": "Initial direct ascent proved219/250 layouts;31 radius8cm layouts violated on the first interval, before any policy evaluation. Preserve those records; retry only these31 using a retreat-first overhead path. No radius/offset/layout/reward/policy is changed or discarded.",
+    "time_to_goal": "seconds among safe successes, with coverage; additionally report horizon-capped time for all episodes",
+    "stage_decision": {
+      "A": "Consistent useful task-level robustness improvement over Iso and Iso-Low across both training seeds without a material violation tradeoff: freeze unchanged algorithm and launch requested3methods x3new seeds x1M, test nominal and these fixed perturbations at100k/300k/600k/1M on independent layouts",
+      "B": "Ties, mixed or unsupported robustness advantage: do not launch9M; one relative-layout task extension, SAC-Lag/Iso/Learned x1development seed x300k,0.9M total",
+      "not_a_statistical_significance_claim": true,
+      "no_adaptive_perturbation_tuning_or_extra_conditions": true
+    }
+  },
+  "source_commit": "81dc9d503b110f88d8ebc40c1ec9a998a2d82442",
+  "device": "cuda:0",
+  "elapsed_seconds": 19.482127740979195
+}
