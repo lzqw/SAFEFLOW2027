@@ -29,6 +29,8 @@
     "energy_target": 18.75,
     "actor_reward_replay": "half_uniform_half_recent10000",
     "margin_replay": "unchanged_same_batch_first_candidate",
+    "margin_capacity_and_updates_matched_all_variants": true,
+    "iso_margin_usage": "trained_with_same_labels_and_EMA_but_never_used_for_sampling_or_energy",
     "dual_eligibility": "actor_updates > 0",
     "reward_scale_changed": false
   },

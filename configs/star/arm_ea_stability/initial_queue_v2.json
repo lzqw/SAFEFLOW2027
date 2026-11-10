@@ -1,0 +1,27 @@
+{
+  "stage": "initial_development_only_no_automatic_confirmation",
+  "config": "configs/star/arm_ea_stability/development_v2.json",
+  "reserved_new_training_transitions": 1800000,
+  "host_roles": {
+    "a100": {"gpus": [0, 1], "initial_slots_per_gpu": 1, "maximum_slots_per_gpu": 1,
+      "jobs": [
+        {"variant": "s_iso", "seed": 2027, "steps": 300000, "name": "s-iso-seed2027-v2-dev"},
+        {"variant": "s_ea", "seed": 2028, "steps": 300000, "name": "s-ea-seed2028-v2-dev"},
+        {"variant": "s_local", "seed": 2028, "steps": 300000, "name": "s-local-seed2028-v2-dev"}
+      ]},
+    "4080": {"gpus": [0], "initial_slots_per_gpu": 1, "maximum_slots_per_gpu": 2,
+      "expand_after_observed_steps": 5000,
+      "jobs": [
+        {"variant": "s_ea", "seed": 2027, "steps": 300000, "name": "s-ea-seed2027-v2-dev"},
+        {"variant": "s_local", "seed": 2027, "steps": 300000, "name": "s-local-seed2027-v2-dev"},
+        {"variant": "s_iso", "seed": 2028, "steps": 300000, "name": "s-iso-seed2028-v2-dev"}
+      ]}
+  },
+  "admission": {"minimum_free_gpu_mib": 6144, "maximum_gpu_utilization_percent": 85,
+    "maximum_host_load_fraction": 0.6, "minimum_disk_free_gib": 8},
+  "owned_handle_poll_seconds": 60,
+  "resource_retry_seconds": 1800,
+  "automatic_restart": false,
+  "foreign_workloads_changed": false,
+  "placement_note": "Each method spans A100 and4080;seeds are not wholly host-bound. Start expensive EA on both hosts. Fill an admitted local slot immediately after its own child finishes."
+}

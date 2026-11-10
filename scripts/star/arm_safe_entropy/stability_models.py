@@ -31,8 +31,11 @@ class StableArmLearner(ArmLearner):
             raise ValueError('Use a declared shared-stability variant and valid update schedule')
         if not 0 < margin_ema_tau <= 1:
             raise ValueError('Margin EMA tau must be in(0,1]')
-        super().__init__(obs_dim,'flow_iso' if variant=='s_iso' else 'flow_learned',
-                         device,width,actor_lr=actor_lr,critic_lr=critic_lr,rho=rho)
+        # All three controls retain the SAME margin capacity,label batch and
+        # optimizer updates. Iso trains the head but never uses its geometry.
+        super().__init__(obs_dim,'flow_learned',device,width,
+                         actor_lr=actor_lr,critic_lr=critic_lr,rho=rho)
+        self.method='flow_iso' if variant=='s_iso' else 'flow_learned'
         self.variant = variant
         self.settings = dict(actor_lr=actor_lr,critic_lr=critic_lr,
             critic_only_updates=critic_only_updates,margin_ema_tau=margin_ema_tau,

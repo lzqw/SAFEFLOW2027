@@ -18,6 +18,8 @@ def test_shared_package_and_dual_accumulation_wait_for_actor_learning():
     learners=[StableArmLearner(variant=v,device='cpu',width=16,critic_only_updates=2)
               for v in ('s_iso','s_local','s_ea')]
     assert all(l.settings==learners[0].settings for l in learners)
+    assert len({sum(p.numel() for p in l.margin_online.parameters()) for l in learners})==1
+    assert learners[0].geometry.mode=='none'
     for learner in learners:
         data=batch()
         learner.record_episode(1.)
