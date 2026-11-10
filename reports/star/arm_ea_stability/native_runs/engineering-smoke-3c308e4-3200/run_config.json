@@ -1,0 +1,256 @@
+{
+  "stage": "ea_stability_v2_engineering",
+  "variant": "s_ea",
+  "method": "flow_learned",
+  "training_seed": 60127,
+  "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+  "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+  "configuration": {
+    "stage": "ea_stability_v2_development",
+    "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "training_radius_m": 0.06,
+    "development_seeds": [
+      2027,
+      2028
+    ],
+    "variants": {
+      "s_iso": "none",
+      "s_local": "local",
+      "s_ea": "endpoint_pullback"
+    },
+    "initial_steps_per_run": 300000,
+    "initial_training_transitions": 1800000,
+    "long_run_steps": 1000000,
+    "long_run_methods": [
+      "s_iso",
+      "selected_geometry_variant"
+    ],
+    "extra_short_candidate_limit": 4,
+    "extra_transitions_per_candidate_limit": 100000,
+    "development_new_training_transition_cap": 6000000,
+    "diagnostic_physical_queries_counted_separately": true,
+    "automatic_formal_launch": false,
+    "conditional_formal_transition_cap": 9000000,
+    "formal_requires_frozen_configuration_and_useful_late_development_signal": true,
+    "shared_learner": {
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "reward_loss": "huber",
+      "huber_beta": 1.0,
+      "batch_size": 256,
+      "replay_capacity": 300000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "utd": 1.0,
+      "reward_updates_per_round": 2,
+      "actor_update_interval": 2,
+      "reward_target_samples": 4,
+      "reward_target_polyak": 0.001,
+      "actor_target_polyak": 0.001,
+      "flow_steps": 4,
+      "velocity_bound": 2.0,
+      "initial_action": 0.0,
+      "reference_variance": 0.04,
+      "rho": 0.25,
+      "energy_target": 18.75,
+      "actor_reward_replay": "half_uniform_half_recent10000",
+      "margin_replay": "unchanged_same_batch_first_candidate",
+      "margin_capacity_and_updates_matched_all_variants": true,
+      "iso_margin_usage": "trained_with_same_labels_and_EMA_but_never_used_for_sampling_or_energy",
+      "dual_eligibility": "actor_updates > 0",
+      "reward_scale_changed": false
+    },
+    "geometry": {
+      "ema_tau": 0.005,
+      "ramp_start_transitions": 10000,
+      "ramp_end_transitions": 30000,
+      "sampling_and_energy_share_actual_covariance": true,
+      "tail": "same_generator_frozen_parameters_deterministic_midpoint_with_real_clamps",
+      "geometry_gradient_variable": "pre_noise_proposal_Zk",
+      "straight_through_clamp": false,
+      "geometry_detached_from_actor_objective": true
+    },
+    "evaluation": {
+      "intermediate_steps": [
+        100000,
+        200000,
+        300000,
+        600000
+      ],
+      "intermediate_nominal_episodes": 30,
+      "intermediate_stress_episodes_per_condition": 20,
+      "intermediate_layout_seed_start": 120027,
+      "final_steps": 1000000,
+      "final_episodes_per_condition": 100,
+      "final_development_layout_seed_start": 130027,
+      "action_sampling_seed": 2970027,
+      "isolate_python_numpy_torch_and_cuda_rng": true,
+      "conditions": [
+        {
+          "name": "nominal",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0.0
+        },
+        {
+          "name": "radius_070",
+          "radius_m": 0.07,
+          "lateral_offset_m": 0.0
+        },
+        {
+          "name": "radius_080",
+          "radius_m": 0.08,
+          "lateral_offset_m": 0.0
+        },
+        {
+          "name": "lateral_030",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0.03
+        },
+        {
+          "name": "lateral_060",
+          "radius_m": 0.06,
+          "lateral_offset_m": 0.06
+        }
+      ],
+      "lateral_sides_balanced": true,
+      "final_checkpoint_selection": "fixed_1M_no_best_checkpoint_substitution"
+    },
+    "resources": {
+      "hosts": [
+        "tjucta-a100",
+        "4080"
+      ],
+      "disabled_hosts": [
+        "5080"
+      ],
+      "initial_A100_learners_per_card": 1,
+      "initial_4080_learners": 1,
+      "maximum_4080_learners": 2,
+      "inspection_interval_seconds": 1800,
+      "stop_foreign_workloads": false
+    },
+    "effort_targets_not_success_gates": {
+      "nominal_safe_success_mean": 0.95,
+      "nominal_violation_mean": 0.02,
+      "stress_safe_success_mean": 0.85,
+      "stress_violation_mean": 0.1,
+      "radius_080_violation_mean": 0.2,
+      "training_violations_per_1M": 350,
+      "late_safe_success_decrease_pp": 5
+    }
+  },
+  "task_config": {
+    "version": "SafeReach-RelativeLayout-v3",
+    "obstacle": true,
+    "horizon": 100,
+    "substeps": 20,
+    "displacement_scale": 0.025,
+    "safety_distance": 0.015,
+    "success_distance": 0.035,
+    "obstacle_radius": 0.06,
+    "progress_scale": 5.0,
+    "success_bonus": 10.0,
+    "failure_penalty": 10.0,
+    "timeout_penalty": 2.0,
+    "step_penalty": 0.01,
+    "randomize_layout": true
+  },
+  "task_definition": {
+    "version": "SafeReach-RelativeLayout-v3",
+    "obstacle": true,
+    "horizon": 100,
+    "substeps": 20,
+    "displacement_scale": 0.025,
+    "safety_distance": 0.015,
+    "success_distance": 0.035,
+    "obstacle_radius": 0.06,
+    "progress_scale": 5.0,
+    "success_bonus": 10.0,
+    "failure_penalty": 10.0,
+    "timeout_penalty": 2.0,
+    "step_penalty": 0.01,
+    "randomize_layout": true,
+    "control_dt": 0.04,
+    "protected_links": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "observations": [
+      "q/pi",
+      "qdot/4",
+      "ee_world_xyz",
+      "goal_world_xyz",
+      "obstacle_world_xyz",
+      "obstacle_radius",
+      "remaining_time"
+    ],
+    "relative_layout_distribution": {
+      "start_center": [
+        -0.25,
+        -0.17,
+        0.25
+      ],
+      "start_jitter_halfwidth": [
+        0.04,
+        0.02,
+        0.03
+      ],
+      "goal_center": [
+        -0.25,
+        0.17,
+        0.25
+      ],
+      "goal_jitter_halfwidth": [
+        0.05,
+        0.02,
+        0.03
+      ],
+      "obstacle_center": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "obstacle_jitter_halfwidth": [
+        0.045,
+        0.015,
+        0.025
+      ],
+      "sampling": "independent uniform coordinates and independent start/goal/obstacle draws; no shared translation",
+      "rejection": "same initial protected-link clearance plus a kinematic safe/reachable goal; no policy-return selection"
+    },
+    "algorithm_change": false,
+    "reward_or_cost_change": false
+  },
+  "total_transition_budget": 3200,
+  "initial_steps": 0,
+  "initialization": "fresh",
+  "initial_physical_evaluation_transitions": 0,
+  "parent_checkpoint": null,
+  "resume_semantics": "learner_replay_optimizer_RNG_partial_episodes_and_observed_physical_state;not_bitwise_solver_cache",
+  "num_envs": 2,
+  "device": "cuda:0",
+  "visible_devices": "0",
+  "host": "CTAlab",
+  "gpu": "NVIDIA A100 80GB PCIe",
+  "software": {
+    "torch": "2.7.1+cu118",
+    "cuda": "11.8",
+    "numpy": "1.24.3",
+    "panda-gym": "3.0.7",
+    "pybullet": "3.2.7",
+    "gymnasium": "1.2.3"
+  },
+  "scientific_early_stopping": false,
+  "automatic_restart_or_extension": false,
+  "training_step_definition": "actual sum of train env.step calls;warmup and preheat included",
+  "evaluation_rng_isolated": true
+}

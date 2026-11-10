@@ -47,6 +47,13 @@ alpha is post-update; the checkpoint probes above read signed Q directly.
 
 ![Late native logs](baseline-f476851/late_native_logs.png)
 
+The expanded [native metric curves](baseline-native-metrics/late_native_logs.png)
+also show reward TD and alpha explicitly alongside Q,energy,clipping and dual.
+They use the already mirrored historical progress,not a repeated evaluation.
+The blue trace is absolute Q magnitude and alone cannot establish positive
+overestimation;the orange lambda0 reconstruction is signed/approximate,and
+the direct signed checkpoint probes in the table are the stronger evidence.
+
 ## Actor/margin cross intervention:320 episodes, not primary replacement
 
 Two representative historical Learned seeds2030/2032, Actor600k/1M crossed
@@ -77,18 +84,66 @@ steps and0 oracle direction queries. These physical queries are reported
 separately rather than called zero environment cost. No large historical
 checkpoint/replay was copied back to the host.
 
+## Independent64-state geometry/value attribution
+
+The additional bounded probe is now complete:64 distinct genuinely visited
+states from independent150027-series episodes,32 nominal/32 radius8cm;
+32 paired action draws per state for each of four historical seed/checkpoint
+models and three fixed-spectrum geometry modes. No optimizer update occurred.
+The pool stratifies up to four near-source-margin states per group,so it is
+a targeted mechanism/validation pool,not an unbiased whole-episode risk estimate.
+
+| Historical Learned | Nominal margin MAE | Radius8cm margin MAE | Nominal /8cm source-action normal cosine | 8cm true interval risk,Local /Pullback |
+|---|---:|---:|---:|---:|
+| 2030,600k | .318mm | 21.234mm | .874 /.982 | 2.246% /2.344% |
+| 2030,1M | .555mm | 21.796mm | .885 /.993 | 7.617% /7.422% |
+| 2032,600k | .456mm | 20.770mm | .836 /.982 | 1.563% /1.563% |
+| 2032,1M | .258mm | 20.856mm | .926 /.987 | 2.930% /3.125% |
+
+The table's MAE uses Local's generated actions;all mode-specific values,
+near-boundary errors,false-safe rates,endpoint VN/VT and sampling timing are
+in [geometry_diagnosis.csv](geometry-3c308e4/geometry_diagnosis.csv).
+Common oracle axes are valid for23/32 nominal and27/32 radius8cm states;
+the14 flat/undefined axes remain undefined in JSON. Cosines compare only
+jointly valid directions,and projected VN/VT use common-valid states. The
+reported risk/MAE retain ALL32 states and32 draws per condition,including
+failures and states without a defined projection axis.
+In these sampled8cm actions the heads predict safety even for the actual
+unsafe draws. Normal direction can be quite accurate while margin VALUE is
+miscalibrated by approximately the2cm unseen radius increase. This is evidence
+against treating head agreement or low nominal/replay MSE as an OOD safety
+certificate. It does not prove a universal additive-radius-error model.
+
+The diagnostic fixes q=.5,rho=.25 and trace .12 for direction isolation;
+it is NOT the native learned risk-weight rule or a retrained EA method.
+All1024 draws per condition/model were jointly spectrum-matched in this
+pool;invalid-gradient fallbacks were still implemented and recorded rather
+than replaced by fake normals. Shared oracle axes are evaluated at each
+source action,not redefined separately for every method. Pullback often lowers
+endpoint VN but also lowers VT,and gives no consistent true interval-risk
+improvement here. This does not establish its independent task-level benefit.
+The complete endpoint-direct results and per-state coverage remain in JSON/CSV.
+
+This probe consumed519 pool-creation intervals,448 finite-difference intervals
+and24576 actual-label intervals,total25543 physical queries,0 training
+transitions. Together with the original5154 cross-evaluation intervals,the
+3-interval physics restoration check and206-interval evaluation RNG check,
+pre-development nontraining physical intervals total30906. Actual engineering
+training is a separate3210 transitions,not added a second time for the RNG check.
+
 ## What remains unproven and next action
 
 The replay margin MAEs are small (Learned2030 final .000572m overall,
 .000599m near the boundary), but this is a fitted replay distribution, not
-an episode-isolated radius8cm validation set. The64-state geometry/true-risk
-probe is still pending and will be reported separately; these replay numbers
-do not substitute for it. No boundary-priority batch or BCE/PID revision is
+an episode-isolated radius8cm validation set. The independent probe above
+shows why the two must not substitute for one another. No boundary-priority batch or BCE/PID revision is
 enabled merely because it was listed as an option.
 
 First candidate remains the SAME lower Actor learning rate and Huber reward
 critic for all S-Iso/S-Local/S-EA; Local/EA share EMA/ramp. These are hypotheses,
-not validated fixes. No new development training has started at this capture.
+not validated fixes. Initial fresh development is now running on A100/4080;
+no100k efficacy outcome was yet available at the22:48 capture. No8cm examples
+have been added to training to make the zero-shot comparison easier.
 The update-delay rationale is consistent with
 [Fujimoto et al.,ICML2018](https://proceedings.mlr.press/v80/fujimoto18a.html),
 which does not guarantee this project's proposed settings will work.

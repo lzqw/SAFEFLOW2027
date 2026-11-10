@@ -1,0 +1,15 @@
+{
+  "initial_expected_runs": 6,
+  "initial_observed_runs": 3,
+  "initial_completed_runs": 0,
+  "scientific_logged_new_training_transitions_lower_bound": 54000,
+  "engineering_logged_new_training_transitions": 3210,
+  "total_logged_new_training_transitions_lower_bound": 57210,
+  "recorded_nontraining_physical_control_intervals": 30906,
+  "development_evaluation_rows": 0,
+  "fixed1M_completed_condition_rows": 0,
+  "new_evaluations_launched": 0,
+  "large_checkpoints_copied": 0,
+  "formal_confirmation_started": false,
+  "whole_goal_complete": false
+}

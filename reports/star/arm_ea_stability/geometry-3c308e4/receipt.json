@@ -1,0 +1,31 @@
+{
+  "status": "completed",
+  "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+  "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+  "states": 64,
+  "draws_per_state": 32,
+  "models": 4,
+  "geometry_modes": 3,
+  "summary_rows": 24,
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "pool_creation_transitions": 519,
+  "pool_creation_episodes": 32,
+  "oracle_statistics": {
+    "oracle_kind": "actual_controller_simulator_finite_difference",
+    "workers": 12,
+    "epsilon": 0.002,
+    "temperature": 0.02,
+    "unique_state_actions": 64,
+    "counterfactual_control_intervals": 448,
+    "cached_rows": 0,
+    "query_seconds": 2.406775609124452,
+    "margin_only_queries": 24576,
+    "static_distance_queries": 0,
+    "learned_model_queries": 0,
+    "candidate_actions_selected": 0
+  },
+  "total_new_physical_intervals": 25543,
+  "elapsed_seconds": 34.16867340099998,
+  "limitations": "Small stratified held-out state pool,not whole-episode robustness. Common true axes are at source actions;invalid axes remain undefined. Fixedq=.5 is a diagnostic intervention;invalid gradients retain isotropic fallback. Joint spectral matching coverage is explicit."
+}

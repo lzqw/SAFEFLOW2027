@@ -14,12 +14,15 @@ import numpy as np
 import torch
 
 from scripts.star.arm_safe_entropy.models import ArmLearner
-from scripts.star.arm_safe_entropy.evaluate_main_robustness import physics_pool
-from scripts.star.arm_safe_entropy.evaluate_obstacle_robustness import (
-    atomic_json, load_policy, rollout_wave, summarize)
 
 
 BASELINE = '1dc1f2945bb01ace08500147659a73623f30d977'
+
+
+def atomic_json(path,payload):
+    temporary=path.with_suffix('.tmp')
+    temporary.write_text(json.dumps(payload,indent=2,allow_nan=False)+'\n')
+    temporary.replace(path)
 
 
 def native_run(project, method, seed):
@@ -137,6 +140,9 @@ def critic_probes(project, output, device, frozen):
 
 
 def cross_evaluations(project, output, device, frozen):
+    # Keep local reporting usable without installing the server's simulator.
+    from scripts.star.arm_safe_entropy.evaluate_main_robustness import physics_pool
+    from scripts.star.arm_safe_entropy.evaluate_obstacle_robustness import load_policy,rollout_wave,summarize
     rows=[]
     plan=dict(task_version=frozen['task_version'],layout_seed_start=92027,
         action_sampling_seed=3970027,action_batch_size=20)
@@ -166,23 +172,31 @@ def cross_evaluations(project, output, device, frozen):
     return rows
 
 
-def plot_logs(project, output):
+def plot_logs(project, output, mirrored_main=None):
     try:
         import matplotlib
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
     except ImportError:
         return 'plot_pending_host_matplotlib'
-    fig,axes=plt.subplots(4,4,figsize=(15,11),squeeze=False)
+    fig,axes=plt.subplots(4,6,figsize=(21,11),squeeze=False)
     jobs=[('flow_iso',2030),('flow_iso',2031),('flow_learned',2030),('flow_learned',2032)]
+    mirrored={}
+    if mirrored_main is not None:
+        for path in mirrored_main.glob('*/run_config.json'):
+            receipt=path.parent/'receipt.json'
+            if receipt.exists() and json.loads(receipt.read_text()).get('status')=='completed':
+                config=json.loads(path.read_text())
+                mirrored[(config['method'],config['training_seed'])]=path.parent
     for panels,(method,seed) in zip(axes,jobs):
-        with (native_run(project,method,seed)/'progress.csv').open() as stream:
+        run=mirrored[(method,seed)] if mirrored_main is not None else native_run(project,method,seed)
+        with (run/'progress.csv').open() as stream:
             rows=[{k:float(v) for k,v in r.items()} for r in csv.DictReader(stream)]
         minimum=950000 if method=='flow_iso' else 600000
         rows=[r for r in rows if r['steps']>=minimum]
         x=[r['steps']/1000 for r in rows]
-        for ax,field,title in zip(panels,['reward_q_abs_max','clipping_rate','energy','safety_multiplier'],
-                                  ['Replay |Q| max','Clipping','Path energy','Cost multiplier']):
+        for ax,field,title in zip(panels,['reward_q_abs_max','reward_td','alpha','energy','clipping_rate','safety_multiplier'],
+                                  ['Replay |Q| max','Reward TD','Alpha','Path energy','Clipping','Cost multiplier']):
             ax.plot(x,[r[field] for r in rows]);ax.set_title(f'{method},{seed}: {title}')
             ax.set_xlabel('Native train transitions,k');ax.grid(alpha=.2)
         # Only valid at lambda=0; logged alpha is post-update, so approximate.

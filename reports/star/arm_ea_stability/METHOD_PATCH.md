@@ -41,7 +41,7 @@ direct-gradient degeneration and true clamp fallback,no_grad input/parameter
 gradient isolation,actual injection-site/Actor-backprop preservation,and
 one-time ramp with shared covariance. No historical test suite was rerun.
 
-## Shared learner implemented; end-to-end runner still pending
+## Shared learner and independent native runner implemented
 
 `stability_models.py` now implements shared Actor LR1e-4,Huber beta1,
 critic LR3e-4,unchanged update counts/target settings,1000 critic-only warmup
@@ -69,9 +69,52 @@ All10 geometry/learner tests pass on the native A100 environment
 Torch2.7.1+cu118 using CPU tensors and0 physical transitions. These synthetic
 contracts are NOT evidence of useful trained policies.
 
-The run-level replay/physical-state checkpoint test,isolated evaluation
-runner and bounded dynamic queue remain unimplemented. No fresh development
-training has started; implementation contracts do not establish efficacy.
+Before any scientific training,the Iso control was also given the SAME online
+margin capacity,EMA copy,label batch and margin optimizer updates as Local/EA.
+Its geometry mode is `none`: it never uses these heads for sampling or energy.
+This honors matched model capacity/update information rather than silently
+comparing different safety-label training budgets. This is a pre-training
+implementation clarification,not an outcome-selected candidate.
+
+`train_stability.py` reuses the native Replay and simulator while keeping old
+frozen-main validation/loading untouched. Every evaluation scopes Python,
+NumPy,Torch CPU/CUDA RNG and uses separate physics clients. Development
+100k/200k/300k/600k uses30 nominal and20 per stress; fixed1M uses100 per
+condition on independent130027-series layouts rather than the development
+120027-series. All success/safe-timeout/violation classes and conditional/capped
+completion times are retained. Neither stress nor diagnostic data trains a head.
+
+Full native checkpoints include online/EMA parameters,optimizers,replay,
+transition/dual counters,all RNGs,partial episode returns/lengths,recent episode
+records,and observed q/dq/layout/time/environment-RNG state. A native continuation
+reconstructs that observed state without silently starting fresh episodes;
+solver warm-start caches are NOT claimed bitwise portable. Protected full
+300k/600k/1M snapshots accompany periodic full recovery checkpoints. Policy-only
+weights cannot be paired with foreign replay or mislabelled as native resume.
+
+On native Torch2.7.1+cu118,all12 focused contracts passed. One actual CUDA
+engineering trial ran3200 steps and resumed to3210:replay count3210,
+learner updates1210,Actor updates105,plus preserved partial episodes. A real
+two-condition/two-episode evaluation consumed206 physical intervals and left
+all CPU/CUDA/Python/NumPy training RNG states unchanged. These3210 training
+transitions are included as engineering overhead,not hidden outside the6M cap.
+The narrow physics reconstruction contract consumed3 additional diagnostic
+intervals. No broad historical suite or failure-drill system was added.
+
+`queue_stability.py` is a finite standard-library parent for exactly six
+fresh300k trials; it cannot launch the9M confirmation. Each method spans
+A100 and4080,with seeds distributed across hosts. A100 starts at one learner
+per admitted card;4080 initially one and permits its second slot after5k
+observed productive steps and resource headroom. Queues fill a released local
+slot without waiting for a global wave; they never restart a failed run.
+Only owned handles are polled frequently; GPU resource checks occur at admission,
+and the read-only observation interval is1800s. No foreign process is stopped.
+
+At22:48:20 local,the owned queues and three native handles were directly
+verified alive:Iso2027 at19k on A100 GPU1,EA2027 at18k andLocal2027 at20k
+on4080. A100 GPU0's initial100% utilization caused a resource wait; the next
+admission check remains queued. The snapshot is not a claim that all six
+trials have started or any efficacy target has been achieved.
 
 Initial development is six fresh300k runs (1.8M). Only after these results
 will up to four extra100k candidates be considered,with one main change each;
