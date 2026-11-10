@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 11:49 check and seven completed formal tests
+## Current frozen-main execution — 2026-11-10 12:19 check and seven completed formal tests
 
 Two native main runs remain unfinished and past random warmup;
 seven completed runs account for the rest of the nine-run frozen cohort.
@@ -38,21 +38,21 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 
 | Training seed / host | SAC-Lag | Flow-Iso | LearnedDir |
 |---|---|---|---|
-| 2030 / A100 | completed1M,native receipt | completed1M,native receipt | running902k,PID857627 |
+| 2030 / A100 | completed1M,native receipt | completed1M,native receipt | running928k,PID857627 |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running757k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running783k,A100 GPU1,PID947125 |
 
-The11:49:12 half-hour observation directly confirmed both remaining native
-Learned PIDs alive at900k/755k and all seven completed1M receipts. Iso2030's
+The12:19:13 half-hour observation directly confirmed both remaining native
+Learned PIDs alive at927k/782k and all seven completed1M receipts. Iso2030's
 required full20-case test had completed after its05:44 native handoff.
-The table uses the subsequent11:50 compact progress capture. These are observed
+The table uses the subsequent12:20 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total8.659M/9M primary transitions
-(96.2% of the fixed budget).
+The nine accepted native counters now total8.711M/9M primary transitions
+(96.8% of the fixed budget).
 This percentage is not a wall-time forecast. During the latest observed30
-minutes both remaining Learned runs advanced25k transitions; at unchanged
+minutes both remaining Learned runs advanced27k transitions; at unchanged
 shared-resource throughput the slowest remaining training run needs roughly
-about5 more hours. Resource admission for final tests and artifact delivery are
+about4 more hours. Resource admission for final tests and artifact delivery are
 additional; no completion deadline or future evaluation score is inferred.
 This sum excludes the original failed5080 deployments, rather than silently
 adding their partial counters to the fresh accepted2032 runs. Seven full runs
@@ -101,7 +101,7 @@ two Learned runs and their required fixed tests continue without new modules or 
 Iso2030 is now the seventh completed1M result and full20-case test, as detailed
 below. All34 native milestones remain retained; the formal table now has
 140/180 condition rows and7/9 completed run evaluations. Progress above
-is actual training, not a claim that the whole experiment is96.2% complete in wall time.
+is actual training, not a claim that the whole experiment is96.8% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -731,22 +731,22 @@ and4080 was13%,with no outstanding native SAFEFLOW job on either free device.
 The original planned Learned2030 nominal600k evaluation was collected without
 an extra rollout; no new formal stress test,scientific revision,training
 restart or budget extension was introduced at this observation.
-The11:49:12 observation again directly confirmed both remaining native
-handles,with A100 utilization3%/93% and4080 at29%. GPU0's resident allocations
+The12:19:13 observation again directly confirmed both remaining native
+handles,with A100 utilization0%/92% and4080 at28%. GPU0's resident allocations
 were not a new SAFEFLOW training/evaluation launch; other work was left untouched.
 Dispatcher PID1062526 was also alive and its log retained the initial and
-next ten scheduled pairs of
+next eleven scheduled pairs of
 native-wait events,with no evaluation launch before native completion.
 No extra GPU scan was performed by that dispatcher while the1M
 completion dependencies were unmet. The native learning table retains34
 declared observations,including Learned2032's already-collected600k nominal
 evaluation; the140 formal condition rows remain unchanged at this check.
 
-The latest25k-per-run half-hour increment is below the preceding30k. A single
+At11:49,the25k-per-run half-hour increment was below the preceding30k. A single
 read-only process sample at11:50 found one other compute application on each
 A100,using roughly9.3GiB/9.6GiB. The instantaneous SM sample was77% for that
 GPU0 application and11% for the other GPU1 application; the two native
-SAFLOW learners were still active,each using about99% of one CPU core and
+SAFEFLOW learners were still active,each showing about99% CPU usage in ps and
 536MiB GPU memory. This is consistent with shared-resource contention,not a
 controlled estimate of its exact causal slowdown. No foreign application,
 MPS setting,CPU affinity,live trainer or frozen parameter was changed. The
