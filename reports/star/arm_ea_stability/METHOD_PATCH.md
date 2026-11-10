@@ -41,15 +41,37 @@ direct-gradient degeneration and true clamp fallback,no_grad input/parameter
 gradient isolation,actual injection-site/Actor-backprop preservation,and
 one-time ramp with shared covariance. No historical test suite was rerun.
 
-## Shared learner and execution still pending
+## Shared learner implemented; end-to-end runner still pending
 
-The independent configuration declares shared Actor LR1e-4,Huber beta1,
+`stability_models.py` now implements shared Actor LR1e-4,Huber beta1,
 critic LR3e-4,unchanged update counts/target settings,1000 critic-only warmup
 updates after2000 random transitions,dual eligibility `actor_updates>0`,
 margin_online/margin_geometry EMA .005 and matching sampling/energy ramp.
-The shared learner integration,full-state resume/RNG test,isolated evaluation
-runner and bounded dynamic queue are not implemented yet. Configuration
-alone is NOT evidence those changes are active.
+It reuses the original critic/Actor network shapes and keeps both reward
+updates,target sample count and target rates unchanged. The online margin
+optimizer does not own the geometry copy. One EMA is applied only after the
+entire learner round; no geometry change occurs between reward updates.
+Warmup episodes remain in the runner's global cost/budget accounting but
+cannot enter the dual EMA before any Actor learning.
+
+The update path retains detached device-side diagnostics. Only an explicit
+periodic `metrics()` call transfers values to the CPU, unlike the old
+per-update synchronization. This is a reporting/performance change,not a
+new reward or update-budget modification. Signed replay/policy Q and the
+alpha used by the Actor are directly exposed rather than inferred from
+post-update alpha and Actor loss.
+
+Four additional focused tests cover the common package/dual preheat gate,
+geometry frozen through a full round with exactly one EMA at the end,
+exact CPU next-update restoration of EMA/optimizers/counters/Python/NumPy/
+Torch RNG,and rejection of an undeclared settings change as a native resume.
+All10 geometry/learner tests pass on the native A100 environment
+Torch2.7.1+cu118 using CPU tensors and0 physical transitions. These synthetic
+contracts are NOT evidence of useful trained policies.
+
+The run-level replay/physical-state checkpoint test,isolated evaluation
+runner and bounded dynamic queue remain unimplemented. No fresh development
+training has started; implementation contracts do not establish efficacy.
 
 Initial development is six fresh300k runs (1.8M). Only after these results
 will up to four extra100k candidates be considered,with one main change each;
