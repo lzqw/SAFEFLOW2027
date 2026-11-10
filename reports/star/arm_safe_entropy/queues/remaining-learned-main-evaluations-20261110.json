@@ -16,6 +16,23 @@
   "native_and_evaluation_host": "tjucta-a100",
   "observed_at_local": "2026-11-10 06:19 Asia/Taipei",
   "status_at_observation": "pending_native_1M_not_evaluated_yet",
+  "latest_status_at_local": "2026-11-10 13:55 Asia/Taipei",
+  "latest_status": "one_completed_one_pending_native_1M",
+  "completed_evaluations": [
+    {
+      "method": "flow_learned",
+      "seed": 2030,
+      "evaluation_pid": 1247208,
+      "condition_rows": 20,
+      "policy_episodes": 2000,
+      "native_nominal_episodes_reused": 400,
+      "new_stress_episodes": 1600,
+      "new_evaluation_transitions": 34191,
+      "training_transitions": 0,
+      "adaptation_updates": 0,
+      "elapsed_seconds": 51.288618084043264
+    }
+  ],
   "evaluation_source_commit": "498535af5633796234df5b65af755207b8e6a996",
   "gpu": 0,
   "interval_seconds": 1800,
