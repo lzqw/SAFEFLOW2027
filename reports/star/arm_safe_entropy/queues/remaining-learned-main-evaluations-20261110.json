@@ -16,8 +16,9 @@
   "native_and_evaluation_host": "tjucta-a100",
   "observed_at_local": "2026-11-10 06:19 Asia/Taipei",
   "status_at_observation": "pending_native_1M_not_evaluated_yet",
-  "latest_status_at_local": "2026-11-10 13:55 Asia/Taipei",
-  "latest_status": "one_completed_one_pending_native_1M",
+  "latest_status_at_local": "2026-11-10 15:56 Asia/Taipei",
+  "latest_status": "both_explicit_frozen_tests_completed_dispatcher_exited_normally",
+  "terminal_event": "all_explicitly_queued_frozen_tests_completed",
   "completed_evaluations": [
     {
       "method": "flow_learned",
@@ -31,6 +32,19 @@
       "training_transitions": 0,
       "adaptation_updates": 0,
       "elapsed_seconds": 51.288618084043264
+    },
+    {
+      "method": "flow_learned",
+      "seed": 2032,
+      "evaluation_pid": 1305451,
+      "condition_rows": 20,
+      "policy_episodes": 2000,
+      "native_nominal_episodes_reused": 400,
+      "new_stress_episodes": 1600,
+      "new_evaluation_transitions": 33545,
+      "training_transitions": 0,
+      "adaptation_updates": 0,
+      "elapsed_seconds": 57.64407158200629
     }
   ],
   "evaluation_source_commit": "498535af5633796234df5b65af755207b8e6a996",

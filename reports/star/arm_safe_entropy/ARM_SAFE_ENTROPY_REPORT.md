@@ -1,4 +1,4 @@
-# Arm safe entropy — final native main run on A100;5080 excluded by user
+# Arm safe entropy — frozen main training and all fixed tests complete
 
 Start date: 2026-11-06. Starting commit `a251b7af4864212c7191e2ff80393d0f62936805`; independent branch
 `codex/arm-safe-entropy-v1`. This is a new simulated Panda task, not a resumed
@@ -27,7 +27,132 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 15:19 check and eight completed formal tests
+## Final frozen-main result — 2026-11-10, all nine runs and180 formal cases complete
+
+**The requested bounded sequence is complete:** the original frozen v2
+zero-shot comparison (40 rows/2000 episodes), the one task-only B screen
+(3 methods xseed2027 x300k), and the frozen new-seed main comparison
+(3 methods xseeds2030/2031/2032 x1M). All36 native nominal milestones and
+all180 predeclared checkpoint/condition rows are retained. The18000 formal
+episode records comprise3600 exact native nominal records reused without
+rerolling and14400 new frozen stress episodes; evaluation used0 training
+transitions and0 adaptation updates. Completing a budget is not evidence
+of method superiority.
+
+The final Learned2032 run completed normally at1M, with468 training
+violations and100/100 nominal safe successes,0/100 violations. The existing
+A100 GPU0 dispatcher then completed its entire20-case test in57.64s and
+exited with `all_explicitly_queued_frozen_tests_completed`. No training was
+restarted, extended, adapted or selected by evaluation performance.
+
+### Fixed1M nominal primary, all three held-out training seeds
+
+Entries below are mean +/- sample SD across the three training seeds, not
+episode-level confidence intervals. Each native policy has100 fixed nominal
+episodes. Capped time assigns every unsuccessful episode the fixed4s horizon;
+successful-only times and their actual support remain in the raw table/JSON.
+Iso's zero-success seeds have undefined successful-only time, not zero.
+
+| Method | Safe success,% | Violation,% | Return | Training violations | Capped time-to-goal,s |
+|---|---:|---:|---:|---:|---:|
+| SAC-Lag | 92.67 +/-11.85 | 0.33 +/-0.58 | 10.4967 +/-1.5852 | 299.0 +/-54.3 | .9448 +/-.3832 |
+| Flow-Iso | 33.33 +/-57.74 | 0.00 +/-0.00 | 1.4467 +/-8.7338 | 495.7 +/-60.7 | 2.9027 +/-1.9006 |
+| LearnedDir | 96.33 +/-6.35 | 3.67 +/-6.35 | 10.7143 +/-1.3869 | 478.3 +/-22.4 | .8308 +/-.1955 |
+
+Learned retains much more final nominal task ability than Iso, whose2030/2031
+policies safely stall for the full horizon. Relative to SAC, Learned's observed
+nominal safe success is3.67 percentage points higher, but its violation rate
+is3.33 points higher and its training count is60.0% higher. This is not a
+task-preserving safety/Pareto improvement. Relative to Iso, its mean training
+count is only3.5% lower, and the paired counts463/504/468 versus475/448/564
+improve in two seeds, not all three. The development seed's32.6% Iso-relative
+training-count reduction did not reproduce as a stable large main-stage gain.
+
+### Fixed1M zero-shot stress primary, all four declared perturbations
+
+For each training seed, average all four equally sized100-episode stress
+conditions first; then report mean +/- sample SD over the three training
+seeds. No favorable condition subset, best checkpoint or unequal-seed pooling
+is used. These are descriptive results, not a significance claim.
+
+| Method | Stress safe success,% | Stress violation,% | Stress capped time-to-goal,s |
+|---|---:|---:|---:|
+| SAC-Lag | 78.75 +/-18.30 | 13.33 +/-9.95 | 1.4057 +/-.5914 |
+| Flow-Iso | 31.08 +/-53.84 | 2.50 +/-3.70 | 2.9788 +/-1.7687 |
+| LearnedDir | 77.83 +/-14.56 | 21.58 +/-15.12 | 1.4479 +/-.4638 |
+
+| Training seed | SAC stress safe success / violation | Iso stress safe success / violation | Learned stress safe success / violation |
+|---|---:|---:|---:|
+| 2030 | 97.75% /2.25% | 0% /0% | 61.25% /38.75% |
+| 2031 | 61.25% /16.25% | 0% /0.75% | 83.75% /15.75% |
+| 2032 | 77.25% /21.50% | 93.25% /6.75% | 88.50% /10.25% |
+
+**The completed formal comparison does not establish a stable overall Learned
+robustness or training-safety advantage.** Compared with SAC, Learned has
+0.92 percentage points lower aggregate stress safe success,8.25 points more
+stress violations and60.0% more training violations. It has favorable
+seed2031/2032 task-retention results, but seed2030 regresses substantially and
+the strong-radius case is unsafe in every Learned final seed (80%/61%/39%
+violation at8cm). Iso's low mean evaluation risk partly reflects two complete
+task failures and is not evidence of useful safe task completion. The prior
+v2 local directional-allocation and one-interval risk evidence remains valid
+within its own scope; it does not prove superior v3 episodic robustness or
+dominance over an unrequested v3 Iso-Low control.
+
+### Last completed run: Learned2032, all fixed checkpoints and conditions
+
+Every entry is safe success% / violation%,100 episodes. Earlier negative
+results and late strong-shift regression are retained rather than replaced
+by the favorable600k nominal or radius result.
+
+| Checkpoint | Nominal | Radius7cm | Radius8cm | Lateral+/-3cm | Lateral+/-6cm |
+|---|---:|---:|---:|---:|---:|
+| 100k | 94 /1 | 87 /11 | 80 /18 | 88 /5 | 75 /10 |
+| 300k | 100 /0 | 96 /4 | 88 /12 | 99 /0 | 98 /0 |
+| 600k | 100 /0 | 100 /0 | 95 /4 | 97 /0 | 95 /0 |
+| 1M | 100 /0 | 98 /2 | 61 /39 | 98 /0 | 97 /0 |
+
+At1M this seed has354/400 stress safe successes and41/400 violations,
+capped time1.1132s. It improves on same-seed SAC's309/400 and86/400,
+but not Iso's373/400 and27/400. Its468 training violations are17.0% below
+Iso564 but34.9% above SAC347. Radius8cm degrades from95%/4% at600k to
+61%/39% at1M; the final endpoint is not replaced. The test ran33545 new
+physical stress transitions, with400 exact native nominal episodes reused
+and1600 new stress episodes across all four checkpoints,0 SGD/adaptation.
+
+### Final delivery coverage and limitations
+
+| Requirement | Actual retained evidence |
+|---|---|
+| Original no-training v2 comparison | [ROBUSTNESS_RESULTS.csv](ROBUSTNESS_RESULTS.csv),40 rows/2000 episodes,negative result unchanged since the v3 freeze |
+| One bounded task-only screen | [relative_layout_screening](relative_layout_screening),3 complete fresh300k runs,0.9M total; unchanged method/geometry |
+| Frozen new-seed training | [MAIN_RESULTS.csv](MAIN_RESULTS.csv),9 complete fresh1M receipts,9M accepted transitions; no resume/early-stop/best-checkpoint substitution |
+| All declared learning points | [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv),36 nominal evaluations,100k/300k/600k/1M for every run |
+| All fixed stress tests | [MAIN_ROBUSTNESS_STATUS.json](MAIN_ROBUSTNESS_STATUS.json),180/180 rows,9/9 complete receipts,18000 episodes; collector and plots passed `--require-complete` |
+| Per-seed statistics and raw provenance | [FINAL_MAIN_SUMMARY.json](FINAL_MAIN_SUMMARY.json),[MAIN_ROBUSTNESS_RESULTS.csv](MAIN_ROBUSTNESS_RESULTS.csv),all native JSON and fixed-condition records |
+| Full large-file recovery archives | All nine full1M runs verified on4080's4T: four A100 archives under `analysis_inputs/formal_main_archive/`,five native runs under `runs/main/`; each has full learner/replay plus all four policies/evaluations |
+| Frozen method and task | Method/geometry unchanged during B; models/geometry/environment/relative-layout sources unchanged from the95ab831 freeze; active runtimes498535a/f059d4d differ only by documented evaluation/resource plumbing |
+| Failures and accounting | Iso horizon stalls,all early adverse results,initial layout-admission preflight,and5080 interruptions retained; no unknown lost tail called an exact primary cost |
+
+The last full learner/replay archive is100594159 bytes and its original A100
+copy remains intact. Large checkpoints were not uploaded to GitHub or copied
+onto the host; only compact source/results/reports/figures were transferred
+through the host. The source copies and the other three A100 originals were
+not deleted. The approximate54k-56k interrupted5080 transitions and at least88
+logged violations are additional engineering overhead,not silently counted
+inside the9M accepted scientific cohort. No new5080 use or foreign-workload
+interruption was introduced. No additional seed,task,weight search or algorithm
+module is launched as a response to the negative aggregate result.
+
+Final curves: [nominal learning](figures/SafeReach-RelativeLayout-v3-main-learning.png),
+[all-seed fixed-final conditions](figures/SafeReach-RelativeLayout-v3-main-robustness-fixed-final.png),
+[all-checkpoint stress learning](figures/SafeReach-RelativeLayout-v3-main-robustness-learning.png).
+The dated sections below are retained execution history,including statements
+that were pending at those historical captures; this final section supersedes
+them as the current completion status. No hardware or broader payload-task
+claim follows from this simulated single-obstacle comparison.
+
+## Historical final-run progress — 2026-11-10 15:19 check and eight completed formal tests
 
 One native main run remains unfinished and past random warmup;
 eight completed runs account for the rest of the nine-run frozen cohort.

@@ -62,11 +62,12 @@
     {
       "run": "main/flow-learned-seed2032-v3-a100-fresh",
       "source_commit": "498535af5633796234df5b65af755207b8e6a996",
-      "latest_logged_transitions": 906000,
+      "latest_logged_transitions": 1000000,
       "evaluation_milestones": [
         100000,
         300000,
-        600000
+        600000,
+        1000000
       ]
     },
     {

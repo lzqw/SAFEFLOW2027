@@ -1,0 +1,25 @@
+{
+  "host": "4080",
+  "archive": "/home/carla/4T/SAFEFLOW2027_ARM/analysis_inputs/formal_main_archive/flow-learned-seed2032-v3-a100-fresh",
+  "method": "flow_learned",
+  "seed": 2032,
+  "steps": 1000000,
+  "file_count": 13,
+  "files": {
+    "evaluation_600000.json": 90006,
+    "evaluation_1000000.json": 90036,
+    "policy_300000.pt": 1843787,
+    "evaluation_300000.json": 90022,
+    "policy_600000.pt": 1843787,
+    "run_config.json": 12745,
+    "policy_100000.pt": 1843787,
+    "evaluation_100000.json": 89999,
+    "receipt.json": 391,
+    "progress.csv": 242101,
+    "latest_full.pt": 100594159,
+    "status.json": 47,
+    "policy_1000000.pt": 1843995
+  },
+  "original_A100_retained": true,
+  "large_checkpoints_on_local_host": false
+}
