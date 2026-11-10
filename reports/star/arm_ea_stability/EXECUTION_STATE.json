@@ -1,0 +1,21 @@
+{
+  "goal": "EA-STAB v2: diagnose, implement shared stability and endpoint alignment, bounded development and conditional confirmation",
+  "status": "active_not_complete",
+  "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+  "branch": "codex/arm-ea-stability-v2",
+  "draft_pr": "https://github.com/lzqw/SAFEFLOW2027/pull/13",
+  "completed": ["independent_worktree_from_fixed_baseline", "signed_critic_and_fixed_batch_gradient_probes_36", "actor_margin_cross_320_episodes", "endpoint_geometry_implementation", "six_focused_geometry_tests_native_Torch2.7.1"],
+  "current_next_actions": ["episode_isolated64state_geometry_diagnosis", "shared_stable_learner_integration", "isolated_evaluation_and_true_full_checkpoint_runner", "EMA_optimizer_counter_RNG_save_load_test", "resource_bounded_development_queue", "launch_six_fresh300k_development_runs"],
+  "development_new_training_transitions_so_far": 0,
+  "diagnostic_physical_evaluation_transitions_so_far": 5154,
+  "diagnostic_oracle_queries_so_far": 0,
+  "initial_planned_training_transitions": 1800000,
+  "development_training_cap": 6000000,
+  "short_candidate_cap": 4,
+  "short_candidate_max_new_transitions": 100000,
+  "formal_confirmation": "conditional_not_queued",
+  "long_run_requirement": "paired_shared_Iso_and_selected_geometry_two_seeds_must_cover600k_to1M",
+  "disabled_server": "5080",
+  "foreign_workloads_changed": false,
+  "historical_results_modified": false
+}

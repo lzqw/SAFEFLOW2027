@@ -1,0 +1,8 @@
+trial_id,phase,variant,parent_checkpoint,seed,target_steps,initial_steps,actual_new_training_transitions,physical_evaluation_transitions,host,source_commit,status,change,hypothesis,result,evidence
+baseline-f476851,A,old_frozen_cohort,native600k_and1M,2030;2031;2032,0,0,0,5154,4080,f476851a644199b8345157fa0c36a83c093dc01a,completed_critic_and_cross_subphase,read_only_probes_and_actor_margin_cross,distinguish_value_instability_from_geometry_drift,positive_Q_overestimate_on_replay_and_policy_for_two_Iso_seeds;old_margin_does_not_rescue_late_Learned_actor,baseline-f476851/receipt.json
+s-iso-2027,B,s_iso,none_fresh,2027,300000,0,0,0,unassigned,,planned,shared_stable_flow_no_direction,stable_shared_backbone,not_run,
+s-iso-2028,B,s_iso,none_fresh,2028,300000,0,0,0,unassigned,,planned,shared_stable_flow_no_direction,stable_shared_backbone,not_run,
+s-local-2027,B,s_local,none_fresh,2027,300000,0,0,0,unassigned,,planned,shared_stable_flow_EMA_ramp_local,stable_local_geometry,not_run,
+s-local-2028,B,s_local,none_fresh,2028,300000,0,0,0,unassigned,,planned,shared_stable_flow_EMA_ramp_local,stable_local_geometry,not_run,
+s-ea-2027,B,s_ea,none_fresh,2027,300000,0,0,0,unassigned,,planned,shared_stable_flow_EMA_ramp_pullback,independent_endpoint_alignment_benefit,not_run,
+s-ea-2028,B,s_ea,none_fresh,2028,300000,0,0,0,unassigned,,planned,shared_stable_flow_EMA_ramp_pullback,independent_endpoint_alignment_benefit,not_run,
