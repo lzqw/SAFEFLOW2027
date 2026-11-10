@@ -35,15 +35,39 @@ def resources(project):
                 disk_free_gib=shutil.disk_usage(project).free/2**30)
 
 
+class ExistingNativeHandle:
+    """Read-only adoption of a detached native child; never signal/restart it."""
+    def __init__(self,job,commit):
+        self.job,self.commit=job,commit
+
+    def poll(self):
+        path=Path('/proc')/str(self.job['pid'])/'cmdline'
+        try: command=path.read_bytes().replace(bytes([0]),b' ').decode()
+        except FileNotFoundError: command=''
+        if command:
+            if ('train_stability' not in command or self.job['output'] not in command or self.commit not in command):
+                raise ValueError('An adopted native PID no longer has its exact training identity')
+            return None
+        receipt=read_json(Path(self.job['output'])/'receipt.json')
+        # Logical terminal result only,NOT an observed child OS wait status.
+        return 0 if receipt.get('status')=='completed' else 255
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--manifest',type=Path,required=True)
     parser.add_argument('--project',type=Path,required=True)
     parser.add_argument('--host-role',choices=['a100','4080'],required=True)
     parser.add_argument('--source-commit',required=True)
+    parser.add_argument('--learner-source',type=Path,help='Immutable native learner source;independent of resource-controller code')
+    parser.add_argument('--adopt-state',type=Path,help='Explicit controller-only handoff;previous controller must already be stopped')
+    parser.add_argument('--maximum-gpu-utilization',type=int,choices=range(1,101),metavar='1..100')
     args=parser.parse_args()
-    source=Path(__file__).resolve().parents[3]
+    controller_source=Path(__file__).resolve().parents[3]
+    source=args.learner_source.resolve() if args.learner_source else controller_source
     plan=read_json(args.manifest)
+    if args.maximum_gpu_utilization is not None:
+        plan['admission']['maximum_gpu_utilization_percent']=args.maximum_gpu_utilization
     role=plan['host_roles'][args.host_role]
     all_jobs=[job for host in plan['host_roles'].values() for job in host['jobs']]
     if (len(all_jobs)!=6 or {(j['variant'],j['seed']) for j in all_jobs}!=
@@ -55,15 +79,40 @@ def main():
     output_root.mkdir(parents=True,exist_ok=True)
     state_path=args.project/'queues'/f'ea-stability-v2-{args.host_role}-{args.source_commit[:7]}.json'
     state_path.parent.mkdir(exist_ok=True)
-    if state_path.exists(): raise ValueError('Existing queue evidence is not a restart authorization')
+    if state_path.exists() and args.adopt_state!=state_path:
+        raise ValueError('Existing queue evidence is not a restart authorization')
     pending=[dict(job) for job in role['jobs']]
     running=[];finished=[];next_resource_attempt={gpu:0. for gpu in role['gpus']}
+    handoff=None
+    if args.adopt_state:
+        prior=read_json(args.adopt_state)
+        if prior.get('source_commit')!=args.source_commit or prior.get('host_role')!=args.host_role:
+            raise ValueError('Adopt only the same finite native cohort and host role')
+        old_command=Path('/proc')/str(prior['queue_pid'])/'cmdline'
+        if old_command.exists() and old_command.read_bytes().strip(bytes([0])):
+            raise ValueError('Previous controller is still live;do not create two launch authorities')
+        expected={(j['variant'],j['seed']) for j in role['jobs']}
+        preserved=prior['pending']+prior['running']+prior['finished']
+        if len(preserved)!=len(expected) or {(j['variant'],j['seed']) for j in preserved}!=expected:
+            raise ValueError('Controller handoff must retain every original trial exactly once')
+        backup=args.adopt_state.with_name(args.adopt_state.stem+f'.before-controller-{os.getpid()}.json')
+        if backup.exists(): raise ValueError('Never replace previous handoff evidence')
+        shutil.copy2(args.adopt_state,backup)
+        pending=prior['pending'];finished=prior['finished']
+        for job in prior['running']:
+            handle=ExistingNativeHandle(job,args.source_commit)
+            handle.poll()  # Validate the actual native identity before adoption.
+            running.append(dict(**job,process=handle,adopted_native_handle=True))
+        handoff=dict(previous_controller_pid=prior['queue_pid'],preserved_state=str(backup),
+                     native_training_processes_changed=False)
 
     def emit(event,**values):
         print(json.dumps(dict(event=event,utc=datetime.now(timezone.utc).isoformat(),**values)),flush=True)
 
     def snapshot(status):
         atomic_json(state_path,dict(status=status,queue_pid=os.getpid(),source_commit=args.source_commit,
+            controller_source=str(controller_source),learner_source=str(source),
+            effective_resource_admission=plan['admission'],controller_handoff=handoff,
             host_role=args.host_role,manifest=str(args.manifest),pending=pending,
             running=[{k:v for k,v in r.items() if k!='process'} for r in running],finished=finished,
             automatic_restart=False,foreign_workloads_changed=False))
@@ -76,8 +125,11 @@ def main():
             receipt=read_json(Path(job['output'])/'receipt.json')
             complete=(returncode==0 and receipt.get('status')=='completed' and receipt.get('steps')==300000
                       and receipt.get('variant')==job['variant'] and receipt.get('training_seed')==job['seed'])
+            adopted=job.get('adopted_native_handle',False)
             finished.append({k:v for k,v in job.items() if k!='process'} |
-                            dict(returncode=returncode,status='completed' if complete else 'failed_no_restart'))
+                            dict(returncode=None if adopted else returncode,
+                                 terminal_evidence='completed_receipt_and_owned_PID_disappearance' if adopted else 'native_child_exit_and_receipt',
+                                 status='completed' if complete else 'failed_no_restart'))
             running.remove(job)
             next_resource_attempt[job['gpu']]=0.
             emit('native_completed' if complete else 'native_failed_no_restart',variant=job['variant'],
