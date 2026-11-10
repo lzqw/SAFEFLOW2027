@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 14:19 check and eight completed formal tests
+## Current frozen-main execution — 2026-11-10 14:40 check and eight completed formal tests
 
 One native main run remains unfinished and past random warmup;
 eight completed runs account for the rest of the nine-run frozen cohort.
@@ -40,18 +40,18 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 |---|---|---|---|
 | 2030 / A100 | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running906k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running927k,A100 GPU1,PID947125 |
 
-The14:19:18 half-hour observation confirmed the remaining Learned2032 native
-handle alive at905k and all eight completed1M receipts. The existing dispatcher
+The14:39:53 resource check confirmed the remaining Learned2032 native
+handle alive at926k. The existing dispatcher
 had completed Learned2030's full20-case GPU0 test and remained alive waiting
-only for Learned2032. The table uses the14:20 compact progress capture. These are observed
+only for Learned2032. The table uses the14:40 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total8.906M/9M primary transitions
-(99.0% of the fixed budget).
+The nine accepted native counters now total8.927M/9M primary transitions
+(99.2% of the fixed budget).
 This percentage is not a wall-time forecast. During the latest observed30
 minutes the remaining Learned2032 run advanced32k transitions; at unchanged
-shared-resource throughput its remaining training needs about1.5 more hours.
+shared-resource throughput its remaining training needs about70 more minutes.
 Resource admission for the last test and artifact delivery are
 additional; no completion deadline or future evaluation score is inferred.
 This sum excludes the original failed5080 deployments, rather than silently
@@ -65,6 +65,15 @@ the4080; A100 has the two-card assignment recorded in
 [main_launch_plan.json](main_launch_plan.json). Other-project loads are not
 paused or killed. A read-only1800s watcher now follows only A100/4080 and the
 actual native/queue PID identities, including future queued-child handoffs.
+
+The14:39 A100 snapshot showed GPU0 at0%/52MiB and GPU1 at20%/595MiB.
+Only the last predeclared native run is still training; it is using GPU1,
+and GPU0 is the already-configured admission target for its frozen evaluation.
+There is no unstarted training job to fill the other card, and one synchronous
+native run is not automatically divisible across GPUs. Low aggregate GPU
+utilization is therefore not evidence that CUDA was disabled. No additional
+seeds, restart/migration, changed training batches or foreign-process interruption
+is introduced to raise the utilization display.
 
 ### Newly completed seed2030: retained task ability versus Iso,but worse safety than SAC
 
@@ -124,7 +133,7 @@ Learned2032 run and its required fixed tests continue without new modules or tun
 Learned2030 is now the eighth completed1M result and full20-case test,as detailed
 below. All35 native milestones remain retained; the formal table now has
 160/180 condition rows and8/9 completed run evaluations. Progress above
-is actual training,not a claim that the whole experiment is99.0% complete in wall time.
+is actual training,not a claim that the whole experiment is99.2% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
@@ -260,7 +269,7 @@ development seed's32.6% reduction. SAC2030 at the same300k is100/100,0/100,
 125 training violations and .7268s; Learned's training count is68.8% higher
 than this matched SAC baseline. Do not pool the favorable Iso-relative
 comparison with another seed's or budget's outcome.
-There are thirty-four main milestone evaluations
+There are thirty-five main milestone evaluations
 in [MAIN_LEARNING_RESULTS.csv](MAIN_LEARNING_RESULTS.csv), separate from the
 fixed-final-only primary table,which now contains all three SAC and all three
 Iso primary seeds plus Learned2030/2031. No near-final progress or earlier checkpoint replaces
