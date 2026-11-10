@@ -27,7 +27,7 @@ Initial resources: A1002x80GB idle,128 CPU threads; other workloads occupy
 First platform is panda-gym/PyBullet, for real link-distance labels and exact
 same-controller counterfactual geometry. Simulation FPS is not learner FPS.
 
-## Current frozen-main execution — 2026-11-10 14:40 check and eight completed formal tests
+## Current frozen-main execution — 2026-11-10 15:19 check and eight completed formal tests
 
 One native main run remains unfinished and past random warmup;
 eight completed runs account for the rest of the nine-run frozen cohort.
@@ -40,18 +40,18 @@ requested100k/300k/600k/1M evaluation milestones,100 episodes each.
 |---|---|---|---|
 | 2030 / A100 | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
 | 2031 /4080,4T | completed1M,native receipt | completed1M,native receipt | completed1M,native receipt |
-| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running927k,A100 GPU1,PID947125 |
+| 2032 /A100+4080 | completed1M,native receipt | completed1M,native receipt | running969k,A100 GPU1,PID947125 |
 
-The14:39:53 resource check confirmed the remaining Learned2032 native
-handle alive at926k. The existing dispatcher
-had completed Learned2030's full20-case GPU0 test and remained alive waiting
-only for Learned2032. The table uses the14:40 compact progress capture. These are observed
+The15:19:20 half-hour observation confirmed the remaining Learned2032 native
+handle alive at968k and all eight completed1M receipts. The existing dispatcher,
+last directly identity-checked at14:39,had completed Learned2030's full20-case
+GPU0 test and was waiting only for Learned2032. The table uses the15:20 compact progress capture. These are observed
 progress/queue states, not extrapolated evaluation values.
-The nine accepted native counters now total8.927M/9M primary transitions
-(99.2% of the fixed budget).
+The nine accepted native counters now total8.969M/9M primary transitions
+(99.7% of the fixed budget).
 This percentage is not a wall-time forecast. During the latest observed30
 minutes the remaining Learned2032 run advanced32k transitions; at unchanged
-shared-resource throughput its remaining training needs about70 more minutes.
+shared-resource throughput its remaining training needs about30 more minutes.
 Resource admission for the last test and artifact delivery are
 additional; no completion deadline or future evaluation score is inferred.
 This sum excludes the original failed5080 deployments, rather than silently
@@ -133,7 +133,7 @@ Learned2032 run and its required fixed tests continue without new modules or tun
 Learned2030 is now the eighth completed1M result and full20-case test,as detailed
 below. All35 native milestones remain retained; the formal table now has
 160/180 condition rows and8/9 completed run evaluations. Progress above
-is actual training,not a claim that the whole experiment is99.2% complete in wall time.
+is actual training,not a claim that the whole experiment is99.7% complete in wall time.
 
 **5080 is no longer used for training, per the user's instruction.** Its Iso/
 Learned2032 PIDs disappeared at about35k/19k before any fixed evaluation.
