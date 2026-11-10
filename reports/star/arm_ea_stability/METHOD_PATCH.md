@@ -116,6 +116,23 @@ on4080. A100 GPU0's initial100% utilization caused a resource wait; the next
 admission check remains queued. The snapshot is not a claim that all six
 trials have started or any efficacy target has been achieved.
 
+At23:29 a resource-only controller handoff removed a misleading exclusive-idle
+assumption:authorized shared-GPU admission now allows up to100% observed A100
+utilization,while retaining6GiB free-memory,CPU-load and disk headroom guards.
+Only this project's standard-library queue parent was stopped;the native
+Iso2027 PID1587947 continued from76k to81k unchanged. New controller1627249
+adopted that exact native handle and launched the originally pending EA2028
+on GPU0,PID1627251. The original queue state was backed up before replacement.
+See [RESOURCE_HANDOFF.json](RESOURCE_HANDOFF.json). This is not a new scientific
+candidate or a training restart;all learners still execute immutable3c308e4
+code/configuration. No foreign process,priority or clock was modified.
+
+The23:48 read-only check verified both A100 native handles and both4080
+handles alive,with two trials still waiting for their predeclared slots.
+Whole-card GPU utilization includes other projects and is not attributed
+entirely to these small learners. The4080 snapshot had about1.5GiB VRAM free,
+so no further process is added there beyond its existing two learners.
+
 Initial development is six fresh300k runs (1.8M). Only after these results
 will up to four extra100k candidates be considered,with one main change each;
 then paired Iso/selected-geometry development must cover600k-to1M. Total

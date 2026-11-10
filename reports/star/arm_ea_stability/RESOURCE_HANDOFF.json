@@ -1,0 +1,34 @@
+{
+  "previous_controller_pid": 1587944,
+  "pid": 1627249,
+  "log": "/home/lzqw/SAFEFLOW2027_ARM/logs/ea-stability-v2-queue-a100-shared-a89fc44.log",
+  "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-3c308e4.json",
+  "learner_source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+  "controller_source": "/home/lzqw/SAFEFLOW2027_ARM/operations/a89fc44bf8bd3e90b7a1059dad7436d7043022c3",
+  "preserved_native_handles": [
+    {
+      "pid": 1587947,
+      "variant": "s_iso",
+      "seed": 2027,
+      "steps": 76000
+    }
+  ],
+  "native_training_processes_stopped": false,
+  "foreign_processes_changed": false,
+  "operation": "resource_only_shared_GPU_admission",
+  "gpu_utilization_ceiling_before": 85,
+  "gpu_utilization_ceiling_after": 100,
+  "minimum_free_gpu_mib_unchanged": 6144,
+  "native_configuration_or_weights_changed": false,
+  "native_handle_verified_after": {
+    "pid": 1587947,
+    "steps": 81000
+  },
+  "added_predeclared_native_job": {
+    "pid": 1627251,
+    "variant": "s_ea",
+    "seed": 2028,
+    "gpu": 0,
+    "steps_observed": 6000
+  }
+}
