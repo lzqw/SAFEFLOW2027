@@ -5,8 +5,8 @@ Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;EA2028's600k and Iso2028's fixed1M endpoints are also available.
-EA2027's600k and the other three fixed1M endpoints remain pending. Complete
+available;all four paired Iso/EA600k endpoints and Iso2028's fixed1M endpoint
+are now available. The other three fixed1M endpoints remain pending. Complete
 two-seed600k-to1M stability is not yet established. EA2027 has an explicit
 same-profile resource handoff at450k,not an extra scientific candidate.
 
@@ -223,6 +223,59 @@ The total logged new training lower bound including engineering is3183210,
 with conservative charge3187210 including the4000 reserve;nontraining
 physical controls70815. There are105 development condition rows,zero
 fixed1M rows,and no extra short candidate or formal-confirmation run.
+
+## Complete paired600k matrix:17:24 capture
+
+EA2027 completed its predeclared600k evaluation after the explicit450k
+resource handoff;no additional development rollouts were selected by
+quality. Its recorded physical evaluation count is1865 control intervals.
+Its full outcomes are:
+
+| EA2027 fixed600k condition | Safe success | Violation | Safe timeout |
+|---|---:|---:|---:|
+| Nominal |100%|0%|0%|
+| Radius7cm |100%|0%|0%|
+| Radius8cm |65%|35%|0%|
+| Lateral+/-3cm |100%|0%|0%|
+| Lateral+/-6cm |100%|0%|0%|
+
+Its native training violations are1515 at32421 completed episodes;including
+the initial CUDA failure's known discarded tail gives at least1530 and32774
+episodes. The resource handoff adds0 known logged discarded costs,not a
+cost-counter reset. Policy-Q mean9.706,max10.135,replay mean9.709,sampled
+replay bound exceedance0,energy19.425,clipping6.09%,and multiplier0 at600k
+do not show a simultaneous large value blow-up at this endpoint.
+
+| Two training-seed mean at600k | Nominal SS | Stress SS | Stress violation | Stress safe timeout | Radius8cm violation | Accounted training violations |
+|---|---:|---:|---:|---:|---:|---:|
+| S-Iso |95%|80.625%|14.375%|5%|37.5%|1469|
+| S-EA |100%|92.5%|7.5%|0%|30%|1547|
+
+These are the complete two development seeds,not an unseen three-seed
+confirmation. EA improves stress safe success by11.875 percentage points
+and lowers mean stress violations by6.875 points versus matched Iso,but
+uses5.31% more accounted cumulative training violations. Radius8cm's mean
+gain is not consistent across seeds:EA2027 risk35% versus Iso65%,whereas
+EA2028 risk25% versus Iso10%. No EA safe timeout occurs here,so its mean
+evaluation advantage is not obtained solely by stalling.
+
+Both EA seeds lose8cm robustness relative to their own300k checkpoints:
+2027 rises10% to35%,2028 rises5% to25%;the seed mean rises7.5% to30%.
+The600k mean misses the20%8cm effort target,despite meeting nominal and
+aggregate-stress development targets. Each stress estimate still uses only
+20 episodes per training seed. This is genuine unfavorable development
+evidence,not omitted because the early300k comparison was stronger.
+Stable-Local's two300k comparisons remain the independent endpoint-geometry
+ablation;there are no Local600k results in the selected matrix and no claim
+of a matched long-stage Local advantage. Fixed1M,new-policy oracle geometry
+and inference-cost evidence are still needed to separate OOD geometry drift
+from shared learner issues and justify any final configuration or confirmation.
+
+No new short candidate or training change has been launched. Compact logged
+steps are Iso2027 939k,EA2028 867k,EA2027 603k,and completed Iso2028 1M.
+Total logged new training including engineering is4019210,with conservative
+charge4024210 including the5000 reserve. Physical nontraining controls80736;
+115 development condition rows and5 completed fixed1M condition rows.
 
 ## First complete fixed1M endpoint:Iso2028,15:25 capture
 

@@ -27,8 +27,10 @@
     {
       "trial": "s-ea-seed2027-v2-long-handoff1",
       "source_commit": "e7be7eaa6d6c86844229dd476c934dece7e5917a",
-      "latest_logged_steps": 477000,
-      "evaluation_milestones": []
+      "latest_logged_steps": 603000,
+      "evaluation_milestones": [
+        600000
+      ]
     },
     {
       "trial": "s-ea-seed2028-v2-dev",
@@ -43,7 +45,7 @@
     {
       "trial": "s-ea-seed2028-v2-long",
       "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
-      "latest_logged_steps": 739000,
+      "latest_logged_steps": 867000,
       "evaluation_milestones": [
         600000
       ]
@@ -61,7 +63,7 @@
     {
       "trial": "s-iso-seed2027-v2-long",
       "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
-      "latest_logged_steps": 820000,
+      "latest_logged_steps": 939000,
       "evaluation_milestones": [
         600000
       ]
