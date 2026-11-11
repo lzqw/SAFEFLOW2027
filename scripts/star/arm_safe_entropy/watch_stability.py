@@ -9,6 +9,7 @@ from datetime import datetime
 import json
 from pathlib import Path
 import subprocess
+import sys
 import time
 
 
@@ -51,7 +52,9 @@ print(json.dumps(result))
 
 def inspect_host(config,include_resources=True):
     try:
-        result=subprocess.run(['ssh','-o','BatchMode=yes','-o','ConnectTimeout=10',config['host'],'python3','-'],
+        command=([sys.executable,'-'] if config.get('local_execution') else
+                 ['ssh','-o','BatchMode=yes','-o','ConnectTimeout=10',config['host'],'python3','-'])
+        result=subprocess.run(command,
             input='cfg='+repr(config)+'\ninclude_resources='+repr(include_resources)+'\n'+REMOTE,
             text=True,capture_output=True,timeout=35,check=True)
         return json.loads(result.stdout)
