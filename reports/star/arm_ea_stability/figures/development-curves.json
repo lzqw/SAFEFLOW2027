@@ -1,0 +1,80 @@
+{
+  "kind": "mirrored_native_development_curves_not_final_decision",
+  "trials": [
+    {
+      "trial": "s-ea-seed2027-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 296000,
+      "evaluation_milestones": [
+        100000,
+        200000
+      ]
+    },
+    {
+      "trial": "s-ea-seed2027-v2-dev-recovery1",
+      "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+      "latest_logged_steps": 294000,
+      "evaluation_milestones": []
+    },
+    {
+      "trial": "s-ea-seed2028-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "trial": "s-iso-seed2027-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "trial": "s-iso-seed2027-v2-long",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 318000,
+      "evaluation_milestones": []
+    },
+    {
+      "trial": "s-iso-seed2028-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 231000,
+      "evaluation_milestones": [
+        100000,
+        200000
+      ]
+    },
+    {
+      "trial": "s-local-seed2027-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    },
+    {
+      "trial": "s-local-seed2028-v2-dev",
+      "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+      "latest_logged_steps": 300000,
+      "evaluation_milestones": [
+        100000,
+        200000,
+        300000
+      ]
+    }
+  ],
+  "evaluation_sampling": "individual training seeds; episodes are not independent training seeds",
+  "throughput": "Measured native wall time includes learner, physics, completed evaluations and saves within segment; running prefixes exclude final milestone overhead. No causal cross-host speed ratio.",
+  "missing": "No imputation or incomplete-run removal; future revisions remain separately labeled",
+  "training_transitions_added": 0,
+  "physical_evaluation_queries_added": 0
+}

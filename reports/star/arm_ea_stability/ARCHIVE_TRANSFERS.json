@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-11",
+  "large_files_written_to_local_host": 0,
+  "original_server_files_deleted_or_replaced": 0,
+  "transfers": [
+    {
+      "from": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "to": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "fresh_destination_directories": ["s-ea-seed2027-v2-dev", "s-iso-seed2028-v2-dev"],
+      "native_full_snapshots": ["s-ea-seed2027-v2-dev/latest_full.pt:290000", "s-iso-seed2028-v2-dev/latest_full.pt:230000"],
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;EA native replay/physical-state restoration subsequently progressed past291k on A100"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "fresh_destination_directories": ["s-iso-seed2027-v2-dev", "s-local-seed2028-v2-dev", "s-ea-seed2028-v2-dev"],
+      "native_full_snapshots": "Each full_300000.pt plus milestone policies and compact artifacts;exclude duplicate latest_full.pt",
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;all three protected300k snapshots directly listed on4080 4T at10:27"
+    }
+  ]
+}

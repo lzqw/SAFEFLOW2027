@@ -13,7 +13,8 @@ import subprocess
 COLUMNS=['stage','trial','variant','training_seed','checkpoint_steps','condition','evaluation_episodes',
     'safe_success','violation_rate','safe_timeout_rate','return','time_to_goal_capped_seconds',
     'time_to_goal_seconds','time_to_goal_successes','minimum_distance_m','training_violation_count',
-    'training_episodes','native_run_completed','source_commit','evidence']
+    'training_episodes','native_run_completed','source_commit','evidence',
+    'discarded_tail_logged_violations','accounted_training_violation_count_lower_bound']
 
 
 def read_json(path):
@@ -26,6 +27,18 @@ def write_csv(path,rows,fields):
         writer=csv.DictWriter(stream,fieldnames=fields)
         writer.writeheader();writer.writerows(rows)
     temporary.replace(path)
+
+
+def discarded_parent_violations(folder,runs,seen=None):
+    """Known costs from discarded parent tails still count,not just replay lineage."""
+    seen=set() if seen is None else seen
+    if folder.name in seen: raise ValueError('Native parent lineage cannot cycle')
+    seen.add(folder.name)
+    config=read_json(folder/'run_config.json')
+    if not config.get('parent_checkpoint'): return 0
+    parent=runs/Path(config['parent_checkpoint']).parent.name
+    incident=read_json(parent/'engineering_interruption.json')
+    return int(incident.get('logged_lost_tail_violations',0))+discarded_parent_violations(parent,runs,seen)
 
 
 def main():
@@ -116,14 +129,21 @@ def main():
                     time_to_goal_seconds=condition['time_to_goal_seconds'],time_to_goal_successes=condition['time_to_goal_successes'],
                     minimum_distance_m=condition['minimum_distance_m'],training_violation_count=evaluation['training_violation_count'],
                     training_episodes=evaluation['training_episodes'],native_run_completed=complete,
-                    source_commit=config['source_commit'],evidence=str(evaluation_path.relative_to(report))))
+                    source_commit=config['source_commit'],evidence=str(evaluation_path.relative_to(report)),
+                    discarded_tail_logged_violations=discarded_parent_violations(folder,runs),
+                    accounted_training_violation_count_lower_bound=evaluation['training_violation_count']+
+                        discarded_parent_violations(folder,runs)))
     write_csv(report/'DEVELOPMENT_RESULTS.csv',rows,COLUMNS)
     write_csv(report/'FINAL_RESULTS.csv',[r for r in rows if r['checkpoint_steps']==1000000 and r['native_run_completed']],COLUMNS)
     write_csv(ledger_path,list(ledger.values()),ledger_fields)
     recorded_nontraining=sum(int(r.get('physical_evaluation_transitions') or 0) for r in ledger.values())
+    tail_reserve=sum(read_json(p).get('unlogged_tail_training_budget_reserve',0)
+                     for p in runs.glob('*/engineering_interruption.json'))
     summary=dict(initial_expected_runs=6,initial_observed_runs=len(initial_pairs),initial_completed_runs=len(complete_initial),
         scientific_logged_new_training_transitions_lower_bound=logged_native,
         engineering_logged_new_training_transitions=engineering,total_logged_new_training_transitions_lower_bound=logged_native+engineering,
+        unlogged_interruption_tail_training_budget_reserve=tail_reserve,
+        conservative_training_budget_charge=logged_native+engineering+tail_reserve,
         recorded_nontraining_physical_control_intervals=recorded_nontraining,
         development_evaluation_rows=len(rows),fixed1M_completed_condition_rows=sum(r['checkpoint_steps']==1000000 and r['native_run_completed'] for r in rows),
         new_evaluations_launched=0,large_checkpoints_copied=0,formal_confirmation_started=False,whole_goal_complete=False)

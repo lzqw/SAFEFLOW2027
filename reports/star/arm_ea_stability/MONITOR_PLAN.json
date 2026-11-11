@@ -1,0 +1,16 @@
+{
+  "interval_seconds": 1800,
+  "whole_goal_complete_when_monitored_jobs_finish": false,
+  "hosts": [
+    {
+      "host": "tjucta-a100",
+      "project": "/home/lzqw/SAFEFLOW2027_ARM",
+      "queues": [{"state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-recovery1.json", "identity_token": "recovery1"}],
+      "direct": [{"pid": 1928659, "variant": "s_iso", "seed": 2027, "gpu": 1,
+        "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+        "steps": 1000000, "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long"}]
+    },
+    {"host": "4080", "project": "/home/carla/4T/SAFEFLOW2027_ARM", "queues": [], "direct": [],
+     "resource_note": "CPU load26/28 at10:17;no own learner currently added. Reconsider admission only when actual headroom exists."}
+  ]
+}

@@ -5,6 +5,7 @@ zeros; elapsed times include evaluation/checkpoint overhead within the native
 runner, not just simulator time. Shared hosts confound cross-run speed ratios.
 """
 import csv
+from datetime import datetime
 import json
 from pathlib import Path
 
@@ -37,7 +38,9 @@ def load_trials():
         label = f"{NAMES[config['variant']]} {config['training_seed']}"
         if config['initial_steps']:
             label += f" from {config['initial_steps']//1000}k"
+        incident_path=path.parent/'engineering_interruption.json'
         trials.append(dict(name=path.parent.name, config=config, rows=rows,
+            incident=json.loads(incident_path.read_text()) if incident_path.exists() else {},
             receipt=receipt, label=label, color=COLORS[config['variant']],
             style='-' if config['training_seed'] == 2027 else '--',
             evaluations=sorted([json.loads(p.read_text()) for p in path.parent.glob('evaluation_*.json')],
@@ -88,6 +91,10 @@ def throughput(trial):
     elapsed = receipt['segment_elapsed_seconds'] if complete else last['segment_elapsed_seconds']
     steps = receipt['steps'] if complete else int(last['steps'])
     window_seconds = last['segment_elapsed_seconds']-first['segment_elapsed_seconds'] if first else 0
+    incident=trial['incident']
+    lifetime=(datetime.fromisoformat(incident['native_terminal_observed_utc'])-
+              datetime.fromisoformat(incident['native_started_utc'])).total_seconds() if (
+                  incident.get('native_terminal_observed_utc') and incident.get('native_started_utc')) else None
     return dict(trial=trial['name'], variant=config['variant'], training_seed=config['training_seed'],
         host=config['host'], gpu=config['gpu'], initial_steps=config['initial_steps'], steps=steps,
         new_transitions=steps-config['initial_steps'], segment_elapsed_seconds=elapsed,
@@ -95,7 +102,11 @@ def throughput(trial):
         recent_window_start_steps=int(first['steps']) if window_seconds > 0 else '',
         recent_window_end_steps=int(last['steps']) if window_seconds > 0 else '',
         recent_window_transitions_per_second=(last['steps']-first['steps'])/window_seconds if window_seconds > 0 else '',
-        scope='completed_including_final_evaluation_and_save' if complete else 'running_logged_prefix_not_final_milestone_overhead',
+        observed_failed_process_lifetime_seconds=lifetime if lifetime is not None else '',
+        logged_transitions_per_failed_process_lifetime=(steps-config['initial_steps'])/lifetime if lifetime else '',
+        scope='completed_including_final_evaluation_and_save' if complete else
+            'interrupted_logged_prefix;process_lifetime_separately_includes_postlog_CUDA_wait' if incident else
+            'running_logged_prefix_not_final_milestone_overhead',
         source_commit=config['source_commit'], evidence=f"native_runs/{trial['name']}/progress.csv")
 
 
@@ -107,7 +118,7 @@ def main():
     figures.mkdir(exist_ok=True)
     progress_figure(trials, [
         ('recent_success', 'Training recent safe success (%)', 100),
-        ('training_violation_count', 'Cumulative training violations (warmup included)', 1),
+        ('training_violation_count', 'Native lineage cumulative training violations', 1),
         ('recent_episode_length', 'Recent completed episode length (steps)', 1),
         ('segment_train_fps', 'Native segment end-to-end train transitions/s', 1),
         ('recent_violation_rate', 'Training recent violation rate (%)', 100),

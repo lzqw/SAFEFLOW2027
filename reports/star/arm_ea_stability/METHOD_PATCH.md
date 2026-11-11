@@ -139,3 +139,22 @@ then paired Iso/selected-geometry development must cover600k-to1M. Total
 new development training is capped at6M,with physical diagnostic queries
 separately recorded. A new9M confirmation is conditional,not initially queued.
 No obsolete job or5080 process is resumed.
+
+## Explicit engineering completion,2026-11-11
+
+Four initial300k trials completed. Two4080 trials ended with a CUDA launch
+failure and no emergency full save;the host later rebooted. Driver94ffff3
+adds only a declared native recovery path to the same300k endpoint,with a
+terminal incident record and a matching existing full learner/replay snapshot.
+Old raw output is never overwritten. Learner,geometry,evaluation,physical
+task and the development profile are unchanged from3c308e4. These recoveries
+are not new candidates or replacements for poor scientific results.
+
+The finite e780fde resource controller completes290k-to300k EA2027 and
+230k-to300k Iso2028 on A100 GPU0;Iso2027 independently continues its native
+300k full snapshot to1M on A100 GPU1. The reserved recovery increment is80k.
+Discarded logged tails (7k transitions,17 violations) remain charged,plus
+an explicit4k budget reserve for unlogged tails. Evaluation tables distinguish
+native lineage cost from the known-tail-adjusted cost lower bound. Native
+reconstruction remains observed-state continuation,not bitwise solver-cache
+identity across a reboot/GPU/host change. No automatic recovery loop is added.
