@@ -36,6 +36,7 @@
   "first_matched600k_pair": "seed2028:EA stress_SS93.75_vs_Iso86.25;violation6.25_vs3.75;radius8_violation25_vs10;not_an_all_condition_Pareto_improvement",
   "late_issue_observed": "Iso2028 signed policy_Q_max17.958 at534k;recent training success0 at553k;recovered before600k;not proof of repaired stability;DEVELOPMENT_REPORT.md",
   "extra_short_candidates_launched": 0,
+  "frozen_margin_transfer_probe": {"source_commit": "af1501c52233951638d34c55f5f0873036138404", "artifact": "margin-transfer-existing-pool.json", "existing_oracle_source_records_reused": 64, "new_physical_controls": 0, "new_training_transitions": 0, "summary_rows": 20, "interpretation": "Persistent roughly22mm optimistic radius8 value bias despite good direct normals;does not grow on this historical source pool as episodic risk worsens;not final new-policy mechanism evidence"},
   "fixed1M_completed_variants_seeds": ["s_iso2027", "s_iso2028", "s_ea2028"],
   "fixed1M_completed_condition_rows": 15,
   "first_matched_fixed1M_pair": "seed2028:EA nominal_SS87_vs_Iso95;stress_SS53.5_vs83.75;radius8_violation97_vs46;accounted_traincost2179_vs2187. EA is worse on every evaluated condition;early300k advantage does not persist. No confirmation launched.",

@@ -68,6 +68,58 @@ No extra short candidate or conditional9M confirmation has started. Finish
 the remaining native1M line,then complete mechanism diagnosis and the
 bounded final decision;the full objective is still active.
 
+## Frozen margin transfer probe:existing labels only,19:32
+
+To distinguish persistent OOD bias from increasing margin drift,we reused
+all64 historical source state/action/oracle records from geometry-3c308e4.
+There are32 nominal and32 radius8cm records,isolated from training,layout
+start150027. No new Actor action was sampled,no environment was constructed
+or advanced,and no optimizer update or training transition occurred. The
+probe evaluates five frozen native policies of seed2028,both their online
+and geometry-EMA margin models. The20 condition/model/checkpoint summary
+rows and per-state values are in
+[margin-transfer-existing-pool.json](margin-transfer-existing-pool.json).
+The original oracle-probe cost remains in the earlier ledger;new physical
+queries for this reuse are0,not64 hidden new queries.
+
+| Frozen geometry EMA | Nominal margin MAE(mm) | Radius8cm MAE(mm) | Radius8cm signed bias(mm) | Radius8cm near-boundary MAE(mm) | Direct margin-action normal cosine |
+|---|---:|---:|---:|---:|---:|
+| EA2028,300k |0.379|22.842|-22.842|23.047|0.966|
+| EA2028,600k |0.267|22.547|-22.547|22.497|0.984|
+| EA2028,1M |0.232|22.224|-22.224|22.152|0.983|
+| Iso2028,600k |0.323|22.053|-22.053|22.029|0.984|
+| Iso2028,1M |0.210|21.775|-21.775|21.814|0.985|
+
+Negative bias means the learned risk margin is too optimistic. Near-boundary
+uses abs(true margin)<=20mm:21 nominal and23 radius8cm records. Direction
+cosines exclude invalid true/learned axes rather than inserting zeros;
+23 nominal and27 radius8cm axes are valid here. The cosine is the direct
+margin action derivative on the historical source action,not the full
+generator-tail pullback normal. In the EA1M radius8cm sample,mean head
+agreement is0.900 despite22.224mm value error. Agreement cannot certify
+calibration.
+
+All32 radius8cm source actions are predicted safe in every probed geometry
+EMA,including the two truly unsafe actions:joint and conditional-on-predicted-
+safe false-safe fractions are2/32=6.25%;the two observed unsafe cases are both
+missed. This is not a6.25% estimate of the new policy's episodic risk or a
+reliable false-negative population estimate from only two positive cases.
+There are no truly unsafe nominal source actions in this particular pool.
+
+Online EA1M radius8cm MAE is22.079mm versus EMA22.224mm. Their similar
+errors do not support blaming the roughly22mm OOD error solely on EMA lag,
+or blindly reducing EMA tau further. Fixed-pool EA calibration also does
+not worsen from300k to1M while its held-out episodic8cm risk rises5% to25%
+to97%. This supports separating persistent geometry-value miscalibration
+from changes in Actor/visited-state distribution;it does not prove which
+causes the episode-level regression or exclude errors on new visited states.
+
+These are retrospective historical-distribution probes,not unseen formal
+tests or substitutes for the required new1M-policy common-state/spectrum,
+true interval-risk and route analysis. No candidate or formal confirmation
+is selected from this old source distribution alone. The last original
+EA2027 native training and its fixed1M endpoint remain required.
+
 ## Runtime progression,2026-11-11 Asia/Taipei
 
 The following three handles were directly verified at10:53:33:
