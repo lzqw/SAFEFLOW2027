@@ -38,6 +38,8 @@ def main():
     parser.add_argument('--resume',type=Path)
     parser.add_argument('--engineering-recovery',action='store_true',
         help='Explicit one-time continuation of an interrupted initial300k trial;requires a terminal incident record')
+    parser.add_argument('--resource-handoff',action='store_true',
+        help='Explicit same-profile continuation to1M from a pinned full checkpoint of a recorded terminal resource handoff')
     parser.add_argument('--smoke',action='store_true')
     args=parser.parse_args()
     configuration=json.loads(args.config.read_text())
@@ -53,6 +55,8 @@ def main():
         parser.error('Development long runs continue a native300k full checkpoint,not a fresh extra1M')
     if args.engineering_recovery and (not args.resume or args.steps!=300000 or args.smoke):
         parser.error('Engineering recovery only completes an interrupted initial300k native trial')
+    if args.resource_handoff and (not args.resume or args.steps!=1000000 or args.smoke or args.engineering_recovery):
+        parser.error('A resource handoff only continues its existing1M target,without a scientific change')
     if args.smoke and args.steps>10000: parser.error('Engineering smoke is bounded separately')
     if (configuration['task_version']!='SafeReach-RelativeLayout-v3' or
             configuration['training_radius_m']!=.06):
@@ -88,6 +92,24 @@ def main():
                 command=Path('/proc',str(incident['native_pid']),'cmdline').read_bytes()
                 if b'train_stability' in command:
                     raise ValueError('Do not duplicate a still-live native training process')
+        elif args.resource_handoff:
+            handoff=json.loads((args.resume.parent/'resource_handoff.json').read_text())
+            parent=json.loads((args.resume.parent/'run_config.json').read_text())
+            if (handoff.get('native_process_confirmed_terminal') is not True or
+                    handoff.get('recovery_checkpoint_steps')!=saved['steps'] or
+                    handoff.get('target_steps')!=1000000 or
+                    handoff.get('variant')!=args.variant or handoff.get('training_seed')!=args.seed or
+                    handoff.get('destination_output')!=str(args.output) or
+                    handoff.get('checkpoint_filename')!=args.resume.name or
+                    not 300000<=saved['steps']<1000000 or
+                    parent.get('total_transition_budget')!=1000000 or
+                    parent.get('configuration')!=configuration or
+                    (args.resume.parent/'receipt.json').exists()):
+                raise ValueError('Handoff requires the pinned matching full state of the recorded terminal1M parent')
+            if handoff.get('source_node')==platform.node():
+                command=Path('/proc',str(handoff['native_pid']),'cmdline')
+                if command.exists() and str(args.resume.parent).encode() in command.read_bytes():
+                    raise ValueError('Do not duplicate a still-live handoff parent')
         elif not args.smoke and (saved['steps']!=300000 or args.steps!=1000000):
             raise ValueError('Only the predeclared300k-to1M continuation is currently authorized')
         learner.load_state_dict(saved['learner']);replay.load_state_dict(saved['replay'])
@@ -114,8 +136,9 @@ def main():
         source_commit=args.source_commit,baseline_commit=configuration['baseline_commit'],
         configuration=configuration,task_config=asdict(task),task_definition=envs[0].definition(),
         total_transition_budget=args.steps,initial_steps=steps,
-        initialization='native_engineering_recovery' if args.engineering_recovery else 'native_full_continuation' if saved else 'fresh',
+        initialization='native_resource_handoff' if args.resource_handoff else 'native_engineering_recovery' if args.engineering_recovery else 'native_full_continuation' if saved else 'fresh',
         engineering_recovery=args.engineering_recovery,
+        resource_handoff=args.resource_handoff,
         initial_training_violations=violations,initial_training_episodes=episodes,
         initial_physical_evaluation_transitions=initial_evaluation_transitions,
         parent_checkpoint=str(args.resume) if args.resume else None,
