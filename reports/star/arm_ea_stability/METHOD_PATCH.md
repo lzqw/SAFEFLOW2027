@@ -158,3 +158,19 @@ an explicit4k budget reserve for unlogged tails. Evaluation tables distinguish
 native lineage cost from the known-tail-adjusted cost lower bound. Native
 reconstruction remains observed-state continuation,not bitwise solver-cache
 identity across a reboot/GPU/host change. No automatic recovery loop is added.
+
+The first EA package was retained for the two native long continuations after
+both300k EA/Local pairs became available;see
+[CONTINUATION_SELECTION.md](CONTINUATION_SELECTION.md). Resource-only queue
+dependencies avoid putting two own initial learners in the occupied A100
+GPU0 recovery slot. A one-shot known-parent staging operation schedules the
+fourth declared700k segment without waiting for a global wave or selecting
+on evaluation scores. External monitoring remains30 minutes.
+
+`mechanism_stability.py` is prepared for the four completed fixed1M policies,
+but has not been run as a final mechanism experiment. Its64-state/32-draw
+common oracle axes,fixed-spectrum interventions,native samplers,small paired
+route probes and same-generator inference timings are separate from primary
+episode scores. Three pure route-proxy cases and rejection of an intermediate
+300k input passed on the native CPU environment,with zero physics or training.
+This does not stand in for the still-required final new-policy evidence.

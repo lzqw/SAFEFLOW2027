@@ -6,16 +6,20 @@ native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Final600k-to1M stability is unmeasured.
 
-## Verified runtime snapshot,2026-11-11 10:23:32 Asia/Taipei
+## Verified runtime snapshot,2026-11-11 10:53:33 Asia/Taipei
 
 | Host / GPU | Trial | Actual logged transitions | Native PID |
 |---|---|---:|---:|
-| A100 /1 | S-Iso2027 native300k-to1M | 312k | 1928659 |
-| A100 /0 | S-EA2027 native290k-to300k recovery | 291k | 1932961 |
+| A100 /1 | S-Iso2027 native300k-to1M | 360k | 1928659 |
+| A100 /0 | S-Iso2028 native230k-to300k recovery | 254k | 1951046 |
+| 4080 /0 | S-EA2028 native300k-to1M | 306k | 229868 |
 
-Both native identities and recovery controller1932957 were directly observed
-live. The controller will then complete S-Iso2028 from its230k native full
-checkpoint. All three original A100 trials plus S-Local2027 completed300k.
+All three native identities and the recovery/long queue identities were
+directly observed live. EA2027's native recovery completed300k;Iso2028
+continues from its230k native full checkpoint. Five of six initial endpoints
+are now complete. EA2027's next700k is queued on A100 GPU0 after the occupied
+recovery slot;Iso2028's700k remains to be started on4080 after its300k file
+exists. Both methods therefore remain represented on both authorized hosts.
 The two other4080 jobs failed with CUDA unspecified launch failure;their
 emergency CUDA-RNG checkpoint also failed. The host subsequently rebooted.
 This is not evidence of a mathematical NaN or a precise hardware root cause.
@@ -24,7 +28,10 @@ No original logs or results were replaced,and no other project was stopped.
 The4080 had load26.13/28CPU at10:17,so two recovery launches were refused
 before any child was created. Its native checkpoints were streamed directly
 to A100 (no local large-file copy). Its load returned to6.28 at10:23;future
-admission can use that headroom after scientific continuation selection.
+admission reused that headroom after scientific continuation selection. The
+10:45 long admission again saw a transient25.95 load;the idle own controller
+was replaced without stopping a native learner,and its resource retry is now
+5 minutes rather than30. External read-only inspection remains30 minutes.
 
 The compact mirror can be slightly older than this read-only snapshot;its
 recorded lower-bound counters are in [DEVELOPMENT_STATUS.json](DEVELOPMENT_STATUS.json).
@@ -40,14 +47,19 @@ columns are the equal-weight mean of four conditions,not independent seeds.
 | S-Iso2027 |96.67% /3.33%|71.25% /28.75%|70%|942|
 | S-Local2027 |100% /0%|88.75% /11.25%|40%|756|
 | S-Local2028 |100% /0%|83.75% /16.25%|65%|817|
+| S-EA2027 |100% /0%|97.5% /2.5%|10%|1007 (accounted at least1022)|
 | S-EA2028 |100% /0%|98.75% /1.25%|5%|1001|
 
-The matched seed2028 result favors EA over Local in evaluation robustness,
-but costs184 more training violations (22.5%) at300k. It is one development
-seed,not a confirmed independent EA benefit. EA2027 and Iso2028 fixed300k
-remain pending explicit engineering completion;they are not assigned zero or
-silently removed. No method is declared repaired and no best intermediate
-checkpoint will replace fixed1M. Iso2027 already starts the required late run.
+Both matched EA/Local seed pairs now favor EA's300k evaluation robustness,
+but EA costs at least28.6% more mean training violations after retaining the
+known discarded tail. This is two development seeds,not a new-seed confirmation
+or proof of late stability. Iso2028 fixed300k remains in explicit engineering
+completion;it is not assigned zero or silently removed. No method is declared
+repaired and no best intermediate checkpoint will replace fixed1M. The initial
+EA package is selected for the planned native long comparison;see
+[CONTINUATION_SELECTION.md](CONTINUATION_SELECTION.md). EA2028 can use4080
+without waiting for the whole recovery wave. EA2027's A100 queue waits only
+for the already occupied GPU0 recovery slot;Iso2027 continues on GPU1.
 
 There is substantial intermediate variation:Local2027 radius8cm violations
 were45%,90%,40% at100/200/300k;EA2028 were60%,50%,5%. Continuing the fixed

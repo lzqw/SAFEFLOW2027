@@ -18,6 +18,13 @@
       "native_full_snapshots": "Each full_300000.pt plus milestone policies and compact artifacts;exclude duplicate latest_full.pt",
       "transport": "SSH tar stream through local pipes,no local disk staging",
       "completion_evidence": "Both pipeline exits zero;all three protected300k snapshots directly listed on4080 4T at10:27"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev-recovery1",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev-recovery1",
+      "native_full_snapshot": "full_300000.pt plus milestone policy and compact artifacts;exclude duplicate latest_full.pt",
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;fresh destination only,original A100 protected snapshot retained"
     }
   ]
 }

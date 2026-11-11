@@ -42,6 +42,10 @@ for the currently running A100 GPU0 recovery slot,then starts automatically.
 Iso2028 will receive its declared700k continuation after its protected300k
 snapshot exists,and can use4080 to keep both methods represented on both
 hosts. This is a resource dependency,not a scientific performance threshold.
+The one-shot6e21cc7 stager now waits on that exact native handle,archives its
+completed300k directory directly to4080's4T,and starts the single declared
+Iso2028 long queue. Its receipt will be `ISO2028_STAGING_RECEIPT.json`;this
+is not an automatic training-restart loop or an extra scientific candidate.
 
 At10:45 the4080 queue observed CPU load25.95/28 and waited;at10:48 it had
 fallen to8.09,with over50GiB available RAM. A30-minute resource backoff would
@@ -72,3 +76,4 @@ uniform mean alone does not establish failure-action saturation. Sampled
 indices are fixed by NumPy default_rng(9830027),sequentially uniform then
 failure batches in the displayed trial order. This is one retrospective
 snapshot per trial,not evidence of persistent calibration over training.
+Full recorded probe numbers:[cost-300k-probe.json](cost-300k-probe.json).
