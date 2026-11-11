@@ -5,8 +5,8 @@ Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;all four paired Iso/EA600k endpoints and Iso2028's fixed1M endpoint
-are now available. The other three fixed1M endpoints remain pending. Complete
+available;all four paired Iso/EA600k endpoints and both Iso fixed1M endpoints
+are now available. Both EA fixed1M endpoints remain pending. Complete
 two-seed600k-to1M stability is not yet established. EA2027 has an explicit
 same-profile resource handoff at450k,not an extra scientific candidate.
 
@@ -321,6 +321,62 @@ one explanation,or silently removed by reporting only recovered endpoints.
 No extra PID or actor-delay candidate is launched from that temporal
 association alone. The original paired complete1M comparisons continue.
 
+## Complete Iso fixed1M results:18:23 capture
+
+Iso2027 has now also completed its full700k native continuation and five
+100-episode final conditions. Its retained final endpoint is:
+
+| Fixed1M condition | Iso2027 SS / violation | Iso2028 SS / violation | Two-seed mean SS / violation |
+|---|---:|---:|---:|
+| Nominal |95% /5%|95% /5%|95% /5%|
+| Radius7cm |37% /63%|83% /17%|60% /40%|
+| Radius8cm |5% /95%|54% /46%|29.5% /70.5%|
+| Lateral+/-3cm |98% /2%|98% /2%|98% /2%|
+| Lateral+/-6cm |99% /1%|100% /0%|99.5% /0.5%|
+| Four-stress mean |59.75% /40.25%|83.75% /16.25%|71.75% /28.25%|
+
+All these final conditions have0 safe timeouts. Mean nominal return10.446
+and capped time0.848s,stress return5.413 and capped time1.627s;all individual
+returns and capped/conditional times remain in FINAL_RESULTS.csv. Iso2027
+has2597 training violations and55282 completed episodes;Iso2028 has2185
+native violations (at least2187 accounted) and53941 native episodes (53999
+accounted). Accounted two-seed means are2392 violations and54640.5 episodes.
+
+Thus the shared package produces functioning nominal final policies in both
+seeds,but does not achieve training safety or robust obstacle-radius
+generalization. At600k the Iso mean stress SS was80.625%,violation14.375%,
+and8cm violation37.5%;the final estimates are71.75%,28.25%,and70.5%.
+The independent final layouts and larger episode count prevent attributing
+each delta solely to temporal change,but the observed final outcome misses
+the intended robustness and late-risk goals. It must not be replaced by
+the better600k checkpoint or described as a completed repair.
+
+At1M Iso2027 policy-Q mean9.716,max10.101,sampled replay bound exceedance0,
+energy19.497,clipping6.09%,multiplier0,and recent training success97%.
+Its600k-to1M logged policy-Q maximum never exceeds12.117;the brief634k
+recent-success trough4% was followed by recovery. Neither final seed
+exhibits the old sustained positive-Q scale near35 or nominal failure at
+its endpoint. That is evidence about the observed phenotype,not a causal
+ablation proving which member of the shared package fixes it or that all
+training excursions are eliminated. The remaining severe radius failure
+cannot be excused by final nominal-task collapse.
+
+The two EA final policies and their matched1M comparison remain pending.
+The original native EA jobs continue on4080;no scientific early stop or
+additional candidate is introduced on the basis of the Iso final results.
+The compact capture records4259210 logged new training transitions including
+engineering,4264210 conservative charge with reserve,and88023 nontraining
+physical controls. There are120 development condition rows and10 completed
+fixed1M rows;the full goal is not complete.
+
+Both protected Iso2027 full snapshots (600k and1M,about201MB total),milestone
+policies and compact raw evidence are now archived in a fresh4080 4T folder.
+The direct SSH stream completed with both pipeline exits0 and matching
+source/destination file sizes;A100 originals remain. The4080 filesystem has
+about1.4TiB free. No large local file was created or historical archive erased.
+See [ARCHIVE_TRANSFERS.json](ARCHIVE_TRANSFERS.json). Both Iso1M full states
+are therefore available on4T for the eventual four-policy mechanism analysis.
+
 ## Resource-only acceleration:EA2027 pinned450k handoff,15:37
 
 Completed Iso2028 released a4080 slot. Preflight observed14.4GiB free VRAM,
@@ -398,7 +454,7 @@ this unfavorable checkpoint remains visible rather than being replaced.
 
 Full condition metrics,return,capped/conditional time and raw episode evidence:
 [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv). [FINAL_RESULTS.csv](FINAL_RESULTS.csv)
-now contains Iso2028's five completed fixed1M conditions. The other three
+now contains both Iso seeds' ten completed fixed1M conditions. Both EA
 long-run endpoints are still absent,not implicitly successful or waived.
 
 ## Learning curves and measured throughput

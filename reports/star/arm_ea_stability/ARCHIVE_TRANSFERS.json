@@ -4,6 +4,15 @@
   "original_server_files_deleted_or_replaced": 0,
   "transfers": [
     {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long",
+      "native_full_snapshots": ["full_600000.pt:100698245 bytes", "full_1000000.pt:100778615 bytes"],
+      "contents": "Both protected full learner/replay snapshots,milestone policies,completed receipt and compact raw results;duplicate latest_full.pt excluded",
+      "transport": "SSH tar stream through local pipes,no local large-file staging;fresh destination directory",
+      "completion_evidence": "Both pipeline exits zero;18:26 destination sizes match both source protected files;A100 native completion independently confirmed by fixed1M receipt and terminal identity",
+      "original_source_retained": true
+    },
+    {
       "from": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2",
       "to": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2",
       "fresh_destination_directories": ["s-ea-seed2027-v2-dev", "s-iso-seed2028-v2-dev"],

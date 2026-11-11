@@ -1,5 +1,5 @@
 {
-  "local_time": "2026-11-11T15:53:06.970013+08:00",
+  "local_time": "2026-11-11T18:23:11.749947+08:00",
   "observations": [
     {
       "host": "tjucta-a100",
@@ -44,15 +44,15 @@
           "variant": "s_iso",
           "seed": 2027,
           "gpu": 1,
-          "identity_alive": true,
-          "steps": 820000,
+          "identity_alive": false,
+          "steps": 1000000,
           "target_steps": 1000000,
-          "completed": false,
+          "completed": true,
           "unexpected_terminal": false
         }
       ],
-      "gpu": "0, 59601, 70\n1, 45678, 99",
-      "load": 9.11,
+      "gpu": "0, 78933, 11\n1, 60301, 86",
+      "load": 6.54,
       "cpus": 128
     },
     {
@@ -71,7 +71,7 @@
               "seed": 2028,
               "gpu": 0,
               "identity_alive": true,
-              "steps": 738000,
+              "steps": 956000,
               "target_steps": 1000000,
               "completed": false,
               "unexpected_terminal": false
@@ -110,14 +110,14 @@
           "seed": 2027,
           "gpu": 0,
           "identity_alive": true,
-          "steps": 476000,
+          "steps": 692000,
           "target_steps": 1000000,
           "completed": false,
           "unexpected_terminal": false
         }
       ],
-      "gpu": "0, 14459, 95",
-      "load": 5.19677734375,
+      "gpu": "0, 14624, 81",
+      "load": 8.4072265625,
       "cpus": 28
     }
   ],
