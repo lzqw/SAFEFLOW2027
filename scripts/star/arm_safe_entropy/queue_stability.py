@@ -80,9 +80,8 @@ def main():
             raise ValueError('A finite followup requires a distinct id and at most four declared native segments')
         for job in all_jobs:
             initial=job.get('initial_steps',-1)
-            if (job['variant'] not in ('s_iso','s_local','s_ea') or job['seed'] not in (2027,2028)
-                    or not Path(job.get('resume','')).is_file()):
-                raise ValueError('Followups require existing native development checkpoints')
+            if job['variant'] not in ('s_iso','s_local','s_ea') or job['seed'] not in (2027,2028):
+                raise ValueError('Followups require the declared development methods and seeds')
             if job.get('engineering_recovery'):
                 if not 0<initial<job['steps']==300000:
                     raise ValueError('Engineering followup only completes the initial300k endpoint')
@@ -91,6 +90,8 @@ def main():
         reservation=sum(j['steps']-j['initial_steps'] for j in all_jobs)
         if reservation!=plan['reserved_new_training_transitions'] or not 0<reservation<=2800000:
             raise ValueError('Followup reservation must exactly match its bounded incremental transitions')
+        if any(not Path(job.get('resume','')).is_file() for job in role['jobs']):
+            raise ValueError('Each local followup requires its existing native full checkpoint')
     elif (len(all_jobs)!=6 or {(j['variant'],j['seed']) for j in all_jobs}!=
               {(v,s) for v in ('s_iso','s_local','s_ea') for s in (2027,2028)} or
               any(j['steps']!=300000 for j in all_jobs) or
@@ -163,6 +164,15 @@ def main():
                         for r in active)):
                 maximum=role['maximum_slots_per_gpu']
             if not pending or len(active)>=maximum or time.monotonic()<next_resource_attempt[gpu]: continue
+            prerequisite=pending[0].get('wait_for_queue_completion')
+            if prerequisite:
+                predecessor=read_json(Path(prerequisite))
+                predecessor_pid=predecessor.get('queue_pid')
+                # Resource sequencing only:finish the already running own
+                # recovery slot,not a success-rate or scientific early-stop gate.
+                if (predecessor.get('status')!='completed_all_predeclared_jobs' or
+                        predecessor_pid is None or (Path('/proc')/str(predecessor_pid)/'cmdline').exists()):
+                    continue
             try:
                 observed=resources(args.project)
                 admission=plan['admission'];card=observed['gpus'][gpu]

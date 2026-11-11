@@ -1,0 +1,26 @@
+{
+  "queue_kind": "explicit_native_development_followup",
+  "config": "configs/star/arm_ea_stability/development_v2.json",
+  "reserved_new_training_transitions": 1400000,
+  "scientific_selection": "Keep the initial rho0.25 EA package after both fixed300k EA/Local seed pairs;retain higher training cost as a failure,not a success gate. Iso2027 long is already running;Iso2028 long follows its protected300k recovery separately.",
+  "host_roles": {
+    "a100": {
+      "gpus": [0], "initial_slots_per_gpu": 1, "maximum_slots_per_gpu": 1,
+      "jobs": [{"name": "s-ea-seed2027-v2-long", "variant": "s_ea", "seed": 2027, "initial_steps": 300000, "steps": 1000000,
+        "resume": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev-recovery1/full_300000.pt",
+        "wait_for_queue_completion": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-recovery1.json"}]
+    },
+    "4080": {
+      "gpus": [0], "initial_slots_per_gpu": 1, "maximum_slots_per_gpu": 1,
+      "jobs": [{"name": "s-ea-seed2028-v2-long", "variant": "s_ea", "seed": 2028, "initial_steps": 300000, "steps": 1000000,
+        "resume": "/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2028-v2-dev/full_300000.pt"}]
+    }
+  },
+  "admission": {"minimum_free_gpu_mib": 6144, "maximum_gpu_utilization_percent": 100,
+    "maximum_host_load_fraction": 0.6, "minimum_disk_free_gib": 8},
+  "owned_handle_poll_seconds": 60,
+  "resource_retry_seconds": 1800,
+  "automatic_restart": false,
+  "formal_confirmation_authorized_by_this_queue": false,
+  "foreign_workloads_changed": false
+}
