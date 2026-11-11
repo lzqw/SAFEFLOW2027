@@ -1,4 +1,4 @@
-"""Finite,resource-only queue for the six predeclared development trials.
+"""Finite resource-only queue for initial trials or explicit native followups.
 
 Standard-library parent,one learner per A100 initially. The4080 may admit its
 second slot after observed productive progress; no training mutation/restart.
@@ -9,6 +9,7 @@ from datetime import datetime,timezone
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import time
@@ -62,6 +63,7 @@ def main():
     parser.add_argument('--learner-source',type=Path,help='Immutable native learner source;independent of resource-controller code')
     parser.add_argument('--adopt-state',type=Path,help='Explicit controller-only handoff;previous controller must already be stopped')
     parser.add_argument('--maximum-gpu-utilization',type=int,choices=range(1,101),metavar='1..100')
+    parser.add_argument('--queue-id',help='Distinct named finite followup,not a restart of the initial queue')
     args=parser.parse_args()
     controller_source=Path(__file__).resolve().parents[3]
     source=args.learner_source.resolve() if args.learner_source else controller_source
@@ -70,14 +72,33 @@ def main():
         plan['admission']['maximum_gpu_utilization_percent']=args.maximum_gpu_utilization
     role=plan['host_roles'][args.host_role]
     all_jobs=[job for host in plan['host_roles'].values() for job in host['jobs']]
-    if (len(all_jobs)!=6 or {(j['variant'],j['seed']) for j in all_jobs}!=
-            {(v,s) for v in ('s_iso','s_local','s_ea') for s in (2027,2028)} or
-            any(j['steps']!=300000 for j in all_jobs) or
-            sum(j['steps'] for j in all_jobs)!=plan['reserved_new_training_transitions']):
-        raise ValueError('This queue can launch only the bounded initial1.8M matrix')
+    followup=plan.get('queue_kind')=='explicit_native_development_followup'
+    if args.queue_id and not re.fullmatch('[a-z0-9-]{1,40}',args.queue_id):
+        parser.error('Queue id must be a short safe filename component')
+    if followup:
+        if not args.queue_id or not 1<=len(all_jobs)<=4:
+            raise ValueError('A finite followup requires a distinct id and at most four declared native segments')
+        for job in all_jobs:
+            initial=job.get('initial_steps',-1)
+            if (job['variant'] not in ('s_iso','s_local','s_ea') or job['seed'] not in (2027,2028)
+                    or not Path(job.get('resume','')).is_file()):
+                raise ValueError('Followups require existing native development checkpoints')
+            if job.get('engineering_recovery'):
+                if not 0<initial<job['steps']==300000:
+                    raise ValueError('Engineering followup only completes the initial300k endpoint')
+            elif not initial==300000<job['steps']==1000000:
+                raise ValueError('Scientific followup only declares a native300k-to1M continuation')
+        reservation=sum(j['steps']-j['initial_steps'] for j in all_jobs)
+        if reservation!=plan['reserved_new_training_transitions'] or not 0<reservation<=2800000:
+            raise ValueError('Followup reservation must exactly match its bounded incremental transitions')
+    elif (len(all_jobs)!=6 or {(j['variant'],j['seed']) for j in all_jobs}!=
+              {(v,s) for v in ('s_iso','s_local','s_ea') for s in (2027,2028)} or
+              any(j['steps']!=300000 for j in all_jobs) or
+              sum(j['steps'] for j in all_jobs)!=plan['reserved_new_training_transitions']):
+        raise ValueError('The initial queue can launch only the bounded1.8M matrix')
     output_root=args.project/'runs/ea_stability_v2'
     output_root.mkdir(parents=True,exist_ok=True)
-    state_path=args.project/'queues'/f'ea-stability-v2-{args.host_role}-{args.source_commit[:7]}.json'
+    state_path=args.project/'queues'/f'ea-stability-v2-{args.host_role}-{args.queue_id or args.source_commit[:7]}.json'
     state_path.parent.mkdir(exist_ok=True)
     if state_path.exists() and args.adopt_state!=state_path:
         raise ValueError('Existing queue evidence is not a restart authorization')
@@ -123,7 +144,7 @@ def main():
             returncode=job['process'].poll()
             if returncode is None: continue
             receipt=read_json(Path(job['output'])/'receipt.json')
-            complete=(returncode==0 and receipt.get('status')=='completed' and receipt.get('steps')==300000
+            complete=(returncode==0 and receipt.get('status')=='completed' and receipt.get('steps')==job['steps']
                       and receipt.get('variant')==job['variant'] and receipt.get('training_seed')==job['seed'])
             adopted=job.get('adopted_native_handle',False)
             finished.append({k:v for k,v in job.items() if k!='process'} |
@@ -163,7 +184,10 @@ def main():
                 raise ValueError('Never overwrite/restart an existing native trial')
             command=[str(args.project/'env/bin/python'),'-u','-m','scripts.star.arm_safe_entropy.train_stability',
                 '--config',str(source/plan['config']),'--variant',job['variant'],'--seed',str(job['seed']),
-                '--steps','300000','--source-commit',args.source_commit,'--output',str(output)]
+                '--steps',str(job['steps']),'--source-commit',args.source_commit,'--output',str(output)]
+            if followup:
+                command.extend(['--resume',job['resume']])
+                if job.get('engineering_recovery'): command.append('--engineering-recovery')
             environment=dict(os.environ,CUDA_VISIBLE_DEVICES=str(gpu),OMP_NUM_THREADS='1',
                              OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1')
             with log.open('xb') as stream:
