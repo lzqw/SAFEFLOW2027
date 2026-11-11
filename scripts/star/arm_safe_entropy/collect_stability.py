@@ -106,6 +106,7 @@ def main():
             physical_evaluation_transitions=(receipt.get('new_physical_evaluation_transitions',0) if complete else
                 sum(read_json(p).get('physical_evaluation_transitions',0) for p in folder.glob('evaluation_*.json'))),
             host=config['host'],source_commit=config['source_commit'],status='completed' if complete else
+                'resource_handoff_parent_retained' if incident.get('reason')=='resource_handoff' else
                 'engineering_interrupted_retained' if incident.get('native_process_confirmed_terminal') else status.get('state','starting'),
             result='native_counter_not_efficacy_claim',evidence=str(folder.relative_to(report)),
             training_violation_count=violations if violations is not None else '',

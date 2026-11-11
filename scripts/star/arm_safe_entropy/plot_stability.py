@@ -102,9 +102,11 @@ def throughput(trial):
         recent_window_start_steps=int(first['steps']) if window_seconds > 0 else '',
         recent_window_end_steps=int(last['steps']) if window_seconds > 0 else '',
         recent_window_transitions_per_second=(last['steps']-first['steps'])/window_seconds if window_seconds > 0 else '',
-        observed_failed_process_lifetime_seconds=lifetime if lifetime is not None else '',
-        logged_transitions_per_failed_process_lifetime=(steps-config['initial_steps'])/lifetime if lifetime else '',
+        observed_terminal_process_lifetime_seconds=lifetime if lifetime is not None else '',
+        observed_failed_process_lifetime_seconds=lifetime if lifetime is not None and incident.get('reason')!='resource_handoff' else '',
+        logged_transitions_per_failed_process_lifetime=(steps-config['initial_steps'])/lifetime if lifetime and incident.get('reason')!='resource_handoff' else '',
         scope='completed_including_final_evaluation_and_save' if complete else
+            'resource_handoff_parent_logged_prefix;terminal_process_lifetime_includes_transfer_pause' if incident.get('reason')=='resource_handoff' else
             'interrupted_logged_prefix;process_lifetime_separately_includes_postlog_CUDA_wait' if incident else
             'running_logged_prefix_not_final_milestone_overhead',
         source_commit=config['source_commit'], evidence=f"native_runs/{trial['name']}/progress.csv")

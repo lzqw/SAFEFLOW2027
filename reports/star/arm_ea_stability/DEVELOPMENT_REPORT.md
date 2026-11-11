@@ -5,8 +5,10 @@ Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;EA2028's600k endpoint is also available. EA2027's600k and all fixed1M endpoints remain pending. Final600k-to1M
-stability is unmeasured.
+available;EA2028's600k and Iso2028's fixed1M endpoints are also available.
+EA2027's600k and the other three fixed1M endpoints remain pending. Complete
+two-seed600k-to1M stability is not yet established. EA2027 has an explicit
+same-profile resource handoff at450k,not an extra scientific candidate.
 
 ## Runtime progression,2026-11-11 Asia/Taipei
 
@@ -222,6 +224,105 @@ with conservative charge3187210 including the4000 reserve;nontraining
 physical controls70815. There are105 development condition rows,zero
 fixed1M rows,and no extra short candidate or formal-confirmation run.
 
+## First complete fixed1M endpoint:Iso2028,15:25 capture
+
+This native continuation completed its full700k incremental transitions and
+then all five100-episode final conditions. Its terminal receipt records
+998000 learner updates,1996000 reward updates,498500 actor updates,and
+13108.80 seconds for the long segment including its evaluations and saves.
+Final tests use the independent fixed layout seed start130027,not the
+middle-checkpoint120027 layouts. No best checkpoint replaces this endpoint.
+
+| Fixed1M condition | Safe success | Violation | Safe timeout | Return | Capped time(s) |
+|---|---:|---:|---:|---:|---:|
+| Nominal |95%|5%|0%|10.432|0.854|
+| Radius7cm |83%|17%|0%|7.823|1.248|
+| Radius8cm |54%|46%|0%|1.629|2.206|
+| Lateral+/-3cm |98%|2%|0%|11.081|0.757|
+| Lateral+/-6cm |100%|0%|0%|11.515|0.706|
+| Four-stress mean |83.75%|16.25%|0%|8.012|1.229|
+
+Native cumulative training violations are2185;retaining the old known
+discarded tail gives at least2187. Native completed episodes53941,accounted
+53999. The final nominal task is functioning,but nominal violation5%,stress
+violation16.25%,8cm violation46%,and cumulative training cost all miss their
+effort targets in this seed. Nominal95% is not evidence of a three-seed
+average. Successful conditional times remain in FINAL_RESULTS.csv alongside
+capped times;the8cm conditional mean0.679s must not hide46 failures.
+
+From600k to1M,this seed's logged policy-Q maximum stays below11.982 and
+recent training success stays85–100%;at1M policy-Q mean9.712,max10.146,
+sampled replay upper-bound exceedance0,energy18.738,clipping6.38%,and
+multiplier0. There is no recurrence of its534k global-Q excursion in that
+logged interval. This is encouraging for nominal late learning in this one
+seed,not evidence that robustness is repaired. The1M radius8cm risk is
+46% versus the600k development estimate10%,with different layouts and
+episode counts;this is a worse observed final endpoint,not an isolated
+causal estimate of temporal drift. All final rows remain visible.
+
+The other Iso seed also had a real post600k training excursion:at634k,
+recent success4%,mean episode length35.92,and multiplier2.376;its policy-Q
+mean was5.915,not a large positive mean-Q blow-up. It recovered before the
+698k mirror. Thus the two observed transient failures cannot all be given
+one explanation,or silently removed by reporting only recovered endpoints.
+No extra PID or actor-delay candidate is launched from that temporal
+association alone. The original paired complete1M comparisons continue.
+
+## Resource-only acceleration:EA2027 pinned450k handoff,15:37
+
+Completed Iso2028 released a4080 slot. Preflight observed14.4GiB free VRAM,
+53GiB available RAM,and load2.61/28 on4080. The A100 EA2027 process was
+advancing near10 actual transitions/s,versus the existing4080 EA workload
+near25–28;GPU utilization alone was not used as the decision criterion.
+
+The explicit plan pins the existing atomic full450k checkpoint after a
+complete learner round. Only the exact owned A100 native PID1997214 was
+briefly frozen while the pinned full state and compact parent records were
+streamed to a fresh4080 4T archive. After destination CPU validation,the source
+was intentionally terminated,not scientifically early-stopped. A new native
+PID681280 resumes the remaining550k to the same1M target. The source archive,
+raw logs and pinned full state are retained on A100 and4080;no large file was
+written locally. No other project was signalled and no5080 resource was used.
+
+Driver e7be7ea adds only a guarded explicit resource-handoff resume path;
+learner,geometry,configuration,evaluation and runtime reconstruction are
+unchanged from the original scientific package. EMA,all optimizers,replay,
+Python/NumPy/Torch/CUDA RNG,episode counters and partial observed physical
+states were loaded. Native first progress451k confirms449000 learner updates,
+898000 reward updates,224000 actor updates and cumulative cost1286,without
+resetting the lineage. This is observed-state continuation,not a claim of
+bitwise-identical Bullet solver caches or cross-GPU arithmetic.
+
+The last logged source row and pinned checkpoint are both450k,so known
+discarded tail transitions,violations and episodes are all0. A separate1000
+transition reserve covers any unlogged work between checkpoint and freeze;
+it is not claimed as observed training. Total unlogged reserve is now5000,
+and the projected complete core training charge is at least4610210 logged
+plus5000 reserve,still below6M. No scientific candidate or new seed was added.
+The old parent process lifetime and transfer pause remain separately visible
+in TRAINING_THROUGHPUT.csv rather than being called a CUDA failure or omitted
+from timing. The first2000 destination transitions averaged27.89/s;this short
+prefix suggests acceleration,but a longer measured window is needed for ETA.
+
+See [EA2027_RESOURCE_HANDOFF_RECEIPT.json](EA2027_RESOURCE_HANDOFF_RECEIPT.json)
+and [the finite plan](../../../configs/star/arm_ea_stability/ea2027_resource_handoff_v2.json).
+The half-hour observer now follows the new exact native identity instead of
+requiring the intentionally terminal old A100 queue to remain alive.
+
+The15:53 scheduled snapshot verified all three remaining native identities
+alive:Iso2027 820k on A100,EA2028 738k and EA2027 476k on4080. Iso2028's
+completed1M receipt remains visible. A20k-transition destination window now
+measures26.75/s for EA2027 (477k compact capture),versus its original A100
+segment near9.97/s:about2.7x observed throughput across this handoff. This
+is a practical same-trial resource improvement,not a causal cross-hardware
+algorithm speed benchmark. The shared scientific source files remain exactly
+identical to3c308e4 by focused diff. Current remaining pure-training estimates
+are2.28h Iso2027,2.69h EA2028,and5.43h EA2027;allow6–8h overall for resource
+variation and milestones,then1–3h for final mechanism/collection/reporting.
+The revised estimate is late evening11 November or early12 November,not the
+previous next-day-morning estimate. Conditional new-seed confirmation is not
+included and still requires the full scientific late-stage decision.
+
 ## Earlier fixed checkpoint retained: S-Local2027,100k
 
 Training cumulative violations:322 at100000 actual train transitions,including
@@ -243,9 +344,9 @@ matched results were unavailable. The fixed300k trial has since completed;
 this unfavorable checkpoint remains visible rather than being replaced.
 
 Full condition metrics,return,capped/conditional time and raw episode evidence:
-[DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv). The currently empty
-[FINAL_RESULTS.csv](FINAL_RESULTS.csv) has no completed fixed1M outcome yet;
-it must not be read as an implicit success or omitted requirement.
+[DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv). [FINAL_RESULTS.csv](FINAL_RESULTS.csv)
+now contains Iso2028's five completed fixed1M conditions. The other three
+long-run endpoints are still absent,not implicitly successful or waived.
 
 ## Learning curves and measured throughput
 

@@ -1,5 +1,5 @@
 {
-  "local_time": "2026-11-11T11:53:01.003895+08:00",
+  "local_time": "2026-11-11T15:53:06.970013+08:00",
   "observations": [
     {
       "host": "tjucta-a100",
@@ -36,28 +36,6 @@
           ],
           "completed": true,
           "unexpected_terminal": false
-        },
-        {
-          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-selected-long-v2.json",
-          "queue_pid": 1958400,
-          "identity_alive": true,
-          "status": "running",
-          "pending": [],
-          "rows": [
-            {
-              "pid": 1997214,
-              "variant": "s_ea",
-              "seed": 2027,
-              "gpu": 0,
-              "identity_alive": true,
-              "steps": 316000,
-              "target_steps": 1000000,
-              "completed": false,
-              "unexpected_terminal": false
-            }
-          ],
-          "completed": false,
-          "unexpected_terminal": false
         }
       ],
       "direct": [
@@ -67,14 +45,14 @@
           "seed": 2027,
           "gpu": 1,
           "identity_alive": true,
-          "steps": 453000,
+          "steps": 820000,
           "target_steps": 1000000,
           "completed": false,
           "unexpected_terminal": false
         }
       ],
-      "gpu": "0, 78545, 64\n1, 78537, 65",
-      "load": 8.41,
+      "gpu": "0, 59601, 70\n1, 45678, 99",
+      "load": 9.11,
       "cpus": 128
     },
     {
@@ -93,7 +71,7 @@
               "seed": 2028,
               "gpu": 0,
               "identity_alive": true,
-              "steps": 386000,
+              "steps": 738000,
               "target_steps": 1000000,
               "completed": false,
               "unexpected_terminal": false
@@ -105,8 +83,8 @@
         {
           "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-iso2028-long-v2.json",
           "queue_pid": 308005,
-          "identity_alive": true,
-          "status": "running",
+          "identity_alive": false,
+          "status": "completed_all_predeclared_jobs",
           "pending": [],
           "rows": [
             {
@@ -114,20 +92,32 @@
               "variant": "s_iso",
               "seed": 2028,
               "gpu": 0,
-              "identity_alive": true,
-              "steps": 344000,
+              "identity_alive": false,
+              "steps": 1000000,
               "target_steps": 1000000,
-              "completed": false,
+              "completed": true,
               "unexpected_terminal": false
             }
           ],
+          "completed": true,
+          "unexpected_terminal": false
+        }
+      ],
+      "direct": [
+        {
+          "pid": 681280,
+          "variant": "s_ea",
+          "seed": 2027,
+          "gpu": 0,
+          "identity_alive": true,
+          "steps": 476000,
+          "target_steps": 1000000,
           "completed": false,
           "unexpected_terminal": false
         }
       ],
-      "direct": [],
-      "gpu": "0, 7599, 100",
-      "load": 6.75927734375,
+      "gpu": "0, 14459, 95",
+      "load": 5.19677734375,
       "cpus": 28
     }
   ],

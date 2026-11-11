@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "variant": "s_iso",
+  "training_seed": 2028,
+  "steps": 1000000,
+  "initial_steps": 300000,
+  "newly_collected_transitions": 700000,
+  "training_violation_count": 2185,
+  "training_episodes": 53941,
+  "training_safe_successes": 50955,
+  "training_safe_timeouts": 801,
+  "physical_evaluation_transitions": 16681,
+  "new_physical_evaluation_transitions": 10877,
+  "segment_elapsed_seconds": 13108.802102767,
+  "cumulative_elapsed_seconds": 20791.466340161853,
+  "learner_updates": 998000,
+  "reward_updates": 1996000,
+  "actor_updates": 498500,
+  "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+  "final_evaluation": "evaluation_1000000.json"
+}

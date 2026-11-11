@@ -32,6 +32,14 @@
       "native_full_snapshot": "full_300000.pt plus milestone policy and compact artifacts;exclude duplicate latest_full.pt",
       "transport": "One-shot direct SSH tar stream;no local large-file staging",
       "completion_evidence": "ISO2028_STAGING_RECEIPT.json;the subsequent native long run progressed beyond300k on4080"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long",
+      "native_full_snapshot": "resource_handoff_full_450000.pt;immutable hardlink to the existing completed-round full450k inode,plus compact parent records;exclude duplicate latest_full.pt",
+      "transport": "One-shot SSH tar stream through local pipes,no local disk staging;fresh destination archive",
+      "completion_evidence": "EA2027_RESOURCE_HANDOFF_RECEIPT.json;destination native PID681280 restored the exact configuration and progressed beyond451k,with original A100 pinned state and raw logs retained",
+      "runtime_metadata_note": "Only intentional-handoff status/incident JSON was generated;no original raw log,policy or full replay checkpoint was deleted or overwritten"
     }
   ]
 }

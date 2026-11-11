@@ -9,10 +9,6 @@
         {
           "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-recovery1.json",
           "identity_token": "recovery1"
-        },
-        {
-          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-selected-long-v2.json",
-          "identity_token": "selected-long-v2"
         }
       ],
       "direct": [
@@ -40,8 +36,18 @@
           "identity_token": "iso2028-long-v2"
         }
       ],
-      "direct": [],
-      "resource_note": "EA2028 native long PID229868 confirmed306k at10:53;Iso2028 long remains to be scheduled only after its protected300k completion."
+      "direct": [
+        {
+          "pid": 681280,
+          "variant": "s_ea",
+          "seed": 2027,
+          "gpu": 0,
+          "source_commit": "e7be7eaa6d6c86844229dd476c934dece7e5917a",
+          "steps": 1000000,
+          "output": "/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long-handoff1"
+        }
+      ],
+      "resource_note": "Iso2028 completed fixed1M;EA2027 explicitly handed off at pinned450k full state from A100 into its released4080 slot. Historical A100 parent queue is no longer a required live handle;EA2027_RESOURCE_HANDOFF_RECEIPT.json preserves its terminal identity and accounting. No scientific profile changed."
     }
   ]
 }
