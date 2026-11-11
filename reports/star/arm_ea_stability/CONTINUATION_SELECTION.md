@@ -43,6 +43,12 @@ Iso2028 will receive its declared700k continuation after its protected300k
 snapshot exists,and can use4080 to keep both methods represented on both
 hosts. This is a resource dependency,not a scientific performance threshold.
 
+At10:45 the4080 queue observed CPU load25.95/28 and waited;at10:48 it had
+fallen to8.09,with over50GiB available RAM. A30-minute resource backoff would
+miss that admitted slot. The waiting4080 controller is replaced explicitly
+with the same finite trial and guards but a5-minute admission retry. No native
+training child had started,and none is stopped. External checks stay30min.
+
 All use the same3c308e4 learner/geometry/profile. Driver94ffff3 only adds
 explicit engineering recovery and initial-counter metadata. Large snapshots
 stay on the servers/4080 4T. The conditional new-seed9M remains unqueued.

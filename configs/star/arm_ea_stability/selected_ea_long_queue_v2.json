@@ -19,7 +19,7 @@
   "admission": {"minimum_free_gpu_mib": 6144, "maximum_gpu_utilization_percent": 100,
     "maximum_host_load_fraction": 0.6, "minimum_disk_free_gib": 8},
   "owned_handle_poll_seconds": 60,
-  "resource_retry_seconds": 1800,
+  "resource_retry_seconds": 300,
   "automatic_restart": false,
   "formal_confirmation_authorized_by_this_queue": false,
   "foreign_workloads_changed": false
