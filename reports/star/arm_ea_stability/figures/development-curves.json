@@ -21,7 +21,7 @@
     {
       "trial": "s-ea-seed2027-v2-long",
       "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
-      "latest_logged_steps": 305000,
+      "latest_logged_steps": 375000,
       "evaluation_milestones": []
     },
     {
@@ -37,7 +37,7 @@
     {
       "trial": "s-ea-seed2028-v2-long",
       "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
-      "latest_logged_steps": 365000,
+      "latest_logged_steps": 500000,
       "evaluation_milestones": []
     },
     {
@@ -53,8 +53,10 @@
     {
       "trial": "s-iso-seed2027-v2-long",
       "source_commit": "3c308e49d4d93d49c15ee8112071d04087e622d8",
-      "latest_logged_steps": 422000,
-      "evaluation_milestones": []
+      "latest_logged_steps": 602000,
+      "evaluation_milestones": [
+        600000
+      ]
     },
     {
       "trial": "s-iso-seed2028-v2-dev",
@@ -76,8 +78,10 @@
     {
       "trial": "s-iso-seed2028-v2-long",
       "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
-      "latest_logged_steps": 306000,
-      "evaluation_milestones": []
+      "latest_logged_steps": 612000,
+      "evaluation_milestones": [
+        600000
+      ]
     },
     {
       "trial": "s-local-seed2027-v2-dev",

@@ -4,7 +4,9 @@ Scientific learner/configuration: `3c308e49d4d93d49c15ee8112071d04087e622d8`.
 Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
-formal-confirmation launch has occurred. Final600k-to1M stability is unmeasured.
+formal-confirmation launch has occurred. Both Iso600k endpoints are now
+available;EA600k and all fixed1M endpoints remain pending. Final600k-to1M
+stability is unmeasured.
 
 ## Runtime progression,2026-11-11 Asia/Taipei
 
@@ -97,6 +99,76 @@ were45%,90%,40% at100/200/300k;EA2028 were60%,50%,5%. Continuing the fixed
 learning curves matters. Known accounted violations756–1022 already at300k
 exceed the350/1M effort target. Cumulative counts cannot decrease during
 continuation;do not erase the prefix or invent final1M scores.
+
+## First fixed600k endpoints: Iso only,2026-11-11 13:30 capture
+
+Both native Iso continuations passed600k and produced their predeclared
+evaluations:30 nominal episodes and20 per stress,layout seed start120027,
+training RNG preserved. These are not additional evaluations launched by the
+collector. The two evaluations consumed4491 physical control intervals,
+separate from training. EA was only375k/500k in this compact capture;do not
+compare its300k scores with Iso600k as a matched endpoint comparison.
+
+Each entry below is safe success / violation / safe timeout,all percentages.
+
+| Fixed600k condition | Iso2027 | Iso2028 |
+|---|---:|---:|
+| Nominal |96.67 /3.33 /0|93.33 /0 /6.67|
+| Radius7cm |65 /35 /0|100 /0 /0|
+| Radius8cm |35 /65 /0|90 /10 /0|
+| Lateral+/-3cm |100 /0 /0|85 /0 /15|
+| Lateral+/-6cm |100 /0 /0|70 /5 /25|
+| Four-stress mean |75 /25 /0|86.25 /3.75 /10|
+
+Across the two training seeds,nominal safe success is95%,stress safe success
+80.625%,stress violation14.375%,stress safe timeout5%,and radius8cm violation
+37.5%. These are descriptive development means,not a three-seed confirmation.
+Native training violations are1508/1428 at600k;retaining the known discarded
+Iso2028 tail gives1508/1430 and a mean of1469. Completed native training
+episodes are32109/30583;accounted episodes32109/30641. Low stress risk in
+Iso2028 is not uniformly successful behavior:the lateral6cm condition has
+five safe timeouts among20 episodes. The cumulative350/1M target is already
+unattainable for these lineages.
+
+The600k learner rows alone look benign:policy-Q means9.699/9.524,maxima
+10.123/10.114,zero sampled replay upper-bound exceedance,clipping5.37%/5.18%,
+energy18.381/18.896,and multiplier0 for both. However,reading the intervening
+native curve reveals a real transient Iso2028 failure that a milestone-only
+summary would hide:
+
+- At534k,logged signed policy-Q maximum17.958 exceeds even the global15
+  task upper bound;policy/replay means are9.798/9.785,and multiplier is0.
+- At548k,40.23% of sampled replay actions exceed their state-specific
+  reward-Q upper bound;recent safe success is17% and mean episode length
+  78.07 control intervals. At553k,recent safe success reaches0%,mean episode
+  length98.02,and multiplier is0. These are recent training-episode windows,
+  not held-out test scores or proof that every state has collapsed.
+- By560k,recent success is90%,sampled replay bound exceedance is0,and
+  by570k recent success is100%. There was no restart or scientific change.
+  The600k held-out nominal result nonetheless retains two safe timeouts.
+
+This is evidence that the first shared stability package has not eliminated
+all critic/behavior excursions. Temporal association does not prove the
+critic spike caused the later behavior. Nor does multiplier0 at the peak
+and trough exclude its nonzero values in between. It does rule out a claim
+that the entire interval is explained solely by a large persistent safety
+penalty. The original complete1M continuations remain mandatory.
+
+No short candidate has yet been launched. If the late interval shows
+recurring material instability,the authorized single-factor actor-interval
+2-to4 comparison is the relevant first candidate;PID,changing noise,or
+silently clipping reported Q would not address the observed evidence.
+Because this excursion recovered before600k,we retain the current complete
+paired long matrix rather than replacing its trajectories mid-run. Final
+method selection still depends on fixed1M results and the new-policy
+mechanism analysis,not this partial Iso-only checkpoint.
+
+Raw rows and episode records are in [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv)
+and the linked native evaluation JSONs. The refreshed curves retain the
+excursion. At this capture,the logged new training lower bound including
+engineering is2699210,conservative charge2703210 including the4000 reserve;
+nontraining physical controls68960. There are100 development condition rows,
+zero completed fixed1M rows,and no formal confirmation started.
 
 ## Earlier fixed checkpoint retained: S-Local2027,100k
 

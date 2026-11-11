@@ -37,13 +37,25 @@ target merely by continuing training. Do not reset counters or hide the
 discarded CUDA-interruption tail. Long runs test late performance and risk;
 they do not erase that failure.
 
-No additional short candidate is selected at this point. Nominal task
+At the original300k selection,no additional short candidate was selected. Nominal task
 learning is intact in both EA seeds,and no positive-Q blow-up,dominant dual
 overshoot or persistent global cost-Q saturation has been demonstrated in
 these fixed300k probes. The allowed0–4 single-factor candidate budget stays
 reserved for an actual relevant late-stage issue rather than a blind sweep.
 The small cost-critic probe below is not a calibration certificate;EA's
 underprediction on some failed replay actions remains a limitation.
+
+Update13:30:both Iso600k evaluations now exist. The intervening Iso2028
+curve contains a signed policy-Q maximum17.958 at534k and a temporary
+recent-training-success trough0% at553k,followed by recovery before600k.
+Thus the earlier absence of demonstrated blow-up applies to the300k
+selection evidence only,not the whole trajectory. No scientific settings
+or selected continuations have been changed. The full details and preserved
+timeouts are in [DEVELOPMENT_REPORT.md](DEVELOPMENT_REPORT.md). A recurring
+late excursion would motivate the authorized single-factor actor interval
+2-to4 candidate;no candidate has yet consumed training budget. Do not infer
+repair from the recovered600k learner row or superiority from mismatched
+EA300k versus Iso600k scores.
 
 The native long matrix stays Iso/EA x2027/2028,300k-to1M (2.8M incremental).
 Iso2027 is already running on A100 GPU1. EA2028 can use4080 now;EA2027 waits
