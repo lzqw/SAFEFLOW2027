@@ -1,60 +1,6 @@
 {
-  "local_time": "2026-11-11T19:23:13.521609+08:00",
+  "local_time": "2026-11-11T20:23:00.030066+08:00",
   "observations": [
-    {
-      "host": "tjucta-a100",
-      "queues": [
-        {
-          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-recovery1.json",
-          "queue_pid": 1932957,
-          "identity_alive": false,
-          "status": "completed_all_predeclared_jobs",
-          "pending": [],
-          "rows": [
-            {
-              "pid": 1932961,
-              "variant": "s_ea",
-              "seed": 2027,
-              "gpu": 0,
-              "identity_alive": false,
-              "steps": 300000,
-              "target_steps": 300000,
-              "completed": true,
-              "unexpected_terminal": false
-            },
-            {
-              "pid": 1951046,
-              "variant": "s_iso",
-              "seed": 2028,
-              "gpu": 0,
-              "identity_alive": false,
-              "steps": 300000,
-              "target_steps": 300000,
-              "completed": true,
-              "unexpected_terminal": false
-            }
-          ],
-          "completed": true,
-          "unexpected_terminal": false
-        }
-      ],
-      "direct": [
-        {
-          "pid": 1928659,
-          "variant": "s_iso",
-          "seed": 2027,
-          "gpu": 1,
-          "identity_alive": false,
-          "steps": 1000000,
-          "target_steps": 1000000,
-          "completed": true,
-          "unexpected_terminal": false
-        }
-      ],
-      "gpu": "0, 79447, 12\n1, 80048, 15",
-      "load": 7.03,
-      "cpus": 128
-    },
     {
       "host": "4080",
       "queues": [
@@ -74,7 +20,8 @@
               "steps": 1000000,
               "target_steps": 1000000,
               "completed": true,
-              "unexpected_terminal": false
+              "unexpected_terminal": false,
+              "receipt_is_archive_of_completed_A100_run": false
             }
           ],
           "completed": true,
@@ -96,7 +43,8 @@
               "steps": 1000000,
               "target_steps": 1000000,
               "completed": true,
-              "unexpected_terminal": false
+              "unexpected_terminal": false,
+              "receipt_is_archive_of_completed_A100_run": false
             }
           ],
           "completed": true,
@@ -110,14 +58,27 @@
           "seed": 2027,
           "gpu": 0,
           "identity_alive": true,
-          "steps": 769000,
+          "steps": 857000,
           "target_steps": 1000000,
           "completed": false,
-          "unexpected_terminal": false
+          "unexpected_terminal": false,
+          "receipt_is_archive_of_completed_A100_run": false
+        },
+        {
+          "pid": 1928659,
+          "variant": "s_iso",
+          "seed": 2027,
+          "gpu": 1,
+          "identity_alive": false,
+          "steps": 1000000,
+          "target_steps": 1000000,
+          "completed": true,
+          "unexpected_terminal": false,
+          "receipt_is_archive_of_completed_A100_run": true
         }
       ],
-      "gpu": "0, 14959, 25",
-      "load": 6.73779296875,
+      "gpu": "0, 14386, 92",
+      "load": 4.576171875,
       "cpus": 28
     }
   ],

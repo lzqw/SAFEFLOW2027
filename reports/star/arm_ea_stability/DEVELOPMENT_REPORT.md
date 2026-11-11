@@ -122,6 +122,23 @@ EA2027 native training and its fixed1M endpoint remain required.
 
 ## Runtime progression,2026-11-11 Asia/Taipei
 
+Operational update20:10:local observer1760840 was confirmed missing at20:07,
+with its last persistent snapshot at19:53 and no terminal marker;the cause
+is unproven. Exact4080 native PID681280 was independently alive at838k,
+then840k. No training restart was made. A read-only observer now runs on
+4080 itself (PID1249282),using only server-local process/receipt checks and
+the same1800s cadence,first scheduled20:23. This needs no new SSH keys or
+client-side daemon. The completed A100 Iso2027 receipt on4T is explicitly
+marked as an archive,not a claim that this native run trained on4080.
+Its active plan is configs/star/arm_ea_stability/native_monitor_4080_v2.json;
+the older MONITOR_PLAN.json is the retired client-side plan. Completion of
+the monitored training phase still does not imply the whole goal is complete.
+The first actual server-local scheduled snapshot at20:23 verified native
+PID681280 alive at857k,with all other fixed1M receipts complete and no
+unexpected terminal state. Its explicit archive flag preserves the A100
+execution provenance. See LATEST_RUNTIME_SNAPSHOT.json. No training process
+was restarted for this observer replacement.
+
 The following three handles were directly verified at10:53:33:
 
 | Host / GPU | Trial | Actual logged transitions | Native PID |
