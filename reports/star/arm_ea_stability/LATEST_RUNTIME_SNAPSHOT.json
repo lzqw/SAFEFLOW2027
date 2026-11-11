@@ -1,5 +1,5 @@
 {
-  "local_time": "2026-11-11T20:23:00.030066+08:00",
+  "local_time": "2026-11-11T22:53:00.390508+08:00",
   "observations": [
     {
       "host": "4080",
@@ -57,10 +57,10 @@
           "variant": "s_ea",
           "seed": 2027,
           "gpu": 0,
-          "identity_alive": true,
-          "steps": 857000,
+          "identity_alive": false,
+          "steps": 1000000,
           "target_steps": 1000000,
-          "completed": false,
+          "completed": true,
           "unexpected_terminal": false,
           "receipt_is_archive_of_completed_A100_run": false
         },
@@ -77,8 +77,8 @@
           "receipt_is_archive_of_completed_A100_run": true
         }
       ],
-      "gpu": "0, 14386, 92",
-      "load": 4.576171875,
+      "gpu": "0, 14472, 58",
+      "load": 21.78662109375,
       "cpus": 28
     }
   ],

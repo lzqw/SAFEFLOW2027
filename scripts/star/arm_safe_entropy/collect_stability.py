@@ -151,7 +151,12 @@ def main():
         conservative_training_budget_charge=logged_native+engineering+tail_reserve,
         recorded_nontraining_physical_control_intervals=recorded_nontraining,
         development_evaluation_rows=len(rows),fixed1M_completed_condition_rows=sum(r['checkpoint_steps']==1000000 and r['native_run_completed'] for r in rows),
-        new_evaluations_launched=0,large_checkpoints_copied=0,formal_confirmation_started=False,whole_goal_complete=False)
+        new_evaluations_launched=0,large_checkpoints_copied=0,formal_confirmation_started=False,
+        # Only relay the agent's separately audited protocol decision;never
+        # equate finished native jobs or a favorable score with whole-goal success.
+        whole_goal_complete=read_json(report/'EXECUTION_STATE.json').get('whole_goal_complete') is True,
+        scientific_targets_achieved=read_json(report/'EXECUTION_STATE.json').get('scientific_targets_achieved',False),
+        completion_authority='separately_audited_EXECUTION_STATE_not_native_counter')
     temporary=report/'DEVELOPMENT_STATUS.json.tmp'
     temporary.write_text(json.dumps(summary,indent=2)+'\n');temporary.replace(report/'DEVELOPMENT_STATUS.json')
     print(json.dumps(summary))

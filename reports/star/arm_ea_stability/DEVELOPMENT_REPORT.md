@@ -1,16 +1,25 @@
-# EA-STAB v2 development:running,not a repair-success claim
+# EA-STAB v2 development:complete fixed-endpoint evidence,not a repair-success claim
+
+Closeout:all six initial300k trials,all four genuine fixed1M continuations,
+and the new-policy mechanism analysis are complete. The final decision is
+**no conditional9M confirmation**:EA has a strong positive seed2027 but an
+unsafe seed2028,not a reliable final configuration. See
+[FINAL_DECISION.md](FINAL_DECISION.md) for the complete four-seed-line table,
+all targets,compute/safety tradeoffs,budget and limits. Earlier timed sections
+below preserve the chronological evidence available at each capture;their
+then-running jobs are not the current execution state.
 
 Scientific learner/configuration: `3c308e49d4d93d49c15ee8112071d04087e622d8`.
 Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;all four paired Iso/EA600k endpoints,both Iso fixed1M endpoints,
-and EA2028's fixed1M endpoint are now available. EA2027's fixed1M endpoint remains pending. Complete
-two-seed600k-to1M stability is not yet established. EA2027 has an explicit
+available;all four paired Iso/EA600k and fixed1M endpoints are now available.
+The complete two-seed600k-to1M evidence does not establish reliable safety.
+EA2027 has an explicit
 same-profile resource handoff at450k,not an extra scientific candidate.
 
-## Latest completed endpoints:19:23 capture,not a repair-success claim
+## Historical partial snapshot:19:23 capture,not a repair-success claim
 
 Three of four predeclared long lineages have completed their actual1M
 endpoint and all five100-episode final conditions. EA2027 remains active at
@@ -609,7 +618,7 @@ Refresh after the serial collector with
 `python -m scripts.star.arm_safe_entropy.plot_stability`. This reporting code
 does not modify the immutable3c308e4 scientific source used on either server.
 
-## Budget and remaining work
+## Budget accounting and protocol boundary
 
 Engineering smoke training consumed3210 new transitions. The two interrupted
 trials have7000 logged transitions and17 logged violations after their last
@@ -627,8 +636,12 @@ in [TRIAL_LEDGER.csv](TRIAL_LEDGER.csv). Native development counters/physical
 evaluation costs update as compact artifacts are mirrored. Full replay and
 policies remain on the authorized servers/4080's4T,not in GitHub.
 
-Initial planned training remains1.8M;total development training is capped6M.
-Only evidence-supported bounded candidates may follow (at most4x100k),then
-paired native Iso/selected-geometry long runs must cover600k-to1M. Useful
-late stability and a frozen final configuration are required before any
-conditional new-seed9M confirmation. There is no new5080 use.
+Initial planned training was1.8M;total development training was capped6M.
+The paired native Iso/EA lines all completed1M;zero extra short candidates
+were added. Final logged training is4610210,conservative reserve-inclusive
+charge4615210. All nontraining physical controls,including the23019-control
+final mechanism and3-control focused contract recheck,are125944. Even their
+combined conservative total4741154 remains below6M. There is no new5080 use,
+formal confirmation or algorithm-success claim. The final decision and
+candidate-selection rationale are in FINAL_DECISION.md;future work is a
+recommendation,not an implicitly queued training extension.

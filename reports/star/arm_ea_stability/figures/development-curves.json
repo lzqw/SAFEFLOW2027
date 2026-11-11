@@ -27,9 +27,10 @@
     {
       "trial": "s-ea-seed2027-v2-long-handoff1",
       "source_commit": "e7be7eaa6d6c86844229dd476c934dece7e5917a",
-      "latest_logged_steps": 770000,
+      "latest_logged_steps": 1000000,
       "evaluation_milestones": [
-        600000
+        600000,
+        1000000
       ]
     },
     {

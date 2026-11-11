@@ -2,6 +2,8 @@
   "date": "2026-11-11",
   "large_files_written_to_local_host": 0,
   "original_server_files_deleted_or_replaced": 0,
+  "final_protected_full_files_verified_on_4080_4T": 14,
+  "final_full_inventory_scope": "Read-only stat verified six full300k files and both protected600k/1M full files for each of four long lineages;all14 exceed100MB. No historical large files or replay were deleted. Policy-only A100 mechanism inputs are not native replay substitutes.",
   "transfers": [
     {
       "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long",
