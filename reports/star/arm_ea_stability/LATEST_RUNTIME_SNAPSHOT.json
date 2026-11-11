@@ -1,0 +1,136 @@
+{
+  "local_time": "2026-11-11T11:53:01.003895+08:00",
+  "observations": [
+    {
+      "host": "tjucta-a100",
+      "queues": [
+        {
+          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-recovery1.json",
+          "queue_pid": 1932957,
+          "identity_alive": false,
+          "status": "completed_all_predeclared_jobs",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 1932961,
+              "variant": "s_ea",
+              "seed": 2027,
+              "gpu": 0,
+              "identity_alive": false,
+              "steps": 300000,
+              "target_steps": 300000,
+              "completed": true,
+              "unexpected_terminal": false
+            },
+            {
+              "pid": 1951046,
+              "variant": "s_iso",
+              "seed": 2028,
+              "gpu": 0,
+              "identity_alive": false,
+              "steps": 300000,
+              "target_steps": 300000,
+              "completed": true,
+              "unexpected_terminal": false
+            }
+          ],
+          "completed": true,
+          "unexpected_terminal": false
+        },
+        {
+          "state": "/home/lzqw/SAFEFLOW2027_ARM/queues/ea-stability-v2-a100-selected-long-v2.json",
+          "queue_pid": 1958400,
+          "identity_alive": true,
+          "status": "running",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 1997214,
+              "variant": "s_ea",
+              "seed": 2027,
+              "gpu": 0,
+              "identity_alive": true,
+              "steps": 316000,
+              "target_steps": 1000000,
+              "completed": false,
+              "unexpected_terminal": false
+            }
+          ],
+          "completed": false,
+          "unexpected_terminal": false
+        }
+      ],
+      "direct": [
+        {
+          "pid": 1928659,
+          "variant": "s_iso",
+          "seed": 2027,
+          "gpu": 1,
+          "identity_alive": true,
+          "steps": 453000,
+          "target_steps": 1000000,
+          "completed": false,
+          "unexpected_terminal": false
+        }
+      ],
+      "gpu": "0, 78545, 64\n1, 78537, 65",
+      "load": 8.41,
+      "cpus": 128
+    },
+    {
+      "host": "4080",
+      "queues": [
+        {
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-selected-long-v2.json",
+          "queue_pid": 229866,
+          "identity_alive": true,
+          "status": "running",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 229868,
+              "variant": "s_ea",
+              "seed": 2028,
+              "gpu": 0,
+              "identity_alive": true,
+              "steps": 386000,
+              "target_steps": 1000000,
+              "completed": false,
+              "unexpected_terminal": false
+            }
+          ],
+          "completed": false,
+          "unexpected_terminal": false
+        },
+        {
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-iso2028-long-v2.json",
+          "queue_pid": 308005,
+          "identity_alive": true,
+          "status": "running",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 330619,
+              "variant": "s_iso",
+              "seed": 2028,
+              "gpu": 0,
+              "identity_alive": true,
+              "steps": 344000,
+              "target_steps": 1000000,
+              "completed": false,
+              "unexpected_terminal": false
+            }
+          ],
+          "completed": false,
+          "unexpected_terminal": false
+        }
+      ],
+      "direct": [],
+      "gpu": "0, 7599, 100",
+      "load": 6.75927734375,
+      "cpus": 28
+    }
+  ],
+  "automatic_restart": false,
+  "whole_goal_complete": false
+}

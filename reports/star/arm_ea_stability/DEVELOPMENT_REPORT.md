@@ -30,6 +30,15 @@ At11:33 all four native identities were directly verified alive:Iso2027 at
 The latter's first admission saw only1.84GiB free VRAM,then its5-minute
 retry admitted it with14.24GiB free. No foreign task was stopped and no
 already running learner was moved or restarted to achieve the four slots.
+
+The11:53 half-hour snapshot again verified all four native identities alive:
+Iso2027 453k,EA2027 316k,EA2028 386k,Iso2028 344k. There is no completed600k
+evaluation yet at that capture. The read-only watcher now persists its log
+and latest JSON independently of interactive tool sessions;its previous
+process had genuinely exited,but the training processes were healthy and
+were not restarted. See [LATEST_RUNTIME_SNAPSHOT.json](LATEST_RUNTIME_SNAPSHOT.json).
+These snapshots are progress evidence,not new policy scores or a completion
+percentage for the full objective.
 The two other4080 jobs failed with CUDA unspecified launch failure;their
 emergency CUDA-RNG checkpoint also failed. The host subsequently rebooted.
 This is not evidence of a mathematical NaN or a precise hardware root cause.
