@@ -1,0 +1,12 @@
+{
+  "reserved_new_training_transitions": 700000,
+  "parent": {"host": "tjucta-a100", "pid": 1951046, "variant": "s_iso", "seed": 2028, "target_steps": 300000,
+    "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+    "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2028-v2-dev-recovery1"},
+  "destination": {"host": "4080", "project": "/home/carla/4T/SAFEFLOW2027_ARM", "target_steps": 1000000,
+    "parent_name": "s-iso-seed2028-v2-dev-recovery1",
+    "learner_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+    "controller_commit": "504d139e3f2012f3a3b5353d75d99561e819ef18",
+    "queue_id": "iso2028-long-v2",
+    "queue_manifest": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-iso2028-long-plan.json"}
+}

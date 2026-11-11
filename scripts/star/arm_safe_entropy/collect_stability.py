@@ -14,7 +14,8 @@ COLUMNS=['stage','trial','variant','training_seed','checkpoint_steps','condition
     'safe_success','violation_rate','safe_timeout_rate','return','time_to_goal_capped_seconds',
     'time_to_goal_seconds','time_to_goal_successes','minimum_distance_m','training_violation_count',
     'training_episodes','native_run_completed','source_commit','evidence',
-    'discarded_tail_logged_violations','accounted_training_violation_count_lower_bound']
+    'discarded_tail_logged_violations','accounted_training_violation_count_lower_bound',
+    'discarded_tail_logged_episodes','accounted_training_episodes_lower_bound']
 
 
 def read_json(path):
@@ -29,7 +30,7 @@ def write_csv(path,rows,fields):
     temporary.replace(path)
 
 
-def discarded_parent_violations(folder,runs,seen=None):
+def discarded_parent_counter(folder,runs,field='logged_lost_tail_violations',seen=None):
     """Known costs from discarded parent tails still count,not just replay lineage."""
     seen=set() if seen is None else seen
     if folder.name in seen: raise ValueError('Native parent lineage cannot cycle')
@@ -38,7 +39,7 @@ def discarded_parent_violations(folder,runs,seen=None):
     if not config.get('parent_checkpoint'): return 0
     parent=runs/Path(config['parent_checkpoint']).parent.name
     incident=read_json(parent/'engineering_interruption.json')
-    return int(incident.get('logged_lost_tail_violations',0))+discarded_parent_violations(parent,runs,seen)
+    return int(incident.get(field,0))+discarded_parent_counter(parent,runs,field,seen)
 
 
 def main():
@@ -130,9 +131,12 @@ def main():
                     minimum_distance_m=condition['minimum_distance_m'],training_violation_count=evaluation['training_violation_count'],
                     training_episodes=evaluation['training_episodes'],native_run_completed=complete,
                     source_commit=config['source_commit'],evidence=str(evaluation_path.relative_to(report)),
-                    discarded_tail_logged_violations=discarded_parent_violations(folder,runs),
+                    discarded_tail_logged_violations=discarded_parent_counter(folder,runs),
                     accounted_training_violation_count_lower_bound=evaluation['training_violation_count']+
-                        discarded_parent_violations(folder,runs)))
+                        discarded_parent_counter(folder,runs),
+                    discarded_tail_logged_episodes=discarded_parent_counter(folder,runs,'logged_lost_tail_episodes'),
+                    accounted_training_episodes_lower_bound=evaluation['training_episodes']+
+                        discarded_parent_counter(folder,runs,'logged_lost_tail_episodes')))
     write_csv(report/'DEVELOPMENT_RESULTS.csv',rows,COLUMNS)
     write_csv(report/'FINAL_RESULTS.csv',[r for r in rows if r['checkpoint_steps']==1000000 and r['native_run_completed']],COLUMNS)
     write_csv(ledger_path,list(ledger.values()),ledger_fields)
