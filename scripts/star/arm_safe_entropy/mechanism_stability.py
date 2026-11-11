@@ -102,6 +102,13 @@ def collect_pool(policies,device):
 
 
 def evaluate_samples(learner,obs,pool,truth,oracle):
+    source_actions=torch.as_tensor(np.asarray([r['source_action'] for r in pool],np.float32),device=obs.device)
+    source_normal,_,source_diagnostic=learner.margin_geometry.geometry(obs,source_actions,return_diagnostics=True)
+    source_normal=source_normal.cpu().numpy()
+    source_direction_valid=(truth[:,4]>1e-7)&source_diagnostic['gradient_valid'].cpu().numpy()
+    source_cosine=(source_normal*truth[:,1:4]).sum(-1)
+    source_agreement=source_diagnostic['agreement'].cpu().numpy()
+    with torch.no_grad(): source_margin=learner.margin_geometry(obs,source_actions).mean(0).cpu().numpy()
     variants={}
     for mode in ('native',)+(() if learner.variant=='s_iso' else MODES):
         geometry=learner.geometry if mode=='native' else FixedSpectrumGeometry(learner.margin_geometry,mode,1000000)
@@ -122,6 +129,10 @@ def evaluate_samples(learner,obs,pool,truth,oracle):
             normal=truth[index,1:4]
             mask=matched[index] if mode!='native' else np.ones(32,bool)
             states.append(dict(state_index=index,condition=row['condition'],true_normal_valid=bool(truth[index,4]>1e-7),
+                source_true_margin_m=float(truth[index,0]),source_predicted_margin_m=float(source_margin[index]),
+                source_direction_valid=bool(source_direction_valid[index]),
+                source_normal_cosine=float(source_cosine[index]) if source_direction_valid[index] else None,
+                source_head_agreement=float(source_agreement[index]),
                 endpoint=endpoint_metrics(value['actions'][index],normal),
                 reference=reference_metrics(value['trace']['normals'][index],value['trace']['vn'][index],value['trace']['vt'][index],normal),
                 matched_endpoint=endpoint_metrics(value['actions'][index,mask],normal) if mask.sum()>=2 else None,
@@ -130,6 +141,9 @@ def evaluate_samples(learner,obs,pool,truth,oracle):
             indices=[i for i,r in enumerate(pool) if r['condition']==condition]
             labels=value['labels'][indices];predicted=value['predicted'][indices]
             near=np.abs(labels)<=.02;safe=predicted<0
+            source_near=np.abs(truth[indices,0])<=.02
+            source_safe=source_margin[indices]<0
+            source_valid_indices=[i for i in indices if source_direction_valid[i]]
             valid=[s for s in states if s['condition']==condition and s['true_normal_valid']]
             same=[s for s in valid if s['matched_endpoint'] is not None]
             mask=matched[indices] if mode!='native' else np.ones_like(labels,bool)
@@ -140,6 +154,13 @@ def evaluate_samples(learner,obs,pool,truth,oracle):
                 true_interval_risk=float(np.mean(labels>0)),
                 matched_spectrum_interval_risk=float(np.mean(labels[mask]>0)) if mode!='native' and mask.any() else None,
                 valid_true_axis_states=len(valid),endpoint_vn=mean_or_none([s['endpoint']['vn'] for s in valid]),
+                source_direction_valid_states=len(source_valid_indices),
+                source_action_normal_cosine=mean_or_none(source_cosine[source_valid_indices]),
+                source_action_head_agreement=float(source_agreement[indices].mean()),
+                source_action_margin_mae_m=float(np.mean(np.abs(truth[indices,0]-source_margin[indices]))),
+                source_near_boundary_states=int(source_near.sum()),
+                source_near_boundary_mae_m=float(np.mean(np.abs(truth[indices,0][source_near]-source_margin[indices][source_near]))) if source_near.any() else None,
+                source_false_safe_given_predicted_safe=float(np.mean(truth[indices,0][source_safe]>0)) if source_safe.any() else None,
                 endpoint_vt=mean_or_none([s['endpoint']['vt'] for s in valid]),
                 reference_vn=mean_or_none([s['reference']['vn'] for s in valid]),
                 reference_vt=mean_or_none([s['reference']['vt'] for s in valid]),

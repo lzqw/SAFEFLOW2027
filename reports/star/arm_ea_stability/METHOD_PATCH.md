@@ -174,3 +174,11 @@ route probes and same-generator inference timings are separate from primary
 episode scores. Three pure route-proxy cases and rejection of an intermediate
 300k input passed on the native CPU environment,with zero physics or training.
 This does not stand in for the still-required final new-policy evidence.
+
+The prepared final mechanism export also reports each new frozen EMA model's
+margin error,false-safe predictions and signed normal agreement on identical
+held-out source actions,with valid-direction counts and head agreement. It
+reuses the same64 source oracle queries rather than adding physics probes.
+This separates value calibration from direction quality;neither two-head
+agreement nor low replay MSE is treated as an accuracy certificate. These
+new-policy values remain pending until the actual fixed1M analysis executes.
