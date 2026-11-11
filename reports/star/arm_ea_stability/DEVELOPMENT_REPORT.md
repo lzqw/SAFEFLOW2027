@@ -5,10 +5,68 @@ Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;all four paired Iso/EA600k endpoints and both Iso fixed1M endpoints
-are now available. Both EA fixed1M endpoints remain pending. Complete
+available;all four paired Iso/EA600k endpoints,both Iso fixed1M endpoints,
+and EA2028's fixed1M endpoint are now available. EA2027's fixed1M endpoint remains pending. Complete
 two-seed600k-to1M stability is not yet established. EA2027 has an explicit
 same-profile resource handoff at450k,not an extra scientific candidate.
+
+## Latest completed endpoints:19:23 capture,not a repair-success claim
+
+Three of four predeclared long lineages have completed their actual1M
+endpoint and all five100-episode final conditions. EA2027 remains active at
+769k in the scheduled snapshot;its incomplete result is not excluded or
+replaced. All six initial300k trials and all four600k evaluations remain.
+
+| Completed fixed1M trial | Nominal SS / violation | Four-stress SS / violation | Radius8cm violation | Accounted training violations |
+|---|---:|---:|---:|---:|
+| Iso2027 |95% /5%|59.75% /40.25%|95%|2597|
+| Iso2028 |95% /5%|83.75% /16.25%|46%|at least2187|
+| EA2028 |87% /13%|53.5% /46.5%|97%|2179|
+
+No safe timeout occurs in any completed final condition. This is not a
+whole-method training-seed mean:the EA2027 final row is still missing.
+In the completed matched2028 pair,EA is worse on held-out safe success and
+violations in every condition. Known logged/retained-tail accounting gives
+2179 training violations versus Iso's lower bound2187,a difference of8
+(0.37% of that lower bound). Unlogged interruption-tail costs are unknown,
+so this is not an exact all-expenditure cost difference or evidence that
+the intended350/1M training-safety target has been achieved.
+The final EA radius8cm result is97 violations among100 episodes,not a
+collision-only statistic. The favorable early300k results cannot substitute
+for this endpoint or justify immediate new-seed confirmation.
+
+| Seed2028 fixed1M condition | EA SS / violation | Iso SS / violation | EA return | EA capped time(s) |
+|---|---:|---:|---:|---:|
+| Nominal |87% /13%|95% /5%|8.694|1.108|
+| Radius7cm |28% /72%|83% /17%|-4.191|3.067|
+| Radius8cm |3% /97%|54% /46%|-9.791|3.900|
+| Lateral+/-3cm |91% /9%|98% /2%|9.558|0.977|
+| Lateral+/-6cm |92% /8%|100% /0%|9.758|0.950|
+
+EA2028's logged600k-to1M policy-Q maximum stays below11.048 and recent
+training safe success89–100%;its final policy-Q mean9.800,max10.129,
+sampled replay upper-bound exceedance0,reward TD0.091,energy17.932,
+clipping6.02%,and multiplier0. Training recent success at1M is100%.
+Therefore a training recent-success/Q-scale snapshot alone would give a
+misleadingly favorable impression of this policy's held-out behavior.
+Its final failure is not accompanied by the old large positive-Q scale
+near35 or persistent nominal training stagnation. These logs do not yet
+identify the causal contribution of margin calibration,direction or Actor
+distribution;the bounded new-policy mechanism analysis remains required.
+
+EA2028 finishes with2179 training violations and55821 completed episodes;
+998000 learner updates,1996000 reward updates,and498500 actor updates.
+Its terminal native long-segment elapsed time29384.39s includes training,
+evaluations and saves. The final500 episodes add6500 physical control
+intervals,accounted separately from training. All large full snapshots and
+policies are already on4080 4T;no local large-file staging is needed.
+
+Current logged new training including engineering is4380210,conservative
+charge4385210 with the5000 reserve,and recorded nontraining controls94523.
+There are125 development condition rows and15 completed fixed1M rows.
+No extra short candidate or conditional9M confirmation has started. Finish
+the remaining native1M line,then complete mechanism diagnosis and the
+bounded final decision;the full objective is still active.
 
 ## Runtime progression,2026-11-11 Asia/Taipei
 
@@ -454,8 +512,8 @@ this unfavorable checkpoint remains visible rather than being replaced.
 
 Full condition metrics,return,capped/conditional time and raw episode evidence:
 [DEVELOPMENT_RESULTS.csv](DEVELOPMENT_RESULTS.csv). [FINAL_RESULTS.csv](FINAL_RESULTS.csv)
-now contains both Iso seeds' ten completed fixed1M conditions. Both EA
-long-run endpoints are still absent,not implicitly successful or waived.
+now contains both Iso seeds and EA2028's fifteen completed fixed1M conditions.
+EA2027's final endpoint is still absent,not implicitly successful or waived.
 
 ## Learning curves and measured throughput
 

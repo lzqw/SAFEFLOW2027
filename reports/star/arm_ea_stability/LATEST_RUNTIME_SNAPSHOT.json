@@ -1,5 +1,5 @@
 {
-  "local_time": "2026-11-11T18:23:11.749947+08:00",
+  "local_time": "2026-11-11T19:23:13.521609+08:00",
   "observations": [
     {
       "host": "tjucta-a100",
@@ -51,8 +51,8 @@
           "unexpected_terminal": false
         }
       ],
-      "gpu": "0, 78933, 11\n1, 60301, 86",
-      "load": 6.54,
+      "gpu": "0, 79447, 12\n1, 80048, 15",
+      "load": 7.03,
       "cpus": 128
     },
     {
@@ -61,8 +61,8 @@
         {
           "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-selected-long-v2.json",
           "queue_pid": 229866,
-          "identity_alive": true,
-          "status": "running",
+          "identity_alive": false,
+          "status": "completed_all_predeclared_jobs",
           "pending": [],
           "rows": [
             {
@@ -70,14 +70,14 @@
               "variant": "s_ea",
               "seed": 2028,
               "gpu": 0,
-              "identity_alive": true,
-              "steps": 956000,
+              "identity_alive": false,
+              "steps": 1000000,
               "target_steps": 1000000,
-              "completed": false,
+              "completed": true,
               "unexpected_terminal": false
             }
           ],
-          "completed": false,
+          "completed": true,
           "unexpected_terminal": false
         },
         {
@@ -110,14 +110,14 @@
           "seed": 2027,
           "gpu": 0,
           "identity_alive": true,
-          "steps": 692000,
+          "steps": 769000,
           "target_steps": 1000000,
           "completed": false,
           "unexpected_terminal": false
         }
       ],
-      "gpu": "0, 14624, 81",
-      "load": 8.4072265625,
+      "gpu": "0, 14959, 25",
+      "load": 6.73779296875,
       "cpus": 28
     }
   ],
