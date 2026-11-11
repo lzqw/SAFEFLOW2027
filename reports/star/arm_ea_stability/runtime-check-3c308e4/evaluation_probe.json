@@ -1,0 +1,209 @@
+{
+  "stage": "ea_stability_v2",
+  "variant": "s_ea",
+  "training_seed": 60127,
+  "milestone_steps": 3210,
+  "geometry_beta": 0.0,
+  "fixed_final_1M": false,
+  "layout_seed_start": 120027,
+  "training_rng_preserved": true,
+  "training_transitions": 0,
+  "adaptation_updates": 0,
+  "physical_evaluation_transitions": 206,
+  "conditions": [
+    {
+      "condition": {
+        "name": "nominal",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.0
+      },
+      "episodes": 2,
+      "safe_success": 0.0,
+      "success": 0.0,
+      "violation": 0.5,
+      "collision": 0.0,
+      "clearance_violation": 0.5,
+      "episode_return": -7.0646342895760945,
+      "minimum_distance_m": 0.0349146288407412,
+      "time_to_goal_capped_seconds": 4.0,
+      "time_to_goal_seconds": null,
+      "time_to_goal_successes": 0,
+      "evaluation_transitions": 105,
+      "safe_success_count": 0,
+      "violation_failure_count": 1,
+      "safe_timeout_count": 1,
+      "records": [
+        {
+          "layout_seed": 120027,
+          "lateral_sign": -1,
+          "layout": {
+            "start": [
+              -0.22872003999066437,
+              -0.15399291895229186,
+              0.2763840985200129
+            ],
+            "goal": [
+              -0.281181021181871,
+              0.16179885485971704,
+              0.27081437865358204
+            ],
+            "obstacle": [
+              -0.260868147963229,
+              -0.0029064884642733962,
+              0.2406492911756708
+            ],
+            "radius_m": 0.06,
+            "initial_minimum_distance_m": 0.056462748357455864,
+            "reset_proposal_batches": 1
+          },
+          "minimum_distance_m": 0.056462748357455864,
+          "episode_return": -3.3583190627898607,
+          "length": 100,
+          "safe_success": false,
+          "success": false,
+          "violation": false,
+          "collision": false,
+          "clearance_violation": false,
+          "true_horizon_terminal": true,
+          "time_to_goal_seconds": null,
+          "time_to_goal_capped_seconds": 4.0,
+          "sampling_seed_for_fixed_wave": 63097027
+        },
+        {
+          "layout_seed": 120028,
+          "lateral_sign": 1,
+          "layout": {
+            "start": [
+              -0.2797668669895746,
+              -0.17927533350673905,
+              0.220046839143715
+            ],
+            "goal": [
+              -0.20598471963686105,
+              0.18905128243973912,
+              0.2666467897809081
+            ],
+            "obstacle": [
+              -0.22041723917168532,
+              0.013643488885915267,
+              0.25509917174678554
+            ],
+            "radius_m": 0.06,
+            "initial_minimum_distance_m": 0.04962859087143409,
+            "reset_proposal_batches": 1
+          },
+          "minimum_distance_m": 0.01336650932402654,
+          "episode_return": -10.770949516362329,
+          "length": 5,
+          "safe_success": false,
+          "success": false,
+          "violation": true,
+          "collision": false,
+          "clearance_violation": true,
+          "true_horizon_terminal": false,
+          "time_to_goal_seconds": null,
+          "time_to_goal_capped_seconds": 4.0,
+          "sampling_seed_for_fixed_wave": 63097027
+        }
+      ]
+    },
+    {
+      "condition": {
+        "name": "radius_080",
+        "radius_m": 0.08,
+        "lateral_offset_m": 0.0
+      },
+      "episodes": 2,
+      "safe_success": 0.0,
+      "success": 0.0,
+      "violation": 0.5,
+      "collision": 0.0,
+      "clearance_violation": 0.5,
+      "episode_return": -7.041100380005068,
+      "minimum_distance_m": 0.018803675199027002,
+      "time_to_goal_capped_seconds": 4.0,
+      "time_to_goal_seconds": null,
+      "time_to_goal_successes": 0,
+      "evaluation_transitions": 101,
+      "safe_success_count": 0,
+      "violation_failure_count": 1,
+      "safe_timeout_count": 1,
+      "records": [
+        {
+          "layout_seed": 120027,
+          "lateral_sign": -1,
+          "layout": {
+            "start": [
+              -0.2745220622701378,
+              -0.18542977030588745,
+              0.2444799362732878
+            ],
+            "goal": [
+              -0.2789134424075674,
+              0.18110461030172742,
+              0.2678704859270762
+            ],
+            "obstacle": [
+              -0.22148872707282322,
+              -0.003996872123646546,
+              0.2541868035072685
+            ],
+            "radius_m": 0.08,
+            "initial_minimum_distance_m": 0.024484440671334956,
+            "reset_proposal_batches": 1
+          },
+          "minimum_distance_m": 0.01444019268947526,
+          "episode_return": -10.951125032351223,
+          "length": 1,
+          "safe_success": false,
+          "success": false,
+          "violation": true,
+          "collision": false,
+          "clearance_violation": true,
+          "true_horizon_terminal": false,
+          "time_to_goal_seconds": null,
+          "time_to_goal_capped_seconds": 4.0,
+          "sampling_seed_for_fixed_wave": 63097027
+        },
+        {
+          "layout_seed": 120028,
+          "lateral_sign": 1,
+          "layout": {
+            "start": [
+              -0.21490254977106596,
+              -0.16818144848289904,
+              0.24034211766898358
+            ],
+            "goal": [
+              -0.299120716490878,
+              0.18571171105466436,
+              0.2768404386860194
+            ],
+            "obstacle": [
+              -0.26991398977840336,
+              -0.01013985421798708,
+              0.2555054374510456
+            ],
+            "radius_m": 0.08,
+            "initial_minimum_distance_m": 0.025908651342918823,
+            "reset_proposal_batches": 1
+          },
+          "minimum_distance_m": 0.023167157708578745,
+          "episode_return": -3.1310757276589136,
+          "length": 100,
+          "safe_success": false,
+          "success": false,
+          "violation": false,
+          "collision": false,
+          "clearance_violation": false,
+          "true_horizon_terminal": true,
+          "time_to_goal_seconds": null,
+          "time_to_goal_capped_seconds": 4.0,
+          "sampling_seed_for_fixed_wave": 63097027
+        }
+      ]
+    }
+  ],
+  "kind": "engineering_rng_protocol_probe_not_development_result",
+  "configuration_override": "2conditions x2episodes only;no primary outcomes replaced"
+}

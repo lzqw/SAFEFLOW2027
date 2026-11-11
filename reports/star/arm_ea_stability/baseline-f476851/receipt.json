@@ -1,0 +1,15 @@
+{
+  "status": "completed_critic_and_actor_margin_attribution",
+  "source_commit": "f476851a644199b8345157fa0c36a83c093dc01a",
+  "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+  "critic_probe_batches": 36,
+  "cross_condition_rows": 16,
+  "cross_policy_episodes": 320,
+  "physical_evaluation_transitions": 5154,
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "oracle_queries": 0,
+  "plot": "late_native_logs.png",
+  "elapsed_seconds": 19.488489835057408,
+  "remaining": "Episode-isolated64state geometry/direction/risk diagnostic is separate; replay fits are not its substitute"
+}

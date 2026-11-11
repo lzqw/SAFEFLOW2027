@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-11",
+  "large_files_written_to_local_host": 0,
+  "original_server_files_deleted_or_replaced": 0,
+  "final_protected_full_files_verified_on_4080_4T": 14,
+  "final_full_inventory_scope": "Read-only stat verified six full300k files and both protected600k/1M full files for each of four long lineages;all14 exceed100MB. No historical large files or replay were deleted. Policy-only A100 mechanism inputs are not native replay substitutes.",
+  "transfers": [
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long",
+      "native_full_snapshots": ["full_600000.pt:100698245 bytes", "full_1000000.pt:100778615 bytes"],
+      "contents": "Both protected full learner/replay snapshots,milestone policies,completed receipt and compact raw results;duplicate latest_full.pt excluded",
+      "transport": "SSH tar stream through local pipes,no local large-file staging;fresh destination directory",
+      "completion_evidence": "Both pipeline exits zero;18:26 destination sizes match both source protected files;A100 native completion independently confirmed by fixed1M receipt and terminal identity",
+      "original_source_retained": true
+    },
+    {
+      "from": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "to": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "fresh_destination_directories": ["s-ea-seed2027-v2-dev", "s-iso-seed2028-v2-dev"],
+      "native_full_snapshots": ["s-ea-seed2027-v2-dev/latest_full.pt:290000", "s-iso-seed2028-v2-dev/latest_full.pt:230000"],
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;EA native replay/physical-state restoration subsequently progressed past291k on A100"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2",
+      "fresh_destination_directories": ["s-iso-seed2027-v2-dev", "s-local-seed2028-v2-dev", "s-ea-seed2028-v2-dev"],
+      "native_full_snapshots": "Each full_300000.pt plus milestone policies and compact artifacts;exclude duplicate latest_full.pt",
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;all three protected300k snapshots directly listed on4080 4T at10:27"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev-recovery1",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev-recovery1",
+      "native_full_snapshot": "full_300000.pt plus milestone policy and compact artifacts;exclude duplicate latest_full.pt",
+      "transport": "SSH tar stream through local pipes,no local disk staging",
+      "completion_evidence": "Both pipeline exits zero;fresh destination only,original A100 protected snapshot retained"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2028-v2-dev-recovery1",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2028-v2-dev-recovery1",
+      "native_full_snapshot": "full_300000.pt plus milestone policy and compact artifacts;exclude duplicate latest_full.pt",
+      "transport": "One-shot direct SSH tar stream;no local large-file staging",
+      "completion_evidence": "ISO2028_STAGING_RECEIPT.json;the subsequent native long run progressed beyond300k on4080"
+    },
+    {
+      "from": "tjucta-a100:/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long",
+      "to": "4080:/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long",
+      "native_full_snapshot": "resource_handoff_full_450000.pt;immutable hardlink to the existing completed-round full450k inode,plus compact parent records;exclude duplicate latest_full.pt",
+      "transport": "One-shot SSH tar stream through local pipes,no local disk staging;fresh destination archive",
+      "completion_evidence": "EA2027_RESOURCE_HANDOFF_RECEIPT.json;destination native PID681280 restored the exact configuration and progressed beyond451k,with original A100 pinned state and raw logs retained",
+      "runtime_metadata_note": "Only intentional-handoff status/incident JSON was generated;no original raw log,policy or full replay checkpoint was deleted or overwritten"
+    }
+  ]
+}

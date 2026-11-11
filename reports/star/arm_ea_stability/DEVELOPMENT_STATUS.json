@@ -1,0 +1,19 @@
+{
+  "initial_expected_runs": 6,
+  "initial_observed_runs": 6,
+  "initial_completed_runs": 6,
+  "scientific_logged_new_training_transitions_lower_bound": 4607000,
+  "engineering_logged_new_training_transitions": 3210,
+  "total_logged_new_training_transitions_lower_bound": 4610210,
+  "unlogged_interruption_tail_training_budget_reserve": 5000,
+  "conservative_training_budget_charge": 4615210,
+  "recorded_nontraining_physical_control_intervals": 125944,
+  "development_evaluation_rows": 130,
+  "fixed1M_completed_condition_rows": 20,
+  "new_evaluations_launched": 0,
+  "large_checkpoints_copied": 0,
+  "formal_confirmation_started": false,
+  "whole_goal_complete": true,
+  "scientific_targets_achieved": false,
+  "completion_authority": "separately_audited_EXECUTION_STATE_not_native_counter"
+}

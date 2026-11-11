@@ -1,0 +1,87 @@
+{
+  "local_time": "2026-11-11T22:53:00.390508+08:00",
+  "observations": [
+    {
+      "host": "4080",
+      "queues": [
+        {
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-selected-long-v2.json",
+          "queue_pid": 229866,
+          "identity_alive": false,
+          "status": "completed_all_predeclared_jobs",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 229868,
+              "variant": "s_ea",
+              "seed": 2028,
+              "gpu": 0,
+              "identity_alive": false,
+              "steps": 1000000,
+              "target_steps": 1000000,
+              "completed": true,
+              "unexpected_terminal": false,
+              "receipt_is_archive_of_completed_A100_run": false
+            }
+          ],
+          "completed": true,
+          "unexpected_terminal": false
+        },
+        {
+          "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-iso2028-long-v2.json",
+          "queue_pid": 308005,
+          "identity_alive": false,
+          "status": "completed_all_predeclared_jobs",
+          "pending": [],
+          "rows": [
+            {
+              "pid": 330619,
+              "variant": "s_iso",
+              "seed": 2028,
+              "gpu": 0,
+              "identity_alive": false,
+              "steps": 1000000,
+              "target_steps": 1000000,
+              "completed": true,
+              "unexpected_terminal": false,
+              "receipt_is_archive_of_completed_A100_run": false
+            }
+          ],
+          "completed": true,
+          "unexpected_terminal": false
+        }
+      ],
+      "direct": [
+        {
+          "pid": 681280,
+          "variant": "s_ea",
+          "seed": 2027,
+          "gpu": 0,
+          "identity_alive": false,
+          "steps": 1000000,
+          "target_steps": 1000000,
+          "completed": true,
+          "unexpected_terminal": false,
+          "receipt_is_archive_of_completed_A100_run": false
+        },
+        {
+          "pid": 1928659,
+          "variant": "s_iso",
+          "seed": 2027,
+          "gpu": 1,
+          "identity_alive": false,
+          "steps": 1000000,
+          "target_steps": 1000000,
+          "completed": true,
+          "unexpected_terminal": false,
+          "receipt_is_archive_of_completed_A100_run": true
+        }
+      ],
+      "gpu": "0, 14472, 58",
+      "load": 21.78662109375,
+      "cpus": 28
+    }
+  ],
+  "automatic_restart": false,
+  "whole_goal_complete": false
+}

@@ -1,0 +1,31 @@
+{
+  "status": "completed",
+  "source_commit": "f7c005d320f64c0690d44eb07cd2f5a032086adc",
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "states": 64,
+  "draws_per_state": 32,
+  "models": 4,
+  "fixed_checkpoint_steps": 1000000,
+  "pool_creation_intervals": 410,
+  "pool_creation_episodes": 32,
+  "route_evaluation_intervals": 1681,
+  "route_evaluation_episodes": 120,
+  "oracle_statistics": {
+    "oracle_kind": "actual_controller_simulator_finite_difference",
+    "workers": 10,
+    "epsilon": 0.002,
+    "temperature": 0.02,
+    "unique_state_actions": 64,
+    "counterfactual_control_intervals": 448,
+    "cached_rows": 0,
+    "query_seconds": 2.285693484125659,
+    "margin_only_queries": 20480,
+    "static_distance_queries": 0,
+    "learned_model_queries": 0,
+    "candidate_actions_selected": 0
+  },
+  "total_new_physical_intervals": 23019,
+  "elapsed_seconds": 65.0995619900059,
+  "primary_evaluation_replaced": false
+}

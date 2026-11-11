@@ -1,0 +1,30 @@
+{
+  "queue_kind": "explicit_native_development_followup",
+  "config": "configs/star/arm_ea_stability/development_v2.json",
+  "reserved_new_training_transitions": 80000,
+  "reason": "Complete two confirmed terminal CUDA-interrupted initial trials;preserve the original segments and account for logged lost tails separately.",
+  "host_roles": {
+    "a100": {
+      "gpus": [0],
+      "initial_slots_per_gpu": 1,
+      "maximum_slots_per_gpu": 1,
+      "jobs": [
+        {"name": "s-ea-seed2027-v2-dev-recovery1", "variant": "s_ea", "seed": 2027, "initial_steps": 290000, "steps": 300000,
+         "resume": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-dev/latest_full.pt", "engineering_recovery": true},
+        {"name": "s-iso-seed2028-v2-dev-recovery1", "variant": "s_iso", "seed": 2028, "initial_steps": 230000, "steps": 300000,
+         "resume": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2028-v2-dev/latest_full.pt", "engineering_recovery": true}
+      ]
+    }
+  },
+  "admission": {
+    "minimum_free_gpu_mib": 6144,
+    "maximum_gpu_utilization_percent": 100,
+    "maximum_host_load_fraction": 0.6,
+    "minimum_disk_free_gib": 8
+  },
+  "owned_handle_poll_seconds": 60,
+  "resource_retry_seconds": 1800,
+  "automatic_restart": false,
+  "formal_confirmation_authorized_by_this_queue": false,
+  "foreign_workloads_changed": false
+}

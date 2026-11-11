@@ -1,0 +1,17 @@
+{
+  "purpose": "Retrospective frozen-model calibration on the64 existing historical source state/action/oracle records;not a new-policy visited-state mechanism or new evaluation",
+  "training_seed": 2028,
+  "cases": [
+    {"run": "s-ea-seed2028-v2-dev", "checkpoint_steps": 300000},
+    {"run": "s-ea-seed2028-v2-long", "checkpoint_steps": 600000},
+    {"run": "s-ea-seed2028-v2-long", "checkpoint_steps": 1000000},
+    {"run": "s-iso-seed2028-v2-long", "checkpoint_steps": 600000},
+    {"run": "s-iso-seed2028-v2-long", "checkpoint_steps": 1000000}
+  ],
+  "near_boundary_width_m": 0.02,
+  "training_transitions": 0,
+  "new_physical_queries": 0,
+  "reused_oracle_source_records": 64,
+  "geometry": "Direct margin action gradient,not the generator-tail pullback direction",
+  "selection": "Fixed all64 records from the already published geometry-3c308e4 pool,including invalid true normals;invalid axes excluded only from cosine metrics"
+}

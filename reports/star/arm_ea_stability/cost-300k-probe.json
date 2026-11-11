@@ -1,0 +1,20 @@
+{
+  "scope": "frozen protected300k native replay;one uniform and one failed-action batch per trial;no persistent-calibration claim",
+  "host": "tjucta-a100",
+  "device": "cpu",
+  "source": "94ffff33f91be4118fac7494e6fc027d8120218b;unchanged3c308e4 learner",
+  "rng": "numpy.default_rng(9830027),displayed order,uniform then failure sampling without replacement",
+  "batch_size_actions": 128,
+  "heads_per_action": 2,
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "physics_queries": 0,
+  "rows": [
+    {"trial": "s-iso-seed2027-v2-dev", "batch": "fixed_uniform", "replay_failures": 942, "cost_q_mean": 0.01280397642403841, "cost_q_min": 0.0, "cost_q_max": 0.6387479901313782, "prediction_below_01": 0.95703125, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.017403919249773026},
+    {"trial": "s-iso-seed2027-v2-dev", "batch": "fixed_failures", "replay_failures": 942, "cost_q_mean": 0.6625881791114807, "cost_q_min": 2.7083501087301776e-19, "cost_q_max": 0.9999997615814209, "prediction_below_01": 0.0546875, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.2840992212295532},
+    {"trial": "s-local-seed2028-v2-dev", "batch": "fixed_uniform", "replay_failures": 817, "cost_q_mean": 0.0030702282674610615, "cost_q_min": 0.0, "cost_q_max": 0.14690184593200684, "prediction_below_01": 0.99609375, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.005660822615027428},
+    {"trial": "s-local-seed2028-v2-dev", "batch": "fixed_failures", "replay_failures": 817, "cost_q_mean": 0.6498585939407349, "cost_q_min": 6.885863967909245e-07, "cost_q_max": 0.9989110231399536, "prediction_below_01": 0.03125, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.30870744585990906},
+    {"trial": "s-ea-seed2028-v2-dev", "batch": "fixed_uniform", "replay_failures": 1001, "cost_q_mean": 0.00821890402585268, "cost_q_min": 0.0, "cost_q_max": 0.8846592307090759, "prediction_below_01": 0.98828125, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.006201075855642557},
+    {"trial": "s-ea-seed2028-v2-dev", "batch": "fixed_failures", "replay_failures": 1001, "cost_q_mean": 0.2859400510787964, "cost_q_min": 0.002844208851456642, "cost_q_max": 0.9998292922973633, "prediction_below_01": 0.30078125, "mean_sigmoid_MSE_to_BCE_logit_gradient_factor": 0.2779756784439087}
+  ]
+}
