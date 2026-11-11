@@ -60,6 +60,7 @@ def main():
         if config.get('stage') not in ('ea_stability_v2_development','ea_stability_v2_engineering'):
             raise ValueError('Do not silently pool another protocol')
         receipt=read_json(folder/'receipt.json');status=read_json(folder/'status.json')
+        incident=read_json(folder/'engineering_interruption.json')
         complete=receipt.get('status')=='completed'
         counter=receipt if complete else status
         steps=counter.get('steps',config['initial_steps'])
@@ -73,22 +74,25 @@ def main():
                 if pair in initial_pairs: raise ValueError('Duplicate initial development run is not a seed replacement')
                 initial_pairs.add(pair)
                 if complete: complete_initial.add(pair)
+            elif config.get('engineering_recovery') and config['total_transition_budget']==300000 and complete:
+                complete_initial.add((config['variant'],config['training_seed']))
         else: engineering+=new
         row=ledger.get(folder.name,dict(trial_id=folder.name,change='native_runner',hypothesis='engineering_contract' if not native else 'declared_development'))
         violations=counter.get('training_violation_count')
-        initial_cost=0 if config['initial_steps']==0 else None
+        initial_cost=config.get('initial_training_violations',0 if config['initial_steps']==0 else None)
         if config.get('parent_checkpoint'):
             parent=runs/Path(config['parent_checkpoint']).parent.name
             parent_receipt=read_json(parent/'receipt.json')
             if parent_receipt.get('steps')==config['initial_steps']:
                 initial_cost=parent_receipt['training_violation_count']
-        row.update(phase='engineering' if not native else 'B' if config['initial_steps']==0 else 'C',
+        row.update(phase='engineering' if not native else 'B_recovery' if config.get('engineering_recovery') else 'B' if config['initial_steps']==0 else 'C',
             variant=config['variant'],parent_checkpoint=config.get('parent_checkpoint') or 'none_fresh',
             seed=config['training_seed'],target_steps=config['total_transition_budget'],initial_steps=config['initial_steps'],
             actual_new_training_transitions=new,
             physical_evaluation_transitions=(receipt.get('new_physical_evaluation_transitions',0) if complete else
                 sum(read_json(p).get('physical_evaluation_transitions',0) for p in folder.glob('evaluation_*.json'))),
-            host=config['host'],source_commit=config['source_commit'],status='completed' if complete else status.get('state','starting'),
+            host=config['host'],source_commit=config['source_commit'],status='completed' if complete else
+                'engineering_interrupted_retained' if incident.get('native_process_confirmed_terminal') else status.get('state','starting'),
             result='native_counter_not_efficacy_claim',evidence=str(folder.relative_to(report)),
             training_violation_count=violations if violations is not None else '',
             segment_new_violations=violations-initial_cost if violations is not None and initial_cost is not None else '',

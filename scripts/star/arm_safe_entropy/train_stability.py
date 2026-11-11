@@ -36,6 +36,8 @@ def main():
     parser.add_argument('--num-envs',type=int,default=2)
     parser.add_argument('--evaluation-workers',type=int,default=10)
     parser.add_argument('--resume',type=Path)
+    parser.add_argument('--engineering-recovery',action='store_true',
+        help='Explicit one-time continuation of an interrupted initial300k trial;requires a terminal incident record')
     parser.add_argument('--smoke',action='store_true')
     args=parser.parse_args()
     configuration=json.loads(args.config.read_text())
@@ -49,6 +51,8 @@ def main():
         parser.error('Initial development300k or declared native long continuation1M only')
     if args.steps==1000000 and not args.resume:
         parser.error('Development long runs continue a native300k full checkpoint,not a fresh extra1M')
+    if args.engineering_recovery and (not args.resume or args.steps!=300000 or args.smoke):
+        parser.error('Engineering recovery only completes an interrupted initial300k native trial')
     if args.smoke and args.steps>10000: parser.error('Engineering smoke is bounded separately')
     if (configuration['task_version']!='SafeReach-RelativeLayout-v3' or
             configuration['training_radius_m']!=.06):
@@ -73,7 +77,18 @@ def main():
         if (saved.get('format')!=FORMAT or saved['variant']!=args.variant or
                 saved['training_seed']!=args.seed or saved['configuration']!=configuration):
             raise ValueError('Resume only the matching native full trial,not a policy/foreign replay pair')
-        if not args.smoke and (saved['steps']!=300000 or args.steps!=1000000):
+        if args.engineering_recovery:
+            incident_path=args.resume.parent/'engineering_interruption.json'
+            incident=json.loads(incident_path.read_text())
+            if (incident.get('native_process_confirmed_terminal') is not True or
+                    incident.get('recovery_checkpoint_steps')!=saved['steps'] or
+                    not 0<saved['steps']<300000 or (args.resume.parent/'receipt.json').exists()):
+                raise ValueError('Recovery requires the declared matching full checkpoint of a terminal incomplete trial')
+            if Path('/proc',str(incident['native_pid']),'cmdline').exists():
+                command=Path('/proc',str(incident['native_pid']),'cmdline').read_bytes()
+                if b'train_stability' in command:
+                    raise ValueError('Do not duplicate a still-live native training process')
+        elif not args.smoke and (saved['steps']!=300000 or args.steps!=1000000):
             raise ValueError('Only the predeclared300k-to1M continuation is currently authorized')
         learner.load_state_dict(saved['learner']);replay.load_state_dict(saved['replay'])
         for key in ('steps','violations','episodes','safe_successes','safe_timeouts','evaluation_transitions'):
@@ -98,7 +113,10 @@ def main():
         variant=args.variant,method=learner.method,training_seed=args.seed,
         source_commit=args.source_commit,baseline_commit=configuration['baseline_commit'],
         configuration=configuration,task_config=asdict(task),task_definition=envs[0].definition(),
-        total_transition_budget=args.steps,initial_steps=steps,initialization='native_full_continuation' if saved else 'fresh',
+        total_transition_budget=args.steps,initial_steps=steps,
+        initialization='native_engineering_recovery' if args.engineering_recovery else 'native_full_continuation' if saved else 'fresh',
+        engineering_recovery=args.engineering_recovery,
+        initial_training_violations=violations,initial_training_episodes=episodes,
         initial_physical_evaluation_transitions=initial_evaluation_transitions,
         parent_checkpoint=str(args.resume) if args.resume else None,
         resume_semantics='learner_replay_optimizer_RNG_partial_episodes_and_observed_physical_state;not_bitwise_solver_cache',

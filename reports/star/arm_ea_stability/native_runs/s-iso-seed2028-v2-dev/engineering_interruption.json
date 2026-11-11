@@ -1,0 +1,14 @@
+{
+  "native_process_confirmed_terminal": true,
+  "native_pid": 3018826,
+  "observed_at": "2026-11-11T10:13:05+08:00",
+  "queue_terminal_state": "finished_with_failures_no_restarts",
+  "native_child_exit_code": 1,
+  "last_logged_steps": 231000,
+  "recovery_checkpoint_steps": 230000,
+  "logged_lost_tail_transitions": 1000,
+  "cause_evidence": "Both owned logs end with CUDA unspecified launch failure; emergency full save also failed while reading CUDA RNG. Host boot now 2026-11-11 09:31:53. Do not infer a mathematical NaN or exact root cause from asynchronous CUDA traceback.",
+  "checkpoint": "latest_full.pt",
+  "checkpoint_contents_confirmed": "matching native learner,replay,optimizer,EMA,all RNG,partial physical observations and counters",
+  "recovery_policy": "One explicit native completion in a new output directory;retain old logs and count lost tail in actual new training. Not a new seed or scientific restart."
+}
