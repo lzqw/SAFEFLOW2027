@@ -29,7 +29,8 @@ def native(job,commit):
  complete=receipt.get('status')=='completed' and receipt.get('steps')==job['steps']
  return dict(pid=job['pid'],variant=job['variant'],seed=job['seed'],gpu=job['gpu'],identity_alive=alive,
   steps=receipt.get('steps',status.get('steps')),target_steps=job['steps'],completed=complete,
-  unexpected_terminal=not alive and not complete)
+  unexpected_terminal=not alive and not complete,
+  receipt_is_archive_of_completed_A100_run=bool(job.get('receipt_is_archive_of_completed_A100_run')))
 queues=[];direct=[]
 for definition in cfg['queues']:
  state=read(definition['state']);cmd=command(state['queue_pid'])
