@@ -1,0 +1,58 @@
+{
+  "status": "archived_and_declared_queue_launched_not_training_complete",
+  "utc": "2026-11-11T03:24:01.093428+00:00",
+  "source_commit": "6e21cc7ba8901e78b178c68980741cc259d65473",
+  "plan": {
+    "reserved_new_training_transitions": 700000,
+    "parent": {
+      "host": "tjucta-a100",
+      "pid": 1951046,
+      "variant": "s_iso",
+      "seed": 2028,
+      "target_steps": 300000,
+      "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+      "output": "/home/lzqw/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2028-v2-dev-recovery1"
+    },
+    "destination": {
+      "host": "4080",
+      "project": "/home/carla/4T/SAFEFLOW2027_ARM",
+      "target_steps": 1000000,
+      "parent_name": "s-iso-seed2028-v2-dev-recovery1",
+      "learner_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+      "controller_commit": "504d139e3f2012f3a3b5353d75d99561e819ef18",
+      "queue_id": "iso2028-long-v2",
+      "queue_manifest": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-iso2028-long-plan.json"
+    }
+  },
+  "parent_receipt": {
+    "status": "completed",
+    "variant": "s_iso",
+    "training_seed": 2028,
+    "steps": 300000,
+    "initial_steps": 230000,
+    "newly_collected_transitions": 70000,
+    "training_violation_count": 847,
+    "training_episodes": 13725,
+    "training_safe_successes": 12271,
+    "training_safe_timeouts": 607,
+    "physical_evaluation_transitions": 5804,
+    "new_physical_evaluation_transitions": 1907,
+    "segment_elapsed_seconds": 2758.1872324128635,
+    "cumulative_elapsed_seconds": 7684.238566431915,
+    "learner_updates": 298000,
+    "reward_updates": 596000,
+    "actor_updates": 148500,
+    "source_commit": "94ffff33f91be4118fac7494e6fc027d8120218b",
+    "final_evaluation": "evaluation_300000.json"
+  },
+  "destination_controller": {
+    "queue_pid": 308005,
+    "state": "/home/carla/4T/SAFEFLOW2027_ARM/queues/ea-stability-v2-4080-iso2028-long-v2.json",
+    "log": "/home/carla/4T/SAFEFLOW2027_ARM/logs/ea-stability-v2-queue-4080-iso2028-long-v2.log"
+  },
+  "local_large_files_created": 0,
+  "new_training_transitions_launched_by_this_stager": 0,
+  "reserved_continuation_transitions": 700000,
+  "native_training_processes_stopped": 0,
+  "foreign_processes_changed": 0
+}

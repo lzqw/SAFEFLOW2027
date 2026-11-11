@@ -6,7 +6,9 @@ native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Final600k-to1M stability is unmeasured.
 
-## Verified runtime snapshot,2026-11-11 10:53:33 Asia/Taipei
+## Runtime progression,2026-11-11 Asia/Taipei
+
+The following three handles were directly verified at10:53:33:
 
 | Host / GPU | Trial | Actual logged transitions | Native PID |
 |---|---|---:|---:|
@@ -14,12 +16,20 @@ formal-confirmation launch has occurred. Final600k-to1M stability is unmeasured.
 | A100 /0 | S-Iso2028 native230k-to300k recovery | 254k | 1951046 |
 | 4080 /0 | S-EA2028 native300k-to1M | 306k | 229868 |
 
-All three native identities and the recovery/long queue identities were
-directly observed live. EA2027's native recovery completed300k;Iso2028
-continues from its230k native full checkpoint. Five of six initial endpoints
-are now complete. EA2027's next700k is queued on A100 GPU0 after the occupied
-recovery slot;Iso2028's700k remains to be started on4080 after its300k file
-exists. Both methods therefore remain represented on both authorized hosts.
+All six initial300k endpoints are now complete. The11:23 observation verified
+Iso2027 long at408k and EA2028 long at355k,and observed Iso2028's completed
+300k receipt with its native process exited. Its one-shot staging receipt at
+11:24 confirms the protected full snapshot was archived to4080 4T and the
+declared700k queue started (controller308005). EA2027's long queue launched
+native PID1997214 on A100 GPU0 at11:25. Iso2028 long initially waits for
+shared CPU/memory resource admission on4080;this is not an evaluation gate.
+The full long matrix is Iso/EA x2027/2028,with both methods on both hosts.
+See [ISO2028_STAGING_RECEIPT.json](ISO2028_STAGING_RECEIPT.json).
+At11:33 all four native identities were directly verified alive:Iso2027 at
+422k and EA2027 at305k on A100;EA2028 at365k and Iso2028 at306k on4080.
+The latter's first admission saw only1.84GiB free VRAM,then its5-minute
+retry admitted it with14.24GiB free. No foreign task was stopped and no
+already running learner was moved or restarted to achieve the four slots.
 The two other4080 jobs failed with CUDA unspecified launch failure;their
 emergency CUDA-RNG checkpoint also failed. The host subsequently rebooted.
 This is not evidence of a mathematical NaN or a precise hardware root cause.
@@ -37,7 +47,7 @@ The compact mirror can be slightly older than this read-only snapshot;its
 recorded lower-bound counters are in [DEVELOPMENT_STATUS.json](DEVELOPMENT_STATUS.json).
 Live partial steps are neither completed trials nor a whole-goal percentage.
 
-## Fixed300k results available so far
+## Complete fixed300k matrix
 
 Each row is one training seed;nominal has30 episodes,each stress20. The stress
 columns are the equal-weight mean of four conditions,not independent seeds.
@@ -45,6 +55,7 @@ columns are the equal-weight mean of four conditions,not independent seeds.
 | Trial | Nominal SS / violation | Stress SS / violation | Radius8cm violation | Native training violations |
 |---|---:|---:|---:|---:|
 | S-Iso2027 |96.67% /3.33%|71.25% /28.75%|70%|942|
+| S-Iso2028 |100% /0%|95% /5%|20%|847 (accounted849)|
 | S-Local2027 |100% /0%|88.75% /11.25%|40%|756|
 | S-Local2028 |100% /0%|83.75% /16.25%|65%|817|
 | S-EA2027 |100% /0%|97.5% /2.5%|10%|1007 (accounted at least1022)|
@@ -53,18 +64,30 @@ columns are the equal-weight mean of four conditions,not independent seeds.
 Both matched EA/Local seed pairs now favor EA's300k evaluation robustness,
 but EA costs at least28.6% more mean training violations after retaining the
 known discarded tail. This is two development seeds,not a new-seed confirmation
-or proof of late stability. Iso2028 fixed300k remains in explicit engineering
-completion;it is not assigned zero or silently removed. No method is declared
-repaired and no best intermediate checkpoint will replace fixed1M. The initial
-EA package is selected for the planned native long comparison;see
-[CONTINUATION_SELECTION.md](CONTINUATION_SELECTION.md). EA2028 can use4080
-without waiting for the whole recovery wave. EA2027's A100 queue waits only
-for the already occupied GPU0 recovery slot;Iso2027 continues on GPU1.
+or proof of late stability. All initial endpoints,including the two recovered
+ones,are retained. No method is declared repaired and no best intermediate
+checkpoint will replace fixed1M. The unchanged first EA package is selected
+for the paired long comparison;see
+[CONTINUATION_SELECTION.md](CONTINUATION_SELECTION.md).
+
+| Two-seed mean at300k | Nominal SS | Stress SS / violation | Radius8cm violation | Accounted training violations |
+|---|---:|---:|---:|---:|
+| S-Iso |98.33%|83.125% /16.875%|45%|at least895.5|
+| S-Local |100%|86.25% /13.75%|52.5%|786.5|
+| S-EA |100%|98.125% /1.875%|7.5%|at least1011.5|
+
+No safe timeout occurred in these fixed300k tests. Stable Iso and Local both
+already learn the nominal task,so this early EA comparison does not rely on
+the historical collapsed Iso baseline. EA has the most favorable300k risk
+results in both seeds,but about13.0% more accounted training violations than
+Iso and28.6% more than Local. These descriptive means retain only two training
+seeds;the test episodes are not additional independent training seeds.
 
 There is substantial intermediate variation:Local2027 radius8cm violations
 were45%,90%,40% at100/200/300k;EA2028 were60%,50%,5%. Continuing the fixed
-learning curves matters. Training violations756–1001 already at300k do not
-meet the350/1M effort target;do not extrapolate these into invented1M scores.
+learning curves matters. Known accounted violations756–1022 already at300k
+exceed the350/1M effort target. Cumulative counts cannot decrease during
+continuation;do not erase the prefix or invent final1M scores.
 
 ## Earlier fixed checkpoint retained: S-Local2027,100k
 

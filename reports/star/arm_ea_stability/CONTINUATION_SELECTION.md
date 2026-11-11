@@ -2,9 +2,18 @@
 
 Select the unchanged first S-EA package (rho0.25,EMA0.005,ramp10k–30k)
 for the two planned geometry continuations. Both EA/Local fixed300k seed
-pairs are now available. Iso2028 is still finishing an engineering recovery;
+pairs were available at selection. Iso2028 was still finishing an engineering recovery;
 its absence is not used to claim superiority over a two-seed Iso baseline.
 There is no favorable600k/best-checkpoint substitution or new formal run.
+
+Update11:24:all six300k endpoints are now complete. The recovered Iso2028
+has nominal safe success100%,radius8cm violation20%,and stress safe success95%.
+Thus the complete two-seed Iso radius8cm mean is45% (70%/20%),versus EA7.5%
+(10%/5%). Its accounted mean training violations are at least895.5,versus
+EA at least1011.5. Both complete matched EA/Local pairs and the full Iso
+baseline remain visible;the continuation choice is unchanged,not reselected
+from a favorable checkpoint. The fourth native long queue was staged to4080
+automatically using the real protected300k snapshot.
 
 | Fixed300k trial | Nominal SS | Stress mean SS / violation | Radius8cm violation | Native / accounted training violations |
 |---|---:|---:|---:|---:|
