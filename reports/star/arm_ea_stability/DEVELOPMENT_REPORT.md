@@ -5,7 +5,7 @@ Recovery driver94ffff3 only permits explicit completion of matching terminal
 native trials;the learner,geometry,physics,evaluation and profile remain
 identical. No scientific early stop,parameter change,extra candidate or
 formal-confirmation launch has occurred. Both Iso600k endpoints are now
-available;EA600k and all fixed1M endpoints remain pending. Final600k-to1M
+available;EA2028's600k endpoint is also available. EA2027's600k and all fixed1M endpoints remain pending. Final600k-to1M
 stability is unmeasured.
 
 ## Runtime progression,2026-11-11 Asia/Taipei
@@ -169,6 +169,58 @@ excursion. At this capture,the logged new training lower bound including
 engineering is2699210,conservative charge2703210 including the4000 reserve;
 nontraining physical controls68960. There are100 development condition rows,
 zero completed fixed1M rows,and no formal confirmation started.
+
+## First matched EA/Iso600k seed pair:2028,14:32 capture
+
+EA2028 reached its declared600k evaluation with the same development layout
+seed start120027 and episode counts as Iso. Its recorded1855 evaluation
+control intervals are now included separately in the nontraining budget.
+This completes only one of two planned training-seed pairs at600k;EA2027
+remains below that milestone. Local has no600k continuation in the selected
+matrix,so its300k result cannot establish an independent600k EA gain.
+
+Entries are safe success / violation / safe timeout percentages.
+
+| Fixed600k condition | EA2028 | Iso2028 |
+|---|---:|---:|
+| Nominal |100 /0 /0|93.33 /0 /6.67|
+| Radius7cm |100 /0 /0|100 /0 /0|
+| Radius8cm |75 /25 /0|90 /10 /0|
+| Lateral+/-3cm |100 /0 /0|85 /0 /15|
+| Lateral+/-6cm |100 /0 /0|70 /5 /25|
+| Four-stress mean |93.75 /6.25 /0|86.25 /3.75 /10|
+
+EA improves stress safe success by7.5 percentage points and removes the
+observed safe timeouts,but has2.5 points more average stress violations.
+Its8cm violation rate is15 points worse than Iso's. EA8cm also regresses
+from5% at300k to25% at600k (one versus five violations among20 episodes),
+so the early robustness gain does not remain uniformly intact. This small
+development sample does not establish statistical significance;the100
+episodes per condition at fixed1M and both training seeds are still needed.
+
+The increased task completion is not free training safety:EA has1564 native
+training violations and32079 completed episodes at600k,versus Iso1428 native
+violations (1430 accounted) and30583 native episodes (30641 accounted).
+EA's accounted violation count is9.37% higher. Nominal capped time is0.689s
+versus Iso0.947s,but8cm capped time is1.520s versus Iso1.046s;neither metric
+supports an all-condition Pareto improvement.
+
+EA's500k-to600k logged policy-Q means stay9.506–9.803,maxima10.075–10.627,
+and recent training safe success90–100%. The maximum sampled replay
+state-specific upper-bound exceedance is0.39%,versus Iso's40.23% excursion.
+At600k EA policy-Q mean9.694,max10.100,energy19.305,clipping5.89%,and
+multiplier0. Thus this EA seed's8cm risk regression is not accompanied by
+the same large logged value excursion or training-task collapse. That
+distinguishes the observed phenomena;it does not prove accurate OOD margin
+geometry or a causal mechanism. No new margin query or training change was
+introduced to produce this analysis.
+
+All four original continuations remain running unchanged. The compact
+capture has EA2027 at411k,Iso2027 at698k,EA2028 at602k,and Iso2028 at862k.
+The total logged new training lower bound including engineering is3183210,
+with conservative charge3187210 including the4000 reserve;nontraining
+physical controls70815. There are105 development condition rows,zero
+fixed1M rows,and no extra short candidate or formal-confirmation run.
 
 ## Earlier fixed checkpoint retained: S-Local2027,100k
 
