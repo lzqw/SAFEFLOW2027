@@ -28,11 +28,37 @@
   "selected_candidates": [],
   "candidate_history": [
     {
+      "trial_id": "crax-ea-nativedual-41027-500k-v3",
+      "task": "PointGoal",
+      "method": "ea",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 100096,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_100096.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
       "trial_id": "crax-iso-nativedual-41027-2m-v3",
       "task": "PointGoal",
       "method": "stable_iso",
       "training_seed": 41027,
       "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1200128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-2m-v3/validation_1200128.json"
+        },
+        {
+          "checkpoint_steps": 1600000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-2m-v3/validation_1600000.json"
+        },
+        {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-2m-v3/validation_2000128.json"
+        },
         {
           "checkpoint_steps": 800000,
           "evaluation_file": "native_runs/crax-iso-nativedual-41027-2m-v3/validation_800000.json"
@@ -182,6 +208,10 @@
       "training_seed": 41027,
       "observed_checkpoints": [
         {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_120000.json"
+        },
+        {
           "checkpoint_steps": 60000,
           "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_60000.json"
         }
@@ -262,6 +292,14 @@
         {
           "checkpoint_steps": 180000,
           "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_240000.json"
+        },
+        {
+          "checkpoint_steps": 300000,
+          "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_300000.json"
         },
         {
           "checkpoint_steps": 60000,

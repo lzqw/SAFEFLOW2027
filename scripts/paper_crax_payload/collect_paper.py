@@ -30,7 +30,7 @@ def collect(host,root,report):
 
 
 def refresh(report):
-    results=[];point_results=[];trials=[];candidate_history=[];physical=0;training=0
+    results=[];piper_results=[];point_results=[];trials=[];candidate_history=[];physical=0;training=0
     ledger_path=report/'TRIAL_LEDGER.csv'
     with ledger_path.open() as stream:
         ledger_reader=csv.DictReader(stream);ledger_fields=ledger_reader.fieldnames;ledger={r['trial_id']:r for r in ledger_reader}
@@ -49,15 +49,17 @@ def refresh(report):
         if (directory/'progress.jsonl').exists():
             history=[json.loads(line) for line in (directory/'progress.jsonl').read_text().splitlines() if line.strip()]
         latest=receipt or status or (history[-1] if history else {})
-        steps=max(latest.get('steps',0),checkpoint_status.get('steps',0));initial=receipt.get('initial_steps',checkpoint_status.get('initial_steps',config.get('initial_steps',0)))
+        steps=max(latest.get('steps',latest.get('training_steps',0)),checkpoint_status.get('steps',0));initial=receipt.get('initial_steps',checkpoint_status.get('initial_steps',config.get('initial_steps',0)))
         new=receipt.get('newly_collected_transitions',receipt.get('new_training_transitions',steps-initial))
         training+=new
         cost=latest.get('training_violation_count',latest.get('training_cumulative_cost',latest.get('total_training_cumulative_cost',checkpoint_status.get('training_cumulative_cost'))))
         queries=0
         for evaluation_path in sorted(directory.glob('evaluation_*.json')):
-            evaluation=read(evaluation_path);queries+=evaluation.get('physical_evaluation_transitions',0)
+            evaluation=read(evaluation_path);is_piper=config.get('robot_family')=='Piper'
+            queries+=evaluation.get('physical_evaluation_transitions',evaluation.get('new_simulation_control_intervals',0))
+            checkpoint_receipt=read(directory/f"training_receipt_{evaluation['checkpoint_steps']}.json") if is_piper else evaluation
             for condition in evaluation.get('conditions',[]):
-                results.append(dict(phase=config.get('phase','development'),trial_id=directory.name,
+                row=dict(phase=config.get('phase','development'),trial_id=directory.name,
                     method=config.get('method'),training_seed=config.get('training_seed',config.get('seed')),
                     steps=evaluation['checkpoint_steps'],checkpoint=evaluation_path.stem.replace('evaluation','policy'),
                     selection_role='fixed_endpoint' if evaluation.get('fixed_endpoint') else 'development_checkpoint',
@@ -65,8 +67,10 @@ def refresh(report):
                     episodes=condition['episodes'],safe_success=condition['safe_success'],violation=condition['violation'],
                     safe_timeout=condition['safe_timeout_count']/condition['episodes'],native_return=condition['episode_return'],
                     capped_time_seconds=condition['time_to_goal_capped_seconds'],conditional_success_time_seconds=condition['time_to_goal_seconds'],
-                    training_cumulative_cost=evaluation['training_violation_count'],completed_training_episodes=evaluation['training_episodes'],
-                    source_commit=config['source_commit']))
+                    training_cumulative_cost=checkpoint_receipt.get('training_violation_count'),completed_training_episodes=checkpoint_receipt.get('training_episodes'),
+                    source_commit=config['source_commit'])
+                if is_piper:piper_results.append(row|dict(robot_family='Piper',task=config['task']))
+                else:results.append(row)
         validations=sorted(directory.glob('validation_*.json'))
         validations+=sorted((report/'native_sac_common_validation').glob(f'*/{directory.name}__*.json'))
         for validation_path in validations:
@@ -96,7 +100,7 @@ def refresh(report):
             if resume_path:
                 inherited_calls=read(report/'native_runs'/PurePosixPath(resume_path).parent.name/'checkpoint_status.json').get('evaluation_calls',0)
             native_calls=max(0,checkpoint_status.get('evaluation_calls',0)-inherited_calls)
-            queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0),native_calls*50*config.get('episode_length',1000))
+            queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0),receipt.get('new_simulation_evaluation_control_intervals',0),native_calls*50*config.get('episode_length',1000))
         physical+=queries
         trial_status='completed' if receipt.get('status')=='completed' else status.get('state',status.get('status','observed_not_liveness_proof'))
         if directory.name in failed_jobs:trial_status='failed_preheat_logging;source_inferred_steps_and_full_budget_reserve_in_CRAX_PROFILE_V1_FAILURES'
@@ -123,6 +127,8 @@ def refresh(report):
     fields=next(csv.reader(path.open()))
     with path.open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(results)
+    with (report/'PIPER_RESULTS.csv').open('w',newline='') as stream:
+        writer=csv.DictWriter(stream,fieldnames=['robot_family','task',*fields]);writer.writeheader();writer.writerows(piper_results)
     path=report/'CRAX_POINTGOAL_RESULTS.csv'
     fields=list(dict.fromkeys(next(csv.reader(path.open()))+['capped_first_goal_seconds','conditional_first_goal_seconds']))
     with path.open('w',newline='') as stream:
@@ -134,7 +140,7 @@ def refresh(report):
     (report/'MODEL_SELECTION.json').write_text(json.dumps(selection,indent=2)+'\n')
     summary=dict(completed_native_runs=sum(r['status']=='completed' for r in trials),observed_native_runs=len(trials),
         observed_new_training_transitions_lower_bound=training,observed_native_evaluation_controls=physical,
-        trials=trials,payload_condition_rows=len(results),pointgoal_validation_rows=len(point_results),whole_goal_complete=False,
+        trials=trials,payload_condition_rows=len(results),piper_condition_rows=len(piper_results),pointgoal_validation_rows=len(point_results),whole_goal_complete=False,
         note='report-only snapshot;no live process claims,no new training,no physics,no large checkpoints copied')
     summary['crax_v1_failure_training_budget_reserve']=failures.get('conservative_development_budget_reservation',0)
     (report/'NATIVE_PROGRESS.json').write_text(json.dumps(summary,indent=2)+'\n')

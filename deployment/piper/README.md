@@ -59,28 +59,33 @@ Iso/Iso-Low/EA within task/condition/repetition blocks. A separately enabled
 on-site implementation is needed before execution. Protection parameters must
 be common across methods. Physical robot training/real adaptation is not enabled.
 
-## Simulation candidates: finite queues prepared, not yet launched
+## Simulation candidates: Reach running, Payload queue prepared
 
 The approved native Payload Iso-Low CPU engineering run completed3210→3220
 transitions with full replay/RNG/partial-state recovery, source70269ac. Its
 actual variance.01/energy target75/initialalpha.0002 are retained, but that smoke
-is not an eligible deployment policy. No six-trial Piper candidate run or
-independent test has been performed yet. Raw evidence and accounting are linked
+is not an eligible deployment policy. Native Reach Iso candidate training now
+runs on one shared A100GPU0 slot; the other Reach methods are queued. Piper
+Payload training and independent testing have not started. Raw evidence is linked
 from `../../reports/paper_crax_payload/PIPER_TRAINING_IMPLEMENTATION.md`.
 
 Six fresh candidates are registered: Reach/Payload ×Iso/Iso-Low/EA ×seed41027,
 300k each, total1.8M. With the already charged3220 engineering transitions, the
 planned training charge is1,803,220 of3M, not six copies of a3M allowance.
-`configs/paper_crax_payload/piper_queue_4080_v1.json` is the combined two-slot
-finite plan. The disjoint `piper_queue_4080_slot0_v1.json` and `slot1_v1.json`
-are an alternative when slots are released separately; never launch both the
-combined plan and partitions. They contain the same six unique native outputs,
-not extra candidates or repetitions. Each method has the same five checkpoints
-and common validation; no engineering weight or old Panda policy is transferred.
+The original all4080 combined and two partition plans are now SUPERSEDED and
+rejected by the finite queue guard, preserving their registration without
+allowing duplicate candidates. Current placement is
+`piper_queue_a100_reach_v1.json`: one sharedGPU0 slot, Reach Iso→Iso-Low→EA;
+and `piper_queue_4080_payload_v1.json`: three Payload candidates, prepared only.
+The same six unique candidate identities, five checkpoints and common selection
+remain; no extra training or engineering/Panda weight transfer is introduced.
 
-Prioritize pending Payload jobs, then fill a verified free slot with a one-slot
-Piper partition without waiting for an unrelated occupied slot. Use the combined
-plan only when two slots are free. A coordinator must first inspect actual
+A100 native queue57815 and Reach Iso57816 started with source6f9e3bf, nice10 and
+CPU thread limits1; actual first3k then5k progress is in
+`../../reports/paper_crax_payload/PIPER_A100_DEPLOYMENT.json`. No GPU reservation,
+MPS/device changes or dependency upgrades were made; PointGoal may share the
+card and remains primary. Sharing is not a promise of zero compute slowdown.
+Prioritize pending primary Payload jobs on4080. A coordinator must inspect actual
 native handles, GPU/disk, absent state/output/log paths and pinned source/assets.
 The admission text is a coordinator preflight contract, not an implemented extra
 watchdog or automatically enforced cross-queue scheduler. Do not restart any
@@ -91,5 +96,7 @@ Official assets are already staged on4080 under
 `/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json` verifies
 the same model commit/source URDF/mesh hashes. Absolute mesh URI resolution gives
 a server-specific resolved-URDF digest; that is not a change to official geometry.
-Only assets were staged: training still needs its exact committed source deployed
-and explicit resource admission. No simulator steps were used to stage assets.
+For4080 Piper only assets were staged: its candidate training is not launched.
+The same pinned assets were streamed to A100 without local staging and resolved
+there, before the verified native launch. No simulator steps were used to stage
+either host's assets. Actual measured physical calibration is still pending.

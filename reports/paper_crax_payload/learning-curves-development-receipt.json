@@ -1,20 +1,21 @@
 {
   "status": "completed_development_snapshot_plots",
-  "created_at_utc": "2026-11-12T06:16:00.453261+00:00",
+  "created_at_utc": "2026-11-12T06:26:41.821572+00:00",
   "script_sha256": "3f2ba2ca2896bf20da206919404819ce00aa11eac306cffd6a99c4061fd57a38",
   "matplotlib_version": "3.7.2",
   "inputs": [
     {
       "path": "reports/paper_crax_payload/CRAX_POINTGOAL_RESULTS.csv",
-      "snapshot_sha256": "ab5c6cb053453afd1541b28ca15adad3f20e956872732d6bcc944cab29f160a9",
-      "snapshot_bytes": 7236,
-      "rows": 22,
-      "captured_at_utc": "2026-11-12T06:15:59.243184+00:00",
+      "snapshot_sha256": "f7619f1160ebab5a36f3e9fd48f8fe5ca10668b17d863ef7d6c872a16074ebe1",
+      "snapshot_bytes": 8358,
+      "rows": 26,
+      "captured_at_utc": "2026-11-12T06:26:40.593906+00:00",
       "phase_counts": {
-        "development": 21,
+        "development": 25,
         "reference": 1
       },
       "trial_ids": [
+        "crax-ea-nativedual-41027-500k-v3",
         "crax-iso-nativedual-41027-2m-v3",
         "crax-iso-nativedual-41027-500k-v3",
         "crax-iso-norm-balanced-41027-500k-v1",
@@ -30,6 +31,50 @@
         "episode_cost": 0
       },
       "plotted_snapshot_records": [
+        {
+          "trial_id": "crax-ea-nativedual-41027-500k-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "100096",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 91.04481797456741
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "1200128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 6.831441898345947
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "1600000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.14,
+          "episode_cost": 17.010426259040834
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "2000128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 3.82,
+          "episode_cost": 61.23351075649261
+        },
         {
           "trial_id": "crax-iso-nativedual-41027-2m-v3",
           "method": "stable_iso",
@@ -273,17 +318,17 @@
           "episode_cost": 72.22632598876953
         }
       ],
-      "current_sha256_at_finish": "ab5c6cb053453afd1541b28ca15adad3f20e956872732d6bcc944cab29f160a9",
+      "current_sha256_at_finish": "f7619f1160ebab5a36f3e9fd48f8fe5ca10668b17d863ef7d6c872a16074ebe1",
       "changed_after_snapshot": false
     },
     {
       "path": "reports/paper_crax_payload/PAYLOAD_RESULTS.csv",
-      "snapshot_sha256": "04aa3badeeea4f9cbbc478870a10cc2353ac2c0054f858d23d82487b2133dff4",
-      "snapshot_bytes": 17386,
-      "rows": 70,
-      "captured_at_utc": "2026-11-12T06:15:59.243732+00:00",
+      "snapshot_sha256": "55618e7939bf94032fb01e5a3c2a75a80e09fded1bcdf382b7dd5c4861491d4f",
+      "snapshot_bytes": 20991,
+      "rows": 85,
+      "captured_at_utc": "2026-11-12T06:26:40.594553+00:00",
       "phase_counts": {
-        "development": 70
+        "development": 85
       },
       "trial_ids": [
         "payload-ea-41027-v1",
@@ -300,6 +345,66 @@
         "violation": 0
       },
       "plotted_snapshot_records": [
+        {
+          "trial_id": "payload-ea-41027-v1",
+          "method": "s_ea",
+          "training_seed": "41027",
+          "steps": "120000",
+          "phase": "development",
+          "condition": "nominal",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.9666666666666667,
+          "violation": 0.03333333333333333
+        },
+        {
+          "trial_id": "payload-ea-41027-v1",
+          "method": "s_ea",
+          "training_seed": "41027",
+          "steps": "120000",
+          "phase": "development",
+          "condition": "radius_070",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.6,
+          "violation": 0.4
+        },
+        {
+          "trial_id": "payload-ea-41027-v1",
+          "method": "s_ea",
+          "training_seed": "41027",
+          "steps": "120000",
+          "phase": "development",
+          "condition": "payload_wide",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.7,
+          "violation": 0.3
+        },
+        {
+          "trial_id": "payload-ea-41027-v1",
+          "method": "s_ea",
+          "training_seed": "41027",
+          "steps": "120000",
+          "phase": "development",
+          "condition": "execution_scale_085",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.9666666666666667,
+          "violation": 0.03333333333333333
+        },
+        {
+          "trial_id": "payload-ea-41027-v1",
+          "method": "s_ea",
+          "training_seed": "41027",
+          "steps": "120000",
+          "phase": "development",
+          "condition": "alternative_route",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.1,
+          "violation": 0.9
+        },
         {
           "trial_id": "payload-ea-41027-v1",
           "method": "s_ea",
@@ -1084,6 +1189,126 @@
           "trial_id": "payload-sac-41028-v1",
           "method": "sac_lag",
           "training_seed": "41028",
+          "steps": "240000",
+          "phase": "development",
+          "condition": "nominal",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.9666666666666667,
+          "violation": 0.03333333333333333
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "240000",
+          "phase": "development",
+          "condition": "radius_070",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.8333333333333334,
+          "violation": 0.16666666666666666
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "240000",
+          "phase": "development",
+          "condition": "payload_wide",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.7,
+          "violation": 0.3
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "240000",
+          "phase": "development",
+          "condition": "execution_scale_085",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 1.0,
+          "violation": 0.0
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "240000",
+          "phase": "development",
+          "condition": "alternative_route",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.23333333333333334,
+          "violation": 0.7666666666666667
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "300000",
+          "phase": "development",
+          "condition": "nominal",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 1.0,
+          "violation": 0.0
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "300000",
+          "phase": "development",
+          "condition": "radius_070",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.9666666666666667,
+          "violation": 0.03333333333333333
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "300000",
+          "phase": "development",
+          "condition": "payload_wide",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.8333333333333334,
+          "violation": 0.16666666666666666
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "300000",
+          "phase": "development",
+          "condition": "execution_scale_085",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 1.0,
+          "violation": 0.0
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
+          "steps": "300000",
+          "phase": "development",
+          "condition": "alternative_route",
+          "evaluation_seed": "450000",
+          "episodes": "30",
+          "safe_success": 0.8,
+          "violation": 0.2
+        },
+        {
+          "trial_id": "payload-sac-41028-v1",
+          "method": "sac_lag",
+          "training_seed": "41028",
           "steps": "60000",
           "phase": "development",
           "condition": "nominal",
@@ -1141,7 +1366,7 @@
           "violation": 0.9333333333333333
         }
       ],
-      "current_sha256_at_finish": "04aa3badeeea4f9cbbc478870a10cc2353ac2c0054f858d23d82487b2133dff4",
+      "current_sha256_at_finish": "55618e7939bf94032fb01e5a3c2a75a80e09fded1bcdf382b7dd5c4861491d4f",
       "changed_after_snapshot": false
     }
   ],
@@ -1149,11 +1374,11 @@
   "outputs": [
     {
       "path": "reports/paper_crax_payload/learning-curves-pointgoal-development.png",
-      "sha256": "6261fb0c6b0b6d4a7beecb7920da3c7ec2355f9263fc00334c74ea3d1a4dde67"
+      "sha256": "317707d55725eb213686e364221ef11a85afbf76beb11a3f82e2f3bc5a05bc6f"
     },
     {
       "path": "reports/paper_crax_payload/learning-curves-payload-development.png",
-      "sha256": "d6dbcc5ba428c7c892bf4bbe0e29fd64202308bce3109f71e29e44301029b56c"
+      "sha256": "00f8a509466d8e1f6d770ecd7937d14fd6be2264e35de5ce71d68b58e35bd070"
     }
   ],
   "payload_conditions": [

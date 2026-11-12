@@ -1,8 +1,10 @@
 # Native Piper simulation training and candidate export
 
 Status: source implemented; two constructive task routes and three focused
-contracts passed. No six-trial development training has been launched by this
-implementation. One explicitly approved3210→3220 engineering continuation
+contracts passed. Native Reach Iso development is now running on a single
+shared A100GPU0 slot; Iso-Low/EA Reach are queued, and three Piper Payload trials
+remain prepared for4080 without displacing its primary Payload work.
+One explicitly approved3210→3220 engineering continuation
 completed on localCPU with pinned source70269ac59a9ac3130a378eb4dbd9ea81798f9887.
 No physical robot transport or motion is enabled, and an engineering checkpoint
 is not a deployment candidate. Model and gripper identity are user-confirmed
@@ -69,7 +71,7 @@ All methods retain five equal fractions and their fixed final endpoint. Fresh
 validation61027 and independent test71027 ranges are distinct from development
 650000 and engineering layouts; independent testing has not been consumed here.
 
-Finite execution plans are now prepared, not launched:
+The initial all4080 finite execution plans were prepared, not launched:
 `piper_queue_4080_v1.json` contains all six jobs with two slots. Its alternative
 disjoint `slot0`/`slot1` plans each contain three jobs/one slot, allowing a newly
 released slot to progress without waiting for another occupied slot. Never run
@@ -80,6 +82,21 @@ extra auto-restart/watchdog implementation. The13:53 resource inspection still
 found two live Payload learners/two pending jobs/GPU99%, so no Piper job started.
 Official assets have been prefetched to4T; source/model/mesh receipt is
 `piper-assets-4080-ac41fcb.json`, with zero new simulation/training interactions.
+
+Current placement supersedes those old plans: three Reach candidates on one
+shared A100GPU0 slot, and three Payload candidates reserved for4080. Source
+6f9e3bf started native Reach Iso at14:18; queue57815 and native57816 were checked
+live, with actual3k steps then5k in the compact copied status. Both processes
+use nice10, CPU thread limits1 and visibleGPU0; no global GPU/device or dependency
+change was made. See `PIPER_A100_DEPLOYMENT.json` and `piper-a100-start-6f9e3bf/`.
+Current plans are `piper_queue_a100_reach_v1.json` and
+`piper_queue_4080_payload_v1.json`. All three old all4080 combined/partition plans
+are explicitly superseded and the queue guard rejects their launch. The six
+candidate identities and1,803,220 total reservation including engineering are
+unchanged; this is resource placement, not extra candidates or training budgets.
+Piper Payload has not started, no candidate has been exported, and independent
+testing is untouched. The same official assets were streamed to A100 and URI
+resolved there; source/mesh digests match4T (`piper-assets-a100-ac41fcb.json`).
 
 ## Full continuation and frozen evaluation
 

@@ -23,6 +23,7 @@ Budget is 25 per episode. No physics or hazards were simplified.
 | SAC LR .01, intermediate candidate | 1,808,128 checkpoint | 3.12 | 18.57 | common validation, 50 episodes |
 | Flow-Iso, normalized, episode dual | 500,224 | 0.12 | 2.60 | common validation, 50 episodes |
 | Flow-Iso, normalized, native-unit dual | 500,224 | 0.00 | 0.082 | common validation, 50 episodes |
+| Same Flow-Iso, genuine continuation | 2,000,128 | 3.82 | 61.23 | common validation, 50 episodes |
 
 Both normalized SAC runs now have all five checkpoints assessed on the same
 61027 layouts (500 episodes/500000 additional nontraining controls in total).
@@ -30,9 +31,11 @@ The LR .01 intermediate candidate reaches at least one goal in90% of episodes;
 74% meet budget, with budget-compliant mean return2.0. It is a useful development
 candidate, not yet a selected or independently tested strategy. Its source run's
 entire3M training remains charged, not just the candidate's1.81M prefix.
-SAC learns the task but both fixed3M endpoints exceed the safety budget. Iso's low cost currently reflects
-stagnation, not success. No effective final Flow configuration or PointGoal EA
-benefit has been established. The latest Iso training-episode bookkeeping is
+SAC learns the task but both fixed3M endpoints exceed the safety budget. Iso's
+500k low cost reflected stagnation, not success. At2M it finally learns the task:
+88% reach at least one goal, but only50% meet budget and mean cost remains high.
+Its budget-compliant mean return is1.52 over25episodes. No cost-qualified final
+Flow configuration or PointGoal EA benefit has been established. Iso bookkeeping is
 recovered explicitly from complete raw replay for continuation; original evidence
 is kept. Subsequent native boundaries now accumulate properly (1024 completed
 episodes at1029376 transitions). [Repair and limitations](EPISODE_ACCOUNTING_RECOVERY.md).
@@ -41,7 +44,11 @@ SAC LR .1 end-to-end throughput was 5701 transitions/s including compilation,
 native evaluation and saves (offline common validation is separately charged).
 Iso's latest full 500k run was 1005 transitions/s,
 with 240/498 seconds spent evaluating. Compiled evaluation reuse is implemented
-prospectively. See [measured profiles](CRAX_FAST_PROFILE.md).
+in the2M continuation: four full validations cost112 seconds total, versus240
+seconds for five previously recompiled validations (different sample counts and
+shared load, not a clean causal speed benchmark). Actual new1,499,904 transitions
+took971.10 seconds including compilation/evaluation/saves,1544.55SPS.
+See [measured profiles](CRAX_FAST_PROFILE.md).
 
 ## 2. Engineering gains versus algorithm changes
 
@@ -61,8 +68,9 @@ negative cost-Q predictions prevent a simple causal explanation of stagnation.
 
 Not established. No formal selection has occurred and independent 71027-series
 tests remain unused. Up to five prospective policy checkpoints per training seed
-are retained. A learned Iso baseline is required before PointGoal EA comparison;
-formal three-method, three-seed training has not started.
+are retained. After Iso learned at2M, same-config Iso continuation to4M and paired
+EA initial500k were launched; this consumes the sixth and last major configuration
+slot. Formal three-method, three-seed training has not started.
 
 ## 4. Full endpoints, seeds and failures
 
@@ -85,7 +93,10 @@ comparison artifacts. No historical long evaluation was rerun.
   Across four stress conditions, SAC safe success was 90.0%, Iso 74.2%.
   Offset-obstacle safe success was only 63.3%/43.3%, respectively. These are
   development conditions, not independent selected-policy tests. EA first
-  seed and SAC second seed are running; two other jobs remain queued.
+  seed and Iso second seed are running; SAC second seed has also completed300k,
+  and EA second seed remains queued. See every condition in the result CSV.
+  SAC second seed also reaches100% nominal safe success; its four stress safe
+  success rates are96.7%,83.3%,100%,80.0%, with corresponding violations retained.
 - Reach M1–M3: completed on 128 fresh common states × 64 draws, all four old
   actors, plus 720 route episodes. Directional-Full improves risk versus
   Iso-High but does not dominate Iso-Low; pullback does not win every actor.
@@ -96,7 +107,10 @@ comparison artifacts. No historical long evaluation was rerun.
 - Piper: user confirmed standard arm and standard gripper. Pinned official model,
   Reach/Payload simulation, genuine Iso-Low engineering save/resume, offline
   recording and timeout handling are implemented. Six native simulation
-  candidates are being prepared; none is yet a trained deployment candidate.
+  candidates are split without duplication: one finite A100GPU0 shared slot now
+  runs Reach Iso→Iso-Low→EA; the4080Payload trio waits for Payload research slots.
+  First native Reach-Iso progress is5000 transitions,1000Actor updates. None is
+  yet a selected/exported deployment candidate.
   Hardware calibration/firmware/TCP/limits remain onsite inputs. Physical
   transport and motion remain disabled; zero real interactions.
 
@@ -109,6 +123,9 @@ costs include Payload 3220 training/222 nontraining controls; Piper 3220 trainin
 recovery 8448 training; CRAX bridge 10 nontraining controls; Reach mechanisms
 437,685 nontraining controls. Frozen gradient analysis uses no environment steps.
 Failed-profile conservative reservation is separate from observed actual totals.
+Completed large CRAX artifacts are being streamed to the4080 4T archive without
+local staging or deletion of A100 originals. The archive manifest remains marked
+incomplete until all destination sizes and hashes match.
 
 The whole objective remains active: effective shared Flow/EA development, fair
 formal PointGoal comparison, Payload development and confirmation, selected-policy

@@ -1,28 +1,32 @@
 {
-  "as_of": "2026-11-12T13:59:00+08:00",
+  "as_of": "2026-11-12T14:24:00+08:00",
   "whole_goal_complete": false,
   "PointGoal_development": {
     "cap_training_transitions": 24000000,
-    "observed_completed_training_including_engineering": 8140288,
+    "observed_completed_training_including_engineering": 9640192,
     "failed_profile_source_inferred_training_not_in_observed_total": 29696,
     "conservative_failed_profile_reservation_instead_of_inferred_total": 98304,
-    "conservatively_charged": 8238592,
-    "remaining_before_next_same_configuration_continuation": 15761408,
-    "major_configurations_launched": 5,
+    "conservatively_charged": 9738496,
+    "major_configurations_launched": 6,
     "major_configuration_cap": 6,
-    "sixth_slot_reserved_for": "pairedEAaftereffectiveIso;notlaunched",
-    "next_same_configuration_possible_continuation_new_training": 1499904,
     "formal_training_started": false,
-    "formal_budget_not_spent_or_reclassified_as_development": true
+    "formal_budget_not_spent_or_reclassified_as_development": true,
+    "remaining_after_completed_and_failed_reservation": 14261504,
+    "active_new_training_reservations": {
+      "Iso_2M_to_4M": 1999872,
+      "EA_fresh_500k_rounded": 500224
+    },
+    "total_reserved_completed_plus_active_targets": 12238592,
+    "remaining_after_active_target_reservations": 11761408
   },
   "Payload_development": {
     "cap_training_transitions": 3000000,
     "engineering_actual_training": 3220,
     "six_initial_jobs_total_reserved": 1800000,
     "remaining_targeted_repair_allowance_after_initial_six": 1196780,
-    "completed_initial_jobs": 2,
+    "completed_initial_jobs": 3,
     "live_initial_jobs": 2,
-    "pending_initial_jobs": 2,
+    "pending_initial_jobs": 1,
     "confirmation_training_started": false,
     "whole_payload_training_cap": 12000000
   },
@@ -30,10 +34,13 @@
     "cap_training_transitions": 3000000,
     "engineering_actual_training": 3220,
     "six_proposed_candidate_jobs_total": 1800000,
-    "candidate_jobs_launched": 0,
+    "candidate_jobs_launched": 1,
     "remaining_after_proposed_six": 1196780,
     "physical_interactions": 0,
-    "physical_connection_authorized": false
+    "physical_connection_authorized": false,
+    "candidate_queue_jobs_reserved_A100": 3,
+    "candidate_queue_jobs_prepared_4080": 3,
+    "observed_new_candidate_training_lower_bound": 5000
   },
   "Arm_mechanism": {
     "cap_new_training": 3000000,

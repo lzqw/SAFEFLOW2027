@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "method": "sac_lag",
+  "training_seed": 41028,
+  "phase": "development",
+  "steps": 300000,
+  "initial_steps": 0,
+  "newly_collected_transitions": 300000,
+  "training_violation_count": 919,
+  "training_episodes": 15475,
+  "training_safe_successes": 14343,
+  "training_safe_timeouts": 213,
+  "new_physical_evaluation_transitions": 12176,
+  "physical_evaluation_transitions": 12176,
+  "segment_elapsed_seconds": 3618.6556968629884,
+  "cumulative_elapsed_seconds": 3618.6556971949904,
+  "learner_updates": 298000,
+  "reward_updates": 596000,
+  "actor_updates": 148500,
+  "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea"
+}

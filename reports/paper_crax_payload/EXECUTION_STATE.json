@@ -12,22 +12,17 @@
     "queue_pid": 3401203,
     "native_pids": [
       3520324,
-      3613987
+      3715064
     ],
     "queue_state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
     "declared_scientific_transitions": 1800000,
-    "initial_jobs": "SAC41027 andIso41027 completed;EA41027 andSAC41028 active;two pending",
-    "observed_training_steps_lower_bound": {
-      "sac41027": 300000,
-      "iso41027": 300000,
-      "ea41027": 102000,
-      "sac41028": 201000
-    },
+    "initial_jobs": "SAC41027/Iso41027/SAC41028 completed;EA41027+Iso41028 live;EA41028 pending",
     "observed_at_local": "2026-11-12 11:48 Asia/Taipei",
     "engineering_new_training": 3220,
     "engineering_nontraining_sim_controls": 222,
     "full_native_resume_passed": true,
-    "completed_development_endpoints": 2
+    "completed_development_endpoints": 3,
+    "latest_native_snapshot": "NATIVE_PROGRESS.json;actualobservedcountersandtimestampsinrawnative_runs"
   },
   "arm_mechanism": {
     "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
@@ -44,7 +39,7 @@
   "CRAX": {
     "official_commit": "63504b540705be98024abd675e646ff5e046c6c2",
     "isolated_env": "/home/lzqw/SAFEFLOW2027_PAPER/env",
-    "status": "nativeGPUprofiles_and_five_major_development_configs_completed;Flowtask_learning_unresolved",
+    "status": "six_major_configs_registered;Iso_task_learned_at2M_butcost_high;pairedEA_andIso4M_active",
     "download_acceleration": "4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
     "full_training_profile_completed": true,
     "native_SAC_reference_started": true,
@@ -52,13 +47,6 @@
     "episode_boundary_bookkeeping": "recovered256episodes fromfullrawreplay;directbooleanDLPack nowlivecount1024 at1029376 steps;original evidencepreserved",
     "formal_runs_started": false,
     "independent_test_consumed": false,
-    "active_continuation": {
-      "pid": 35500,
-      "source_commit": "f35ccdca5754ef1217aa633dbb952e505e914020",
-      "run": "crax-iso-nativedual-41027-2m-v3",
-      "initial_steps": 500224,
-      "target_steps": 2000000
-    },
     "common_SAC_validation": {
       "status": "completed",
       "nontraining_controls": 500000,
@@ -72,7 +60,34 @@
       },
       "independent_test_used": false
     },
-    "completed_training_transitions_including_engineering_before_active_continuation": 8140288
+    "completed_training_transitions_including_engineering_before_active_continuation": 9640192,
+    "latest_Iso_development": {
+      "steps": 2000128,
+      "goals": 3.82,
+      "at_least_one_goal": 0.88,
+      "mean_cost": 61.23351,
+      "budget_compliance": 0.5,
+      "task_learned": true,
+      "safety_target_met": false
+    },
+    "active_native_jobs": [
+      {
+        "pid": 63591,
+        "gpu": 0,
+        "run": "crax-iso-nativedual-41027-4m-v3",
+        "initial_steps": 2000128,
+        "target_steps": 4000000,
+        "method": "stable_iso"
+      },
+      {
+        "pid": 63592,
+        "gpu": 1,
+        "run": "crax-ea-nativedual-41027-500k-v3",
+        "initial_steps": 0,
+        "target_steps": 500000,
+        "method": "ea"
+      }
+    ]
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -84,10 +99,19 @@
     "physical_calibration_firmware_workspace_limits": "pending_operator_confirmation;not_a_blocker_for_simulation",
     "engineering_training": 3220,
     "nontraining_sim_controls": 130,
-    "native_sim_candidate_training_started": false
+    "native_sim_candidate_training_started": true,
+    "queue_pid": 57815,
+    "native_pid": 57816,
+    "host": "tjucta-a100",
+    "gpu": 0,
+    "actual_observed_training_steps": 5000,
+    "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+    "shared_slot": true,
+    "native_sim_candidates_completed": 0,
+    "remaining4080Payload_plan": "prepared_not_launched"
   },
   "next_required_actions": [
-    "resolve focusedCRAXepisode bookkeeping andcontinueexistingIso configuration ifsafe",
+    "finishpairedEA500k andsameIso4M;fairEAcontinuationsandseconddevseedwithincap",
     "complete identical common validation ofnormalizedSACcandidates",
     "learn effectiveIso thenEA under24M/sixconfigcap",
     "complete sixPayload300k endpoints andfairconfirmation",
@@ -99,7 +123,7 @@
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 14:10 Asia/Taipei",
+  "observed_at_local": "2026-11-12 14:24 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {
