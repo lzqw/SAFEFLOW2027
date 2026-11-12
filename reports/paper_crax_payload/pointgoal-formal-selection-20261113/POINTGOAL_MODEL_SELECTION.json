@@ -1,0 +1,2303 @@
+{
+  "schema": "pointgoal_common_validation_selection_v1",
+  "status": "complete_frozen_selection",
+  "source_commit": "8b60aa5",
+  "common_validation_seeds": [
+    61027,
+    61028,
+    61029,
+    61030,
+    61031
+  ],
+  "episodes_per_seed": 50,
+  "risk_rule": {
+    "mean_episode_cost_max": 25.0
+  },
+  "independent_test_used": false,
+  "candidates": [
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "427aa1b7138899a09a3b8aa35a8bece3bf2042faa33b3c8527e58e39fa2ea8da",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 7.616,
+      "mean_episode_cost": 35.03017456102371,
+      "mean_goals_per_episode": 7.616,
+      "mean_at_least_one_goal": 0.976,
+      "mean_budget_compliant_fraction": 0.512,
+      "mean_budget_compliant_return": 2.5364827586206897,
+      "mean_capped_first_goal_seconds": 6.695039850354195,
+      "per_seed_episode_cost": [
+        34.071792504787446,
+        34.8881671667099,
+        38.62134026288986,
+        32.49801280975342,
+        35.07156006097794
+      ],
+      "per_seed_goals_per_episode": [
+        7.72,
+        7.96,
+        6.46,
+        7.66,
+        8.28
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "8e160847a0e3bce81549db5b51ad1ac44750fcceac6c9d56463453564b555ca7",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 32.792,
+      "mean_episode_cost": 56.97364287471771,
+      "mean_goals_per_episode": 32.792,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.036,
+      "mean_budget_compliant_return": 21.1,
+      "mean_capped_first_goal_seconds": 2.847039936363697,
+      "per_seed_episode_cost": [
+        56.70773067474365,
+        58.47216641426086,
+        54.68306060791016,
+        54.05116232395172,
+        60.954094352722166
+      ],
+      "per_seed_goals_per_episode": [
+        33.46,
+        33.74,
+        31.64,
+        32.72,
+        32.4
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "09c57986ff8c01c0fce50e942c0f97b98290a62fe1b0a0a9134d9861458898d5",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 13.824,
+      "mean_episode_cost": 24.60651953172684,
+      "mean_goals_per_episode": 13.824,
+      "mean_at_least_one_goal": 0.988,
+      "mean_budget_compliant_fraction": 0.724,
+      "mean_budget_compliant_return": 10.185046153467207,
+      "mean_capped_first_goal_seconds": 4.325439903318882,
+      "per_seed_episode_cost": [
+        19.54427312374115,
+        30.8428737616539,
+        19.390643339157105,
+        28.409168775081636,
+        24.845638659000397
+      ],
+      "per_seed_goals_per_episode": [
+        14.1,
+        15.16,
+        14.18,
+        13.18,
+        12.5
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "22799429db035e5e51dd4d0f18ca678a0d6532e0771824d56d3061711e79e809",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 8.276,
+      "mean_episode_cost": 26.039874567985535,
+      "mean_goals_per_episode": 8.276,
+      "mean_at_least_one_goal": 0.964,
+      "mean_budget_compliant_fraction": 0.608,
+      "mean_budget_compliant_return": 5.346973886328725,
+      "mean_capped_first_goal_seconds": 8.769599803984166,
+      "per_seed_episode_cost": [
+        28.44204980134964,
+        22.65523077249527,
+        30.397935869693757,
+        23.4598926615715,
+        25.244263734817505
+      ],
+      "per_seed_goals_per_episode": [
+        7.54,
+        7.96,
+        9.1,
+        8.3,
+        8.48
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "7d2d47998f7d42efce72c2a7e8b1394b43087e3696e79241b23aa1eee7c8eacb",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 18.192,
+      "mean_episode_cost": 22.24191329097748,
+      "mean_goals_per_episode": 18.192,
+      "mean_at_least_one_goal": 0.996,
+      "mean_budget_compliant_fraction": 0.664,
+      "mean_budget_compliant_return": 14.890746668133238,
+      "mean_capped_first_goal_seconds": 3.5779199200272562,
+      "per_seed_episode_cost": [
+        21.99916286945343,
+        21.413685245513918,
+        24.390298800468443,
+        23.82704108953476,
+        19.579378449916838
+      ],
+      "per_seed_goals_per_episode": [
+        18.9,
+        20.62,
+        17.12,
+        16.84,
+        17.48
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "8b35fb8ecec7ecf0d6395680a5b1130e2398c937a0d63261e58f8eb360e1a1ce",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 4.604,
+      "mean_episode_cost": 20.533497596263885,
+      "mean_goals_per_episode": 4.604,
+      "mean_at_least_one_goal": 0.828,
+      "mean_budget_compliant_fraction": 0.684,
+      "mean_budget_compliant_return": 2.159862407862408,
+      "mean_capped_first_goal_seconds": 19.630719561219216,
+      "per_seed_episode_cost": [
+        17.810015270709993,
+        28.593934524059296,
+        15.474646224975587,
+        19.759765243530275,
+        21.02912671804428
+      ],
+      "per_seed_goals_per_episode": [
+        4.58,
+        5.84,
+        4.38,
+        5.28,
+        2.94
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "6da656613d8836aee5ba264af4f9cd68761d4b256ab0aed6a03b402e68cbf604",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 25.472,
+      "mean_episode_cost": 54.55860355424881,
+      "mean_goals_per_episode": 25.472,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.164,
+      "mean_budget_compliant_return": 7.908253968253968,
+      "mean_capped_first_goal_seconds": 2.7020799396038058,
+      "per_seed_episode_cost": [
+        60.92460253715515,
+        56.18389077186585,
+        52.4401057600975,
+        51.74892169475555,
+        51.49549700737
+      ],
+      "per_seed_goals_per_episode": [
+        23.46,
+        25.44,
+        26.86,
+        25.88,
+        25.72
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "89b371adc46d8ce749ed17fdae9fc43e56b8c9155da190a6a9444dc0dab47d85",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 15.776,
+      "mean_episode_cost": 35.0016614613533,
+      "mean_goals_per_episode": 15.776,
+      "mean_at_least_one_goal": 0.996,
+      "mean_budget_compliant_fraction": 0.428,
+      "mean_budget_compliant_return": 8.401190476190477,
+      "mean_capped_first_goal_seconds": 3.6979199173450468,
+      "per_seed_episode_cost": [
+        34.328495669364926,
+        41.61078073501587,
+        31.12554525375366,
+        32.014218766689304,
+        35.92926688194275
+      ],
+      "per_seed_goals_per_episode": [
+        15.2,
+        16.92,
+        13.98,
+        17.08,
+        15.7
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "0d921339c3f2779c4371e4bb6116af707d82bb00e5f2da2fa68cdd38f16186ed",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 10.272,
+      "mean_episode_cost": 25.059414261341093,
+      "mean_goals_per_episode": 10.272,
+      "mean_at_least_one_goal": 0.968,
+      "mean_budget_compliant_fraction": 0.684,
+      "mean_budget_compliant_return": 6.9317719359824626,
+      "mean_capped_first_goal_seconds": 7.051199842393398,
+      "per_seed_episode_cost": [
+        16.31099353313446,
+        19.479366805553436,
+        17.513360214233398,
+        37.78970666408539,
+        34.20364408969879
+      ],
+      "per_seed_goals_per_episode": [
+        11.06,
+        10.66,
+        8.38,
+        9.08,
+        12.18
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "90cb8115f639d151a7c769ef78a4c41795d3182fbf200e6936716f25a252897b",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 29.108,
+      "mean_episode_cost": 26.89645700597763,
+      "mean_goals_per_episode": 29.108,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.452,
+      "mean_budget_compliant_return": 27.262017316017317,
+      "mean_capped_first_goal_seconds": 2.942399934232235,
+      "per_seed_episode_cost": [
+        24.295799112319948,
+        30.59263653039932,
+        26.87115423679352,
+        25.062732954025268,
+        27.659962196350097
+      ],
+      "per_seed_goals_per_episode": [
+        29.42,
+        28.54,
+        29.26,
+        30.14,
+        28.18
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "06f3d9017e2c6a16e57169c2e50801f1c3bd69f1fea8136f0d04023487b3b1c8",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 15.708,
+      "mean_episode_cost": 60.906278387069705,
+      "mean_goals_per_episode": 15.708,
+      "mean_at_least_one_goal": 0.976,
+      "mean_budget_compliant_fraction": 0.176,
+      "mean_budget_compliant_return": 4.541666666666667,
+      "mean_capped_first_goal_seconds": 6.740159849345685,
+      "per_seed_episode_cost": [
+        68.3388599395752,
+        59.15725997209549,
+        61.00121130943298,
+        53.86571575403214,
+        62.16834496021271
+      ],
+      "per_seed_goals_per_episode": [
+        16.18,
+        14.74,
+        15.66,
+        15.12,
+        16.84
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "ea85d993c764562c716ca4953090acaf156f85a2584cf28c1dfb8f8083572ab1",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 33.36,
+      "mean_episode_cost": 58.491168825626374,
+      "mean_goals_per_episode": 33.36,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.032,
+      "mean_budget_compliant_return": 13.708333333333332,
+      "mean_capped_first_goal_seconds": 2.7324799389243126,
+      "per_seed_episode_cost": [
+        55.58202084541321,
+        59.482939302921295,
+        58.23457466125488,
+        57.491690711975096,
+        61.66461860656738
+      ],
+      "per_seed_goals_per_episode": [
+        33.58,
+        33.04,
+        33.9,
+        32.74,
+        33.54
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "a9086699e3c2b4a73ce9ac73de881138061996e7f1eca3e79c0edbcbc7a287ca",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 34.088,
+      "mean_episode_cost": 26.317595737457275,
+      "mean_goals_per_episode": 34.088,
+      "mean_at_least_one_goal": 0.996,
+      "mean_budget_compliant_fraction": 0.488,
+      "mean_budget_compliant_return": 33.99644047619048,
+      "mean_capped_first_goal_seconds": 3.059839931607246,
+      "per_seed_episode_cost": [
+        22.431287574768067,
+        28.895620555877684,
+        27.476836738586425,
+        26.52955560684204,
+        26.25467821121216
+      ],
+      "per_seed_goals_per_episode": [
+        34.52,
+        33.76,
+        33.92,
+        34.36,
+        33.88
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "b9503fc828e492f0b44be34ca7def2d0c9a3293e70af261f0239b8c727cbc86a",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.256,
+      "mean_episode_cost": 22.00468463897705,
+      "mean_goals_per_episode": 35.256,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.664,
+      "mean_budget_compliant_return": 35.40163458265925,
+      "mean_capped_first_goal_seconds": 2.686399939954281,
+      "per_seed_episode_cost": [
+        23.106897945404054,
+        20.24184084892273,
+        22.281488094329834,
+        22.44381214141846,
+        21.94938416481018
+      ],
+      "per_seed_goals_per_episode": [
+        35.54,
+        35.16,
+        34.84,
+        35.44,
+        35.3
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "ea",
+      "run": "crax-formal-ea-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "0a0af07062acd7e58feb4ba361659e9a1c39c1974d582f014bbae94c4dfda66f",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.124,
+      "mean_episode_cost": 16.775224060058594,
+      "mean_goals_per_episode": 35.124,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.912,
+      "mean_budget_compliant_return": 35.1425918762089,
+      "mean_capped_first_goal_seconds": 2.711679939389229,
+      "per_seed_episode_cost": [
+        16.667346267700196,
+        16.48799147605896,
+        17.987461013793947,
+        16.63263898849487,
+        16.100682554244994
+      ],
+      "per_seed_goals_per_episode": [
+        35.66,
+        35.34,
+        34.34,
+        35.32,
+        34.96
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 2016256,
+      "policy_sha256": "6b0114742712dfeb386d124e77280f95583ad6b70850198be0527f544551b57b",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 1.8880000114440918,
+      "mean_episode_cost": 28.495328521728517,
+      "mean_goals_per_episode": 1.8880000114440918,
+      "mean_at_least_one_goal": 0.664,
+      "mean_budget_compliant_fraction": 0.74,
+      "mean_budget_compliant_return": 1.4062865495681762,
+      "mean_capped_first_goal_seconds": 29.281279130668644,
+      "per_seed_episode_cost": [
+        35.599578857421875,
+        28.814733505249023,
+        27.7602596282959,
+        35.371883392333984,
+        14.930187225341797
+      ],
+      "per_seed_goals_per_episode": [
+        1.8799999952316284,
+        2.259999990463257,
+        2.2200000286102295,
+        1.3600000143051147,
+        1.7200000286102295
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 4012288,
+      "policy_sha256": "4957b978e5cdf3e3b85ab024e073ca0d3893ac5e8b9e9bef3439060bccf03b24",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.36000061035156,
+      "mean_episode_cost": 75.54224853515625,
+      "mean_goals_per_episode": 35.36000061035156,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.0,
+      "mean_budget_compliant_return": null,
+      "mean_capped_first_goal_seconds": 2.605119997923373,
+      "per_seed_episode_cost": [
+        80.5561752319336,
+        76.7051010131836,
+        74.28910827636719,
+        71.8572006225586,
+        74.30365753173828
+      ],
+      "per_seed_goals_per_episode": [
+        35.2400016784668,
+        35.540000915527344,
+        35.84000015258789,
+        35.0,
+        35.18000030517578
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 6008320,
+      "policy_sha256": "83115e27253d553e7a7a55ecbca2ac718cd39d5907df55601af44364fef964c8",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.907999420166014,
+      "mean_episode_cost": 53.855875396728514,
+      "mean_goals_per_episode": 35.907999420166014,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.02,
+      "mean_budget_compliant_return": 35.5,
+      "mean_capped_first_goal_seconds": 2.677119935278893,
+      "per_seed_episode_cost": [
+        51.16067886352539,
+        54.3176383972168,
+        55.7502326965332,
+        53.742427825927734,
+        54.30839920043945
+      ],
+      "per_seed_goals_per_episode": [
+        36.040000915527344,
+        35.880001068115234,
+        36.099998474121094,
+        35.599998474121094,
+        35.91999816894531
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 8004352,
+      "policy_sha256": "3eb166cf3f1cd5d1dd2c40563323a0ecf6a3320ae969cfdb42fa4b284c002dc6",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.75599975585938,
+      "mean_episode_cost": 43.14774703979492,
+      "mean_goals_per_episode": 35.75599975585938,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.04,
+      "mean_budget_compliant_return": 34.208333015441895,
+      "mean_capped_first_goal_seconds": 2.6524799211812025,
+      "per_seed_episode_cost": [
+        41.7692756652832,
+        43.81507873535156,
+        41.309322357177734,
+        42.898292541503906,
+        45.9467658996582
+      ],
+      "per_seed_goals_per_episode": [
+        36.20000076293945,
+        35.97999954223633,
+        35.63999938964844,
+        35.459999084472656,
+        35.5
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 10000384,
+      "policy_sha256": "6f8e1151746d153933f7b484a2b7bc44f5174dbb121b1855a49a4cb9ee166585",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 36.34000015258789,
+      "mean_episode_cost": 38.851253509521484,
+      "mean_goals_per_episode": 36.34000015258789,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.096,
+      "mean_budget_compliant_return": 37.073333740234375,
+      "mean_capped_first_goal_seconds": 2.647039857826235,
+      "per_seed_episode_cost": [
+        35.17167663574219,
+        40.21247482299805,
+        38.69743728637695,
+        39.43321228027344,
+        40.7414665222168
+      ],
+      "per_seed_goals_per_episode": [
+        36.040000915527344,
+        36.619998931884766,
+        35.619998931884766,
+        36.560001373291016,
+        36.86000061035156
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 2016256,
+      "policy_sha256": "60a86f8b01979845930bda74de774e3c054338b024d32ffe661607dd7f6550c4",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 3.9759999752044677,
+      "mean_episode_cost": 37.86584587097168,
+      "mean_goals_per_episode": 3.9759999752044677,
+      "mean_at_least_one_goal": 0.856,
+      "mean_budget_compliant_fraction": 0.528,
+      "mean_budget_compliant_return": 1.9104588985443116,
+      "mean_capped_first_goal_seconds": 17.190079449756148,
+      "per_seed_episode_cost": [
+        27.075529098510742,
+        35.92415237426758,
+        40.797420501708984,
+        39.693603515625,
+        45.838523864746094
+      ],
+      "per_seed_goals_per_episode": [
+        2.799999952316284,
+        3.359999895095825,
+        3.240000009536743,
+        4.699999809265137,
+        5.78000020980835
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 4012288,
+      "policy_sha256": "20ad585e1f7cc6ed987ad47a69571f720ba38d64707906c56808039663a6f220",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.26800003051758,
+      "mean_episode_cost": 74.95531158447265,
+      "mean_goals_per_episode": 35.26800003051758,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.0,
+      "mean_budget_compliant_return": null,
+      "mean_capped_first_goal_seconds": 2.6784000255823117,
+      "per_seed_episode_cost": [
+        73.4209976196289,
+        76.9575424194336,
+        74.31568908691406,
+        73.66313171386719,
+        76.41919708251953
+      ],
+      "per_seed_goals_per_episode": [
+        35.439998626708984,
+        35.7400016784668,
+        35.0,
+        35.099998474121094,
+        35.060001373291016
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 6008320,
+      "policy_sha256": "bf1baed2781249cc1e6e7de6f734baae80a440f454c66f19ed6b0632905d1950",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.524000549316405,
+      "mean_episode_cost": 50.29748764038086,
+      "mean_goals_per_episode": 35.524000549316405,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.028,
+      "mean_budget_compliant_return": 31.8,
+      "mean_capped_first_goal_seconds": 2.6800000011324867,
+      "per_seed_episode_cost": [
+        50.416297912597656,
+        48.68535232543945,
+        51.670875549316406,
+        50.347869873046875,
+        50.367042541503906
+      ],
+      "per_seed_goals_per_episode": [
+        35.29999923706055,
+        36.02000045776367,
+        35.880001068115234,
+        35.040000915527344,
+        35.380001068115234
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 8004352,
+      "policy_sha256": "acee640c362b3836a0f01dbc87b1c3a2d69fba4ee3f2a031806bd0a3adaf4c9a",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.731999206542966,
+      "mean_episode_cost": 44.93764801025391,
+      "mean_goals_per_episode": 35.731999206542966,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.044000000000000004,
+      "mean_budget_compliant_return": 35.64999961853027,
+      "mean_capped_first_goal_seconds": 2.688959961869716,
+      "per_seed_episode_cost": [
+        44.423728942871094,
+        46.49248504638672,
+        43.95574188232422,
+        46.00531768798828,
+        43.81096649169922
+      ],
+      "per_seed_goals_per_episode": [
+        35.939998626708984,
+        36.220001220703125,
+        35.779998779296875,
+        34.959999084472656,
+        35.7599983215332
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 10000384,
+      "policy_sha256": "753b1c00fa7179f491e88e68ebac92afac6f92a14fcfbc829f0a59c65aee6887",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 36.104000854492185,
+      "mean_episode_cost": 42.66152420043945,
+      "mean_goals_per_episode": 36.104000854492185,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.056,
+      "mean_budget_compliant_return": 38.2,
+      "mean_capped_first_goal_seconds": 2.62111993653059,
+      "per_seed_episode_cost": [
+        40.764495849609375,
+        41.546573638916016,
+        44.080108642578125,
+        41.7688102722168,
+        45.14763259887695
+      ],
+      "per_seed_goals_per_episode": [
+        35.900001525878906,
+        36.5,
+        36.060001373291016,
+        35.86000061035156,
+        36.20000076293945
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 2016256,
+      "policy_sha256": "25a8eb16f3c7ceaa038c1f722a38ea9ba3d9a15b5ea2293c6ebcf6fd4f8cbc86",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 1.656000018119812,
+      "mean_episode_cost": 11.632011604309081,
+      "mean_goals_per_episode": 1.656000018119812,
+      "mean_at_least_one_goal": 0.8079999999999999,
+      "mean_budget_compliant_fraction": 0.892,
+      "mean_budget_compliant_return": 1.440065860748291,
+      "mean_capped_first_goal_seconds": 17.79551962177038,
+      "per_seed_episode_cost": [
+        13.043163299560547,
+        11.832860946655273,
+        11.751089096069336,
+        10.451931953430176,
+        11.081012725830078
+      ],
+      "per_seed_goals_per_episode": [
+        1.940000057220459,
+        1.5199999809265137,
+        1.8200000524520874,
+        1.340000033378601,
+        1.659999966621399
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 4012288,
+      "policy_sha256": "a4373f0259412b604dfd7e020994057013cff1a58c857270238f1b128e080477",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.01199951171875,
+      "mean_episode_cost": 85.97742309570313,
+      "mean_goals_per_episode": 35.01199951171875,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.0,
+      "mean_budget_compliant_return": null,
+      "mean_capped_first_goal_seconds": 2.6006398954844485,
+      "per_seed_episode_cost": [
+        84.2126235961914,
+        88.59935760498047,
+        92.77385711669922,
+        85.04774475097656,
+        79.25353240966797
+      ],
+      "per_seed_goals_per_episode": [
+        35.099998474121094,
+        35.5,
+        34.47999954223633,
+        34.52000045776367,
+        35.459999084472656
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 6008320,
+      "policy_sha256": "cab1f663ba0dd0170b5cb9383c8e1b7ee546ff6fbb624b5c6ebb87acbd2ca03c",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 36.09599990844727,
+      "mean_episode_cost": 59.2652229309082,
+      "mean_goals_per_episode": 36.09599990844727,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.004,
+      "mean_budget_compliant_return": 36.0,
+      "mean_capped_first_goal_seconds": 2.642239931175709,
+      "per_seed_episode_cost": [
+        56.28141784667969,
+        62.245121002197266,
+        59.14501953125,
+        57.46175765991211,
+        61.19279861450195
+      ],
+      "per_seed_goals_per_episode": [
+        36.400001525878906,
+        36.279998779296875,
+        35.779998779296875,
+        35.65999984741211,
+        36.36000061035156
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 8004352,
+      "policy_sha256": "c6d448b740028118d9ba1ab4ba8bae51f8ef4ffd83d25ff0af7b8eda1132ba6d",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 35.7879997253418,
+      "mean_episode_cost": 48.54712142944336,
+      "mean_goals_per_episode": 35.7879997253418,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.028,
+      "mean_budget_compliant_return": 38.333333333333336,
+      "mean_capped_first_goal_seconds": 2.65183990654707,
+      "per_seed_episode_cost": [
+        47.00767135620117,
+        51.7841796875,
+        45.5628547668457,
+        48.37948226928711,
+        50.00141906738281
+      ],
+      "per_seed_goals_per_episode": [
+        36.119998931884766,
+        35.91999816894531,
+        35.880001068115234,
+        35.31999969482422,
+        35.70000076293945
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "sac_lag",
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 10000384,
+      "policy_sha256": "8f23df25460d503b10fe919b939a1e6ca8427d86005adbd0f7ddd12fce9384a5",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 36.27600021362305,
+      "mean_episode_cost": 42.33027725219726,
+      "mean_goals_per_episode": 36.27600021362305,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.032,
+      "mean_budget_compliant_return": 35.166666412353514,
+      "mean_capped_first_goal_seconds": 2.644479982395171,
+      "per_seed_episode_cost": [
+        42.98329162597656,
+        46.49686050415039,
+        39.564056396484375,
+        40.976593017578125,
+        41.630584716796875
+      ],
+      "per_seed_goals_per_episode": [
+        36.31999969482422,
+        36.959999084472656,
+        35.7400016784668,
+        35.720001220703125,
+        36.63999938964844
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "737935bee844a646861ee36dc719c5da3ef2c8e1a9651f8655dc4c151d484856",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 8.272,
+      "mean_episode_cost": 40.8271719508171,
+      "mean_goals_per_episode": 8.272,
+      "mean_at_least_one_goal": 0.988,
+      "mean_budget_compliant_fraction": 0.40800000000000003,
+      "mean_budget_compliant_return": 3.816985814920934,
+      "mean_capped_first_goal_seconds": 5.091199886202812,
+      "per_seed_episode_cost": [
+        32.32655381679535,
+        48.47901512145996,
+        40.516827912330626,
+        44.15677851676941,
+        38.65668438673019
+      ],
+      "per_seed_goals_per_episode": [
+        7.26,
+        10.64,
+        6.66,
+        7.8,
+        9.0
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "87097e69f1cff5bbe733f985824f015979ac2e2237fa355861a9e7241b0f3aa6",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 28.612000000000002,
+      "mean_episode_cost": 50.45767962741852,
+      "mean_goals_per_episode": 28.612000000000002,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.14,
+      "mean_budget_compliant_return": 10.293333333333333,
+      "mean_capped_first_goal_seconds": 3.0294399322867394,
+      "per_seed_episode_cost": [
+        49.3830629825592,
+        48.15258362531662,
+        54.0283308005333,
+        51.265120935440066,
+        49.45929979324341
+      ],
+      "per_seed_goals_per_episode": [
+        28.88,
+        27.42,
+        28.76,
+        28.92,
+        29.08
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "5537077fbbf9a6d7581bed1a444d3387f6f141bd1ad1e464908fc956cb3ecc13",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 11.264,
+      "mean_episode_cost": 19.344458933353426,
+      "mean_goals_per_episode": 11.264,
+      "mean_at_least_one_goal": 0.968,
+      "mean_budget_compliant_fraction": 0.728,
+      "mean_budget_compliant_return": 8.834914657689048,
+      "mean_capped_first_goal_seconds": 6.469439855396748,
+      "per_seed_episode_cost": [
+        22.702787156105042,
+        17.862094736099245,
+        19.066051275730132,
+        17.967004487514497,
+        19.124357011318207
+      ],
+      "per_seed_goals_per_episode": [
+        13.16,
+        11.08,
+        9.0,
+        11.68,
+        11.4
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "ef78f8bad5815ec6d87c44131b184b9f9b8391015834b5cb4f521d2d8f3cda80",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 17.74,
+      "mean_episode_cost": 21.527099069595337,
+      "mean_goals_per_episode": 17.74,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.696,
+      "mean_budget_compliant_return": 14.362031914445707,
+      "mean_capped_first_goal_seconds": 3.072319931328297,
+      "per_seed_episode_cost": [
+        19.013011627197265,
+        20.61570468902588,
+        25.06397752761841,
+        18.954015791416168,
+        23.988785712718965
+      ],
+      "per_seed_goals_per_episode": [
+        16.92,
+        17.82,
+        19.22,
+        18.38,
+        16.36
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "training_seed": 51027,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "688a380c5f56bd57f5a8bb964e2c7b24ab1589af21edc808a35b402c9bd6bb1c",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 1.532,
+      "mean_episode_cost": 23.375254746437072,
+      "mean_goals_per_episode": 1.532,
+      "mean_at_least_one_goal": 0.648,
+      "mean_budget_compliant_fraction": 0.8240000000000001,
+      "mean_budget_compliant_return": 1.377905982905983,
+      "mean_capped_first_goal_seconds": 35.80735919964313,
+      "per_seed_episode_cost": [
+        24.57198906183243,
+        26.553668892383577,
+        17.82838186740875,
+        14.577824356555938,
+        33.34440955400467
+      ],
+      "per_seed_goals_per_episode": [
+        1.64,
+        1.42,
+        1.7,
+        1.28,
+        1.62
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "b2b5174c9cefb3a9d846e5ddcf59fead33850bbf3974b0ccdd3d4288d5a40452",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 12.7,
+      "mean_episode_cost": 59.7315430932045,
+      "mean_goals_per_episode": 12.7,
+      "mean_at_least_one_goal": 0.944,
+      "mean_budget_compliant_fraction": 0.196,
+      "mean_budget_compliant_return": 3.1542857142857144,
+      "mean_capped_first_goal_seconds": 13.025279708862305,
+      "per_seed_episode_cost": [
+        53.61406536102295,
+        71.09697470664977,
+        56.40568334817886,
+        61.30346097946167,
+        56.23753107070923
+      ],
+      "per_seed_goals_per_episode": [
+        12.9,
+        13.56,
+        11.28,
+        14.64,
+        11.12
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "f5bac61123d643a7ef3fade4a7e3df35eea62cf020aeb56d6e0a2d327fc09d1a",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 25.496,
+      "mean_episode_cost": 53.71809215688705,
+      "mean_goals_per_episode": 25.496,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.196,
+      "mean_budget_compliant_return": 9.242857142857142,
+      "mean_capped_first_goal_seconds": 2.632319941163063,
+      "per_seed_episode_cost": [
+        57.364405679702756,
+        55.63797995090485,
+        46.41304131746292,
+        56.10385299682617,
+        53.07118083953858
+      ],
+      "per_seed_goals_per_episode": [
+        28.26,
+        25.12,
+        22.66,
+        26.04,
+        25.4
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "95b2fa71514990f1323a565adc323979d43d182596ae8b0888a97d057babf04a",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 16.128,
+      "mean_episode_cost": 37.18262441062927,
+      "mean_goals_per_episode": 16.128,
+      "mean_at_least_one_goal": 0.996,
+      "mean_budget_compliant_fraction": 0.404,
+      "mean_budget_compliant_return": 10.201168261562998,
+      "mean_capped_first_goal_seconds": 3.414399923682213,
+      "per_seed_episode_cost": [
+        27.955814409255982,
+        34.04532997131348,
+        44.303219404220584,
+        42.44241699457169,
+        37.16634127378464
+      ],
+      "per_seed_goals_per_episode": [
+        14.88,
+        17.3,
+        18.52,
+        13.7,
+        16.24
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "9c0633d61ac9ec3dde1b01b23d5c08119024d8cb64eb5e27e2aa521d984056f3",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 9.388,
+      "mean_episode_cost": 21.072159302711487,
+      "mean_goals_per_episode": 9.388,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.788,
+      "mean_budget_compliant_return": 7.115509432622475,
+      "mean_capped_first_goal_seconds": 3.068799931406975,
+      "per_seed_episode_cost": [
+        16.931529307365416,
+        27.225304713249205,
+        20.52138438463211,
+        22.519493656158446,
+        18.16308445215225
+      ],
+      "per_seed_goals_per_episode": [
+        9.04,
+        9.92,
+        10.52,
+        8.42,
+        9.04
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "training_seed": 51028,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "da71c5677dc2751435738ac778dd8ceffb24899777ef5bcde995ba060a048e51",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 27.524,
+      "mean_episode_cost": 24.02121705341339,
+      "mean_goals_per_episode": 27.524,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.576,
+      "mean_budget_compliant_return": 26.218307140887788,
+      "mean_capped_first_goal_seconds": 2.809279937207699,
+      "per_seed_episode_cost": [
+        25.16404158115387,
+        24.7490642952919,
+        22.385161509513853,
+        23.392507936954498,
+        24.41530994415283
+      ],
+      "per_seed_goals_per_episode": [
+        29.14,
+        29.2,
+        26.44,
+        26.54,
+        26.3
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 2000128,
+      "policy_sha256": "c6f0ec7eb50df0b426735d401c76161c79dbeb879e847efd9711d916794d3d8c",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 14.028,
+      "mean_episode_cost": 63.79306456804275,
+      "mean_goals_per_episode": 14.028,
+      "mean_at_least_one_goal": 0.992,
+      "mean_budget_compliant_fraction": 0.216,
+      "mean_budget_compliant_return": 3.7585703185703188,
+      "mean_capped_first_goal_seconds": 4.979839888691902,
+      "per_seed_episode_cost": [
+        60.35986961364746,
+        68.19355515003204,
+        66.7532788181305,
+        68.847249584198,
+        54.81136967420578
+      ],
+      "per_seed_goals_per_episode": [
+        15.68,
+        14.76,
+        13.62,
+        14.26,
+        11.82
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 4000000,
+      "policy_sha256": "e67f048187f27524b43628bf3948d875b8ffa1d7574fce4b5116d2d094acbb59",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 30.676,
+      "mean_episode_cost": 64.55333436107635,
+      "mean_goals_per_episode": 30.676,
+      "mean_at_least_one_goal": 1.0,
+      "mean_budget_compliant_fraction": 0.048,
+      "mean_budget_compliant_return": 6.24,
+      "mean_capped_first_goal_seconds": 2.698879939675331,
+      "per_seed_episode_cost": [
+        60.91013135910034,
+        67.83705881595611,
+        66.0603623199463,
+        62.680573778152464,
+        65.27854553222656
+      ],
+      "per_seed_goals_per_episode": [
+        31.66,
+        30.62,
+        30.52,
+        29.68,
+        30.9
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 6000128,
+      "policy_sha256": "e698be3cfccf781b4db952300fbeb1c0cc269c551b8462bc70236789d6f1c30c",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 20.608,
+      "mean_episode_cost": 27.337022802829743,
+      "mean_goals_per_episode": 20.608,
+      "mean_at_least_one_goal": 0.992,
+      "mean_budget_compliant_fraction": 0.524,
+      "mean_budget_compliant_return": 15.235472527472528,
+      "mean_capped_first_goal_seconds": 3.6745599178671835,
+      "per_seed_episode_cost": [
+        31.968489446640014,
+        26.405693893432616,
+        25.5890713095665,
+        27.63102370262146,
+        25.09083566188812
+      ],
+      "per_seed_goals_per_episode": [
+        17.26,
+        23.18,
+        20.06,
+        21.78,
+        20.76
+      ],
+      "risk_qualified": false,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 8000000,
+      "policy_sha256": "3a7d76b737f30764c6cda3d38d0e9014b169f71e14a791c7eb2038a3caab0a40",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 8.5,
+      "mean_episode_cost": 12.786449162960054,
+      "mean_goals_per_episode": 8.5,
+      "mean_at_least_one_goal": 0.972,
+      "mean_budget_compliant_fraction": 0.876,
+      "mean_budget_compliant_return": 6.794387780241439,
+      "mean_capped_first_goal_seconds": 5.8649598689079285,
+      "per_seed_episode_cost": [
+        9.636970789432526,
+        13.74057734489441,
+        12.175122990608216,
+        13.776072266101837,
+        14.603502423763276
+      ],
+      "per_seed_goals_per_episode": [
+        9.3,
+        8.24,
+        7.78,
+        8.86,
+        8.32
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    },
+    {
+      "method": "stable_iso",
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "training_seed": 51029,
+      "checkpoint_steps": 10000128,
+      "policy_sha256": "19b31d805571ed1e63a8e4b02aae641fa4b7a221598834949b1fbf9de54a429e",
+      "validation_seeds": [
+        61027,
+        61028,
+        61029,
+        61030,
+        61031
+      ],
+      "mean_native_return": 6.5440000000000005,
+      "mean_episode_cost": 19.39008340406418,
+      "mean_goals_per_episode": 6.5440000000000005,
+      "mean_at_least_one_goal": 0.996,
+      "mean_budget_compliant_fraction": 0.744,
+      "mean_budget_compliant_return": 4.354039290298918,
+      "mean_capped_first_goal_seconds": 3.6947199174165726,
+      "per_seed_episode_cost": [
+        18.325462803840637,
+        19.104423973560333,
+        13.496243879795074,
+        28.892079396247865,
+        17.132206966876982
+      ],
+      "per_seed_goals_per_episode": [
+        6.9,
+        6.72,
+        6.74,
+        6.86,
+        5.5
+      ],
+      "risk_qualified": true,
+      "independent_test_used": false
+    }
+  ],
+  "methods": {
+    "sac_lag": {
+      "status": "risk_qualified",
+      "selected": {
+        "method": "sac_lag",
+        "run": "crax-formal-sac_lag-51029-10m-v1",
+        "training_seed": 51029,
+        "checkpoint_steps": 2016256,
+        "policy_sha256": "25a8eb16f3c7ceaa038c1f722a38ea9ba3d9a15b5ea2293c6ebcf6fd4f8cbc86",
+        "validation_seeds": [
+          61027,
+          61028,
+          61029,
+          61030,
+          61031
+        ],
+        "mean_native_return": 1.656000018119812,
+        "mean_episode_cost": 11.632011604309081,
+        "mean_goals_per_episode": 1.656000018119812,
+        "mean_at_least_one_goal": 0.8079999999999999,
+        "mean_budget_compliant_fraction": 0.892,
+        "mean_budget_compliant_return": 1.440065860748291,
+        "mean_capped_first_goal_seconds": 17.79551962177038,
+        "per_seed_episode_cost": [
+          13.043163299560547,
+          11.832860946655273,
+          11.751089096069336,
+          10.451931953430176,
+          11.081012725830078
+        ],
+        "per_seed_goals_per_episode": [
+          1.940000057220459,
+          1.5199999809265137,
+          1.8200000524520874,
+          1.340000033378601,
+          1.659999966621399
+        ],
+        "risk_qualified": true,
+        "independent_test_used": false
+      },
+      "eligible_for_deployment": true,
+      "candidate_count": 15,
+      "risk_qualified_count": 1,
+      "pareto_candidates": [
+        {
+          "method": "sac_lag",
+          "run": "crax-formal-sac_lag-51027-10m-v1",
+          "training_seed": 51027,
+          "checkpoint_steps": 2016256,
+          "policy_sha256": "6b0114742712dfeb386d124e77280f95583ad6b70850198be0527f544551b57b",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 1.8880000114440918,
+          "mean_episode_cost": 28.495328521728517,
+          "mean_goals_per_episode": 1.8880000114440918,
+          "mean_at_least_one_goal": 0.664,
+          "mean_budget_compliant_fraction": 0.74,
+          "mean_budget_compliant_return": 1.4062865495681762,
+          "mean_capped_first_goal_seconds": 29.281279130668644,
+          "per_seed_episode_cost": [
+            35.599578857421875,
+            28.814733505249023,
+            27.7602596282959,
+            35.371883392333984,
+            14.930187225341797
+          ],
+          "per_seed_goals_per_episode": [
+            1.8799999952316284,
+            2.259999990463257,
+            2.2200000286102295,
+            1.3600000143051147,
+            1.7200000286102295
+          ],
+          "risk_qualified": false,
+          "independent_test_used": false
+        },
+        {
+          "method": "sac_lag",
+          "run": "crax-formal-sac_lag-51027-10m-v1",
+          "training_seed": 51027,
+          "checkpoint_steps": 10000384,
+          "policy_sha256": "6f8e1151746d153933f7b484a2b7bc44f5174dbb121b1855a49a4cb9ee166585",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 36.34000015258789,
+          "mean_episode_cost": 38.851253509521484,
+          "mean_goals_per_episode": 36.34000015258789,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.096,
+          "mean_budget_compliant_return": 37.073333740234375,
+          "mean_capped_first_goal_seconds": 2.647039857826235,
+          "per_seed_episode_cost": [
+            35.17167663574219,
+            40.21247482299805,
+            38.69743728637695,
+            39.43321228027344,
+            40.7414665222168
+          ],
+          "per_seed_goals_per_episode": [
+            36.040000915527344,
+            36.619998931884766,
+            35.619998931884766,
+            36.560001373291016,
+            36.86000061035156
+          ],
+          "risk_qualified": false,
+          "independent_test_used": false
+        },
+        {
+          "method": "sac_lag",
+          "run": "crax-formal-sac_lag-51028-10m-v1",
+          "training_seed": 51028,
+          "checkpoint_steps": 2016256,
+          "policy_sha256": "60a86f8b01979845930bda74de774e3c054338b024d32ffe661607dd7f6550c4",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 3.9759999752044677,
+          "mean_episode_cost": 37.86584587097168,
+          "mean_goals_per_episode": 3.9759999752044677,
+          "mean_at_least_one_goal": 0.856,
+          "mean_budget_compliant_fraction": 0.528,
+          "mean_budget_compliant_return": 1.9104588985443116,
+          "mean_capped_first_goal_seconds": 17.190079449756148,
+          "per_seed_episode_cost": [
+            27.075529098510742,
+            35.92415237426758,
+            40.797420501708984,
+            39.693603515625,
+            45.838523864746094
+          ],
+          "per_seed_goals_per_episode": [
+            2.799999952316284,
+            3.359999895095825,
+            3.240000009536743,
+            4.699999809265137,
+            5.78000020980835
+          ],
+          "risk_qualified": false,
+          "independent_test_used": false
+        },
+        {
+          "method": "sac_lag",
+          "run": "crax-formal-sac_lag-51029-10m-v1",
+          "training_seed": 51029,
+          "checkpoint_steps": 2016256,
+          "policy_sha256": "25a8eb16f3c7ceaa038c1f722a38ea9ba3d9a15b5ea2293c6ebcf6fd4f8cbc86",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 1.656000018119812,
+          "mean_episode_cost": 11.632011604309081,
+          "mean_goals_per_episode": 1.656000018119812,
+          "mean_at_least_one_goal": 0.8079999999999999,
+          "mean_budget_compliant_fraction": 0.892,
+          "mean_budget_compliant_return": 1.440065860748291,
+          "mean_capped_first_goal_seconds": 17.79551962177038,
+          "per_seed_episode_cost": [
+            13.043163299560547,
+            11.832860946655273,
+            11.751089096069336,
+            10.451931953430176,
+            11.081012725830078
+          ],
+          "per_seed_goals_per_episode": [
+            1.940000057220459,
+            1.5199999809265137,
+            1.8200000524520874,
+            1.340000033378601,
+            1.659999966621399
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        }
+      ]
+    },
+    "stable_iso": {
+      "status": "risk_qualified",
+      "selected": {
+        "method": "stable_iso",
+        "run": "crax-formal-stable_iso-51028-10m-v1",
+        "training_seed": 51028,
+        "checkpoint_steps": 10000128,
+        "policy_sha256": "da71c5677dc2751435738ac778dd8ceffb24899777ef5bcde995ba060a048e51",
+        "validation_seeds": [
+          61027,
+          61028,
+          61029,
+          61030,
+          61031
+        ],
+        "mean_native_return": 27.524,
+        "mean_episode_cost": 24.02121705341339,
+        "mean_goals_per_episode": 27.524,
+        "mean_at_least_one_goal": 1.0,
+        "mean_budget_compliant_fraction": 0.576,
+        "mean_budget_compliant_return": 26.218307140887788,
+        "mean_capped_first_goal_seconds": 2.809279937207699,
+        "per_seed_episode_cost": [
+          25.16404158115387,
+          24.7490642952919,
+          22.385161509513853,
+          23.392507936954498,
+          24.41530994415283
+        ],
+        "per_seed_goals_per_episode": [
+          29.14,
+          29.2,
+          26.44,
+          26.54,
+          26.3
+        ],
+        "risk_qualified": true,
+        "independent_test_used": false
+      },
+      "eligible_for_deployment": true,
+      "candidate_count": 15,
+      "risk_qualified_count": 7,
+      "pareto_candidates": [
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51027-10m-v1",
+          "training_seed": 51027,
+          "checkpoint_steps": 4000000,
+          "policy_sha256": "87097e69f1cff5bbe733f985824f015979ac2e2237fa355861a9e7241b0f3aa6",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 28.612000000000002,
+          "mean_episode_cost": 50.45767962741852,
+          "mean_goals_per_episode": 28.612000000000002,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.14,
+          "mean_budget_compliant_return": 10.293333333333333,
+          "mean_capped_first_goal_seconds": 3.0294399322867394,
+          "per_seed_episode_cost": [
+            49.3830629825592,
+            48.15258362531662,
+            54.0283308005333,
+            51.265120935440066,
+            49.45929979324341
+          ],
+          "per_seed_goals_per_episode": [
+            28.88,
+            27.42,
+            28.76,
+            28.92,
+            29.08
+          ],
+          "risk_qualified": false,
+          "independent_test_used": false
+        },
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51027-10m-v1",
+          "training_seed": 51027,
+          "checkpoint_steps": 6000128,
+          "policy_sha256": "5537077fbbf9a6d7581bed1a444d3387f6f141bd1ad1e464908fc956cb3ecc13",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 11.264,
+          "mean_episode_cost": 19.344458933353426,
+          "mean_goals_per_episode": 11.264,
+          "mean_at_least_one_goal": 0.968,
+          "mean_budget_compliant_fraction": 0.728,
+          "mean_budget_compliant_return": 8.834914657689048,
+          "mean_capped_first_goal_seconds": 6.469439855396748,
+          "per_seed_episode_cost": [
+            22.702787156105042,
+            17.862094736099245,
+            19.066051275730132,
+            17.967004487514497,
+            19.124357011318207
+          ],
+          "per_seed_goals_per_episode": [
+            13.16,
+            11.08,
+            9.0,
+            11.68,
+            11.4
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        },
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51027-10m-v1",
+          "training_seed": 51027,
+          "checkpoint_steps": 8000000,
+          "policy_sha256": "ef78f8bad5815ec6d87c44131b184b9f9b8391015834b5cb4f521d2d8f3cda80",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 17.74,
+          "mean_episode_cost": 21.527099069595337,
+          "mean_goals_per_episode": 17.74,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.696,
+          "mean_budget_compliant_return": 14.362031914445707,
+          "mean_capped_first_goal_seconds": 3.072319931328297,
+          "per_seed_episode_cost": [
+            19.013011627197265,
+            20.61570468902588,
+            25.06397752761841,
+            18.954015791416168,
+            23.988785712718965
+          ],
+          "per_seed_goals_per_episode": [
+            16.92,
+            17.82,
+            19.22,
+            18.38,
+            16.36
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        },
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51028-10m-v1",
+          "training_seed": 51028,
+          "checkpoint_steps": 10000128,
+          "policy_sha256": "da71c5677dc2751435738ac778dd8ceffb24899777ef5bcde995ba060a048e51",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 27.524,
+          "mean_episode_cost": 24.02121705341339,
+          "mean_goals_per_episode": 27.524,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.576,
+          "mean_budget_compliant_return": 26.218307140887788,
+          "mean_capped_first_goal_seconds": 2.809279937207699,
+          "per_seed_episode_cost": [
+            25.16404158115387,
+            24.7490642952919,
+            22.385161509513853,
+            23.392507936954498,
+            24.41530994415283
+          ],
+          "per_seed_goals_per_episode": [
+            29.14,
+            29.2,
+            26.44,
+            26.54,
+            26.3
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        },
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51029-10m-v1",
+          "training_seed": 51029,
+          "checkpoint_steps": 4000000,
+          "policy_sha256": "e67f048187f27524b43628bf3948d875b8ffa1d7574fce4b5116d2d094acbb59",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 30.676,
+          "mean_episode_cost": 64.55333436107635,
+          "mean_goals_per_episode": 30.676,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.048,
+          "mean_budget_compliant_return": 6.24,
+          "mean_capped_first_goal_seconds": 2.698879939675331,
+          "per_seed_episode_cost": [
+            60.91013135910034,
+            67.83705881595611,
+            66.0603623199463,
+            62.680573778152464,
+            65.27854553222656
+          ],
+          "per_seed_goals_per_episode": [
+            31.66,
+            30.62,
+            30.52,
+            29.68,
+            30.9
+          ],
+          "risk_qualified": false,
+          "independent_test_used": false
+        },
+        {
+          "method": "stable_iso",
+          "run": "crax-formal-stable_iso-51029-10m-v1",
+          "training_seed": 51029,
+          "checkpoint_steps": 8000000,
+          "policy_sha256": "3a7d76b737f30764c6cda3d38d0e9014b169f71e14a791c7eb2038a3caab0a40",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 8.5,
+          "mean_episode_cost": 12.786449162960054,
+          "mean_goals_per_episode": 8.5,
+          "mean_at_least_one_goal": 0.972,
+          "mean_budget_compliant_fraction": 0.876,
+          "mean_budget_compliant_return": 6.794387780241439,
+          "mean_capped_first_goal_seconds": 5.8649598689079285,
+          "per_seed_episode_cost": [
+            9.636970789432526,
+            13.74057734489441,
+            12.175122990608216,
+            13.776072266101837,
+            14.603502423763276
+          ],
+          "per_seed_goals_per_episode": [
+            9.3,
+            8.24,
+            7.78,
+            8.86,
+            8.32
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        }
+      ]
+    },
+    "ea": {
+      "status": "risk_qualified",
+      "selected": {
+        "method": "ea",
+        "run": "crax-formal-ea-51029-10m-v1",
+        "training_seed": 51029,
+        "checkpoint_steps": 8000000,
+        "policy_sha256": "b9503fc828e492f0b44be34ca7def2d0c9a3293e70af261f0239b8c727cbc86a",
+        "validation_seeds": [
+          61027,
+          61028,
+          61029,
+          61030,
+          61031
+        ],
+        "mean_native_return": 35.256,
+        "mean_episode_cost": 22.00468463897705,
+        "mean_goals_per_episode": 35.256,
+        "mean_at_least_one_goal": 1.0,
+        "mean_budget_compliant_fraction": 0.664,
+        "mean_budget_compliant_return": 35.40163458265925,
+        "mean_capped_first_goal_seconds": 2.686399939954281,
+        "per_seed_episode_cost": [
+          23.106897945404054,
+          20.24184084892273,
+          22.281488094329834,
+          22.44381214141846,
+          21.94938416481018
+        ],
+        "per_seed_goals_per_episode": [
+          35.54,
+          35.16,
+          34.84,
+          35.44,
+          35.3
+        ],
+        "risk_qualified": true,
+        "independent_test_used": false
+      },
+      "eligible_for_deployment": true,
+      "candidate_count": 15,
+      "risk_qualified_count": 5,
+      "pareto_candidates": [
+        {
+          "method": "ea",
+          "run": "crax-formal-ea-51029-10m-v1",
+          "training_seed": 51029,
+          "checkpoint_steps": 8000000,
+          "policy_sha256": "b9503fc828e492f0b44be34ca7def2d0c9a3293e70af261f0239b8c727cbc86a",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 35.256,
+          "mean_episode_cost": 22.00468463897705,
+          "mean_goals_per_episode": 35.256,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.664,
+          "mean_budget_compliant_return": 35.40163458265925,
+          "mean_capped_first_goal_seconds": 2.686399939954281,
+          "per_seed_episode_cost": [
+            23.106897945404054,
+            20.24184084892273,
+            22.281488094329834,
+            22.44381214141846,
+            21.94938416481018
+          ],
+          "per_seed_goals_per_episode": [
+            35.54,
+            35.16,
+            34.84,
+            35.44,
+            35.3
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        },
+        {
+          "method": "ea",
+          "run": "crax-formal-ea-51029-10m-v1",
+          "training_seed": 51029,
+          "checkpoint_steps": 10000128,
+          "policy_sha256": "0a0af07062acd7e58feb4ba361659e9a1c39c1974d582f014bbae94c4dfda66f",
+          "validation_seeds": [
+            61027,
+            61028,
+            61029,
+            61030,
+            61031
+          ],
+          "mean_native_return": 35.124,
+          "mean_episode_cost": 16.775224060058594,
+          "mean_goals_per_episode": 35.124,
+          "mean_at_least_one_goal": 1.0,
+          "mean_budget_compliant_fraction": 0.912,
+          "mean_budget_compliant_return": 35.1425918762089,
+          "mean_capped_first_goal_seconds": 2.711679939389229,
+          "per_seed_episode_cost": [
+            16.667346267700196,
+            16.48799147605896,
+            17.987461013793947,
+            16.63263898849487,
+            16.100682554244994
+          ],
+          "per_seed_goals_per_episode": [
+            35.66,
+            35.34,
+            34.34,
+            35.32,
+            34.96
+          ],
+          "risk_qualified": true,
+          "independent_test_used": false
+        }
+      ]
+    }
+  },
+  "overall_deployment_candidate": {
+    "method": "ea",
+    "run": "crax-formal-ea-51029-10m-v1",
+    "training_seed": 51029,
+    "checkpoint_steps": 8000000,
+    "policy_sha256": "b9503fc828e492f0b44be34ca7def2d0c9a3293e70af261f0239b8c727cbc86a",
+    "validation_seeds": [
+      61027,
+      61028,
+      61029,
+      61030,
+      61031
+    ],
+    "mean_native_return": 35.256,
+    "mean_episode_cost": 22.00468463897705,
+    "mean_goals_per_episode": 35.256,
+    "mean_at_least_one_goal": 1.0,
+    "mean_budget_compliant_fraction": 0.664,
+    "mean_budget_compliant_return": 35.40163458265925,
+    "mean_capped_first_goal_seconds": 2.686399939954281,
+    "per_seed_episode_cost": [
+      23.106897945404054,
+      20.24184084892273,
+      22.281488094329834,
+      22.44381214141846,
+      21.94938416481018
+    ],
+    "per_seed_goals_per_episode": [
+      35.54,
+      35.16,
+      34.84,
+      35.44,
+      35.3
+    ],
+    "risk_qualified": true,
+    "independent_test_used": false
+  },
+  "freeze_digest": "bb57d6466973774d5d956090e1bb85abf79fbae96da5104dc727492fbbfec718"
+}
