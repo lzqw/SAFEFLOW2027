@@ -8,9 +8,17 @@ beside this report.
   521 safe timeouts.
 - Reach / Iso-Low: 300k simulated transitions completed; 0 safe successes and
   2,952 safe timeouts. This is retained as a negative baseline, not hidden.
-- Reach / EA: 299k/300k transitions at the latest snapshot, about 10.3
-  transitions/s, with 8,181 safe successes and 482 safe timeouts. Training is
-  still running on A100 GPU0.
+- Reach / EA: 300k simulated transitions completed on A100 GPU0 at about 10.26
+  transitions/s, with 8,215 training safe successes and 482 safe timeouts.
+  The final 30-episode simulation evaluation reports nominal safe success
+  1.00 (0 violations), new-geometry safe success 0.333 (20 violations), and
+  execution-scale-0.85 safe success 0.833 (5 violations). No collision was
+  recorded in these evaluation conditions.
+
+The final EA receipt, training receipt, evaluation JSON, and latest status are
+stored in `piper-progress-20261113/`. The run used 29,311.6 seconds of elapsed
+training time, 6,000,000 training physics substeps, 6,318,898 training
+distance queries, and zero physical-robot interactions.
 
 The full Piper deployment plan, dry-run boundaries, and physical-motion
 authorization constraints remain unchanged. Checkpoints stay server-side.
