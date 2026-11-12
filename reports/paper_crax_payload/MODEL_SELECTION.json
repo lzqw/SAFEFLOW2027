@@ -1,0 +1,14 @@
+{
+  "status":"registered_not_selected",
+  "protocol":"EXPERIMENT_PROTOCOL.md",
+  "configuration":"configs/paper_crax_payload/master_v1.json",
+  "rule":"common_risk_requirement_then_task_then_capped_time;otherwise_explicit_pareto",
+  "equal_checkpoint_fractions":[0.2,0.4,0.6,0.8,1.0],
+  "validation_seeds":[61027,61028,61029,61030,61031],
+  "independent_test_seeds":[71027,71028,71029,71030,71031],
+  "test_used_for_selection":false,
+  "selected_candidates":[],
+  "candidate_history":[],
+  "historical_EA2027":"historical_positive_case_only;prior_seen_tests_not_independent",
+  "piper_candidates":"pending_native_Piper_training;no_renamed_Panda_weights"
+}

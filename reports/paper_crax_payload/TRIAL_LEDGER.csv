@@ -1,0 +1,5 @@
+trial_id,task,phase,status,method,seed,actual_new_training_transitions,new_nontraining_simulator_controls,new_real_robot_interactions,evidence,notes
+payload-engineering-v1,payload,engineering,completed,ea,41999,3220,0,0,payload-engineering-v1/ENGINEERING_ACCOUNTING.json,3210 full run plus10 genuine restored continuation;not a development candidate
+payload-semantic-and-feasibility-v1,payload,engineering,completed,mixed,,0,222,0,payload-engineering-v1/ENGINEERING_ACCOUNTING.json,all local/native contracts and five-condition constructive detour queries charged
+piper-official-model-smoke-v1,piper,engineering,completed,none,,0,8,0,../../deployment/piper/preparation_receipt.json,160 physics substeps;official provisional model not confirmed physical hardware
+linear-flow-theory-v1,synthetic,mechanism,completed,none,,0,0,0,THEORY_NUMERICS.json,400000 synthetic Gaussian draws and40000 SPD proposals;no simulator queries

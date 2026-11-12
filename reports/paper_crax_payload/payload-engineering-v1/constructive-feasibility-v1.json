@@ -1,0 +1,58 @@
+{
+  "training_transitions": 0,
+  "learner_updates": 0,
+  "control": "same fixed high detour for all five conditions;not a learned-policy score",
+  "physical_control_intervals": 206,
+  "records": [
+    {
+      "condition": "nominal",
+      "safe_success": true,
+      "violation": false,
+      "collision": false,
+      "physical_control_intervals": 40,
+      "minimum_distance_m": 0.048192984078045314,
+      "arm_minimum_final_interval_m": 0.0752328948527635,
+      "payload_minimum_final_interval_m": 0.10576966863629955
+    },
+    {
+      "condition": "radius_070",
+      "safe_success": true,
+      "violation": false,
+      "collision": false,
+      "physical_control_intervals": 40,
+      "minimum_distance_m": 0.038192984078045306,
+      "arm_minimum_final_interval_m": 0.06523289485276348,
+      "payload_minimum_final_interval_m": 0.09576966863629954
+    },
+    {
+      "condition": "payload_wide",
+      "safe_success": true,
+      "violation": false,
+      "collision": false,
+      "physical_control_intervals": 40,
+      "minimum_distance_m": 0.04819298716222778,
+      "arm_minimum_final_interval_m": 0.07523283317943885,
+      "payload_minimum_final_interval_m": 0.0987789832054971
+    },
+    {
+      "condition": "execution_scale_085",
+      "safe_success": true,
+      "violation": false,
+      "collision": false,
+      "physical_control_intervals": 46,
+      "minimum_distance_m": 0.04819368061008808,
+      "arm_minimum_final_interval_m": 0.08220441117642457,
+      "payload_minimum_final_interval_m": 0.10657670459211438
+    },
+    {
+      "condition": "alternative_route",
+      "safe_success": true,
+      "violation": false,
+      "collision": false,
+      "physical_control_intervals": 40,
+      "minimum_distance_m": 0.03240955927210139,
+      "arm_minimum_final_interval_m": 0.05675029831317743,
+      "payload_minimum_final_interval_m": 0.10870549151239897
+    }
+  ]
+}

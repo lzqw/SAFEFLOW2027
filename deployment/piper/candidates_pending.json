@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "native_Piper_training_not_started",
+  "robot_family": "Piper",
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "methods": ["Iso", "Iso-Low", "EA"],
+  "tasks": ["Reach", "Payload"],
+  "trained_candidates": [],
+  "simulation_development_cap_transitions": 3000000,
+  "new_training_transitions": 0,
+  "real_interactions": 0,
+  "physical_motion_enabled": false,
+  "reason": "Official model is executable in provisional simulation, but actual robot/gripper/TCP/limits are unknown. Native Piper training and common validation selection are required before exporting policies; old Panda weights are not converted or relabelled."
+}

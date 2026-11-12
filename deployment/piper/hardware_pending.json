@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "pending_operator_information",
+  "robot_family": "Piper",
+  "robot_model": null,
+  "serial_or_asset_id": null,
+  "firmware_version": null,
+  "gripper_model": null,
+  "gripper_opening_m": null,
+  "tcp_from_flange_m_xyzw": null,
+  "world_from_base_m_xyzw": null,
+  "control_period_s": null,
+  "max_tcp_speed_m_s": null,
+  "max_payload_kg": null,
+  "workspace_min_m": null,
+  "workspace_max_m": null,
+  "emergency_stop_confirmed": false,
+  "operator_on_site": false,
+  "motion_enabled": false,
+  "requirement": "Do not populate these values by guessing from Panda or generic vendor limits. Offline simulation values are separate and are not an authorization."
+}

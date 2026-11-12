@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status": "offline_preparation_and_provisional_official_model_smoke_completed",
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "sdk_commit": "d90e234ba8e408cfa964b38aa9120b3131fc9f85",
+  "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+  "official_source_urdf": "src/piper_description/urdf/piper_description.urdf",
+  "hardware_model_and_gripper_match": false,
+  "hardware_information_status": "pending",
+  "simulator": "PyBullet",
+  "simulations": [
+    {"task": "Reach", "control_intervals": 3, "physics_substeps": 60, "zero_action_fixture": true, "minimum_interval_distance_m": 0.03442948152546359, "violation": false, "safe_success": false, "reset_ik_error_m": 0.015327268773591342},
+    {"task": "Payload", "control_intervals": 3, "physics_substeps": 60, "zero_action_fixture": true, "minimum_interval_distance_m": 0.033597476259891165, "violation": false, "safe_success": false, "reset_ik_error_m": 0.015327268773591342}
+  ],
+  "reset_fix_verification": {"reason": "Explicitly reset finger joint positions between episodes; preserve initial receipts and verify updated simulator once per task", "Reach_control_intervals": 1, "Payload_control_intervals": 1, "physics_substeps": 40, "additional_training_transitions": 0, "real_interactions": 0},
+  "new_simulation_control_intervals": 8,
+  "new_physics_substeps": 160,
+  "new_training_transitions": 0,
+  "real_interactions": 0,
+  "physical_connections": 0,
+  "physical_commands_sent": 0,
+  "trained_deployment_candidates": 0,
+  "offline_contract_tests": {"passed": 4, "failed": 0, "simulated_control_intervals": 0, "scope": "SI conversion, disabled physical transport, timeout/deadline/rejection record-replay, Panda/untrained export rejection, planned360-episode balance"},
+  "dry_run": {"synthetic_control_records": 3, "accepted_proposals": 1, "rejected_proposals": 2, "deadline_misses": 1, "executed_actions": 0},
+  "real_fixed_policy_schedule": {"planned_episodes": 360, "executed_episodes": 0, "seed": 72027},
+  "native_receipts_external_directory": "/home/lzqw/SAFEFLOW2027_delivery/arm-ea-stability-runtime",
+  "compact_raw_evidence_copy": "deployment/piper/evidence/; planned360-row schedule is reproducibly generated rather than uploaded as an executed result",
+  "raw_evidence_files": ["piper-assets-ac41fcb.json", "piper-reach-smoke-v1.json", "piper-payload-smoke-v1.json", "piper-reach-smoke-v2.json", "piper-payload-smoke-v2.json", "piper-offline-contracts-v1.xml", "piper-offline-record-v1.jsonl", "piper-real-plan-v1.json"],
+  "actual_smoke_environment": {"python": "3.11.5", "numpy": "1.26.4", "pybullet": "3.2.7", "gymnasium": "0.28.1", "pytest": "7.4.0", "torch": "2.4.0+cu118", "simulation_device": "local_CPU", "torch_policy_inference_used": false},
+  "warning": "Official URDF dummy_link lacks inertial data; PyBullet emits a nonfatal warning. Base is fixed. This smoke does not validate dynamic fidelity, task learnability, workspace certification or robot safety. No learned-policy or deployment-performance claim."
+}
