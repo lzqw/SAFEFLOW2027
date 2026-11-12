@@ -13,10 +13,8 @@ def main():
     import numpy as np
     from dataclasses import asdict
     from scripts.paper_crax_payload.payload_environment import PayloadConfig, SafePayloadTransport
-    from scripts.paper_crax_payload.payload_route_qualification import (
-        qualify_offset_route, replay_open_loop_witness, route_sector,
-        run_predeclared_alternative,
-    )
+    from scripts.paper_crax_payload.payload_route_qualification import qualify_offset_route, route_sector
+    from scripts.paper_crax_payload.payload_rollouts import replay_open_loop_witness, run_predeclared_alternative
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--plan', type=Path, required=True)
