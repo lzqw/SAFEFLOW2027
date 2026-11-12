@@ -5,7 +5,7 @@ standard Piper model and gripper, seed 41027, common 300k transition budget,
 and `piper_sim_v1.json` configuration are shared across methods. No physical
 robot connection or motion is enabled.
 
-- EA: running on A100 GPU1; latest snapshot 73k/300k transitions, about 10.8
+- EA: running on A100 GPU1; latest snapshot 74k/300k transitions, about 10.8
   transitions/s after optimizer warm-up.
 - Iso: running on A100 GPU0; latest snapshot 180k/300k transitions, about 26.8
   transitions/s after optimizer warm-up.
