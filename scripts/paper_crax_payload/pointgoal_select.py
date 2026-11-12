@@ -59,6 +59,8 @@ def main():
         policy_hashes = sorted({r['policy_sha256'] for r in entries})
         if len(policy_hashes) != 1:
             raise ValueError('Candidate policy hash changed across validation seeds')
+        compliant_returns = [num(r, 'budget_compliant_return') for r in entries
+                             if num(r, 'budget_compliant_return') is not None]
         summary = {
             'method': method, 'run': run, 'training_seed': int(entries[0].get('training_seed') or seed_from_run(run)),
             'checkpoint_steps': checkpoint, 'policy_sha256': policy_hashes[0],
@@ -68,7 +70,7 @@ def main():
             'mean_goals_per_episode': mean(num(r, 'goals_per_episode') for r in entries),
             'mean_at_least_one_goal': mean(num(r, 'at_least_one_goal') for r in entries),
             'mean_budget_compliant_fraction': mean(num(r, 'budget_compliant_fraction') for r in entries),
-            'mean_budget_compliant_return': mean(num(r, 'budget_compliant_return') for r in entries if num(r, 'budget_compliant_return') is not None),
+            'mean_budget_compliant_return': mean(compliant_returns) if compliant_returns else None,
             'mean_capped_first_goal_seconds': mean(num(r, 'capped_first_goal_seconds') for r in entries),
             'per_seed_episode_cost': [num(r, 'episode_cost') for r in entries],
             'per_seed_goals_per_episode': [num(r, 'goals_per_episode') for r in entries],
