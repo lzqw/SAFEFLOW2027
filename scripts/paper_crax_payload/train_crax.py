@@ -4,6 +4,7 @@ Checkpoint = learner+optimizers+replay+MJX state+per-env partial episodes+RNG.
 Do not put the server-only checkpoint output under reports or upload it to GitHub.
 """
 import argparse
+import atexit
 import csv
 import json
 import os
@@ -140,6 +141,20 @@ def main():
     timing_events=[];gpu_memory_samples=[]
     log_fields=['steps','new_steps','elapsed_seconds','steady_training_sps','end_to_end_sps','updates_per_second','training_cumulative_cost','cost_per_1000_transitions','completed_episodes','recent_native_return','recent_episode_cost','recent_goals','recent_at_least_one_goal','peak_torch_memory_mib','learner_updates','actor_updates','geometry_weight','energy','alpha','multiplier']
     progress=args.output/'progress.csv'
+    terminal={'completed':False}
+    def preserve_interruption():
+        if terminal['completed']:return
+        # Called only at real process exit, never by observation timeout. Save
+        # the exact already-collected prefix without another simulator step.
+        atomic_json(args.output/'interruption.json',dict(status='engineering_interruption',
+            steps=steps,initial_steps=initial_steps,new_training_transitions=steps-initial_steps,
+            source_commit=args.source_commit,automatic_restart=False))
+        state=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),
+            partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),
+            steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
+        torch.save(state,args.output/'interrupted_full.pt.tmp')
+        (args.output/'interrupted_full.pt.tmp').replace(args.output/'interrupted_full.pt')
+    atexit.register(preserve_interruption)
     with progress.open('a',newline='') as handle:
         writer=csv.DictWriter(handle,fieldnames=log_fields)
         if handle.tell()==0:writer.writeheader()
@@ -241,6 +256,7 @@ def main():
         total_device_shared_memory_samples=gpu_memory_samples,torch_peak_memory_is_not_total_device_memory=True,
         full_replay_environment_partial_episode_rng_saved=True,
         note='profile-only is engineering training,not a candidate;all actual rounded transitions charged'))
+    terminal['completed']=True
 
 
 if __name__=='__main__':main()

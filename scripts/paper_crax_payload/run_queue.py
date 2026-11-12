@@ -30,6 +30,7 @@ def main():
             if Path(job['output']).exists():raise FileExistsError('Preserve original run output')
             command=[plan['python'],'-u','-m',job['module'],*job['arguments'],'--output',job['output'],'--source-commit',args.source_commit]
             env=os.environ|{'OMP_NUM_THREADS':'1','MKL_NUM_THREADS':'1','XLA_PYTHON_CLIENT_PREALLOCATE':'false'}
+            env.update(job.get('environment',{}))
             stream=log.open('x');proc=subprocess.Popen(command,cwd=project,env=env,stdout=stream,stderr=subprocess.STDOUT)
             record=dict(name=job['name'],pid=proc.pid,command=command,output=job['output'],log=str(log),status='running',started_unix=time.time())
             records.append(record);live[proc.pid]=(proc,stream,record)

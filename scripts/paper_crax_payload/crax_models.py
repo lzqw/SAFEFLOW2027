@@ -216,7 +216,7 @@ class CumulativeFlowLearner:
 
     def metrics(self):
         keys = list(self.last_metrics)
-        values = torch.stack([self.last_metrics[k] for k in keys]).detach().cpu().tolist()
+        values = torch.stack([self.last_metrics[k] for k in keys]).detach().cpu().tolist() if keys else []
         return dict(zip(keys, values)) | dict(updates=self.updates, actor_updates=self.actor_updates,
             margin_updates=self.margin_updates, reward_updates=self.reward_updates,
             energy_target=self.energy_target)

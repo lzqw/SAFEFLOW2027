@@ -93,7 +93,10 @@ class PointGoalTorch:
             env_id='safe_goal_point',difficulty=1,episode_length=n.episode_length,
             physics_timestep=float(n.sys.opt.timestep),frame_skip=n._n_frames,
             control_period=float(n.dt),action_dim=self.action_dim,obs_dim=self.obs_dim,
-            action_limits=np.asarray(n.sys.actuator.ctrl_range).tolist(),
+            # Point's site/joint-in-parent transmissions are excluded from the
+            # legacy Brax Actuator view. MJX uses the complete native Model.
+            action_limits=np.asarray(n.sys.actuator_ctrlrange).tolist(),
+            action_limits_source='native_MJX_Model_not_filtered_legacy_Brax_actuator',
             goals=n._num_goals,hazards=n._num_hazards,
             hazard_types=[h.hazard_type for h in n._hazard_manager.hazards],
             hazard_collidable=[bool(h.collidable) for h in n._hazard_manager.hazards],

@@ -142,3 +142,10 @@ def test_geometry_ramp_is_effective_update_age_and_restored_exactly():
     restored.load_state_dict(deepcopy(learner.state_dict()))
     assert restored.margin_updates==3000
     assert geometry_ramp(restored.geometry.transitions)==.5
+def test_warmup_metrics_do_not_require_a_loss_or_fake_zero_learning():
+    from scripts.paper_crax_payload.crax_models import CumulativeFlowLearner
+    learner=CumulativeFlowLearner(4,2,device='cpu',width=8)
+    metrics=learner.metrics()
+    assert metrics['updates']==metrics['actor_updates']==metrics['margin_updates']==0
+    assert 'actor_loss' not in metrics and 'reward_loss' not in metrics
+

@@ -30,7 +30,10 @@ def collect(host,root,report):
 
 
 def refresh(report):
-    results=[];point_results=[];trials=[];physical=0;training=0
+    results=[];point_results=[];trials=[];candidate_history=[];physical=0;training=0
+    ledger_path=report/'TRIAL_LEDGER.csv'
+    with ledger_path.open() as stream:
+        ledger_reader=csv.DictReader(stream);ledger_fields=ledger_reader.fieldnames;ledger={r['trial_id']:r for r in ledger_reader}
     for directory in sorted((report/'native_runs').glob('*')):
         config=read(directory/'run_config.json') or read(directory/'configuration.json')
         if not config:continue
@@ -76,7 +79,21 @@ def refresh(report):
                 conditional_first_goal_seconds=validation.get('conditional_first_goal_seconds'),source_commit=config['source_commit']))
         queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0))
         physical+=queries
-        trials.append(dict(trial_id=directory.name,status='completed' if receipt.get('status')=='completed' else status.get('state',status.get('status','observed_not_liveness_proof')),
+        trial_status='completed' if receipt.get('status')=='completed' else status.get('state',status.get('status','observed_not_liveness_proof'))
+        task='payload' if config.get('task')=='SafePayloadTransport-v1' else 'PointGoal'
+        ledger[directory.name]=dict(trial_id=directory.name,task=task,phase=config.get('phase','development'),status=trial_status,
+            method=config.get('method'),seed=config.get('training_seed',config.get('seed')),
+            actual_new_training_transitions=new,new_nontraining_simulator_controls=queries,new_real_robot_interactions=0,
+            evidence=f'native_runs/{directory.name}/'+('receipt.json' if receipt else 'status.json'),
+            notes='actual completed segment' if receipt else 'observed lower bound;not process-liveness proof;all prefixes retained')
+        candidates=[dict(checkpoint_steps=int(v.stem.split('_')[-1]),evaluation_file=str(v.relative_to(report)))
+            for v in sorted(directory.glob('evaluation_*.json'))]
+        candidates += [dict(checkpoint_steps=int(v.stem.split('_')[-1]),evaluation_file=str(v.relative_to(report)))
+            for v in sorted(directory.glob('validation_*.json'))]
+        if candidates:candidate_history.append(dict(trial_id=directory.name,task=task,method=config.get('method'),
+            training_seed=config.get('training_seed',config.get('seed')),observed_checkpoints=candidates,
+            selection_performed=False,test_used_for_selection=False))
+        trials.append(dict(trial_id=directory.name,status=trial_status,
             steps=steps,new_training_transitions_lower_bound=new,training_cost_lower_bound=cost,
             evaluation_controls_observed=queries,method=config.get('method'),training_seed=config.get('training_seed',config.get('seed')),
             pid=config.get('native_pid'),source_commit=config.get('source_commit')))
@@ -88,6 +105,11 @@ def refresh(report):
     fields=list(dict.fromkeys(next(csv.reader(path.open()))+['capped_first_goal_seconds','conditional_first_goal_seconds']))
     with path.open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(point_results)
+    with ledger_path.open('w',newline='') as stream:
+        writer=csv.DictWriter(stream,fieldnames=ledger_fields);writer.writeheader();writer.writerows(ledger.values())
+    selection=read(report/'MODEL_SELECTION.json');selection['candidate_history']=candidate_history
+    selection['selection_has_occurred']=bool(selection.get('selected_candidates'))
+    (report/'MODEL_SELECTION.json').write_text(json.dumps(selection,indent=2)+'\n')
     summary=dict(completed_native_runs=sum(r['status']=='completed' for r in trials),observed_native_runs=len(trials),
         observed_new_training_transitions_lower_bound=training,observed_native_evaluation_controls=physical,
         trials=trials,payload_condition_rows=len(results),pointgoal_validation_rows=len(point_results),whole_goal_complete=False,
