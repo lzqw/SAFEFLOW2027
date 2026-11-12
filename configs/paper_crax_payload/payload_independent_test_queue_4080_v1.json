@@ -1,0 +1,96 @@
+{
+  "schema": "payload_independent_test_queue_v1",
+  "project": "/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 1,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-independent-test-v1.json",
+  "minimum_free_disk_bytes": 10737418240,
+  "admission": {
+    "status": "locked_after_complete_selection",
+    "cohort": "development",
+    "candidate_count": 3,
+    "selection_freeze": "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/PAYLOAD_SELECTION_FREEZE_DEVELOPMENT.json",
+    "independent_test_used_for_selection": false,
+    "foreign_process_stop_allowed": false,
+    "automatic_restart": false
+  },
+  "jobs": [
+    {
+      "name": "payload-independent-sac_lag-41028-300000-v1",
+      "module": "scripts.paper_crax_payload.payload_frozen",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/payload_selection_v1.json",
+        "--training-config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--cohort",
+        "development",
+        "--candidate-id",
+        "development:sac_lag:41028:000300000",
+        "--run-root",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs",
+        "--split",
+        "independent_test",
+        "--selection-freeze",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/PAYLOAD_SELECTION_FREEZE_DEVELOPMENT.json",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/payload-independent-test-v1/development_sac_lag_41028_000300000.json",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-independent-test-v1/development_sac_lag_41028_000300000.log"
+    },
+    {
+      "name": "payload-independent-s_iso-41028-120000-v1",
+      "module": "scripts.paper_crax_payload.payload_frozen",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/payload_selection_v1.json",
+        "--training-config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--cohort",
+        "development",
+        "--candidate-id",
+        "development:s_iso:41028:000120000",
+        "--run-root",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs",
+        "--split",
+        "independent_test",
+        "--selection-freeze",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/PAYLOAD_SELECTION_FREEZE_DEVELOPMENT.json",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/payload-independent-test-v1/development_s_iso_41028_000120000.json",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-independent-test-v1/development_s_iso_41028_000120000.log"
+    },
+    {
+      "name": "payload-independent-s_ea-41028-240000-v1",
+      "module": "scripts.paper_crax_payload.payload_frozen",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/payload_selection_v1.json",
+        "--training-config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--cohort",
+        "development",
+        "--candidate-id",
+        "development:s_ea:41028:000240000",
+        "--run-root",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs",
+        "--split",
+        "independent_test",
+        "--selection-freeze",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/PAYLOAD_SELECTION_FREEZE_DEVELOPMENT.json",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/payload-independent-test-v1/development_s_ea_41028_000240000.json",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-independent-test-v1/development_s_ea_41028_000240000.log"
+    }
+  ]
+}
