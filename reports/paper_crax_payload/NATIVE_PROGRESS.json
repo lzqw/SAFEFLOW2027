@@ -1,7 +1,7 @@
 {
   "completed_native_runs": 24,
   "observed_native_runs": 31,
-  "observed_new_training_transitions_lower_bound": 58416776,
+  "observed_new_training_transitions_lower_bound": 59209528,
   "observed_native_evaluation_controls": 4348034,
   "trials": [
     {
@@ -55,9 +55,9 @@
     {
       "trial_id": "crax-formal-ea-51027-10m-v1",
       "status": "running",
-      "steps": 6349824,
-      "new_training_transitions_lower_bound": 6349824,
-      "training_cost_lower_bound": 254162.65625,
+      "steps": 6619392,
+      "new_training_transitions_lower_bound": 6619392,
+      "training_cost_lower_bound": 261592.796875,
       "evaluation_controls_observed": 150000,
       "method": "ea",
       "training_seed": 51027,
@@ -103,9 +103,9 @@
     {
       "trial_id": "crax-formal-stable_iso-51028-10m-v1",
       "status": "running",
-      "steps": 509184,
-      "new_training_transitions_lower_bound": 509184,
-      "training_cost_lower_bound": 23208.322265625,
+      "steps": 1018368,
+      "new_training_transitions_lower_bound": 1018368,
+      "training_cost_lower_bound": 24969.27734375,
       "evaluation_controls_observed": 0,
       "method": "stable_iso",
       "training_seed": 51028,
@@ -307,9 +307,9 @@
     {
       "trial_id": "payload-ea-41028-v1",
       "status": "running",
-      "steps": 162000,
-      "new_training_transitions_lower_bound": 162000,
-      "training_cost_lower_bound": 472,
+      "steps": 171000,
+      "new_training_transitions_lower_bound": 171000,
+      "training_cost_lower_bound": 512,
       "evaluation_controls_observed": 15958,
       "method": "s_ea",
       "training_seed": 41028,
@@ -367,9 +367,9 @@
     {
       "trial_id": "piper-reach-iso-41027-v1",
       "status": "running",
-      "steps": 263000,
-      "new_training_transitions_lower_bound": 263000,
-      "training_cost_lower_bound": 785,
+      "steps": 268000,
+      "new_training_transitions_lower_bound": 268000,
+      "training_cost_lower_bound": 792,
       "evaluation_controls_observed": 9338,
       "method": "Iso",
       "training_seed": 41027,

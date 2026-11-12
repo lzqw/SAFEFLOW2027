@@ -106,7 +106,7 @@
     },
     "formal_controller_pid": 180138,
     "formal_source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
-    "formal_completed_runs_observed": 2,
+    "formal_completed_runs_observed": 3,
     "small_common_state_mechanism": {
       "status": "completed",
       "states": 32,
@@ -124,7 +124,7 @@
       ],
       "pending": 4,
       "status": "running",
-      "last_authoritative_check": "2026-11-12 17:31 Asia/Taipei"
+      "admission_wait_reason": null
     },
     "formal_first_two_completed": [
       {
@@ -138,7 +138,20 @@
         "actual_steps": 10000384,
         "elapsed_seconds": 1149.4298656
       }
-    ]
+    ],
+    "formal_completed_run_ids": [
+      "crax-formal-sac_lag-51027-10m-v1",
+      "crax-formal-sac_lag-51028-10m-v1",
+      "crax-formal-stable_iso-51027-10m-v1"
+    ],
+    "formal_latest_iso51027": {
+      "actual_steps": 10000128,
+      "goals": 1.38,
+      "cost": 28.7090650105,
+      "at_least_one_goal": 0.76,
+      "budget_compliance": 0.86,
+      "full_runner_sps": 2031.20170771094
+    }
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -170,7 +183,7 @@
     }
   },
   "next_required_actions": [
-    "complete remaining seven formal PointGoal10M runs;then equal common validation and locked independent test",
+    "complete remaining six formal PointGoal10M runs;then equal common validation and locked independent test",
     "finishscientificanalyseswithoutfurtherconfigurationsearch;all6recipesretained",
     "runregisteredformal3methods3seedsandfaircommonvalidation",
     "finishsixPayload300kdevelopmentandfair0.6Mconfirmation",
@@ -181,7 +194,7 @@
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 17:31 Asia/Taipei",
+  "observed_at_local": "2026-11-12 17:34 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {
