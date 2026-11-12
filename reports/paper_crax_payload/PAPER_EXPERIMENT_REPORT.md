@@ -77,9 +77,11 @@ selection.
   zero physical-robot interactions. Piper remains simulation-only; no CAN,
   SDK motion, or random physical exploration was enabled.
 - Piper Payload has a validated simulation/smoke and constructive-feasibility
-  path, but its three 300k learned candidates were not started in this
-  delivery; this is separate from the completed CRAX Payload experiments and
-  remains the next optional queue item.
+  path. The learned 300k candidates are now running on two A100 GPUs: EA is at
+  28k/300k transitions and Iso at 58k/300k in the latest compact receipts;
+  Iso-Low is queued until one slot is released. These are interim training
+  states, not final learned-policy results, and remain separate from the
+  completed CRAX Payload experiments.
 
 ## 6. Actual cost and reproducibility
 
