@@ -1,7 +1,7 @@
 {
   "completed_native_runs": 24,
   "observed_native_runs": 31,
-  "observed_new_training_transitions_lower_bound": 57762816,
+  "observed_new_training_transitions_lower_bound": 58416776,
   "observed_native_evaluation_controls": 4348034,
   "trials": [
     {
@@ -55,9 +55,9 @@
     {
       "trial_id": "crax-formal-ea-51027-10m-v1",
       "status": "running",
-      "steps": 6140160,
-      "new_training_transitions_lower_bound": 6140160,
-      "training_cost_lower_bound": 246472.015625,
+      "steps": 6349824,
+      "new_training_transitions_lower_bound": 6349824,
+      "training_cost_lower_bound": 254162.65625,
       "evaluation_controls_observed": 150000,
       "method": "ea",
       "training_seed": 51027,
@@ -103,9 +103,9 @@
     {
       "trial_id": "crax-formal-stable_iso-51028-10m-v1",
       "status": "running",
-      "steps": 69888,
-      "new_training_transitions_lower_bound": 69888,
-      "training_cost_lower_bound": 8855.177734375,
+      "steps": 509184,
+      "new_training_transitions_lower_bound": 509184,
+      "training_cost_lower_bound": 23208.322265625,
       "evaluation_controls_observed": 0,
       "method": "stable_iso",
       "training_seed": 51028,
@@ -367,9 +367,9 @@
     {
       "trial_id": "piper-reach-iso-41027-v1",
       "status": "running",
-      "steps": 258000,
-      "new_training_transitions_lower_bound": 258000,
-      "training_cost_lower_bound": 772,
+      "steps": 263000,
+      "new_training_transitions_lower_bound": 263000,
+      "training_cost_lower_bound": 785,
       "evaluation_controls_observed": 9338,
       "method": "Iso",
       "training_seed": 41027,

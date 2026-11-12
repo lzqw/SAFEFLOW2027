@@ -44,7 +44,7 @@
     "full_training_profile_completed": true,
     "native_SAC_reference_started": true,
     "configuration_registry": "CONFIGURATION_REGISTRY.json",
-    "episode_boundary_bookkeeping": "recovered256episodes fromfullrawreplay;directbooleanDLPack nowlivecount1024 at1029376 steps;original evidencepreserved",
+    "episode_boundary_bookkeeping": "development directbooleanDLPackrepair validated;formal runners are nativeSAC or same formal Flow code and preserve all receipts",
     "formal_runs_started": true,
     "independent_test_consumed": false,
     "common_SAC_validation": {
@@ -106,7 +106,7 @@
     },
     "formal_controller_pid": 180138,
     "formal_source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
-    "formal_completed_runs_observed": 1,
+    "formal_completed_runs_observed": 2,
     "small_common_state_mechanism": {
       "status": "completed",
       "states": 32,
@@ -115,7 +115,30 @@
       "training_steps": 0,
       "raw": "pointgoal-common4m-161637c/receipt.json",
       "not_independent_test": true
-    }
+    },
+    "formal_latest_queue": {
+      "controller_pid": 180138,
+      "live_native_pids": [
+        200904,
+        291182
+      ],
+      "pending": 4,
+      "status": "running",
+      "last_authoritative_check": "2026-11-12 17:31 Asia/Taipei"
+    },
+    "formal_first_two_completed": [
+      {
+        "run": "crax-formal-sac_lag-51027-10m-v1",
+        "actual_steps": 10000384,
+        "elapsed_seconds": 833.50554,
+        "full_sps": 11997.98144
+      },
+      {
+        "run": "crax-formal-sac_lag-51028-10m-v1",
+        "actual_steps": 10000384,
+        "elapsed_seconds": 1149.4298656
+      }
+    ]
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -147,7 +170,7 @@
     }
   },
   "next_required_actions": [
-    "complete9formalPointGoal10Mfullbudgets;sharedvalidationandlockedindependenttests",
+    "complete remaining seven formal PointGoal10M runs;then equal common validation and locked independent test",
     "finishscientificanalyseswithoutfurtherconfigurationsearch;all6recipesretained",
     "runregisteredformal3methods3seedsandfaircommonvalidation",
     "finishsixPayload300kdevelopmentandfair0.6Mconfirmation",
@@ -158,7 +181,7 @@
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 16:11 Asia/Taipei",
+  "observed_at_local": "2026-11-12 17:31 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {

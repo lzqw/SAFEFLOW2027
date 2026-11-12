@@ -27,7 +27,7 @@ crax-iso-nativedual-41027-500k-v3,PointGoal,development,completed,stable_iso,410
 crax-sac-norm-lagrate01-41027-3m-v3,PointGoal,development,completed,sac_lag_native,41027,3000064,550000,0,native_runs/crax-sac-norm-lagrate01-41027-3m-v3/receipt.json,actual completed segment
 payload-sac-41028-v1,payload,development,completed,sac_lag,41028,300000,12176,0,native_runs/payload-sac-41028-v1/receipt.json,actual completed segment
 crax-iso-nativedual-41027-2m-v3,PointGoal,development,completed,stable_iso,41027,1499904,200000,0,native_runs/crax-iso-nativedual-41027-2m-v3/receipt.json,actual completed segment
-piper-reach-iso-41027-v1,Piper-Reach,development,running,Iso,41027,258000,9338,0,native_runs/piper-reach-iso-41027-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
+piper-reach-iso-41027-v1,Piper-Reach,development,running,Iso,41027,263000,9338,0,native_runs/piper-reach-iso-41027-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
 payload-iso-41028-v1,payload,development,completed,s_iso,41028,300000,20863,0,native_runs/payload-iso-41028-v1/receipt.json,actual completed segment
 crax-ea-nativedual-41027-500k-v3,PointGoal,development,completed,ea,41027,500224,250000,0,native_runs/crax-ea-nativedual-41027-500k-v3/receipt.json,actual completed segment
 crax-iso-nativedual-41027-4m-v3,PointGoal,development,completed,stable_iso,41027,1999872,150000,0,native_runs/crax-iso-nativedual-41027-4m-v3/receipt.json,actual completed segment
@@ -37,7 +37,7 @@ crax-ea-nativedual-41027-4m-v3,PointGoal,development,completed,ea,41027,1999872,
 crax-ea-nativedual-41028-2m-v3,PointGoal,development,completed,ea,41028,2000128,250000,0,native_runs/crax-ea-nativedual-41028-2m-v3/receipt.json,actual completed segment
 crax-formal-sac_lag-51027-10m-v1,PointGoal,formal,completed,sac_lag_native,51027,10000384,300000,0,native_runs/crax-formal-sac_lag-51027-10m-v1/receipt.json,actual completed segment
 crax-formal-stable_iso-51027-10m-v1,PointGoal,formal,completed,stable_iso,51027,10000128,250000,0,native_runs/crax-formal-stable_iso-51027-10m-v1/receipt.json,actual completed segment
-crax-formal-ea-51027-10m-v1,PointGoal,formal,running,ea,51027,6140160,150000,0,native_runs/crax-formal-ea-51027-10m-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
+crax-formal-ea-51027-10m-v1,PointGoal,formal,running,ea,51027,6349824,150000,0,native_runs/crax-formal-ea-51027-10m-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
 crax-formal-sac_lag-51028-10m-v1,PointGoal,formal,completed,sac_lag_native,51028,10000384,300000,0,native_runs/crax-formal-sac_lag-51028-10m-v1/receipt.json,actual completed segment
-crax-formal-stable_iso-51028-10m-v1,PointGoal,formal,running,stable_iso,51028,69888,0,0,native_runs/crax-formal-stable_iso-51028-10m-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
+crax-formal-stable_iso-51028-10m-v1,PointGoal,formal,running,stable_iso,51028,509184,0,0,native_runs/crax-formal-stable_iso-51028-10m-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
 payload-ea-41028-v1,payload,development,running,s_ea,41028,162000,15958,0,native_runs/payload-ea-41028-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
