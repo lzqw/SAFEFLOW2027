@@ -18,12 +18,14 @@ import numpy as np
 
 
 VALIDATION_SEEDS=(61027,61028,61029,61030,61031)
+INDEPENDENT_TEST_SEEDS=(71027,71028,71029,71030,71031)
 CRAX_COMMIT='63504b540705be98024abd675e646ff5e046c6c2'
 
 
-def require_validation_seeds(seeds):
-    if not seeds or len(set(seeds))!=len(seeds) or any(seed not in VALIDATION_SEEDS for seed in seeds):
-        raise ValueError('Use only distinct predeclared development validation seeds61027..61031;not independent test')
+def require_validation_seeds(seeds, split='validation'):
+    allowed = VALIDATION_SEEDS if split == 'validation' else INDEPENDENT_TEST_SEEDS
+    if not seeds or len(set(seeds))!=len(seeds) or any(seed not in allowed for seed in seeds):
+        raise ValueError('Use exactly one predeclared seed family for the selected split')
 
 
 def read_plan(run):
@@ -100,12 +102,28 @@ def main():
     parser.add_argument('--seeds',nargs='+',type=int,default=[61027])
     parser.add_argument('--episodes-per-seed',type=int,default=50)
     parser.add_argument('--analysis-sha256',required=True)
+    parser.add_argument('--split',choices=['validation','independent_test'],default='validation')
+    parser.add_argument('--candidate-steps',nargs='+',type=int)
+    parser.add_argument('--selection-freeze',type=Path)
     args=parser.parse_args()
-    require_validation_seeds(args.seeds)
-    if args.episodes_per_seed not in (30,50):parser.error('Registered development screen uses30or50episodes,not independent final test')
+    require_validation_seeds(args.seeds,args.split)
+    if args.split=='validation' and args.episodes_per_seed not in (30,50):parser.error('Registered development screen uses30or50episodes')
+    if args.split=='independent_test' and args.episodes_per_seed != 100:parser.error('Independent test requires100episodes')
+    if args.split=='independent_test' and (args.selection_freeze is None or args.candidate_steps is None or len(args.candidate_steps)!=1):
+        parser.error('Independent test requires one exact selected checkpoint and a selection freeze')
     if sha256(__file__)!=args.analysis_sha256:raise ValueError('Analysis source differs from explicit pre-execution hash')
     if args.output.exists():raise FileExistsError('Refuse to overwrite prior evaluations or restart automatically')
     plans=[read_plan(run) for run in args.runs]
+    if args.candidate_steps is not None:
+        for plan in plans:
+            plan['candidates']=[c for c in plan['candidates'] if c['steps'] in args.candidate_steps]
+            if not plan['candidates']:
+                raise ValueError('Requested candidate checkpoint is absent from a run')
+    selection=None
+    if args.split=='independent_test':
+        selection=json.loads(args.selection_freeze.read_text())
+        if selection.get('status')!='complete_frozen_selection' or selection.get('independent_test_used') is not False:
+            raise ValueError('Independent test requires an untouched complete selection freeze')
     if len({p['name'] for p in plans})!=len(plans):raise ValueError('Duplicate run input')
     task_keys=('env_id','difficulty','episode_length','physics_timestep','frame_skip','action_dim','obs_dim',
                'action_repeat','normalize_observations','safety_bound')
@@ -173,6 +191,11 @@ def main():
                     or saved.get('normalizer_saved') is not True or len(saved['params'])!=2):
                 raise ValueError('Wrong frozen policy/normalizer artifact schema')
             params,replica_axis=unreplicate_saved_policy(saved['params'],jax)
+            if selection is not None:
+                selected=selection['methods']['sac_lag']['selected']
+                if (selected['run'] != plan['name'] or selected['checkpoint_steps'] != candidate['steps']
+                        or selected['policy_sha256'] != sha256(path)):
+                    raise ValueError('Independent test policy is not the exact frozen selected SAC candidate')
             policy_data.append((plan,candidate,params,sha256(path),replica_axis))
     reset_keys,noise_key=keys(args.seeds[0])
     first_params=jax.device_put(policy_data[0][2])
@@ -180,7 +203,7 @@ def main():
     compiled=evaluate.lower(first_params,reset_keys,noise_key).compile()
     compile_seconds=time.monotonic()-compile_started
     total_planned_controls=len(policy_data)*len(args.seeds)*count*horizon
-    atomic_json(args.output/'plan.json',dict(role='development_common_validation_not_independent_test',
+    atomic_json(args.output/'plan.json',dict(role='independent_test' if args.split=='independent_test' else 'development_common_validation_not_independent_test',
         analysis_source_sha256=args.analysis_sha256,seeds=args.seeds,episodes_per_seed=count,
         candidates_per_run=5,runs=[dict(name=p['name'],source_commit=p['source_commit'],settings=p['settings']) for p in plans],
         control_period_seconds=float(native.dt),native_horizon=horizon,frame_skip=native._n_frames,
@@ -203,7 +226,7 @@ def main():
                 stored_policy_replica_axis_removed=replica_axis,
                 frozen_actor=True,frozen_normalizer=True,optimizer_updates=0,dual_updates=0,
                 training_transitions=0,physical_controls=count*horizon,evaluation_seconds=elapsed,
-                role='development_common_validation_not_independent_test')
+                role='independent_test' if args.split=='independent_test' else 'development_common_validation_not_independent_test')
             atomic_json(args.output/f"{plan['name']}__{candidate['steps']}__{seed}.json",result)
             row={key:value for key,value in result.items() if key!='records'};rows.append(row)
             atomic_json(args.output/'status.json',dict(status='candidate_completed',completed_rows=len(rows),
@@ -217,7 +240,7 @@ def main():
         result_rows=len(rows),candidates_per_run=5,runs=len(plans),seeds=args.seeds,
         episodes_per_seed=count,environment_instances_created=1,compilation_calls=1,
         compile_seconds=compile_seconds,elapsed_seconds=time.monotonic()-started,
-        original_checkpoints_modified=False,independent_test_executed=False,
+        original_checkpoints_modified=False,independent_test_executed=args.split=='independent_test',
         primary_endpoint_rows_not_replaced=True,automatic_restart=False))
 
 

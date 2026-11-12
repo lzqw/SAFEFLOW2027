@@ -13,6 +13,7 @@ from pathlib import Path
 
 
 VALIDATION_SEEDS = (61027, 61028, 61029, 61030, 61031)
+INDEPENDENT_TEST_SEEDS = (71027, 71028, 71029, 71030, 71031)
 CHECKPOINT_STEPS = (2_000_128, 4_000_000, 6_000_128, 8_000_000, 10_000_128)
 
 
@@ -41,11 +42,18 @@ def main():
     parser.add_argument('--episodes', type=int, default=50)
     parser.add_argument('--device', default='cuda:0')
     parser.add_argument('--source-commit', required=True)
+    parser.add_argument('--split', choices=['validation', 'independent_test'], default='validation')
+    parser.add_argument('--selected-checkpoint', type=int)
+    parser.add_argument('--selection-freeze', type=Path)
     args = parser.parse_args()
-    if tuple(args.seeds) != VALIDATION_SEEDS:
-        raise ValueError('Use exactly the predeclared validation seeds 61027..61031')
-    if args.episodes != 50:
+    expected_seeds = VALIDATION_SEEDS if args.split == 'validation' else INDEPENDENT_TEST_SEEDS
+    if tuple(args.seeds) != expected_seeds:
+        raise ValueError('Use exactly the predeclared seed family for the selected split')
+    if args.split == 'validation' and args.episodes != 50:
         raise ValueError('Common validation requires 50 episodes per validation seed')
+    if args.split == 'independent_test' and (args.episodes != 100 or args.selected_checkpoint is None
+                                             or args.selection_freeze is None or len(args.runs) != 1):
+        raise ValueError('Independent test requires one exact candidate, 100 episodes, and a selection freeze')
     args.output.mkdir(parents=True, exist_ok=True)
 
     import torch
@@ -67,10 +75,16 @@ def main():
     rows = []
     planned = 0
     started = time.monotonic()
+    selection = json.loads(args.selection_freeze.read_text()) if args.selection_freeze else None
+    if selection is not None and (selection.get('status') != 'complete_frozen_selection'
+                                  or selection.get('independent_test_used') is not False):
+        raise ValueError('Independent test requires an untouched complete selection freeze')
     for run in args.runs:
         if not run.is_dir():
             raise FileNotFoundError(run)
         for checkpoint in CHECKPOINT_STEPS:
+            if args.selected_checkpoint is not None and checkpoint != args.selected_checkpoint:
+                continue
             policy_path = run / f'policy_{checkpoint}.pt'
             if not policy_path.is_file():
                 raise FileNotFoundError(policy_path)
@@ -96,6 +110,11 @@ def main():
             learner.log_alpha.requires_grad_(False)
             cache = {}
             policy_hash = digest(policy_path)
+            if selection is not None:
+                method_record = selection['methods'][method]['selected']
+                if (method_record['run'] != run.name or method_record['checkpoint_steps'] != checkpoint
+                        or method_record['policy_sha256'] != policy_hash):
+                    raise ValueError('Independent test policy is not the exact frozen selected Flow candidate')
             for validation_seed in args.seeds:
                 target = args.output / f'{run.name}__{checkpoint}__{validation_seed}.json'
                 if target.exists():
@@ -105,7 +124,8 @@ def main():
                     checkpoint_steps=checkpoint, policy_sha256=policy_hash,
                     training_source_commit=policy['source_commit'], validation_seed=validation_seed,
                     frozen_actor=True, frozen_normalizer=True, optimizer_updates=0,
-                    dual_updates=0, training_transitions=0, role='development_common_validation_not_independent_test',
+                    dual_updates=0, training_transitions=0,
+                    role='independent_test' if args.split == 'independent_test' else 'development_common_validation_not_independent_test',
                     analysis_source_commit=args.source_commit)
                 target.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
                 row = summarize(result) | {k: result[k] for k in (
@@ -121,11 +141,11 @@ def main():
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader(); writer.writerows(rows)
     receipt = dict(status='completed', schema='pointgoal_flow_common_validation_v1',
-        analysis_source_commit=args.source_commit, training_transitions=0,
+        analysis_source_commit=args.source_commit, split=args.split, training_transitions=0,
         optimizer_updates=0, dual_updates=0, real_interactions=0,
         physical_controls=planned, result_rows=len(rows), runs=len(args.runs),
         checkpoints_per_run=len(CHECKPOINT_STEPS), seeds=list(args.seeds),
-        episodes_per_seed=args.episodes, independent_test_executed=False,
+        episodes_per_seed=args.episodes, independent_test_executed=args.split == 'independent_test',
         original_checkpoints_modified=False, elapsed_seconds=time.monotonic()-started)
     (args.output / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(json.dumps(receipt, sort_keys=True))
