@@ -110,7 +110,9 @@ def main():
     learner=CumulativeFlowLearner(env.obs_dim,env.action_dim,args.method,str(device),width=shared['hidden_width'],
         actor_lr=shared['actor_lr'],critic_lr=shared['critic_lr'],variance=shared['reference_variance'],
         rho=shared['normal_variance_ratio'],cost_budget=cfg['episodic_cost_budget'],discount=cfg['discount'],
-        critic_only_updates=0 if args.profile_only else shared['critic_only_updates'],flow_steps=shared['flow_steps'])
+        critic_only_updates=0 if args.profile_only else shared['critic_only_updates'],flow_steps=shared['flow_steps'],
+        dual_rule=shared.get('dual_rule','episode_mean'),episode_length=env.native.episode_length,
+        lagrangian_lr=shared.get('lagrangian_lr',.01))
     if args.profile_only:
         # Engineering-only workload: exercise actual EA differentiation, not
         # the disabled warmup branch. No invented margin/preheat update counts.
@@ -140,7 +142,8 @@ def main():
         task_mode='cumulative',cost_q='unbounded_discounted_raw_cost',
         float32_matmul_precision=torch.get_float32_matmul_precision(),
         cuda_matmul_allow_tf32=torch.backends.cuda.matmul.allow_tf32,
-        dual='raw_completed_episode_batch_mean;lr0.01;EMA0.05;clip0_100;not_native_SAC_perstep_rule',
+        dual=(f"native_per_step_bound25/H;lr{shared.get('lagrangian_lr',.01)}/H_per_learner_round;cap2;full_episodes_logged_separately"
+              if learner.dual_rule=='native_per_step' else 'raw_completed_episode_batch_mean;lr0.01;EMA0.05;clip0_100;not_native_SAC_perstep_rule'),
         u=G/(E*F),replay_exposure=G*B/(E*F),energy_target=learner.energy_target,
         jax_preallocate=os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'],
         jax_compilation_cache_dir=os.environ.get('JAX_COMPILATION_CACHE_DIR'),
@@ -150,6 +153,10 @@ def main():
     log_fields=['steps','new_steps','elapsed_seconds','steady_training_sps','end_to_end_sps','updates_per_second','training_cumulative_cost','cost_per_1000_transitions','completed_episodes','recent_native_return','recent_episode_cost','recent_goals','recent_at_least_one_goal','peak_torch_memory_mib','learner_updates','actor_updates','geometry_weight','energy','alpha','multiplier']
     progress=args.output/'progress.csv'
     terminal={'completed':False}
+    def full_state():
+        return dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
+            partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),
+            steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
     def preserve_interruption():
         if terminal['completed']:return
         # Called only at real process exit, never by observation timeout. Save
@@ -157,10 +164,7 @@ def main():
         atomic_json(args.output/'interruption.json',dict(status='engineering_interruption',
             steps=steps,initial_steps=initial_steps,new_training_transitions=steps-initial_steps,
             source_commit=args.source_commit,automatic_restart=False))
-        state=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
-            partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),
-            steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
-        torch.save(state,args.output/'interrupted_full.pt.tmp')
+        torch.save(full_state(),args.output/'interrupted_full.pt.tmp')
         (args.output/'interrupted_full.pt.tmp').replace(args.output/'interrupted_full.pt')
     atexit.register(preserve_interruption)
     with progress.open('a',newline='') as handle:
@@ -242,11 +246,14 @@ def main():
                         completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit)
                     eval_seconds+=result['elapsed_seconds'];eval_controls+=result['physical_controls']
                     atomic_json(args.output/f'validation_{steps}.json',result)
+                t=time.monotonic()
+                checkpoint_path=args.output/f'full_{steps}.pt'
+                torch.save(full_state(),checkpoint_path.with_suffix('.pt.tmp'))
+                checkpoint_path.with_suffix('.pt.tmp').replace(checkpoint_path)
+                save_seconds+=time.monotonic()-t
                 log_start+=time.monotonic()-checkpoint_started
         t=time.monotonic()
-        checkpoint=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
-            partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),steps=steps,
-            method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
+        checkpoint=full_state()
         torch.save(checkpoint,args.output/'full_latest.pt.tmp');(args.output/'full_latest.pt.tmp').replace(args.output/'full_latest.pt')
         save_seconds+=time.monotonic()-t
     elapsed=time.monotonic()-started

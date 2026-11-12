@@ -151,16 +151,25 @@ def cost_target(cost, next_value, terminated, discount, task_mode):
 class CumulativeFlowLearner:
     def __init__(self, obs_dim, action_dim, method='stable_iso', device='cuda:0',
                  width=256, actor_lr=1e-4, critic_lr=3e-4, variance=.04, rho=.25,
-                 cost_budget=25., discount=.99, critic_only_updates=1000, flow_steps=4):
+                 cost_budget=25., discount=.99, critic_only_updates=1000, flow_steps=4,
+                 dual_rule='episode_mean', episode_length=1000, lagrangian_lr=.01):
         if method not in ('stable_iso', 'ea', 'local'):
             raise ValueError('Declared Flow method required')
         self.device, self.method = torch.device(device), method
+        if dual_rule not in ('episode_mean','native_per_step') or episode_length<=0 or lagrangian_lr<=0:
+            raise ValueError('Explicit cumulative-cost dual rule and native horizon required')
+        self.dual_rule,self.episode_length=dual_rule,int(episode_length)
         self.settings = dict(obs_dim=obs_dim, action_dim=action_dim, method=method,
             width=width, actor_lr=actor_lr, critic_lr=critic_lr, variance=variance,
             rho=rho, cost_budget=cost_budget, discount=discount,
             critic_only_updates=critic_only_updates, flow_steps=flow_steps,
             task_mode='cumulative', reward_scaling=1., cost_scaling=1.,
             batching_version='head_vjp_target9_v1')
+        if dual_rule=='native_per_step':
+            self.settings.update(dual_rule=dual_rule,episode_length=self.episode_length,
+                dual_per_step_budget=cost_budget/self.episode_length,
+                dual_lr_per_round=lagrangian_lr/self.episode_length,dual_multiplier_cap=2.,
+                lagrangian_base_lr=lagrangian_lr)
         self.actor = FlowActor(obs_dim, action_dim, width, flow_steps, variance, rho).to(self.device)
         self.target_actor = deepcopy(self.actor).requires_grad_(False)
         self.q = QEnsemble(obs_dim, action_dim, width).to(self.device)
@@ -199,9 +208,22 @@ class CumulativeFlowLearner:
         mean = (costs * completed).sum() / count.clamp_min(1)
         ema = torch.where(self.dual_episodes == 0, mean, .95 * self.episode_cost_ema + .05 * mean)
         self.episode_cost_ema.copy_(torch.where(count > 0, ema, self.episode_cost_ema))
-        candidate = (self.multiplier + .01 * (ema - self.settings['cost_budget'])).clamp(0, 100)
-        self.multiplier.copy_(torch.where(count > 0, candidate, self.multiplier))
+        if self.dual_rule=='episode_mean':
+            candidate = (self.multiplier + .01 * (ema - self.settings['cost_budget'])).clamp(0, 100)
+            self.multiplier.copy_(torch.where(count > 0, candidate, self.multiplier))
         self.dual_episodes.add_(count)
+
+    @torch.no_grad()
+    def update_native_dual(self, raw_costs):
+        """Official-compatible per-step units, not a fictitious short episode.
+
+        Real full episode sums remain recorded independently by the runner.
+        As in native SAC, the multiplier follows sampled raw per-step costs.
+        Shared Flow critic-only preheat cannot update it before Actor learning.
+        """
+        if self.dual_rule!='native_per_step' or self.actor_updates==0:return
+        delta=raw_costs.mean()-self.settings['dual_per_step_budget']
+        self.multiplier.add_(self.settings['dual_lr_per_round']*delta).clamp_(0,self.settings['dual_multiplier_cap'])
 
     def update(self, batch):
         obs, action, reward, nxt, terminated = (batch[k] for k in
@@ -281,6 +303,7 @@ class CumulativeFlowLearner:
             for p, t in zip(self.margin.parameters(), self.margin_geometry.parameters()):
                 t.lerp_(p, .005)
         self.geometry.set_margin_updates(self.margin_updates)
+        self.update_native_dual(batch['cost'])
         self.last_metrics.update(reward_loss=qloss.detach(), cost_loss=loss_c.detach(),
             margin_loss=margin_loss.detach(), alpha=self.log_alpha.detach().exp(),
             multiplier=self.multiplier.detach().clone())

@@ -280,6 +280,8 @@ def main():
     parser.add_argument('--num-envs',type=int,default=256)
     parser.add_argument('--batch-size',type=int,default=1024)
     parser.add_argument('--updates',type=int,default=4)
+    parser.add_argument('--lagrangian-lr',type=float,default=.01,
+        help='Explicit native base LR;effective per-SGD LR divides by native horizon')
     parser.add_argument('--normalize-observations',action=argparse.BooleanOptionalAction,default=False,
                         help='Explicit one-factor baseline setting; default remains the raw-state reference')
     parser.add_argument('--min-replay-size',type=int,default=20000)
@@ -293,6 +295,7 @@ def main():
                         help='Engineering-only fixed host epoch size for one small actual resume check')
     args=parser.parse_args()
     if args.steps<=args.min_replay_size or args.steps<=0:parser.error('A finite target beyond prefill is required')
+    if args.lagrangian_lr<=0:parser.error('Positive explicit Lagrangian base LR required')
     if (args.skip_native_evaluation or args.epoch_actor_steps) and not args.engineering_check:
         parser.error('Engineering scheduling flags are not a scientific training configuration')
     if args.output.exists() and any(args.output.iterdir()):
@@ -313,7 +316,7 @@ def main():
         num_envs=args.num_envs,batch_size=args.batch_size,grad_updates_per_step=args.updates,
         min_replay_size=args.min_replay_size,max_replay_size=args.max_replay_size,
         learning_rate=3e-4,discount=.99,reward_scaling=1.,cost_scaling=1.,normalize_observations=args.normalize_observations,
-        safety_bound=25.,lagrangian_lr=.01,lambda_max=2.,episode_length=native.episode_length,
+        safety_bound=25.,lagrangian_lr=args.lagrangian_lr,lambda_max=2.,episode_length=native.episode_length,
         action_repeat=1,env_id='safe_goal_point',difficulty=1,physics_timestep=float(native.sys.opt.timestep),
         frame_skip=native._n_frames,action_dim=native.action_size,obs_dim=native.observation_size,
         jax_version=jax.__version__,jax_devices=[d.device_kind for d in jax.local_devices()],
@@ -364,7 +367,7 @@ def main():
                 normalize_observations=args.normalize_observations,max_devices_per_host=1,reward_scaling=1.,
                 min_replay_size=args.min_replay_size,max_replay_size=args.max_replay_size,
                 grad_updates_per_step=args.updates,deterministic_eval=False,progress_fn=progress,
-                training_metrics_steps=50000,safety_bound=25.,lagrangian_lr=.01,initial_lambda=0.,
+                training_metrics_steps=50000,safety_bound=25.,lagrangian_lr=args.lagrangian_lr,initial_lambda=0.,
                 lambda_max=2.,wrap_env_fn=CompleteReset)
         except ExplicitCheckpointStop:
             stop='explicit_engineering_checkpoint_stop'
