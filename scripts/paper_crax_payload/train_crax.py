@@ -19,6 +19,8 @@ import torch
 
 from scripts.paper_crax_payload.crax_env import PointGoalTorch, DeviceReplay
 from scripts.paper_crax_payload.crax_models import CumulativeFlowLearner
+from scripts.paper_crax_payload.configuration import load_configuration
+from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
 from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore_rng, isolated_rng
 
 
@@ -32,7 +34,7 @@ def finite_number(value):
     return float(value) if np.isfinite(value) else None
 
 
-def evaluate(learner, num_envs, seed):
+def evaluate(learner, num_envs, seed, normalizer=None):
     """One complete native episode per fresh env; no adaptation or rollout-RNG use."""
     start = time.monotonic()
     with isolated_rng():
@@ -46,7 +48,8 @@ def evaluate(learner, num_envs, seed):
         # Native horizon is retained. No host sync for per-env or per-step decisions.
         for index in range(env.native.episode_length):
             with torch.no_grad():
-                action, _, _ = learner.actor(obs, geometry=learner.geometry, generator=rng)
+                policy_obs=obs if normalizer is None else normalizer.transform(obs)
+                action, _, _ = learner.actor(policy_obs, geometry=learner.geometry, generator=rng)
             obs, reward, done, info = env.step(action)
             returns += reward * active
             costs += info['cost'] * active
@@ -83,7 +86,7 @@ def main():
     p.add_argument('--eval-envs',type=int,default=50)
     p.add_argument('--source-commit',required=True)
     args=p.parse_args()
-    master=json.loads(args.config.read_text()); cfg=master['pointgoal']; profile=cfg['profiles'][args.profile]
+    master=load_configuration(args.config); cfg=master['pointgoal']; profile=cfg['profiles'][args.profile]
     if args.steps <= 0 or args.steps > master['budgets']['pointgoal_development_transitions']:
         raise ValueError('Invalid finite development target')
     if args.output.exists() and any(args.output.iterdir()) and not args.resume:
@@ -101,6 +104,9 @@ def main():
     if F!=1:raise ValueError('This first profile implements registered F1 only')
     shared=cfg['shared_learner']
     env=PointGoalTorch(E,args.seed,str(device))
+    norm_mode=cfg['observation_normalization']
+    if norm_mode=='none_initial_shared_with_reference':norm_mode='none'
+    normalizer=ObservationNormalizer(env.obs_dim,device,norm_mode)
     learner=CumulativeFlowLearner(env.obs_dim,env.action_dim,args.method,str(device),width=shared['hidden_width'],
         actor_lr=shared['actor_lr'],critic_lr=shared['critic_lr'],variance=shared['reference_variance'],
         rho=shared['normal_variance_ratio'],cost_budget=cfg['episodic_cost_budget'],discount=cfg['discount'],
@@ -120,6 +126,8 @@ def main():
         if state['profile']!=profile or state['seed']!=args.seed or state['method']!=args.method:
             raise ValueError('Resume profile/seed/method mismatch; use explicit candidate fork instead')
         learner.load_state_dict(state['learner']); replay.load_state_dict(state['replay'])
+        if 'normalizer' in state:normalizer.load_state_dict(state['normalizer'])
+        elif norm_mode!='none':raise ValueError('Missing native normalizer;do not change units on resume')
         obs=env.load_state_dict(state['environment']); partial=state['partial'];totals=state['totals']
         steps=initial_steps=state['steps'];rollout_rng.set_state(state['rollout_rng'].cpu());restore_rng(state['rng'])
     else:obs=env.reset()
@@ -149,7 +157,7 @@ def main():
         atomic_json(args.output/'interruption.json',dict(status='engineering_interruption',
             steps=steps,initial_steps=initial_steps,new_training_transitions=steps-initial_steps,
             source_commit=args.source_commit,automatic_restart=False))
-        state=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),
+        state=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
             partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),
             steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
         torch.save(state,args.output/'interrupted_full.pt.tmp')
@@ -168,7 +176,7 @@ def main():
             if steps<shared['random_prefill_transitions']:
                 action=torch.rand((E,env.action_dim),device=device,generator=rollout_rng)*2-1
             else:
-                with torch.no_grad():action,_,_=learner.actor(obs,geometry=learner.geometry,generator=rollout_rng)
+                with torch.no_grad():action,_,_=learner.actor(normalizer.transform(obs),geometry=learner.geometry,generator=rollout_rng)
             if sample_timing:events[1].record()
             nxt,reward,done,info=env.step(action)
             if sample_timing:events[2].record()
@@ -177,6 +185,7 @@ def main():
                 log_start+=first_step_seconds;log_steps=steps+E
             replay.add(obs=obs,action=action,reward=reward,cost=info['cost'],next_obs=info['terminal_observation'],
                 terminated=info['terminated'],truncated=info['truncated'],margin=info['margin'])
+            normalizer.update(obs)
             partial['return']+=reward;partial['cost']+=info['cost'];partial['goals']+=info['goals'];partial['length']+=1
             totals[0]+=info['cost'].sum()
             completed_records.append(torch.stack((done,partial['return'],partial['cost'],partial['goals'],partial['length']),-1).detach())
@@ -186,7 +195,7 @@ def main():
             for value in partial.values():value.mul_(~done)
             obs=nxt;steps+=E
             if steps>=shared['random_prefill_transitions'] and replay.size>=B:
-                for _ in range(G):learner.update(replay.sample(B))
+                for _ in range(G):learner.update(normalizer.batch(replay.sample(B)))
             if sample_timing:
                 events[3].record();timing_events.append(events)
             if steps>=next_log or steps>=args.steps:
@@ -224,18 +233,18 @@ def main():
                 checkpoints.pop(0)
                 t=time.monotonic()
                 policy=dict(learner=learner.state_dict(),task=env.effective_config(),steps=steps,method=args.method,seed=args.seed,
-                    normalizer='identity',action_scaling='native[-1,1]',source_commit=args.source_commit)
+                    normalizer=normalizer.state_dict(),action_scaling='native[-1,1]',source_commit=args.source_commit)
                 torch.save(policy,args.output/f'policy_{steps}.pt')
                 save_seconds+=time.monotonic()-t
                 if args.eval_envs:
-                    result=evaluate(learner,args.eval_envs,61027)
+                    result=evaluate(learner,args.eval_envs,61027,normalizer)
                     result.update(checkpoint_steps=steps,training_cumulative_cost=float(totals[0].cpu()),
                         completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit)
                     eval_seconds+=result['elapsed_seconds'];eval_controls+=result['physical_controls']
                     atomic_json(args.output/f'validation_{steps}.json',result)
                 log_start+=time.monotonic()-checkpoint_started
         t=time.monotonic()
-        checkpoint=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),
+        checkpoint=dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
             partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),steps=steps,
             method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
         torch.save(checkpoint,args.output/'full_latest.pt.tmp');(args.output/'full_latest.pt.tmp').replace(args.output/'full_latest.pt')

@@ -12,7 +12,9 @@ from torch import nn
 from torch.nn import functional as F
 
 from scripts.star.arm_safe_entropy.models import mlp
-from scripts.star.arm_safe_entropy.endpoint_geometry import EndpointGeometry, frozen_parameters
+from scripts.star.arm_safe_entropy.endpoint_geometry import (
+    EndpointGeometry, deterministic_tail, frozen_parameters, geometry_ramp)
+from scripts.star.arm_safe_entropy.geometry import strict_normals
 
 
 class QEnsemble(nn.Module):
@@ -40,6 +42,47 @@ class UpdateGeometry(EndpointGeometry):
         # Exact algebraic reparameterization of the existing 10k–30k ramp.
         self.transitions = 30000 if self.profile_full_geometry else max(0, 10000 + 5 * (self.margin_updates - 1000))
 
+    def query(self, actor, obs, midpoint, proposal, step, return_diagnostics=False):
+        """Same frozen true-tail geometry, one batched head VJP traversal.
+
+        Summation is over independent sample rows only. An identity cotangent
+        batch retains each margin head's gradient separately, including the
+        head agreement/validity calculation; it is not a gradient of their mean.
+        """
+        beta = geometry_ramp(self.transitions)
+        if self.mode == 'none' or beta == 0.:
+            return super().query(actor, obs, midpoint, proposal, step, return_diagnostics)
+        with frozen_parameters(actor, self.margin), torch.enable_grad():
+            if self.mode == 'local':
+                variable = midpoint.detach().requires_grad_(True)
+                endpoint = variable
+            elif self.mode == 'endpoint_direct':
+                with torch.no_grad():
+                    predicted = deterministic_tail(actor, obs.detach(), proposal.detach(), step)
+                variable = predicted.detach().requires_grad_(True)
+                endpoint = variable
+            else:
+                variable = proposal.detach().requires_grad_(True)
+                endpoint = deterministic_tail(actor, obs.detach(), variable, step)
+            margins = self.margin(obs.detach(), endpoint)
+            head_sums = margins.reshape(margins.shape[0], -1).sum(-1)
+            basis = torch.eye(margins.shape[0], device=margins.device, dtype=margins.dtype)
+            gradients = torch.autograd.grad(head_sums, variable, grad_outputs=basis,
+                is_grads_batched=True, create_graph=False)[0]
+        units, head_valid = strict_normals(gradients)
+        normal, mean_valid = strict_normals(gradients.mean(0))
+        valid = head_valid.all(0) & mean_valid
+        agreement = (units[0] * units[1]).sum(-1).clamp(0., 1.)
+        raw_weight = (margins.detach().mean(0) / self.margin.temperature).sigmoid() * agreement * valid
+        normal, weight = normal.detach(), (beta * raw_weight).detach()
+        if return_diagnostics:
+            diagnostics = dict(valid=valid, zero_gradient=~valid,
+                beta=torch.full_like(weight, beta), raw_weight=raw_weight,
+                agreement=agreement, endpoint=endpoint.detach(),
+                proposal_clipped=(proposal.detach().abs() > 1.).any(-1))
+            return normal, weight, {k:v.detach() for k,v in diagnostics.items()}
+        return normal, weight
+
 
 class FlowActor(nn.Module):
     def __init__(self, obs_dim, action_dim, width=256, num_steps=4, variance=.04, rho=.25):
@@ -55,7 +98,17 @@ class FlowActor(nn.Module):
     def velocity(self, obs, action, time):
         return 2 * torch.tanh(self.net(torch.cat((obs, action, time), -1)))
 
-    def forward(self, obs, deterministic=False, geometry=None, generator=None):
+    def forward(self, obs, deterministic=False, geometry=None, generator=None,
+                noise_increments=None):
+        # Explicit common noise is diagnostic-only; native sampling still uses
+        # its caller-owned generator. No host/device conversion is introduced.
+        if noise_increments is not None:
+            expected = (self.num_steps, *obs.shape[:-1], self.action_dim)
+            if (not isinstance(noise_increments, torch.Tensor)
+                    or tuple(noise_increments.shape) != expected
+                    or noise_increments.device != obs.device
+                    or noise_increments.dtype != obs.dtype):
+                raise ValueError('Noise increments must match K/batch/action shape, dtype and device')
         action = obs.new_zeros((*obs.shape[:-1], self.action_dim))
         energy, clips, weights = (obs.new_zeros(obs.shape[:-1]) for _ in range(3))
         dt = 1 / self.num_steps
@@ -73,8 +126,13 @@ class FlowActor(nn.Module):
             normal_v = (normal * velocity).sum(-1)
             tangent2 = (velocity.square().sum(-1) - normal_v.square()).clamp_min(0)
             energy = energy + .5 * dt * (normal_v.square() / vn + tangent2 / vt)
-            noise = torch.zeros_like(action) if deterministic else torch.randn(
-                action.shape, dtype=action.dtype, device=action.device, generator=generator)
+            if deterministic:
+                noise = torch.zeros_like(action)
+            elif noise_increments is not None:
+                noise = noise_increments[index]
+            else:
+                noise = torch.randn(action.shape, dtype=action.dtype, device=action.device,
+                                    generator=generator)
             increment = vt.sqrt()[..., None] * noise + ((vn.sqrt() - vt.sqrt()) *
                 (noise * normal).sum(-1))[..., None] * normal
             proposal = injection + math.sqrt(dt) * increment
@@ -101,7 +159,8 @@ class CumulativeFlowLearner:
             width=width, actor_lr=actor_lr, critic_lr=critic_lr, variance=variance,
             rho=rho, cost_budget=cost_budget, discount=discount,
             critic_only_updates=critic_only_updates, flow_steps=flow_steps,
-            task_mode='cumulative', reward_scaling=1., cost_scaling=1.)
+            task_mode='cumulative', reward_scaling=1., cost_scaling=1.,
+            batching_version='head_vjp_target9_v1')
         self.actor = FlowActor(obs_dim, action_dim, width, flow_steps, variance, rho).to(self.device)
         self.target_actor = deepcopy(self.actor).requires_grad_(False)
         self.q = QEnsemble(obs_dim, action_dim, width).to(self.device)
@@ -147,7 +206,8 @@ class CumulativeFlowLearner:
     def update(self, batch):
         obs, action, reward, nxt, terminated = (batch[k] for k in
             ('obs','action','reward','next_obs','terminated'))
-        # Raw state observations and rewards; no undisclosed normalization/scaling.
+        # Caller supplies the explicitly registered observation transform;
+        # reward and cost remain in their raw task units.
         predicted = self.margin(obs, action)
         mask = (torch.rand_like(predicted) < .8).to(obs.dtype)
         margin_loss = ((predicted - batch['margin']).square() * mask).sum() / mask.sum().clamp_min(1)
@@ -157,9 +217,18 @@ class CumulativeFlowLearner:
         self.margin_opt.step()
         self.margin_updates += 1
         alpha = self.log_alpha.detach().exp()
+        # Target actor and EMA geometry stay frozen for the entire round.
+        # Draw all nine independent groups in one larger call: one cost group
+        # and four samples for EACH of the two reward updates. Random-number
+        # ordering changes, not the sampling law or optimizer/update budget.
+        # Qt must still be evaluated inside each reward update below: its first
+        # Polyak update changes the second TD target.
+        batch_size = nxt.shape[0]
         with torch.no_grad():
-            next_action, _, _ = self.target_actor(nxt, geometry=self.geometry)
-            target_c = cost_target(batch['cost'], self.cost_qt(nxt, next_action).min(0).values,
+            packed_actions, packed_energy, _ = self.target_actor(nxt.repeat(9, 1), geometry=self.geometry)
+            packed_actions = packed_actions.reshape(9, batch_size, -1)
+            packed_energy = packed_energy.reshape(9, batch_size)
+            target_c = cost_target(batch['cost'], self.cost_qt(nxt, packed_actions[0]).min(0).values,
                 terminated, self.settings['discount'], 'cumulative')
         loss_c = F.smooth_l1_loss(self.cost_q(obs, action), target_c.expand(2, -1))
         self.cost_opt.zero_grad(set_to_none=True)
@@ -169,10 +238,12 @@ class CumulativeFlowLearner:
         with torch.no_grad():
             for p, t in zip(self.cost_q.parameters(), self.cost_qt.parameters()):
                 t.lerp_(p, .005)
-        for _ in range(2):
+        expanded = nxt.repeat(4, 1)
+        for reward_index in range(2):
             with torch.no_grad():
-                expanded = nxt.repeat(4, 1)
-                sampled, energy, _ = self.target_actor(expanded, geometry=self.geometry)
+                begin = 1 + 4 * reward_index
+                sampled = packed_actions[begin:begin+4].reshape(4*batch_size, -1)
+                energy = packed_energy[begin:begin+4].reshape(4*batch_size)
                 future = (self.qt(expanded, sampled).min(0).values - alpha * energy).reshape(4, -1).mean(0)
                 target = reward + self.settings['discount'] * (1 - terminated) * future
             qloss = F.smooth_l1_loss(self.q(obs, action), target.expand(2, -1), beta=1.)

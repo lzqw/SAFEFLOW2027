@@ -1,0 +1,5 @@
+{
+ "base_config":"master_v1.json",
+ "reason":"One-factor shared observation-normalization candidate after raw-state official SAC1M remained weak (goals0.30/cost72.23);official SAC supports running normalization. This is a prospective candidate,not a proven repair. Reward/cost/horizon/budget and learning update schedules unchanged.",
+ "overrides":{"pointgoal":{"observation_normalization":"running_acme"}}
+}
