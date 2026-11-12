@@ -20,3 +20,9 @@ the server and only compact receipts/results are committed to GitHub.
 Iso also produced an interim 60k evaluation (30 episodes per condition): all
 three conditions timed out without collision or violation. This is an early
 learning snapshot, not a final candidate assessment; the process remains live.
+
+At 120k, Iso again evaluated 30 episodes per condition: nominal,
+new-geometry, and execution-scale conditions all had 0 safe successes,
+0 violations, and 30/30 safe timeouts. The 120k receipt records 180,000
+evaluation physics substeps and zero physical-robot interactions. This remains
+an interim diagnostic, not a final learned-policy result.

@@ -81,7 +81,9 @@ selection.
   52k/300k transitions and Iso at 120k/300k in the latest compact receipts;
   Iso-Low is queued until one slot is released. These are interim training
   states, not final learned-policy results, and remain separate from the
-  completed CRAX Payload experiments.
+  completed CRAX Payload experiments. Iso's 120k interim evaluation had
+  0/30 safe successes, 0 violations, and 30/30 safe timeouts in each of the
+  nominal, new-geometry, and execution-scale conditions.
 
 ## 6. Actual cost and reproducibility
 
