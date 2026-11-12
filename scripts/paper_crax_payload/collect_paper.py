@@ -30,7 +30,7 @@ def collect(host,root,report):
 
 
 def refresh(report):
-    results=[];trials=[];physical=0;training=0
+    results=[];point_results=[];trials=[];physical=0;training=0
     for directory in sorted((report/'native_runs').glob('*')):
         config=read(directory/'run_config.json') or read(directory/'configuration.json')
         if not config:continue
@@ -57,6 +57,24 @@ def refresh(report):
                     capped_time_seconds=condition['time_to_goal_capped_seconds'],conditional_success_time_seconds=condition['time_to_goal_seconds'],
                     training_cumulative_cost=evaluation['training_violation_count'],completed_training_episodes=evaluation['training_episodes'],
                     source_commit=config['source_commit']))
+        for validation_path in sorted(directory.glob('validation_*.json')):
+            validation=read(validation_path)
+            if 'physical_controls' not in validation:continue
+            queries+=validation['physical_controls']
+            endpoint=validation.get('checkpoint_steps',int(validation_path.stem.split('_')[-1]))
+            point_results.append(dict(phase=config.get('phase','development'),trial_id=directory.name,
+                method=config.get('method'),training_seed=config.get('seed'),steps=endpoint,
+                checkpoint=f'policy_{endpoint}' if config.get('method')!='sac_lag_native' else 'policy_normalizer',
+                selection_role='development_validation_not_independent_test',evaluation_seed=validation['seed'],episodes=validation['episodes'],
+                native_return=validation['native_return'],episode_cost=validation['episode_cost'],goals_per_episode=validation['goals_per_episode'],
+                at_least_one_goal_fraction=validation['at_least_one_goal'],budget_compliant_fraction=validation['budget_compliant_fraction'],
+                budget_compliant_return=validation['budget_compliant_return'],budget_compliant_episodes=validation['budget_compliant_episodes'],
+                training_cumulative_cost=validation.get('training_cumulative_cost'),
+                cost_per_1000_transitions=1000*validation['training_cumulative_cost']/endpoint if validation.get('training_cumulative_cost') is not None else None,
+                full_training_sps=receipt.get('full_training_including_compile_eval_save_sps'),
+                capped_first_goal_seconds=validation.get('capped_first_goal_seconds'),
+                conditional_first_goal_seconds=validation.get('conditional_first_goal_seconds'),source_commit=config['source_commit']))
+        queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0))
         physical+=queries
         trials.append(dict(trial_id=directory.name,status='completed' if receipt.get('status')=='completed' else status.get('state',status.get('status','observed_not_liveness_proof')),
             steps=steps,new_training_transitions_lower_bound=new,training_cost_lower_bound=cost,
@@ -66,9 +84,13 @@ def refresh(report):
     fields=next(csv.reader(path.open()))
     with path.open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(results)
+    path=report/'CRAX_POINTGOAL_RESULTS.csv'
+    fields=list(dict.fromkeys(next(csv.reader(path.open()))+['capped_first_goal_seconds','conditional_first_goal_seconds']))
+    with path.open('w',newline='') as stream:
+        writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(point_results)
     summary=dict(completed_native_runs=sum(r['status']=='completed' for r in trials),observed_native_runs=len(trials),
         observed_new_training_transitions_lower_bound=training,observed_native_evaluation_controls=physical,
-        trials=trials,payload_condition_rows=len(results),whole_goal_complete=False,
+        trials=trials,payload_condition_rows=len(results),pointgoal_validation_rows=len(point_results),whole_goal_complete=False,
         note='report-only snapshot;no live process claims,no new training,no physics,no large checkpoints copied')
     (report/'NATIVE_PROGRESS.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary

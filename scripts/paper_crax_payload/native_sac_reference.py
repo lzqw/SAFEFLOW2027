@@ -13,6 +13,7 @@ import pickle
 import time
 
 os.environ.setdefault('XLA_PYTHON_CLIENT_PREALLOCATE','false')
+os.environ.setdefault('JAX_COMPILATION_CACHE_DIR',str(Path.cwd()/'runs'/'jax-compilation-cache'))
 import jax
 from jax import numpy as jp
 import numpy as np
@@ -160,6 +161,8 @@ def main():
         jax.effects_barrier()
         with (args.output/'policy_normalizer.pkl').open('wb') as stream:pickle.dump(jax.device_get(params),stream)
         validation=frozen_validation(make_policy,params)
+        validation.update(checkpoint_steps=last_step,training_cumulative_cost=totals.get('training_cumulative_cost'),
+            source_commit=args.source_commit)
         (args.output/f'validation_{last_step}.json').write_text(json.dumps(validation,indent=2)+'\n')
         result=dict(status='completed',steps=last_step,new_training_transitions=last_step,
             requested_steps=args.steps,source_commit=args.source_commit,

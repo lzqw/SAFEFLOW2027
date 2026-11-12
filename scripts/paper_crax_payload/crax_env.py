@@ -5,7 +5,9 @@ terminated/truncated and the NEXT policy observation separately. No host-copy
 in the interaction path. Native dynamics, costs, goals and horizon are unchanged.
 """
 import os
+from pathlib import Path
 os.environ.setdefault('XLA_PYTHON_CLIENT_PREALLOCATE', 'false')
+os.environ.setdefault('JAX_COMPILATION_CACHE_DIR',str(Path.cwd()/'runs'/'jax-compilation-cache'))
 
 import jax
 from jax import numpy as jp

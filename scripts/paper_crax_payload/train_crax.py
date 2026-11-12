@@ -134,6 +134,7 @@ def main():
         dual='raw_completed_episode_batch_mean;lr0.01;EMA0.05;clip0_100;not_native_SAC_perstep_rule',
         u=G/(E*F),replay_exposure=G*B/(E*F),energy_target=learner.energy_target,
         jax_preallocate=os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'],
+        jax_compilation_cache_dir=os.environ.get('JAX_COMPILATION_CACHE_DIR'),
         engineering_profile_overrides=dict(critic_only_updates=0,geometry_beta=1.) if args.profile_only else None))
     checkpoints=[] if args.profile_only else sorted(set(((int(args.steps*f)+E-1)//E)*E for f in master['selection']['candidate_checkpoint_fractions'] if int(args.steps*f)>initial_steps))
     timing_events=[];gpu_memory_samples=[]
@@ -213,6 +214,8 @@ def main():
                 save_seconds+=time.monotonic()-t
                 if args.eval_envs:
                     result=evaluate(learner,args.eval_envs,61027)
+                    result.update(checkpoint_steps=steps,training_cumulative_cost=float(totals[0].cpu()),
+                        completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit)
                     eval_seconds+=result['elapsed_seconds'];eval_controls+=result['physical_controls']
                     atomic_json(args.output/f'validation_{steps}.json',result)
                 log_start+=time.monotonic()-checkpoint_started
