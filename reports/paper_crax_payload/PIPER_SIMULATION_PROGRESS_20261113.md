@@ -8,8 +8,8 @@ beside this report.
   521 safe timeouts.
 - Reach / Iso-Low: 300k simulated transitions completed; 0 safe successes and
   2,952 safe timeouts. This is retained as a negative baseline, not hidden.
-- Reach / EA: 282k/300k transitions at the latest snapshot, about 10.3
-  transitions/s, with 7,592 safe successes and 482 safe timeouts. Training is
+- Reach / EA: 283k/300k transitions at the latest snapshot, about 10.3
+  transitions/s, with 7,627 safe successes and 482 safe timeouts. Training is
   still running on A100 GPU0.
 
 The full Piper deployment plan, dry-run boundaries, and physical-motion
