@@ -46,6 +46,13 @@ There are currently **no trained Piper deployment candidates**; see
 `candidates_pending.json`. The model smoke and synthetic dry-run must not be
 reported as learned success, candidate generation, or real interactions.
 
+Training must use `scripts.paper_crax_payload.piper_helpers.PiperTrainingEnvironment`
+and its declared common configuration, not the provisional zero-action CLI.
+Follow-up checks found the base200-iteration goal IK insufficient. The training
+wrapper uses the same actual solver with1200 iterations, static safe/reachable
+endpoint admission, and actual payload-centroid completion; constructive
+feasibility is recorded separately, not counted as a learned policy result.
+
 The real experiment generator produces 360 **planned** trials, interleaving
 Iso/Iso-Low/EA within task/condition/repetition blocks. A separately enabled
 on-site implementation is needed before execution. Protection parameters must

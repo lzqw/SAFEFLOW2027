@@ -25,6 +25,14 @@ Payload33.597mm，均未违规，也均未成功完成任务。这不是策略�
 实际本地环境Python3.11.5、NumPy1.26.4、PyBullet3.2.7、Gymnasium0.28.1；
 这些只是CPU工程smoke，未启动PyTorch策略训练或GPU性能测试。
 
+后续训练接入没有把零动作smoke当作可学习性证明：静态目标检查发现基础200次IK迭代
+在跨工作空间目标上收敛不足。独立训练wrapper使用同一真实IK求解器的1200次上限、
+所有方法共同的安全可达端点reset筛选，并以真实载荷质心定义Payload完成。
+[构造性可行路线记录](piper-constructive-feasibility-v2.json) 中 Reach、Payload 各58个
+真实控制区间成功绕行，最小距离44.6mm、0违规；另外116个控制区间/2320子步由该
+独立探测计账，不重算进上述8个准备smoke，也不是训练策略结果。
+基础仿真CLI只用于模型工程smoke，训练必须使用 `PiperTrainingEnvironment`。
+
 离线接口使用 **robot-base坐标，位置m、角度rad、时间s、四元数xyzw**。
 SDK 的单位转换只做纯算术：位置1单位=0.001mm，角度1单位=0.001度，依据
 [固定SDK源说明](https://github.com/agilexrobotics/pyAgxArm/blob/d90e234ba8e408cfa964b38aa9120b3131fc9f85/pyAgxArm/protocols/can_protocol/msgs/piper/default/transmit/arm_end_pose_ctrl.py)。

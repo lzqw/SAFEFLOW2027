@@ -21,6 +21,7 @@
   "physical_connections": 0,
   "physical_commands_sent": 0,
   "trained_deployment_candidates": 0,
+  "task_learnability_status": "Zero-action smoke alone does not establish learnability. Follow-up training wrapper found default200-iteration goal IK inadequate and uses same solver1200 iterations plus shared endpoint admissibility. Independent constructive-feasibility-v2 receipt records116 additional controls separately; not charged to this8-control preparation receipt and not learned-policy results.",
   "offline_contract_tests": {"passed": 4, "failed": 0, "simulated_control_intervals": 0, "scope": "SI conversion, disabled physical transport, timeout/deadline/rejection record-replay, Panda/untrained export rejection, planned360-episode balance"},
   "dry_run": {"synthetic_control_records": 3, "accepted_proposals": 1, "rejected_proposals": 2, "deadline_misses": 1, "executed_actions": 0},
   "real_fixed_policy_schedule": {"planned_episodes": 360, "executed_episodes": 0, "seed": 72027},

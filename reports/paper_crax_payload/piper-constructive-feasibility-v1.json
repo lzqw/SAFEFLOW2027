@@ -1,0 +1,22 @@
+{
+  "status": "failed_before_controls_static_goal_IK_gate",
+  "attempted_tasks": ["Reach"],
+  "unattempted_tasks": ["Payload"],
+  "failure": "Native200-iteration IK failed bounded static goal-admissibility; no training launched",
+  "native_default_start_tcp": [0.3270941972732544, -0.10847317427396774, 0.28719234466552734],
+  "native_default_requested_goal": [0.32, 0.12, 0.28],
+  "native_default_achieved_goal_tcp": [0.33726394176483154, 0.003553382819518447, 0.23906323313713074],
+  "single_pass_goal_error_m": 0.12463417356095409,
+  "single_pass_goal_arm_clearance_m": -0.04107055630720725,
+  "single_pass_payload_clearance_m_in_separate_diagnostic": -0.037511478007170446,
+  "diagnosis": "Repeated offlineIK seeds converged without physics:124.6mm→104.9mm→34.6mm→0.606mm→0.0069mm; fixture not proven intrinsically unreachable",
+  "new_training_transitions": 0,
+  "new_simulation_control_intervals": 0,
+  "new_physics_substeps": 0,
+  "static_distance_queries_in_failed_gate": 2,
+  "additional_static_distance_queries_in_local_diagnosis": 5,
+  "total_IK_calls_failed_gate_and_local_diagnosis": 19,
+  "physical_robot_interactions": 0,
+  "legacy_or_deployment_files_changed": false,
+  "next_action": "new common training-wrapper1200iterationIK, then genuine detour probe; no task training until feasibility"
+}

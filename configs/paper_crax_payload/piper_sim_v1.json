@@ -1,0 +1,47 @@
+{
+  "protocol": "paper_crax_payload_v1",
+  "robot_family": "Piper",
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "hardware_identification": "user-confirmed standard Piper and standard gripper; physical calibration still pending",
+  "physical_motion_enabled": false,
+  "simulation_training_budget": 3000000,
+  "tasks": ["Reach", "Payload"],
+  "methods": ["Iso", "Iso-Low", "EA"],
+  "development_seed": 41027,
+  "initial_steps_per_trial": 300000,
+  "simulation": {},
+  "shared_learner": {
+    "hidden_width": 128, "actor_lr": 0.0001, "critic_lr": 0.0003,
+    "batch_size": 256, "replay_capacity": 300000,
+    "random_transitions": 2000, "critic_only_updates": 1000,
+    "learner_updates_per_transition": 1, "reward_updates_per_round": 2,
+    "actor_update_interval": 2, "margin_ema_tau": 0.005, "flow_steps": 4,
+    "rho": 0.25, "reference_variance": 0.04,
+    "iso_low_reference_variance": 0.01, "kinetic_alpha_per_variance": 0.02,
+    "energy_target_per_action": 0.25,
+    "reward_scaling": 1.0, "cost_scaling": 1.0,
+    "normalizer": "identity_after_explicit_simulator_units",
+    "cost_mode": "episodic_binary", "episode_budget": 0.1
+  },
+  "num_envs": 2,
+  "checkpoint_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
+  "log_every": 1000,
+  "checkpoint_every": 25000,
+  "evaluation": {
+    "development_episodes_per_condition": 30,
+    "validation_episodes_per_condition": 50,
+    "independent_test_episodes_per_condition": 100,
+    "development_layout_seed_start": 650000,
+    "validation_layout_seed_start": 61027,
+    "independent_test_layout_seed_start": 71027,
+    "action_sampling_seed": 690000,
+    "conditions": [
+      {"name": "nominal", "simulation_overrides": {}},
+      {"name": "new_geometry", "simulation_overrides": {"obstacle_radius_m": 0.055}},
+      {"name": "execution_scale_085", "simulation_overrides": {}, "action_scale": 0.85}
+    ],
+    "selection": "same five checkpoints eachmethod;riskqualified then safe success then capped time;otherwise explicit Pareto",
+    "independent_test_used_for_selection": false
+  },
+  "provenance": "fresh official Piper simulation only; no Panda weights and no physical calibration assertion"
+}
