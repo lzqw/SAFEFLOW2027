@@ -7,7 +7,7 @@ robot connection or motion is enabled.
 
 - EA: running on A100 GPU1; latest snapshot 23k/300k transitions, about 14.6
   transitions/s after optimizer warm-up.
-- Iso: running on A100 GPU0; latest snapshot 43k/300k transitions, about 28.5
+- Iso: running on A100 GPU0; latest snapshot 45k/300k transitions, about 28.4
   transitions/s after optimizer warm-up.
 - Iso-Low: queued until one A100 slot is released; it will use the same seed,
   budget, and source commit without duplicating either active run.
