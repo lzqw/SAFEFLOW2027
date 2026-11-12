@@ -76,6 +76,10 @@ selection.
   physics substeps, 6,318,898 distance queries, 29,311.6 seconds elapsed, and
   zero physical-robot interactions. Piper remains simulation-only; no CAN,
   SDK motion, or random physical exploration was enabled.
+- Piper Payload has a validated simulation/smoke and constructive-feasibility
+  path, but its three 300k learned candidates were not started in this
+  delivery; this is separate from the completed CRAX Payload experiments and
+  remains the next optional queue item.
 
 ## 6. Actual cost and reproducibility
 
