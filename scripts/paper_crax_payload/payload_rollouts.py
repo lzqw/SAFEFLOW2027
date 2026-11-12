@@ -62,7 +62,34 @@ def evaluate_frozen_rollouts(learner, config, episodes, seed_start, conditions,
                         if trace_path.exists():
                             raise FileExistsError('Preserve partial/completed action witnesses before any new physics')
                         trace_path.parent.mkdir(parents=True, exist_ok=True)
-                    observation, initial = env.reset(seed=seed_start+index)
+                    try:
+                        observation, initial = env.reset(seed=seed_start+index)
+                    except RuntimeError as error:
+                        # A declared held-out layout can be physically
+                        # unconstructable even after the environment's bounded
+                        # layout attempts. Preserve it as an explicit test
+                        # failure instead of aborting the whole locked split or
+                        # silently changing the seed/layout distribution.
+                        records.append(dict(
+                            layout_seed=seed_start+index,
+                            episode_return=0.0,
+                            length=0,
+                            minimum_distance_m=0.0,
+                            trajectory_payload_xyz=[],
+                            action_witness_file=None,
+                            time_to_goal_seconds=None,
+                            time_to_goal_capped_seconds=env.config.horizon*env.control_dt,
+                            safe_success=False,
+                            violation=True,
+                            collision=False,
+                            arm_collision=False,
+                            payload_collision=False,
+                            clearance_violation=True,
+                            true_horizon_terminal=False,
+                            reset_failure=True,
+                            reset_failure_type=type(error).__name__,
+                            reset_failure_message=str(error)))
+                        continue
                     stream = trace_path.open('x') if trace_path else None
                     if stream:
                         stream.write(json.dumps(jsonable(dict(kind='initial_state', layout_seed=seed_start+index,
@@ -112,6 +139,7 @@ def evaluate_frozen_rollouts(learner, config, episodes, seed_start, conditions,
                 safe_success_count=sum(r['safe_success'] for r in records),
                 violation_count=sum(r['violation'] for r in records),
                 safe_timeout_count=sum(not r['safe_success'] and not r['violation'] for r in records),
+                reset_failure_count=sum(bool(r.get('reset_failure', False)) for r in records),
                 physical_evaluation_transitions=sum(r['length'] for r in records),
                 time_to_goal_seconds=float(np.mean(successful)) if successful else None,
                 **{key: float(np.mean([r[key] for r in records])) for key in ('safe_success', 'violation',
