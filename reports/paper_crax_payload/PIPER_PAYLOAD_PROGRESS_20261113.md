@@ -7,14 +7,14 @@ robot connection or motion is enabled.
 
 - EA: running on A100 GPU1; latest snapshot 48k/300k transitions, about 11.8
   transitions/s after optimizer warm-up.
-- Iso: running on A100 GPU0; latest snapshot 110k/300k transitions, about 27.2
+- Iso: running on A100 GPU0; latest snapshot 112k/300k transitions, about 27.2
   transitions/s after optimizer warm-up.
 - Iso-Low: queued until one A100 slot is released; it will use the same seed,
   budget, and source commit without duplicating either active run.
 
 The two live status receipts are `piper-progress-20261113/PAYLOAD_*_STATUS_LATEST.json`.
 At the observed speeds, EA is estimated at roughly 6.0 hours and Iso at roughly
-2.0 hours; these are estimates, not completion results. Checkpoints remain on
+1.9 hours; these are estimates, not completion results. Checkpoints remain on
 the server and only compact receipts/results are committed to GitHub.
 
 Iso also produced an interim 60k evaluation (30 episodes per condition): all
