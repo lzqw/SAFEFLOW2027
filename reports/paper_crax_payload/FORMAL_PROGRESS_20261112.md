@@ -3,6 +3,12 @@
 This is a compact, read-only progress snapshot. It intentionally contains no
 model checkpoints; large artifacts remain on the A100/4080 hosts.
 
+The latest queue receipt (11:22 UTC) supersedes the earlier table below for
+process status: **6/9 formal runs are now complete**, EA/51028 is at about
+3.49M/10M steps, Stable-Iso/51029 is at about 2.27M/10M steps, and the final
+EA/51029 job will be appended automatically. The latest queue and observer
+receipts are in `formal-latest-20261112-1122/`.
+
 ## Current state
 
 - PointGoal formal matrix: **5 of 9 registered runs completed**; 2 runs are
