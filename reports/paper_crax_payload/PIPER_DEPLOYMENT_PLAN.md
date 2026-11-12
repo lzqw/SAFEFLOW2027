@@ -1,4 +1,16 @@
-# Piper：标准型号已确认，A100原生Reach候选已开始训练
+# Piper：标准型号已确认，A100原生Reach候选已完成
+
+> **Current status amendment — 2026-11-13.** The older queue notes below are
+> retained as execution history. Since they were written, the A100 Reach EA
+> run `piper-reach-ea-41027-v1` completed its registered 300,000 simulated
+> transitions and produced final receipt/evaluation artifacts under
+> `piper-progress-20261113/`. The final 30-episode evaluation was nominal
+> safe-success 1.00, new-geometry 0.333, and execution-scale-0.85 0.833, with
+> zero recorded collisions. Iso and Iso-Low Reach receipts are also present.
+> This is still simulation-only: no CAN connection, SDK command, physical
+> motion, or real-robot interaction occurred. The older statements that EA was
+> queued or that no trained Piper candidate existed are historical and are
+> superseded by the final receipt.
 
 ## 本轮实际完成的范围
 
