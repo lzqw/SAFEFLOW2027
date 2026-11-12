@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "plan_id": "pointgoal-formal-v1",
+  "phase": "formal",
+  "status": "prepared_not_frozen",
+  "methods": ["sac_lag", "stable_iso", "ea"],
+  "training_seeds": [51027, 51028, 51029],
+  "allowed_common_budgets": [5000000, 10000000],
+  "common_steps_per_seed": null,
+  "checkpoint_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
+  "maximum_checkpoints_per_seed": 5,
+  "task": {
+    "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "env_id": "safe_goal_point",
+    "difficulty": 1,
+    "task_mode": "cumulative",
+    "episodic_cost_budget": 25.0
+  },
+  "method_configurations": {
+    "sac_lag": {
+      "runner": "scripts.paper_crax_payload.native_sac_checkpoint",
+      "runtime_parameters": null,
+      "pending_choices": ["normalize_observations", "lagrangian_lr", "E_B_G"]
+    },
+    "stable_iso": {
+      "runner": "scripts.paper_crax_payload.train_crax",
+      "candidate_configuration_file": "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+      "runtime_parameters": null
+    },
+    "ea": {
+      "runner": "scripts.paper_crax_payload.train_crax",
+      "candidate_configuration_file": "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+      "runtime_parameters": null
+    }
+  },
+  "algorithm_file_sha256": {
+    "scripts/paper_crax_payload/train_crax.py": null,
+    "scripts/paper_crax_payload/crax_models.py": null,
+    "scripts/paper_crax_payload/crax_env.py": null,
+    "scripts/paper_crax_payload/observation_normalizer.py": null,
+    "scripts/paper_crax_payload/native_sac_checkpoint.py": null,
+    "scripts/paper_crax_payload/native_sac_reference.py": null,
+    "scripts/paper_crax_payload/formal_admission.py": null,
+    "scripts/paper_crax_payload/configuration.py": null,
+    "scripts/star/arm_safe_entropy/models.py": null,
+    "scripts/star/arm_safe_entropy/endpoint_geometry.py": null,
+    "scripts/star/arm_safe_entropy/geometry.py": null,
+    "scripts/star/arm_safe_entropy/stability_runtime.py": null
+  },
+  "freeze_record": null,
+  "runs": [
+    {"method": "sac_lag", "training_seed": 51027},
+    {"method": "sac_lag", "training_seed": 51028},
+    {"method": "sac_lag", "training_seed": 51029},
+    {"method": "stable_iso", "training_seed": 51027},
+    {"method": "stable_iso", "training_seed": 51028},
+    {"method": "stable_iso", "training_seed": 51029},
+    {"method": "ea", "training_seed": 51027},
+    {"method": "ea", "training_seed": 51028},
+    {"method": "ea", "training_seed": 51029}
+  ],
+  "note": "Prepared admission schema only. No formal configuration or budget is frozen and no run is launched. Native host-epoch rounding is recorded separately from the exact nominal fractions; all actual transitions remain charged."
+}

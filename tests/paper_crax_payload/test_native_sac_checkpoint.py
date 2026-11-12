@@ -122,3 +122,28 @@ def test_policy_only_is_not_resume_and_target_extension_is_explicit(tmp_path):
     assert extended.plan['actual_rounded_final_steps']>=8192
     with pytest.raises(ValueError,match='one native device'):
         FullCheckpointManager(tmp_path/'multi',{}).epoch_plan(32,16,4096,128,8,2,1)
+
+
+def test_prospective_history_preserves_per_epoch_cost_without_settings_changes(tmp_path):
+    import json
+    settings=dict(seed=41,num_envs=8,normalize_observations=False)
+    manager=FullCheckpointManager(tmp_path/'history',settings,backend=FakeBackend(),
+                                  invocation_source_commit='a'*40)
+    manager.epoch_plan(32,16,4096,128,8,1,1)
+    first=_toy_states()
+    manager.save_epoch(*first,5.,1,384,{})
+    second=_toy_states()
+    second[1].info['paper_total_cost']=np.array([[40.,60.]])
+    manager.save_epoch(*second,6.,2,640,{})
+    history=[json.loads(line) for line in (tmp_path/'history/checkpoint_history.jsonl').read_text().splitlines()]
+    assert [r['steps'] for r in history]==[384,640]
+    assert [r['training_cumulative_cost'] for r in history]==[70.,100.]
+    assert history[1]['cost_per_1000_transitions']==156.25
+    assert history[1]['new_training_transitions']==640
+    assert history[0]['completed_epoch']==1 and history[1]['completed_epoch']==2
+    assert all(r['evaluation_calls']==0 and r['phase']=='development' for r in history)
+    with (tmp_path/'history/full_latest.pkl').open('rb') as stream:payload=pickle.load(stream)
+    assert payload['settings']==settings and 'phase' not in payload
+    restored=FullCheckpointManager(tmp_path/'history-resume',settings,
+        resume=tmp_path/'history/full_latest.pkl',backend=FakeBackend())
+    assert restored.initial_steps==640 and restored.settings==settings

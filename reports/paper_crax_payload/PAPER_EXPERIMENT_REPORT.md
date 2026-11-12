@@ -24,6 +24,10 @@ Budget is 25 per episode. No physics or hazards were simplified.
 | Flow-Iso, normalized, episode dual | 500,224 | 0.12 | 2.60 | common validation, 50 episodes |
 | Flow-Iso, normalized, native-unit dual | 500,224 | 0.00 | 0.082 | common validation, 50 episodes |
 | Same Flow-Iso, genuine continuation | 2,000,128 | 3.82 | 61.23 | common validation, 50 episodes |
+| Same Flow-Iso, fixed4M development endpoint | 4,000,000 | 12.42 | 43.67 | common validation, 50 episodes |
+| Paired EA, early development screen | 500,224 | 0.00 | 0.0044 | common validation, 50 episodes |
+| Same EA, matched2M development endpoint | 2,000,128 | 0.42 | 11.30 | common validation, 50 episodes |
+| Iso second seed41028, fixed2M endpoint | 2,000,128 | 10.50 | 81.62 | common validation, 50 episodes |
 
 Both normalized SAC runs now have all five checkpoints assessed on the same
 61027 layouts (500 episodes/500000 additional nontraining controls in total).
@@ -39,6 +43,19 @@ Flow configuration or PointGoal EA benefit has been established. Iso bookkeeping
 recovered explicitly from complete raw replay for continuation; original evidence
 is kept. Subsequent native boundaries now accumulate properly (1024 completed
 episodes at1029376 transitions). [Repair and limitations](EPISODE_ACCOUNTING_RECOVERY.md).
+
+At4M Iso reaches98% at-least-one-goal and12.42 goals/episode, but only44% meet
+budget25; budget-compliant return is4.9091 over22episodes. Task ability improves
+without a claim of safety-budget compliance. EA's500k low cost is another early
+stagnant screen, not a benefit claim. It now continues to the same2M learning
+budget. A second Iso development seed41028 has completed, with all results retained.
+
+Second Iso seed41028 is now complete: at1.6M it had1.54 goals,88% at-least-one-goal,
+cost17.62; at2M it reached10.5 goals and100% at-least-one-goal, but cost81.62.
+The lower-cost intermediate is not substituted for that fixed endpoint. Paired
+EA2M has0.42 goals/30% reach, cost11.30: lower risk but much weaker task progress,
+not a joint improvement. EA seed41027 continues to4M and second seed41028 starts
+the same2M development budget. No seventh major recipe is launched.
 
 SAC LR .1 end-to-end throughput was 5701 transitions/s including compilation,
 native evaluation and saves (offline common validation is separately charged).
@@ -109,8 +126,10 @@ comparison artifacts. No historical long evaluation was rerun.
   recording and timeout handling are implemented. Six native simulation
   candidates are split without duplication: one finite A100GPU0 shared slot now
   runs Reach Iso→Iso-Low→EA; the4080Payload trio waits for Payload research slots.
-  First native Reach-Iso progress is5000 transitions,1000Actor updates. None is
-  yet a selected/exported deployment candidate.
+  First native Reach-Iso60k development evaluation is weak: nominal safe success
+  16.7%/violation83.3%, new geometry3.3%/96.7%, action-scale16.7%/83.3%,30episodes
+  per condition. These unsafe early results remain; none is a selected/exported
+  deployment candidate. Registered300k training continues, no physical motion.
   Hardware calibration/firmware/TCP/limits remain onsite inputs. Physical
   transport and motion remain disabled; zero real interactions.
 
@@ -123,12 +142,23 @@ costs include Payload 3220 training/222 nontraining controls; Piper 3220 trainin
 recovery 8448 training; CRAX bridge 10 nontraining controls; Reach mechanisms
 437,685 nontraining controls. Frozen gradient analysis uses no environment steps.
 Failed-profile conservative reservation is separate from observed actual totals.
-Completed large CRAX artifacts are being streamed to the4080 4T archive without
-local staging or deletion of A100 originals. The archive manifest remains marked
-incomplete until all destination sizes and hashes match.
+Completed large CRAX artifacts were streamed to the4080 4T archive without
+local staging or deletion of A100 originals. The first five completed scientific
+runs are archived and verified:44files,2,565,010,425bytes, all source/destination
+sizes and hashes match. [Verified manifest](CRAX_DEVELOPMENT_ARCHIVE_6f9e3bf.json).
+Later2M/4M and active continuations are separate from that exact archived scope.
 
 The whole objective remains active: effective shared Flow/EA development, fair
 formal PointGoal comparison, Payload development and confirmation, selected-policy
 independent tests, PointGoal mechanism supplement and native Piper deployment
 candidates/dry-run bundles are still required. Optional CVPO is nonblocking.
 Physical experiments require a separate onsite enabling decision.
+
+Prepared, not executed: [formal PointGoal admission](../../docs/paper_crax_payload/formal_admission.md)
+retains all nine registered runs and refuses an unfrozen/common-budget mismatch;
+[Payload selection workflow](PAYLOAD_SELECTION_WORKFLOW.md) registers30 development
+or45 confirmation candidates, strict per-condition risk qualification and locked
+held-out tests. Small PointGoal32-state×16-draw mechanism code is prepared for one
+later admitted frozen comparison, not counted as a completed mechanism result.
+The existing finite queue can bind each next job to the actually released GPU
+slot. Focused CPU contracts for this preparation add no training or simulator queries.

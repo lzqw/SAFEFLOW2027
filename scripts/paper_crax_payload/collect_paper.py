@@ -17,6 +17,27 @@ def read(path):
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def checkpoint_cost_history(directory, report):
+    """Read only recorded prefix costs, including explicit resume ancestors."""
+    costs={};visited=set();current=directory
+    while current.is_dir() and current not in visited:
+        visited.add(current)
+        path=current/'checkpoint_history.jsonl'
+        if path.exists():
+            for line in path.read_text().splitlines():
+                if line.strip():
+                    record=json.loads(line)
+                    # A child record takes precedence at the identical prefix.
+                    costs.setdefault(record['steps'],record.get('training_cumulative_cost'))
+        config=read(current/'configuration.json')
+        parent=config.get('resume_from')
+        if not parent:break
+        name=PurePosixPath(parent).parent.name
+        if name in ('','.', '..'):raise ValueError('Invalid explicit resume ancestor')
+        current=report/'native_runs'/name
+    return costs
+
+
 def collect(host,root,report):
     command=f"cd {shlex.quote(root)} && find . -maxdepth 2 -type f \\( -name '*.json' -o -name '*.jsonl' -o -name 'progress.csv' -o -name 'training_episodes.csv' \\) -print0 | tar --null -czf - -T -"
     data=subprocess.check_output(['ssh','-o','BatchMode=yes','-o','ConnectTimeout=12',host,command],timeout=55)
@@ -42,7 +63,7 @@ def refresh(report):
         if 'settings' in config:
             config=config|config['settings']
             config['method']='sac_lag_native'
-            config['phase']='engineering' if config.get('engineering_check') else 'development'
+            config['phase']='engineering' if config.get('engineering_check') else config.get('phase','development')
         receipt=read(directory/'receipt.json');status=read(directory/'status.json')
         checkpoint_status=read(directory/'checkpoint_status.json')
         history=[]
@@ -73,20 +94,22 @@ def refresh(report):
                 else:results.append(row)
         validations=sorted(directory.glob('validation_*.json'))
         validations+=sorted((report/'native_sac_common_validation').glob(f'*/{directory.name}__*.json'))
+        recorded_costs=checkpoint_cost_history(directory,report)
         for validation_path in validations:
             validation=read(validation_path)
             if 'physical_controls' not in validation:continue
             queries+=validation['physical_controls']
             endpoint=validation.get('checkpoint_steps',int(validation_path.stem.split('_')[-1]))
+            validation_cost=validation.get('training_cumulative_cost',recorded_costs.get(endpoint))
             point_results.append(dict(phase=config.get('phase','development'),trial_id=directory.name,
                 method=config.get('method'),training_seed=config.get('seed'),steps=endpoint,
                 checkpoint=f'policy_{endpoint}' if config.get('method')!='sac_lag_native' else f'policy_normalizer_{endpoint}',
-                selection_role='development_validation_not_independent_test',evaluation_seed=validation.get('seed',validation.get('validation_seed')),episodes=validation['episodes'],
+                selection_role=f"{config.get('phase','development')}_validation_not_independent_test",evaluation_seed=validation.get('seed',validation.get('validation_seed')),episodes=validation['episodes'],
                 native_return=validation['native_return'],episode_cost=validation['episode_cost'],goals_per_episode=validation['goals_per_episode'],
                 at_least_one_goal_fraction=validation['at_least_one_goal'],budget_compliant_fraction=validation['budget_compliant_fraction'],
                 budget_compliant_return=validation['budget_compliant_return'],budget_compliant_episodes=validation['budget_compliant_episodes'],
-                training_cumulative_cost=validation.get('training_cumulative_cost'),
-                cost_per_1000_transitions=1000*validation['training_cumulative_cost']/endpoint if validation.get('training_cumulative_cost') is not None else None,
+                training_cumulative_cost=validation_cost,
+                cost_per_1000_transitions=1000*validation_cost/endpoint if validation_cost is not None else None,
                 full_training_sps=receipt.get('full_training_including_compile_eval_save_sps'),
                 capped_first_goal_seconds=validation.get('capped_first_goal_seconds'),
                 conditional_first_goal_seconds=validation.get('conditional_first_goal_seconds'),source_commit=config['source_commit']))

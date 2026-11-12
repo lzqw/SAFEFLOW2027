@@ -5,7 +5,7 @@
   "whole_goal_complete": false,
   "scientific_targets_achieved": false,
   "task_file": "MASTER_TASK.md",
-  "previous_goal_turn_classification": "new_goal;implementation_and_verified_new_native_training_progress",
+  "previous_goal_turn_classification": "progress;publishedreal2Moutcomes_and_launchedpairedEA_andnativePiper",
   "payload": {
     "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
     "host": "4080",
@@ -17,7 +17,7 @@
     "queue_state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
     "declared_scientific_transitions": 1800000,
     "initial_jobs": "SAC41027/Iso41027/SAC41028 completed;EA41027+Iso41028 live;EA41028 pending",
-    "observed_at_local": "2026-11-12 11:48 Asia/Taipei",
+    "observed_at_local": "2026-11-12 14:24 Asia/Taipei",
     "engineering_new_training": 3220,
     "engineering_nontraining_sim_controls": 222,
     "full_native_resume_passed": true,
@@ -60,34 +60,60 @@
       },
       "independent_test_used": false
     },
-    "completed_training_transitions_including_engineering_before_active_continuation": 9640192,
+    "completed_training_transitions_including_engineering_before_active_continuation": 15640320,
     "latest_Iso_development": {
-      "steps": 2000128,
-      "goals": 3.82,
-      "at_least_one_goal": 0.88,
-      "mean_cost": 61.23351,
-      "budget_compliance": 0.5,
+      "steps": 4000000,
+      "goals": 12.42,
+      "at_least_one_goal": 0.98,
+      "mean_cost": 43.670701949596406,
+      "budget_compliance": 0.44,
+      "budget_compliant_return": 4.909090909090909,
       "task_learned": true,
       "safety_target_met": false
     },
     "active_native_jobs": [
       {
-        "pid": 63591,
-        "gpu": 0,
-        "run": "crax-iso-nativedual-41027-4m-v3",
+        "pid": 120883,
+        "gpu": 1,
+        "run": "crax-ea-nativedual-41027-4m-v3",
         "initial_steps": 2000128,
         "target_steps": 4000000,
-        "method": "stable_iso"
+        "training_seed": 41027,
+        "method": "ea"
       },
       {
-        "pid": 63592,
-        "gpu": 1,
-        "run": "crax-ea-nativedual-41027-500k-v3",
+        "pid": 134322,
+        "gpu": 0,
+        "run": "crax-ea-nativedual-41028-2m-v3",
         "initial_steps": 0,
-        "target_steps": 500000,
+        "target_steps": 2000000,
+        "training_seed": 41028,
         "method": "ea"
       }
-    ]
+    ],
+    "latest_EA_screen": {
+      "steps": 2000128,
+      "goals": 0.42,
+      "cost": 11.301383950710296,
+      "at_least_one_goal": 0.3,
+      "task_learned": false,
+      "interpretation": "conservative;notjointtasksafetywin;continuepaired4M"
+    },
+    "second_Iso_development": {
+      "training_seed": 41028,
+      "steps": 2000128,
+      "goals": 10.5,
+      "at_least_one_goal": 1,
+      "mean_cost": 81.62013145685196,
+      "budget_compliance": 0.34,
+      "intermediate_1600000": {
+        "goals": 1.54,
+        "cost": 17.6152827549,
+        "at_least_one_goal": 0.88
+      },
+      "interpretation": "earlybudgetedprogressfollowedbyhigherunsafeendpoint;preserveboth"
+    },
+    "formal_admission": "prepared_not_frozen;all9registeredcombinations/common5Mor10M;0formallaunches"
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -104,26 +130,33 @@
     "native_pid": 57816,
     "host": "tjucta-a100",
     "gpu": 0,
-    "actual_observed_training_steps": 5000,
+    "actual_observed_training_steps": 60000,
     "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
     "shared_slot": true,
     "native_sim_candidates_completed": 0,
-    "remaining4080Payload_plan": "prepared_not_launched"
+    "remaining4080Payload_plan": "prepared_not_launched",
+    "first_development_validation": {
+      "episodes_per_condition": 30,
+      "nominal_safe_success": 0.16666666666666666,
+      "nominal_violation": 0.8333333333333334,
+      "geometry_safe_success": 0.03333333333333333,
+      "geometry_violation": 0.9666666666666667,
+      "qualified_for_deployment": false
+    }
   },
   "next_required_actions": [
-    "finishpairedEA500k andsameIso4M;fairEAcontinuationsandseconddevseedwithincap",
-    "complete identical common validation ofnormalizedSACcandidates",
-    "learn effectiveIso thenEA under24M/sixconfigcap",
-    "complete sixPayload300k endpoints andfairconfirmation",
-    "selected-policyindependentgeneralization andPointGoalcommonstates",
-    "nativePiper candidates andofflineexportdryrun;nohardwaremotion",
-    "freezeandrunregisteredformalPointGoalcomparison",
-    "publishactualinterimresults andfullfinalsixquestionreport whencomplete"
+    "complete sameconfigurationEA2Mthen4M ifjustified;inspectseconddevseedwithincap",
+    "freezecommon5Mor10Mformalbudgetandallthreerecipesafterpaireddevelopment",
+    "runregisteredformal3methods3seedsandfaircommonvalidation",
+    "finishsixPayload300kdevelopmentandfair0.6Mconfirmation",
+    "selected-policyindependentgeneralizationandPointGoalcommonstates",
+    "nativePiperReachandPayloadcandidatesplusfrozenvalidation/bundles/dryrun;nophysicalmotion",
+    "publishallendpoints,failures,budgetsandfinalsixquestionreport"
   ],
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 14:24 Asia/Taipei",
+  "observed_at_local": "2026-11-12 15:12 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {
@@ -136,5 +169,15 @@
     },
     "read_only": true,
     "automatic_restart": false
+  },
+  "archive": {
+    "status": "completed_verified_archive",
+    "completed_scientific_runs": 5,
+    "files": 44,
+    "bytes": 2565010425,
+    "destination_host": "4080",
+    "destination_root": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-6f9e3bf",
+    "A100_originals_retained": true,
+    "manifest": "CRAX_DEVELOPMENT_ARCHIVE_6f9e3bf.json"
   }
 }

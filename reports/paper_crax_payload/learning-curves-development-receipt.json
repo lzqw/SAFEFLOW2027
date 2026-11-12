@@ -1,36 +1,96 @@
 {
   "status": "completed_development_snapshot_plots",
-  "created_at_utc": "2026-11-12T06:26:41.821572+00:00",
+  "created_at_utc": "2026-11-12T07:17:19.039853+00:00",
   "script_sha256": "3f2ba2ca2896bf20da206919404819ce00aa11eac306cffd6a99c4061fd57a38",
   "matplotlib_version": "3.7.2",
   "inputs": [
     {
       "path": "reports/paper_crax_payload/CRAX_POINTGOAL_RESULTS.csv",
-      "snapshot_sha256": "f7619f1160ebab5a36f3e9fd48f8fe5ca10668b17d863ef7d6c872a16074ebe1",
-      "snapshot_bytes": 8358,
-      "rows": 26,
-      "captured_at_utc": "2026-11-12T06:26:40.593906+00:00",
+      "snapshot_sha256": "18ef3be5087c61da54e12f6aac72ac18d8a6d590c0e6069057aa2eeee47c2ced",
+      "snapshot_bytes": 13595,
+      "rows": 43,
+      "captured_at_utc": "2026-11-12T07:17:17.799115+00:00",
       "phase_counts": {
-        "development": 25,
+        "development": 42,
         "reference": 1
       },
       "trial_ids": [
+        "crax-ea-nativedual-41027-2m-v3",
+        "crax-ea-nativedual-41027-4m-v3",
         "crax-ea-nativedual-41027-500k-v3",
         "crax-iso-nativedual-41027-2m-v3",
+        "crax-iso-nativedual-41027-4m-v3",
         "crax-iso-nativedual-41027-500k-v3",
+        "crax-iso-nativedual-41028-2m-v3",
         "crax-iso-norm-balanced-41027-500k-v1",
         "crax-sac-norm-41027-3m-v2",
         "crax-sac-norm-lagrate01-41027-3m-v3",
         "crax-sac-ref-41027-v1"
       ],
       "training_seeds": [
-        "41027"
+        "41027",
+        "41028"
       ],
       "missing_metrics": {
         "goals_per_episode": 0,
         "episode_cost": 0
       },
       "plotted_snapshot_records": [
+        {
+          "trial_id": "crax-ea-nativedual-41027-2m-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "1200128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 7.991485109329224
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-2m-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "1600000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.24,
+          "episode_cost": 14.31425606250763
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-2m-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "2000128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.42,
+          "episode_cost": 11.301383950710296
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-2m-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "800000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 0.21473979949951172
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-4m-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "2400000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 1.54,
+          "episode_cost": 8.628550674915314
+        },
         {
           "trial_id": "crax-ea-nativedual-41027-500k-v3",
           "method": "ea",
@@ -41,6 +101,50 @@
           "episodes": "50",
           "goals_per_episode": 0.0,
           "episode_cost": 91.04481797456741
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-500k-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "200192",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 5.748511781692505
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-500k-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "300032",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 3.2869867706298828
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-500k-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "400128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.02,
+          "episode_cost": 14.570030851364136
+        },
+        {
+          "trial_id": "crax-ea-nativedual-41027-500k-v3",
+          "method": "ea",
+          "training_seed": "41027",
+          "steps": "500224",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.0,
+          "episode_cost": 0.004374663829803466
         },
         {
           "trial_id": "crax-iso-nativedual-41027-2m-v3",
@@ -85,6 +189,39 @@
           "episodes": "50",
           "goals_per_episode": 0.0,
           "episode_cost": 9.469455697536468
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-4m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "2400000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.46,
+          "episode_cost": 31.416069836616515
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-4m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "3200000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 5.86,
+          "episode_cost": 41.97243985176087
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41027-4m-v3",
+          "method": "stable_iso",
+          "training_seed": "41027",
+          "steps": "4000000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 12.42,
+          "episode_cost": 43.670701949596406
         },
         {
           "trial_id": "crax-iso-nativedual-41027-500k-v3",
@@ -140,6 +277,61 @@
           "episodes": "50",
           "goals_per_episode": 0.0,
           "episode_cost": 0.0821924591064453
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41028-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41028",
+          "steps": "1200128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.44,
+          "episode_cost": 16.48767343759537
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41028-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41028",
+          "steps": "1600000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 1.54,
+          "episode_cost": 17.61528275489807
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41028-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41028",
+          "steps": "2000128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 10.5,
+          "episode_cost": 81.62013145685196
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41028-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41028",
+          "steps": "400128",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.02,
+          "episode_cost": 4.256331083774566
+        },
+        {
+          "trial_id": "crax-iso-nativedual-41028-2m-v3",
+          "method": "stable_iso",
+          "training_seed": "41028",
+          "steps": "800000",
+          "phase": "development",
+          "evaluation_seed": "61027",
+          "episodes": "50",
+          "goals_per_episode": 0.06,
+          "episode_cost": 0.8117560720443726
         },
         {
           "trial_id": "crax-iso-norm-balanced-41027-500k-v1",
@@ -318,7 +510,7 @@
           "episode_cost": 72.22632598876953
         }
       ],
-      "current_sha256_at_finish": "f7619f1160ebab5a36f3e9fd48f8fe5ca10668b17d863ef7d6c872a16074ebe1",
+      "current_sha256_at_finish": "18ef3be5087c61da54e12f6aac72ac18d8a6d590c0e6069057aa2eeee47c2ced",
       "changed_after_snapshot": false
     },
     {
@@ -326,7 +518,7 @@
       "snapshot_sha256": "55618e7939bf94032fb01e5a3c2a75a80e09fded1bcdf382b7dd5c4861491d4f",
       "snapshot_bytes": 20991,
       "rows": 85,
-      "captured_at_utc": "2026-11-12T06:26:40.594553+00:00",
+      "captured_at_utc": "2026-11-12T07:17:17.799761+00:00",
       "phase_counts": {
         "development": 85
       },
@@ -1374,7 +1566,7 @@
   "outputs": [
     {
       "path": "reports/paper_crax_payload/learning-curves-pointgoal-development.png",
-      "sha256": "317707d55725eb213686e364221ef11a85afbf76beb11a3f82e2f3bc5a05bc6f"
+      "sha256": "11c3fda7f9214636d6c0841e07a209c96f596fe4c7c1869673d131a10c21b4d3"
     },
     {
       "path": "reports/paper_crax_payload/learning-curves-payload-development.png",

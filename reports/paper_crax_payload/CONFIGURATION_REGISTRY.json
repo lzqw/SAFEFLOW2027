@@ -80,15 +80,22 @@
       "dual": "native_per_step;effective_lr0.1/H_per_round;cap2",
       "seed": 41027,
       "requested_steps": 500000,
-      "actual_steps": 2000128,
-      "status": "same_config_2M_completed_and4M_continuation_launched",
-      "validation_goals": 3.82,
-      "validation_cost": 61.2335107565,
-      "interpretation": "tasklearnedat2Mbutmeancostabove25;noqualifiedfinalbaselineyet",
+      "actual_steps": 4000000,
+      "status": "firstseed4M_and_secondseed2M_completed",
+      "validation_goals": 12.42,
+      "validation_cost": 43.6707019496,
+      "interpretation": "clear taskability butmean rawcoststillabove25;noextra recipe",
       "continuation_source": "6f9e3bf",
-      "continuation_pid": 63591,
       "episode_accounting_status": "recovered_full_prefix_and_live_boundaries_correct;originalflags/countsdisclosed",
-      "validation_at_least_one_goal": 0.88
+      "validation_at_least_one_goal": 0.98,
+      "development_seeds_launched": [
+        41027,
+        41028
+      ],
+      "second_seed_target": 2000000,
+      "second_seed_actual_steps": 2000128,
+      "second_seed_final_goals": 10.5,
+      "second_seed_final_cost": 81.6201314569
     },
     {
       "id": "SAC_norm_native_dual_v3",
@@ -121,10 +128,22 @@
       "dual": "sameaspairedIso;native_per_step;effective_lr0.1/H;cap2",
       "seed": 41027,
       "requested_steps": 500000,
-      "status": "launched_fresh_after_Iso_task_learning",
-      "native_pid": 63592,
+      "status": "firstseed2M_completed_to4Mactive;secondseedfresh2Mactive",
+      "native_pid": 120883,
       "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
-      "geometry": "default_rho0.25;margin_update_ramp1000to5000;noextracritic"
+      "geometry": "default_rho0.25;margin_update_ramp1000to5000;noextracritic",
+      "actual_steps": 2000128,
+      "validation_goals": 0.42,
+      "validation_cost": 11.3013839507,
+      "initial_continuation_steps": 2000128,
+      "continuation_target": 4000000,
+      "validation_at_least_one_goal": 0.3,
+      "development_seeds_launched": [
+        41027,
+        41028
+      ],
+      "second_seed_native_pid": 134322,
+      "second_seed_target": 2000000
     }
   ],
   "launched_count": 6,

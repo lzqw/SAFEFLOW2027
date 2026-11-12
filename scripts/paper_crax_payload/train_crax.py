@@ -15,13 +15,10 @@ import time
 
 os.environ.setdefault('XLA_PYTHON_CLIENT_PREALLOCATE', 'false')
 import numpy as np
-import torch
 
-from scripts.paper_crax_payload.crax_env import PointGoalTorch, DeviceReplay
-from scripts.paper_crax_payload.crax_models import CumulativeFlowLearner
 from scripts.paper_crax_payload.configuration import load_configuration
-from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
-from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore_rng, isolated_rng
+from scripts.paper_crax_payload.formal_admission import (
+    admit_run, flow_runtime_parameters, phase_fields, require_resume_phase)
 
 
 def atomic_json(path, value):
@@ -36,6 +33,9 @@ def finite_number(value):
 
 def evaluate(learner, num_envs, seed, normalizer=None, environment_cache=None):
     """One complete native episode per fresh env; no adaptation or rollout-RNG use."""
+    import torch
+    from scripts.paper_crax_payload.crax_env import PointGoalTorch
+    from scripts.star.arm_safe_entropy.stability_runtime import isolated_rng
     start = time.monotonic()
     with isolated_rng():
         env=None if environment_cache is None else environment_cache.get('env')
@@ -92,12 +92,27 @@ def main():
     p.add_argument('--profile-only',action='store_true')
     p.add_argument('--eval-envs',type=int,default=50)
     p.add_argument('--source-commit',required=True)
+    p.add_argument('--phase',choices=['development','formal'],default='development')
+    p.add_argument('--formal-plan',type=Path)
     args=p.parse_args()
     master=load_configuration(args.config); cfg=master['pointgoal']; profile=cfg['profiles'][args.profile]
-    if args.steps <= 0 or args.steps > master['budgets']['pointgoal_development_transitions']:
+    admission=admit_run(phase=args.phase,plan_path=args.formal_plan,method=args.method,
+        seed=args.seed,steps=args.steps,source_commit=args.source_commit,
+        runtime_parameters=flow_runtime_parameters(master,args.profile,args.eval_envs),
+        forbidden_flags=dict(profile_only=args.profile_only,
+                             episode_accounting_repair=args.repair_episode_accounting_from_replay))
+    labels=phase_fields(admission)
+    if args.steps <= 0 or (args.phase=='development' and args.steps > master['budgets']['pointgoal_development_transitions']):
         raise ValueError('Invalid finite development target')
     if args.output.exists() and any(args.output.iterdir()) and not args.resume:
         raise FileExistsError('Never overwrite an existing run or restart on observation timeout')
+    # Admission above is CPU-only and precedes imports that may initialize JAX
+    # devices. Existing development settings/state layouts are not revised.
+    import torch
+    from scripts.paper_crax_payload.crax_env import PointGoalTorch, DeviceReplay
+    from scripts.paper_crax_payload.crax_models import CumulativeFlowLearner
+    from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
+    from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore_rng
     args.output.mkdir(parents=True,exist_ok=True)
     started=time.monotonic(); random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     torch.set_num_threads(4)
@@ -132,6 +147,7 @@ def main():
     completed_records=[]; steps=initial_steps=0; eval_controls=0; eval_seconds=save_seconds=0.
     if args.resume:
         state=torch.load(args.resume,map_location=device,weights_only=False)
+        require_resume_phase(admission,state)
         if args.repair_episode_accounting_from_replay:
             from scripts.paper_crax_payload.recover_episode_accounting import recover_episode_accounting
             recovery,recovered_rows=recover_episode_accounting(state)
@@ -148,7 +164,7 @@ def main():
     else:obs=env.reset()
     torch.cuda.synchronize(); reset_compile_seconds=time.monotonic()-started
     atomic_json(args.output/'configuration.json',dict(master=master,profile_name=args.profile,
-        phase='engineering_profile' if args.profile_only else 'development',
+        phase='engineering_profile' if args.profile_only else args.phase,
         profile=profile,method=args.method,seed=args.seed,source_commit=args.source_commit,
         task=env.effective_config(),requested_steps=args.steps,
         actual_target_steps=((args.steps+E-1)//E)*E,initial_steps=initial_steps,
@@ -160,7 +176,8 @@ def main():
         u=G/(E*F),replay_exposure=G*B/(E*F),energy_target=learner.energy_target,
         jax_preallocate=os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'],
         jax_compilation_cache_dir=os.environ.get('JAX_COMPILATION_CACHE_DIR'),
-        engineering_profile_overrides=dict(critic_only_updates=0,geometry_beta=1.) if args.profile_only else None))
+        engineering_profile_overrides=dict(critic_only_updates=0,geometry_beta=1.) if args.profile_only else None,
+        **({'formal_admission':admission} if admission is not None else {})))
     checkpoints=[] if args.profile_only else sorted(set(((int(args.steps*f)+E-1)//E)*E for f in master['selection']['candidate_checkpoint_fractions'] if int(args.steps*f)>initial_steps))
     timing_events=[];gpu_memory_samples=[];evaluation_environment_cache={}
     log_fields=['steps','new_steps','elapsed_seconds','steady_training_sps','end_to_end_sps','updates_per_second','training_cumulative_cost','cost_per_1000_transitions','completed_episodes','recent_native_return','recent_episode_cost','recent_goals','recent_at_least_one_goal','peak_torch_memory_mib','learner_updates','actor_updates','geometry_weight','energy','alpha','multiplier']
@@ -169,14 +186,14 @@ def main():
     def full_state():
         return dict(learner=learner.state_dict(),replay=replay.state_dict(),environment=env.state_dict(),normalizer=normalizer.state_dict(),
             partial=partial,totals=totals,rollout_rng=rollout_rng.get_state(),rng=capture_rng(),
-            steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit)
+            steps=steps,method=args.method,seed=args.seed,profile=profile,source_commit=args.source_commit,**labels)
     def preserve_interruption():
         if terminal['completed']:return
         # Called only at real process exit, never by observation timeout. Save
         # the exact already-collected prefix without another simulator step.
         atomic_json(args.output/'interruption.json',dict(status='engineering_interruption',
             steps=steps,initial_steps=initial_steps,new_training_transitions=steps-initial_steps,
-            source_commit=args.source_commit,automatic_restart=False))
+            source_commit=args.source_commit,automatic_restart=False,**labels))
         torch.save(full_state(),args.output/'interrupted_full.pt.tmp')
         (args.output/'interrupted_full.pt.tmp').replace(args.output/'interrupted_full.pt')
     atexit.register(preserve_interruption)
@@ -250,13 +267,14 @@ def main():
                 checkpoints.pop(0)
                 t=time.monotonic()
                 policy=dict(learner=learner.state_dict(),task=env.effective_config(),steps=steps,method=args.method,seed=args.seed,
-                    normalizer=normalizer.state_dict(),action_scaling='native[-1,1]',source_commit=args.source_commit)
+                    normalizer=normalizer.state_dict(),action_scaling='native[-1,1]',source_commit=args.source_commit,**labels)
                 torch.save(policy,args.output/f'policy_{steps}.pt')
                 save_seconds+=time.monotonic()-t
                 if args.eval_envs:
                     result=evaluate(learner,args.eval_envs,61027,normalizer,evaluation_environment_cache)
                     result.update(checkpoint_steps=steps,training_cumulative_cost=float(totals[0].cpu()),
-                        completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit)
+                        completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit,**labels)
+                    if admission is not None:result['selection_role']='formal_validation_not_independent_test'
                     eval_seconds+=result['elapsed_seconds'];eval_controls+=result['physical_controls']
                     atomic_json(args.output/f'validation_{steps}.json',result)
                 t=time.monotonic()
@@ -284,7 +302,8 @@ def main():
         profile_component_events=len(timing_events),profile_components=components,
         total_device_shared_memory_samples=gpu_memory_samples,torch_peak_memory_is_not_total_device_memory=True,
         full_replay_environment_partial_episode_rng_saved=True,
-        note='profile-only is engineering training,not a candidate;all actual rounded transitions charged'))
+        note=('fixed frozen-plan formal endpoint;all actual rounded transitions charged' if admission is not None
+              else 'profile-only is engineering training,not a candidate;all actual rounded transitions charged'),**labels))
     terminal['completed']=True
 
 

@@ -1,0 +1,56 @@
+{
+  "schema": "payload_fair_selection_v1",
+  "task": "SafePayloadTransport-v1",
+  "methods": {"sac_lag": "sac", "s_iso": "iso", "s_ea": "ea"},
+  "checkpoint_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
+  "cohorts": {
+    "development": {"training_seeds": [41027, 41028], "target_steps": 300000, "run_template": "payload-{short}-{seed}-v1"},
+    "confirmation": {"training_seeds": [51027, 51028, 51029], "target_steps": 600000, "run_template": "payload-{short}-{seed}-confirm-v1"}
+  },
+  "risk_qualification": {"nominal_max_violation": 0.05, "each_stress_max_violation": 0.10, "stress_mean_is_eligibility_rule": false},
+  "ranking": ["macro_safe_success_descending", "macro_capped_seconds_ascending", "candidate_id_for_exact_ties"],
+  "native_return": "retained diagnostic, never an extra tie priority",
+  "no_qualified_candidate": "explicit_Pareto_research_representative_not_eligible_deployment;same_task_ranking_within_front",
+  "horizon_seconds": 4.0,
+  "validation": {
+    "episodes_per_condition": 50, "layout_seed_start": 61027, "action_sampling_seed": 1961027,
+    "conditions": [
+      {"name": "nominal", "task_overrides": {}},
+      {"name": "radius_070", "task_overrides": {"obstacle_radius": 0.07}},
+      {"name": "payload_wide", "task_overrides": {"payload_half_extents": [0.035, 0.025, 0.02]}},
+      {"name": "execution_scale_085", "task_overrides": {}, "action_scale": 0.85},
+      {"name": "offset_route_candidate", "task_overrides": {}, "obstacle_offset": [0.045, 0.0, 0.04]}
+    ]
+  },
+  "independent_test": {
+    "episodes_per_condition": 100, "layout_seed_start": 71027, "action_sampling_seed": 1971027,
+    "requires_complete_frozen_selection": true,
+    "conditions": [
+      {"name": "nominal", "task_overrides": {}},
+      {"name": "radius_075_heldout", "task_overrides": {"obstacle_radius": 0.075}},
+      {"name": "payload_shape_heldout", "task_overrides": {"payload_half_extents": [0.032, 0.022, 0.024]}},
+      {"name": "execution_scale_080_heldout", "task_overrides": {}, "action_scale": 0.8},
+      {"name": "offset_route_candidate", "task_overrides": {}, "obstacle_offset": [0.045, 0.0, 0.04]}
+    ]
+  },
+  "route_qualification": {
+    "status": "registered_not_executed",
+    "fixed_obstacle_offset": [0.045, 0.0, 0.04],
+    "same_offset_seen_in_development": true,
+    "independence_claim": "new_test_layouts_and_policy_selection;offset_parameter_not_claimed_unseen",
+    "calibration_layout_seed_start": 62027, "calibration_layout_count": 10,
+    "action_sampling_seed": 1962027,
+    "source": "frozen selected policies nominal successful trajectories, pooled equally over methods",
+    "usual_route": "modal predefined sector family;ties deterministic;no selection using test results",
+    "truth_replay": "real openloop replay of recorded nominal executed actions from checked observed robot/gripper/payload/goal initial state, then explicit fixed obstacle translation; native20-substep labels;never feed truth to behavior",
+    "minimum_blocked_usual_route_fraction": 0.5,
+    "all_shifted_initial_states_must_be_safe": true,
+    "alternative": "one common predeclared high detour controller, same layouts, no oracle action reranking",
+    "minimum_alternative_safe_success_fraction": 0.8,
+    "failure_label": "offset_geometry_stress_only;alternative_route_claim_not_verified",
+    "test_offset_adaptation": false
+  },
+  "unavailable_candidates": "retain explicit terminal failure with evidence;pending or unexplained missing candidate blocks complete selection",
+  "fixed_endpoints": "always retain all final-seed results separately;selection never replaces fixed endpoints",
+  "independent_test_executed": false
+}

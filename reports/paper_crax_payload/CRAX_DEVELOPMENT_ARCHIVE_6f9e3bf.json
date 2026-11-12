@@ -1,5 +1,5 @@
 {
-  "status": "source_hashed_transfer_not_complete",
+  "status": "completed_verified_archive",
   "source_host": "tjucta-a100",
   "source_root": "/home/lzqw/SAFEFLOW2027_PAPER/runs",
   "destination_host": "4080",
@@ -9,31 +9,36 @@
       "name": "crax-sac-ref-41027-v1",
       "status": "completed",
       "steps": 1000192,
-      "full_learner_resume_saved": false
+      "full_learner_resume_saved": false,
+      "source_commit": "86669eeffeeb89a669537987eff8e2ce89c3ef0b"
     },
     {
       "name": "crax-sac-norm-41027-3m-v2",
       "status": "completed",
       "steps": 3000064,
-      "full_learner_resume_saved": true
+      "full_learner_resume_saved": true,
+      "source_commit": "e4ad097aeeed9c62fd8d9e33a0112fc08bb97674"
     },
     {
       "name": "crax-sac-norm-lagrate01-41027-3m-v3",
       "status": "completed",
       "steps": 3000064,
-      "full_learner_resume_saved": true
+      "full_learner_resume_saved": true,
+      "source_commit": "699c5bedf882a21ed31c02cfb2ac138c8fcd771e"
     },
     {
       "name": "crax-iso-norm-balanced-41027-500k-v1",
       "status": "completed",
       "steps": 500224,
-      "full_learner_resume_saved": true
+      "full_learner_resume_saved": true,
+      "source_commit": "cec7e5dfae0a2053d54a66e4dcbe9825987b80ea"
     },
     {
       "name": "crax-iso-nativedual-41027-500k-v3",
       "status": "completed",
       "steps": 500224,
-      "full_learner_resume_saved": true
+      "full_learner_resume_saved": true,
+      "source_commit": "699c5bedf882a21ed31c02cfb2ac138c8fcd771e"
     }
   ],
   "files": [
@@ -41,353 +46,485 @@
       "path": "crax-sac-ref-41027-v1/configuration.json",
       "bytes": 880,
       "sha256": "be33373dc008fcb6cd96ca30aa6c8c9f1398752184868d76e7d7c441ce6d1628",
-      "source_mtime_ns": 1794457202841265200,
-      "source_inode": 31361668,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794457202841265076",
+      "source_inode": "31361668",
+      "source_hardlink_count": 1,
+      "destination_bytes": 880,
+      "destination_sha256": "be33373dc008fcb6cd96ca30aa6c8c9f1398752184868d76e7d7c441ce6d1628",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-ref-41027-v1/policy_normalizer.pkl",
       "bytes": 333201,
       "sha256": "6008e5abba62c17d06d483a7f92626dd269acc606c5c8efab1268ae9cef0323f",
-      "source_mtime_ns": 1794457594192654600,
-      "source_inode": 31361755,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794457594192654637",
+      "source_inode": "31361755",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333201,
+      "destination_sha256": "6008e5abba62c17d06d483a7f92626dd269acc606c5c8efab1268ae9cef0323f",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-ref-41027-v1/receipt.json",
       "bytes": 1978,
       "sha256": "959e5ef17aba522cb01316292eb607a1b3a84f210d8abcf2c3d02dce29534eb3",
-      "source_mtime_ns": 1794457690752598300,
-      "source_inode": 31361765,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794457690752598252",
+      "source_inode": "31361765",
+      "source_hardlink_count": 1,
+      "destination_bytes": 1978,
+      "destination_sha256": "959e5ef17aba522cb01316292eb607a1b3a84f210d8abcf2c3d02dce29534eb3",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/checkpoint_plan.json",
       "bytes": 545,
       "sha256": "a373614b7f68797b85fe4ed924fd21c44c30aa1f550360eacdb513bea1e01172",
-      "source_mtime_ns": 1794459858052971300,
-      "source_inode": 31361885,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459858052971161",
+      "source_inode": "31361885",
+      "source_hardlink_count": 1,
+      "destination_bytes": 545,
+      "destination_sha256": "a373614b7f68797b85fe4ed924fd21c44c30aa1f550360eacdb513bea1e01172",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/checkpoint_status.json",
       "bytes": 1727,
       "sha256": "b264e9df460250d06dbdd768fa4ebfa1d7f6ff80b59301204de0990e925c5810",
-      "source_mtime_ns": 1794460527819618600,
-      "source_inode": 31361929,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460527819618684",
+      "source_inode": "31361929",
+      "source_hardlink_count": 1,
+      "destination_bytes": 1727,
+      "destination_sha256": "b264e9df460250d06dbdd768fa4ebfa1d7f6ff80b59301204de0990e925c5810",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/configuration.json",
       "bytes": 2464,
       "sha256": "6f0e213e0a0e19cf35914022349d20cb7625b5f683d37387828b6812c70d33eb",
-      "source_mtime_ns": 1794459858020969200,
-      "source_inode": 31361793,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459858020969170",
+      "source_inode": "31361793",
+      "source_hardlink_count": 1,
+      "destination_bytes": 2464,
+      "destination_sha256": "6f0e213e0a0e19cf35914022349d20cb7625b5f683d37387828b6812c70d33eb",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/full_latest.pkl",
       "bytes": 533462106,
       "sha256": "dd4e5b72a8a3c754b562bdb27ef1a490cee2c3f8ab60d60b8a19979951305973",
-      "source_mtime_ns": 1794460527551612000,
-      "source_inode": 31361930,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460527551611933",
+      "source_inode": "31361930",
+      "source_hardlink_count": 1,
+      "destination_bytes": 533462106,
+      "destination_sha256": "dd4e5b72a8a3c754b562bdb27ef1a490cee2c3f8ab60d60b8a19979951305973",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/policy_normalizer_1212160.pkl",
       "bytes": 333266,
       "sha256": "0c330711870d05b88d68ab02d0afd6e06edc1d7c9ef4daa6d205888f22676edb",
-      "source_mtime_ns": 1794460306801293300,
-      "source_inode": 31361922,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460306801293294",
+      "source_inode": "31361922",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "0c330711870d05b88d68ab02d0afd6e06edc1d7c9ef4daa6d205888f22676edb",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/policy_normalizer_1808128.pkl",
       "bytes": 333266,
       "sha256": "706fd1b798a8dec4a3a61572b6e29e2e6440fba3845b5c7bf9be58607d6a98e3",
-      "source_mtime_ns": 1794460381279611400,
-      "source_inode": 31361921,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460381279611482",
+      "source_inode": "31361921",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "706fd1b798a8dec4a3a61572b6e29e2e6440fba3845b5c7bf9be58607d6a98e3",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/policy_normalizer_2404096.pkl",
       "bytes": 333266,
       "sha256": "ae036a5520730f9026718de76af20ad8b5d7cb760c95557693b82953bcf6070c",
-      "source_mtime_ns": 1794460453709675300,
-      "source_inode": 31361928,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460453709675352",
+      "source_inode": "31361928",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "ae036a5520730f9026718de76af20ad8b5d7cb760c95557693b82953bcf6070c",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/policy_normalizer_3000064.pkl",
       "bytes": 333266,
       "sha256": "c345a276c9d9001adb877ca6b801c841d81f92f68f701d7f503c36642e2569d7",
-      "source_mtime_ns": 1794460527219603500,
-      "source_inode": 31361923,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460527219603572",
+      "source_inode": "31361923",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "c345a276c9d9001adb877ca6b801c841d81f92f68f701d7f503c36642e2569d7",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/policy_normalizer_616192.pkl",
       "bytes": 333266,
       "sha256": "3a643327e5f4d7ede2a0fea3d5325da520202b136853dc42f44e81b67cf40769",
-      "source_mtime_ns": 1794460226918550800,
-      "source_inode": 31361919,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460226918550836",
+      "source_inode": "31361919",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "3a643327e5f4d7ede2a0fea3d5325da520202b136853dc42f44e81b67cf40769",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-41027-3m-v2/receipt.json",
       "bytes": 1957,
       "sha256": "785a0504bbb82e5321c3a4a4323ccc25ad997199eaf413a544af5e468a151f7d",
-      "source_mtime_ns": 1794460530023674000,
-      "source_inode": 31361931,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794460530023674117",
+      "source_inode": "31361931",
+      "source_hardlink_count": 1,
+      "destination_bytes": 1957,
+      "destination_sha256": "785a0504bbb82e5321c3a4a4323ccc25ad997199eaf413a544af5e468a151f7d",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/checkpoint_plan.json",
       "bytes": 545,
       "sha256": "a373614b7f68797b85fe4ed924fd21c44c30aa1f550360eacdb513bea1e01172",
-      "source_mtime_ns": 1794461159331832300,
-      "source_inode": 31361936,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461159331832306",
+      "source_inode": "31361936",
+      "source_hardlink_count": 1,
+      "destination_bytes": 545,
+      "destination_sha256": "a373614b7f68797b85fe4ed924fd21c44c30aa1f550360eacdb513bea1e01172",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/checkpoint_status.json",
       "bytes": 1778,
       "sha256": "183f1f5ddf7e0642ac1284834ebcd3be14e660b18782f2c27be60e26717f12e7",
-      "source_mtime_ns": 1794461682916488700,
-      "source_inode": 31361960,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461682916488756",
+      "source_inode": "31361960",
+      "source_hardlink_count": 1,
+      "destination_bytes": 1778,
+      "destination_sha256": "183f1f5ddf7e0642ac1284834ebcd3be14e660b18782f2c27be60e26717f12e7",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/configuration.json",
       "bytes": 2463,
       "sha256": "a7e0cab609d6ac32fb1088179a1c8955b8df636edad77bff3566e96a15210dac",
-      "source_mtime_ns": 1794461159303831800,
-      "source_inode": 31361771,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461159303831872",
+      "source_inode": "31361771",
+      "source_hardlink_count": 1,
+      "destination_bytes": 2463,
+      "destination_sha256": "a7e0cab609d6ac32fb1088179a1c8955b8df636edad77bff3566e96a15210dac",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/full_latest.pkl",
       "bytes": 533462156,
       "sha256": "7cc4f8975f9f7ba7c87b34f314fef00f454adbcb30464847de1537b70383b5a8",
-      "source_mtime_ns": 1794461682660487200,
-      "source_inode": 31361966,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461682660487176",
+      "source_inode": "31361966",
+      "source_hardlink_count": 1,
+      "destination_bytes": 533462156,
+      "destination_sha256": "7cc4f8975f9f7ba7c87b34f314fef00f454adbcb30464847de1537b70383b5a8",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/policy_normalizer_1212160.pkl",
       "bytes": 333266,
       "sha256": "b9da0d91c78245d2d874e546645738b0e2716a49ea9f9d9971f85feebf9acc32",
-      "source_mtime_ns": 1794461444319273500,
-      "source_inode": 31361952,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461444319273546",
+      "source_inode": "31361952",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "b9da0d91c78245d2d874e546645738b0e2716a49ea9f9d9971f85feebf9acc32",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/policy_normalizer_1808128.pkl",
       "bytes": 333266,
       "sha256": "5df71eba12db5f1a9673267a1d6a1942555715c09fe5e3181aae26dc9622691b",
-      "source_mtime_ns": 1794461518599590400,
-      "source_inode": 31361956,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461518599590354",
+      "source_inode": "31361956",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "5df71eba12db5f1a9673267a1d6a1942555715c09fe5e3181aae26dc9622691b",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/policy_normalizer_2404096.pkl",
       "bytes": 333266,
       "sha256": "b3b8963ba5bfa1655f15a85571d73a13b94620d6a82a29e4d10fff76f318abf8",
-      "source_mtime_ns": 1794461606820042200,
-      "source_inode": 31361942,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461606820042341",
+      "source_inode": "31361942",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "b3b8963ba5bfa1655f15a85571d73a13b94620d6a82a29e4d10fff76f318abf8",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/policy_normalizer_3000064.pkl",
       "bytes": 333266,
       "sha256": "a817e5dc3cd529e4e3620280f7c68eaa9d4de5158520919e86c03513cbeadbef",
-      "source_mtime_ns": 1794461682336485000,
-      "source_inode": 31361965,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461682336485176",
+      "source_inode": "31361965",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "a817e5dc3cd529e4e3620280f7c68eaa9d4de5158520919e86c03513cbeadbef",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/policy_normalizer_616192.pkl",
       "bytes": 333266,
       "sha256": "d13a1d2217fd7775fa1a5630a80dd4021fac37456d697fe09625ee1514f8a208",
-      "source_mtime_ns": 1794461377079036200,
-      "source_inode": 31361948,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461377079036034",
+      "source_inode": "31361948",
+      "source_hardlink_count": 1,
+      "destination_bytes": 333266,
+      "destination_sha256": "d13a1d2217fd7775fa1a5630a80dd4021fac37456d697fe09625ee1514f8a208",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-sac-norm-lagrate01-41027-3m-v3/receipt.json",
       "bytes": 2007,
       "sha256": "8b428e8812ad206b6e707caacd5f916b5b4a68c7a25affccbd17bef7036f57b1",
-      "source_mtime_ns": 1794461683656493300,
-      "source_inode": 31361957,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461683656493328",
+      "source_inode": "31361957",
+      "source_hardlink_count": 1,
+      "destination_bytes": 2007,
+      "destination_sha256": "8b428e8812ad206b6e707caacd5f916b5b4a68c7a25affccbd17bef7036f57b1",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/configuration.json",
       "bytes": 7092,
       "sha256": "0386c9c17486e6d2b84dfa4c56075261adf81f91bcedc7cb51d315655d4a3611",
-      "source_mtime_ns": 1794459180053230800,
-      "source_inode": 31361863,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459180053230733",
+      "source_inode": "31361863",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7092,
+      "destination_sha256": "0386c9c17486e6d2b84dfa4c56075261adf81f91bcedc7cb51d315655d4a3611",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/full_latest.pt",
       "bytes": 277666383,
       "sha256": "89985b6679f7cf74da33013cd8e3ced63536de7c2aa6934fc6ab98fe06ecbeee",
-      "source_mtime_ns": 1794459783380030700,
-      "source_inode": 31361880,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459783380030818",
+      "source_inode": "31361880",
+      "source_hardlink_count": 1,
+      "destination_bytes": 277666383,
+      "destination_sha256": "89985b6679f7cf74da33013cd8e3ced63536de7c2aa6934fc6ab98fe06ecbeee",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/policy_100096.pt",
       "bytes": 7494359,
       "sha256": "b4af2d39936a2853fe34b101f5809ce565b81e1d20305506b0d898d0b71da903",
-      "source_mtime_ns": 1794459236348668400,
-      "source_inode": 31361866,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459236348668363",
+      "source_inode": "31361866",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494359,
+      "destination_sha256": "b4af2d39936a2853fe34b101f5809ce565b81e1d20305506b0d898d0b71da903",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/policy_200192.pt",
       "bytes": 7494359,
       "sha256": "e575e08a787396af1632bcfbcecc0622c5e0ccceb6c68ad66b173cc189944ea3",
-      "source_mtime_ns": 1794459441427505200,
-      "source_inode": 31361872,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459441427505212",
+      "source_inode": "31361872",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494359,
+      "destination_sha256": "e575e08a787396af1632bcfbcecc0622c5e0ccceb6c68ad66b173cc189944ea3",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/policy_300032.pt",
       "bytes": 7494359,
       "sha256": "f3baf827496a62a228f3b31384b19cdc0d5f074c6a94bb263f3da8a5d0ffcf64",
-      "source_mtime_ns": 1794459536494546400,
-      "source_inode": 31361874,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459536494546451",
+      "source_inode": "31361874",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494359,
+      "destination_sha256": "f3baf827496a62a228f3b31384b19cdc0d5f074c6a94bb263f3da8a5d0ffcf64",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/policy_400128.pt",
       "bytes": 7494359,
       "sha256": "32de2699a8fbc384cad9790672e8d23e6e3e77049399a40c9c7ed6d24e3c4f86",
-      "source_mtime_ns": 1794459631307877000,
-      "source_inode": 31361876,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459631307876996",
+      "source_inode": "31361876",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494359,
+      "destination_sha256": "32de2699a8fbc384cad9790672e8d23e6e3e77049399a40c9c7ed6d24e3c4f86",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/policy_500224.pt",
       "bytes": 7494359,
       "sha256": "e2b041cef66942bf0161ff2b8f90e0081df6727019e88654a72d98331ec5dcf5",
-      "source_mtime_ns": 1794459731844252700,
-      "source_inode": 31361867,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459731844252618",
+      "source_inode": "31361867",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494359,
+      "destination_sha256": "e2b041cef66942bf0161ff2b8f90e0081df6727019e88654a72d98331ec5dcf5",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-norm-balanced-41027-500k-v1/receipt.json",
       "bytes": 7209,
       "sha256": "3dd41751e44f2b5c741cb963ebed4cab00dda2fbe0849ea7dfd0044fde448e7b",
-      "source_mtime_ns": 1794459783380030700,
-      "source_inode": 31361881,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794459783380030818",
+      "source_inode": "31361881",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7209,
+      "destination_sha256": "3dd41751e44f2b5c741cb963ebed4cab00dda2fbe0849ea7dfd0044fde448e7b",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/configuration.json",
       "bytes": 7389,
       "sha256": "cad07c9b37a12701cd0c3c980ae9f6ad919765336c02ca973dbfbd104fe039fb",
-      "source_mtime_ns": 1794461169163984000,
-      "source_inode": 31361937,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461169163983875",
+      "source_inode": "31361937",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7389,
+      "destination_sha256": "cad07c9b37a12701cd0c3c980ae9f6ad919765336c02ca973dbfbd104fe039fb",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_100096.pt",
       "bytes": 67999567,
       "sha256": "4fd9d48db76692f280f1188e190aefce0f07188b08a0d6461adde6f7e0591e14",
-      "source_mtime_ns": 1794461274165559000,
-      "source_inode": 31361944,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461274165559118",
+      "source_inode": "31361944",
+      "source_hardlink_count": 1,
+      "destination_bytes": 67999567,
+      "destination_sha256": "4fd9d48db76692f280f1188e190aefce0f07188b08a0d6461adde6f7e0591e14",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_200192.pt",
       "bytes": 120448207,
       "sha256": "98cff59434b802aa19c8938cfe46a6308cd9a4d558bb0968a50793f74ac42f21",
-      "source_mtime_ns": 1794461367586902300,
-      "source_inode": 31361947,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461367586902245",
+      "source_inode": "31361947",
+      "source_hardlink_count": 1,
+      "destination_bytes": 120448207,
+      "destination_sha256": "98cff59434b802aa19c8938cfe46a6308cd9a4d558bb0968a50793f74ac42f21",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_300032.pt",
       "bytes": 172766095,
       "sha256": "5a99b71d8d97f83b92583c27b098f553524ff20aa8998f818e63437a81cbe9ce",
-      "source_mtime_ns": 1794461463059347500,
-      "source_inode": 31361954,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461463059347445",
+      "source_inode": "31361954",
+      "source_hardlink_count": 1,
+      "destination_bytes": 172766095,
+      "destination_sha256": "5a99b71d8d97f83b92583c27b098f553524ff20aa8998f818e63437a81cbe9ce",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_400128.pt",
       "bytes": 225216079,
       "sha256": "412ac3dcc918d5df5251a0d874ef205c533c6d6ca454974e1f076df24844818e",
-      "source_mtime_ns": 1794461557827782000,
-      "source_inode": 31361958,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461557827781920",
+      "source_inode": "31361958",
+      "source_hardlink_count": 1,
+      "destination_bytes": 225216079,
+      "destination_sha256": "412ac3dcc918d5df5251a0d874ef205c533c6d6ca454974e1f076df24844818e",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_500224.pt",
       "bytes": 277667087,
       "sha256": "06d537399b53d999e60a2184a307863ff2a7734cc28588261b1b4e09d7c13334",
-      "source_mtime_ns": 1794461656108326100,
-      "source_inode": 31361962,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461656108326034",
+      "source_inode": "31361962",
+      "source_hardlink_count": 1,
+      "destination_bytes": 277667087,
+      "destination_sha256": "06d537399b53d999e60a2184a307863ff2a7734cc28588261b1b4e09d7c13334",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/full_latest.pt",
       "bytes": 277667087,
       "sha256": "465b7d4aa6e8db1f5859c066aba34f56aef5e9f86571075396da3cb346418427",
-      "source_mtime_ns": 1794461656840330500,
-      "source_inode": 31361963,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461656840330401",
+      "source_inode": "31361963",
+      "source_hardlink_count": 1,
+      "destination_bytes": 277667087,
+      "destination_sha256": "465b7d4aa6e8db1f5859c066aba34f56aef5e9f86571075396da3cb346418427",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/policy_100096.pt",
       "bytes": 7494551,
       "sha256": "9f9c0709f3772000df75f64d0518c4200778c6fc92613359f4043cf42af49078",
-      "source_mtime_ns": 1794461225744842200,
-      "source_inode": 31361940,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461225744842150",
+      "source_inode": "31361940",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494551,
+      "destination_sha256": "9f9c0709f3772000df75f64d0518c4200778c6fc92613359f4043cf42af49078",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/policy_200192.pt",
       "bytes": 7494551,
       "sha256": "6c682557b634fc6a985b5050eb07b72d130034d4b8efcd72946cc5e34d46e22b",
-      "source_mtime_ns": 1794461319438216200,
-      "source_inode": 31361945,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461319438216217",
+      "source_inode": "31361945",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494551,
+      "destination_sha256": "6c682557b634fc6a985b5050eb07b72d130034d4b8efcd72946cc5e34d46e22b",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/policy_300032.pt",
       "bytes": 7494551,
       "sha256": "7574f001b8b64b235826bb301587dcdce8caa980b1361f178ef0f596da941351",
-      "source_mtime_ns": 1794461414551165200,
-      "source_inode": 31361951,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461414551165108",
+      "source_inode": "31361951",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494551,
+      "destination_sha256": "7574f001b8b64b235826bb301587dcdce8caa980b1361f178ef0f596da941351",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/policy_400128.pt",
       "bytes": 7494551,
       "sha256": "4c1a813806e782f326f6665e14c454ab33dce9fc23a766a2d6f98c79276cadb1",
-      "source_mtime_ns": 1794461509375547600,
-      "source_inode": 31361955,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461509375547641",
+      "source_inode": "31361955",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494551,
+      "destination_sha256": "4c1a813806e782f326f6665e14c454ab33dce9fc23a766a2d6f98c79276cadb1",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/policy_500224.pt",
       "bytes": 7494551,
       "sha256": "06a8be29b33111bc9d6ef4dc595afdfe7d1b406e8d4d992d9304e6872bde8553",
-      "source_mtime_ns": 1794461607788047600,
-      "source_inode": 31361959,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461607788047709",
+      "source_inode": "31361959",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7494551,
+      "destination_sha256": "06a8be29b33111bc9d6ef4dc595afdfe7d1b406e8d4d992d9304e6872bde8553",
+      "size_and_sha256_match": true
     },
     {
       "path": "crax-iso-nativedual-41027-500k-v3/receipt.json",
       "bytes": 7213,
       "sha256": "dffe440ec685f4022d577de10edd98784a0895870a7d9871170c8f8037701a24",
-      "source_mtime_ns": 1794461656840330500,
-      "source_inode": 31361964,
-      "source_hardlink_count": 1
+      "source_mtime_ns": "1794461656840330401",
+      "source_inode": "31361964",
+      "source_hardlink_count": 1,
+      "destination_bytes": 7213,
+      "destination_sha256": "dffe440ec685f4022d577de10edd98784a0895870a7d9871170c8f8037701a24",
+      "size_and_sha256_match": true
     }
   ],
   "total_logical_bytes": 2565010425,
@@ -396,5 +533,22 @@
   "new_training_transitions": 0,
   "new_simulator_queries": 0,
   "new_real_interactions": 0,
-  "scope": "only five explicitly completed scientific runs;archival is not a new scientific validation;old raw accounting evidence retained as-is"
+  "scope": "only five explicitly completed scientific runs;archival is not a new scientific validation;old raw accounting evidence retained as-is",
+  "completed_at_local": "2026-11-12T14:38:27+08:00",
+  "artifact_tag": "crax-development-6f9e3bf_not_a_claim_all_training_used_this_source",
+  "source_originals_currently_present_unchanged": true,
+  "source_before_after_metadata_check": "mtime_ns and inode compared as exact decimal strings;no IEEE754 rounding",
+  "all_44_destination_sizes_and_sha256_matched": true,
+  "missing_files": [],
+  "unexpected_files": [],
+  "transfer": {
+    "kind": "SSH_tar_A100_through_local_PIPE_to_4080",
+    "exit_code": 0,
+    "automatic_retries": 0,
+    "local_large_file_staging": false,
+    "overwrite_policy": "new_unique_target_mkdir_then_tar_keep_old_files",
+    "source_deleted": false,
+    "target_deleted": false
+  },
+  "large_checkpoints_in_GitHub": false
 }

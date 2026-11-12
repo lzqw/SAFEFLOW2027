@@ -28,6 +28,46 @@
   "selected_candidates": [],
   "candidate_history": [
     {
+      "trial_id": "crax-ea-nativedual-41027-2m-v3",
+      "task": "PointGoal",
+      "method": "ea",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1200128,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-2m-v3/validation_1200128.json"
+        },
+        {
+          "checkpoint_steps": 1600000,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-2m-v3/validation_1600000.json"
+        },
+        {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-2m-v3/validation_2000128.json"
+        },
+        {
+          "checkpoint_steps": 800000,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-2m-v3/validation_800000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-ea-nativedual-41027-4m-v3",
+      "task": "PointGoal",
+      "method": "ea",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 2400000,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-4m-v3/validation_2400000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
       "trial_id": "crax-ea-nativedual-41027-500k-v3",
       "task": "PointGoal",
       "method": "ea",
@@ -36,6 +76,22 @@
         {
           "checkpoint_steps": 100096,
           "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_100096.json"
+        },
+        {
+          "checkpoint_steps": 200192,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_200192.json"
+        },
+        {
+          "checkpoint_steps": 300032,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_300032.json"
+        },
+        {
+          "checkpoint_steps": 400128,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_400128.json"
+        },
+        {
+          "checkpoint_steps": 500224,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41027-500k-v3/validation_500224.json"
         }
       ],
       "selection_performed": false,
@@ -68,6 +124,28 @@
       "test_used_for_selection": false
     },
     {
+      "trial_id": "crax-iso-nativedual-41027-4m-v3",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 2400000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-4m-v3/validation_2400000.json"
+        },
+        {
+          "checkpoint_steps": 3200000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-4m-v3/validation_3200000.json"
+        },
+        {
+          "checkpoint_steps": 4000000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-4m-v3/validation_4000000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
       "trial_id": "crax-iso-nativedual-41027-500k-v3",
       "task": "PointGoal",
       "method": "stable_iso",
@@ -92,6 +170,36 @@
         {
           "checkpoint_steps": 500224,
           "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_500224.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-iso-nativedual-41028-2m-v3",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 41028,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1200128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41028-2m-v3/validation_1200128.json"
+        },
+        {
+          "checkpoint_steps": 1600000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41028-2m-v3/validation_1600000.json"
+        },
+        {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41028-2m-v3/validation_2000128.json"
+        },
+        {
+          "checkpoint_steps": 400128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41028-2m-v3/validation_400128.json"
+        },
+        {
+          "checkpoint_steps": 800000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41028-2m-v3/validation_800000.json"
         }
       ],
       "selection_performed": false,
@@ -304,6 +412,20 @@
         {
           "checkpoint_steps": 60000,
           "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "piper-reach-iso-41027-v1",
+      "task": "Piper-Reach",
+      "method": "Iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/piper-reach-iso-41027-v1/evaluation_60000.json"
         }
       ],
       "selection_performed": false,

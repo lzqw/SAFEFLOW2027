@@ -21,6 +21,9 @@ import time
 
 import numpy as np
 
+from scripts.paper_crax_payload.formal_admission import (
+    admit_run, native_runtime_parameters, phase_fields, require_resume_phase)
+
 
 CRAX_COMMIT='63504b540705be98024abd675e646ff5e046c6c2'
 TRAIN_SHA256='e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4'
@@ -136,11 +139,14 @@ class ExplicitCheckpointStop(RuntimeError):
 
 class FullCheckpointManager:
     def __init__(self,output,settings,*,resume=None,allow_target_extension=False,
-                 stop_after_epochs=0,candidate_count=5,backend=None):
+                 stop_after_epochs=0,candidate_count=5,backend=None,phase_metadata=None,
+                 invocation_source_commit=None):
         if not 1<=candidate_count<=5:
             raise ValueError('At most five predeclared eligible checkpoints')
         self.output=Path(output);self.output.mkdir(parents=True,exist_ok=True)
         self.settings=deepcopy(settings);self.candidate_count=candidate_count
+        self.phase_metadata=deepcopy(phase_metadata or {})
+        self.invocation_source_commit=invocation_source_commit
         self.allow_target_extension=allow_target_extension
         self.stop_after_epochs=stop_after_epochs
         self.backend=backend;self.payload=None;self.resume_available=resume is not None
@@ -152,6 +158,7 @@ class FullCheckpointManager:
             with Path(resume).open('rb') as stream:self.payload=pickle.load(stream)
             if not isinstance(self.payload,dict) or self.payload.get('format')!=CHECKPOINT_FORMAT:
                 raise ValueError('Not a full native SAC checkpoint; policy-only reference cannot resume')
+            require_resume_phase(self.phase_metadata.get('formal_admission'),self.payload)
             if self.payload['native_train_sha256']!=TRAIN_SHA256 or self.payload['crax_commit']!=CRAX_COMMIT:
                 raise ValueError('Pinned scientific source mismatch')
             if self.payload['settings']!=self.settings:
@@ -198,7 +205,8 @@ class FullCheckpointManager:
                     raise ValueError('Extension lacks an earlier required candidate artifact; use a fresh fairly budgeted run')
         _atomic_json(self.output/'checkpoint_plan.json',self.plan|dict(format=CHECKPOINT_FORMAT,
             resume_available=self.resume_available,initial_steps=self.initial_steps,
-            fixed_native_train_sha256=TRAIN_SHA256,selection='exactly declared candidate_epochs;other host epochs ineligible'))
+            fixed_native_train_sha256=TRAIN_SHA256,selection='exactly declared candidate_epochs;other host epochs ineligible',
+            **self.phase_metadata))
         return stride,epochs
 
     def is_candidate_epoch(self,epoch):
@@ -239,7 +247,7 @@ class FullCheckpointManager:
             _atomic_pickle(path,dict(params=(host['training_state'].normalizer_params,
                 host['training_state'].policy_params),steps=int(current_step),completed_epoch=completed_epoch,
                 source='official_SAC_Lag_full_state',normalizer_saved=True,
-                validation_status='pending_offline_common_validation;native_eval_is_diagnostic'))
+                validation_status='pending_offline_common_validation;native_eval_is_diagnostic',**self.phase_metadata))
             self.candidates=[c for c in self.candidates if c['completed_epoch']!=completed_epoch]
             self.candidates.append(dict(completed_epoch=completed_epoch,steps=int(current_step),path=str(path.resolve())))
         logger_attributes={name:deepcopy(getattr(logger,name)) for name in
@@ -251,12 +259,23 @@ class FullCheckpointManager:
             replay_python_size=getattr(replay,'_size',0),logger_state=dict(
                 attributes=logger_attributes,metrics_buffer={k:list(v) for k,v in logger._metrics_buffer.items()}),
             candidate_checkpoints=self.candidates,evaluation_calls=self.evaluation_calls,
-            python_rng=random.getstate(),numpy_rng=np.random.get_state(),metrics=self.last_metrics)
+            python_rng=random.getstate(),numpy_rng=np.random.get_state(),metrics=self.last_metrics,**self.phase_metadata)
         _atomic_pickle(self.output/'full_latest.pkl',payload)
         eligible=[c for c in self.candidates if c['completed_epoch'] in self.plan['candidate_epochs']]
         raw_cost=np.asarray(host['env_state'].info['paper_total_cost']).sum()
         raw_goals=np.asarray(host['env_state'].info['paper_total_goals']).sum()
         self.checkpoint_seconds+=time.monotonic()-started
+        # Prospective compact history, not a reconstruction of missing old
+        # candidate costs. No extra full/replay save and no SGD/physics change.
+        history=dict(steps=int(current_step),completed_epoch=completed_epoch,
+            initial_steps=self.initial_steps,new_training_transitions=int(current_step)-self.initial_steps,
+            training_cumulative_cost=float(raw_cost),training_cumulative_goals=float(raw_goals),
+            cost_per_1000_transitions=1000*float(raw_cost)/max(int(current_step),1),
+            evaluation_calls=self.evaluation_calls,candidate_eligible=self.is_candidate_epoch(completed_epoch),
+            invocation_source_commit=self.invocation_source_commit,phase='development')
+        history.update(self.phase_metadata)
+        with (self.output/'checkpoint_history.jsonl').open('a') as stream:
+            stream.write(json.dumps(history,allow_nan=False)+'\n')
         _atomic_json(self.output/'checkpoint_status.json',dict(status='saved_host_boundary',
             format=CHECKPOINT_FORMAT,steps=int(current_step),initial_steps=self.initial_steps,
             new_training_transitions=int(current_step)-self.initial_steps,
@@ -265,7 +284,7 @@ class FullCheckpointManager:
             training_cumulative_cost=float(raw_cost),training_cumulative_goals=float(raw_goals),
             evaluation_calls=self.evaluation_calls,candidate_checkpoints=eligible,
             selection_opportunity_limit=self.candidate_count,epoch_plan=self.plan,
-            full_state_fields=list(host),checkpoint_seconds_this_invocation=self.checkpoint_seconds))
+            full_state_fields=list(host),checkpoint_seconds_this_invocation=self.checkpoint_seconds,**self.phase_metadata))
         self.epochs_this_invocation+=1
         if self.stop_after_epochs and self.epochs_this_invocation>=self.stop_after_epochs:
             raise ExplicitCheckpointStop('Explicit engineering stop after a fully saved host epoch')
@@ -293,7 +312,16 @@ def main():
     parser.add_argument('--skip-native-evaluation',action='store_true')
     parser.add_argument('--epoch-actor-steps',type=int,default=0,
                         help='Engineering-only fixed host epoch size for one small actual resume check')
+    parser.add_argument('--phase',choices=['development','formal'],default='development')
+    parser.add_argument('--formal-plan',type=Path)
     args=parser.parse_args()
+    admission=admit_run(phase=args.phase,plan_path=args.formal_plan,method='sac_lag',
+        seed=args.seed,steps=args.steps,source_commit=args.source_commit,
+        runtime_parameters=native_runtime_parameters(args),forbidden_flags=dict(
+            engineering_check=args.engineering_check,skip_native_evaluation=args.skip_native_evaluation,
+            epoch_actor_steps=args.epoch_actor_steps,stop_after_epochs=args.stop_after_epochs,
+            individual_target_extension=args.allow_target_extension))
+    labels=phase_fields(admission)
     if args.steps<=args.min_replay_size or args.steps<=0:parser.error('A finite target beyond prefill is required')
     if args.lagrangian_lr<=0:parser.error('Positive explicit Lagrangian base LR required')
     if (args.skip_native_evaluation or args.epoch_actor_steps) and not args.engineering_check:
@@ -336,7 +364,8 @@ def main():
     wrapper_module=importlib.import_module('scripts.paper_crax_payload.native_sac_reference')
     settings['paper_reset_wrapper_file_sha256']=hashlib.sha256(Path(wrapper_module.__file__).read_bytes()).hexdigest()
     manager=FullCheckpointManager(args.output,settings,resume=args.resume,
-        allow_target_extension=args.allow_target_extension,stop_after_epochs=args.stop_after_epochs)
+        allow_target_extension=args.allow_target_extension,stop_after_epochs=args.stop_after_epochs,
+        phase_metadata=labels,invocation_source_commit=args.source_commit)
     if args.epoch_actor_steps:
         original_plan=manager.epoch_plan
         def engineering_plan(stride,epochs,target,prefill,actor_steps,devices,processes):
@@ -346,7 +375,7 @@ def main():
     _atomic_json(args.output/'configuration.json',dict(settings=settings,requested_steps=args.steps,
         source_commit=args.source_commit,checkpoint_kind=CHECKPOINT_FORMAT,
         actual_native_source_guard=True,common_validation='offline_on_exactly_five_saved_candidates',
-        resume_from=str(args.resume) if args.resume else None))
+        resume_from=str(args.resume) if args.resume else None,**labels))
     def progress(step,metrics):
         row=dict(steps=int(step),elapsed_seconds=time.monotonic()-started,
                  metrics={k:float(np.asarray(v).mean()) for k,v in metrics.items()})
@@ -386,7 +415,7 @@ def main():
             full_training_including_compile_eval_save_sps=(manager.last_steps-manager.initial_steps)/elapsed,
             full_state_resume_saved=True,five_candidate_schedule=manager.plan['candidate_epochs'],
             eligible_candidates=status['candidate_checkpoints'],native_train_sha256=TRAIN_SHA256,
-            inner_scientific_functions_unchanged=list(CORE_FUNCTIONS),new_real_robot_interactions=0))
+            inner_scientific_functions_unchanged=list(CORE_FUNCTIONS),new_real_robot_interactions=0,**labels))
     finally:
         acting.actor_step=original_actor_step
 

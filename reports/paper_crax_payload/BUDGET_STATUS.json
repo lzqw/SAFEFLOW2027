@@ -1,23 +1,23 @@
 {
-  "as_of": "2026-11-12T14:24:00+08:00",
+  "as_of": "2026-11-12T15:12:00+08:00",
   "whole_goal_complete": false,
   "PointGoal_development": {
     "cap_training_transitions": 24000000,
-    "observed_completed_training_including_engineering": 9640192,
+    "observed_completed_training_including_engineering": 15640320,
     "failed_profile_source_inferred_training_not_in_observed_total": 29696,
     "conservative_failed_profile_reservation_instead_of_inferred_total": 98304,
-    "conservatively_charged": 9738496,
+    "conservatively_charged": 15738624,
     "major_configurations_launched": 6,
     "major_configuration_cap": 6,
     "formal_training_started": false,
     "formal_budget_not_spent_or_reclassified_as_development": true,
-    "remaining_after_completed_and_failed_reservation": 14261504,
+    "remaining_after_completed_and_failed_reservation": 8261376,
     "active_new_training_reservations": {
-      "Iso_2M_to_4M": 1999872,
-      "EA_fresh_500k_rounded": 500224
+      "EA_first_seed_2M_to_4M": 1999872,
+      "EA_second_seed_2M_rounded": 2000128
     },
-    "total_reserved_completed_plus_active_targets": 12238592,
-    "remaining_after_active_target_reservations": 11761408
+    "total_reserved_completed_plus_active_targets": 19738624,
+    "remaining_after_active_target_reservations": 4261376
   },
   "Payload_development": {
     "cap_training_transitions": 3000000,
@@ -40,7 +40,7 @@
     "physical_connection_authorized": false,
     "candidate_queue_jobs_reserved_A100": 3,
     "candidate_queue_jobs_prepared_4080": 3,
-    "observed_new_candidate_training_lower_bound": 5000
+    "observed_new_candidate_training_lower_bound": 60000
   },
   "Arm_mechanism": {
     "cap_new_training": 3000000,

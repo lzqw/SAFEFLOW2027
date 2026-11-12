@@ -1,5 +1,10 @@
 # CRAX：一次针对 learner 的批处理优化
 
+状态补记：下文保留实现当时的计划与验证记录。一次同配置 Fast v3 复核现已完成，
+实测末段2481.83SPS、runner全程837.75SPS；完整范围和限制见
+[最终profile记录](CRAX_FAST_PROFILE.md)。这里的“等待复核”不再是当前待办，
+不得据此重复启动profiling。
+
 ## 实际瓶颈，不是环境FPS
 
 优化前来源是 `f6731395bc5e2b06eed4641ab4242f6fd0b73a6e`，三个
