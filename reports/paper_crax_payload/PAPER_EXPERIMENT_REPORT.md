@@ -71,7 +71,8 @@ selection.
   Iso, Iso-Low, and EA Reach simulations are complete. The final EA 300k
   evaluation (30 episodes per condition) achieved nominal safe success 1.00,
   new-geometry safe success 0.333, and execution-scale-0.85 safe success
-  0.833; no collision was recorded. The receipt records 6,000,000 training
+  0.833; Iso reached 0.900/0.300/0.833 and Iso-Low reached 0/0/0 with
+  timeouts. No collision was recorded in the three EA conditions. The receipt records 6,000,000 training
   physics substeps, 6,318,898 distance queries, 29,311.6 seconds elapsed, and
   zero physical-robot interactions. Piper remains simulation-only; no CAN,
   SDK motion, or random physical exploration was enabled.
