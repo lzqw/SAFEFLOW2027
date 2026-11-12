@@ -1,181 +1,90 @@
-# Interim paper experiment results — 2026-11-12
+# SAFEFlow CRAX / Payload / Piper — verified delivery report
 
-This is development progress, not a completed paper comparison. Independent
-branch from `fc5716e`; historical results remain unchanged. Registered budgets,
-seeds and selection rules: [protocol](EXPERIMENT_PROTOCOL.md).
+Date: 2026-11-13. This report is the current status of the compact artifacts
+on `codex/paper-crax-payload-v1`; historical interim reports are retained under
+the same directory.
 
-Development learning curves (all observed points, no smoothing or seed selection):
-[PointGoal](learning-curves-pointgoal-development.png) ·
-[Payload](learning-curves-payload-development.png). The accompanying plot receipt
-records exact input CSV hashes; these plots are snapshots, not live dashboards.
+## 1. Fast and effective PointGoal configuration
 
-## 1. Is PointGoal fast and effective?
+The frozen PointGoal matrix contains three methods (SAC-Lag, Stable-Iso, EA),
+three training seeds, and 10M transitions per run. Common validation used five
+seeds, five checkpoint opportunities, and 50 episodes per candidate (225
+candidate/seed evaluations). The common risk rule was mean episode cost ≤25.
 
-The official native task runs on A100, with 1000 control steps, goal refresh,
-raw cumulative safety costs, observation dimension 62 and action dimension 2.
-Budget is 25 per episode. No physics or hazards were simplified.
+| method | selected seed/checkpoint | common cost | common goals/episode | independent cost | independent goals/episode |
+|---|---:|---:|---:|---:|---:|
+| SAC-Lag | 51029 / 2,016,256 | 11.63 | 1.66 | 13.20 | 1.93 |
+| Stable-Iso | 51028 / 10,000,128 | 24.02 | 27.52 | 26.85 | 28.29 |
+| EA | 51029 / 8,000,000 | 22.00 | 35.26 | 21.32 | 35.43 |
 
-| Development run, seed 41027 | Actual training | Goals/episode | Mean cost | Evaluation |
-|---|---:|---:|---:|---|
-| SAC, no normalization | 1,000,192 | 0.30 | 72.23 | common validation, 50 episodes |
-| SAC, normalized, dual LR .01, fixed endpoint | 3,000,064 | 33.74 | 87.20 | common validation, 50 episodes |
-| SAC, normalized, dual LR .1, fixed endpoint | 3,000,064 | 30.08 | 61.22 | common validation, 50 episodes |
-| SAC LR .01, intermediate candidate | 1,808,128 checkpoint | 3.12 | 18.57 | common validation, 50 episodes |
-| Flow-Iso, normalized, episode dual | 500,224 | 0.12 | 2.60 | common validation, 50 episodes |
-| Flow-Iso, normalized, native-unit dual | 500,224 | 0.00 | 0.082 | common validation, 50 episodes |
-| Same Flow-Iso, genuine continuation | 2,000,128 | 3.82 | 61.23 | common validation, 50 episodes |
-| Same Flow-Iso, fixed4M development endpoint | 4,000,000 | 12.42 | 43.67 | common validation, 50 episodes |
-| Paired EA, early development screen | 500,224 | 0.00 | 0.0044 | common validation, 50 episodes |
-| Same EA, matched2M development endpoint | 2,000,128 | 0.42 | 11.30 | common validation, 50 episodes |
-| Iso second seed41028, fixed2M endpoint | 2,000,128 | 10.50 | 81.62 | common validation, 50 episodes |
+EA is the overall task-performing risk-qualified candidate. Its exact policy
+bytes were tested on five fresh independent seeds ×100 episodes. Measured
+PointGoal full-training SPS and checkpoint details are in
+`CRAX_POINTGOAL_RESULTS.csv`, `POINTGOAL_SELECTION_AND_INDEPENDENT_20261113.md`,
+and `pointgoal-formal-selection-20261113/`.
 
-Both normalized SAC runs now have all five checkpoints assessed on the same
-61027 layouts (500 episodes/500000 additional nontraining controls in total).
-The LR .01 intermediate candidate reaches at least one goal in90% of episodes;
-74% meet budget, with budget-compliant mean return2.0. It is a useful development
-candidate, not yet a selected or independently tested strategy. Its source run's
-entire3M training remains charged, not just the candidate's1.81M prefix.
-SAC learns the task but both fixed3M endpoints exceed the safety budget. Iso's
-500k low cost reflected stagnation, not success. At2M it finally learns the task:
-88% reach at least one goal, but only50% meet budget and mean cost remains high.
-Its budget-compliant mean return is1.52 over25episodes. No cost-qualified final
-Flow configuration or PointGoal EA benefit has been established. Iso bookkeeping is
-recovered explicitly from complete raw replay for continuation; original evidence
-is kept. Subsequent native boundaries now accumulate properly (1024 completed
-episodes at1029376 transitions). [Repair and limitations](EPISODE_ACCOUNTING_RECOVERY.md).
+## 2. Engineering acceleration versus method changes
 
-At4M Iso reaches98% at-least-one-goal and12.42 goals/episode, but only44% meet
-budget25; budget-compliant return is4.9091 over22episodes. Task ability improves
-without a claim of safety-budget compliance. EA's500k low cost is another early
-stagnant screen, not a benefit claim. It now continues to the same2M learning
-budget. A second Iso development seed41028 has completed, with all results retained.
+Engineering changes include batched head-VJPs and joint target draws: the Fast
+EA profile increased steady throughput from 1,082 to 2,482 transitions/s at
+matched sampling settings. Compiled evaluation reuse also reduced repeated
+validation overhead. These are throughput changes, not evidence of an
+algorithmic task gain. Algorithmic changes are the native cumulative-cost
+learner, Stable-Iso covariance, EA directional geometry, and their fixed
+training/selection rules. The final Piper EA run reports 10.256 transitions/s
+end-to-end on A100 GPU0 and 298,000 learner updates for 300,000 collected
+transitions.
 
-Second Iso seed41028 is now complete: at1.6M it had1.54 goals,88% at-least-one-goal,
-cost17.62; at2M it reached10.5 goals and100% at-least-one-goal, but cost81.62.
-The lower-cost intermediate is not substituted for that fixed endpoint. Paired
-EA2M has0.42 goals/30% reach, cost11.30: lower risk but much weaker task progress,
-not a joint improvement. EA seed41027 continues to4M and second seed41028 starts
-the same2M development budget. No seventh major recipe is launched.
+## 3. Independent EA benefit
 
-EA4M reaches18.22 goals/episode and100% at-least-one-goal versus Iso's12.42, with
-mean costs46.61 versus43.67; both remain above budget25. EA second seed at2M is
-5.28 goals/cost66.58. These are development tradeoffs, not independent-test or
-deployment claims. The common10M formal matrix is now frozen and active; first
-formal SAC seed51027 completed10,000,384 actual transitions (11,997.98 full-run
-SPS including its native diagnostics), while remaining eight runs are finite-queue
-scheduled. Actual rounded counts, not nominal10M, are authoritative.
+All three selected methods received the same common-validation and locked
+independent-test procedure. On the independent test, EA reached 35.43
+goals/episode at mean cost 21.32, versus Stable-Iso 28.29 at 26.85 and SAC-Lag
+1.93 at 13.20. Thus EA provides the strongest task progress among the
+risk-qualified candidates while remaining below Stable-Iso's independent mean
+cost. This is a selected-policy comparison, not a claim that every seed wins.
 
-SAC LR .1 end-to-end throughput was 5701 transitions/s including compilation,
-native evaluation and saves (offline common validation is separately charged).
-Iso's latest full 500k run was 1005 transitions/s,
-with 240/498 seconds spent evaluating. Compiled evaluation reuse is implemented
-in the2M continuation: four full validations cost112 seconds total, versus240
-seconds for five previously recompiled validations (different sample counts and
-shared load, not a clean causal speed benchmark). Actual new1,499,904 transitions
-took971.10 seconds including compilation/evaluation/saves,1544.55SPS.
-See [measured profiles](CRAX_FAST_PROFILE.md).
+## 4. Seeds, endpoints, and failures
 
-## 2. Engineering gains versus algorithm changes
+All nine formal PointGoal runs and their fixed endpoints are retained; weak
+intermediate checkpoints, failed profiling attempts, and negative baselines
+are not hidden. Policy hashes, common-validation receipts, independent-test
+receipts, and the complete candidate history are stored in
+`pointgoal-formal-selection-20261113/` and `TRIAL_LEDGER.csv`. Selection was
+performed before the independent test; the independent test did not alter the
+selection.
 
-Batched head VJPs and joint target draws increased Fast EA profile steady training
-throughput from 1082 to 2482 transitions/s at the same E/B/G and sample counts.
-This is an engineering profile, not a learned task result; whole short-run
-throughput including compilation/saves is substantially lower. Profiles have
-different replay exposure and cannot establish method superiority.
+## 5. Payload, robustness, mechanisms, and Piper
 
-Normalization and the revised dual recipe are explicit scientific configuration
-changes. Old results are retained. A frozen gradient probe found weighted cost
-gradient norm 18.44 times reward gradient norm, but positive alignment and
-negative cost-Q predictions prevent a simple causal explanation of stagnation.
-[Full diagnostic and limitations](CRAX-GRADIENTS-ISO500K-CEC.md).
+- Payload common validation contains all 30 registered candidates. SAC-Lag
+  seed 41028 at 300k is the deployment-eligible risk-qualified candidate;
+  Stable-Iso and EA stress/offset trade-offs remain explicitly reported.
+  Held-out condition summaries are in `PAYLOAD_RESULTS.csv`,
+  `ROBUSTNESS_RESULTS.csv`, and the Payload independent-test report.
+- Robustness includes geometry, execution, and alternative-route conditions;
+  the offset-route diagnostic is marked as not proving initial admissibility.
+- Arm M1–M4, PointGoal common-state analysis, and the small theory numerics are
+  recorded in `MECHANISM_RESULTS.csv`, `ARMMECHANISM_REPORT.md`, and
+  `THEORY_NUMERICS.md`. They are diagnostic evidence, not a universal risk
+  certificate.
+- Piper uses the pinned official standard Piper arm and standard gripper model.
+  Iso, Iso-Low, and EA Reach simulations are complete. The final EA 300k
+  evaluation (30 episodes per condition) achieved nominal safe success 1.00,
+  new-geometry safe success 0.333, and execution-scale-0.85 safe success
+  0.833; no collision was recorded. The receipt records 6,000,000 training
+  physics substeps, 6,318,898 distance queries, 29,311.6 seconds elapsed, and
+  zero physical-robot interactions. Piper remains simulation-only; no CAN,
+  SDK motion, or random physical exploration was enabled.
 
-## 3. Fair selection and independent EA benefit
+## 6. Actual cost and reproducibility
 
-Not established. No formal selection has occurred and independent 71027-series
-tests remain unused. Up to five prospective policy checkpoints per training seed
-are retained. After Iso learned at2M, same-config Iso continuation to4M and paired
-EA initial500k were launched; this consumes the sixth and last major configuration
-slot. Formal three-method, three-seed training has not started.
+Actual training budgets and non-training simulator queries are recorded in
+`TRIAL_LEDGER.csv`, `NATIVE_PROGRESS.json`, and the method receipts. Large
+checkpoints remain server-side/4080 archive; GitHub contains code, compact
+results, configurations, reports, and receipts. Required delivery artifacts
+are present in this directory: protocol, fast profile, PointGoal/Payload/
+robustness/mechanism/parameter tables, model selection, trial ledger, Piper
+deployment plan, and this report. No physical interaction cost was incurred.
 
-## 4. Full endpoints, seeds and failures
-
-Development seeds are 41027/41028; formal seeds 51027/51028/51029 remain registered.
-All available checkpoints, intermediate validation and weak endpoints remain.
-Three initial profiling runs failed in preheat logging, before optimizer updates;
-their native counters were not persisted. Source inference is 29,696 collected
-transitions, and the full 98,304 requested budget is conservatively reserved.
-Costs are unknown, not zero. [Failure accounting](CRAX_PROFILE_V1_FAILURES.json).
-
-One actual native SAC full-state recovery check passed learner/replay/key byte
-comparison and native-state numerical comparison, not whole-state bitwise
-identity. Small derived COM/angular-momentum differences are disclosed in its
-comparison artifacts. No historical long evaluation was rerun.
-
-## 5. Payload, generalization, mechanisms and Piper
-
-- Payload: two first-seed 300k endpoints completed. Both SAC and Iso reached
-  100% nominal safe success with zero violations in 30 development episodes.
-  Across four stress conditions, SAC safe success was 90.0%, Iso 74.2%.
-  Offset-obstacle safe success was only 63.3%/43.3%, respectively. These are
-  development conditions, not independent selected-policy tests. EA first
-  seed and Iso second seed are running; SAC second seed has also completed300k,
-  and EA second seed remains queued. See every condition in the result CSV.
-  SAC second seed also reaches100% nominal safe success; its four stress safe
-  success rates are96.7%,83.3%,100%,80.0%, with corresponding violations retained.
-- Reach M1–M3: completed on 128 fresh common states × 64 draws, all four old
-  actors, plus 720 route episodes. Directional-Full improves risk versus
-  Iso-High but does not dominate Iso-Low; pullback does not win every actor.
-  [Actual findings](ARMMECHANISM_REPORT.md). M4 four synthetic checks completed.
-- Independent generalization, PointGoal common-state mechanisms and formal
-  Payload confirmation remain pending. Constructive detours are feasibility
-  checks, not learned-policy success or route-adaptation evidence.
-- A small PointGoal common-state mechanism analysis is now complete: 32 distinct
-  frozen states ×16 draws, Iso/EA actors with reference/Pullback samplers,
-  2,208 nontraining controls (160 finite-difference labels +2,048 action labels).
-  Four states account for all positive-cost labels (12.5% of draws); Pullback has
-  no native-cost reduction in this small pool. Endpoint VN/VT changes are local
-  proxy diagnostics only, not an interval-risk certificate or global policy gain.
-- Piper: user confirmed standard arm and standard gripper. Pinned official model,
-  Reach/Payload simulation, genuine Iso-Low engineering save/resume, offline
-  recording and timeout handling are implemented. Six native simulation
-  candidates are split without duplication: one finite A100GPU0 shared slot now
-  runs Reach Iso→Iso-Low→EA; the4080Payload trio waits for Payload research slots.
-  First native Reach-Iso60k development evaluation is weak: nominal safe success
-  16.7%/violation83.3%, new geometry3.3%/96.7%, action-scale16.7%/83.3%,30episodes
-  per condition. These unsafe early results remain; none is a selected/exported
-  deployment candidate. Registered300k training continues, no physical motion.
-  Hardware calibration/firmware/TCP/limits remain onsite inputs. Physical
-  transport and motion remain disabled; zero real interactions.
-
-## 6. Actual costs and remaining work
-
-[Trial ledger](TRIAL_LEDGER.csv) and [native snapshot](NATIVE_PROGRESS.json) retain
-actual completed segments and observed active lower bounds. Additional engineering
-costs include Payload 3220 training/222 nontraining controls; Piper 3220 training/
-130 nontraining controls including its separate original smoke; native SAC
-recovery 8448 training; CRAX bridge 10 nontraining controls; Reach mechanisms
-437,685 nontraining controls. Frozen gradient analysis uses no environment steps.
-Failed-profile conservative reservation is separate from observed actual totals.
-Completed large CRAX artifacts were streamed to the4080 4T archive without
-local staging or deletion of A100 originals. The first five completed scientific
-runs are archived and verified:44files,2,565,010,425bytes, all source/destination
-sizes and hashes match. [Verified manifest](CRAX_DEVELOPMENT_ARCHIVE_6f9e3bf.json).
-Later2M/4M and active continuations are separate from that exact archived scope.
-
-The whole objective remains active: effective shared Flow/EA development, fair
-formal PointGoal comparison, Payload development and confirmation, selected-policy
-independent tests, PointGoal mechanism supplement and native Piper deployment
-candidates/dry-run bundles are still required. Optional CVPO is nonblocking.
-Physical experiments require a separate onsite enabling decision. The first five
-completed Flow development runs are archived on4080 4T with verified sizes/SHA
-(89 files, 12,463,654,160 bytes); all A100 originals remain. A separate proposal
-lists 19 numbered snapshots for possible offload, but no deletion has occurred.
-
-Prepared, not executed: [formal PointGoal admission](../../docs/paper_crax_payload/formal_admission.md)
-retains all nine registered runs and refuses an unfrozen/common-budget mismatch;
-[Payload selection workflow](PAYLOAD_SELECTION_WORKFLOW.md) registers30 development
-or45 confirmation candidates, strict per-condition risk qualification and locked
-held-out tests. Small PointGoal32-state×16-draw mechanism code is prepared for one
-later admitted frozen comparison, not counted as a completed mechanism result.
-The existing finite queue can bind each next job to the actually released GPU
-slot. Focused CPU contracts for this preparation add no training or simulator queries.
+The final selection JSON is `MODEL_SELECTION.json`; its previous interim
+version is retained as `MODEL_SELECTION_HISTORY.json`.

@@ -32,8 +32,11 @@
 - Arm mechanisms M1–M4 and the small PointGoal common-state mechanism analysis
   are retained in the mechanism reports.
 - Piper assets, model identity, simulation interfaces, dry-run boundaries, and
-  no-motion physical safety constraints are prepared. Iso and Iso-Low Reach
-  simulations are complete; EA Reach simulation is still running.
+  no-motion physical safety constraints are prepared. Iso, Iso-Low, and EA
+  Reach simulations are complete. The EA 300k endpoint ran at 10.26
+  transitions/s; its 30-episode simulation evaluation was 100% nominal safe
+  success, 33.3% safe success under new geometry, and 83.3% under execution
+  scale 0.85, with zero recorded collisions. No physical motion was enabled.
 
 ## Remaining gate
 
