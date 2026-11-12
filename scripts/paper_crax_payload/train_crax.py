@@ -34,12 +34,18 @@ def finite_number(value):
     return float(value) if np.isfinite(value) else None
 
 
-def evaluate(learner, num_envs, seed, normalizer=None):
+def evaluate(learner, num_envs, seed, normalizer=None, environment_cache=None):
     """One complete native episode per fresh env; no adaptation or rollout-RNG use."""
     start = time.monotonic()
     with isolated_rng():
-        env = PointGoalTorch(num_envs, seed, str(learner.device))
-        obs = env.reset()
+        env=None if environment_cache is None else environment_cache.get('env')
+        if env is None:
+            env=PointGoalTorch(num_envs,seed,str(learner.device))
+            if environment_cache is not None:environment_cache['env']=env
+        if env.num_envs!=num_envs:raise ValueError('Do not silently change evaluation episode batch')
+        # Reuse the already compiled simulator, not the previous episode/state.
+        # Every checkpoint still gets the identical fresh seeded native layouts.
+        obs = env.reset(seed=seed)
         rng = torch.Generator(device=learner.device).manual_seed(seed + 1)
         active = torch.ones(num_envs, dtype=torch.bool, device=learner.device)
         returns = torch.zeros(num_envs, device=learner.device)
@@ -149,7 +155,7 @@ def main():
         jax_compilation_cache_dir=os.environ.get('JAX_COMPILATION_CACHE_DIR'),
         engineering_profile_overrides=dict(critic_only_updates=0,geometry_beta=1.) if args.profile_only else None))
     checkpoints=[] if args.profile_only else sorted(set(((int(args.steps*f)+E-1)//E)*E for f in master['selection']['candidate_checkpoint_fractions'] if int(args.steps*f)>initial_steps))
-    timing_events=[];gpu_memory_samples=[]
+    timing_events=[];gpu_memory_samples=[];evaluation_environment_cache={}
     log_fields=['steps','new_steps','elapsed_seconds','steady_training_sps','end_to_end_sps','updates_per_second','training_cumulative_cost','cost_per_1000_transitions','completed_episodes','recent_native_return','recent_episode_cost','recent_goals','recent_at_least_one_goal','peak_torch_memory_mib','learner_updates','actor_updates','geometry_weight','energy','alpha','multiplier']
     progress=args.output/'progress.csv'
     terminal={'completed':False}
@@ -241,7 +247,7 @@ def main():
                 torch.save(policy,args.output/f'policy_{steps}.pt')
                 save_seconds+=time.monotonic()-t
                 if args.eval_envs:
-                    result=evaluate(learner,args.eval_envs,61027,normalizer)
+                    result=evaluate(learner,args.eval_envs,61027,normalizer,evaluation_environment_cache)
                     result.update(checkpoint_steps=steps,training_cumulative_cost=float(totals[0].cpu()),
                         completed_training_episodes=int(totals[1].cpu()),source_commit=args.source_commit)
                     eval_seconds+=result['elapsed_seconds'];eval_controls+=result['physical_controls']

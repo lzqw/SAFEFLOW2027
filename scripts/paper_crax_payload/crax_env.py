@@ -70,7 +70,10 @@ class PointGoalTorch:
         self._step = jax.jit(step)
         self.state = None
 
-    def reset(self):
+    def reset(self, seed=None):
+        if seed is not None:
+            self.seed=int(seed)
+            self.key=jax.random.PRNGKey(self.seed)
         self.key, key = jax.random.split(self.key)
         self.state = self._reset(jax.random.split(key, self.num_envs))
         obs = jax_to_torch(self.state.obs)
