@@ -1,0 +1,50 @@
+{
+  "status": "completed",
+  "source_commit": "f6731395bc5e2b06eed4641ab4242f6fd0b73a6e",
+  "steps": 32768,
+  "requested_steps": 32768,
+  "initial_steps": 0,
+  "new_training_transitions": 32768,
+  "total_training_cumulative_cost": 3156.26025390625,
+  "completed_training_episodes": 0,
+  "evaluation_controls": 0,
+  "new_real_robot_interactions": 0,
+  "learner_updates": 200,
+  "reward_updates": 400,
+  "actor_updates": 100,
+  "margin_updates": 200,
+  "reset_compile_seconds": 9.826608059927821,
+  "first_step_compile_seconds": 11.834103521890938,
+  "elapsed_seconds": 61.7632981648203,
+  "full_training_including_compile_eval_save_sps": 530.5416157109352,
+  "evaluation_seconds": 0.0,
+  "save_seconds": 0.13180256797932088,
+  "profile_only": true,
+  "profile_component_events": 49,
+  "profile_components": {
+    "actor_cuda_ms_per_vector_step": 25.08185577392578,
+    "environment_bridge_cuda_ms_per_vector_step": 17.58412742614746,
+    "replay_learner_cuda_ms_per_vector_step": 449.6148376464844
+  },
+  "total_device_shared_memory_samples": [
+    {
+      "steps": 9984,
+      "nvidia_smi": "0, 3276 MiB, 81920 MiB, 12 %\n1, 3304 MiB, 81920 MiB, 51 %"
+    },
+    {
+      "steps": 19968,
+      "nvidia_smi": "0, 3276 MiB, 81920 MiB, 87 %\n1, 3438 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 29952,
+      "nvidia_smi": "0, 3412 MiB, 81920 MiB, 67 %\n1, 2528 MiB, 81920 MiB, 50 %"
+    },
+    {
+      "steps": 32768,
+      "nvidia_smi": "0, 3412 MiB, 81920 MiB, 66 %\n1, 3124 MiB, 81920 MiB, 44 %"
+    }
+  ],
+  "torch_peak_memory_is_not_total_device_memory": true,
+  "full_replay_environment_partial_episode_rng_saved": true,
+  "note": "profile-only is engineering training,not a candidate;all actual rounded transitions charged"
+}

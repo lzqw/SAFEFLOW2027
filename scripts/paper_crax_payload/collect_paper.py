@@ -34,18 +34,25 @@ def refresh(report):
     ledger_path=report/'TRIAL_LEDGER.csv'
     with ledger_path.open() as stream:
         ledger_reader=csv.DictReader(stream);ledger_fields=ledger_reader.fieldnames;ledger={r['trial_id']:r for r in ledger_reader}
+    failures=read(report/'CRAX_PROFILE_V1_FAILURES.json')
+    failed_jobs={r['trial_id']:r for r in failures.get('jobs',[])}
     for directory in sorted((report/'native_runs').glob('*')):
         config=read(directory/'run_config.json') or read(directory/'configuration.json')
         if not config:continue
+        if 'settings' in config:
+            config=config|config['settings']
+            config['method']='sac_lag_native'
+            config['phase']='engineering' if config.get('engineering_check') else 'development'
         receipt=read(directory/'receipt.json');status=read(directory/'status.json')
+        checkpoint_status=read(directory/'checkpoint_status.json')
         history=[]
         if (directory/'progress.jsonl').exists():
             history=[json.loads(line) for line in (directory/'progress.jsonl').read_text().splitlines() if line.strip()]
         latest=receipt or status or (history[-1] if history else {})
-        steps=latest.get('steps',0);initial=config.get('initial_steps',0)
+        steps=max(latest.get('steps',0),checkpoint_status.get('steps',0));initial=receipt.get('initial_steps',checkpoint_status.get('initial_steps',config.get('initial_steps',0)))
         new=receipt.get('newly_collected_transitions',receipt.get('new_training_transitions',steps-initial))
         training+=new
-        cost=latest.get('training_violation_count',latest.get('training_cumulative_cost',latest.get('total_training_cumulative_cost')))
+        cost=latest.get('training_violation_count',latest.get('training_cumulative_cost',latest.get('total_training_cumulative_cost',checkpoint_status.get('training_cumulative_cost'))))
         queries=0
         for evaluation_path in sorted(directory.glob('evaluation_*.json')):
             evaluation=read(evaluation_path);queries+=evaluation.get('physical_evaluation_transitions',0)
@@ -77,10 +84,21 @@ def refresh(report):
                 full_training_sps=receipt.get('full_training_including_compile_eval_save_sps'),
                 capped_first_goal_seconds=validation.get('capped_first_goal_seconds'),
                 conditional_first_goal_seconds=validation.get('conditional_first_goal_seconds'),source_commit=config['source_commit']))
-        queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0))
+        if 'native_evaluation_controls_this_invocation' in receipt:
+            # Offline common validation is ADDITIONAL to native diagnostics.
+            # A resumed segment must not inherit the parent's diagnostic count.
+            queries+=receipt['native_evaluation_controls_this_invocation']
+        else:
+            inherited_calls=0
+            resume_path=config.get('resume_from')
+            if resume_path:
+                inherited_calls=read(report/'native_runs'/PurePosixPath(resume_path).parent.name/'checkpoint_status.json').get('evaluation_calls',0)
+            native_calls=max(0,checkpoint_status.get('evaluation_calls',0)-inherited_calls)
+            queries=max(queries,receipt.get('evaluation_controls',0),receipt.get('physical_evaluation_transitions',0),native_calls*50*config.get('episode_length',1000))
         physical+=queries
         trial_status='completed' if receipt.get('status')=='completed' else status.get('state',status.get('status','observed_not_liveness_proof'))
-        task='payload' if config.get('task')=='SafePayloadTransport-v1' else 'PointGoal'
+        if directory.name in failed_jobs:trial_status='failed_preheat_logging;source_inferred_steps_and_full_budget_reserve_in_CRAX_PROFILE_V1_FAILURES'
+        task=('Piper-'+str(config.get('task'))) if config.get('robot_family')=='Piper' else ('payload' if config.get('task')=='SafePayloadTransport-v1' else 'PointGoal')
         ledger[directory.name]=dict(trial_id=directory.name,task=task,phase=config.get('phase','development'),status=trial_status,
             method=config.get('method'),seed=config.get('training_seed',config.get('seed')),
             actual_new_training_transitions=new,new_nontraining_simulator_controls=queries,new_real_robot_interactions=0,
@@ -114,6 +132,7 @@ def refresh(report):
         observed_new_training_transitions_lower_bound=training,observed_native_evaluation_controls=physical,
         trials=trials,payload_condition_rows=len(results),pointgoal_validation_rows=len(point_results),whole_goal_complete=False,
         note='report-only snapshot;no live process claims,no new training,no physics,no large checkpoints copied')
+    summary['crax_v1_failure_training_budget_reserve']=failures.get('conservative_development_budget_reservation',0)
     (report/'NATIVE_PROGRESS.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary
 

@@ -88,7 +88,12 @@ class PointGoalTorch:
         # pinned legacy capsule helper cannot carry that stream handshake.
         jax_action = jax.dlpack.from_dlpack(action.detach().contiguous())
         self.state, obs, reward, done, info, self.key = self._step(self.state, jax_action, self.key)
-        return jax_to_torch(obs), jax_to_torch(reward), jax_to_torch(done).bool(), jax_to_torch(info)
+        # Preserve the boolean DLPack object itself. The official helper first
+        # allocates a JAX float cast; chaining a Torch .bool() drops that foreign
+        # temporary while its asynchronous consumer can still be pending.
+        # Avoid this unnecessary conversion/lifetime boundary, without a host sync.
+        torch_done=torch.utils.dlpack.from_dlpack(done)
+        return jax_to_torch(obs), jax_to_torch(reward), torch_done, jax_to_torch(info)
 
     def effective_config(self):
         n = self.native

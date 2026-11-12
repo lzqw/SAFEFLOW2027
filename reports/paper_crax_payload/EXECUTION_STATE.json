@@ -1,51 +1,96 @@
 {
-  "status":"active_implementation_and_fresh_development",
-  "baseline_commit":"fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
-  "branch":"codex/paper-crax-payload-v1",
-  "whole_goal_complete":false,
-  "scientific_targets_achieved":false,
-  "task_file":"MASTER_TASK.md",
-  "previous_goal_turn_classification":"new_goal;implementation_and_verified_new_native_training_progress",
-  "payload":{
-    "source_commit":"fe04b21b574da0b3bf326699feacb5b58de043ea",
-    "host":"4080","queue_pid":3401203,"native_pids":[3401225,3401226],
-    "queue_state":"/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
-    "declared_scientific_transitions":1800000,"initial_jobs":"SAC41027,Iso41027;remaining4auto_fill",
-    "observed_training_steps_lower_bound":{"sac41027":9000,"iso41027":7000},
-    "observed_at_local":"2026-11-12 11:48 Asia/Taipei",
-    "engineering_new_training":3220,"engineering_nontraining_sim_controls":222,
-    "full_native_resume_passed":true,"completed_development_endpoints":0
+  "status": "active_implementation_and_fresh_development",
+  "baseline_commit": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+  "branch": "codex/paper-crax-payload-v1",
+  "whole_goal_complete": false,
+  "scientific_targets_achieved": false,
+  "task_file": "MASTER_TASK.md",
+  "previous_goal_turn_classification": "new_goal;implementation_and_verified_new_native_training_progress",
+  "payload": {
+    "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+    "host": "4080",
+    "queue_pid": 3401203,
+    "native_pids": [
+      3520324,
+      3613987
+    ],
+    "queue_state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
+    "declared_scientific_transitions": 1800000,
+    "initial_jobs": "SAC41027 andIso41027 completed;EA41027 andSAC41028 active;two pending",
+    "observed_training_steps_lower_bound": {
+      "sac41027": 300000,
+      "iso41027": 300000,
+      "ea41027": 102000,
+      "sac41028": 201000
+    },
+    "observed_at_local": "2026-11-12 11:48 Asia/Taipei",
+    "engineering_new_training": 3220,
+    "engineering_nontraining_sim_controls": 222,
+    "full_native_resume_passed": true,
+    "completed_development_endpoints": 2
   },
-  "arm_mechanism":{
-    "source_commit":"fe04b21b574da0b3bf326699feacb5b58de043ea",
-    "host":"tjucta-a100","gpu":1,"native_pid":4016671,
-    "output":"/home/lzqw/SAFEFLOW2027_PAPER/analysis/arm-mechanism-fe04b21",
-    "states":128,"draws_per_state":64,"observed_pool_controls":542,
-    "new_training":0,"status":"running;final_receipt_required_for_total_query_accounting"
+  "arm_mechanism": {
+    "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+    "host": "tjucta-a100",
+    "gpu": 1,
+    "native_pid": 4016671,
+    "output": "/home/lzqw/SAFEFLOW2027_PAPER/analysis/arm-mechanism-fe04b21",
+    "states": 128,
+    "draws_per_state": 64,
+    "new_training": 0,
+    "status": "completed",
+    "new_nontraining_simulator_controls": 437685
   },
-  "CRAX":{
-    "official_commit":"63504b540705be98024abd675e646ff5e046c6c2",
-    "isolated_env":"/home/lzqw/SAFEFLOW2027_PAPER/env",
-    "status":"dependency_install_and_bridge_implementation_not_yet_GPU_verified",
-    "download_acceleration":"4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
-    "full_training_profile_completed":false,"native_SAC_reference_started":false,
-    "actual_training_transitions":0
+  "CRAX": {
+    "official_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "isolated_env": "/home/lzqw/SAFEFLOW2027_PAPER/env",
+    "status": "nativeGPUprofiles_and_five_major_development_configs_completed;Flowtask_learning_unresolved",
+    "download_acceleration": "4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
+    "full_training_profile_completed": true,
+    "native_SAC_reference_started": true,
+    "actual_training_transitions": 8140288,
+    "configuration_registry": "CONFIGURATION_REGISTRY.json",
+    "episode_boundary_bookkeeping": "latestIsofullreplay contains256truncations butrunnercount0;focusednontrainingdiagnosis underway",
+    "formal_runs_started": false,
+    "independent_test_consumed": false
   },
-  "Piper":{
-    "user_identified_model":"Piper standard","user_identified_gripper":"standard",
-    "real_hardware_connection_enabled":false,"real_interactions":0,
-    "official_model_smoke_sim_controls":8,"trained_native_candidates":0,
-    "physical_calibration_firmware_workspace_limits":"pending_operator_confirmation;not_a_blocker_for_simulation"
+  "Piper": {
+    "user_identified_model": "Piper standard",
+    "user_identified_gripper": "standard",
+    "real_hardware_connection_enabled": false,
+    "real_interactions": 0,
+    "official_model_smoke_sim_controls": 8,
+    "trained_native_candidates": 0,
+    "physical_calibration_firmware_workspace_limits": "pending_operator_confirmation;not_a_blocker_for_simulation",
+    "engineering_training": 3220,
+    "nontraining_sim_controls": 130,
+    "native_sim_candidate_training_started": false
   },
-  "next_required_actions":[
-    "finish_isolated_CRAX_dependencies_and_actual_GPU_bridge_semantics_roundtrip",
-    "run_one_short_complete_training_profile_and_native_SAC_reference_in_parallel",
-    "develop_effective_Iso_then_EA_under24M_cap_with_fair_candidates",
-    "collect_all_six_Payload300k_endpoints_then_targeted_development_and_common_confirmation",
-    "collect_actual128x64_frozen_mechanism_receipt_and_complete_independent_generalization",
-    "train_native_standard_Piper_simulation_candidates_and_deployment_bundles_without_physical_motion",
-    "freeze_and_run_registered_PointGoal_core_main_comparison_not_just_best_seed",
-    "publish_actual_results_ledgers_curves_and_full_six_question_final_report"
+  "next_required_actions": [
+    "resolve focusedCRAXepisode bookkeeping andcontinueexistingIso configuration ifsafe",
+    "complete identical common validation ofnormalizedSACcandidates",
+    "learn effectiveIso thenEA under24M/sixconfigcap",
+    "complete sixPayload300k endpoints andfairconfirmation",
+    "selected-policyindependentgeneralization andPointGoalcommonstates",
+    "nativePiper candidates andofflineexportdryrun;nohardwaremotion",
+    "freezeandrunregisteredformalPointGoalcomparison",
+    "publishactualinterimresults andfullfinalsixquestionreport whencomplete"
   ],
-  "foreign_workloads_changed":false,"5080_used":false,"historical_results_modified":false
+  "foreign_workloads_changed": false,
+  "5080_used": false,
+  "historical_results_modified": false,
+  "observed_at_local": "2026-11-12 13:59 Asia/Taipei",
+  "observers": {
+    "interval_seconds": 1800,
+    "A100": {
+      "pid": 4191500,
+      "snapshot": "/home/lzqw/SAFEFLOW2027_PAPER/queues/paper-observer-latest.json"
+    },
+    "RTX4080": {
+      "pid": 3627156,
+      "snapshot": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/paper-observer-latest.json"
+    },
+    "read_only": true,
+    "automatic_restart": false
+  }
 }

@@ -1,0 +1,32 @@
+/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/io/mjcf.py:492: UserWarning: Brax System, piplines and environments are not actively being maintained. Please see MJX for a well maintained JAX-based physics engine: https://github.com/google-deepmind/mujoco/tree/main/mjx. For a host of environments that use MJX, see: https://github.com/google-deepmind/mujoco_playground.
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/validate_native_sac_common.py", line 202, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/validate_native_sac_common.py", line 159, in main
+    compiled=evaluate.lower(first_params,reset_keys,noise_key).compile()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/validate_native_sac_common.py", line 141, in evaluate
+    final=jax.lax.scan(step,(state,totals,active,noise_key,first_goal),jp.arange(horizon))[0]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/validate_native_sac_common.py", line 133, in step
+    action,_=policy(state.obs,noise)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/training/agents/sac_lag/networks.py", line 49, in policy
+    logits = sac_lag_networks.policy_network.apply(*params, observations)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/training/networks.py", line 371, in apply
+    return policy_module.apply(policy_params, obs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/training/networks.py", line 101, in __call__
+    hidden = linen.Dense(
+             ^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/flax/linen/linear.py", line 263, in __call__
+    kernel = self.param(
+             ^^^^^^^^^^^
+flax.errors.ScopeParamShapeError: Initializer expected to generate shape (1, 62, 256) but got shape (62, 256) instead for parameter "kernel" in "/hidden_0". (https://flax.readthedocs.io/en/latest/api_reference/flax.errors.html#flax.errors.ScopeParamShapeError)
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

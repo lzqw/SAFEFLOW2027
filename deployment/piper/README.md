@@ -2,7 +2,8 @@
 
 This package never opens CAN or imports/initializes the robot SDK. Physical
 motion is not implemented or authorized. User identified the standard Piper and
-standard gripper; the pinned official standard URDF is selected. TCP, firmware,
+standard gripper; model/gripper identity is CONFIRMED, not an unanswered field.
+The pinned official standard URDF is selected. Measured TCP, firmware,
 calibrated frame, control period, workspace, payload and speed limits remain
 missing; fill `hardware_pending.json` with the on-site operator. Provisional
 simulation limits do **not** substitute for those answers.
@@ -56,4 +57,39 @@ feasibility is recorded separately, not counted as a learned policy result.
 The real experiment generator produces 360 **planned** trials, interleaving
 Iso/Iso-Low/EA within task/condition/repetition blocks. A separately enabled
 on-site implementation is needed before execution. Protection parameters must
-be common across methods. Training/real adaptation is also not enabled.
+be common across methods. Physical robot training/real adaptation is not enabled.
+
+## Simulation candidates: finite queues prepared, not yet launched
+
+The approved native Payload Iso-Low CPU engineering run completed3210→3220
+transitions with full replay/RNG/partial-state recovery, source70269ac. Its
+actual variance.01/energy target75/initialalpha.0002 are retained, but that smoke
+is not an eligible deployment policy. No six-trial Piper candidate run or
+independent test has been performed yet. Raw evidence and accounting are linked
+from `../../reports/paper_crax_payload/PIPER_TRAINING_IMPLEMENTATION.md`.
+
+Six fresh candidates are registered: Reach/Payload ×Iso/Iso-Low/EA ×seed41027,
+300k each, total1.8M. With the already charged3220 engineering transitions, the
+planned training charge is1,803,220 of3M, not six copies of a3M allowance.
+`configs/paper_crax_payload/piper_queue_4080_v1.json` is the combined two-slot
+finite plan. The disjoint `piper_queue_4080_slot0_v1.json` and `slot1_v1.json`
+are an alternative when slots are released separately; never launch both the
+combined plan and partitions. They contain the same six unique native outputs,
+not extra candidates or repetitions. Each method has the same five checkpoints
+and common validation; no engineering weight or old Panda policy is transferred.
+
+Prioritize pending Payload jobs, then fill a verified free slot with a one-slot
+Piper partition without waiting for an unrelated occupied slot. Use the combined
+plan only when two slots are free. A coordinator must first inspect actual
+native handles, GPU/disk, absent state/output/log paths and pinned source/assets.
+The admission text is a coordinator preflight contract, not an implemented extra
+watchdog or automatically enforced cross-queue scheduler. Do not restart any
+failed job invisibly or stop foreign processes to make room. No5080 or hardware.
+
+Official assets are already staged on4080 under
+`/home/carla/4T/SAFEFLOW2027_PAPER/vendor/piper-model-cache`; receipt
+`/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json` verifies
+the same model commit/source URDF/mesh hashes. Absolute mesh URI resolution gives
+a server-specific resolved-URDF digest; that is not a change to official geometry.
+Only assets were staged: training still needs its exact committed source deployed
+and explicit resource admission. No simulator steps were used to stage assets.

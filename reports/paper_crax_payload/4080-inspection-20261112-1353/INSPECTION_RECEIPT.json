@@ -1,0 +1,26 @@
+{
+  "host": "4080",
+  "server_inspection_time": "2026-11-12T13:53:51+08:00",
+  "native_source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+  "queue_pid": 3401203,
+  "queue_status": "running",
+  "completed_trials": ["payload-sac-41027-v1", "payload-iso-41027-v1"],
+  "live_native_trials_verified_by_ps_and_exact_command": [
+    {"name": "payload-ea-41027-v1", "pid": 3520324, "copied_status_steps": 102000},
+    {"name": "payload-sac-41028-v1", "pid": 3613987, "copied_status_steps": 201000}
+  ],
+  "pending_payload_jobs": 2,
+  "gpu": {"index": 0, "name": "NVIDIA GeForce RTX 4080 SUPER", "free_MiB": 14011, "total_MiB": 16376, "utilization_percent": 99},
+  "fixed300k_development_summary": [
+    {"method": "sac_lag", "training_seed": 41027, "steps": 300000, "nominal_safe_success": 1.0, "nominal_violation": 0.0, "stress_safe_success_mean": 0.9, "stress_violation_mean": 0.09166666666666666, "stress_safe_timeout_mean": 0.008333333333333333, "training_violations": 777, "training_episodes": 14440, "physical_evaluation_transitions": 12827},
+    {"method": "s_iso", "training_seed": 41027, "steps": 300000, "nominal_safe_success": 1.0, "nominal_violation": 0.0, "stress_safe_success_mean": 0.7416666666666667, "stress_violation_mean": 0.25, "stress_safe_timeout_mean": 0.008333333333333333, "training_violations": 1063, "training_episodes": 14409, "physical_evaluation_transitions": 12328}
+  ],
+  "evaluation_scope": "30episodes percondition at development layouts; one trainingseed; not independent validation/test or deploymentselection",
+  "retained_evidence": "all available compact JSON/JSONL of the four observed runs copied into this timestamped snapshot; no replay or weights copied into GitHub",
+  "piper_admission_decision": "not launched: two live Payload jobs and two pending; preserve priority and shared slots",
+  "inspection_new_training_transitions": 0,
+  "inspection_new_simulation_control_intervals": 0,
+  "physical_robot_interactions": 0,
+  "foreign_processes_stopped": false,
+  "5080_used": false
+}

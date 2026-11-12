@@ -1,0 +1,63 @@
+{
+  "status": "saved_host_boundary",
+  "format": "SAFEFlow-native-SAC-Lag-full-host-epoch-v1",
+  "steps": 3000064,
+  "initial_steps": 0,
+  "new_training_transitions": 3000064,
+  "gradient_steps": 46560,
+  "training_cumulative_cost": 229606.40625,
+  "training_cumulative_goals": 28570.0,
+  "evaluation_calls": 6,
+  "candidate_checkpoints": [
+    {
+      "completed_epoch": 1,
+      "steps": 616192,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-sac-norm-41027-3m-v2/policy_normalizer_616192.pkl"
+    },
+    {
+      "completed_epoch": 2,
+      "steps": 1212160,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-sac-norm-41027-3m-v2/policy_normalizer_1212160.pkl"
+    },
+    {
+      "completed_epoch": 3,
+      "steps": 1808128,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-sac-norm-41027-3m-v2/policy_normalizer_1808128.pkl"
+    },
+    {
+      "completed_epoch": 4,
+      "steps": 2404096,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-sac-norm-41027-3m-v2/policy_normalizer_2404096.pkl"
+    },
+    {
+      "completed_epoch": 5,
+      "steps": 3000064,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-sac-norm-41027-3m-v2/policy_normalizer_3000064.pkl"
+    }
+  ],
+  "selection_opportunity_limit": 5,
+  "epoch_plan": {
+    "target_steps": 3000000,
+    "prefill_steps": 20224,
+    "actor_steps": 256,
+    "actor_epoch_steps": 2328,
+    "total_epochs": 5,
+    "candidate_count": 5,
+    "actual_rounded_final_steps": 3000064,
+    "candidate_epochs": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "full_state_fields": [
+    "buffer_state",
+    "env_state",
+    "evaluator_key",
+    "local_key",
+    "training_state"
+  ],
+  "checkpoint_seconds_this_invocation": 72.4541527593974
+}

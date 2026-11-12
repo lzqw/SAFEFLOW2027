@@ -4,8 +4,10 @@ Status: source implemented; two constructive task routes and three focused
 contracts passed. No six-trial development training has been launched by this
 implementation. One explicitly approved3210→3220 engineering continuation
 completed on localCPU with pinned source70269ac59a9ac3130a378eb4dbd9ea81798f9887.
-No physical robot transport or
-motion is enabled, and an engineering checkpoint is not a deployment candidate.
+No physical robot transport or motion is enabled, and an engineering checkpoint
+is not a deployment candidate. Model and gripper identity are user-confirmed
+standard Piper/standard gripper; remaining physical calibration is a different
+pending item, not missing model identification.
 
 ## Model and genuine task feasibility first
 
@@ -66,6 +68,18 @@ are available; the trainer does not claim a global distributed budget lock.
 All methods retain five equal fractions and their fixed final endpoint. Fresh
 validation61027 and independent test71027 ranges are distinct from development
 650000 and engineering layouts; independent testing has not been consumed here.
+
+Finite execution plans are now prepared, not launched:
+`piper_queue_4080_v1.json` contains all six jobs with two slots. Its alternative
+disjoint `slot0`/`slot1` plans each contain three jobs/one slot, allowing a newly
+released slot to progress without waiting for another occupied slot. Never run
+the combined plan and partitions together. Total with engineering is1,803,220.
+Payload pending jobs have priority; the coordinator verifies actual free slots
+and ensures total native Payload+Piper learners<=2. Admission metadata is not an
+extra auto-restart/watchdog implementation. The13:53 resource inspection still
+found two live Payload learners/two pending jobs/GPU99%, so no Piper job started.
+Official assets have been prefetched to4T; source/model/mesh receipt is
+`piper-assets-4080-ac41fcb.json`, with zero new simulation/training interactions.
 
 ## Full continuation and frozen evaluation
 

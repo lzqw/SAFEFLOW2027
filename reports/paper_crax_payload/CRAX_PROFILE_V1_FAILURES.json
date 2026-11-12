@@ -1,0 +1,20 @@
+{
+ "status":"engineering_failure_not_method_results",
+ "source_commit":"86669eeffeeb89a669537987eff8e2ce89c3ef0b",
+ "cause":"warmup_metrics_empty_TensorList_before_first_optimizer_update",
+ "native_runs_terminal":true,
+ "original_controller_pid":4067293,
+ "controller_explicitly_stopped_after_diagnosis":true,
+ "source_inferred_actual_collected_transitions":29696,
+ "native_receipt_observed_training_counter_available":false,
+ "costs_unknown_not_zero":true,
+ "conservative_development_budget_reservation":98304,
+ "jobs":[
+  {"trial_id":"crax-profile-balanced-v1","native_pid":4067298,"E":256,"requested_steps":32768,"source_inferred_first_log_steps":9984},
+  {"trial_id":"crax-profile-fast-v1","native_pid":4072982,"E":512,"requested_steps":32768,"source_inferred_first_log_steps":9728},
+  {"trial_id":"crax-profile-learn-heavy-v1","native_pid":4079512,"E":128,"requested_steps":32768,"source_inferred_first_log_steps":9984}
+ ],
+ "automatic_restart":false,
+ "repair_source_commit":"f6731395bc5e2b06eed4641ab4242f6fd0b73a6e",
+ "repaired_queue":"configs/paper_crax_payload/crax_profile_queue_a100_v2.json"
+}

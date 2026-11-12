@@ -1,14 +1,204 @@
 {
-  "status":"registered_not_selected",
-  "protocol":"EXPERIMENT_PROTOCOL.md",
-  "configuration":"configs/paper_crax_payload/master_v1.json",
-  "rule":"common_risk_requirement_then_task_then_capped_time;otherwise_explicit_pareto",
-  "equal_checkpoint_fractions":[0.2,0.4,0.6,0.8,1.0],
-  "validation_seeds":[61027,61028,61029,61030,61031],
-  "independent_test_seeds":[71027,71028,71029,71030,71031],
-  "test_used_for_selection":false,
-  "selected_candidates":[],
-  "candidate_history":[],
-  "historical_EA2027":"historical_positive_case_only;prior_seen_tests_not_independent",
-  "piper_candidates":"pending_native_Piper_training;no_renamed_Panda_weights"
+  "status": "registered_not_selected",
+  "protocol": "EXPERIMENT_PROTOCOL.md",
+  "configuration": "configs/paper_crax_payload/master_v1.json",
+  "rule": "common_risk_requirement_then_task_then_capped_time;otherwise_explicit_pareto",
+  "equal_checkpoint_fractions": [
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1.0
+  ],
+  "validation_seeds": [
+    61027,
+    61028,
+    61029,
+    61030,
+    61031
+  ],
+  "independent_test_seeds": [
+    71027,
+    71028,
+    71029,
+    71030,
+    71031
+  ],
+  "test_used_for_selection": false,
+  "selected_candidates": [],
+  "candidate_history": [
+    {
+      "trial_id": "crax-iso-nativedual-41027-500k-v3",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 100096,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_100096.json"
+        },
+        {
+          "checkpoint_steps": 200192,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_200192.json"
+        },
+        {
+          "checkpoint_steps": 300032,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_300032.json"
+        },
+        {
+          "checkpoint_steps": 400128,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_400128.json"
+        },
+        {
+          "checkpoint_steps": 500224,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-500k-v3/validation_500224.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-iso-norm-balanced-41027-500k-v1",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 100096,
+          "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_100096.json"
+        },
+        {
+          "checkpoint_steps": 200192,
+          "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_200192.json"
+        },
+        {
+          "checkpoint_steps": 300032,
+          "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_300032.json"
+        },
+        {
+          "checkpoint_steps": 400128,
+          "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_400128.json"
+        },
+        {
+          "checkpoint_steps": 500224,
+          "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_500224.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-sac-ref-41027-v1",
+      "task": "PointGoal",
+      "method": "sac_lag_native",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1000192,
+          "evaluation_file": "native_runs/crax-sac-ref-41027-v1/validation_1000192.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-ea-41027-v1",
+      "task": "payload",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-iso-41027-v1",
+      "task": "payload",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_240000.json"
+        },
+        {
+          "checkpoint_steps": 300000,
+          "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_300000.json"
+        },
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-sac-41027-v1",
+      "task": "payload",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-sac-41027-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/payload-sac-41027-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/payload-sac-41027-v1/evaluation_240000.json"
+        },
+        {
+          "checkpoint_steps": 300000,
+          "evaluation_file": "native_runs/payload-sac-41027-v1/evaluation_300000.json"
+        },
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-sac-41027-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-sac-41028-v1",
+      "task": "payload",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-sac-41028-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    }
+  ],
+  "historical_EA2027": "historical_positive_case_only;prior_seen_tests_not_independent",
+  "piper_candidates": "pending_native_Piper_training;no_renamed_Panda_weights",
+  "selection_has_occurred": false
 }

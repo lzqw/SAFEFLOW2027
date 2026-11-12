@@ -88,6 +88,7 @@ def main():
     p.add_argument('--seed',type=int,default=41027)
     p.add_argument('--device',default='cuda:0')
     p.add_argument('--resume',type=Path)
+    p.add_argument('--repair-episode-accounting-from-replay',action='store_true')
     p.add_argument('--profile-only',action='store_true')
     p.add_argument('--eval-envs',type=int,default=50)
     p.add_argument('--source-commit',required=True)
@@ -131,6 +132,12 @@ def main():
     completed_records=[]; steps=initial_steps=0; eval_controls=0; eval_seconds=save_seconds=0.
     if args.resume:
         state=torch.load(args.resume,map_location=device,weights_only=False)
+        if args.repair_episode_accounting_from_replay:
+            from scripts.paper_crax_payload.recover_episode_accounting import recover_episode_accounting
+            recovery,recovered_rows=recover_episode_accounting(state)
+            atomic_json(args.output/'episode_accounting_recovery.json',recovery)
+            with (args.output/'recovered_training_episodes.csv').open('w',newline='') as stream:
+                writer=csv.writer(stream);writer.writerow(['observed_by_steps','native_return','episode_cost','goals','length']);writer.writerows(recovered_rows)
         if state['profile']!=profile or state['seed']!=args.seed or state['method']!=args.method:
             raise ValueError('Resume profile/seed/method mismatch; use explicit candidate fork instead')
         learner.load_state_dict(state['learner']); replay.load_state_dict(state['replay'])
