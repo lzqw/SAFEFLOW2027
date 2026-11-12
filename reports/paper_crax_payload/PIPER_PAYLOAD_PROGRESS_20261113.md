@@ -31,3 +31,8 @@ new-geometry, and execution-scale conditions all had 0 safe successes,
 0 violations, and 30/30 safe timeouts. The 120k receipt records 180,000
 evaluation physics substeps and zero physical-robot interactions. This remains
 an interim diagnostic, not a final learned-policy result.
+
+Iso's 180k evaluation likewise had 0/30 safe successes in every condition.
+Nominal and execution-scale had 0 violations and 30/30 timeouts; new-geometry
+had 1/30 violation and 29/30 timeouts. No collision or physical-robot
+interaction was recorded.

@@ -87,7 +87,8 @@ selection.
   EA's 60k interim evaluation likewise had 0/30 safe successes in each
   condition; nominal and execution-scale had no violations, while
   new-geometry had 4/30 violations. These are interim learning diagnostics,
-  not final candidate results.
+  not final candidate results. Iso's 180k evaluation had 0/30 safe successes
+  in all conditions, with 1/30 violation only in new-geometry.
 
 ## 6. Actual cost and reproducibility
 
