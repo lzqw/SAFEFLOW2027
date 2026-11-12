@@ -1,0 +1,72 @@
+{
+  "target_steps": 10000000,
+  "prefill_steps": 20224,
+  "actor_steps": 256,
+  "actor_epoch_steps": 7797,
+  "total_epochs": 5,
+  "candidate_count": 5,
+  "actual_rounded_final_steps": 10000384,
+  "candidate_epochs": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "format": "SAFEFlow-native-SAC-Lag-full-host-epoch-v1",
+  "resume_available": false,
+  "initial_steps": 0,
+  "fixed_native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+  "selection": "exactly declared candidate_epochs;other host epochs ineligible",
+  "phase": "formal",
+  "formal_admission": {
+    "plan_id": "pointgoal-formal-v1",
+    "plan_sha256": "48e4582f64d1035cacc4f8bc2db6f11b5e43c4e63be0686d50900e2a80445585",
+    "plan_path": "configs/paper_crax_payload/pointgoal_formal_plan_v1.json",
+    "method": "sac_lag",
+    "training_seed": 51028,
+    "common_steps_per_seed": 10000000,
+    "checkpoint_fractions": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "nominal_checkpoint_steps": [
+      2000000,
+      4000000,
+      6000000,
+      8000000,
+      10000000
+    ],
+    "registered_training_seeds": [
+      51027,
+      51028,
+      51029
+    ],
+    "registered_methods": [
+      "sac_lag",
+      "stable_iso",
+      "ea"
+    ],
+    "runtime_configuration_sha256": "b3c4c041096de519d0720c92b3db1a0314b530f87a591d859520677f92782c7b",
+    "algorithm_file_sha256": {
+      "scripts/paper_crax_payload/train_crax.py": "d948c455742e7b5c2858e11d94b45c9bee234b34d23efeab036a73fb84ab3f16",
+      "scripts/paper_crax_payload/crax_models.py": "156f93f8dc2bffef443c94314dca73dbb440499db74b21486c38595c6d5f9c9d",
+      "scripts/paper_crax_payload/crax_env.py": "a5bb0f8df29178a59db86937624bf4648bf5b84788bdb616b58a964575f00d7f",
+      "scripts/paper_crax_payload/observation_normalizer.py": "7c3889bfd1dc900408c27fb75d2ee6c42467188d953e0c08192001479d5772f3",
+      "scripts/paper_crax_payload/native_sac_checkpoint.py": "6373179743b1e8a9d76861563cb2fe113f5d73fcee8b7ecdd1872aa15e297c7d",
+      "scripts/paper_crax_payload/native_sac_reference.py": "a97fb39b58cddf607f254917f0a985907384782c039a826f6c4e002390ee3260",
+      "scripts/paper_crax_payload/formal_admission.py": "4d91520f6bfabf99bda4daed65ad371ba839e7d80796c6e1db997446802ca349",
+      "scripts/paper_crax_payload/configuration.py": "788250e2d92acf8f168457dc36efd6da85be5111b506672cfa43467b11409e03",
+      "scripts/star/arm_safe_entropy/models.py": "9609e016d92c1e21e2d8440becdeac8a7893781b353fa008083f3cc91c3db8fe",
+      "scripts/star/arm_safe_entropy/endpoint_geometry.py": "344795a3623df033d003636b3391b08359d1cb007c875f20f08ee9274ee5e660",
+      "scripts/star/arm_safe_entropy/geometry.py": "49000843bd6db327b4ad5fe599f439808f13c97a7c12fad9c9ab4232a7024d34",
+      "scripts/star/arm_safe_entropy/stability_runtime.py": "12ddedfaac9106fd1a8f9f947390f8efd7bf166a31840b448224e23122324ee1"
+    },
+    "source_binding": "exact_algorithm_file_hashes_not_self_referential_plan_commit",
+    "runtime_source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
+    "phase": "formal"
+  }
+}

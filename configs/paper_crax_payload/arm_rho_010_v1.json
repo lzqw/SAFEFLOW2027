@@ -1,0 +1,109 @@
+{
+  "stage": "paper_arm_trained_rho_parameter_v1",
+  "baseline_commit": "1dc1f2945bb01ace08500147659a73623f30d977",
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "training_radius_m": 0.06,
+  "development_seeds": [
+    2027
+  ],
+  "shared_learner": {
+    "actor_lr": 0.0001,
+    "critic_lr": 0.0003,
+    "reward_loss": "huber",
+    "huber_beta": 1,
+    "batch_size": 256,
+    "replay_capacity": 300000,
+    "random_transitions": 2000,
+    "critic_only_updates": 1000,
+    "utd": 1,
+    "reward_updates_per_round": 2,
+    "actor_update_interval": 2,
+    "reward_target_samples": 4,
+    "reward_target_polyak": 0.001,
+    "actor_target_polyak": 0.001,
+    "flow_steps": 4,
+    "velocity_bound": 2,
+    "initial_action": 0,
+    "reference_variance": 0.04,
+    "rho": 0.1,
+    "energy_target": 18.75,
+    "actor_reward_replay": "half_uniform_half_recent10000",
+    "margin_replay": "unchanged_same_batch_first_candidate",
+    "margin_capacity_and_updates_matched_all_variants": true,
+    "iso_margin_usage": "trained_with_same_labels_and_EMA_but_never_used_for_sampling_or_energy",
+    "dual_eligibility": "actor_updates > 0",
+    "reward_scale_changed": false
+  },
+  "geometry": {
+    "ema_tau": 0.005,
+    "ramp_start_transitions": 10000,
+    "ramp_end_transitions": 30000,
+    "sampling_and_energy_share_actual_covariance": true,
+    "tail": "same_generator_frozen_parameters_deterministic_midpoint_with_real_clamps",
+    "geometry_gradient_variable": "pre_noise_proposal_Zk",
+    "straight_through_clamp": false,
+    "geometry_detached_from_actor_objective": true
+  },
+  "evaluation": {
+    "intermediate_steps": [
+      100000,
+      200000,
+      300000,
+      600000
+    ],
+    "intermediate_nominal_episodes": 20,
+    "intermediate_stress_episodes_per_condition": 10,
+    "intermediate_layout_seed_start": 360027,
+    "final_steps": 1000000,
+    "final_episodes_per_condition": 30,
+    "final_development_layout_seed_start": 370027,
+    "action_sampling_seed": 3970027,
+    "isolate_python_numpy_torch_and_cuda_rng": true,
+    "conditions": [
+      {
+        "name": "nominal",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0
+      },
+      {
+        "name": "radius_065",
+        "radius_m": 0.065,
+        "lateral_offset_m": 0
+      },
+      {
+        "name": "lateral_015",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.015
+      }
+    ],
+    "lateral_sides_balanced": true,
+    "final_checkpoint_selection": "fixed_1M_parameter_analysis_only_no_default_or_formal_reselection"
+  },
+  "paper_parameter_registration": {
+    "registration_state_at_creation": "prepared_not_admitted_not_trained",
+    "parameter": "rho_min_normal_variance_over_reference_at_q1",
+    "rho": 0.1,
+    "training_seed": 2027,
+    "fresh_total_training_transitions": 1000000,
+    "native_segments": [
+      300000,
+      1000000
+    ],
+    "segment_new_training_transitions": [
+      300000,
+      700000
+    ],
+    "source_recipe_anchor": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+    "source_driver_anchor": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+    "training_semantics": "original_Panda_first_violation_episodic_binary_cost_probability_budget0.1;not_CRAX_cumulative25",
+    "effective_actor_width": 128,
+    "effective_margin_width": 64,
+    "global_reference_variance_unchanged": 0.04,
+    "energy_target_unchanged": 18.75,
+    "initial_alpha_energy_unchanged": 0.0008,
+    "new_default_selection_authorized": false,
+    "new_formal_launch_authorized": false,
+    "scientific_early_stop": false,
+    "known_radius080_test_not_used_for_tuning": true
+  }
+}

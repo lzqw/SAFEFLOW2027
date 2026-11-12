@@ -46,6 +46,15 @@ is loosened. Every failed/timeout episode keeps the full4s capped horizon, so a
 motionless safe policy or fast failure cannot masquerade as fast task completion.
 Train seeds, not evaluation episodes, remain the statistical replication unit.
 
+Zero-success metadata clarification: risk qualification and the ranking above
+remain unchanged. `task_progress_observed` means at least one safe task
+completion was observed (macro safe success>0), not merely positive shaped return
+or physical motion. A risk-qualified winner with zero safe successes is marked
+`risk_qualified_but_stagnant`, `eligible_for_deployment=false`; it is not called a
+successful or usable deployment policy. Its candidate/fixed endpoints remain
+retained and it can still enter the exact same locked scientific test as a
+non-deployable baseline. No candidate is dropped and no risk threshold is relaxed.
+
 ## Common validation CLI and exact frozen provenance
 
 For each registered candidate, `payload_frozen.py` checks native method/seed/

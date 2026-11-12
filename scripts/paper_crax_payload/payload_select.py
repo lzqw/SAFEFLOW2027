@@ -57,7 +57,8 @@ def summarize_validation(document, plan):
     threshold = plan['risk_qualification']
     qualified = risks[0] <= threshold['nominal_max_violation'] and all(
         risk <= threshold['each_stress_max_violation'] for risk in risks[1:])
-    return dict(risk_qualified=qualified, condition_names=expected, per_condition_violation=risks,
+    return dict(risk_qualified=qualified, task_progress_observed=any(value>0. for value in successes),
+        condition_names=expected, per_condition_violation=risks,
         per_condition_safe_success=successes, macro_safe_success=mean(successes),
         macro_capped_seconds=mean(capped), macro_native_return=mean(returns),
         stress_mean_violation_diagnostic_only=mean(risks[1:]))
@@ -105,15 +106,18 @@ def select(plan, cohort, documents):
         observed = [row for row in supplied.values() if row['candidate']['method']==method and not row['unavailable']]
         if not observed:
             chosen[method] = dict(status='all_registered_candidates_failed', selected=None,
-                risk_qualified=False, eligible_for_deployment=False)
+                risk_qualified=False, task_progress_observed=False, eligible_for_deployment=False)
             continue
         eligible = [row for row in observed if row['score']['risk_qualified']]
         front = [row for row in observed if not any(dominates(other, row) for other in observed)]
         pool = eligible or front
         winner = min(pool, key=lambda row: (-row['score']['macro_safe_success'],
             row['score']['macro_capped_seconds'], row['candidate']['candidate_id']))
-        chosen[method] = dict(status='risk_qualified' if eligible else 'pareto_tradeoff_not_risk_qualified',
-            selected=winner, risk_qualified=bool(eligible), eligible_for_deployment=bool(eligible),
+        progress=winner['score']['task_progress_observed']
+        status=('risk_qualified' if progress else 'risk_qualified_but_stagnant') if eligible else 'pareto_tradeoff_not_risk_qualified'
+        chosen[method] = dict(status=status,
+            selected=winner, risk_qualified=bool(eligible), task_progress_observed=progress,
+            eligible_for_deployment=bool(eligible) and progress,
             allowed_candidate_count=sum(c['method']==method for c in registered.values()),
             evaluated_candidate_count=len(observed), pareto_candidate_ids=[r['candidate']['candidate_id'] for r in front])
     result = dict(schema='payload_frozen_selection_v1', status='complete_frozen_selection',

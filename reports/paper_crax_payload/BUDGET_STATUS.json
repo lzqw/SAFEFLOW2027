@@ -1,21 +1,18 @@
 {
-  "as_of": "2026-11-12T15:12:00+08:00",
+  "as_of": "2026-11-12T16:11:00+08:00",
   "whole_goal_complete": false,
   "PointGoal_development": {
     "cap_training_transitions": 24000000,
-    "observed_completed_training_including_engineering": 15640320,
+    "observed_completed_training_including_engineering": 19640320,
     "failed_profile_source_inferred_training_not_in_observed_total": 29696,
     "conservative_failed_profile_reservation_instead_of_inferred_total": 98304,
-    "conservatively_charged": 15738624,
+    "conservatively_charged": 19738624,
     "major_configurations_launched": 6,
     "major_configuration_cap": 6,
-    "formal_training_started": false,
+    "formal_training_started": true,
     "formal_budget_not_spent_or_reclassified_as_development": true,
-    "remaining_after_completed_and_failed_reservation": 8261376,
-    "active_new_training_reservations": {
-      "EA_first_seed_2M_to_4M": 1999872,
-      "EA_second_seed_2M_rounded": 2000128
-    },
+    "remaining_after_completed_and_failed_reservation": 4261376,
+    "active_new_training_reservations": {},
     "total_reserved_completed_plus_active_targets": 19738624,
     "remaining_after_active_target_reservations": 4261376
   },
@@ -52,5 +49,21 @@
     "NativeProgress is a compact-run snapshot and does not itself include every engineering receipt;TrialLedger holds supplemental rows.",
     "Budget reservation is not an observed actual sample count.",
     "Live and pending status is a timestamped snapshot,not continuous liveness proof."
-  ]
+  ],
+  "PointGoal_formal": {
+    "status": "frozen_queue_active",
+    "common_steps_per_seed": 10000000,
+    "registered_runs": 9,
+    "nominal_training_reservation": 90000000,
+    "estimated_vector_host_rounding_upper_extra": 1920,
+    "actual_counts_authority": "allnativerunreceipts;neverrounddownactualsampling",
+    "first_completed_actual": 10000384,
+    "completed_runs_observed": 1,
+    "total_PointGoal_cap_with_common10M": 150000000,
+    "optional_CVPO_started": false
+  },
+  "PointGoal_mechanisms": {
+    "actual_training": 0,
+    "actual_nontraining_simulator_controls": 2208
+  }
 }

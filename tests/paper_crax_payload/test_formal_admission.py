@@ -24,6 +24,8 @@ def frozen_fixture(tmp_path, budget=5000000):
         freeze_record=dict(frozen_at_utc='2026-11-12T00:00:00+00:00',
             decision_evidence='unit-test-only fixture; no real formal freeze',
             all_methods_common_budget_confirmed=True))
+    for row in plan['runs']:
+        row['steps']=budget
     for spec in plan['method_configurations'].values():
         spec['runtime_parameters']=deepcopy(PARAMETERS)
     path=tmp_path/'unit-formal-plan.json'
@@ -46,9 +48,11 @@ def test_full_registered_matrix_and_common_budgets_are_admitted_only_when_frozen
             record=request(path,method=method,seed=seed,steps=budget)
             assert record['common_steps_per_seed']==budget
             assert record['nominal_checkpoint_steps']==[int(budget*f) for f in [.2,.4,.6,.8,1.]]
-    assert json.loads(PLAN.read_text())['status']=='prepared_not_frozen'
+    assert json.loads(PLAN.read_text())['status']=='frozen'
+    prepared=deepcopy(plan);prepared['status']='prepared_not_frozen';prepared['freeze_record']=None
+    prepared_path=tmp_path/'prepared-plan.json';prepared_path.write_text(json.dumps(prepared))
     with pytest.raises(ValueError,match='not frozen'):
-        request(PLAN)
+        request(prepared_path)
     assert phase_fields(None)=={}
     # Defaults preserve existing development seeds/configurations and settings.
     assert admit_run(phase='development',plan_path=None,method='local',seed=41027,steps=500000,
@@ -101,6 +105,8 @@ def test_even_matching_frozen_flow_config_cannot_override_native_task_budget(tmp
 @pytest.mark.parametrize('module',['train_crax','native_sac_checkpoint'])
 def test_prepared_plan_rejected_before_any_gpu_library_import(tmp_path,module):
     output=tmp_path/'must-not-be-created'
+    prepared=json.loads(PLAN.read_text());prepared['status']='prepared_not_frozen';prepared['freeze_record']=None
+    prepared_path=tmp_path/'prepared-plan.json';prepared_path.write_text(json.dumps(prepared))
     code='''
 import importlib.abc,runpy,sys
 class BlockGPU(importlib.abc.MetaPathFinder):
@@ -110,7 +116,7 @@ class BlockGPU(importlib.abc.MetaPathFinder):
 sys.meta_path.insert(0,BlockGPU())
 sys.argv=ARGS
 runpy.run_module(MODULE,run_name='__main__')
-'''.replace('ARGS',repr(['formal-admission-test','--phase','formal','--formal-plan',str(PLAN),
+'''.replace('ARGS',repr(['formal-admission-test','--phase','formal','--formal-plan',str(prepared_path),
     '--steps','5000000','--seed','51027','--source-commit','a'*40,'--output',str(output)]))
     code=code.replace('MODULE',repr('scripts.paper_crax_payload.'+module))
     process=subprocess.run([sys.executable,'-c',code],cwd=ROOT,text=True,capture_output=True,timeout=20)

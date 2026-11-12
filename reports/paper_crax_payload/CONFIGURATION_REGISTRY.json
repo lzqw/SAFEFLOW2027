@@ -128,28 +128,30 @@
       "dual": "sameaspairedIso;native_per_step;effective_lr0.1/H;cap2",
       "seed": 41027,
       "requested_steps": 500000,
-      "status": "firstseed2M_completed_to4Mactive;secondseedfresh2Mactive",
-      "native_pid": 120883,
+      "status": "firstseed4M_and_secondseed2M_completed",
       "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
       "geometry": "default_rho0.25;margin_update_ramp1000to5000;noextracritic",
-      "actual_steps": 2000128,
-      "validation_goals": 0.42,
-      "validation_cost": 11.3013839507,
+      "actual_steps": 4000000,
+      "validation_goals": 18.22,
+      "validation_cost": 46.61016037464142,
       "initial_continuation_steps": 2000128,
       "continuation_target": 4000000,
-      "validation_at_least_one_goal": 0.3,
+      "validation_at_least_one_goal": 1,
       "development_seeds_launched": [
         41027,
         41028
       ],
-      "second_seed_native_pid": 134322,
-      "second_seed_target": 2000000
+      "second_seed_target": 2000000,
+      "second_seed_actual_steps": 2000128,
+      "second_seed_final_goals": 5.28,
+      "second_seed_final_cost": 66.58321972846984
     }
   ],
   "launched_count": 6,
   "remaining_major_configuration_slots": 0,
-  "next_conditional_action": "InspectactualEA500k thenexistingconfig2M/4Mcontinuationandseconddevseed asjustified;noadditionalmajorrecipeswithoutdirection;independenttestnotused.",
+  "next_conditional_action": "Noadditionalmajorrecipe;formalall3methods3seedscommon10M underway;completefairheldoutcomparison.",
   "candidate_policy_access": "at most5 prospectively registered points per training seed and method;all fixed endpoints retained;common independent test not used for tuning",
-  "formal_configuration_frozen": false,
-  "independent_test_consumed": false
+  "formal_configuration_frozen": true,
+  "independent_test_consumed": false,
+  "formal_plan": "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
 }

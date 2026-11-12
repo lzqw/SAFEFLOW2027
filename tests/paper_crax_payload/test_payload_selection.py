@@ -86,6 +86,25 @@ def test_failed_candidate_retained_but_unexplained_missing_cannot_disappear():
     assert result['methods']['sac_lag']['evaluated_candidate_count']==9
 
 
+def test_zero_success_risk_qualified_winner_is_stagnant_not_deployable_but_testable():
+    p=plan();docs=[evidence(p,c) for c in candidates(p,'development')]
+    for document in docs:
+        for condition in document['result']['conditions']:
+            for record in condition['records']:
+                record.update(safe_success=False,violation=False,true_horizon_terminal=True,
+                    time_to_goal_capped_seconds=4.,episode_return=-3.)
+    result=select(p,'development',docs)
+    assert len(result['candidate_evidence'])==30
+    for method,record in result['methods'].items():
+        assert record['risk_qualified'] and not record['task_progress_observed']
+        assert record['status']=='risk_qualified_but_stagnant'
+        assert record['eligible_for_deployment'] is False
+        assert record['allowed_candidate_count']==record['evaluated_candidate_count']==10
+        selected=record['selected']
+        assert selected['score']['macro_safe_success']==0.
+        assert verify_test_authorization(p,'development',selected['candidate'],selected['policy_sha256'],result)=='risk_qualified_but_stagnant'
+
+
 def test_route_claim_requires_truth_substeps_and_actual_blocking_not_offset_name():
     p=plan()['route_qualification'];hashes={'sac_lag':'a','s_iso':'b','s_ea':'c'}
     records=[dict(method=m,layout_seed=s,source_safe_success=True,sector=4,

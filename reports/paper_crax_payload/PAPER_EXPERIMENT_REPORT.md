@@ -57,6 +57,14 @@ EA2M has0.42 goals/30% reach, cost11.30: lower risk but much weaker task progres
 not a joint improvement. EA seed41027 continues to4M and second seed41028 starts
 the same2M development budget. No seventh major recipe is launched.
 
+EA4M reaches18.22 goals/episode and100% at-least-one-goal versus Iso's12.42, with
+mean costs46.61 versus43.67; both remain above budget25. EA second seed at2M is
+5.28 goals/cost66.58. These are development tradeoffs, not independent-test or
+deployment claims. The common10M formal matrix is now frozen and active; first
+formal SAC seed51027 completed10,000,384 actual transitions (11,997.98 full-run
+SPS including its native diagnostics), while remaining eight runs are finite-queue
+scheduled. Actual rounded counts, not nominal10M, are authoritative.
+
 SAC LR .1 end-to-end throughput was 5701 transitions/s including compilation,
 native evaluation and saves (offline common validation is separately charged).
 Iso's latest full 500k run was 1005 transitions/s,
@@ -121,6 +129,12 @@ comparison artifacts. No historical long evaluation was rerun.
 - Independent generalization, PointGoal common-state mechanisms and formal
   Payload confirmation remain pending. Constructive detours are feasibility
   checks, not learned-policy success or route-adaptation evidence.
+- A small PointGoal common-state mechanism analysis is now complete: 32 distinct
+  frozen states ×16 draws, Iso/EA actors with reference/Pullback samplers,
+  2,208 nontraining controls (160 finite-difference labels +2,048 action labels).
+  Four states account for all positive-cost labels (12.5% of draws); Pullback has
+  no native-cost reduction in this small pool. Endpoint VN/VT changes are local
+  proxy diagnostics only, not an interval-risk certificate or global policy gain.
 - Piper: user confirmed standard arm and standard gripper. Pinned official model,
   Reach/Payload simulation, genuine Iso-Low engineering save/resume, offline
   recording and timeout handling are implemented. Six native simulation
@@ -152,7 +166,10 @@ The whole objective remains active: effective shared Flow/EA development, fair
 formal PointGoal comparison, Payload development and confirmation, selected-policy
 independent tests, PointGoal mechanism supplement and native Piper deployment
 candidates/dry-run bundles are still required. Optional CVPO is nonblocking.
-Physical experiments require a separate onsite enabling decision.
+Physical experiments require a separate onsite enabling decision. The first five
+completed Flow development runs are archived on4080 4T with verified sizes/SHA
+(89 files, 12,463,654,160 bytes); all A100 originals remain. A separate proposal
+lists 19 numbered snapshots for possible offload, but no deletion has occurred.
 
 Prepared, not executed: [formal PointGoal admission](../../docs/paper_crax_payload/formal_admission.md)
 retains all nine registered runs and refuses an unfrozen/common-budget mismatch;

@@ -1,0 +1,241 @@
+{
+  "status": "prepared_not_admitted",
+  "launch_authorized": false,
+  "priority": "lower_than_PointGoal_Payload_major_Piper_candidates",
+  "project": "/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/arm-rho-parameter-v1.json",
+  "slots": 1,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  ],
+  "controller_module": "scripts.paper_crax_payload.run_queue",
+  "admission_blockers": [
+    "Existing controller must first enforce requires_successful_job exit0+required_checkpoint (or coordinator must admit segments manually)",
+    "Root must explicitly release capacity and admit this low-priority prepared plan",
+    "Use unchanged oldArm runtime,not newCRAX CUDA12 library preload"
+  ],
+  "scientific_core_anchor": "3c308e49d4d93d49c15ee8112071d04087e622d8",
+  "driver_anchor": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+  "expected_source_sha256": {
+    "configs/paper_crax_payload/arm_rho_010_v1.json": "6c128b186935cdd71904e5a5dc8d017ae77d240b40aaef503193dcddb9dc0050",
+    "configs/paper_crax_payload/arm_rho_050_v1.json": "904c8762198218951c18ecb3b87ba6fd2e975631f5ab4eb52cc0649ae2e8df0d",
+    "scripts/star/arm_safe_entropy/train_stability.py": "0af5f060d35ad0456097aa85ffa2a71d686c8035800426bbb1b9fc4a9ad7e7b9",
+    "scripts/star/arm_safe_entropy/stability_models.py": "f025d5da5753e1d404934dadee88fa28e68482e73ec87d7235027f880241cfb7",
+    "scripts/star/arm_safe_entropy/endpoint_geometry.py": "344795a3623df033d003636b3391b08359d1cb007c875f20f08ee9274ee5e660",
+    "scripts/star/arm_safe_entropy/stability_runtime.py": "12ddedfaac9106fd1a8f9f947390f8efd7bf166a31840b448224e23122324ee1",
+    "scripts/star/arm_safe_entropy/environment.py": "fb6241c4b46a35be1c074603bc032d009fe809220ab6ede7a45d53de4b5b5256",
+    "scripts/star/arm_safe_entropy/relative_layout.py": "0c94df111a3324f83d05ca67b95939f05cf4df53ad8a37d15dffd0e5ee12ae59",
+    "scripts/star/arm_safe_entropy/geometry.py": "49000843bd6db327b4ad5fe599f439808f13c97a7c12fad9c9ab4232a7024d34",
+    "scripts/star/arm_safe_entropy/models.py": "9609e016d92c1e21e2d8440becdeac8a7893781b353fa008083f3cc91c3db8fe",
+    "scripts/star/arm_safe_entropy/stability_evaluation.py": "31bb50e9d41ee860ab89f4ab5ad2e072256aafd399d63944e9af724114cb09a3"
+  },
+  "reserved_new_training_transitions": 2000000,
+  "master_arm_mechanism_parameter_repair_cap": 3000000,
+  "current_spent_training_transitions": 0,
+  "unallocated_arm_reserve_not_automatic_authority": 1000000,
+  "counts_against_CRAX_six_config_limit": false,
+  "automatic_restart": false,
+  "automatic_formal_launch": false,
+  "default_selection_after_freeze": false,
+  "foreign_process_changes": false,
+  "disabled_hosts": [
+    "5080"
+  ],
+  "jobs": [
+    {
+      "name": "arm-rho010-seed2027-prefix300k-v1",
+      "module": "scripts.star.arm_safe_entropy.train_stability",
+      "arguments": [
+        "--config",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/project/configs/paper_crax_payload/arm_rho_010_v1.json",
+        "--variant",
+        "s_ea",
+        "--seed",
+        "2027",
+        "--device",
+        "cuda:0",
+        "--num-envs",
+        "2",
+        "--evaluation-workers",
+        "10",
+        "--steps",
+        "300000"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho010-seed2027-prefix300k-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/arm-rho010-seed2027-prefix300k-v1.log",
+      "rho": 0.1,
+      "initial_steps": 0,
+      "target_steps": 300000,
+      "expected_new_training_transitions": 300000,
+      "initialization": "fresh_no_old_actor_or_replay"
+    },
+    {
+      "name": "arm-rho010-seed2027-fixed1m-v1",
+      "module": "scripts.star.arm_safe_entropy.train_stability",
+      "arguments": [
+        "--config",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/project/configs/paper_crax_payload/arm_rho_010_v1.json",
+        "--variant",
+        "s_ea",
+        "--seed",
+        "2027",
+        "--device",
+        "cuda:0",
+        "--num-envs",
+        "2",
+        "--evaluation-workers",
+        "10",
+        "--steps",
+        "1000000",
+        "--resume",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho010-seed2027-prefix300k-v1/full_300000.pt"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho010-seed2027-fixed1m-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/arm-rho010-seed2027-fixed1m-v1.log",
+      "rho": 0.1,
+      "initial_steps": 300000,
+      "target_steps": 1000000,
+      "expected_new_training_transitions": 700000,
+      "initialization": "same_point_native_full_continuation_not_transfer",
+      "requires_successful_job": "arm-rho010-seed2027-prefix300k-v1",
+      "required_checkpoint": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho010-seed2027-prefix300k-v1/full_300000.pt",
+      "required_parent_receipt": {
+        "status": "completed",
+        "steps": 300000,
+        "variant": "s_ea",
+        "training_seed": 2027
+      }
+    },
+    {
+      "name": "arm-rho050-seed2027-prefix300k-v1",
+      "module": "scripts.star.arm_safe_entropy.train_stability",
+      "arguments": [
+        "--config",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/project/configs/paper_crax_payload/arm_rho_050_v1.json",
+        "--variant",
+        "s_ea",
+        "--seed",
+        "2027",
+        "--device",
+        "cuda:0",
+        "--num-envs",
+        "2",
+        "--evaluation-workers",
+        "10",
+        "--steps",
+        "300000"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho050-seed2027-prefix300k-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/arm-rho050-seed2027-prefix300k-v1.log",
+      "rho": 0.5,
+      "initial_steps": 0,
+      "target_steps": 300000,
+      "expected_new_training_transitions": 300000,
+      "initialization": "fresh_no_old_actor_or_replay"
+    },
+    {
+      "name": "arm-rho050-seed2027-fixed1m-v1",
+      "module": "scripts.star.arm_safe_entropy.train_stability",
+      "arguments": [
+        "--config",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/project/configs/paper_crax_payload/arm_rho_050_v1.json",
+        "--variant",
+        "s_ea",
+        "--seed",
+        "2027",
+        "--device",
+        "cuda:0",
+        "--num-envs",
+        "2",
+        "--evaluation-workers",
+        "10",
+        "--steps",
+        "1000000",
+        "--resume",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho050-seed2027-prefix300k-v1/full_300000.pt"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho050-seed2027-fixed1m-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/arm-rho050-seed2027-fixed1m-v1.log",
+      "rho": 0.5,
+      "initial_steps": 300000,
+      "target_steps": 1000000,
+      "expected_new_training_transitions": 700000,
+      "initialization": "same_point_native_full_continuation_not_transfer",
+      "requires_successful_job": "arm-rho050-seed2027-prefix300k-v1",
+      "required_checkpoint": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/paper_arm_rho_v1/arm-rho050-seed2027-prefix300k-v1/full_300000.pt",
+      "required_parent_receipt": {
+        "status": "completed",
+        "steps": 300000,
+        "variant": "s_ea",
+        "training_seed": 2027
+      }
+    }
+  ],
+  "evaluation": {
+    "intermediate_steps": [
+      100000,
+      200000,
+      300000,
+      600000
+    ],
+    "intermediate_nominal_episodes": 20,
+    "intermediate_stress_episodes_per_condition": 10,
+    "intermediate_layout_seed_start": 360027,
+    "final_steps": 1000000,
+    "final_episodes_per_condition": 30,
+    "final_development_layout_seed_start": 370027,
+    "action_sampling_seed": 3970027,
+    "isolate_python_numpy_torch_and_cuda_rng": true,
+    "conditions": [
+      {
+        "name": "nominal",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0
+      },
+      {
+        "name": "radius_065",
+        "radius_m": 0.065,
+        "lateral_offset_m": 0
+      },
+      {
+        "name": "lateral_015",
+        "radius_m": 0.06,
+        "lateral_offset_m": 0.015
+      }
+    ],
+    "lateral_sides_balanced": true,
+    "final_checkpoint_selection": "fixed_1M_parameter_analysis_only_no_default_or_formal_reselection"
+  },
+  "modest_new_training_evaluation_episodes_per_point": 250,
+  "all_new_training_evaluation_episode_upper_bound": 500,
+  "all_new_training_evaluation_control_upper_bound": 50000,
+  "prospective_frozen_anchor_validation_episodes": 180,
+  "prospective_frozen_anchor_validation_control_upper_bound": 18000,
+  "anchor_evaluation_entrypoint": "Python API stability_runtime.build_learner + StableArmLearner.load_state_dict + stability_evaluation.evaluate_stability;no invented evaluate-only CLI",
+  "historical_anchors": [
+    {
+      "label": "trained_EA_rho0.25",
+      "seed": 2027,
+      "variant": "s_ea",
+      "steps": 1000000,
+      "policy": "/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-ea-seed2027-v2-long-handoff1/policy_1000000.pt",
+      "training_resume": false
+    },
+    {
+      "label": "trained_Iso_effective_rho1",
+      "seed": 2027,
+      "variant": "s_iso",
+      "steps": 1000000,
+      "stored_actor_rho": 0.25,
+      "effective_covariance_rho": 1,
+      "policy": "/home/carla/4T/SAFEFLOW2027_ARM/runs/ea_stability_v2/s-iso-seed2027-v2-long/policy_1000000.pt",
+      "training_resume": false
+    }
+  ]
+}

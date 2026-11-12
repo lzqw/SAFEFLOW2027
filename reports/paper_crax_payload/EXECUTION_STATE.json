@@ -39,13 +39,13 @@
   "CRAX": {
     "official_commit": "63504b540705be98024abd675e646ff5e046c6c2",
     "isolated_env": "/home/lzqw/SAFEFLOW2027_PAPER/env",
-    "status": "six_major_configs_registered;Iso_task_learned_at2M_butcost_high;pairedEA_andIso4M_active",
+    "status": "development_under_cap_completed;formal_common10M_frozen_and_native_queue_active",
     "download_acceleration": "4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
     "full_training_profile_completed": true,
     "native_SAC_reference_started": true,
     "configuration_registry": "CONFIGURATION_REGISTRY.json",
     "episode_boundary_bookkeeping": "recovered256episodes fromfullrawreplay;directbooleanDLPack nowlivecount1024 at1029376 steps;original evidencepreserved",
-    "formal_runs_started": false,
+    "formal_runs_started": true,
     "independent_test_consumed": false,
     "common_SAC_validation": {
       "status": "completed",
@@ -60,7 +60,7 @@
       },
       "independent_test_used": false
     },
-    "completed_training_transitions_including_engineering_before_active_continuation": 15640320,
+    "completed_training_transitions_including_engineering_before_active_continuation": 19640320,
     "latest_Iso_development": {
       "steps": 4000000,
       "goals": 12.42,
@@ -71,33 +71,15 @@
       "task_learned": true,
       "safety_target_met": false
     },
-    "active_native_jobs": [
-      {
-        "pid": 120883,
-        "gpu": 1,
-        "run": "crax-ea-nativedual-41027-4m-v3",
-        "initial_steps": 2000128,
-        "target_steps": 4000000,
-        "training_seed": 41027,
-        "method": "ea"
-      },
-      {
-        "pid": 134322,
-        "gpu": 0,
-        "run": "crax-ea-nativedual-41028-2m-v3",
-        "initial_steps": 0,
-        "target_steps": 2000000,
-        "training_seed": 41028,
-        "method": "ea"
-      }
-    ],
+    "active_native_jobs": "dynamic:authoritativequeues/pointgoal-formal-v1.json;initial180139/180140;firstSACcompletedandnextjobautofilled",
     "latest_EA_screen": {
-      "steps": 2000128,
-      "goals": 0.42,
-      "cost": 11.301383950710296,
-      "at_least_one_goal": 0.3,
-      "task_learned": false,
-      "interpretation": "conservative;notjointtasksafetywin;continuepaired4M"
+      "steps": 4000000,
+      "goals": 18.22,
+      "cost": 46.61016037464142,
+      "at_least_one_goal": 1,
+      "budget_compliance": 0.36,
+      "task_learned": true,
+      "safety_target_met": false
     },
     "second_Iso_development": {
       "training_seed": 41028,
@@ -113,7 +95,27 @@
       },
       "interpretation": "earlybudgetedprogressfollowedbyhigherunsafeendpoint;preserveboth"
     },
-    "formal_admission": "prepared_not_frozen;all9registeredcombinations/common5Mor10M;0formallaunches"
+    "formal_admission": "frozen;common10M;all9registered;formalnativequeueactive",
+    "second_EA_development": {
+      "training_seed": 41028,
+      "steps": 2000128,
+      "goals": 5.28,
+      "at_least_one_goal": 1,
+      "mean_cost": 66.58321972846984,
+      "budget_compliance": 0.44
+    },
+    "formal_controller_pid": 180138,
+    "formal_source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
+    "formal_completed_runs_observed": 1,
+    "small_common_state_mechanism": {
+      "status": "completed",
+      "states": 32,
+      "draws": 16,
+      "nontraining_controls": 2208,
+      "training_steps": 0,
+      "raw": "pointgoal-common4m-161637c/receipt.json",
+      "not_independent_test": true
+    }
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -145,8 +147,8 @@
     }
   },
   "next_required_actions": [
-    "complete sameconfigurationEA2Mthen4M ifjustified;inspectseconddevseedwithincap",
-    "freezecommon5Mor10Mformalbudgetandallthreerecipesafterpaireddevelopment",
+    "complete9formalPointGoal10Mfullbudgets;sharedvalidationandlockedindependenttests",
+    "finishscientificanalyseswithoutfurtherconfigurationsearch;all6recipesretained",
     "runregisteredformal3methods3seedsandfaircommonvalidation",
     "finishsixPayload300kdevelopmentandfair0.6Mconfirmation",
     "selected-policyindependentgeneralizationandPointGoalcommonstates",
@@ -156,7 +158,7 @@
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 15:12 Asia/Taipei",
+  "observed_at_local": "2026-11-12 16:11 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {

@@ -8,7 +8,7 @@
     0.4,
     0.6,
     0.8,
-    1.0
+    1
   ],
   "validation_seeds": [
     61027,
@@ -120,12 +120,68 @@
           "evaluation_file": "native_runs/crax-ea-nativedual-41028-2m-v3/validation_1600000.json"
         },
         {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-ea-nativedual-41028-2m-v3/validation_2000128.json"
+        },
+        {
           "checkpoint_steps": 400128,
           "evaluation_file": "native_runs/crax-ea-nativedual-41028-2m-v3/validation_400128.json"
         },
         {
           "checkpoint_steps": 800000,
           "evaluation_file": "native_runs/crax-ea-nativedual-41028-2m-v3/validation_800000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-formal-ea-51027-10m-v1",
+      "task": "PointGoal",
+      "method": "ea",
+      "training_seed": 51027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-formal-ea-51027-10m-v1/validation_2000128.json"
+        },
+        {
+          "checkpoint_steps": 4000000,
+          "evaluation_file": "native_runs/crax-formal-ea-51027-10m-v1/validation_4000000.json"
+        },
+        {
+          "checkpoint_steps": 6000128,
+          "evaluation_file": "native_runs/crax-formal-ea-51027-10m-v1/validation_6000128.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-formal-stable_iso-51027-10m-v1",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 51027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 10000128,
+          "evaluation_file": "native_runs/crax-formal-stable_iso-51027-10m-v1/validation_10000128.json"
+        },
+        {
+          "checkpoint_steps": 2000128,
+          "evaluation_file": "native_runs/crax-formal-stable_iso-51027-10m-v1/validation_2000128.json"
+        },
+        {
+          "checkpoint_steps": 4000000,
+          "evaluation_file": "native_runs/crax-formal-stable_iso-51027-10m-v1/validation_4000000.json"
+        },
+        {
+          "checkpoint_steps": 6000128,
+          "evaluation_file": "native_runs/crax-formal-stable_iso-51027-10m-v1/validation_6000128.json"
+        },
+        {
+          "checkpoint_steps": 8000000,
+          "evaluation_file": "native_runs/crax-formal-stable_iso-51027-10m-v1/validation_8000000.json"
         }
       ],
       "selection_performed": false,
@@ -354,8 +410,38 @@
           "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_120000.json"
         },
         {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_240000.json"
+        },
+        {
+          "checkpoint_steps": 300000,
+          "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_300000.json"
+        },
+        {
           "checkpoint_steps": 60000,
           "evaluation_file": "native_runs/payload-ea-41027-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-ea-41028-v1",
+      "task": "payload",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-ea-41028-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-ea-41028-v1/evaluation_60000.json"
         }
       ],
       "selection_performed": false,
@@ -386,6 +472,36 @@
         {
           "checkpoint_steps": 60000,
           "evaluation_file": "native_runs/payload-iso-41027-v1/evaluation_60000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "payload-iso-41028-v1",
+      "task": "payload",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/payload-iso-41028-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/payload-iso-41028-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/payload-iso-41028-v1/evaluation_240000.json"
+        },
+        {
+          "checkpoint_steps": 300000,
+          "evaluation_file": "native_runs/payload-iso-41028-v1/evaluation_300000.json"
+        },
+        {
+          "checkpoint_steps": 60000,
+          "evaluation_file": "native_runs/payload-iso-41028-v1/evaluation_60000.json"
         }
       ],
       "selection_performed": false,
@@ -458,6 +574,18 @@
       "training_seed": 41027,
       "observed_checkpoints": [
         {
+          "checkpoint_steps": 120000,
+          "evaluation_file": "native_runs/piper-reach-iso-41027-v1/evaluation_120000.json"
+        },
+        {
+          "checkpoint_steps": 180000,
+          "evaluation_file": "native_runs/piper-reach-iso-41027-v1/evaluation_180000.json"
+        },
+        {
+          "checkpoint_steps": 240000,
+          "evaluation_file": "native_runs/piper-reach-iso-41027-v1/evaluation_240000.json"
+        },
+        {
           "checkpoint_steps": 60000,
           "evaluation_file": "native_runs/piper-reach-iso-41027-v1/evaluation_60000.json"
         }
@@ -468,5 +596,24 @@
   ],
   "historical_EA2027": "historical_positive_case_only;prior_seen_tests_not_independent",
   "piper_candidates": "pending_native_Piper_training;no_renamed_Panda_weights",
-  "selection_has_occurred": false
+  "selection_has_occurred": false,
+  "formal_plan": {
+    "path": "configs/paper_crax_payload/pointgoal_formal_plan_v1.json",
+    "status": "frozen",
+    "common_steps_per_seed": 10000000,
+    "registered_methods": [
+      "sac_lag",
+      "stable_iso",
+      "ea"
+    ],
+    "registered_training_seeds": [
+      51027,
+      51028,
+      51029
+    ],
+    "candidate_checkpoints_per_seed": 5,
+    "formal_training_started": true,
+    "selection_has_occurred": false,
+    "independent_test_consumed": false
+  }
 }

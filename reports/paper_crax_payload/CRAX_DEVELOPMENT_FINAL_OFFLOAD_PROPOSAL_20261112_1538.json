@@ -1,0 +1,576 @@
+{
+  "status": "prepared_only_destination_verification_pending",
+  "deletion_authorized": false,
+  "source_host": "tjucta-a100",
+  "destination_host": "4080",
+  "destination_base": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538",
+  "restriction": "Do not delete until coordinator explicitly approves this exact list after destination SHA256 verification. No broad globs or recursive run deletion.",
+  "eligible_count": 19,
+  "eligible_bytes": 9622654057,
+  "eligible_gib": 8.96179495099932,
+  "files": [
+    {
+      "path": "crax-iso-nativedual-41027-2m-v3/full_1200128.pt",
+      "bytes": 539553795,
+      "sha256": "c99d0048a2b3a99c630a2f7b91661138e6881c3e42efe9cdcccf1667fc38958b",
+      "mtime_ns": "1794463932442173414",
+      "inode": "31362019",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/full_1200128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-2m-v3/full_1200128.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-2m-v3/full_1600000.pt",
+      "bytes": 539555075,
+      "sha256": "cc83267777c5958de7f81aecc6c4369946427bc057dff24af506fb6fd66e5d53",
+      "mtime_ns": "1794464149015065035",
+      "inode": "31362123",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/full_1600000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-2m-v3/full_1600000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-2m-v3/full_2000128.pt",
+      "bytes": 539547139,
+      "sha256": "8cdf8f817c8559a1736da22b6056b2dc737dc3d2b5e54d28e7d4051ec3d9d1e5",
+      "mtime_ns": "1794464364305125210",
+      "inode": "31362133",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/full_2000128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-2m-v3/full_2000128.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-2m-v3/full_800000.pt",
+      "bytes": 434752079,
+      "sha256": "b4cae74b33c9670ed3af046d87bfa8dc52323a56c3df0eafa60aca9ba3c845a9",
+      "mtime_ns": "1794463723594838797",
+      "inode": "31362016",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/full_800000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-2m-v3/full_800000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-4m-v3/full_2400000.pt",
+      "bytes": 539543363,
+      "sha256": "d0d633b0e32efc24e360f67d024fbed94c9797fdd54cfaa92673b25b7987e558",
+      "mtime_ns": "1794464851547119957",
+      "inode": "31362154",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/full_2400000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-4m-v3/full_2400000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-4m-v3/full_3200000.pt",
+      "bytes": 539545347,
+      "sha256": "f4a56842fe110703bca00401996043533733a37bf726563b26c14009aa273f93",
+      "mtime_ns": "1794465298938697291",
+      "inode": "31362173",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/full_3200000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-4m-v3/full_3200000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41027-4m-v3/full_4000000.pt",
+      "bytes": 539543939,
+      "sha256": "0a7f022d68abb9304991409d3fe125b8d5ca74739e014c14fbe1faf78b870b79",
+      "mtime_ns": "1794465751790960350",
+      "inode": "31362180",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/full_4000000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41027-4m-v3/full_4000000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41028-2m-v3/full_1200128.pt",
+      "bytes": 539542531,
+      "sha256": "6ecb93f8e5ee126bf039744ca4299d4746c72ef160722196e9e3c17e54ecdfbb",
+      "mtime_ns": "1794466592279347984",
+      "inode": "31362202",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_1200128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41028-2m-v3/full_1200128.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41028-2m-v3/full_1600000.pt",
+      "bytes": 539545667,
+      "sha256": "5da4bc6813f8ab69caa567e48072166e8d7ffc6b68da15a52919634d8b3660a9",
+      "mtime_ns": "1794466808799693714",
+      "inode": "31362210",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_1600000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41028-2m-v3/full_1600000.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41028-2m-v3/full_2000128.pt",
+      "bytes": 539540995,
+      "sha256": "27eff36f8fc16ee5e45998a019e8aca2b97e0c8e976e3ba4aba72887e289bb15",
+      "mtime_ns": "1794467019075448706",
+      "inode": "31362221",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_2000128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41028-2m-v3/full_2000128.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41028-2m-v3/full_400128.pt",
+      "bytes": 225215055,
+      "sha256": "90f9ac34ce515e6c005e1c861ca0156555f259509b53a3177b800ef8caa3bee3",
+      "mtime_ns": "1794466157063977395",
+      "inode": "31362193",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_400128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41028-2m-v3/full_400128.pt"
+    },
+    {
+      "path": "crax-iso-nativedual-41028-2m-v3/full_800000.pt",
+      "bytes": 434746639,
+      "sha256": "2f3238a63c26ab070fc799d31cd4935d7ea68aae66f18377bb38feb13829e76c",
+      "mtime_ns": "1794466374434228370",
+      "inode": "31362197",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_800000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-iso-nativedual-41028-2m-v3/full_800000.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-2m-v3/full_1200128.pt",
+      "bytes": 539549379,
+      "sha256": "dbccd5b54e13d66a562b62bd7bae9348f349cf53bf812c046ebc113e2c78ebd5",
+      "mtime_ns": "1794465998242351462",
+      "inode": "31362190",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/full_1200128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-2m-v3/full_1200128.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-2m-v3/full_1600000.pt",
+      "bytes": 539548675,
+      "sha256": "c747ec70092eaf03dbce43551114694e734541977788cf3236914fa4f0371f38",
+      "mtime_ns": "1794466381530410583",
+      "inode": "31362199",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/full_1600000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-2m-v3/full_1600000.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-2m-v3/full_2000128.pt",
+      "bytes": 539546627,
+      "sha256": "021872e657793fc27a31edaed1624c76fd2fc8313d301ebd659003a83673fc75",
+      "mtime_ns": "1794466770446965191",
+      "inode": "31362205",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/full_2000128.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-2m-v3/full_2000128.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-2m-v3/full_800000.pt",
+      "bytes": 434748687,
+      "sha256": "6eeb5ce55eb77402a8e7b369c6d57eb6273a6fb067b0766b841d4b406c5a0494",
+      "mtime_ns": "1794465608198192156",
+      "inode": "31362176",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/full_800000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-2m-v3/full_800000.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-4m-v3/full_2400000.pt",
+      "bytes": 539545603,
+      "sha256": "c6bc5f7e3b2bc9453ad04e46e3c3a32d84493c7fa17a7f800aef72395a9d790c",
+      "mtime_ns": "1794467438506135817",
+      "inode": "31362226",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/full_2400000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-4m-v3/full_2400000.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-4m-v3/full_3200000.pt",
+      "bytes": 539541187,
+      "sha256": "65e43af866791e8d5cc54e111046107b7a24ea2e568d93542508b50315c6bfc6",
+      "mtime_ns": "1794468180141166806",
+      "inode": "31362237",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/full_3200000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-4m-v3/full_3200000.pt"
+    },
+    {
+      "path": "crax-ea-nativedual-41027-4m-v3/full_4000000.pt",
+      "bytes": 539542275,
+      "sha256": "06f70d5ebf2f26b5ec6a8f575f5d40d071ab397f77fb5edb2335d733fe04b4bb",
+      "mtime_ns": "1794468941828039657",
+      "inode": "31362246",
+      "nlink": 1,
+      "eligible_numbered_full": true,
+      "source_absolute": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/full_4000000.pt",
+      "destination_absolute": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-final-20261112-1538/crax-ea-nativedual-41027-4m-v3/full_4000000.pt"
+    }
+  ],
+  "retain_source_files": [
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/configuration.json",
+      "bytes": 7363,
+      "sha256": "d99c31d02b9853eff208dba93253e12b4fb95027d2db9d8d4fc6625a0900ceb6"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/episode_accounting_recovery.json",
+      "bytes": 501,
+      "sha256": "15f6070975bf4d4e5944833a8ff3f0e907498d962f207bc9a0a37d7999011a65"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/full_latest.pt",
+      "bytes": 539546895,
+      "sha256": "1a1d1a2380d41488b06a46bf950e164515da9157f032b64c0d4a0e358f546fbf"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/policy_1200128.pt",
+      "bytes": 7495354,
+      "sha256": "24a34a640e3154dd10b3cad56406ac819b3d183723ab3b4ac8e9a7618e080ca9"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/policy_1600000.pt",
+      "bytes": 7495354,
+      "sha256": "c6be857ec40360e259d94cf7cf6aaa4d285b9aede0b0645170ee288bf0d62757"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/policy_2000128.pt",
+      "bytes": 7495354,
+      "sha256": "36657fcd3ff009c430ec01a8d844ef2924c785e11ad43947a06b962926a41505"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/policy_800000.pt",
+      "bytes": 7494999,
+      "sha256": "920eab8e471bb5ac0c7902f8ee04ab6ea3d3b5ff1350c59901e0c8b6a67462ee"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/progress.csv",
+      "bytes": 34447,
+      "sha256": "43edbce4dbe8439f6e9f89d6030aa5a950be74d7797f04961174f5b3ec0871f0"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/receipt.json",
+      "bytes": 19007,
+      "sha256": "3ad1379cbdac4b51d8ec734a49a6ccb372943831dd6780d9794a320bdedd7a3e"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/recovered_training_episodes.csv",
+      "bytes": 9451,
+      "sha256": "a3b4651e173c1c8ffc2d44f67d330a8090afc6fb38ae3dd34c37f39eb6827465"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/status.json",
+      "bytes": 745,
+      "sha256": "f20e5c5b035dc4e14f4f4ac7f5fab7e3ffec6c35d09fa312c357863e0a9a531d"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/training_episodes.csv",
+      "bytes": 44070,
+      "sha256": "8c5aea976877106200351bac647a60519b218028391c04080339a50a39916562"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/validation_1200128.json",
+      "bytes": 10780,
+      "sha256": "8774c79b1e78814623718e5b3009fd3a238ccd8ece8315235b5d899f8e242eb0"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/validation_1600000.json",
+      "bytes": 10995,
+      "sha256": "42437fe908f01a4d3bee84430e18850a1153d525161d0205371d327b3f44a7bc"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/validation_2000128.json",
+      "bytes": 11847,
+      "sha256": "105a4c6a9b25ceb8da674c1ed1542e19ff4246a3661c1cba573bfa8486fcc219"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-2m-v3/validation_800000.json",
+      "bytes": 10702,
+      "sha256": "ed7bc8421583865f8ad9ab4eb65629f21bbab0332a5da620bee4eef181fe1173"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/configuration.json",
+      "bytes": 7397,
+      "sha256": "8a2f982298e61ccda7954e3baed7207b2b7e8200747de2355f7b5e7d0bd98744"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/full_latest.pt",
+      "bytes": 539543695,
+      "sha256": "6b9c39f0a78886851c597b589d8d75cd4b42e5cac91ff689173b9e990ae56990"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/policy_2400000.pt",
+      "bytes": 7495418,
+      "sha256": "255ef5b1b26f4c9c21b11446423efc5fe9768b366f9a5747aca6e7d4ef6aa964"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/policy_3200000.pt",
+      "bytes": 7495418,
+      "sha256": "13615dab8923587e5f1c1fc8cba4689275f2a0a74da46a4c564c18812415c16a"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/policy_4000000.pt",
+      "bytes": 7495418,
+      "sha256": "8d54d457c1bb4cbb7f9eab3439b722f4efed0b70a499f4b3e129e702bfc1ac46"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/progress.csv",
+      "bytes": 46188,
+      "sha256": "057d164d821e4bff215ee9cfd631e13c0abd8852be979978f3e9217b38ac941e"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/receipt.json",
+      "bytes": 24998,
+      "sha256": "5b380cb4782b3124b9339e0eed5205d9a2a94f889acb704ca445e94a029b62f7"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/status.json",
+      "bytes": 769,
+      "sha256": "657314636619a706e8036d453bbe73899b4aee4d4ec9b42c4c589541f1afa103"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/training_episodes.csv",
+      "bytes": 68614,
+      "sha256": "576a19de4a24b7546eb83a8f6e932c8382feb641f9ac4a5e3f6fdb4dd81ef9c8"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/validation_2400000.json",
+      "bytes": 11316,
+      "sha256": "e154a4cff6794d4952ed613661abb74f1926980e55db46db62903129bc288bdd"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/validation_3200000.json",
+      "bytes": 11937,
+      "sha256": "84457496164ec1afde1ec747b4f262f5b1f5b874ab9d111eb9586eefbbf0179e"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/validation_4000000.json",
+      "bytes": 12116,
+      "sha256": "d6c0cfa07b7c6849d50a0d7cd714f20ed29ffb3d46a517fd42f14323ee6d8150"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/configuration.json",
+      "bytes": 7391,
+      "sha256": "e16ece3633f588f5ff179823f5747f211cf08d68ef99e74b88917f746daa69dd"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/full_latest.pt",
+      "bytes": 539540751,
+      "sha256": "456edcf1f9e0be484aec6e683dce40b9b7fe32d4899f933433860ad9741ffd7a"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/policy_1200128.pt",
+      "bytes": 7494906,
+      "sha256": "078cb99d52e889d4e60983e2325c9e05a1a6844da95fb56f6ef81795e71c708a"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/policy_1600000.pt",
+      "bytes": 7494906,
+      "sha256": "9a03aab54c3bebe98fb8f447cd7115500acf65cf516e2e6101d3bd2e57a80ce5"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/policy_2000128.pt",
+      "bytes": 7494906,
+      "sha256": "8a913e9720116ae5b3c7307c5fc2c17f58fdeb410256b59ef649888b411c8bea"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/policy_400128.pt",
+      "bytes": 7494551,
+      "sha256": "6734a2ace1ecf907f1c2bdbcfc498ea8c0737efcc5492d75161ffc9e54c8fb38"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/policy_800000.pt",
+      "bytes": 7494551,
+      "sha256": "eb4eab4dfa887b8a3379b60c5d8f50d7a36701d9dd5c7185b3d194494dbe836d"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/progress.csv",
+      "bytes": 45092,
+      "sha256": "79d203454028c468b9ce1f00196e05c482a925bd3e7dfbef2b9982f3125b14d9"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/receipt.json",
+      "bytes": 24884,
+      "sha256": "cc834b10a37b42b577c24a28376430f36e107812d6829d8fd46314c92d0d07fe"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/status.json",
+      "bytes": 777,
+      "sha256": "0a7686cc3165d56c30fc63d73bd73418472464ee46f5bee73a9898bd3d94df8d"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/training_episodes.csv",
+      "bytes": 55032,
+      "sha256": "e40d0affbb00b3ab3fec1729c7b006b850c5c5b288216a869dbece42119b7768"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/validation_1200128.json",
+      "bytes": 11285,
+      "sha256": "77d607103d630ebadf884e517038466a9492baff28b8d9bf16cd332fc5c919f2"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/validation_1600000.json",
+      "bytes": 11835,
+      "sha256": "99849434f146b01b4452e607b3d479ba634ca54632212021044bd3597e53d0ef"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/validation_2000128.json",
+      "bytes": 12164,
+      "sha256": "13277f6538340f4e1fe39e97b2baaf7b3cfebdf11df8961a07fe5679f24f2ddf"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/validation_400128.json",
+      "bytes": 10765,
+      "sha256": "0eff1eddba15d167f5560a9377aeaa89c28be2512f4f0d1d7668ec6b96139ee3"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41028-2m-v3/validation_800000.json",
+      "bytes": 10929,
+      "sha256": "a2390a97ba6f8f2df5a488b193b23cbaad3c80ffd55248c0de97c231dc5508a7"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/configuration.json",
+      "bytes": 7388,
+      "sha256": "71d7bf389b42eca8f7afd2da8ecf78a738065ee5f7ab3d732ead5f8c365a4f73"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/full_latest.pt",
+      "bytes": 539546383,
+      "sha256": "1f5a324ae140555002a99db4a3c193398f4264445061d10cf5115b5c4df8137e"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/policy_1200128.pt",
+      "bytes": 7495354,
+      "sha256": "12f134459f2d423eed1570b9e780a8f1a2a33b0772561ce4934ed5b000dc3b04"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/policy_1600000.pt",
+      "bytes": 7495354,
+      "sha256": "35d4e97369d12280339cdc3aa2d0517c4a216ba8d0baccb140cfeb608d323b28"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/policy_2000128.pt",
+      "bytes": 7495354,
+      "sha256": "43a64a11cb44dfeec0957d9cbecd18dc01912bdd07e95bffdf52dadfb661cd24"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/policy_800000.pt",
+      "bytes": 7494999,
+      "sha256": "f1ef2a22b87049aca167cfdd7d3d86cc27309e85595f01856b459e5a5528d681"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/progress.csv",
+      "bytes": 36245,
+      "sha256": "2825da2b50fb399a62ea9029d60f0d0138bff8f683b05e746b65f8d2614b8920"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/receipt.json",
+      "bytes": 19042,
+      "sha256": "76bcbc1e83db8f115804e3afc07632af953ec8b7650348837b3f27abe1d95abb"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/status.json",
+      "bytes": 792,
+      "sha256": "bb8b4a4d911de6af4ad1defd9ba6794f284fce57ffe7fe7d6663f3e2718119bf"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/training_episodes.csv",
+      "bytes": 44592,
+      "sha256": "2b748967bb55453b4d2d94eb79c96ace62998663f2653b324c12ede9480d292e"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/validation_1200128.json",
+      "bytes": 10837,
+      "sha256": "84ed5adbe64d833f96edc23af79bd2f74d163d9bcb986176c627c35a65c2fba5"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/validation_1600000.json",
+      "bytes": 11084,
+      "sha256": "1481aa0399990b51ee78c06ecdcd98be0f1f1f7164fe6f118f247325c95e4468"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/validation_2000128.json",
+      "bytes": 11222,
+      "sha256": "858995124cb143043b8cb9d6ffefc2f1ed1ee5fede42700db536cc5052c7390b"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-2m-v3/validation_800000.json",
+      "bytes": 10679,
+      "sha256": "173b567848a95bdd6ad83fdb1605a137dabb53ee5926fef64350b5fe3368e671"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/configuration.json",
+      "bytes": 7389,
+      "sha256": "49d5bdbbaae9303402b9da579b9ae07e004312535826869c0bb58a874a1fe105"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/full_latest.pt",
+      "bytes": 539542031,
+      "sha256": "dee8708ff31ea9c88916ddf0f1487356b94425709b159ee185181aab802248f4"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/policy_2400000.pt",
+      "bytes": 7495418,
+      "sha256": "845fd830c993096aa9e0c676a1ced3c32948489c8eaab18f86a3a83d3cf3aee9"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/policy_3200000.pt",
+      "bytes": 7495418,
+      "sha256": "f159726fdc2df4b99f4f584794f04007d37c98c3ff21de827d7b8d86e8970f46"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/policy_4000000.pt",
+      "bytes": 7495418,
+      "sha256": "195e5e23b85b1d02683792de615704610b86d62207682f1738593b92fa2d83e0"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/progress.csv",
+      "bytes": 49344,
+      "sha256": "2d015f4b7b2e6482615eaca45ea294d4f80238a2f66f8d48da27b74ce4144859"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/receipt.json",
+      "bytes": 25001,
+      "sha256": "127a683a330d38f91ac1b51262d26098d08d12ac2a208d9b96c8f86355dc3d33"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/status.json",
+      "bytes": 794,
+      "sha256": "0b993cfba7d16e2001c6c5dff448889203e5bfcefe6d92390f970e2914cb5bc1"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/training_episodes.csv",
+      "bytes": 68347,
+      "sha256": "01b41d00f6ac88e30b33254fef2e3b59122483ed74b2ede32930263c713fce4a"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/validation_2400000.json",
+      "bytes": 11445,
+      "sha256": "dec80a313528430999da623f5d3349cae5ae0873376ad6a3ab4bf6efab28d87b"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/validation_3200000.json",
+      "bytes": 12110,
+      "sha256": "c6eee79d46d165353165f393de400c0ddac9cb286fafc3bea4b189d7ac4be370"
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/validation_4000000.json",
+      "bytes": 12190,
+      "sha256": "cb3e7425ef42426cdbb5a58c440e276483faf63f163bc1d7666415cdfda77801"
+    }
+  ],
+  "active_run_excluded": "crax-ea-nativedual-41028-2m-v3",
+  "planned_source_headroom_gib_before_other_writes": 36.26692095099932
+}
