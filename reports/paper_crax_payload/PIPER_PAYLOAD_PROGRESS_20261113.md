@@ -21,6 +21,11 @@ Iso also produced an interim 60k evaluation (30 episodes per condition): all
 three conditions timed out without collision or violation. This is an early
 learning snapshot, not a final candidate assessment; the process remains live.
 
+EA's 60k interim evaluation had 0/30 safe successes in all three conditions;
+nominal and execution-scale had 0 violations and 30/30 timeouts, while the
+new-geometry condition had 4/30 violations and 26/30 timeouts. No collision or
+physical-robot interaction was recorded.
+
 At 120k, Iso again evaluated 30 episodes per condition: nominal,
 new-geometry, and execution-scale conditions all had 0 safe successes,
 0 violations, and 30/30 safe timeouts. The 120k receipt records 180,000

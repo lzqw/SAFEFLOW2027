@@ -84,6 +84,10 @@ selection.
   completed CRAX Payload experiments. Iso's 120k interim evaluation had
   0/30 safe successes, 0 violations, and 30/30 safe timeouts in each of the
   nominal, new-geometry, and execution-scale conditions.
+  EA's 60k interim evaluation likewise had 0/30 safe successes in each
+  condition; nominal and execution-scale had no violations, while
+  new-geometry had 4/30 violations. These are interim learning diagnostics,
+  not final candidate results.
 
 ## 6. Actual cost and reproducibility
 
