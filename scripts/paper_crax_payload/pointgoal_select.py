@@ -29,7 +29,7 @@ def method_from_run(run):
 
 
 def seed_from_run(run):
-    return int(run.split('-')[2])
+    return int(run.split('-')[3])
 
 
 def main():
