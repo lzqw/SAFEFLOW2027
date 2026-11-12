@@ -2,8 +2,9 @@
 
 Status: source implemented; two constructive task routes and three focused
 contracts passed. No six-trial development training has been launched by this
-implementation. One explicitly approved3210→3220 engineering continuation is
-pending a source commit at this report revision. No physical robot transport or
+implementation. One explicitly approved3210→3220 engineering continuation
+completed on localCPU with pinned source70269ac59a9ac3130a378eb4dbd9ea81798f9887.
+No physical robot transport or
 motion is enabled, and an engineering checkpoint is not a deployment candidate.
 
 ## Model and genuine task feasibility first
@@ -138,14 +139,34 @@ Engineering checkpoints are rejected as deployment candidates. All exports keep
 `physical_motion_enabled=false` and `hardware_matched=false`; there is no SDK/CAN
 connection. Actual candidate generation awaits real training and common selection.
 
-## New query accounting before approved engineering training
+## Approved genuine engineering continuation
+
+Payload Iso-Low, engineering seed41998:3210 fresh transitions then10 native
+continuation transitions. Replay3210→3220, learner rounds1210→1220, reward updates
+2420→2440, actor updates105→110, partial episode lengths[27,73]→[32,78]. The
+serialized native reference variance is.01, energy target75 and initialalpha.0002.
+The39 completed engineering episodes contain14 violations,0 successes and25 safe
+timeouts, unchanged in the10-step child. This is a recovery/unit smoke, not a
+learned task-capability or speed result, and no candidate bundle was exported.
+
+Raw receipts, module digests and progress are in `piper-engineering-70269ac/`.
+Both full replay/optimizer checkpoints are archived on4080's4T disk under
+`/home/carla/4T/SAFEFLOW2027_PAPER/archives/piper-engineering-70269ac/`, retaining
+necessary local engineering originals outsideGitHub. Local/remote SHA256 match:
+initial `4a7096e7b2d60da9c268e0efdb398cfd313073abea5e545ec532827ef982d0c3`,
+child `c64baa94938878b247a3a17abd3a2297b2dd52359d4772d4d3d9e96af524091d`.
+No file containing raw replay/weights is added toGitHub.
+
+## New query accounting including approved engineering training
 
 | Item | New train transitions | Non-training controls | Physics substeps | Scene distance evaluations |
 |---|---:|---:|---:|---:|
 | Failed static gate and offline IK diagnosis |0|0|0|7|
 | Actual two-task constructive detour |0|116|2320|2440|
 | Two restore/next-interval focused contracts |0|6|120|130|
-| Total at this revision |0|122|2440|2577|
+| NativeCPU Payload Iso-Low engineering |3210|0|64200|67492|
+| Native full continuation |10|0|200|210|
+| Total at this revision |3220|122|66840|70279|
 
 Distance evaluations include reset/goal static and interval samples; they are
 not additional control transitions or training steps. Earlier deployment-agent

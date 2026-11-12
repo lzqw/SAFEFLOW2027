@@ -2,9 +2,12 @@
 
 ## 当前证据边界
 
-新实现 `scripts/paper_crax_payload/native_sac_checkpoint.py` 已完成3项聚焦CPU契约测试、
-AST编译与CLI帮助检查。**尚未启动真实JAX/MJX训练或保存恢复检查**；不能仅凭这些
-CPU检查就声称原生GPU learner恢复已通过。主协调者批准后只做一次小型实际续训对照。
+新实现 `scripts/paper_crax_payload/native_sac_checkpoint.py` 已完成聚焦CPU契约测试、
+AST编译与CLI帮助检查。主协调者随后批准的一次真实JAX/MJX恢复检查已完成，科学源
+`dc197f333dab788c915075f05a4f6c2f81ce0ec5`：实际新增8448训练步、0评测控制、0真实交互。
+**Learner/replay/RNG逐字节一致，所有canonical物理状态/观测/partial episode一致；
+两个MJX派生浮点缓存在1.2e-7内不同，故不声称整个native Data逐字节一致。**
+完整原始数值比较保留在 `native-sac-resume-dc197f3/comparison-bytes.json`。
 
 已完成的旧 `native_sac_reference.py` 仍保持原样。其1,000,192步reference只保存policy/
 normalizer，不具备训练恢复状态；本工具明确拒绝将其pickle当完整checkpoint恢复。
@@ -80,7 +83,7 @@ diagnostic；共同61027等layout validation应在这些固定五个候选上离
 policy snapshot，程序直接拒绝，不能凭最终权重倒造中间checkpoint；应改成明确计费的
 fresh run。所有旧候选仍保留历史记录，不因为选择范围变化而删除。
 
-## 一次小型真实检查建议（待协调者批准）
+## 一次实际小型真实检查（已批准完成，不再重跑）
 
 使用相同seed和工程设置，比较完整run与“host epoch1保存停止→新进程完整恢复”的最终
 state。默认任务物理/horizon仍不改变；只缩小E/replay/batch和显式工程host粒度。
@@ -97,4 +100,42 @@ normalizer/dual、replay及RNG、nativeenv state、outer/eval keys和计数。
 Wallclock/logger计时不同不作为数值失败。真实采样预期每条完整lineage4224步，
 两条lineage合计8448步，不把恢复对照的重复采样计作零；以实际receipt为准。
 
-这只是后续执行方案，当前没有发起这些新进程，也没有将它们提前写为通过。
+实际三进程都使用同一dc197f3文件，依次完成：
+
+| 分段 | 原生步骤 | 真实新增训练 | 梯度更新累计 | 进程耗时 |
+|---|---:|---:|---:|---:|
+| uninterrupted |0→4224|4224|512|182.888秒|
+| prefix，显式host停止 |0→384|384|32|96.209秒|
+| resumed，新进程恢复 |384→4224|3840|512|92.160秒|
+| **实际总新增** |两条完整lineage|**8448**|实际总1024|约371.257秒|
+
+没有自动重启或额外物理试验。三条receipt的评测均0；共同validation没有被工程检查
+冒充完成。两条lineage训练原始成本均699.019287，真实合计1398.038574；分段续训只计
+699.019287−47.266903的新增成本，不把prefix累加两遍。该4k工程试验不是策略效果基线。
+
+### 全状态比较，而非只看policy
+
+实际保存的130个TrainingState叶子（所有网络、optimizer、normalizer、dual、计数）、
+4个replay叶子（含完整轨迹和key）、outer local_key与evaluator_key在完整/分段终点逐字节
+相同。所有候选实际steps相同：896、1664、2688、3456、4224；各恰好五个机会。
+
+环境141个叶子中139个逐字节相同，包括qpos/qvel、观测、partial成本、reset keys等。
+仅`.pipeline_state.subtree_com`差1.1920929e-7、`._impl.subtree_angmom`差1.39698e-9，
+均在预先比较容差rtol1e-6/atol1e-7内。当前MJX3.11源码`forward.py:70–74`
+调用kinematics→com_pos；`smooth.py:140–161`从xipos/body_mass重新计算subtree_com，
+`smooth.py:456+`重新计算subtree angular momentum。这些是派生缓存；低位差原因与
+不同编译/浮点归约一致，但并未直接审计HLO来证明某个唯一原因。没有删去这两个叶子，
+原始严格`exact_resume_contract_passed`仍为false，数值容差合同为true。
+
+另外dc197f3最初没有固定未使用的Python/NumPy全局RNG，故独立fresh进程的这些host状态
+不相同。恢复后的两个host RNG与**其自身prefix**存档逐项相同；官方算法使用显式JAX keys，
+这些算法key在两条lineage完全一致。后续版本已前瞻性增加host seed，并记录Reset wrapper
+文件hash；没有更改这三条正在运行时的源，也没有为美化字节比较而额外重复8448步。
+
+### 大文件存档
+
+三个完整pickle已从A100流式复制到4080 4T：
+`/home/carla/4T/SAFEFLOW2027_PAPER/archives/native-sac-resume-dc197f3/`。
+每个约10.79MB，源/目的SHA256逐文件一致；必要A100原件保留，未删除任何旧记录。
+GitHub只放JSON、日志与代码，不放这些full pickle。详见同目录紧凑
+`ARCHIVE_MANIFEST.json`。

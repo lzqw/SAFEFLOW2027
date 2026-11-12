@@ -1,0 +1,154 @@
+{
+  "status": "completed_read_only_comparison",
+  "source_commit": "dc197f333dab788c915075f05a4f6c2f81ce0ec5",
+  "comparisons": {
+    "training_state": {
+      "tree_structure_equal": true,
+      "leaves_left": 130,
+      "leaves_right": 130,
+      "all_leaves_bitwise_equal": true,
+      "all_leaves_close": true,
+      "maximum_absolute_error": 0.0,
+      "mismatches": []
+    },
+    "env_state": {
+      "tree_structure_equal": true,
+      "leaves_left": 141,
+      "leaves_right": 141,
+      "all_leaves_bitwise_equal": false,
+      "all_leaves_close": true,
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "mismatches": [
+        {
+          "path": ".pipeline_state.subtree_com",
+          "shape_left": [
+            1,
+            8,
+            20,
+            3
+          ],
+          "shape_right": [
+            1,
+            8,
+            20,
+            3
+          ],
+          "dtype_left": "float32",
+          "dtype_right": "float32",
+          "absolute_error": 1.1920928955078125e-07,
+          "within_declared_tolerance": true
+        },
+        {
+          "path": ".pipeline_state._impl.subtree_angmom",
+          "shape_left": [
+            1,
+            8,
+            20,
+            3
+          ],
+          "shape_right": [
+            1,
+            8,
+            20,
+            3
+          ],
+          "dtype_left": "float32",
+          "dtype_right": "float32",
+          "absolute_error": 1.3969838619232178e-09,
+          "within_declared_tolerance": true
+        }
+      ]
+    },
+    "buffer_state": {
+      "tree_structure_equal": true,
+      "leaves_left": 4,
+      "leaves_right": 4,
+      "all_leaves_bitwise_equal": true,
+      "all_leaves_close": true,
+      "maximum_absolute_error": 0.0,
+      "mismatches": []
+    },
+    "local_key": {
+      "tree_structure_equal": true,
+      "leaves_left": 1,
+      "leaves_right": 1,
+      "all_leaves_bitwise_equal": true,
+      "all_leaves_close": true,
+      "maximum_absolute_error": 0.0,
+      "mismatches": []
+    },
+    "evaluator_key": {
+      "tree_structure_equal": true,
+      "leaves_left": 1,
+      "leaves_right": 1,
+      "all_leaves_bitwise_equal": true,
+      "all_leaves_close": true,
+      "maximum_absolute_error": 0.0,
+      "mismatches": []
+    }
+  },
+  "algorithm_counters_and_plan_equal": true,
+  "candidate_steps_equal": true,
+  "candidate_steps": [
+    [
+      3,
+      896
+    ],
+    [
+      6,
+      1664
+    ],
+    [
+      10,
+      2688
+    ],
+    [
+      13,
+      3456
+    ],
+    [
+      16,
+      4224
+    ]
+  ],
+  "unused_host_rng": {
+    "python_full_vs_resumed_equal": false,
+    "numpy_full_vs_resumed_equal": false,
+    "python_resumed_vs_own_prefix_equal": true,
+    "numpy_resumed_vs_own_prefix_equal": true,
+    "explanation": "dc197f3 does not initially seed unused Python/NumPy global RNGs;full-vs-fresh-prefix host states need not equal. Official algorithm uses explicit JAX keys. Exact restoration is checked against the actual prefix state;no whole-pickle/all-host-state bitwise claim."
+  },
+  "actual_total_new_training_transitions": 8448,
+  "native_evaluation_controls": 0,
+  "common_validation_controls": 0,
+  "comparison_new_training_transitions": 0,
+  "comparison_simulator_queries": 0,
+  "comparison_real_interactions": 0,
+  "segment_receipts": {
+    "uninterrupted": {
+      "status": "completed",
+      "steps": 4224,
+      "initial_steps": 0,
+      "new_training_transitions": 4224,
+      "elapsed_seconds": 182.88831775309518
+    },
+    "prefix": {
+      "status": "explicit_engineering_checkpoint_stop",
+      "steps": 384,
+      "initial_steps": 0,
+      "new_training_transitions": 384,
+      "elapsed_seconds": 96.20882575400174
+    },
+    "resumed": {
+      "status": "completed",
+      "steps": 4224,
+      "initial_steps": 384,
+      "new_training_transitions": 3840,
+      "elapsed_seconds": 92.15992630412802
+    }
+  },
+  "all_typed_algorithm_state_bitwise_equal": false,
+  "all_typed_algorithm_state_within_declared_tolerance": true,
+  "numerical_resume_contract_passed": true,
+  "exact_resume_contract_passed": false
+}

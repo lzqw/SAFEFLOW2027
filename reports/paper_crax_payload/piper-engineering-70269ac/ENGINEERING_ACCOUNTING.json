@@ -1,0 +1,46 @@
+{
+  "source_commit": "70269ac59a9ac3130a378eb4dbd9ea81798f9887",
+  "robot_family": "Piper",
+  "task": "Payload",
+  "method": "Iso-Low",
+  "training_seed": 41998,
+  "actual_new_training_transitions": 3220,
+  "actual_nontraining_control_intervals": 122,
+  "training_physics_substeps": 64400,
+  "nontraining_physics_substeps": 2440,
+  "training_scene_distance_evaluations": 67702,
+  "nontraining_scene_distance_evaluations": 2577,
+  "earlier_deployment_agent_Piper8control_smoke_is_separate": true,
+  "physical_robot_interactions": 0,
+  "candidate_exports_generated": 0,
+  "development_trials_launched": 0,
+  "resume_proof": {
+    "before_steps": 3210, "after_steps": 3220,
+    "before_replay_count": 3210, "after_replay_count": 3220,
+    "before_learner_updates": 1210, "after_learner_updates": 1220,
+    "before_reward_updates": 2420, "after_reward_updates": 2440,
+    "before_actor_updates": 105, "after_actor_updates": 110,
+    "before_partial_episode_lengths": [27, 73],
+    "after_partial_episode_lengths": [32, 78],
+    "native_reference_variance": 0.01, "native_energy_target": 75.0,
+    "native_initial_alpha": 0.0002,
+    "episodes": 39, "training_violations": 14,
+    "training_safe_successes": 0, "training_safe_timeouts": 25,
+    "is_deployment_candidate": false
+  },
+  "nontraining_sources": [
+    {"source": "failed staticgoal gate and offline IKdiagnosis", "control_intervals": 0, "physics_substeps": 0, "scene_distance_evaluations": 7, "IK_calls": 19},
+    {"source": "two actual constructive task routes", "control_intervals": 116, "physics_substeps": 2320, "scene_distance_evaluations": 2440},
+    {"source": "Reach/Payload observed fullstate and nextinterval focused contracts", "control_intervals": 6, "physics_substeps": 120, "scene_distance_evaluations": 130}
+  ],
+  "full_checkpoints": {
+    "archive_root": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/piper-engineering-70269ac",
+    "initial_relative_file": "piper-payload-isolow-41998-engineering-70269ac/latest_full.pt",
+    "initial_sha256": "4a7096e7b2d60da9c268e0efdb398cfd313073abea5e545ec532827ef982d0c3",
+    "resume_relative_file": "piper-payload-isolow-41998-engineering-70269ac-resume1/latest_full.pt",
+    "resume_sha256": "c64baa94938878b247a3a17abd3a2297b2dd52359d4772d4d3d9e96af524091d",
+    "local_remote_checksums_match": true,
+    "large_files_in_GitHub": false,
+    "local_engineering_originals_preserved_outside_worktree": true
+  }
+}

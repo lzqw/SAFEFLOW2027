@@ -1,0 +1,64 @@
+{
+  "settings": {
+    "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+    "seed": 99027,
+    "num_envs": 8,
+    "batch_size": 16,
+    "grad_updates_per_step": 1,
+    "min_replay_size": 128,
+    "max_replay_size": 8192,
+    "learning_rate": 0.0003,
+    "discount": 0.99,
+    "reward_scaling": 1.0,
+    "cost_scaling": 1.0,
+    "normalize_observations": false,
+    "safety_bound": 25.0,
+    "lagrangian_lr": 0.01,
+    "lambda_max": 2.0,
+    "episode_length": 1000,
+    "action_repeat": 1,
+    "env_id": "safe_goal_point",
+    "difficulty": 1,
+    "physics_timestep": 0.019999999552965164,
+    "frame_skip": 4,
+    "action_dim": 2,
+    "obs_dim": 62,
+    "jax_version": "0.6.0",
+    "jax_devices": [
+      "NVIDIA A100 80GB PCIe"
+    ],
+    "engineering_check": true,
+    "engineering_epoch_actor_steps": 32,
+    "skip_native_evaluation": true,
+    "api_repairs": [
+      "fresh_complete_autoreset",
+      "pre_reset_terminal_observation",
+      "cumulative_raw_cost_accounting"
+    ],
+    "dependency_versions": {
+      "jax": "0.6.0",
+      "jaxlib": "0.6.0",
+      "flax": "0.10.6",
+      "optax": "0.2.4",
+      "mujoco": "3.11.0",
+      "mujoco-mjx": "3.11.0",
+      "numpy": "2.2.6",
+      "crax": null
+    },
+    "native_module_sha256": {
+      "crax.training.agents.sac_lag.train": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+      "crax.training.agents.sac_lag.losses": "cdcd7d5a4732a05b71d4f76e2e2e21ba4a82071b1e42c755d088e4be4b3692b6",
+      "crax.training.agents.sac_lag.networks": "78ff32c4bd8c2014ec7d17ce77db211baa672c7b4cf8a4db8b6d162333921e8e",
+      "crax.training.types": "61187003fba28f260bd51552a9e47435f60a14ea92dc157d428ffb0126869e55",
+      "crax.envs.safe_goal": "52d69feab7a7cc445edd2cd01a073b33038e785bb3526ec2be5f909487d774fc",
+      "crax.envs.hazards": "b2a807efd468a94b1525ec581e11d8947326cc4ec8552a9d1c19a686db622a3e"
+    }
+  },
+  "requested_steps": 4096,
+  "source_commit": "dc197f333dab788c915075f05a4f6c2f81ce0ec5",
+  "checkpoint_kind": "SAFEFlow-native-SAC-Lag-full-host-epoch-v1",
+  "actual_native_source_guard": true,
+  "common_validation": "offline_on_exactly_five_saved_candidates",
+  "resume_from": null
+}

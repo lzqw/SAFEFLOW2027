@@ -1,0 +1,36 @@
+{
+  "status": "explicit_engineering_checkpoint_stop",
+  "steps": 384,
+  "initial_steps": 0,
+  "new_training_transitions": 384,
+  "requested_steps": 4096,
+  "source_commit": "dc197f333dab788c915075f05a4f6c2f81ce0ec5",
+  "elapsed_seconds": 96.20882575400174,
+  "training_cumulative_cost": 47.266902923583984,
+  "training_cumulative_goals": 0.0,
+  "native_evaluation_calls_total": 0,
+  "native_evaluation_calls_this_invocation": 0,
+  "native_evaluation_controls_this_invocation": 0,
+  "common_validation_controls": 0,
+  "common_validation_status": "pending_offline_equal_candidate_rule",
+  "full_training_including_compile_eval_save_sps": 3.9913178130024916,
+  "full_state_resume_saved": true,
+  "five_candidate_schedule": [
+    3,
+    6,
+    10,
+    13,
+    16
+  ],
+  "eligible_candidates": [],
+  "native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+  "inner_scientific_functions_unchanged": [
+    "sgd_step",
+    "get_experience",
+    "training_step",
+    "prefill_replay_buffer",
+    "training_epoch",
+    "training_epoch_with_timing"
+  ],
+  "new_real_robot_interactions": 0
+}

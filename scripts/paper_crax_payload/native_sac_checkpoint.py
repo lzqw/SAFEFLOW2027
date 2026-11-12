@@ -303,7 +303,11 @@ def main():
     from crax import envs
     from crax.training import acting,logger as native_logger
     from scripts.paper_crax_payload.native_sac_reference import CompleteReset
-    started=time.monotonic();environment=envs.get_environment('safe_goal_point',level=1)
+    # Prospective metadata/reproducibility fix after the dc197f3 recovery check:
+    # official algorithm streams already use explicit JAX keys; these host
+    # streams were unused but should also start reproducibly in future runs.
+    started=time.monotonic();random.seed(args.seed);np.random.seed(args.seed)
+    environment=envs.get_environment('safe_goal_point',level=1)
     native=environment.unwrapped
     settings=dict(crax_commit=CRAX_COMMIT,native_train_sha256=TRAIN_SHA256,seed=args.seed,
         num_envs=args.num_envs,batch_size=args.batch_size,grad_updates_per_step=args.updates,
@@ -314,7 +318,7 @@ def main():
         frame_skip=native._n_frames,action_dim=native.action_size,obs_dim=native.observation_size,
         jax_version=jax.__version__,jax_devices=[d.device_kind for d in jax.local_devices()],
         engineering_check=args.engineering_check,engineering_epoch_actor_steps=args.epoch_actor_steps,
-        skip_native_evaluation=args.skip_native_evaluation,
+        skip_native_evaluation=args.skip_native_evaluation,host_rng_initialization='Python_NumPy_seed_from_training_seed',
         api_repairs=['fresh_complete_autoreset','pre_reset_terminal_observation','cumulative_raw_cost_accounting'])
     settings['dependency_versions']={}
     for package in ('jax','jaxlib','flax','optax','mujoco','mujoco-mjx','numpy','crax'):
@@ -326,6 +330,8 @@ def main():
                  'crax.envs.safe_goal','crax.envs.hazards'):
         module=importlib.import_module(name)
         settings['native_module_sha256'][name]=hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
+    wrapper_module=importlib.import_module('scripts.paper_crax_payload.native_sac_reference')
+    settings['paper_reset_wrapper_file_sha256']=hashlib.sha256(Path(wrapper_module.__file__).read_bytes()).hexdigest()
     manager=FullCheckpointManager(args.output,settings,resume=args.resume,
         allow_target_extension=args.allow_target_extension,stop_after_epochs=args.stop_after_epochs)
     if args.epoch_actor_steps:
