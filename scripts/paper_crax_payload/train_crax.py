@@ -41,24 +41,29 @@ def evaluate(learner, num_envs, seed):
         active = torch.ones(num_envs, dtype=torch.bool, device=learner.device)
         returns = torch.zeros(num_envs, device=learner.device)
         costs, goals, lengths = (torch.zeros_like(returns) for _ in range(3))
+        first_goal=torch.full_like(returns,env.native.episode_length)
         # Native horizon is retained. No host sync for per-env or per-step decisions.
-        for _ in range(env.native.episode_length):
+        for index in range(env.native.episode_length):
             with torch.no_grad():
                 action, _, _ = learner.actor(obs, geometry=learner.geometry, generator=rng)
             obs, reward, done, info = env.step(action)
             returns += reward * active
             costs += info['cost'] * active
+            first_goal=torch.where(active & (goals==0) & (info['goals']>0),index+1,first_goal)
             goals += info['goals'] * active
             lengths += active
             active &= ~done
-        records = torch.stack((returns,costs,goals,lengths),-1).cpu().tolist()
+        records = torch.stack((returns,costs,goals,lengths,first_goal),-1).cpu().tolist()
     qualified = [r for r in records if r[1] <= learner.settings['cost_budget']]
-    return dict(seed=seed,episodes=num_envs,records=[dict(native_return=r[0],episode_cost=r[1],goals=r[2],length=r[3]) for r in records],
+    return dict(seed=seed,episodes=num_envs,records=[dict(native_return=r[0],episode_cost=r[1],goals=r[2],length=r[3],
+        capped_first_goal_seconds=r[4]*float(env.native.dt),first_goal_seconds=r[4]*float(env.native.dt) if r[2]>=1 else None) for r in records],
         native_return=float(np.mean([r[0] for r in records])),episode_cost=float(np.mean([r[1] for r in records])),
         goals_per_episode=float(np.mean([r[2] for r in records])),at_least_one_goal=float(np.mean([r[2]>=1 for r in records])),
         budget_compliant_fraction=len(qualified)/len(records),
         budget_compliant_return=float(np.mean([r[0] for r in qualified])) if qualified else None,
         budget_compliant_episodes=len(qualified),physical_controls=num_envs*env.native.episode_length,
+        capped_first_goal_seconds=float(np.mean([r[4] for r in records]))*float(env.native.dt),
+        conditional_first_goal_seconds=float(np.mean([r[4] for r in records if r[2]>=1]))*float(env.native.dt) if any(r[2]>=1 for r in records) else None,
         elapsed_seconds=time.monotonic()-start,training_updates=0,dual_updates=0,
         actor_margin_normalizer_dual_frozen=True)
 
@@ -85,6 +90,9 @@ def main():
     args.output.mkdir(parents=True,exist_ok=True)
     started=time.monotonic(); random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     torch.set_num_threads(4)
+    # Shared engineering setting for ALL new CRAX Flow controls. Record it;
+    # this is not a measured causal TF32 speedup or unchanged bitwise arithmetic.
+    torch.set_float32_matmul_precision('high')
     device=torch.device(args.device)
     if device.type!='cuda':raise ValueError('Actual GPU path required for reported full-training throughput')
     torch.cuda.set_device(device)
@@ -116,10 +124,13 @@ def main():
     else:obs=env.reset()
     torch.cuda.synchronize(); reset_compile_seconds=time.monotonic()-started
     atomic_json(args.output/'configuration.json',dict(master=master,profile_name=args.profile,
+        phase='engineering_profile' if args.profile_only else 'development',
         profile=profile,method=args.method,seed=args.seed,source_commit=args.source_commit,
         task=env.effective_config(),requested_steps=args.steps,
         actual_target_steps=((args.steps+E-1)//E)*E,initial_steps=initial_steps,
         task_mode='cumulative',cost_q='unbounded_discounted_raw_cost',
+        float32_matmul_precision=torch.get_float32_matmul_precision(),
+        cuda_matmul_allow_tf32=torch.backends.cuda.matmul.allow_tf32,
         dual='raw_completed_episode_batch_mean;lr0.01;EMA0.05;clip0_100;not_native_SAC_perstep_rule',
         u=G/(E*F),replay_exposure=G*B/(E*F),energy_target=learner.energy_target,
         jax_preallocate=os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'],

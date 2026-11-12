@@ -80,23 +80,30 @@ def frozen_validation(make_policy,params,seed=61027,count=50):
     def run(keys,rng):
         state=env.reset(keys)
         totals=jp.zeros((count,4));active=jp.ones((count,),dtype=bool)
-        def body(carry,_):
-            state,totals,active,key=carry;key,noise=jax.random.split(key)
+        first_goal=jp.full((count,),base.unwrapped.episode_length)
+        def body(carry,index):
+            state,totals,active,key,first_goal=carry;key,noise=jax.random.split(key)
             action,_=policy(state.obs,noise)
             nxt=env.step(state,action)
             goal_count=jp.rint((nxt.reward-(state.info['last_dist_goal']-
                 nxt.metrics['distance_to_goal'])*base.unwrapped._reward_distance)/base.unwrapped._reward_goal)
             increment=jp.stack((nxt.reward,nxt.info['cost'],goal_count,jp.ones_like(nxt.reward)),-1)
+            first_goal=jp.where(active & (totals[:,2]==0) & (goal_count>0),index+1,first_goal)
             totals=totals+increment*active[:,None]
-            return (nxt,totals,active&~nxt.done.astype(bool),key),None
-        return jax.lax.scan(body,(state,totals,active,rng),None,length=base.unwrapped.episode_length)[0][1]
+            return (nxt,totals,active&~nxt.done.astype(bool),key,first_goal),None
+        final=jax.lax.scan(body,(state,totals,active,rng,first_goal),jp.arange(base.unwrapped.episode_length))[0]
+        return jp.concatenate((final[1],final[4][:,None]),-1)
     started=time.monotonic();raw=np.asarray(run(jax.random.split(key,count),rng))
     qualified=raw[:,1]<=25
     return dict(seed=seed,episodes=count,native_return=float(raw[:,0].mean()),episode_cost=float(raw[:,1].mean()),
         goals_per_episode=float(raw[:,2].mean()),at_least_one_goal=float((raw[:,2]>=1).mean()),
         budget_compliant_fraction=float(qualified.mean()),budget_compliant_episodes=int(qualified.sum()),
         budget_compliant_return=float(raw[qualified,0].mean()) if qualified.any() else None,
-        records=[dict(native_return=float(r[0]),episode_cost=float(r[1]),goals=float(r[2]),length=int(r[3])) for r in raw],
+        records=[dict(native_return=float(r[0]),episode_cost=float(r[1]),goals=float(r[2]),length=int(r[3]),
+            capped_first_goal_seconds=float(r[4])*float(base.unwrapped.dt),
+            first_goal_seconds=float(r[4])*float(base.unwrapped.dt) if r[2]>=1 else None) for r in raw],
+        capped_first_goal_seconds=float(raw[:,4].mean())*float(base.unwrapped.dt),
+        conditional_first_goal_seconds=float(raw[raw[:,2]>=1,4].mean())*float(base.unwrapped.dt) if (raw[:,2]>=1).any() else None,
         physical_controls=count*base.unwrapped.episode_length,elapsed_seconds=time.monotonic()-started,
         training_updates=0,dual_updates=0,actor_margin_normalizer_dual_frozen=True)
 
@@ -133,7 +140,7 @@ def main():
     acting.actor_step=actor_step
     env=envs.get_environment('safe_goal_point',level=1)
     settings=dict(crax_commit='63504b540705be98024abd675e646ff5e046c6c2',source_commit=args.source_commit,method='sac_lag_native',
-        env_id='safe_goal_point',difficulty=1,requested_steps=args.steps,seed=args.seed,
+        env_id='safe_goal_point',difficulty=1,phase='reference',requested_steps=args.steps,seed=args.seed,
         episode_length=env.unwrapped.episode_length,num_envs=args.num_envs,batch_size=args.batch_size,
         grad_updates_per_step=args.updates,replay_exposure=args.updates*args.batch_size/args.num_envs,
         safety_bound=25.,cost_q='official_unbounded_discounted_cost',discount=.99,

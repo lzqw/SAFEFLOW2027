@@ -19,6 +19,14 @@ work, actual optimizer rate, walltime including eval/save, allocated memory and
 shared GPU load. No simulator-only benchmark is a full-training speed result.
 Torch/JAX conversion requires same device and actual pre-reset next observation.
 
+All new CRAX Torch Flow controls use `float32_matmul_precision=high`, recorded
+in each configuration. This permits TF32 internal matmul arithmetic on supported
+CUDA hardware while retaining float32 outputs; it is not bitwise-equivalent to
+highest precision, nor a separately measured TF32 causal speedup. See
+[installed-version PyTorch2.7 API](https://docs.pytorch.org/docs/2.7/generated/torch.set_float32_matmul_precision.html).
+Historical Arm/Payload running jobs are not modified. JAX's native precision
+configuration is separately recorded; different update exposures remain explicit.
+
 The CRAX geometry label is a risk-positive **endpoint-clearance proxy in metres**
 against native hazard boundaries, not a claimed control-interval minimum and not
 the cumulative cost critic. Native costs include every native source unchanged.
