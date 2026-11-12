@@ -1,0 +1,1843 @@
+{
+  "schema": "payload_frozen_selection_v1",
+  "status": "complete_frozen_selection",
+  "cohort": "development",
+  "plan_digest": "50e4658f90872dab0d845bc79eb68861588e0d5df52ef8f0ba463df923e73e91",
+  "registered_candidates": [
+    {
+      "candidate_id": "development:sac_lag:41027:000060000",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-sac-41027-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41027:000120000",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-sac-41027-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41027:000180000",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-sac-41027-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41027:000240000",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-sac-41027-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41027:000300000",
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-sac-41027-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000060000",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-sac-41028-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000120000",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-sac-41028-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000180000",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-sac-41028-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000240000",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-sac-41028-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000300000",
+      "method": "sac_lag",
+      "training_seed": 41028,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-sac-41028-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    },
+    {
+      "candidate_id": "development:s_iso:41027:000060000",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-iso-41027-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41027:000120000",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-iso-41027-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41027:000180000",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-iso-41027-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41027:000240000",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-iso-41027-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41027:000300000",
+      "method": "s_iso",
+      "training_seed": 41027,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-iso-41027-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000060000",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-iso-41028-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000120000",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-iso-41028-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000180000",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-iso-41028-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000240000",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-iso-41028-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000300000",
+      "method": "s_iso",
+      "training_seed": 41028,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-iso-41028-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    },
+    {
+      "candidate_id": "development:s_ea:41027:000060000",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-ea-41027-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41027:000120000",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-ea-41027-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41027:000180000",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-ea-41027-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41027:000240000",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-ea-41027-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41027:000300000",
+      "method": "s_ea",
+      "training_seed": 41027,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-ea-41027-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    },
+    {
+      "candidate_id": "development:s_ea:41028:000060000",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "checkpoint_steps": 60000,
+      "run_id": "payload-ea-41028-v1",
+      "policy_filename": "policy_60000.pt",
+      "full_filename": "full_60000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41028:000120000",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "checkpoint_steps": 120000,
+      "run_id": "payload-ea-41028-v1",
+      "policy_filename": "policy_120000.pt",
+      "full_filename": "full_120000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41028:000180000",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "checkpoint_steps": 180000,
+      "run_id": "payload-ea-41028-v1",
+      "policy_filename": "policy_180000.pt",
+      "full_filename": "full_180000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41028:000240000",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "checkpoint_steps": 240000,
+      "run_id": "payload-ea-41028-v1",
+      "policy_filename": "policy_240000.pt",
+      "full_filename": "full_240000.pt",
+      "fixed_endpoint": false
+    },
+    {
+      "candidate_id": "development:s_ea:41028:000300000",
+      "method": "s_ea",
+      "training_seed": 41028,
+      "checkpoint_steps": 300000,
+      "run_id": "payload-ea-41028-v1",
+      "policy_filename": "policy_300000.pt",
+      "full_filename": "full_300000.pt",
+      "fixed_endpoint": true
+    }
+  ],
+  "candidate_evidence": {
+    "development:s_ea:41027:000060000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41027:000060000",
+        "method": "s_ea",
+        "training_seed": 41027,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-ea-41027-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.14,
+          0.24,
+          0.06,
+          0.1,
+          0.94
+        ],
+        "per_condition_safe_success": [
+          0.5,
+          0.56,
+          0.54,
+          0.5,
+          0.06
+        ],
+        "macro_safe_success": 0.432,
+        "macro_capped_seconds": 2.7408,
+        "macro_native_return": 1.468405451777761,
+        "stress_mean_violation_diagnostic_only": 0.33499999999999996
+      },
+      "policy_sha256": "e5b62122d8e684a19908e602a63b5d884ad5dfd64e0b490528b0934e12f6720e",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "20e327f586a6fafdfe03bb059d37c8eba37a3f1e7d2e4a3337ccc61a078ea224",
+      "unavailable": false
+    },
+    "development:s_ea:41027:000120000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41027:000120000",
+        "method": "s_ea",
+        "training_seed": 41027,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-ea-41027-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.1,
+          0.36,
+          0.34,
+          0.08,
+          0.84
+        ],
+        "per_condition_safe_success": [
+          0.9,
+          0.64,
+          0.66,
+          0.92,
+          0.16
+        ],
+        "macro_safe_success": 0.656,
+        "macro_capped_seconds": 1.84768,
+        "macro_native_return": 3.9515717525431318,
+        "stress_mean_violation_diagnostic_only": 0.40499999999999997
+      },
+      "policy_sha256": "6a40f38be65851d5986186e1ef661ba012c63e97a161b1aa329d3dd57b167dae",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "585d49950ea01c4ac543e26e5d22272b654fce2e11f7ce2a3a8c709612e9f190",
+      "unavailable": false
+    },
+    "development:s_ea:41027:000180000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41027:000180000",
+        "method": "s_ea",
+        "training_seed": 41027,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-ea-41027-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.36,
+          0.58,
+          0.0,
+          0.72
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.64,
+          0.42,
+          1.0,
+          0.28
+        ],
+        "macro_safe_success": 0.664,
+        "macro_capped_seconds": 1.84112,
+        "macro_native_return": 4.12196131100451,
+        "stress_mean_violation_diagnostic_only": 0.415
+      },
+      "policy_sha256": "74d8065def7eb37538ad91ec1fb45f2be3aa44d51981f077f37581f378e19259",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "0bfa9201b99a882dabf54d75193af5801b164701a354e1db8383b763a10939c1",
+      "unavailable": false
+    },
+    "development:s_ea:41027:000240000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41027:000240000",
+        "method": "s_ea",
+        "training_seed": 41027,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-ea-41027-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.22,
+          0.72,
+          0.8,
+          0.16,
+          0.8
+        ],
+        "per_condition_safe_success": [
+          0.78,
+          0.28,
+          0.2,
+          0.84,
+          0.2
+        ],
+        "macro_safe_success": 0.46,
+        "macro_capped_seconds": 2.49952,
+        "macro_native_return": -0.3440009663880076,
+        "stress_mean_violation_diagnostic_only": 0.62
+      },
+      "policy_sha256": "8c657b84746d30a2c321261fde392a9ed9f299e405080a881473fd1fca5d0956",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "62d287cf01ab9bb7169cb819d67813587087045c97de6475d7114704d042e324",
+      "unavailable": false
+    },
+    "development:s_ea:41027:000300000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41027:000300000",
+        "method": "s_ea",
+        "training_seed": 41027,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-ea-41027-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.04,
+          0.38,
+          0.52,
+          0.04,
+          0.78
+        ],
+        "per_condition_safe_success": [
+          0.96,
+          0.62,
+          0.48,
+          0.96,
+          0.22
+        ],
+        "macro_safe_success": 0.648,
+        "macro_capped_seconds": 1.89264,
+        "macro_native_return": 3.7556661427832907,
+        "stress_mean_violation_diagnostic_only": 0.43
+      },
+      "policy_sha256": "4263256fa44f39bc8cd2d32da14c41e78958206849f20e8ac8060eb664615b4a",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "7a58d877e4c1e4561e4a92ba5cdf29c68b3e46dddb2b33ec4ab10e7028e7b6e6",
+      "unavailable": false
+    },
+    "development:s_ea:41028:000060000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41028:000060000",
+        "method": "s_ea",
+        "training_seed": 41028,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-ea-41028-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": false,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.56
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "macro_native_return": -3.1189186225100527,
+        "stress_mean_violation_diagnostic_only": 0.14
+      },
+      "policy_sha256": "7de03f26b4277ee7e6650332e7314349a0d3cedf02b375c4fac7101e2233398c",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "206f7b21eed1ebc7c18b6d76b07dabc261c3f7454282ca8dd12ce6e12a0d90dd",
+      "unavailable": false
+    },
+    "development:s_ea:41028:000120000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41028:000120000",
+        "method": "s_ea",
+        "training_seed": 41028,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-ea-41028-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.0,
+          0.0,
+          0.72
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          1.0,
+          1.0,
+          0.28
+        ],
+        "macro_safe_success": 0.852,
+        "macro_capped_seconds": 1.2391999999999999,
+        "macro_native_return": 8.193558640133894,
+        "stress_mean_violation_diagnostic_only": 0.185
+      },
+      "policy_sha256": "e07d34e7802876ca9945be39007d4025a3ba751697d638db856ae46072666542",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "97c009141820543ee6cdc07253bf8eecea7f940ccfa2bf8d3a079c020e791fe0",
+      "unavailable": false
+    },
+    "development:s_ea:41028:000180000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41028:000180000",
+        "method": "s_ea",
+        "training_seed": 41028,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-ea-41028-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.4,
+          0.9,
+          0.74,
+          0.32,
+          0.88
+        ],
+        "per_condition_safe_success": [
+          0.6,
+          0.1,
+          0.26,
+          0.68,
+          0.12
+        ],
+        "macro_safe_success": 0.352,
+        "macro_capped_seconds": 2.86256,
+        "macro_native_return": -2.6100628844867413,
+        "stress_mean_violation_diagnostic_only": 0.71
+      },
+      "policy_sha256": "cfc575a43d17d9a9f95de7a7d6c5b0ff2dd0e34d7304a9b0560473c6b854e9ad",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "2f488b0bb6b71865a79c4357be11d3e5b14ba8c5a353a53c7efbc0714a4d43d2",
+      "unavailable": false
+    },
+    "development:s_ea:41028:000240000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41028:000240000",
+        "method": "s_ea",
+        "training_seed": 41028,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-ea-41028-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.06,
+          0.08,
+          0.0,
+          0.32
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          0.92,
+          1.0,
+          0.68
+        ],
+        "macro_safe_success": 0.908,
+        "macro_capped_seconds": 1.07248,
+        "macro_native_return": 9.465021798562963,
+        "stress_mean_violation_diagnostic_only": 0.115
+      },
+      "policy_sha256": "fc422c62af36d6a54b5316486d620fd1b42894628df6f951c5e289a1fe5099d6",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "1a31db1620054bdfd185d792d11c74ea9ce72ff0fc893df3169631513997d19f",
+      "unavailable": false
+    },
+    "development:s_ea:41028:000300000": {
+      "candidate": {
+        "candidate_id": "development:s_ea:41028:000300000",
+        "method": "s_ea",
+        "training_seed": 41028,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-ea-41028-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.04,
+          0.28,
+          0.54,
+          0.04,
+          0.34
+        ],
+        "per_condition_safe_success": [
+          0.96,
+          0.72,
+          0.46,
+          0.96,
+          0.66
+        ],
+        "macro_safe_success": 0.752,
+        "macro_capped_seconds": 1.5707200000000001,
+        "macro_native_return": 6.065009942396411,
+        "stress_mean_violation_diagnostic_only": 0.30000000000000004
+      },
+      "policy_sha256": "57246db22fd494a73c26519ef073626ec75198b316986626d112b24575dfac01",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "b883639dd128390fd9ad569486da48096b5adc0599aa9f20ea8b051b9b657c68",
+      "unavailable": false
+    },
+    "development:s_iso:41027:000060000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41027:000060000",
+        "method": "s_iso",
+        "training_seed": 41027,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-iso-41027-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.08,
+          0.1,
+          0.04,
+          0.84
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.92,
+          0.9,
+          0.96,
+          0.16
+        ],
+        "macro_safe_success": 0.784,
+        "macro_capped_seconds": 1.5231999999999999,
+        "macro_native_return": 6.709007725124589,
+        "stress_mean_violation_diagnostic_only": 0.265
+      },
+      "policy_sha256": "e9fb13c0079add82a9fc97d98a05a95d681cf859921fc0cf7cef402c472c036c",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "7b065b7708c4e41d4c0ca9db2cb8db8f432dafe2554e00c675417573ff480048",
+      "unavailable": false
+    },
+    "development:s_iso:41027:000120000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41027:000120000",
+        "method": "s_iso",
+        "training_seed": 41027,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-iso-41027-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.06,
+          0.22,
+          0.04,
+          0.8
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.94,
+          0.78,
+          0.96,
+          0.2
+        ],
+        "macro_safe_success": 0.772,
+        "macro_capped_seconds": 1.4984,
+        "macro_native_return": 6.449927285392314,
+        "stress_mean_violation_diagnostic_only": 0.28
+      },
+      "policy_sha256": "a46812108a9002bcdf5d598bd42ad041b1f94b9cb24aef101e35df453340c753",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "27d2a4b6912956a4f9a9ec50e30a204f27538e09c887ccd655acd3e16fff0a8e",
+      "unavailable": false
+    },
+    "development:s_iso:41027:000180000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41027:000180000",
+        "method": "s_iso",
+        "training_seed": 41027,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-iso-41027-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.06,
+          0.42,
+          0.48,
+          0.08,
+          0.52
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.58,
+          0.52,
+          0.92,
+          0.48
+        ],
+        "macro_safe_success": 0.688,
+        "macro_capped_seconds": 1.78304,
+        "macro_native_return": 4.6336186033501,
+        "stress_mean_violation_diagnostic_only": 0.375
+      },
+      "policy_sha256": "af2f8c12ab1c241664bc38b917aa511fb14a8db924f08af8c80d9f3dd07f4610",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "511b8681020e2fe7f2c199f89b03491d4903c8db248eae38b82c1cc9a7bc9868",
+      "unavailable": false
+    },
+    "development:s_iso:41027:000240000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41027:000240000",
+        "method": "s_iso",
+        "training_seed": 41027,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-iso-41027-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.08,
+          0.36,
+          0.4,
+          0.04,
+          0.22
+        ],
+        "per_condition_safe_success": [
+          0.92,
+          0.64,
+          0.6,
+          0.96,
+          0.78
+        ],
+        "macro_safe_success": 0.78,
+        "macro_capped_seconds": 1.49104,
+        "macro_native_return": 6.662315170776831,
+        "stress_mean_violation_diagnostic_only": 0.255
+      },
+      "policy_sha256": "e03bdd7b3a09da9100f61e8085bcf0e46dfc14f8d1d1611b5774cc7a134cba04",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "e8426cdd299ca0674040d149007391d83592e988be914923b5cd90d2033dbe3b",
+      "unavailable": false
+    },
+    "development:s_iso:41027:000300000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41027:000300000",
+        "method": "s_iso",
+        "training_seed": 41027,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-iso-41027-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.22,
+          0.24,
+          0.0,
+          0.44
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.78,
+          0.76,
+          1.0,
+          0.56
+        ],
+        "macro_safe_success": 0.8160000000000001,
+        "macro_capped_seconds": 1.3611199999999999,
+        "macro_native_return": 7.450782174101118,
+        "stress_mean_violation_diagnostic_only": 0.225
+      },
+      "policy_sha256": "500f0de63894505e2b3c3f22a904ee8238ddd8f07ae62f8cf6402dff4e995980",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "4416cb251db510987d6136b896a5e06fd5c3d3377248c6184424f7af408788d8",
+      "unavailable": false
+    },
+    "development:s_iso:41028:000060000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41028:000060000",
+        "method": "s_iso",
+        "training_seed": 41028,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-iso-41028-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.18,
+          0.34,
+          0.16,
+          0.08,
+          0.92
+        ],
+        "per_condition_safe_success": [
+          0.4,
+          0.32,
+          0.4,
+          0.4,
+          0.08
+        ],
+        "macro_safe_success": 0.32,
+        "macro_capped_seconds": 3.79168,
+        "macro_native_return": -0.428206321917541,
+        "stress_mean_violation_diagnostic_only": 0.375
+      },
+      "policy_sha256": "68db5af61d5ec8e444152df823c5513628f727f60e7860246aacb8c05747eed9",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "91cb22222390f39adad61ea507d178b855106b99c7df59a82709030a6099e6a5",
+      "unavailable": false
+    },
+    "development:s_iso:41028:000120000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41028:000120000",
+        "method": "s_iso",
+        "training_seed": 41028,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-iso-41028-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.0,
+          0.0,
+          0.72
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          1.0,
+          1.0,
+          0.28
+        ],
+        "macro_safe_success": 0.852,
+        "macro_capped_seconds": 1.2376,
+        "macro_native_return": 8.198407589521208,
+        "stress_mean_violation_diagnostic_only": 0.185
+      },
+      "policy_sha256": "64409a8937ab4ed99040f2c5e10964eac95bef88469aefa771493a8ec2afe571",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "9daf6e562156a8326b931f149af2b72aa90df4c1f0c2c3d37089461b45b64f2d",
+      "unavailable": false
+    },
+    "development:s_iso:41028:000180000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41028:000180000",
+        "method": "s_iso",
+        "training_seed": 41028,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-iso-41028-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.12,
+          0.28,
+          0.4,
+          0.16,
+          0.82
+        ],
+        "per_condition_safe_success": [
+          0.88,
+          0.7,
+          0.58,
+          0.82,
+          0.18
+        ],
+        "macro_safe_success": 0.632,
+        "macro_capped_seconds": 1.94736,
+        "macro_native_return": 3.5320564073251624,
+        "stress_mean_violation_diagnostic_only": 0.415
+      },
+      "policy_sha256": "b6a3396d7ef3662203b8549fb8ff71f2407b3038d0592e30dc77b3ecc6b02fbc",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "0d86b7b15bbfae00a6954dd1bac46363905171a30ba4508cef758add0d4beec4",
+      "unavailable": false
+    },
+    "development:s_iso:41028:000240000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41028:000240000",
+        "method": "s_iso",
+        "training_seed": 41028,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-iso-41028-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.1,
+          0.2,
+          0.02,
+          0.7
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.9,
+          0.8,
+          0.98,
+          0.3
+        ],
+        "macro_safe_success": 0.792,
+        "macro_capped_seconds": 1.42416,
+        "macro_native_return": 6.918177029232837,
+        "stress_mean_violation_diagnostic_only": 0.255
+      },
+      "policy_sha256": "bf289b54ab4549f6be776221773cb9d5acd8c34556be5488129e3e279432cfe3",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "e0086beedcba1a82dae5d604925bb27b8125d7354b019b7cf958249f4f04ad0b",
+      "unavailable": false
+    },
+    "development:s_iso:41028:000300000": {
+      "candidate": {
+        "candidate_id": "development:s_iso:41028:000300000",
+        "method": "s_iso",
+        "training_seed": 41028,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-iso-41028-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.2,
+          0.58,
+          0.58,
+          0.14,
+          0.88
+        ],
+        "per_condition_safe_success": [
+          0.8,
+          0.42,
+          0.42,
+          0.86,
+          0.12
+        ],
+        "macro_safe_success": 0.524,
+        "macro_capped_seconds": 2.29696,
+        "macro_native_return": 1.0472426626813505,
+        "stress_mean_violation_diagnostic_only": 0.5449999999999999
+      },
+      "policy_sha256": "83a3a9462e854ac989a5149d881bdfd14bfd524bc9349b889157a4fe9d576497",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "0e7504032c886d3958f1e1fd9b366168258b522850e69d22f66321df075c4c8d",
+      "unavailable": false
+    },
+    "development:sac_lag:41027:000060000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41027:000060000",
+        "method": "sac_lag",
+        "training_seed": 41027,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-sac-41027-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.2,
+          0.12,
+          0.1,
+          0.96
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.8,
+          0.88,
+          0.9,
+          0.04
+        ],
+        "macro_safe_success": 0.72,
+        "macro_capped_seconds": 1.72336,
+        "macro_native_return": 5.387983379472705,
+        "stress_mean_violation_diagnostic_only": 0.345
+      },
+      "policy_sha256": "c53dc7be3257cac47f2a644ffb28c9898b3a1c1dbd424abd5480c2e0aa624ece",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "f2d4e91382fafcf4e63970d9d241708cfc52f16e78a8e0d531f555c5f491ce90",
+      "unavailable": false
+    },
+    "development:sac_lag:41027:000120000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41027:000120000",
+        "method": "sac_lag",
+        "training_seed": 41027,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-sac-41027-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.14,
+          0.28,
+          0.2,
+          0.24,
+          0.94
+        ],
+        "per_condition_safe_success": [
+          0.78,
+          0.64,
+          0.76,
+          0.68,
+          0.04
+        ],
+        "macro_safe_success": 0.5800000000000001,
+        "macro_capped_seconds": 2.10624,
+        "macro_native_return": 2.8390309374479825,
+        "stress_mean_violation_diagnostic_only": 0.415
+      },
+      "policy_sha256": "1848cf3df9704d608c66ef092b1a46ce61f117d00c536dfbb92865012d0ea1cd",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "8a224a385ff243a3565dd2007a47c5d67090442c38a75e542b0a457ebd394829",
+      "unavailable": false
+    },
+    "development:sac_lag:41027:000180000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41027:000180000",
+        "method": "sac_lag",
+        "training_seed": 41027,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-sac-41027-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.06,
+          0.12,
+          0.02,
+          0.7
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          0.88,
+          0.98,
+          0.3
+        ],
+        "macro_safe_success": 0.82,
+        "macro_capped_seconds": 1.3260800000000001,
+        "macro_native_return": 7.512509054417806,
+        "stress_mean_violation_diagnostic_only": 0.22499999999999998
+      },
+      "policy_sha256": "b8c820f4604d0779b15636041160c5607fb292a825dac5251b2dc2b69df819f9",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "f21b91d137f7f147bdbfe378037c58b4f3b3ca5e2c77ea15186ca2f57bd29b47",
+      "unavailable": false
+    },
+    "development:sac_lag:41027:000240000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41027:000240000",
+        "method": "sac_lag",
+        "training_seed": 41027,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-sac-41027-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.04,
+          0.22,
+          0.26,
+          0.02,
+          0.62
+        ],
+        "per_condition_safe_success": [
+          0.96,
+          0.78,
+          0.74,
+          0.98,
+          0.38
+        ],
+        "macro_safe_success": 0.768,
+        "macro_capped_seconds": 1.49616,
+        "macro_native_return": 6.442085852812364,
+        "stress_mean_violation_diagnostic_only": 0.28
+      },
+      "policy_sha256": "b86037722ff4e53652ed07db2804173093e634e06ca3340ee2dd07aac051fe05",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "77226c3f77e3ad710397531875e7bf069b80f83d734fbeee3c0a726f9afd3a2e",
+      "unavailable": false
+    },
+    "development:sac_lag:41027:000300000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41027:000300000",
+        "method": "sac_lag",
+        "training_seed": 41027,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-sac-41027-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.02,
+          0.0,
+          0.24
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          0.98,
+          1.0,
+          0.76
+        ],
+        "macro_safe_success": 0.944,
+        "macro_capped_seconds": 0.9336,
+        "macro_native_return": 10.254819211416436,
+        "stress_mean_violation_diagnostic_only": 0.06999999999999999
+      },
+      "policy_sha256": "bca8f32747fd11d1eb5b82c9d87e655e5cd2224b6e49a32c4c37191568b53156",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "35e7c654d915fe6470847a48038b947d8e985cb8dd7ce9feb7a665e8acda49a1",
+      "unavailable": false
+    },
+    "development:sac_lag:41028:000060000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41028:000060000",
+        "method": "sac_lag",
+        "training_seed": 41028,
+        "checkpoint_steps": 60000,
+        "run_id": "payload-sac-41028-v1",
+        "policy_filename": "policy_60000.pt",
+        "full_filename": "full_60000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.04,
+          0.18,
+          0.04,
+          0.88
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.96,
+          0.82,
+          0.96,
+          0.12
+        ],
+        "macro_safe_success": 0.768,
+        "macro_capped_seconds": 1.51584,
+        "macro_native_return": 6.3601573245718415,
+        "stress_mean_violation_diagnostic_only": 0.285
+      },
+      "policy_sha256": "032df23cc26879101be26eefcee3f5bae5ada1565e9b165401e0ae8e2d31f5d8",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "5c6e5b56d6c3bef318e4063afabd89a35738ee2ed2ccb1550f8ad5fbb1fd29be",
+      "unavailable": false
+    },
+    "development:sac_lag:41028:000120000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41028:000120000",
+        "method": "sac_lag",
+        "training_seed": 41028,
+        "checkpoint_steps": 120000,
+        "run_id": "payload-sac-41028-v1",
+        "policy_filename": "policy_120000.pt",
+        "full_filename": "full_120000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.02,
+          0.14,
+          0.24,
+          0.08,
+          0.86
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.86,
+          0.76,
+          0.92,
+          0.14
+        ],
+        "macro_safe_success": 0.732,
+        "macro_capped_seconds": 1.61504,
+        "macro_native_return": 5.604852842846878,
+        "stress_mean_violation_diagnostic_only": 0.33
+      },
+      "policy_sha256": "4dd65e52fab1871ef7252cd20d633f07ea68a2840840e75b343ec0c762d6b5d2",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "e2c94dcd3732d504e5381747e72078206f1167d3d4971521db36dfba300ae393",
+      "unavailable": false
+    },
+    "development:sac_lag:41028:000180000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41028:000180000",
+        "method": "sac_lag",
+        "training_seed": 41028,
+        "checkpoint_steps": 180000,
+        "run_id": "payload-sac-41028-v1",
+        "policy_filename": "policy_180000.pt",
+        "full_filename": "full_180000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.0,
+          0.0,
+          0.56
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          1.0,
+          1.0,
+          0.44
+        ],
+        "macro_safe_success": 0.884,
+        "macro_capped_seconds": 1.12768,
+        "macro_native_return": 8.91741671087191,
+        "stress_mean_violation_diagnostic_only": 0.14500000000000002
+      },
+      "policy_sha256": "47eb36b0a618bc0e65fa2b6aa6ba19bb520b5123d03cec84778a5376839399ed",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "64e2735ae41de41b4510902798205c70c7dbce25e2df2ffce65d30c6e7138f11",
+      "unavailable": false
+    },
+    "development:sac_lag:41028:000240000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41028:000240000",
+        "method": "sac_lag",
+        "training_seed": 41028,
+        "checkpoint_steps": 240000,
+        "run_id": "payload-sac-41028-v1",
+        "policy_filename": "policy_240000.pt",
+        "full_filename": "full_240000.pt",
+        "fixed_endpoint": false
+      },
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.18,
+          0.22,
+          0.06,
+          0.66
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.82,
+          0.78,
+          0.94,
+          0.34
+        ],
+        "macro_safe_success": 0.776,
+        "macro_capped_seconds": 1.46096,
+        "macro_native_return": 6.607366851913337,
+        "stress_mean_violation_diagnostic_only": 0.28
+      },
+      "policy_sha256": "1e9d4c5c22445a029f53a96c9b37640c071d7dfef6df1c32fdf04c4b71cbba46",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "80514a4bebaebca6e7c99b0876dc54b7e74bc80cb9fe0a13ff97335689dc1ac9",
+      "unavailable": false
+    },
+    "development:sac_lag:41028:000300000": {
+      "candidate": {
+        "candidate_id": "development:sac_lag:41028:000300000",
+        "method": "sac_lag",
+        "training_seed": 41028,
+        "checkpoint_steps": 300000,
+        "run_id": "payload-sac-41028-v1",
+        "policy_filename": "policy_300000.pt",
+        "full_filename": "full_300000.pt",
+        "fixed_endpoint": true
+      },
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "condition_names": [
+          "nominal",
+          "radius_070",
+          "payload_wide",
+          "execution_scale_085",
+          "offset_route_candidate"
+        ],
+        "per_condition_violation": [
+          0.0,
+          0.06,
+          0.08,
+          0.02,
+          0.06
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          0.92,
+          0.98,
+          0.94
+        ],
+        "macro_safe_success": 0.956,
+        "macro_capped_seconds": 0.90864,
+        "macro_native_return": 10.556433265564808,
+        "stress_mean_violation_diagnostic_only": 0.055
+      },
+      "policy_sha256": "4f1deec334150d1bd4cb82dfa6a3e15a567b782afa22c1f7d3de13338c79bdbe",
+      "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+      "validation_digest": "e64246a0d0b09b15dee52c8a109fa5c1dfeea00a12949bb0cdcfcd6b23de90b7",
+      "unavailable": false
+    }
+  },
+  "methods": {
+    "sac_lag": {
+      "status": "risk_qualified",
+      "selected": {
+        "candidate": {
+          "candidate_id": "development:sac_lag:41028:000300000",
+          "method": "sac_lag",
+          "training_seed": 41028,
+          "checkpoint_steps": 300000,
+          "run_id": "payload-sac-41028-v1",
+          "policy_filename": "policy_300000.pt",
+          "full_filename": "full_300000.pt",
+          "fixed_endpoint": true
+        },
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": true,
+          "condition_names": [
+            "nominal",
+            "radius_070",
+            "payload_wide",
+            "execution_scale_085",
+            "offset_route_candidate"
+          ],
+          "per_condition_violation": [
+            0.0,
+            0.06,
+            0.08,
+            0.02,
+            0.06
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.94,
+            0.92,
+            0.98,
+            0.94
+          ],
+          "macro_safe_success": 0.956,
+          "macro_capped_seconds": 0.90864,
+          "macro_native_return": 10.556433265564808,
+          "stress_mean_violation_diagnostic_only": 0.055
+        },
+        "policy_sha256": "4f1deec334150d1bd4cb82dfa6a3e15a567b782afa22c1f7d3de13338c79bdbe",
+        "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+        "validation_digest": "e64246a0d0b09b15dee52c8a109fa5c1dfeea00a12949bb0cdcfcd6b23de90b7",
+        "unavailable": false
+      },
+      "risk_qualified": true,
+      "task_progress_observed": true,
+      "eligible_for_deployment": true,
+      "allowed_candidate_count": 10,
+      "evaluated_candidate_count": 10,
+      "pareto_candidate_ids": [
+        "development:sac_lag:41027:000300000",
+        "development:sac_lag:41028:000180000",
+        "development:sac_lag:41028:000300000"
+      ]
+    },
+    "s_iso": {
+      "status": "pareto_tradeoff_not_risk_qualified",
+      "selected": {
+        "candidate": {
+          "candidate_id": "development:s_iso:41028:000120000",
+          "method": "s_iso",
+          "training_seed": 41028,
+          "checkpoint_steps": 120000,
+          "run_id": "payload-iso-41028-v1",
+          "policy_filename": "policy_120000.pt",
+          "full_filename": "full_120000.pt",
+          "fixed_endpoint": false
+        },
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "condition_names": [
+            "nominal",
+            "radius_070",
+            "payload_wide",
+            "execution_scale_085",
+            "offset_route_candidate"
+          ],
+          "per_condition_violation": [
+            0.0,
+            0.02,
+            0.0,
+            0.0,
+            0.72
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.98,
+            1.0,
+            1.0,
+            0.28
+          ],
+          "macro_safe_success": 0.852,
+          "macro_capped_seconds": 1.2376,
+          "macro_native_return": 8.198407589521208,
+          "stress_mean_violation_diagnostic_only": 0.185
+        },
+        "policy_sha256": "64409a8937ab4ed99040f2c5e10964eac95bef88469aefa771493a8ec2afe571",
+        "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+        "validation_digest": "9daf6e562156a8326b931f149af2b72aa90df4c1f0c2c3d37089461b45b64f2d",
+        "unavailable": false
+      },
+      "risk_qualified": false,
+      "task_progress_observed": true,
+      "eligible_for_deployment": false,
+      "allowed_candidate_count": 10,
+      "evaluated_candidate_count": 10,
+      "pareto_candidate_ids": [
+        "development:s_iso:41027:000240000",
+        "development:s_iso:41027:000300000",
+        "development:s_iso:41028:000120000",
+        "development:s_iso:41028:000240000"
+      ]
+    },
+    "s_ea": {
+      "status": "pareto_tradeoff_not_risk_qualified",
+      "selected": {
+        "candidate": {
+          "candidate_id": "development:s_ea:41028:000240000",
+          "method": "s_ea",
+          "training_seed": 41028,
+          "checkpoint_steps": 240000,
+          "run_id": "payload-ea-41028-v1",
+          "policy_filename": "policy_240000.pt",
+          "full_filename": "full_240000.pt",
+          "fixed_endpoint": false
+        },
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "condition_names": [
+            "nominal",
+            "radius_070",
+            "payload_wide",
+            "execution_scale_085",
+            "offset_route_candidate"
+          ],
+          "per_condition_violation": [
+            0.0,
+            0.06,
+            0.08,
+            0.0,
+            0.32
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.94,
+            0.92,
+            1.0,
+            0.68
+          ],
+          "macro_safe_success": 0.908,
+          "macro_capped_seconds": 1.07248,
+          "macro_native_return": 9.465021798562963,
+          "stress_mean_violation_diagnostic_only": 0.115
+        },
+        "policy_sha256": "fc422c62af36d6a54b5316486d620fd1b42894628df6f951c5e289a1fe5099d6",
+        "training_config_digest": "f40ece053c21ebee23c16397d96fda27ad1fd2f473dd3ef06a312976f21e4e22",
+        "validation_digest": "1a31db1620054bdfd185d792d11c74ea9ce72ff0fc893df3169631513997d19f",
+        "unavailable": false
+      },
+      "risk_qualified": false,
+      "task_progress_observed": true,
+      "eligible_for_deployment": false,
+      "allowed_candidate_count": 10,
+      "evaluated_candidate_count": 10,
+      "pareto_candidate_ids": [
+        "development:s_ea:41028:000060000",
+        "development:s_ea:41028:000120000",
+        "development:s_ea:41028:000240000"
+      ]
+    }
+  },
+  "independent_test_used_for_selection": false,
+  "fixed_endpoints_replaced": false,
+  "training_seeds_are_replication_unit": true,
+  "new_training_transitions": 0,
+  "new_simulation_control_intervals": 0,
+  "freeze_digest": "143372ca6767a5f9da6e8d125fbcdf4c4dafaea94c6ffea6b3e2ffe6ee22b227"
+}
