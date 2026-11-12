@@ -1,9 +1,16 @@
-# PointGoal正式阶段：已准备准入接口，尚未冻结或启动
+# PointGoal正式阶段：共同10M已冻结，完整九组合待启动
 
-计划文件是 `configs/paper_crax_payload/pointgoal_formal_plan_v1.json`，当前明确为
-`prepared_not_frozen`。它不是训练队列，不是模型选择结果；本次没有修改正在运行的
-服务器代码、启动训练/评估、冻结预算或配置。一个开发seed好即可继续研究，不新增
-“所有seed同时获胜”的研究前提。
+计划文件是 `configs/paper_crax_payload/pointgoal_formal_plan_v1.json`。
+协调者在2026-11-12 07:38:24UTC根据完整Iso/EA4M对照，已将其显式冻结为
+三方法共同10M、三个新训练seed、每seed五个checkpoint；这不是部署模型选择结果。
+此前准入功能准备阶段没有启动训练或消耗测试集，一个开发seed好即可继续研究，
+不新增“所有seed同时获胜”的研究前提。
+
+SAC使用归一化、LR.01和原生E256/B1024/G4，Flow使用共享v3/Balanced。
+Iso从2M的3.82目标升至4M的12.42，EA从0.42升至18.22；两者成本仍高于25。
+据此共同预算选择10M以覆盖仍在进行的学习；没有单独延长某种方法。
+十二个算法文件hash已固定，九组合CPU准入检查通过，0训练/模拟查询。
+正式启动由有限队列执行，实际PID/角色和向量/host epoch取整记录在运行凭证中。
 
 ## 固定范围
 
@@ -20,7 +27,7 @@ Flow的env/difficulty/task-mode/budget仍须与原生TASK一致，且environment
 Formal禁止profile-only、
 工程提前停止/跳过评估、个别目标扩展等旗标；development原有选项保持可用。
 
-示例只说明参数，**用当前prepared计划运行必定被拒绝**：
+示例只说明参数，历史prepared计划会被拒绝；当前frozen计划仍要求参数完全一致：
 
 ```text
 python -m scripts.paper_crax_payload.train_crax ... --phase formal --formal-plan configs/paper_crax_payload/pointgoal_formal_plan_v1.json

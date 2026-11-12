@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import time
 
@@ -34,10 +35,11 @@ def main():
     if state_path.exists():raise FileExistsError('Inspect previous native handles; do not restart a queue blindly')
     if not 1<=plan['slots']<=2:raise ValueError('Only bounded shared slots allowed')
     validate_slot_environments(plan)
-    jobs=plan['jobs'];live={};records=[]
+    jobs=plan['jobs'];live={};records=[];admission_wait_reason=None
     def save():
         state=dict(pid=os.getpid(),source_commit=args.source_commit,status='running' if jobs or live else 'completed',
-            jobs=records,pending=len(jobs),live_native_pids=list(live),automatic_restart=False,foreign_processes_changed=False)
+            jobs=records,pending=len(jobs),live_native_pids=list(live),automatic_restart=False,foreign_processes_changed=False,
+            admission_wait_reason=admission_wait_reason)
         temp=state_path.with_suffix('.tmp');temp.write_text(json.dumps(state,indent=2)+'\n');temp.replace(state_path)
     while jobs or live:
         for pid,(proc,stream,record) in list(live.items()):
@@ -45,6 +47,11 @@ def main():
             if code is not None:
                 stream.close();record.update(exit_code=code,status='completed' if code==0 else 'failed_not_restarted',finished_unix=time.time());del live[pid]
         while jobs and len(live)<plan['slots']:
+            minimum_free=plan.get('minimum_free_disk_bytes',0)
+            if minimum_free and shutil.disk_usage(project).free<minimum_free:
+                admission_wait_reason='waiting_for_disk_space;active_jobs_not_stopped'
+                break
+            admission_wait_reason=None
             slot=next_slot([item[2] for item in live.values()],plan['slots'])
             job=jobs.pop(0);log=Path(job['log']);log.parent.mkdir(parents=True,exist_ok=True)
             if Path(job['output']).exists():raise FileExistsError('Preserve original run output')

@@ -1,0 +1,313 @@
+{
+  "project": "/home/lzqw/SAFEFLOW2027_PAPER/project",
+  "python": "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+  "slots": 2,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "1"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "state": "/home/lzqw/SAFEFLOW2027_PAPER/queues/pointgoal-formal-v1.json",
+  "minimum_free_disk_bytes": 10737418240,
+  "maximum_nominal_new_training_transitions": 90000000,
+  "rounding": "Nativehost/vectorroundingchargedactualnotnominal;~1920additionalpossible",
+  "admission": {
+    "status": "frozen_registered_matrix",
+    "formal_plan": "configs/paper_crax_payload/pointgoal_formal_plan_v1.json",
+    "formal_plan_sha256": "48e4582f64d1035cacc4f8bc2db6f11b5e43c4e63be0686d50900e2a80445585",
+    "methods": [
+      "sac_lag",
+      "stable_iso",
+      "ea"
+    ],
+    "training_seeds": [
+      51027,
+      51028,
+      51029
+    ],
+    "common_steps_per_seed": 10000000,
+    "first_slot_gpu1": "completedEAdevelopmentreleased",
+    "other_slot_gpu0": "temporarysharingwithlastEAdevseedandlowpriorityPiper;80GBmemoryheadroomchecked;nopauses",
+    "independent_test_used": false,
+    "foreign_process_stop_allowed": false,
+    "automatic_restart": false
+  },
+  "jobs": [
+    {
+      "name": "crax-formal-sac_lag-51027-10m-v1",
+      "module": "scripts.paper_crax_payload.native_sac_checkpoint",
+      "arguments": [
+        "--steps",
+        "10000000",
+        "--seed",
+        "51027",
+        "--num-envs",
+        "256",
+        "--batch-size",
+        "1024",
+        "--updates",
+        "4",
+        "--lagrangian-lr",
+        "0.01",
+        "--normalize-observations",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-sac_lag-51027-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-sac_lag-51027-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-stable_iso-51027-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "stable_iso",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51027",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-stable_iso-51027-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-stable_iso-51027-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-ea-51027-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "ea",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51027",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-ea-51027-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-ea-51027-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-sac_lag-51028-10m-v1",
+      "module": "scripts.paper_crax_payload.native_sac_checkpoint",
+      "arguments": [
+        "--steps",
+        "10000000",
+        "--seed",
+        "51028",
+        "--num-envs",
+        "256",
+        "--batch-size",
+        "1024",
+        "--updates",
+        "4",
+        "--lagrangian-lr",
+        "0.01",
+        "--normalize-observations",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-sac_lag-51028-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-sac_lag-51028-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-stable_iso-51028-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "stable_iso",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51028",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-stable_iso-51028-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-stable_iso-51028-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-ea-51028-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "ea",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51028",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-ea-51028-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-ea-51028-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-sac_lag-51029-10m-v1",
+      "module": "scripts.paper_crax_payload.native_sac_checkpoint",
+      "arguments": [
+        "--steps",
+        "10000000",
+        "--seed",
+        "51029",
+        "--num-envs",
+        "256",
+        "--batch-size",
+        "1024",
+        "--updates",
+        "4",
+        "--lagrangian-lr",
+        "0.01",
+        "--normalize-observations",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-sac_lag-51029-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-sac_lag-51029-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-stable_iso-51029-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "stable_iso",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51029",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-stable_iso-51029-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-stable_iso-51029-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    },
+    {
+      "name": "crax-formal-ea-51029-10m-v1",
+      "module": "scripts.paper_crax_payload.train_crax",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "ea",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51029",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-ea-51029-10m-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-formal-ea-51029-10m-v1.log",
+      "environment": {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONPATH": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_runtime/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cufft/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cublas/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nvjitlink/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cuda_cupti/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusparse/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cusolver/lib:/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/nccl/lib"
+      }
+    }
+  ]
+}

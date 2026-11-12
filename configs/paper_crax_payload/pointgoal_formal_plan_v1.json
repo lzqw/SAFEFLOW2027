@@ -2,62 +2,349 @@
   "schema_version": 1,
   "plan_id": "pointgoal-formal-v1",
   "phase": "formal",
-  "status": "prepared_not_frozen",
-  "methods": ["sac_lag", "stable_iso", "ea"],
-  "training_seeds": [51027, 51028, 51029],
-  "allowed_common_budgets": [5000000, 10000000],
-  "common_steps_per_seed": null,
-  "checkpoint_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
+  "status": "frozen",
+  "methods": [
+    "sac_lag",
+    "stable_iso",
+    "ea"
+  ],
+  "training_seeds": [
+    51027,
+    51028,
+    51029
+  ],
+  "allowed_common_budgets": [
+    5000000,
+    10000000
+  ],
+  "common_steps_per_seed": 10000000,
+  "checkpoint_fractions": [
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1
+  ],
   "maximum_checkpoints_per_seed": 5,
   "task": {
     "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
     "env_id": "safe_goal_point",
     "difficulty": 1,
     "task_mode": "cumulative",
-    "episodic_cost_budget": 25.0
+    "episodic_cost_budget": 25
   },
   "method_configurations": {
     "sac_lag": {
       "runner": "scripts.paper_crax_payload.native_sac_checkpoint",
-      "runtime_parameters": null,
-      "pending_choices": ["normalize_observations", "lagrangian_lr", "E_B_G"]
+      "runtime_parameters": {
+        "num_envs": 256,
+        "batch_size": 1024,
+        "updates": 4,
+        "lagrangian_lr": 0.01,
+        "normalize_observations": true,
+        "min_replay_size": 20000,
+        "max_replay_size": 1000000,
+        "learning_rate": 0.0003,
+        "discount": 0.99,
+        "reward_scaling": 1,
+        "cost_scaling": 1,
+        "safety_bound": 25,
+        "env_id": "safe_goal_point",
+        "difficulty": 1,
+        "checkpoint_fractions": [
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "maximum_checkpoints_per_seed": 5
+      },
+      "configuration_status": "frozen"
     },
     "stable_iso": {
       "runner": "scripts.paper_crax_payload.train_crax",
       "candidate_configuration_file": "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
-      "runtime_parameters": null
+      "runtime_parameters": {
+        "pointgoal": {
+          "env_id": "safe_goal_point",
+          "difficulty": 1,
+          "task_mode": "cumulative",
+          "episodic_cost_budget": 25,
+          "discount": 0.99,
+          "reward_scaling": 1,
+          "cost_scaling": 1,
+          "observation_normalization": "running_acme",
+          "environment_overrides": {},
+          "profiles": {
+            "balanced": {
+              "E": 256,
+              "F": 1,
+              "B": 1024,
+              "G": 4,
+              "replay_exposure": 16
+            },
+            "fast": {
+              "E": 512,
+              "F": 1,
+              "B": 1024,
+              "G": 4,
+              "replay_exposure": 8
+            },
+            "learn_heavy": {
+              "E": 128,
+              "F": 1,
+              "B": 512,
+              "G": 8,
+              "replay_exposure": 32
+            }
+          },
+          "shared_learner": {
+            "hidden_width": 256,
+            "actor_lr": 0.0001,
+            "critic_lr": 0.0003,
+            "reward_loss": "huber_beta1",
+            "reward_updates_per_round": 2,
+            "actor_update_interval": 2,
+            "reward_target_samples": 4,
+            "flow_steps": 4,
+            "reference_variance": 0.04,
+            "normal_variance_ratio": 0.25,
+            "replay_capacity": 1000000,
+            "margin_ema_tau": 0.005,
+            "geometry_margin_updates_start": 1000,
+            "geometry_margin_updates_full": 5000,
+            "kinetic_alpha_per_variance": 0.02,
+            "energy_target_per_action": 0.25,
+            "random_prefill_transitions": 20000,
+            "critic_only_updates": 1000,
+            "dual_rule": "native_per_step",
+            "lagrangian_lr": 0.1
+          },
+          "development": {
+            "reference_initial_steps": 1000000,
+            "candidate_steps": 500000,
+            "survivor_steps": 2000000,
+            "best_shared_steps": [
+              3000000,
+              5000000
+            ],
+            "maximum_major_configurations": 6
+          },
+          "methods": [
+            "sac_lag",
+            "stable_iso",
+            "ea"
+          ],
+          "optional_baseline": "cvpo"
+        },
+        "profile_name": "balanced",
+        "profile": {
+          "E": 256,
+          "F": 1,
+          "B": 1024,
+          "G": 4,
+          "replay_exposure": 16
+        },
+        "eval_envs": 50,
+        "checkpoint_fractions": [
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "maximum_checkpoints_per_seed": 5
+      },
+      "configuration_status": "frozen"
     },
     "ea": {
       "runner": "scripts.paper_crax_payload.train_crax",
       "candidate_configuration_file": "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
-      "runtime_parameters": null
+      "runtime_parameters": {
+        "pointgoal": {
+          "env_id": "safe_goal_point",
+          "difficulty": 1,
+          "task_mode": "cumulative",
+          "episodic_cost_budget": 25,
+          "discount": 0.99,
+          "reward_scaling": 1,
+          "cost_scaling": 1,
+          "observation_normalization": "running_acme",
+          "environment_overrides": {},
+          "profiles": {
+            "balanced": {
+              "E": 256,
+              "F": 1,
+              "B": 1024,
+              "G": 4,
+              "replay_exposure": 16
+            },
+            "fast": {
+              "E": 512,
+              "F": 1,
+              "B": 1024,
+              "G": 4,
+              "replay_exposure": 8
+            },
+            "learn_heavy": {
+              "E": 128,
+              "F": 1,
+              "B": 512,
+              "G": 8,
+              "replay_exposure": 32
+            }
+          },
+          "shared_learner": {
+            "hidden_width": 256,
+            "actor_lr": 0.0001,
+            "critic_lr": 0.0003,
+            "reward_loss": "huber_beta1",
+            "reward_updates_per_round": 2,
+            "actor_update_interval": 2,
+            "reward_target_samples": 4,
+            "flow_steps": 4,
+            "reference_variance": 0.04,
+            "normal_variance_ratio": 0.25,
+            "replay_capacity": 1000000,
+            "margin_ema_tau": 0.005,
+            "geometry_margin_updates_start": 1000,
+            "geometry_margin_updates_full": 5000,
+            "kinetic_alpha_per_variance": 0.02,
+            "energy_target_per_action": 0.25,
+            "random_prefill_transitions": 20000,
+            "critic_only_updates": 1000,
+            "dual_rule": "native_per_step",
+            "lagrangian_lr": 0.1
+          },
+          "development": {
+            "reference_initial_steps": 1000000,
+            "candidate_steps": 500000,
+            "survivor_steps": 2000000,
+            "best_shared_steps": [
+              3000000,
+              5000000
+            ],
+            "maximum_major_configurations": 6
+          },
+          "methods": [
+            "sac_lag",
+            "stable_iso",
+            "ea"
+          ],
+          "optional_baseline": "cvpo"
+        },
+        "profile_name": "balanced",
+        "profile": {
+          "E": 256,
+          "F": 1,
+          "B": 1024,
+          "G": 4,
+          "replay_exposure": 16
+        },
+        "eval_envs": 50,
+        "checkpoint_fractions": [
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "maximum_checkpoints_per_seed": 5
+      },
+      "configuration_status": "frozen"
     }
   },
   "algorithm_file_sha256": {
-    "scripts/paper_crax_payload/train_crax.py": null,
-    "scripts/paper_crax_payload/crax_models.py": null,
-    "scripts/paper_crax_payload/crax_env.py": null,
-    "scripts/paper_crax_payload/observation_normalizer.py": null,
-    "scripts/paper_crax_payload/native_sac_checkpoint.py": null,
-    "scripts/paper_crax_payload/native_sac_reference.py": null,
-    "scripts/paper_crax_payload/formal_admission.py": null,
-    "scripts/paper_crax_payload/configuration.py": null,
-    "scripts/star/arm_safe_entropy/models.py": null,
-    "scripts/star/arm_safe_entropy/endpoint_geometry.py": null,
-    "scripts/star/arm_safe_entropy/geometry.py": null,
-    "scripts/star/arm_safe_entropy/stability_runtime.py": null
+    "scripts/paper_crax_payload/train_crax.py": "d948c455742e7b5c2858e11d94b45c9bee234b34d23efeab036a73fb84ab3f16",
+    "scripts/paper_crax_payload/crax_models.py": "156f93f8dc2bffef443c94314dca73dbb440499db74b21486c38595c6d5f9c9d",
+    "scripts/paper_crax_payload/crax_env.py": "a5bb0f8df29178a59db86937624bf4648bf5b84788bdb616b58a964575f00d7f",
+    "scripts/paper_crax_payload/observation_normalizer.py": "7c3889bfd1dc900408c27fb75d2ee6c42467188d953e0c08192001479d5772f3",
+    "scripts/paper_crax_payload/native_sac_checkpoint.py": "6373179743b1e8a9d76861563cb2fe113f5d73fcee8b7ecdd1872aa15e297c7d",
+    "scripts/paper_crax_payload/native_sac_reference.py": "a97fb39b58cddf607f254917f0a985907384782c039a826f6c4e002390ee3260",
+    "scripts/paper_crax_payload/formal_admission.py": "4d91520f6bfabf99bda4daed65ad371ba839e7d80796c6e1db997446802ca349",
+    "scripts/paper_crax_payload/configuration.py": "788250e2d92acf8f168457dc36efd6da85be5111b506672cfa43467b11409e03",
+    "scripts/star/arm_safe_entropy/models.py": "9609e016d92c1e21e2d8440becdeac8a7893781b353fa008083f3cc91c3db8fe",
+    "scripts/star/arm_safe_entropy/endpoint_geometry.py": "344795a3623df033d003636b3391b08359d1cb007c875f20f08ee9274ee5e660",
+    "scripts/star/arm_safe_entropy/geometry.py": "49000843bd6db327b4ad5fe599f439808f13c97a7c12fad9c9ab4232a7024d34",
+    "scripts/star/arm_safe_entropy/stability_runtime.py": "12ddedfaac9106fd1a8f9f947390f8efd7bf166a31840b448224e23122324ee1"
   },
-  "freeze_record": null,
+  "freeze_record": {
+    "frozen_at_utc": "2026-11-12T07:38:24Z",
+    "all_methods_common_budget_confirmed": true,
+    "code_base_commit": "342a40bb83fad59384eca0115d03fdb7260492a9",
+    "decision_evidence": [
+      "reports/paper_crax_payload/native_runs/crax-iso-nativedual-41027-4m-v3/receipt.json",
+      "reports/paper_crax_payload/native_runs/crax-iso-nativedual-41027-4m-v3/validation_4000000.json",
+      "reports/paper_crax_payload/native_runs/crax-ea-nativedual-41027-4m-v3/receipt.json",
+      "reports/paper_crax_payload/native_runs/crax-ea-nativedual-41027-4m-v3/validation_4000000.json",
+      "reports/paper_crax_payload/native_runs/crax-iso-nativedual-41028-2m-v3/receipt.json",
+      "reports/paper_crax_payload/native_sac_common_validation/dd12384/COMMON_VALIDATION_RESULTS.csv"
+    ],
+    "reason": "Both pairedFlow policies stillgain goals late: Iso3.82at2M to12.42at4M,EA.42at2M to18.22at4M;neither4M meanepisodecost meets25. Freezecommon10M prospectivelyforall3methods,notindividualextension. SelectnativeSACnormalizedLR.01bybettertaskprogressamongriskqualifiedfivecheckpointdevcandidates;retainLR.1results. No newmajorrecipe;secondEAdevseedneednotwinbeforeformalstarts.",
+    "development_endpoints": {
+      "Iso41027_4M": {
+        "goals": 12.42,
+        "cost": 43.670701949596406
+      },
+      "EA41027_4M": {
+        "goals": 18.22,
+        "cost": 46.61016037464142
+      },
+      "Iso41028_2M": {
+        "goals": 10.5,
+        "cost": 81.62013145685196
+      }
+    },
+    "initialization": "allninefresh_registeredseeds;nodevelopmentweighttransfer",
+    "independent_test_used": false
+  },
   "runs": [
-    {"method": "sac_lag", "training_seed": 51027},
-    {"method": "sac_lag", "training_seed": 51028},
-    {"method": "sac_lag", "training_seed": 51029},
-    {"method": "stable_iso", "training_seed": 51027},
-    {"method": "stable_iso", "training_seed": 51028},
-    {"method": "stable_iso", "training_seed": 51029},
-    {"method": "ea", "training_seed": 51027},
-    {"method": "ea", "training_seed": 51028},
-    {"method": "ea", "training_seed": 51029}
+    {
+      "method": "sac_lag",
+      "training_seed": 51027,
+      "steps": 10000000
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 51028,
+      "steps": 10000000
+    },
+    {
+      "method": "sac_lag",
+      "training_seed": 51029,
+      "steps": 10000000
+    },
+    {
+      "method": "stable_iso",
+      "training_seed": 51027,
+      "steps": 10000000
+    },
+    {
+      "method": "stable_iso",
+      "training_seed": 51028,
+      "steps": 10000000
+    },
+    {
+      "method": "stable_iso",
+      "training_seed": 51029,
+      "steps": 10000000
+    },
+    {
+      "method": "ea",
+      "training_seed": 51027,
+      "steps": 10000000
+    },
+    {
+      "method": "ea",
+      "training_seed": 51028,
+      "steps": 10000000
+    },
+    {
+      "method": "ea",
+      "training_seed": 51029,
+      "steps": 10000000
+    }
   ],
-  "note": "Prepared admission schema only. No formal configuration or budget is frozen and no run is launched. Native host-epoch rounding is recorded separately from the exact nominal fractions; all actual transitions remain charged."
+  "note": "Frozenprospectivelybeforeanyformaltraining. Allthree methodsandallthree registeredseeds receivecommon10M,fivecheckpointopportunities,andfixedendpoints.Nativehost/vectorroundingseparatelyrecordedandactualtransitionscharged.Nophysicalconnection,noindependenttestused."
 }
