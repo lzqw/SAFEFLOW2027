@@ -1,7 +1,7 @@
 """Official-URDF provisional Piper Reach/Payload, simulation only.
 
-No Panda model/weights are loaded. Gripper/TCP are explicit provisional values,
-not claimed to match the user's as-yet-unidentified robot. A trained candidate
+No Panda model/weights are loaded. User identified standard Piper/gripper;
+TCP/dynamics are provisional, not physically calibrated. A trained candidate
 must carry this simulation identity and later pass model/calibration matching.
 """
 from __future__ import annotations

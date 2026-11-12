@@ -5,7 +5,13 @@
 M4四项线性数值实验已经完成且通过，见 THEORY_NUMERICS.json/md。只有 synthetic
 Gaussian/SPD draws；0新增训练、0模拟控制、0真实交互。最小数值/采样语义测试5通过。
 
-## 已实现、尚未启动物理查询
+## 已实现并已执行的Reach机制runner
+
+后续经主协调者授权，源fe04b21在A100共享GPU1实际完成：128个新状态、64draws、
+M1/M2、720个交叉路线episode及冻结rho/K敏感性，共437685个新增模拟控制区间，
+0新增训练、0真实交互。PID4016671已正常退出；输出
+`arm-mechanism-fe04b21/receipt.json`，结论见 [ARMMECHANISM_REPORT.md](ARMMECHANISM_REPORT.md)。
+以下为实现范围说明，不将准备状态冒充结果。
 
 `scripts/paper_crax_payload/mechanism_sampling.py` 不接受 oracle 参数。它复用被冻结
 Actor的velocity和原有真实clamp deterministic tail；不改变旧训练和历史代码。
@@ -47,5 +53,5 @@ python -m scripts.paper_crax_payload.mechanism_arm \
 ```
 
 输出目录拒绝覆盖。receipt实际计算新池采样区间、有限差分控制区间、margin-only模拟查询、
-路线区间以及0训练/0optimizer/0真实交互。未运行时不生成成功receipt，不把代码准备完毕
-写成机制证据完成。父级协调者尚未授权启动该runner，故当前M1/M2/M3物理成本为0。
+路线区间以及0训练/0optimizer/0真实交互。未运行时不生成成功receipt；这次完成的
+实际receipt与全部104结果行已经保存，未追加或恢复任何旧长训练。

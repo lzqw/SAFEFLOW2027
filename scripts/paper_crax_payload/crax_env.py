@@ -13,7 +13,7 @@ import numpy as np
 import torch
 from crax import envs
 from crax.envs.wrappers.training import EpisodeWrapper, VmapWrapper
-from crax.io.torch import torch_to_jax, jax_to_torch
+from crax.io.torch import jax_to_torch
 
 
 def _merge_reset(done, reset, terminal):
@@ -79,7 +79,10 @@ class PointGoalTorch:
     def step(self, action):
         if self.state is None:
             raise RuntimeError('Call reset before step')
-        self.state, obs, reward, done, info, self.key = self._step(self.state, torch_to_jax(action.detach().contiguous()), self.key)
+        # Modern DLPack object protocol negotiates stream synchronization. The
+        # pinned legacy capsule helper cannot carry that stream handshake.
+        jax_action = jax.dlpack.from_dlpack(action.detach().contiguous())
+        self.state, obs, reward, done, info, self.key = self._step(self.state, jax_action, self.key)
         return jax_to_torch(obs), jax_to_torch(reward), jax_to_torch(done).bool(), jax_to_torch(info)
 
     def effective_config(self):

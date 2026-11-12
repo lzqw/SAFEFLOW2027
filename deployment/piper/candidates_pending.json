@@ -10,5 +10,5 @@
   "new_training_transitions": 0,
   "real_interactions": 0,
   "physical_motion_enabled": false,
-  "reason": "Official model is executable in provisional simulation, but actual robot/gripper/TCP/limits are unknown. Native Piper training and common validation selection are required before exporting policies; old Panda weights are not converted or relabelled."
+  "reason": "User confirmed Piper standard version and standard gripper; the pinned standard official model is selected for native simulation training when a shared slot is available. Physical firmware/TCP/calibration/limits remain pending. No native Piper policy has yet been trained or selected; old Panda weights are not converted or relabelled."
 }

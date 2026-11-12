@@ -6,7 +6,8 @@
   "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
   "official_source_urdf": "src/piper_description/urdf/piper_description.urdf",
   "hardware_model_and_gripper_match": false,
-  "hardware_information_status": "pending",
+  "hardware_information_status": "user_identified_standard_Piper_and_standard_gripper;firmware_calibration_and_physical_limits_pending",
+  "operator_model_identification_update": "User later confirmed standard Piper and standard gripper; initial smoke observations remain unchanged. Standard official model selected, not physically calibrated/verified.",
   "simulator": "PyBullet",
   "simulations": [
     {"task": "Reach", "control_intervals": 3, "physics_substeps": 60, "zero_action_fixture": true, "minimum_interval_distance_m": 0.03442948152546359, "violation": false, "safe_success": false, "reset_ik_error_m": 0.015327268773591342},

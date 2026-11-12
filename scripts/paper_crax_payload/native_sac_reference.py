@@ -50,6 +50,7 @@ class CompleteReset(Wrapper):
         metrics={k:jp.where(state.done,0.,v) for k,v in state.info['episode_metrics'].items()}
         episode_goals=metrics['paper_episode_goals']
         clean=state.replace(done=jp.zeros_like(state.done),info=dict(state.info,
+            steps=jp.where(state.done,0.,state.info['steps']),
             episode_metrics=metrics,episode_done=jp.zeros_like(state.done)))
         terminal=self.env.step(clean,action)
         goals=jp.rint((terminal.reward-(state.info['last_dist_goal']-
@@ -62,9 +63,42 @@ class CompleteReset(Wrapper):
         done=terminal.done.astype(bool)
         policy=jax.lax.cond(jp.any(done),lambda _:merge_reset(done,self.reset(keys),terminal),lambda _:terminal,None)
         info=dict(policy.info,terminal_observation=terminal.obs,cost=terminal.info['cost'],
-            truncation=terminal.info['truncation'],episode_metrics=terminal.info['episode_metrics'],
+            truncation=terminal.info['truncation'],steps=terminal.info['steps'],episode_metrics=terminal.info['episode_metrics'],
             paper_total_cost=total_cost,paper_total_goals=total_goals,paper_reset_keys=keys)
         return policy.replace(done=terminal.done,reward=terminal.reward,metrics=terminal.metrics,info=info)
+
+
+def frozen_validation(make_policy,params,seed=61027,count=50):
+    """Same initial native layouts as Flow evaluate; first full episode per env."""
+    base=envs.get_environment('safe_goal_point',level=1)
+    env=CompleteReset(base,base.unwrapped.episode_length)
+    policy=make_policy(params,deterministic=False)
+    # Match PointGoalTorch.reset's exact initial-key split, not just seed label.
+    _,key=jax.random.split(jax.random.PRNGKey(seed))
+    rng=jax.random.PRNGKey(seed+1)
+    @jax.jit
+    def run(keys,rng):
+        state=env.reset(keys)
+        totals=jp.zeros((count,4));active=jp.ones((count,),dtype=bool)
+        def body(carry,_):
+            state,totals,active,key=carry;key,noise=jax.random.split(key)
+            action,_=policy(state.obs,noise)
+            nxt=env.step(state,action)
+            goal_count=jp.rint((nxt.reward-(state.info['last_dist_goal']-
+                nxt.metrics['distance_to_goal'])*base.unwrapped._reward_distance)/base.unwrapped._reward_goal)
+            increment=jp.stack((nxt.reward,nxt.info['cost'],goal_count,jp.ones_like(nxt.reward)),-1)
+            totals=totals+increment*active[:,None]
+            return (nxt,totals,active&~nxt.done.astype(bool),key),None
+        return jax.lax.scan(body,(state,totals,active,rng),None,length=base.unwrapped.episode_length)[0][1]
+    started=time.monotonic();raw=np.asarray(run(jax.random.split(key,count),rng))
+    qualified=raw[:,1]<=25
+    return dict(seed=seed,episodes=count,native_return=float(raw[:,0].mean()),episode_cost=float(raw[:,1].mean()),
+        goals_per_episode=float(raw[:,2].mean()),at_least_one_goal=float((raw[:,2]>=1).mean()),
+        budget_compliant_fraction=float(qualified.mean()),budget_compliant_episodes=int(qualified.sum()),
+        budget_compliant_return=float(raw[qualified,0].mean()) if qualified.any() else None,
+        records=[dict(native_return=float(r[0]),episode_cost=float(r[1]),goals=float(r[2]),length=int(r[3])) for r in raw],
+        physical_controls=count*base.unwrapped.episode_length,elapsed_seconds=time.monotonic()-started,
+        training_updates=0,dual_updates=0,actor_margin_normalizer_dual_frozen=True)
 
 
 def main():
@@ -98,7 +132,7 @@ def main():
         return state,transition._replace(next_observation=state.info['terminal_observation'])
     acting.actor_step=actor_step
     env=envs.get_environment('safe_goal_point',level=1)
-    settings=dict(crax_commit='63504b540705be98024abd675e646ff5e046c6c2',source_commit=args.source_commit,
+    settings=dict(crax_commit='63504b540705be98024abd675e646ff5e046c6c2',source_commit=args.source_commit,method='sac_lag_native',
         env_id='safe_goal_point',difficulty=1,requested_steps=args.steps,seed=args.seed,
         episode_length=env.unwrapped.episode_length,num_envs=args.num_envs,batch_size=args.batch_size,
         grad_updates_per_step=args.updates,replay_exposure=args.updates*args.batch_size/args.num_envs,
@@ -118,12 +152,14 @@ def main():
             safety_bound=25.,lagrangian_lr=.01,initial_lambda=0.,lambda_max=2.,wrap_env_fn=CompleteReset)
         jax.effects_barrier()
         with (args.output/'policy_normalizer.pkl').open('wb') as stream:pickle.dump(jax.device_get(params),stream)
+        validation=frozen_validation(make_policy,params)
+        (args.output/f'validation_{last_step}.json').write_text(json.dumps(validation,indent=2)+'\n')
         result=dict(status='completed',steps=last_step,new_training_transitions=last_step,
             requested_steps=args.steps,source_commit=args.source_commit,
             elapsed_seconds=time.monotonic()-started,**totals,
             final_metrics={k:float(np.asarray(v).mean()) for k,v in metrics.items()},
             evaluation_query_accounting='official3passes_50envs_nativehorizon;separate_from_training',
-            evaluation_controls=3*50*env.unwrapped.episode_length,
+            evaluation_controls=3*50*env.unwrapped.episode_length+validation['physical_controls'],
             full_learner_resume_saved=False,new_real_robot_interactions=0)
         (args.output/'receipt.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     finally:

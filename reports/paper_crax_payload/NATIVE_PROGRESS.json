@@ -1,0 +1,35 @@
+{
+  "completed_native_runs": 0,
+  "observed_native_runs": 2,
+  "observed_new_training_transitions_lower_bound": 87000,
+  "observed_native_evaluation_controls": 0,
+  "trials": [
+    {
+      "trial_id": "payload-iso-41027-v1",
+      "status": "running",
+      "steps": 34000,
+      "new_training_transitions_lower_bound": 34000,
+      "training_cost_lower_bound": 63,
+      "evaluation_controls_observed": 0,
+      "method": "s_iso",
+      "training_seed": 41027,
+      "pid": 3401226,
+      "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea"
+    },
+    {
+      "trial_id": "payload-sac-41027-v1",
+      "status": "running",
+      "steps": 53000,
+      "new_training_transitions_lower_bound": 53000,
+      "training_cost_lower_bound": 169,
+      "evaluation_controls_observed": 0,
+      "method": "sac_lag",
+      "training_seed": 41027,
+      "pid": 3401225,
+      "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea"
+    }
+  ],
+  "payload_condition_rows": 0,
+  "whole_goal_complete": false,
+  "note": "report-only snapshot;no live process claims,no new training,no physics,no large checkpoints copied"
+}

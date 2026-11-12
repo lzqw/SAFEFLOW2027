@@ -3,3 +3,6 @@ payload-engineering-v1,payload,engineering,completed,ea,41999,3220,0,0,payload-e
 payload-semantic-and-feasibility-v1,payload,engineering,completed,mixed,,0,222,0,payload-engineering-v1/ENGINEERING_ACCOUNTING.json,all local/native contracts and five-condition constructive detour queries charged
 piper-official-model-smoke-v1,piper,engineering,completed,none,,0,8,0,../../deployment/piper/preparation_receipt.json,160 physics substeps;official provisional model not confirmed physical hardware
 linear-flow-theory-v1,synthetic,mechanism,completed,none,,0,0,0,THEORY_NUMERICS.json,400000 synthetic Gaussian draws and40000 SPD proposals;no simulator queries
+arm-mechanism-fe04b21,Reach,mechanism,completed,frozen_all_four_actors,,0,437685,0,arm-mechanism-fe04b21/receipt.json,128freshstates64draws104rows720routeepisodes;not a new trained method
+payload-sac-41027-v1,payload,development,running,sac_lag,41027,53000,0,0,native_runs/payload-sac-41027-v1/status.json,observed logged lower bound;finite target300000;consult NATIVE_PROGRESS for later snapshots
+payload-iso-41027-v1,payload,development,running,s_iso,41027,34000,0,0,native_runs/payload-iso-41027-v1/status.json,observed logged lower bound;finite target300000;consult NATIVE_PROGRESS for later snapshots

@@ -1,9 +1,10 @@
 # Piper preparation: offline only
 
 This package never opens CAN or imports/initializes the robot SDK. Physical
-motion is not implemented or authorized. Actual robot series, gripper, TCP,
-firmware, calibrated frame, control period, workspace, payload and speed limits
-are missing; fill `hardware_pending.json` with the on-site operator. Provisional
+motion is not implemented or authorized. User identified the standard Piper and
+standard gripper; the pinned official standard URDF is selected. TCP, firmware,
+calibrated frame, control period, workspace, payload and speed limits remain
+missing; fill `hardware_pending.json` with the on-site operator. Provisional
 simulation limits do **not** substitute for those answers.
 
 Pinned official sources are in `model_lock.json`. Assets stay outside GitHub:
@@ -20,7 +21,7 @@ python -m deployment.piper.protocol --output /path/to/new-real-protocol.json
 Assets fetch the pinned official ROS model, resolve package URIs to external
 mesh paths, and retain source commit/digest. They do not execute vendor scripts
 or silently upgrade. The two environments use the actual six-joint Piper model,
-not Panda, and an explicitly provisional standard gripper/TCP. Payload is a
+not Panda, and the user-identified standard gripper with a provisional TCP. Payload is a
 light rigidly held body; no grasp learning. Arm-obstacle and payload-obstacle
 distance minima cover every substep, including the start of the control
 interval. Allowed payload-gripper contact filtering never removes obstacle
@@ -33,7 +34,7 @@ observation freshness and monotonicity, and inference deadline. Rejected
 proposals have no command/executed action. Recording distinguishes raw policy
 proposals from separately measured execution; replay does not execute anything.
 Pure SDK-unit conversion is documented against the pinned source, not tested
-against unidentified hardware.
+against physically calibrated hardware.
 
 `bundle.py` exports native Piper Actor, frozen EMA geometry margin, frozen
 normalizer, variance, action scale, source/model versions and integrity hashes.
