@@ -1,4 +1,5 @@
 trial_id,task,phase,status,method,seed,actual_new_training_transitions,new_nontraining_simulator_controls,new_real_robot_interactions,evidence,notes
+crax-done-boundary-699,PointGoal,diagnostic,completed,stable_iso,41027,0,512,0,episode-boundary-699/done-boundary-699-async.json,twofrozen256controlboundaryprobes;bothpassed;historicalbookkeepingbugnotreproduced;noSGD
 piper-native-engineering-70269ac,Piper-Payload,engineering,completed,Iso-Low,41998,3220,122,0,piper-engineering-70269ac/ENGINEERING_ACCOUNTING.json,3220actualtraining;122additionalnontrainingcontrols;earlier8smokeseparate;noexports
 native-sac-recovery-dc197f3,PointGoal,engineering,completed,SAC-Lag,99027,8448,0,0,native-sac-resume-dc197f3/comparison-bytes.json,full4224+prefix384+resumedincrement3840;learnerreplaykeysbyteexact;native141leavesnumericalnotallbyteexact
 crax-native-bridge-d77b1cc,PointGoal,engineering,completed,mixed,41991,0,10,0,crax-dependency-setup/bridge-receipt-d77b1cc.json,10actualsimcontrols;2syntheticlearnerupdates;elapsedboundaryinjectedonlyforprobe
@@ -19,8 +20,9 @@ crax-profile-fast-v2,PointGoal,engineering_profile,completed,ea,41994,32768,0,0,
 crax-profile-learn-heavy-v2,PointGoal,engineering_profile,completed,ea,41994,32768,0,0,native_runs/crax-profile-learn-heavy-v2/receipt.json,actual completed segment
 crax-iso-norm-balanced-41027-500k-v1,PointGoal,development,completed,stable_iso,41027,500224,250000,0,native_runs/crax-iso-norm-balanced-41027-500k-v1/receipt.json,actual completed segment
 crax-profile-fast-batched-v3,PointGoal,engineering_profile,completed,ea,41994,32768,0,0,native_runs/crax-profile-fast-batched-v3/receipt.json,actual completed segment
-crax-sac-norm-41027-3m-v2,PointGoal,development,completed,sac_lag_native,41027,3000064,300000,0,native_runs/crax-sac-norm-41027-3m-v2/receipt.json,actual completed segment
+crax-sac-norm-41027-3m-v2,PointGoal,development,completed,sac_lag_native,41027,3000064,550000,0,native_runs/crax-sac-norm-41027-3m-v2/receipt.json,actual completed segment
 payload-ea-41027-v1,payload,development,running,s_ea,41027,108000,6097,0,native_runs/payload-ea-41027-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
 crax-iso-nativedual-41027-500k-v3,PointGoal,development,completed,stable_iso,41027,500224,250000,0,native_runs/crax-iso-nativedual-41027-500k-v3/receipt.json,actual completed segment
-crax-sac-norm-lagrate01-41027-3m-v3,PointGoal,development,completed,sac_lag_native,41027,3000064,300000,0,native_runs/crax-sac-norm-lagrate01-41027-3m-v3/receipt.json,actual completed segment
+crax-sac-norm-lagrate01-41027-3m-v3,PointGoal,development,completed,sac_lag_native,41027,3000064,550000,0,native_runs/crax-sac-norm-lagrate01-41027-3m-v3/receipt.json,actual completed segment
 payload-sac-41028-v1,payload,development,running,sac_lag,41028,224000,7004,0,native_runs/payload-sac-41028-v1/status.json,observed lower bound;not process-liveness proof;all prefixes retained
+crax-iso-nativedual-41027-2m-v3,PointGoal,development,running,stable_iso,41027,529152,50000,0,native_runs/crax-iso-nativedual-41027-2m-v3/status.json,observed lower bound;not process-liveness proof;all prefixes retained

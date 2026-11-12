@@ -12,6 +12,8 @@ def main():
     p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--source-commit',required=True)
     args=p.parse_args();plan=json.loads(args.plan.read_text())
+    if plan.get('superseded_by') or plan.get('admission',{}).get('superseded_by') or plan.get('admission',{}).get('status','').startswith('superseded'):
+        raise ValueError('Superseded queue plan: preserve historical registration, never duplicate its jobs')
     project=Path(plan['project']);state_path=Path(plan['state']);state_path.parent.mkdir(parents=True,exist_ok=True)
     if state_path.exists():raise FileExistsError('Inspect previous native handles; do not restart a queue blindly')
     if not 1<=plan['slots']<=2:raise ValueError('Only bounded shared slots allowed')

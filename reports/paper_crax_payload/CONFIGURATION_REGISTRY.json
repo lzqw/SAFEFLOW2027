@@ -57,7 +57,17 @@
       "actual_steps": 3000064,
       "native_diagnostic_goals": 33.8600006,
       "native_diagnostic_cost": 84.4412155,
-      "common_validation_status": "pending"
+      "common_validation_status": "completed_all5",
+      "validation_endpoint_goals": 33.7400016785,
+      "validation_endpoint_cost": 87.19784545898,
+      "qualified_intermediate_development_candidate": {
+        "checkpoint": 1808128,
+        "goals": 3.12,
+        "mean_cost": 18.572626,
+        "at_least_one_goal": 0.9,
+        "budget_compliance": 0.74
+      },
+      "selection_status": "not_selected_not_independent_test"
     },
     {
       "id": "FlowIso_norm_native_dual_v3",
@@ -71,10 +81,13 @@
       "seed": 41027,
       "requested_steps": 500000,
       "actual_steps": 500224,
-      "status": "completed_development_screen_episode_bookkeeping_under_diagnosis",
+      "status": "same_config_continuation_to2M_running",
       "validation_goals": 0,
       "validation_cost": 0.0821924591064453,
-      "interpretation": "low cost but no task progress;not a final valid baseline"
+      "interpretation": "low cost but no task progress;not a final valid baseline",
+      "continuation_source": "f35ccdc",
+      "continuation_pid": 35500,
+      "episode_accounting_status": "recovered_full_prefix_and_live_boundaries_correct;originalflags/countsdisclosed"
     },
     {
       "id": "SAC_norm_native_dual_v3",
@@ -91,13 +104,15 @@
       "status": "completed_development",
       "native_diagnostic_goals": 28.8999996,
       "native_diagnostic_cost": 74.4435806,
-      "common_validation_status": "pending",
-      "full_resume_saved": true
+      "common_validation_status": "completed_all5",
+      "full_resume_saved": true,
+      "validation_endpoint_goals": 30.0799999237,
+      "validation_endpoint_cost": 61.2153663635
     }
   ],
   "launched_count": 5,
   "remaining_major_configuration_slots": 1,
-  "next_conditional_action": "Resolve focused episode-boundary bookkeeping discrepancy, then continue same Iso recipe to2M;reserve last majorconfiguration slot for pairedEA after task learning. No silent budget or configuration-cap expansion.",
+  "next_conditional_action": "Inspect sameIso recipe at2M;reserve sixthslot forpairedEA aftertasklearning. SAC nowhasgenuinequalifieddevelopmentcandidate;formalconfigurationnotyetfrozen. No silentbudget/configurationcap expansion.",
   "candidate_policy_access": "at most5 prospectively registered points per training seed and method;all fixed endpoints retained;common independent test not used for tuning",
   "formal_configuration_frozen": false,
   "independent_test_consumed": false

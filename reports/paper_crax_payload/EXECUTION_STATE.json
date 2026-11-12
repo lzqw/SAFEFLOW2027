@@ -48,11 +48,31 @@
     "download_acceleration": "4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
     "full_training_profile_completed": true,
     "native_SAC_reference_started": true,
-    "actual_training_transitions": 8140288,
     "configuration_registry": "CONFIGURATION_REGISTRY.json",
-    "episode_boundary_bookkeeping": "latestIsofullreplay contains256truncations butrunnercount0;focusednontrainingdiagnosis underway",
+    "episode_boundary_bookkeeping": "recovered256episodes fromfullrawreplay;directbooleanDLPack nowlivecount1024 at1029376 steps;original evidencepreserved",
     "formal_runs_started": false,
-    "independent_test_consumed": false
+    "independent_test_consumed": false,
+    "active_continuation": {
+      "pid": 35500,
+      "source_commit": "f35ccdca5754ef1217aa633dbb952e505e914020",
+      "run": "crax-iso-nativedual-41027-2m-v3",
+      "initial_steps": 500224,
+      "target_steps": 2000000
+    },
+    "common_SAC_validation": {
+      "status": "completed",
+      "nontraining_controls": 500000,
+      "eligible_development_candidate": {
+        "configuration": "SAC_norm_full_v2",
+        "checkpoint": 1808128,
+        "goals": 3.12,
+        "mean_cost": 18.572626,
+        "at_least_one_goal": 0.9,
+        "budget_compliance": 0.74
+      },
+      "independent_test_used": false
+    },
+    "completed_training_transitions_including_engineering_before_active_continuation": 8140288
   },
   "Piper": {
     "user_identified_model": "Piper standard",
@@ -79,7 +99,7 @@
   "foreign_workloads_changed": false,
   "5080_used": false,
   "historical_results_modified": false,
-  "observed_at_local": "2026-11-12 13:59 Asia/Taipei",
+  "observed_at_local": "2026-11-12 14:10 Asia/Taipei",
   "observers": {
     "interval_seconds": 1800,
     "A100": {

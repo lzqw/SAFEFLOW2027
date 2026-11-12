@@ -4,6 +4,11 @@ This is development progress, not a completed paper comparison. Independent
 branch from `fc5716e`; historical results remain unchanged. Registered budgets,
 seeds and selection rules: [protocol](EXPERIMENT_PROTOCOL.md).
 
+Development learning curves (all observed points, no smoothing or seed selection):
+[PointGoal](learning-curves-pointgoal-development.png) ·
+[Payload](learning-curves-payload-development.png). The accompanying plot receipt
+records exact input CSV hashes; these plots are snapshots, not live dashboards.
+
 ## 1. Is PointGoal fast and effective?
 
 The official native task runs on A100, with 1000 control steps, goal refresh,
@@ -13,20 +18,28 @@ Budget is 25 per episode. No physics or hazards were simplified.
 | Development run, seed 41027 | Actual training | Goals/episode | Mean cost | Evaluation |
 |---|---:|---:|---:|---|
 | SAC, no normalization | 1,000,192 | 0.30 | 72.23 | common validation, 50 episodes |
-| SAC, normalized, dual LR .01 | 3,000,064 | 33.86 | 84.44 | native diagnostic, 50 episodes |
-| SAC, normalized, dual LR .1 | 3,000,064 | 28.90 | 74.44 | native diagnostic, 50 episodes |
+| SAC, normalized, dual LR .01, fixed endpoint | 3,000,064 | 33.74 | 87.20 | common validation, 50 episodes |
+| SAC, normalized, dual LR .1, fixed endpoint | 3,000,064 | 30.08 | 61.22 | common validation, 50 episodes |
+| SAC LR .01, intermediate candidate | 1,808,128 checkpoint | 3.12 | 18.57 | common validation, 50 episodes |
 | Flow-Iso, normalized, episode dual | 500,224 | 0.12 | 2.60 | common validation, 50 episodes |
 | Flow-Iso, normalized, native-unit dual | 500,224 | 0.00 | 0.082 | common validation, 50 episodes |
 
-Native diagnostic and common-layout validation are not interchangeable;
-the two normalized SAC runs are awaiting the same common validation. SAC learns
-the task but has not met the safety budget. Iso's low cost currently reflects
+Both normalized SAC runs now have all five checkpoints assessed on the same
+61027 layouts (500 episodes/500000 additional nontraining controls in total).
+The LR .01 intermediate candidate reaches at least one goal in90% of episodes;
+74% meet budget, with budget-compliant mean return2.0. It is a useful development
+candidate, not yet a selected or independently tested strategy. Its source run's
+entire3M training remains charged, not just the candidate's1.81M prefix.
+SAC learns the task but both fixed3M endpoints exceed the safety budget. Iso's low cost currently reflects
 stagnation, not success. No effective final Flow configuration or PointGoal EA
 benefit has been established. The latest Iso training-episode bookkeeping is
-under a focused boundary diagnosis; raw replay and all checkpoints are kept.
+recovered explicitly from complete raw replay for continuation; original evidence
+is kept. Subsequent native boundaries now accumulate properly (1024 completed
+episodes at1029376 transitions). [Repair and limitations](EPISODE_ACCOUNTING_RECOVERY.md).
 
 SAC LR .1 end-to-end throughput was 5701 transitions/s including compilation,
-native evaluation and saves. Iso's latest full 500k run was 1005 transitions/s,
+native evaluation and saves (offline common validation is separately charged).
+Iso's latest full 500k run was 1005 transitions/s,
 with 240/498 seconds spent evaluating. Compiled evaluation reuse is implemented
 prospectively. See [measured profiles](CRAX_FAST_PROFILE.md).
 

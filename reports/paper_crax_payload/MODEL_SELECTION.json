@@ -28,6 +28,20 @@
   "selected_candidates": [],
   "candidate_history": [
     {
+      "trial_id": "crax-iso-nativedual-41027-2m-v3",
+      "task": "PointGoal",
+      "method": "stable_iso",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 800000,
+          "evaluation_file": "native_runs/crax-iso-nativedual-41027-2m-v3/validation_800000.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
       "trial_id": "crax-iso-nativedual-41027-500k-v3",
       "task": "PointGoal",
       "method": "stable_iso",
@@ -82,6 +96,66 @@
         {
           "checkpoint_steps": 500224,
           "evaluation_file": "native_runs/crax-iso-norm-balanced-41027-500k-v1/validation_500224.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-sac-norm-41027-3m-v2",
+      "task": "PointGoal",
+      "method": "sac_lag_native",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1212160,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-41027-3m-v2__1212160__61027.json"
+        },
+        {
+          "checkpoint_steps": 1808128,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-41027-3m-v2__1808128__61027.json"
+        },
+        {
+          "checkpoint_steps": 2404096,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-41027-3m-v2__2404096__61027.json"
+        },
+        {
+          "checkpoint_steps": 3000064,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-41027-3m-v2__3000064__61027.json"
+        },
+        {
+          "checkpoint_steps": 616192,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-41027-3m-v2__616192__61027.json"
+        }
+      ],
+      "selection_performed": false,
+      "test_used_for_selection": false
+    },
+    {
+      "trial_id": "crax-sac-norm-lagrate01-41027-3m-v3",
+      "task": "PointGoal",
+      "method": "sac_lag_native",
+      "training_seed": 41027,
+      "observed_checkpoints": [
+        {
+          "checkpoint_steps": 1212160,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-lagrate01-41027-3m-v3__1212160__61027.json"
+        },
+        {
+          "checkpoint_steps": 1808128,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-lagrate01-41027-3m-v3__1808128__61027.json"
+        },
+        {
+          "checkpoint_steps": 2404096,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-lagrate01-41027-3m-v3__2404096__61027.json"
+        },
+        {
+          "checkpoint_steps": 3000064,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-lagrate01-41027-3m-v3__3000064__61027.json"
+        },
+        {
+          "checkpoint_steps": 616192,
+          "evaluation_file": "native_sac_common_validation/dd12384/crax-sac-norm-lagrate01-41027-3m-v3__616192__61027.json"
         }
       ],
       "selection_performed": false,

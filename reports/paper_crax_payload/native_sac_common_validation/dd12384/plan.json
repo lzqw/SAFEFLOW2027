@@ -1,0 +1,144 @@
+{
+  "role": "development_common_validation_not_independent_test",
+  "analysis_source_sha256": "dd123845b2f3aaede0c6a3d4e74eebfc927fe90961210c12dbe35043f32e05a9",
+  "seeds": [
+    61027
+  ],
+  "episodes_per_seed": 50,
+  "candidates_per_run": 5,
+  "runs": [
+    {
+      "name": "crax-sac-norm-41027-3m-v2",
+      "source_commit": "e4ad097aeeed9c62fd8d9e33a0112fc08bb97674",
+      "settings": {
+        "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+        "native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+        "seed": 41027,
+        "num_envs": 256,
+        "batch_size": 1024,
+        "grad_updates_per_step": 4,
+        "min_replay_size": 20000,
+        "max_replay_size": 1000000,
+        "learning_rate": 0.0003,
+        "discount": 0.99,
+        "reward_scaling": 1.0,
+        "cost_scaling": 1.0,
+        "normalize_observations": true,
+        "safety_bound": 25.0,
+        "lagrangian_lr": 0.01,
+        "lambda_max": 2.0,
+        "episode_length": 1000,
+        "action_repeat": 1,
+        "env_id": "safe_goal_point",
+        "difficulty": 1,
+        "physics_timestep": 0.019999999552965164,
+        "frame_skip": 4,
+        "action_dim": 2,
+        "obs_dim": 62,
+        "jax_version": "0.6.0",
+        "jax_devices": [
+          "NVIDIA A100 80GB PCIe"
+        ],
+        "engineering_check": false,
+        "engineering_epoch_actor_steps": 0,
+        "skip_native_evaluation": false,
+        "host_rng_initialization": "Python_NumPy_seed_from_training_seed",
+        "api_repairs": [
+          "fresh_complete_autoreset",
+          "pre_reset_terminal_observation",
+          "cumulative_raw_cost_accounting"
+        ],
+        "dependency_versions": {
+          "jax": "0.6.0",
+          "jaxlib": "0.6.0",
+          "flax": "0.10.6",
+          "optax": "0.2.4",
+          "mujoco": "3.11.0",
+          "mujoco-mjx": "3.11.0",
+          "numpy": "2.2.6",
+          "crax": null
+        },
+        "native_module_sha256": {
+          "crax.training.agents.sac_lag.train": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+          "crax.training.agents.sac_lag.losses": "cdcd7d5a4732a05b71d4f76e2e2e21ba4a82071b1e42c755d088e4be4b3692b6",
+          "crax.training.agents.sac_lag.networks": "78ff32c4bd8c2014ec7d17ce77db211baa672c7b4cf8a4db8b6d162333921e8e",
+          "crax.training.types": "61187003fba28f260bd51552a9e47435f60a14ea92dc157d428ffb0126869e55",
+          "crax.envs.safe_goal": "52d69feab7a7cc445edd2cd01a073b33038e785bb3526ec2be5f909487d774fc",
+          "crax.envs.hazards": "b2a807efd468a94b1525ec581e11d8947326cc4ec8552a9d1c19a686db622a3e"
+        },
+        "paper_reset_wrapper_file_sha256": "a97fb39b58cddf607f254917f0a985907384782c039a826f6c4e002390ee3260"
+      }
+    },
+    {
+      "name": "crax-sac-norm-lagrate01-41027-3m-v3",
+      "source_commit": "699c5bedf882a21ed31c02cfb2ac138c8fcd771e",
+      "settings": {
+        "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+        "native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+        "seed": 41027,
+        "num_envs": 256,
+        "batch_size": 1024,
+        "grad_updates_per_step": 4,
+        "min_replay_size": 20000,
+        "max_replay_size": 1000000,
+        "learning_rate": 0.0003,
+        "discount": 0.99,
+        "reward_scaling": 1.0,
+        "cost_scaling": 1.0,
+        "normalize_observations": true,
+        "safety_bound": 25.0,
+        "lagrangian_lr": 0.1,
+        "lambda_max": 2.0,
+        "episode_length": 1000,
+        "action_repeat": 1,
+        "env_id": "safe_goal_point",
+        "difficulty": 1,
+        "physics_timestep": 0.019999999552965164,
+        "frame_skip": 4,
+        "action_dim": 2,
+        "obs_dim": 62,
+        "jax_version": "0.6.0",
+        "jax_devices": [
+          "NVIDIA A100 80GB PCIe"
+        ],
+        "engineering_check": false,
+        "engineering_epoch_actor_steps": 0,
+        "skip_native_evaluation": false,
+        "host_rng_initialization": "Python_NumPy_seed_from_training_seed",
+        "api_repairs": [
+          "fresh_complete_autoreset",
+          "pre_reset_terminal_observation",
+          "cumulative_raw_cost_accounting"
+        ],
+        "dependency_versions": {
+          "jax": "0.6.0",
+          "jaxlib": "0.6.0",
+          "flax": "0.10.6",
+          "optax": "0.2.4",
+          "mujoco": "3.11.0",
+          "mujoco-mjx": "3.11.0",
+          "numpy": "2.2.6",
+          "crax": null
+        },
+        "native_module_sha256": {
+          "crax.training.agents.sac_lag.train": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+          "crax.training.agents.sac_lag.losses": "cdcd7d5a4732a05b71d4f76e2e2e21ba4a82071b1e42c755d088e4be4b3692b6",
+          "crax.training.agents.sac_lag.networks": "78ff32c4bd8c2014ec7d17ce77db211baa672c7b4cf8a4db8b6d162333921e8e",
+          "crax.training.types": "61187003fba28f260bd51552a9e47435f60a14ea92dc157d428ffb0126869e55",
+          "crax.envs.safe_goal": "52d69feab7a7cc445edd2cd01a073b33038e785bb3526ec2be5f909487d774fc",
+          "crax.envs.hazards": "b2a807efd468a94b1525ec581e11d8947326cc4ec8552a9d1c19a686db622a3e"
+        },
+        "paper_reset_wrapper_file_sha256": "a97fb39b58cddf607f254917f0a985907384782c039a826f6c4e002390ee3260"
+      }
+    }
+  ],
+  "control_period_seconds": 0.07999999821186066,
+  "native_horizon": 1000,
+  "frame_skip": 4,
+  "environment_instances_created": 1,
+  "compilation_calls": 1,
+  "compile_seconds": 78.32872365484945,
+  "compilation_generated_physical_controls": 0,
+  "total_planned_physical_controls": 500000,
+  "initial_layouts": "identicalPointGoalTorch.resetPRNGsplit;policy_noise_separate;nativegoalrefreshandcostunchanged"
+}

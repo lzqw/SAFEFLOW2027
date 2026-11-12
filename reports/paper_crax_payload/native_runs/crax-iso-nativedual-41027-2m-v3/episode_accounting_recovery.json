@@ -1,0 +1,23 @@
+{
+  "before": {
+    "episodes": 0.0,
+    "partial_lengths": [
+      1954.0,
+      1954.0,
+      1954.0,
+      1954.0
+    ]
+  },
+  "recovered_complete_episodes": 256,
+  "recovered_partial_lengths": [
+    954.0,
+    954.0,
+    954.0,
+    954.0
+  ],
+  "recovered_episode_cost_ema": 99.42343642748892,
+  "original_raw_training_cost_preserved": 26635.54296875,
+  "models_optimizers_multiplier_replay_environment_rng_changed": false,
+  "new_training_transitions": 0,
+  "nontraining_simulator_controls": 0
+}

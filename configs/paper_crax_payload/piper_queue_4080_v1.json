@@ -8,7 +8,8 @@
   "already_charged_engineering_training_transitions": 3220,
   "total_with_this_queue_and_engineering": 1803220,
   "admission": {
-    "status": "prepared_not_launched",
+    "status": "superseded_not_for_launch",
+    "superseded_by": ["configs/paper_crax_payload/piper_queue_a100_reach_v1.json", "configs/paper_crax_payload/piper_queue_4080_payload_v1.json"],
     "priority": "Payload pending jobs first; admit Piper only into verified released slots, without waiting for an unrelated occupied slot",
     "execution_alternatives": "this two-slot combined plan when two slots are free OR the disjoint slot0/slot1 partition plans as each slot becomes free; never both",
     "prerequisites": [

@@ -7,7 +7,8 @@
   "piper_total_training_budget": 3000000,
   "already_charged_engineering_training_transitions": 3220,
   "admission": {
-    "status": "prepared_not_launched",
+    "status": "superseded_not_for_launch",
+    "superseded_by": ["configs/paper_crax_payload/piper_queue_a100_reach_v1.json", "configs/paper_crax_payload/piper_queue_4080_payload_v1.json"],
     "priority": "Payload pending jobs first; admit Piper only into verified released slots, without waiting for an unrelated occupied slot",
     "execution_alternatives": "paired disjoint one-slot queues only; do not also launch the combined two-slot plan",
     "prerequisites": [

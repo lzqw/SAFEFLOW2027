@@ -1,9 +1,21 @@
 {
   "completed_native_runs": 11,
-  "observed_native_runs": 16,
-  "observed_new_training_transitions_lower_bound": 9063840,
-  "observed_native_evaluation_controls": 1338256,
+  "observed_native_runs": 17,
+  "observed_new_training_transitions_lower_bound": 9592992,
+  "observed_native_evaluation_controls": 1888256,
   "trials": [
+    {
+      "trial_id": "crax-iso-nativedual-41027-2m-v3",
+      "status": "running",
+      "steps": 1029376,
+      "new_training_transitions_lower_bound": 529152,
+      "training_cost_lower_bound": 27393.900390625,
+      "evaluation_controls_observed": 50000,
+      "method": "stable_iso",
+      "training_seed": 41027,
+      "pid": null,
+      "source_commit": "f35ccdc"
+    },
     {
       "trial_id": "crax-iso-nativedual-41027-500k-v3",
       "status": "completed",
@@ -118,7 +130,7 @@
       "steps": 3000064,
       "new_training_transitions_lower_bound": 3000064,
       "training_cost_lower_bound": 229606.40625,
-      "evaluation_controls_observed": 300000,
+      "evaluation_controls_observed": 550000,
       "method": "sac_lag_native",
       "training_seed": 41027,
       "pid": null,
@@ -130,7 +142,7 @@
       "steps": 3000064,
       "new_training_transitions_lower_bound": 3000064,
       "training_cost_lower_bound": 137560.78125,
-      "evaluation_controls_observed": 300000,
+      "evaluation_controls_observed": 550000,
       "method": "sac_lag_native",
       "training_seed": 41027,
       "pid": null,
@@ -198,7 +210,7 @@
     }
   ],
   "payload_condition_rows": 70,
-  "pointgoal_validation_rows": 11,
+  "pointgoal_validation_rows": 22,
   "whole_goal_complete": false,
   "note": "report-only snapshot;no live process claims,no new training,no physics,no large checkpoints copied",
   "crax_v1_failure_training_budget_reserve": 98304

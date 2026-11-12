@@ -67,15 +67,17 @@ def refresh(report):
                     capped_time_seconds=condition['time_to_goal_capped_seconds'],conditional_success_time_seconds=condition['time_to_goal_seconds'],
                     training_cumulative_cost=evaluation['training_violation_count'],completed_training_episodes=evaluation['training_episodes'],
                     source_commit=config['source_commit']))
-        for validation_path in sorted(directory.glob('validation_*.json')):
+        validations=sorted(directory.glob('validation_*.json'))
+        validations+=sorted((report/'native_sac_common_validation').glob(f'*/{directory.name}__*.json'))
+        for validation_path in validations:
             validation=read(validation_path)
             if 'physical_controls' not in validation:continue
             queries+=validation['physical_controls']
             endpoint=validation.get('checkpoint_steps',int(validation_path.stem.split('_')[-1]))
             point_results.append(dict(phase=config.get('phase','development'),trial_id=directory.name,
                 method=config.get('method'),training_seed=config.get('seed'),steps=endpoint,
-                checkpoint=f'policy_{endpoint}' if config.get('method')!='sac_lag_native' else 'policy_normalizer',
-                selection_role='development_validation_not_independent_test',evaluation_seed=validation['seed'],episodes=validation['episodes'],
+                checkpoint=f'policy_{endpoint}' if config.get('method')!='sac_lag_native' else f'policy_normalizer_{endpoint}',
+                selection_role='development_validation_not_independent_test',evaluation_seed=validation.get('seed',validation.get('validation_seed')),episodes=validation['episodes'],
                 native_return=validation['native_return'],episode_cost=validation['episode_cost'],goals_per_episode=validation['goals_per_episode'],
                 at_least_one_goal_fraction=validation['at_least_one_goal'],budget_compliant_fraction=validation['budget_compliant_fraction'],
                 budget_compliant_return=validation['budget_compliant_return'],budget_compliant_episodes=validation['budget_compliant_episodes'],
@@ -108,6 +110,8 @@ def refresh(report):
             for v in sorted(directory.glob('evaluation_*.json'))]
         candidates += [dict(checkpoint_steps=int(v.stem.split('_')[-1]),evaluation_file=str(v.relative_to(report)))
             for v in sorted(directory.glob('validation_*.json'))]
+        candidates += [dict(checkpoint_steps=read(v)['checkpoint_steps'],evaluation_file=str(v.relative_to(report)))
+            for v in validations if v.parent!=directory]
         if candidates:candidate_history.append(dict(trial_id=directory.name,task=task,method=config.get('method'),
             training_seed=config.get('training_seed',config.get('seed')),observed_checkpoints=candidates,
             selection_performed=False,test_used_for_selection=False))
