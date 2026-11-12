@@ -16,3 +16,7 @@ The two live status receipts are `piper-progress-20261113/PAYLOAD_*_STATUS_LATES
 At the observed speeds, EA is estimated at roughly 5.7 hours and Iso at roughly
 2.4 hours; these are estimates, not completion results. Checkpoints remain on
 the server and only compact receipts/results are committed to GitHub.
+
+Iso also produced an interim 60k evaluation (30 episodes per condition): all
+three conditions timed out without collision or violation. This is an early
+learning snapshot, not a final candidate assessment; the process remains live.
