@@ -1,0 +1,77 @@
+{
+  "as_of": "2026-11-13T12:23:41.843164+00:00",
+  "campaign": {
+    "protocol": "SAFEFlow_Robot_Gap_v2",
+    "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
+    "controller_pid": 1039792,
+    "started_unix": 1794572540.2551646,
+    "state": "running",
+    "cap": 2200000,
+    "launched_training_target": 10000,
+    "observed_completed_training": 0,
+    "physical_robot_interactions": 0,
+    "pointgoal_new_training": 0,
+    "jobs": [
+      {
+        "name": "profile-reference",
+        "command": [
+          "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+          "-u",
+          "-m",
+          "scripts.paper_crax_payload.piper_train",
+          "train",
+          "--config",
+          "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/profile-reference.json",
+          "--assets-receipt",
+          "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+          "--output",
+          "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/profile-reference",
+          "--device",
+          "cuda:0",
+          "--task",
+          "Payload",
+          "--method",
+          "EA",
+          "--steps",
+          "10000",
+          "--seed",
+          "41027",
+          "--source-commit",
+          "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
+          "--engineering"
+        ],
+        "target_steps": 10000,
+        "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/profile-reference",
+        "status": "running",
+        "engineering": true,
+        "started_unix": 1794572540.2557054,
+        "pid": 1039826
+      }
+    ],
+    "later_phases_not_launched": true,
+    "updated_unix": 1794572540.2561114
+  },
+  "budget": {
+    "as_of": "2026-11-13T12:23:41.843164+00:00",
+    "source": "actual existing receipts and current new-run status; no historical audit rerun",
+    "new_round_cap": 2200000,
+    "initial_phase_reserved": 230000,
+    "initial_phase_reservation_breakdown": {
+      "three_profiles": 30000,
+      "paired_transfer": 200000
+    },
+    "actually_launched_target": 10000,
+    "observed_new_training_including_partial_prefixes": 2000,
+    "unreserved_later_allowance": 1970000,
+    "pointgoal_new_training": 0,
+    "old_piper_completed_candidates": 6,
+    "old_piper_actual_candidate_transitions": 1800000,
+    "old_pointgoal_formal_completed": 9,
+    "old_pointgoal_actual_transitions": 90001920,
+    "old_remaining_is_not_reused_as_new_budget": true,
+    "physical_robot_interactions": 0,
+    "other_projects_modified": false
+  },
+  "live_process_proof": "Snapshot alone is not proof of liveness; confirm its recorded PID on host",
+  "all_results_development_not_independent_test": true
+}
