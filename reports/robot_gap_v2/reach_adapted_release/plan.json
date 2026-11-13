@@ -1,0 +1,64 @@
+{
+  "candidates": [
+    {
+      "method": "Iso",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-iso-100k/full_400000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/reach-radius-iso-100k.json",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-iso-100k/training_receipt_400000.json",
+      "steps": 400000,
+      "cohort": "matched_radius_adaptation_endpoint",
+      "new_adaptation_transitions": 100000,
+      "full_checkpoint_sha256": "b25befa9a9daaacbb8c8e41a312de695e76a9aad3aeda8f5b6ea316a66edafc0"
+    },
+    {
+      "method": "EA",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/reach-radius-ea-100k.json",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/training_receipt_400000.json",
+      "steps": 400000,
+      "cohort": "matched_radius_adaptation_endpoint",
+      "new_adaptation_transitions": 100000,
+      "full_checkpoint_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b"
+    },
+    {
+      "method": "Iso-Low",
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_120000.pt",
+      "config": "configs/paper_crax_payload/piper_sim_v1.json",
+      "training_receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_120000.json",
+      "steps": 120000,
+      "cohort": "original_selected_stagnant_reference",
+      "new_adaptation_transitions": 0,
+      "full_checkpoint_sha256": "fb35cd44e319ceefdbe25a34d3ab3c40a787436975f6f77d5f94d8bba66c969f"
+    }
+  ],
+  "validation_new_candidates": 2,
+  "validation_episodes_per_condition": 50,
+  "independent_test_episodes_per_condition": 100,
+  "conditions": [
+    {
+      "name": "nominal",
+      "simulation_overrides": {}
+    },
+    {
+      "name": "new_geometry",
+      "simulation_overrides": {
+        "obstacle_radius_m": 0.055
+      }
+    },
+    {
+      "name": "execution_scale_085",
+      "simulation_overrides": {},
+      "action_scale": 0.85
+    }
+  ],
+  "layout_seed_starts": {
+    "validation": 61027,
+    "independent_test": 71027
+  },
+  "original_release_selection_sha256": "02c227e9bbea44a9c252d4f5f842b701e672fcc4de4dfa8764db18f036d4b11e",
+  "original2250_validation_episodes_not_repeated": true,
+  "no_training_or_checkpoint_sweep": true,
+  "geometry_scope": "55mm is in adaptation training family; independent layouts, not unseen radius",
+  "Iso_Low_is_not_matched_adaptation": true,
+  "physical_motion_enabled": false
+}

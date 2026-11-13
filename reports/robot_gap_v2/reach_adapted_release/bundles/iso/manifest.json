@@ -1,0 +1,59 @@
+{
+  "robot_family": "Piper",
+  "training_robot_family": "Piper",
+  "task": "Reach",
+  "method": "Iso",
+  "observation_dim": 34,
+  "action_dim": 3,
+  "training_steps": 400000,
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "training_source_commit": "acb481dd",
+  "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+  "normalizer_frozen": true,
+  "action_frame": "robot_base",
+  "action_unit": "normalized_delta_xyz",
+  "action_scale_m": 0.01,
+  "hidden_width": 128,
+  "flow_steps": 4,
+  "reference_variance": 0.04,
+  "iso_reference_variance": 0.04,
+  "physical_motion_enabled": false,
+  "hardware_matched": false,
+  "selection": {
+    "robot_family": "Piper",
+    "task": "Reach",
+    "method": "Iso",
+    "selected_checkpoint_steps": 400000,
+    "selection_split": "validation",
+    "independent_test_used_for_selection": false,
+    "risk_qualified": false,
+    "status": "pareto_tradeoff_not_risk_qualified",
+    "candidate_count": 1,
+    "score": {
+      "risk_qualified": false,
+      "task_progress_observed": true,
+      "macro_safe_success": 0.9066666666666666,
+      "macro_capped_seconds": 1.5234666666666667,
+      "per_condition_violation": [
+        0.0,
+        0.24,
+        0.04
+      ],
+      "per_condition_safe_success": [
+        1.0,
+        0.76,
+        0.96
+      ]
+    },
+    "checkpoint_rule": "sole fixed400K adaptation endpoint, never intermediate reselection",
+    "physical_deployment_eligible": false,
+    "hardware_calibration_pending": true
+  },
+  "task_semantics": "native Piper simulation; IK1200/shared endpoint admissibility; Payload centroid success",
+  "schema_version": 1,
+  "policy_sha256": "408df3a77e7dd55a73dd759c3a55af1280a3866a614262e2172a0a05aa8264ea",
+  "normalizer_sha256": "08c75064794375d77f12f22dd1675c93250b1eb3d8296d87ab54e49285fa494f",
+  "training_receipt_sha256": "10a9b364e2d8f1c7ec516aef297b8aac657ffb17a3328e774bc88b50dba80eb2",
+  "hardware_transport_available": false,
+  "recovery_checkpoint": false
+}

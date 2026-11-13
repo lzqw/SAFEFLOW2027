@@ -111,6 +111,7 @@ def main():
         physical_robot_interactions=0,no_layout_or_policy_reselection=True,
         not_independent_test=True,elapsed_seconds=time.monotonic()-started)
     (args.output/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    (args.output/'status.json').write_text(json.dumps(dict(state='completed',completed_controls=controls,pid=os.getpid()))+'\n')
     print(json.dumps(receipt,indent=2))
 
 

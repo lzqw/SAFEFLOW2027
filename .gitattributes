@@ -9,6 +9,7 @@
 *.pdf binary
 *.stl binary
 reports/robot_gap_v2/reach_release/bundles/**/*.pt binary -eol
+reports/robot_gap_v2/reach_adapted_release/bundles/**/*.pt binary -eol
 
 # Archive sealed STAR P4.3 CSVs byte-for-byte without line-ending conversion.
 reports/star/p4_3_safety_anisotropy_artifacts/**/*.csv binary -eol

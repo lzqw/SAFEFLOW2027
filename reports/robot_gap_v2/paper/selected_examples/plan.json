@@ -1,0 +1,19 @@
+{
+  "layout_seed": 61027,
+  "episodes_per_model": 1,
+  "prospective_first_layout": true,
+  "methods": [
+    "stable_iso",
+    "ea"
+  ],
+  "native_horizon": 1000,
+  "planned_controls": 2000,
+  "role": "illustrative_development_trajectories_not_independent_test_or_mechanism",
+  "training_transitions": 0,
+  "optimizer_updates": 0,
+  "physical_robot_interactions": 0,
+  "selection_freeze_digest": "bb57d6466973774d5d956090e1bb85abf79fbae96da5104dc727492fbbfec718",
+  "CPU_only": true,
+  "layout_resampling_allowed": false,
+  "native_goal_refresh_unchanged": true
+}

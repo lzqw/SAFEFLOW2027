@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "summaries": [
+    {
+      "method": "stable_iso",
+      "selected_run": "crax-formal-stable_iso-51028-10m-v1",
+      "selected_steps": 10000128,
+      "policy_sha256": "da71c5677dc2751435738ac778dd8ceffb24899777ef5bcde995ba060a048e51",
+      "initial_physical_state_sha256": "55932d0ce286f044c2fbc63f3dc442778e6682d167f7268c2b740c33ea0a5072",
+      "controls": 1000,
+      "native_return": 36.0,
+      "cost": 17.755509346723557,
+      "goals": 36.0
+    },
+    {
+      "method": "ea",
+      "selected_run": "crax-formal-ea-51029-10m-v1",
+      "selected_steps": 8000000,
+      "policy_sha256": "b9503fc828e492f0b44be34ca7def2d0c9a3293e70af261f0239b8c727cbc86a",
+      "initial_physical_state_sha256": "55932d0ce286f044c2fbc63f3dc442778e6682d167f7268c2b740c33ea0a5072",
+      "controls": 1000,
+      "native_return": 37.0,
+      "cost": 28.312067329883575,
+      "goals": 37.0
+    }
+  ],
+  "actual_native_controls": 2000,
+  "planned_native_control_upper_bound": 2000,
+  "training_transitions": 0,
+  "optimizer_updates": 0,
+  "physical_robot_interactions": 0,
+  "no_layout_or_policy_reselection": true,
+  "not_independent_test": true,
+  "elapsed_seconds": 72.54368557222188
+}

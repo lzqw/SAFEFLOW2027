@@ -23,6 +23,9 @@ Equal100K Reach radius adaptation improves new-geometry success from30→80%
 (Iso) and33.33→73.33% (EA). Both nominal/scale reach100%; geometry violations
 remain20%/26.67%, above the prior release's10% risk qualification threshold.
 There is no universal EA advantage or physical deployability demonstrated.
+The condition retains its original name `new_geometry`, but55mm is included
+in the adaptation training-radius family. This is geometry-distribution repair,
+not extrapolation to an unseen radius. Independent-layout tests are separate.
 
 The planned continuation uses each fixed100K Payload endpoint, with200K more
 per method and identical full-state resume. No curriculum, geometry change or

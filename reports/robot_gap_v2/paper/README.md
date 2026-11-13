@@ -54,3 +54,10 @@ It verifies Actor,EMA-margin and normalizer against the selected policy bytes,
 uses bounded native-query batches, and keeps a single fixed pool even if cost
 events are all zero or all positive. Its actual execution/results remain pending
 a suitable shared-GPU memory window; the historical4M study is not relabelled.
+
+`selected_examples/` now separately delivers two genuine native trajectories
+on the prospectively fixed first development layout61027. Iso36goals/17.76cost,
+EA37goals/28.31cost: EA exceeds the25 budget in this example. The unfavorable
+episode is retained without resampling. All2000 control records and model/
+physical-state hashes are included. This illustrative CPU rollout is not the
+500-episode independent test or final-model mechanism study.

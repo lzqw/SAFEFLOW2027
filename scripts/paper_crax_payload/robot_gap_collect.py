@@ -87,11 +87,16 @@ def main():
     final=json.loads(final_path.read_text()) if final_path.exists() else {}
     adapted_path=args.campaign_root/'reach-adapted-release/status.json'
     adapted=json.loads(adapted_path.read_text()) if adapted_path.exists() else {}
+    examples_path=args.campaign_root/'pointgoal-selected-examples/receipt.json'
+    examples=json.loads(examples_path.read_text()) if examples_path.exists() else {}
+    closure_path=args.campaign_root/'payload-closure/status.json'
+    closure=json.loads(closure_path.read_text()) if closure_path.exists() else {}
     snapshot = dict(as_of=now, campaign=campaign, reach_followups=followup,
         payload_continuation=continuation, reach_release=release,
-        reach_adapted_release=adapted,final_pointgoal_analysis=final,budget=budget,
+        reach_adapted_release=adapted,final_pointgoal_analysis=final,
+        pointgoal_selected_examples=examples,payload_closure=closure,budget=budget,
         live_process_proof='Snapshot alone is not proof of liveness; confirm its recorded PID on host',
-        all_results_development_not_independent_test=True)
+        progress_rows_and_original_finals_are_development_not_independent_test=True)
     (args.output/'TASK_STATUS.json').write_text(json.dumps(snapshot, indent=2)+'\n')
     write_csv(args.output/'piper_existing_finals.csv', final_rows)
     write_csv(args.output/'new_training_progress.csv', new_jobs)

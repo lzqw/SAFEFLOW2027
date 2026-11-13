@@ -84,5 +84,11 @@
   "PointGoal_mechanisms": {
     "actual_training": 0,
     "actual_nontraining_simulator_controls": 2208
+  },
+  "PointGoal_selected_trajectory_examples": {
+    "actual_training": 0,
+    "actual_nontraining_simulator_controls": 2000,
+    "authority": "../robot_gap_v2/paper/selected_examples/receipt.json",
+    "not_the_queued_final64x32_mechanism": true
   }
 }

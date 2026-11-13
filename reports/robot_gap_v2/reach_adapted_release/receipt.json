@@ -1,0 +1,41 @@
+{
+  "status": "completed_offline_adapted_release",
+  "new_validation_episodes": 300,
+  "independent_test_episodes": 900,
+  "new_training_transitions": 0,
+  "new_simulation_control_intervals": 56697,
+  "new_physics_substeps": 1133940,
+  "distance_queries": 1193040,
+  "selection_sha256": "54eb3342822f8eba0d7f72f5157c8f789ff5c7fa23cf17a83463c7412a7f6ea1",
+  "selection_frozen_before_independent_test": true,
+  "offline_replays": {
+    "Iso": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    },
+    "Iso-Low": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    },
+    "EA": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    }
+  },
+  "physical_robot_interactions": 0,
+  "physical_motion_enabled": false,
+  "real_deployment_machine_latency_pending": true,
+  "original_release_not_modified": true
+}

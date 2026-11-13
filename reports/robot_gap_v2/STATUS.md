@@ -12,8 +12,9 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Reach→Payload | Matched100K pair complete; both200K additional continuations running | Fixed100K endpoint parents, identical full-state resume to300K; no curriculum |
 | Reach geometry adaptation≤0.20M | Both100K adaptations complete | New-geometry safe success Iso80%, EA73.33%; nominal/scale100% both |
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
-| Final PointGoal mechanism/efficiency/figures | Three-seed figures/efficiency and Flow CPU latency complete; mechanism queued | Final-selected64×32/four samplers, after Piper work and≥8GiB free GPU memory |
-| Reach deployment candidate/control program | All15 candidates/2250 validation episodes complete; three native bundles and offline replays exported | See reach_release/README.md; geometry remains weak, hardware eligibility false |
+| Final PointGoal mechanism/efficiency/figures | Three-seed figures, native SAC/Flow CPU latency and fixed selected-policy trajectories complete; mechanism queued | Final-selected64×32/four samplers, after Piper work and≥8GiB free GPU memory |
+| Reach deployment candidate/control program | Adapted endpoints frozen and tested on900 independent-layout episodes; actual bundles/replay exported | See reach_adapted_release/README.md; geometry violations28%/30%, hardware eligibility false |
+| Payload post-training closure | Five canonical candidates/method fixed; CPU controller1282516 waits for completed continuations |50common-validation and100independent-layout episodes/condition; no RL or extra candidate opportunities |
 
 Snapshot:2026-11-13T17:18:55UTC (November14,01:18:55+08). Initial campaign and
 Reach followup controllers exited after completing all their jobs. New controller
@@ -34,6 +35,17 @@ endpoint. The evidence permits the planned matched continuation, not an
 automatic claim that transfer or EA solves robustness. Original Reach geometry
 adaptation improved both methods substantially; Iso is slightly better than EA
 on the fixed new-geometry development set. These are one-training-seed results.
+Independent adapted Reach confirmation is now complete: Iso nominal/55mm/scale
+safe success100%/72%/99%, EA100%/70%/100%,100 episodes per condition. Geometry
+violations28%/30% still fail the10% release rule.55mm was in the adaptation
+training family: independent layouts, not an unseen-radius claim. Iso-Low's
+original120K reference remains0% successful and was not given matched adaptation.
+Actual400K bundles are separate from the preserved original release.
+
+The first fixed PointGoal trajectory layout61027 gives Iso36goals/17.76cost,
+EA37goals/28.31cost. It is retained despite EA exceeding25 on that example;
+no prettier layout is substituted. All2000 native controls and plots are in
+paper/selected_examples/, distinct from independent aggregate tests/mechanism.
 
 Latest A100 finals change the older plan snapshot: original Payload EA at300K has
 nominal90%, new geometry53.33%, execution-scale63.33% safe success (30 development

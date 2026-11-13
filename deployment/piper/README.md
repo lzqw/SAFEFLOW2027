@@ -43,10 +43,12 @@ It requires native training provenance and rejects Panda/untrained policies.
 `FrozenPiperPolicy` keeps input gradients for pullback without updating model
 parameters. A deployment bundle is **not** a full replay/recovery checkpoint.
 Iso-Low must actually have lower reference variance, not just a renamed label.
-Three genuine frozen Reach bundles are now delivered in
-[`reports/robot_gap_v2/reach_release`](../../reports/robot_gap_v2/reach_release/README.md).
+The current genuine frozen Reach bundles are delivered in
+[`reach_adapted_release`](../../reports/robot_gap_v2/reach_adapted_release/README.md),
+with the [original common-selection release](../../reports/robot_gap_v2/reach_release/README.md)
+preserved separately.
 The legacy filename `candidates_pending.json` now indexes those actual bundles;
-it no longer means training has not started. Iso180K and EA300K are explicit
+it no longer means training has not started. Iso400K and EA400K are explicit
 Pareto candidates that fail the cross-condition risk criterion. Iso-Low120K
 haszero task success despitezero violations. None is marked eligible for
 physical deployment. Model smokes and dry-runs are not physical interactions.
@@ -81,7 +83,7 @@ Example from the repository root, using the genuine exported EA policy:
 
 ```bash
 python -m deployment.piper.replay_policy \
-  --bundle reports/robot_gap_v2/reach_release/bundles/ea \
+  --bundle reports/robot_gap_v2/reach_adapted_release/bundles/ea \
   --observations reports/robot_gap_v2/reach_release/observations.jsonl \
   --output /path/on/data-disk/new-offline-replay.jsonl \
   --device cpu
@@ -96,7 +98,12 @@ geometry/scale safe success Iso100%/80%/100% and EA100%/73.33%/100% on30 fixed
 development episodes/condition. These are one-training-seed results, not
 independent tests or the50-episode common-selection scores. Geometry violations
 remain20%/26.67%; the adapted policies are not risk-qualified or substituted
-into the frozen original release. Payload transfer continuations are still
+into the frozen original release. Subsequent independent-layout testing of
+the fixed adapted endpoints gives Iso100%/72%/99%, EA100%/70%/100%,100 episodes/
+condition. The55mm test radius is in the training family, not held out. Geometry
+violations28%/30% still fail the risk criterion; no EA superiority or physical
+eligibility is claimed. The new bundles are an additional release, not an
+overwrite of the original. Payload transfer continuations are still
 running. Current budget/results are in
 [`Robot-Gap status`](../../reports/robot_gap_v2/STATUS.md).
 

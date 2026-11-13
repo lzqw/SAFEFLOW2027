@@ -252,6 +252,10 @@ equal additional budgets; no EA superiority is claimed. Geometry violations
 remain20%/26.67%, so neither is risk-qualified by the earlier≤10%-each-condition
 deployment rule. That rule and common-validation data are distinct from these
 30-episode development results.
+The original `new_geometry` condition is55mm, included in the adaptation's
+45/50/55mm training family. Improvement is adaptation to that geometry family,
+not evidence of generalization to an unseen radius. Subsequent independent
+tests use new layouts, not a newly held-out radius value.
 
 Both transfer endpoints meet the plan's≥50% nominal learning signal. Continue
 exactly those fixed100K full states by200K each to300K, not the best-looking
@@ -290,3 +294,48 @@ and replaced before any query/output existed. Its previous status is preserved
 on the data disk. The fixed launcher supplies the pinned native checkout and
 waits for the Payload continuation pair too; no training core or foreign job
 was changed and no mechanism experiment was restarted.
+
+## Adapted Reach independent confirmation and the remaining closure
+
+The sole400K endpoints received300 new validation episodes (50 per condition
+for each matched method), then both identities were frozen before independent
+layouts71027–71126. The original2250-episode selection was not repeated.
+
+| Independent policy,100 episodes/condition | Nominal success/violation |55mm success/violation |Scale0.85 success/violation |
+|---|---|---|---|
+| Iso400K |100%/0%|72%/28%|99%/0%|
+| EA400K |100%/0%|70%/30%|100%/0%|
+| Original Iso-Low120K |0%/0%|0%/0%|0%/0%|
+
+Iso-Low is an unchanged stagnant reference, not a matched100K adaptation arm.
+All900 actual independent episode records bind the pre-test frozen selection.
+Validation was Iso100/76/96%, EA100/72/100%. Single training seed, no claimed
+statistical superiority from a2-point difference, and55mm is in the adaptation
+training family. These confirm independent-layout task behavior, not unseen-
+radius extrapolation or calibrated hardware safety. Geometry violations remain
+well above the10% release rule; neither active method is deployment eligible.
+Real native bundles, normalization/EMA-margin identities, raw/proposed-action
+replays and latency are in reach_adapted_release/. The original release remains
+read-only. Evaluation added56,697 native controls,1,133,940 physics substeps and
+1,193,040 distance queries,zero RL or physical interaction.
+
+PointGoal trajectory examples are also complete: one predeclared development
+layout61027, same physical initial state and exact selected models. Iso gets
+36goals/17.76cost, EA37/28.31; EA exceeds25 in this example. The unfavorable
+case is retained, not replaced. All2000 real native control records, layout,
+model hashes and readable PNG/PDF are in paper/selected_examples/. The old
+500-episode independent aggregate remains unchanged and is not replaced by
+these two examples. CPU capture took72.54s andzero RL updates.
+
+Payload closure is queued without further training: exactlyfive canonical
+checkpoints/method at60/120/180/240/300K, with60K taken from the completed100K
+transfer and the rest from its fixed100K→300K continuation.20/40/80/100K
+development snapshots do not become extra candidates. The plan was registered
+after reviewing the initial100K development learning curves for the continuation
+decision, but before new common validation or independent labels. Both methods
+share the same candidate opportunities, validation/test layouts and budgets.
+The CPU controller1282516 waits in30minute intervals for both full-budget
+receipts, then validates each candidate once, freezes both selected identities
+and evaluates independent layouts. No optional training/curriculum is enabled.
+Original scratch trials remain separate references with different pretraining
+and update histories, not a common-initialization sample-efficiency comparison.
