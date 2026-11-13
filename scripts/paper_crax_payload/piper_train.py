@@ -25,9 +25,44 @@ from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore
 from scripts.star.arm_safe_entropy.train import Replay, atomic_json
 from scripts.paper_crax_payload.piper_helpers import (
     PiperTrainingEnvironment, capture_piper_environment, restore_piper_environment)
+from scripts.paper_crax_payload.crax_models import UpdateGeometry
+from scripts.paper_crax_payload.piper_parallel import PiperProcessEnvironment
 
 
 FORMAT = 'paper_native_piper_sim_v1_full'
+
+
+def initialize_actor_transfer(learner, config, assets, args):
+    """Explicit cross-task fork; never weaken identical-task resume validation."""
+    if args.task_transfer != 'Reach_to_Payload' or args.task != 'Payload':
+        raise ValueError('Only the declared simulated Reach-to-Payload transfer is authorized')
+    saved = torch.load(args.init_from, map_location=learner.device, weights_only=False)
+    if (saved.get('format') != FORMAT or saved.get('robot_family') != 'Piper' or
+            saved.get('task') != 'Reach' or saved.get('method') != 'Iso' or saved.get('engineering') or
+            saved.get('model_commit') != config['model_commit'] or
+            saved.get('model_source_urdf_sha256') != assets['source_sha256']):
+        raise ValueError('Require the fixed native non-engineering Piper Reach/Iso parent')
+    parent = saved['configuration']
+    for key in ('hidden_width', 'flow_steps', 'reference_variance'):
+        if parent['shared_learner'][key] != config['shared_learner'][key]:
+            raise ValueError(f'Incompatible actor transfer setting: {key}')
+    if parent['shared_learner']['normalizer'] != config['shared_learner']['normalizer']:
+        raise ValueError('Transfer requires the compatible explicit34D input convention')
+    if learner.updates or learner.actor_updates or learner.transitions:
+        raise ValueError('Actor transfer must start from a fresh learner')
+    actor = saved['learner']['actor']
+    learner.actor.load_state_dict(actor, strict=True)
+    learner.target_actor.load_state_dict(actor, strict=True)
+    digest = hashlib.sha256()
+    with args.init_from.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(4*1024*1024), b''):
+            digest.update(chunk)
+    return dict(kind='simulated_Reach_to_Payload_actor_only', parent_checkpoint=str(args.init_from),
+        parent_sha256=digest.hexdigest(), parent_task='Reach', parent_method='Iso',
+        parent_training_steps=saved['steps'], parent_source_commit=saved['source_commit'],
+        transferred=['actor_weights', 'identity34D_input_convention'],
+        reset=['reward_Q', 'cost_Q', 'margin_online', 'margin_EMA', 'replay', 'optimizers', 'dual', 'alpha', 'counters'],
+        target_actor_initialized_from_same_actor=True, physical_robot_interactions=0)
 
 
 class PiperFlowLearner(StableArmLearner):
@@ -57,6 +92,20 @@ class PiperFlowLearner(StableArmLearner):
             piper_energy_target=self.energy_target,
             piper_initial_alpha=shared['kinetic_alpha_per_variance']*variance,
             piper_flow_steps=shared['flow_steps'], piper_robot_family='Piper')
+        self.batch_reward_targets = shared.get('batched_targets', False)
+        if shared.get('batched_geometry', False):
+            # Reuse the CRAX batched per-head VJP, retaining Piper's actual
+            # transition-based ramp rather than CRAX's update-based ramp.
+            self.geometry = UpdateGeometry(self.margin_geometry, self.MODES[variant])
+        if self.batch_reward_targets or shared.get('batched_geometry', False):
+            self.settings.update(piper_batching=dict(targets=self.batch_reward_targets,
+                geometry=shared.get('batched_geometry', False)))
+        self.profile_full_geometry = config.get('profile_full_geometry', False)
+
+    def set_transitions(self, transitions):
+        super().set_transitions(transitions)
+        if getattr(self, 'profile_full_geometry', False):
+            self.geometry.transitions = 30000
 
     def update(self, batch):
         super().update(batch)
@@ -136,6 +185,14 @@ def evaluate_piper(learner, config, assets, task, episodes, seed_start, conditio
 def train(args):
     config = json.loads(args.config.read_text())
     assets = json.loads(args.assets_receipt.read_text())
+    if args.task not in config['tasks'] or assets['model_commit'] != config['model_commit']:
+        raise ValueError('Native task and pinned official model must match')
+    if config.get('profile_full_geometry') and not args.engineering:
+        raise ValueError('Forced full geometry is engineering-only, never scientific training')
+    if args.resume and args.init_from:
+        raise ValueError('Task transfer and identical-task resume are different operations')
+    if bool(args.init_from) != bool(args.task_transfer):
+        raise ValueError('Use explicit --init-from together with --task-transfer')
     if args.output.exists():
         raise FileExistsError('Preserve every native Piper trial')
     if args.engineering and args.steps > 10000:
@@ -150,7 +207,16 @@ def train(args):
         torch.cuda.manual_seed_all(args.seed)
     learner = PiperFlowLearner(config, args.method, args.device)
     shared = config['shared_learner']
-    envs = [make_piper_env(config, assets, args.task) for _ in range(config['num_envs'])]
+    update_rounds = shared.get('updates_per_vector_step')
+    if update_rounds is None:
+        update_rounds = config['num_envs'] * shared['learner_updates_per_transition']
+    if isinstance(update_rounds, bool) or int(update_rounds) != update_rounds or update_rounds < 1:
+        raise ValueError('Explicit positive integer updates_per_vector_step required')
+    update_rounds = int(update_rounds)
+    transfer = initialize_actor_transfer(learner, config, assets, args) if args.init_from else None
+    envs = ([PiperProcessEnvironment(assets, dict(config['simulation'], task=args.task))
+             for _ in range(config['num_envs'])] if config.get('parallel_environments', False)
+            else [make_piper_env(config, assets, args.task) for _ in range(config['num_envs'])])
     replay = Replay(shared['replay_capacity'], 34)
     steps = violations = episodes = successes = timeouts = evaluation_controls = evaluation_substeps = 0
     partial_returns = np.zeros(len(envs)); partial_costs = np.zeros(len(envs))
@@ -187,13 +253,21 @@ def train(args):
     learner.set_transitions(steps)
     args.output.mkdir(parents=True)
     source_files = dict(piper_train=Path(__file__), piper_helpers=Path(__file__).with_name('piper_helpers.py'),
+        piper_parallel=Path(__file__).with_name('piper_parallel.py'),
+        stable_learner=Path('scripts/star/arm_safe_entropy/stability_models.py'),
+        batched_geometry=Path(__file__).with_name('crax_models.py'),
         simulator=Path('deployment/piper/simulation.py'))
     atomic_json(args.output/'run_config.json', dict(robot_family='Piper', task=args.task, method=args.method,
         training_seed=args.seed, source_commit=args.source_commit, model_commit=config['model_commit'],
         configuration=config, asset_receipt=assets, task_definition=envs[0].definition(),
         native_pid=os.getpid(), host=platform.node(), device=args.device,
         visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'), initial_steps=steps, total_transition_budget=args.steps,
-        initialization='native_Piper_full_continuation' if args.resume else 'fresh_Piper_no_Panda_transfer',
+        initialization=('native_Piper_full_continuation' if args.resume else
+                        'Piper_Reach_actor_only_to_Payload' if transfer else 'fresh_Piper_no_Panda_transfer'),
+        task_transfer=transfer,
+        updates_per_vector_step=update_rounds,
+        learner_updates_per_transition=update_rounds/len(envs),
+        replay_samples_per_transition=update_rounds*shared['batch_size']/len(envs),
         parent_checkpoint=str(args.resume) if args.resume else None, engineering=args.engineering,
         reference_variance=learner.actor.variance, energy_target=learner.energy_target,
         initial_alpha=shared['kinetic_alpha_per_variance']*learner.actor.variance,
@@ -203,6 +277,12 @@ def train(args):
         software=dict(torch=str(torch.__version__), cuda=torch.version.cuda, numpy=np.__version__,
             **{name: version(name) for name in ('gymnasium', 'pybullet')})))
     started = time.monotonic()
+    timing = dict(action_seconds=0., environment_reset_step_seconds=0.,
+                  learner_replay_seconds=0., evaluation_seconds=0., checkpoint_seconds=0.)
+    def timer():
+        if config.get('synchronized_profile_timing') and learner.device.type == 'cuda':
+            torch.cuda.synchronize(learner.device)
+        return time.monotonic()
     last_log = last_checkpoint = steps
     milestones = [] if args.engineering else sorted(set(int(args.steps*f) for f in config['checkpoint_fractions'] if steps < int(args.steps*f) <= args.steps))
     if any(s % len(envs) for s in milestones):
@@ -210,6 +290,7 @@ def train(args):
     stream = (args.output/'progress.jsonl').open('w')
 
     def checkpoint(filename='latest_full.pt'):
+        checkpoint_started = time.monotonic()
         state = dict(format=FORMAT, robot_family='Piper', configuration=config, model_commit=config['model_commit'],
             model_source_urdf_sha256=assets['source_sha256'],
             source_commit=args.source_commit, task=args.task, method=args.method, training_seed=args.seed,
@@ -221,6 +302,7 @@ def train(args):
             cumulative_elapsed_seconds=previous_elapsed+time.monotonic()-started)
         temporary = args.output/(filename+'.tmp')
         torch.save(state, temporary); temporary.replace(args.output/filename)
+        timing['checkpoint_seconds'] += time.monotonic()-checkpoint_started
 
     def receipt(status):
         return dict(status=status, robot_family='Piper', training_robot_family='Piper', task=args.task,
@@ -240,8 +322,14 @@ def train(args):
 
     try:
         while steps < args.steps:
+            tick = timer()
             actions = (np.random.uniform(-1., 1., (len(envs), 3)).astype(np.float32)
                 if steps < shared['random_transitions'] else learner.action(observations))
+            timing['action_seconds'] += timer()-tick
+            tick = timer()
+            if config.get('parallel_environments', False):
+                for env, action in zip(envs, actions):
+                    env.begin_step(action)
             for index, env in enumerate(envs):
                 observation, reward, done, truncated, info = env.step(actions[index])
                 replay.add(obs=observations[index], action=actions[index], reward=reward,
@@ -257,10 +345,13 @@ def train(args):
                     partial_returns[index] = partial_costs[index] = partial_lengths[index] = 0
                     observation, _ = env.reset()
                 observations[index] = observation
+            timing['environment_reset_step_seconds'] += timer()-tick
             steps += len(envs); learner.set_transitions(steps)
+            tick = timer()
             if steps > shared['random_transitions'] and replay.count >= shared['batch_size']:
-                for _ in range(len(envs)*shared['learner_updates_per_transition']):
+                for _ in range(update_rounds):
                     learner.update(replay.sample(shared['batch_size'], learner.device, recent=True))
+            timing['learner_replay_seconds'] += timer()-tick
             if steps-last_log >= config['log_every'] or steps == args.steps:
                 elapsed = time.monotonic()-started
                 row = dict(steps=steps, episodes=episodes, training_violation_count=violations,
@@ -277,16 +368,21 @@ def train(args):
                 print(json.dumps(row), flush=True); last_log = steps
             if milestones and steps == milestones[0]:
                 milestone = milestones.pop(0)
+                evaluation_started = time.monotonic()
                 result = evaluate_piper(learner, config, assets, args.task,
                     config['evaluation']['development_episodes_per_condition'], config['evaluation']['development_layout_seed_start'])
                 result.update(method=args.method, training_seed=args.seed, checkpoint_steps=steps, fixed_endpoint=steps==args.steps)
                 evaluation_controls += result['new_simulation_control_intervals']; evaluation_substeps += result['new_physics_substeps']
                 atomic_json(args.output/f'evaluation_{milestone}.json', result)
+                timing['evaluation_seconds'] += time.monotonic()-evaluation_started
                 checkpoint(f'full_{milestone}.pt')
                 atomic_json(args.output/f'training_receipt_{milestone}.json', receipt('completed_native_checkpoint'))
             if steps-last_checkpoint >= config['checkpoint_every'] or steps == args.steps:
                 checkpoint(); last_checkpoint = steps
-        atomic_json(args.output/'receipt.json', receipt('completed'))
+        atomic_json(args.output/'receipt.json', receipt('completed') | dict(timing=timing,
+            synchronized_profile_timing=config.get('synchronized_profile_timing', False),
+            updates_per_vector_step=update_rounds, batch_size=shared['batch_size'],
+            task_transfer=transfer, complete_training_sps=(steps-initial_steps)/(time.monotonic()-started)))
         atomic_json(args.output/'status.json', dict(state='completed', steps=steps))
     except BaseException as error:
         checkpoint('interrupted_full.pt')
@@ -378,6 +474,8 @@ def main():
     p.add_argument('--steps', type=int, required=True)
     p.add_argument('--source-commit', required=True)
     p.add_argument('--resume', type=Path)
+    p.add_argument('--init-from', type=Path)
+    p.add_argument('--task-transfer', choices=['Reach_to_Payload'])
     p.add_argument('--engineering', action='store_true')
     p.set_defaults(run=train)
     p = sub.add_parser('evaluate', parents=[common])

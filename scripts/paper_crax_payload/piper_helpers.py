@@ -94,6 +94,8 @@ class PiperTrainingEnvironment(PiperSimulation):
 
 
 def capture_piper_environment(env):
+    if hasattr(env, 'capture'):
+        return env.capture()
     joints = env.arm_joints + env.finger_joints
     states = [env.b('getJointState', env.robot, joint) for joint in joints]
     state = dict(joints=list(joints), positions=[s[0] for s in states], velocities=[s[1] for s in states],
@@ -116,6 +118,8 @@ def capture_piper_environment(env):
 
 
 def restore_piper_environment(env, state):
+    if hasattr(env, 'restore'):
+        return env.restore(state)
     if (state['payload'] is None) != (env.payload is None):
         raise ValueError('Cannot restore a Reach state into Payload or vice versa')
     if state['joints'] != env.arm_joints + env.finger_joints:
