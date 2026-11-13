@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-13T18:29:06.142165+00:00",
+  "as_of": "2026-11-13T18:49:43.139891+00:00",
   "campaign": {
     "protocol": "SAFEFlow_Robot_Gap_v2",
     "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
@@ -403,7 +403,7 @@
     "updated_unix": 1794581465.2055647
   },
   "payload_continuation": {
-    "state": "running_or_waiting_for_shared_resources",
+    "state": "completed_pending_scientific_decision",
     "controller_pid": 1263416,
     "controller_sha256": "6159eefbf871c28ccad6ff1801d0bc287f3773b061efb910e5bf411396bcbb63",
     "training_source_commit": "acb481dd",
@@ -466,7 +466,7 @@
         "name": "transfer-ea-300k",
         "method": "EA",
         "pid": 1263428,
-        "status": "running",
+        "status": "completed",
         "target_steps": 200000,
         "cumulative_target_steps": 300000,
         "initial_steps": 100000,
@@ -499,10 +499,13 @@
           "--resume",
           "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-100k/full_100000.pt"
         ],
-        "started_unix": 1794590312.826513
+        "started_unix": 1794590312.826513,
+        "exit_code": 0,
+        "actual_steps": 200000,
+        "finished_unix": 1794595712.8726563
       }
     ],
-    "updated_unix": 1794593912.8676157
+    "updated_unix": 1794595712.8726602
   },
   "reach_release": {
     "state": "completed_offline_preparation",
@@ -607,7 +610,7 @@
     "training_transitions": 0
   },
   "budget": {
-    "as_of": "2026-11-13T18:29:06.142165+00:00",
+    "as_of": "2026-11-13T18:49:43.139891+00:00",
     "source": "actual existing receipts and current new-run status; no historical audit rerun",
     "new_round_cap": 2200000,
     "initial_phase_reserved": 230000,
@@ -619,7 +622,7 @@
     "payload_continuation_reserved": 400000,
     "total_new_round_reserved": 830000,
     "actually_launched_target": 830000,
-    "observed_new_training_including_partial_prefixes": 790000,
+    "observed_new_training_including_partial_prefixes": 830000,
     "unreserved_later_allowance": 1370000,
     "pointgoal_new_training": 0,
     "old_piper_completed_candidates": 6,

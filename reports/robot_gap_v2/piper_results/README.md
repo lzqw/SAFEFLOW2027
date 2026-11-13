@@ -1,7 +1,7 @@
 # Completed Piper transfer and geometry adaptation
 
-`piper_new_learning_curve.csv` retains all48 condition/checkpoint rows from
-five completed branches, including the Iso300K continuation;
+`piper_new_learning_curve.csv` retains all60 condition/checkpoint rows from
+six completed branches, including both300K Payload continuations;
 `piper_new_efficiency.csv` records exact
 new transitions, elapsed time, stage timing, update counts and new violations.
 `receipts/` contains the corresponding genuine completion receipts. Raw
@@ -39,11 +39,25 @@ learning has stabilized more than robustness. The200K continuation took
 training violations are682 including the first100K. These are development
 results, not the pending common-validation/independent closure.
 
-EA's continuation was still live at239K/300K at02:19+08 November14. Its
-partially completed segment is deliberately not folded into this completed-run
-efficiency/curve table. The figure uses identical x-axis scales for both
-methods; missing later EA points mean pending results, not zero success.
-Do not compare the two methods as if both300K endpoints were already available.
+EA's continuation is also complete. Its300K nominal/geometry/scale safe success
+is83.33%/23.33%/63.33%, with16.67%/76.67%/36.67% violations. At120K it reached
+96.67%/80%/96.67%, declined at180K, collapsed to56.67%/3.33%/53.33% at240K,
+then partially recovered. All checkpoints are retained;300K does not replace
+or erase the regressions. The200K segment took5253.53s (38.07SPS) with481 new
+training violations (847 cumulative Payload violations). Equal additional
+budgets do not establish a universal EA advantage: Iso has higher nominal
+success, EA has higher but still poor geometry success, and scale is similar.
+
+| Fixed300K Payload endpoint | Nominal | Geometry | Scale0.85 | Cumulative training violations |
+|---|---:|---:|---:|---:|
+| Iso |100%|10%|66.67%|682|
+| EA |83.33%|23.33%|63.33%|847|
+
+These remain30-episode development results from one training seed. The queued
+closure uses exactly the canonical five checkpoints/method and new independent
+layouts after freezing both selections. It has not completed yet. Neither
+fixed300K endpoint solves robustness; no further training is automatically
+authorized. The figure uses identical x-axis scales for both methods.
 
 Regenerate from retained input records:
 

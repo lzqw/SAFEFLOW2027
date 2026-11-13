@@ -9,20 +9,21 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Old Piper Reach/Payload300K candidates | All six completed on A100 | Compact final evaluations/receipts |
 | Payload failure diagnosis | Fixed10-layout diagnostic completed, no training | See diagnostic_motion_episodes.csv and diagnostic_summary.json |
 | Piper speed | Three10K profiles complete:10.63/32.46/57.66SPS | Batched-large chosen; all short scores zero, no learning-equivalence claim |
-| Reach→Payload | Iso300K complete; EA260K/300K prefix at02:29+08 | Iso final nominal/geometry/scale100%/10%/66.67%; no independent-test claim yet |
+| Reach→Payload | Both matched300K continuations complete | Iso100%/10%/66.67%, EA83.33%/23.33%/63.33% nominal/geometry/scale development success |
 | Reach geometry adaptation≤0.20M | Both100K adaptations complete | New-geometry safe success Iso80%, EA73.33%; nominal/scale100% both |
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
 | Final PointGoal mechanism/efficiency/figures | Complete: final selected64×32/four samplers on native CPU,16,704 controls, zero RL | paper/final_mechanism/: small covariance changes, no within-state cost-event-rate differences |
 | Reach deployment candidate/control program | Adapted endpoints frozen and tested on900 independent-layout episodes; actual bundles/replay exported | See reach_adapted_release/README.md; geometry violations28%/30%, hardware eligibility false |
 | Payload post-training closure | Five canonical candidates/method fixed; CPU controller1282516 waits for completed continuations |50common-validation and100independent-layout episodes/condition; no RL or extra candidate opportunities |
 
-Snapshot:2026-11-13T18:29:06UTC (November14,02:29:06+08). Initial campaign and
-Reach followup controllers exited after completing all their jobs. Iso's
-continuation is complete, with its genuine300K receipt; worker1263426 exited
-normally. EA worker1263428 and controllers1263416/1282516 were confirmed
-live at02:18:50+08. Observed new training is790K:630K completed plus160K of
-EA's200K continuation (260K cumulative Payload). This prefix is not
-a final result or perpetual liveness guarantee. Controllers check every30minutes,
+Snapshot:2026-11-13T18:49:43UTC (November14,02:49:43+08). Initial campaign,
+Reach followup and Payload continuation controllers exited after completing
+their jobs. Both genuine300K continuation receipts exist; workers1263426 and
+1263428 are absent after normal completion. All830K reserved new transitions
+are now complete, not just progress prefixes. CPU closure controller1282516
+was confirmed sleeping/live at02:49:19+08 and waits for its next30minute tick
+before common validation. That snapshot is not a perpetual liveness guarantee.
+Controllers check every30minutes,
 retain other projects and never restart failed jobs. The final mechanism's
 GPU-waiting controller was verified before any output/query and replaced by
 CPU-only controller1319063/native worker1319072, without taking either Payload
@@ -50,7 +51,11 @@ scale safe success (30 development episodes/condition), with0%/90%/33.33%
 violations. Its120/180/240K geometry scores66.67/43.33/56.67% also remain in
 the full curve. Continued nominal learning did not fix robustness. The fixed
 endpoint is retained separately from the queued matched-five-candidate
-validation/independent selection. EA's300K result is not available yet.
+validation/independent selection. EA's300K nominal/geometry/scale success is
+83.33%/23.33%/63.33%, with16.67%/76.67%/36.67% violations. Its120K values
+96.67%/80%/96.67% fell sharply at240K, then only partially recovered at300K.
+Both complete curves are retained. No robustness solution or consistent EA
+advantage is established, and no additional training is launched.
 
 The first fixed PointGoal trajectory layout61027 gives Iso36goals/17.76cost,
 EA37goals/28.31cost. It is retained despite EA exceeding25 on that example;
@@ -81,7 +86,7 @@ serial/process parity. Local base Python lacks panda_gym; no extra installation
 was performed to force that environment to run these tests.
 
 Reservation: profiles30K + transfer2×100K + Reach2×100K + Payload continuation
-2×200K =830K, against the2.20M cap. Actual observed new transitions are790K at
+2×200K =830K, against the2.20M cap. Actual completed new transitions are830K at
 this snapshot. The1.37M remaining
 unreserved allowance is not a spending target. The Reach decision follows the
 fixed risk diagnostic: a radius prior corrected values without changing the

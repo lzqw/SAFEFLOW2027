@@ -12,7 +12,7 @@ as history, not descriptions of currently running processes.
 | Required question | Evidence-supported answer now | Remaining evidence |
 |---|---|---|
 | Why did Piper Payload fail to learn? | Original Iso is not immobile:0.424m path but only0.0684m gap reduction; detour and EA each succeed10/10 on the same diagnostic layouts. This identifies ineffective learned routing/progress, not a globally unreachable task. | No isolated causal proof that reward, values or exploration alone caused the failure. |
-| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods at100K. Iso now completes300K with100% nominal, but only10% geometry and66.67% scale success. | EA300K continuation and matched-five-candidate independent closure remain pending. No initialization-only causal attribution or solved-robustness claim. |
+| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods. Both300K endpoints are complete: Iso100/10/66.67%, EA83.33/23.33/63.33% nominal/geometry/scale safe success. | Matched-five-candidate independent closure remains pending. No initialization-only causal attribution or solved-robustness claim. |
 | Has Reach geometry improved? | Independent-layout Iso400K success100/72/99%; EA400K100/70/100% for nominal/55mm/scale. Both received100K adaptation. | Geometry violations28/30% exceed the10% release rule.55mm was in training: no unseen-radius claim. |
 | Does EA's gain survive equal adaptation? | PointGoal's frozen independent EA policy has35.43goals/21.32cost versus Iso28.29/26.85. Equal Reach adaptation does not show an EA advantage; Iso is2points higher at55mm. | Payload300K independent comparison;4080 Panda repair. Three-seed fixed10M PointGoal remains separate from selected-policy tests. |
 | Is training genuinely faster? | Profile complete SPS10.63→57.66; actual EA100K transfer34.97SPS including evaluation/save, within20–40SPS engineering target. | Optimization/update counts changed and shared load is uncontrolled; no learning-equivalence or hardware-only speedup claim. |
@@ -410,3 +410,27 @@ The02:29 collector now observes790K newly trained transitions,630K complete
 plus160K of EA's200K continuation (260K cumulative Payload). Payload closure,
 4080 repair access and actual deployment-PC latency remain outstanding; this
 is not a completed-round claim.
+
+## November14,02:49+08 — all authorized Piper training complete
+
+EA's fixed100K→300K continuation completed normally: nominal/geometry/scale
+safe success83.33%/23.33%/63.33%, violations16.67%/76.67%/36.67% (30 fixed
+development episodes/condition). Its120K success96.67%/80%/96.67% regressed
+to56.67%/3.33%/53.33% at240K; the full curve is published without substituting
+an intermediate peak for the fixed endpoint. EA's200K segment took5253.53s
+(38.07SPS),481 additional training violations and847 cumulative Payload
+violations. Iso has682 cumulative violations and better300K nominal success;
+EA has higher but still poor new-geometry success. No consistent safety/task
+dominance is established. Original scratch EA300K development90/53.33/63.33%
+is retained as a differently pretrained/configured reference, not a matched
+common-initialization control; transfer does not improve its geometry endpoint.
+
+All830K newly reserved transitions are now complete. No curriculum, extension,
+extra seed or optional matrix is launched. The1.37M unreserved ceiling is not
+a spending target. The six-branch60-row development curve and exact complete
+segment timing/updates are in piper_results/. CPU closure1282516 was confirmed
+sleeping/live at02:49 and will start its canonical-five common validation at
+the next registered30minute tick (about03:09+08), then freeze both identities
+before independent testing. No validation/test result is claimed yet.4080 is
+still unreachable; A100 retains145GiB home and74GiB data free space, and both
+shared GPUs show100% instantaneous utilization by the remaining other projects.
