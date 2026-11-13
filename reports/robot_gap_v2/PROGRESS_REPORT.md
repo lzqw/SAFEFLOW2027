@@ -7,6 +7,26 @@ Latest completed outcomes and the continuation decision are in the final
 section, datedNovember14+08. Earlier timestamped execution snapshots are retained
 as history, not descriptions of currently running processes.
 
+## Current decision answers — not a completed-round claim
+
+| Required question | Evidence-supported answer now | Remaining evidence |
+|---|---|---|
+| Why did Piper Payload fail to learn? | Original Iso is not immobile:0.424m path but only0.0684m gap reduction; detour and EA each succeed10/10 on the same diagnostic layouts. This identifies ineffective learned routing/progress, not a globally unreachable task. | No isolated causal proof that reward, values or exploration alone caused the failure. |
+| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods at100K. Iso50% and EA66.67% nominal; strong intermediate regression is retained. | Fixed300K continuation and its matched-five-candidate independent closure are still running/waiting. No initialization-only causal attribution. |
+| Has Reach geometry improved? | Independent-layout Iso400K success100/72/99%; EA400K100/70/100% for nominal/55mm/scale. Both received100K adaptation. | Geometry violations28/30% exceed the10% release rule.55mm was in training: no unseen-radius claim. |
+| Does EA's gain survive equal adaptation? | PointGoal's frozen independent EA policy has35.43goals/21.32cost versus Iso28.29/26.85. Equal Reach adaptation does not show an EA advantage; Iso is2points higher at55mm. | Payload300K independent comparison;4080 Panda repair. Three-seed fixed10M PointGoal remains separate from selected-policy tests. |
+| Is training genuinely faster? | Profile complete SPS10.63→57.66; actual EA100K transfer34.97SPS including evaluation/save, within20–40SPS engineering target. | Optimization/update counts changed and shared load is uncontrolled; no learning-equivalence or hardware-only speedup claim. |
+| What can be taken to deployment? | Actual frozen400K Reach bundles, EMA margin/normalizer, offline replay and90-episode on-site protocol are delivered in reach_adapted_release/ and deployment/piper/. | Not eligible for motion: independent geometry violations are too high. Deployment-PC latency, calibrated frames/TCP/limits and现场确认 remain outstanding. No physical connection. |
+
+Source tables and actual receipts: [Piper curves/efficiency](piper_results/README.md),
+[independent Reach/bundles](reach_adapted_release/README.md),
+[PointGoal paper material](paper/README.md). This table answers the requested
+questions without replacing development results with independent tests or
+declaring incomplete work finished. The new final-mechanism postprocessor
+accepts only the completed64×32/four-sampler receipt and reports both native
+cost magnitude and whether per-state event rates actually differ across
+samplers. A mixed pool alone is not evidence of an event-safety effect.
+
 ## Actual old Piper finals
 
 All six300K trials are complete. At30 fixed development episodes per condition:
@@ -61,7 +81,7 @@ parity, transfer isolation and preserved second reward-target Polyak ordering.
 The original local Python test environment lacks panda_gym; no broad package
 installation or repeated validation campaign was undertaken.
 
-## Budget, resources and outstanding decisions
+## Historical initial budget, resources and outstanding decisions
 
 Receipt refresh confirms1.80M completed old Piper candidate transitions and
 90,001,920 completed old formal PointGoal transitions. Neither is newly charged
@@ -74,7 +94,7 @@ for another turn. Healthy foreign jobs remain untouched.4080's confirmed address
 172.21.221.238 still returns no route to host. No5080 is used. New artifacts go
 to `/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2`, not/home.
 
-Still pending: complete transfer outcomes and paired decision; queued Reach
+Pending at that initial snapshot: complete transfer outcomes and paired decision; queued Reach
 adaptation;4080 Payload repair; queued final-selected PointGoal64×32 mechanism;
 actual deployment-machine latency. Original Reach selection and offline release
 are complete; see the final section and reach_release/README.md.

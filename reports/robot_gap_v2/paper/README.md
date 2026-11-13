@@ -55,6 +55,22 @@ uses bounded native-query batches, and keeps a single fixed pool even if cost
 events are all zero or all positive. Its actual execution/results remain pending
 a suitable shared-GPU memory window; the historical4M study is not relabelled.
 
+After its genuine completion, render the eight-row table and figure without
+loading models, simulating, choosing states or drawing more actions:
+
+```bash
+python -m scripts.paper_crax_payload.pointgoal_mechanism_pack \
+  --input /path/to/retained/pointgoal-final64x32 \
+  --selection reports/paper_crax_payload/pointgoal-formal-selection-20261113/POINTGOAL_MODEL_SELECTION.json \
+  --output reports/robot_gap_v2/paper/final_mechanism
+```
+
+The command refuses the old32×16 study, partial receipts, wrong model steps,
+missing sampler arms or duplicate states. It preserves nondiscrimination:
+even a mixed-cost pool does not show an event-safety effect if every sampler
+has identical event rates within each state. This preparation is not a claim
+that final mechanism results already exist.
+
 `selected_examples/` now separately delivers two genuine native trajectories
 on the prospectively fixed first development layout61027. Iso36goals/17.76cost,
 EA37goals/28.31cost: EA exceeds the25 budget in this example. The unfavorable
