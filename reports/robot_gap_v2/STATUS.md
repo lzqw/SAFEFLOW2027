@@ -16,11 +16,12 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Reach deployment candidate/control program | Adapted endpoints frozen and tested on900 independent-layout episodes; actual bundles/replay exported | See reach_adapted_release/README.md; geometry violations28%/30%, hardware eligibility false |
 | Payload post-training closure | Five canonical candidates/method fixed; CPU controller1282516 waits for completed continuations |50common-validation and100independent-layout episodes/condition; no RL or extra candidate opportunities |
 
-Snapshot:2026-11-13T17:18:55UTC (November14,01:18:55+08). Initial campaign and
+Snapshot:2026-11-13T17:44:40UTC (November14,01:44:40+08). Initial campaign and
 Reach followup controllers exited after completing all their jobs. New controller
 PID1263416 launched Payload Iso PID1263426 and EA PID1263428, each200K additional
 transitions from its fixed100K endpoint. All three processes were confirmed live
-at01:19+08. Observed new training is431K including a1K continuation prefix, not
+again at01:45+08. Observed new training is592K including162K continuation prefixes
+(Iso203K/300K cumulative, EA159K/300K cumulative), not
 a final result or perpetual liveness guarantee. Controllers check every30minutes,
 retain other projects and never restart failed jobs. Final mechanism controller
 was replaced before any query to explicitly supply the pinned native CRAX
@@ -71,7 +72,7 @@ serial/process parity. Local base Python lacks panda_gym; no extra installation
 was performed to force that environment to run these tests.
 
 Reservation: profiles30K + transfer2×100K + Reach2×100K + Payload continuation
-2×200K =830K, against the2.20M cap. Actual observed new transitions are431K at
+2×200K =830K, against the2.20M cap. Actual observed new transitions are592K at
 this snapshot. The1.37M remaining
 unreserved allowance is not a spending target. The Reach decision follows the
 fixed risk diagnostic: a radius prior corrected values without changing the
