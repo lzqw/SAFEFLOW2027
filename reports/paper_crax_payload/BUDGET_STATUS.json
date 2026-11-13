@@ -69,7 +69,7 @@
     "optional_CVPO_started": false
   },
   "RobotGap_v2": {
-    "as_of": "2026-11-13T18:49:43.139891+00:00",
+    "as_of": "2026-11-13T19:30:13.882190+00:00",
     "actual_completed_new_training": 830000,
     "observed_new_training_including_partial_prefixes": 830000,
     "new_training_cap": 2200000,
@@ -91,6 +91,16 @@
     "final_selected64x32_controls": 16704,
     "final_selected_authority": "../robot_gap_v2/paper/final_mechanism/native/receipt.json",
     "final_selected_execution_backend": "cpu"
+  },
+  "Piper_Payload_v2_closure": {
+    "actual_training": 0,
+    "actual_common_validation_episodes": 1500,
+    "actual_independent_test_episodes": 600,
+    "actual_nontraining_simulator_controls": 74988,
+    "actual_physics_substeps": 1499760,
+    "actual_distance_queries": 1578950,
+    "authority": "../robot_gap_v2/payload_closure/receipt.json",
+    "selected_snapshot_steps_are_not_actual_branch_training_expenditure": true
   },
   "PointGoal_selected_trajectory_examples": {
     "actual_training": 0,

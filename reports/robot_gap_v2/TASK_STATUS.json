@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-13T18:49:43.139891+00:00",
+  "as_of": "2026-11-13T19:30:13.882190+00:00",
   "campaign": {
     "protocol": "SAFEFlow_Robot_Gap_v2",
     "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
@@ -604,13 +604,12 @@
     "elapsed_seconds": 72.54368557222188
   },
   "payload_closure": {
-    "state": "waiting_for_matched_Payload_endpoints",
-    "controller_pid": 1282516,
-    "check_interval_seconds": 1800,
-    "training_transitions": 0
+    "state": "completed",
+    "completed_controls": 74988,
+    "controller_pid": 1282516
   },
   "budget": {
-    "as_of": "2026-11-13T18:49:43.139891+00:00",
+    "as_of": "2026-11-13T19:30:13.882190+00:00",
     "source": "actual existing receipts and current new-run status; no historical audit rerun",
     "new_round_cap": 2200000,
     "initial_phase_reserved": 230000,

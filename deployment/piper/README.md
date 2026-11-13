@@ -103,8 +103,15 @@ the fixed adapted endpoints gives Iso100%/72%/99%, EA100%/70%/100%,100 episodes/
 condition. The55mm test radius is in the training family, not held out. Geometry
 violations28%/30% still fail the risk criterion; no EA superiority or physical
 eligibility is claimed. The new bundles are an additional release, not an
-overwrite of the original. Payload transfer continuations are still
-running. Current budget/results are in
+overwrite of the original. Payload transfer continuations and their independent
+closure are also complete. Validation-selected Iso60K has100%/100%/100% safe
+success across100 independent layouts/condition; EA120K has96%/75%/98%, with
+4%/25%/2% violations. Both branches actually trained300K Payload transitions;
+selected checkpoint age is not the spent budget. Actual selected inference
+packages are in [payload_closure](../../reports/robot_gap_v2/payload_closure/README.md).
+They remain offline simulation artifacts, not a new Payload on-site plan or
+physical enable. The current first on-site plan remains the90 Reach trials.
+Current budget/results are in
 [`Robot-Gap status`](../../reports/robot_gap_v2/STATUS.md).
 
 ## Historical engineering and queue registration (superseded execution state)

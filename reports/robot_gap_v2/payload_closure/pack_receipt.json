@@ -1,0 +1,12 @@
+{
+  "status": "completed_postprocessing_only",
+  "original_selection_sha256": "2ded883a239df2958a438d1d5be5aca5d1ae896cb06cf8416a4c7ccc9f7ae576",
+  "independent_episode_rows": 600,
+  "common_validation_episodes": 1500,
+  "verified_original_native_controls": 74988,
+  "verified_original_native_substeps": 1499760,
+  "verified_original_distance_queries": 1578950,
+  "new_simulation_controls": 0,
+  "new_training_transitions": 0,
+  "physical_robot_interactions": 0
+}

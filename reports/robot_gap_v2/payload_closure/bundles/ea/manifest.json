@@ -1,0 +1,61 @@
+{
+  "robot_family": "Piper",
+  "training_robot_family": "Piper",
+  "task": "Payload",
+  "method": "EA",
+  "observation_dim": 34,
+  "action_dim": 3,
+  "training_steps": 120000,
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "training_source_commit": "acb481dd",
+  "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+  "normalizer_frozen": true,
+  "action_frame": "robot_base",
+  "action_unit": "normalized_delta_xyz",
+  "action_scale_m": 0.01,
+  "hidden_width": 128,
+  "flow_steps": 4,
+  "reference_variance": 0.04,
+  "iso_reference_variance": 0.04,
+  "physical_motion_enabled": false,
+  "hardware_matched": false,
+  "selection": {
+    "robot_family": "Piper",
+    "task": "Payload",
+    "method": "EA",
+    "selected_checkpoint_steps": 120000,
+    "selection_split": "validation",
+    "independent_test_used_for_selection": false,
+    "candidate_count": 5,
+    "risk_qualified": false,
+    "status": "pareto_tradeoff_not_risk_qualified",
+    "score": {
+      "risk_qualified": false,
+      "task_progress_observed": true,
+      "macro_safe_success": 0.9,
+      "macro_capped_seconds": 1.6951999999999998,
+      "per_condition_violation": [
+        0.0,
+        0.28,
+        0.02
+      ],
+      "per_condition_safe_success": [
+        1.0,
+        0.72,
+        0.98
+      ]
+    },
+    "original_selection_sha256": "2ded883a239df2958a438d1d5be5aca5d1ae896cb06cf8416a4c7ccc9f7ae576",
+    "actual_Payload_training_consumed_each_branch": 300000,
+    "shared_Reach_parent_training_steps": 300000,
+    "physical_deployment_eligible": false,
+    "hardware_calibration_pending": true
+  },
+  "task_semantics": "native Piper simulation; IK1200/shared endpoint admissibility; Payload centroid success",
+  "schema_version": 1,
+  "policy_sha256": "fa2a015cec9c79b964a0be18122cf16170d2ca3272ca49124ab66bb1489daa5b",
+  "normalizer_sha256": "08c75064794375d77f12f22dd1675c93250b1eb3d8296d87ab54e49285fa494f",
+  "training_receipt_sha256": "adfc9cfed42696bfe2ef305f6b39c7fd933dca4a5c600e8fea6cf6676ec778f8",
+  "hardware_transport_available": false,
+  "recovery_checkpoint": false
+}

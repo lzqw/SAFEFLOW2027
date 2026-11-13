@@ -4,6 +4,12 @@ Parent PR14: `5a403e04d3064c2a02d8c28023bb050e3098040c`.
 User plan: PointGoal closure; Piper Payload learning/transfer; Piper Reach geometry/deployment;
 existing Payload targeted geometry repair. New training cap2.20M, not a spending target.
 
+Current decisions and unresolved external conditions:
+[FINAL_DECISION_REPORT.md](FINAL_DECISION_REPORT.md). A100's launched training,
+Payload independent closure and final PointGoal mechanism are complete. The
+whole goal is not complete:4080 parent access/repair and actual deployment-PC
+latency remain outstanding. No further RL is launched to fill idle capacity.
+
 | Task | State | Next evidence |
 |---|---|---|
 | Old Piper Reach/Payload300K candidates | All six completed on A100 | Compact final evaluations/receipts |
@@ -14,15 +20,17 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
 | Final PointGoal mechanism/efficiency/figures | Complete: final selected64×32/four samplers on native CPU,16,704 controls, zero RL | paper/final_mechanism/: small covariance changes, no within-state cost-event-rate differences |
 | Reach deployment candidate/control program | Adapted endpoints frozen and tested on900 independent-layout episodes; actual bundles/replay exported | See reach_adapted_release/README.md; geometry violations28%/30%, hardware eligibility false |
-| Payload post-training closure | Five canonical candidates/method fixed; CPU controller1282516 waits for completed continuations |50common-validation and100independent-layout episodes/condition; no RL or extra candidate opportunities |
+| Payload post-training closure | Complete:1500 common-validation+600 independent episodes; selected Iso60K and EA120K | Independent success Iso100/100/100%, EA96/75/98%; actual frozen bundles in payload_closure/ |
 
-Snapshot:2026-11-13T18:49:43UTC (November14,02:49:43+08). Initial campaign,
+Snapshot:2026-11-13T19:30:13UTC (November14,03:30:13+08). Initial campaign,
 Reach followup and Payload continuation controllers exited after completing
 their jobs. Both genuine300K continuation receipts exist; workers1263426 and
 1263428 are absent after normal completion. All830K reserved new transitions
 are now complete, not just progress prefixes. CPU closure controller1282516
-was confirmed sleeping/live at02:49:19+08 and waits for its next30minute tick
-before common validation. That snapshot is not a perpetual liveness guarantee.
+completed74,988 native controls,1,499,760 physics substeps and1,578,950 distance
+queries. Its actual completed receipt exists and the process is absent; all
+listed training/closure/final-mechanism handles are terminal. No task is
+restarted merely because its process exited after completion.
 Controllers check every30minutes,
 retain other projects and never restart failed jobs. The final mechanism's
 GPU-waiting controller was verified before any output/query and replaced by
@@ -56,6 +64,16 @@ validation/independent selection. EA's300K nominal/geometry/scale success is
 96.67%/80%/96.67% fell sharply at240K, then only partially recovered at300K.
 Both complete curves are retained. No robustness solution or consistent EA
 advantage is established, and no additional training is launched.
+
+The separately validation-selected Payload candidates now have independent
+confirmation on100 new layouts/condition: Iso60K100%/100%/100% safe success
+with0% violations; EA120K96%/75%/98% with4%/25%/2% violations. Both branches
+actually consumed300K Payload training after the common300K Reach parent.
+The five-candidate selection was frozen before test, not chosen using these
+independent labels. The one-training-seed result supports a useful Iso
+simulation candidate, not a physical or global zero-risk guarantee. Both actual
+inference packages/normalizers/manifests/receipts are delivered, motion false.
+Full300K endpoints/regressions remain separate from this selected-policy test.
 
 The first fixed PointGoal trajectory layout61027 gives Iso36goals/17.76cost,
 EA37goals/28.31cost. It is retained despite EA exceeding25 on that example;

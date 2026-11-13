@@ -1,6 +1,9 @@
 # Robot-Gap v2 — execution progress
 
-This is an interim report, not the final2.2M decision report. All new work is
+This file preserves the execution history. Current conclusions are in
+[FINAL_DECISION_REPORT.md](FINAL_DECISION_REPORT.md); the whole goal remains
+incomplete because4080 repair access and deployment-PC timing are outstanding.
+All launched A100 training/evaluations are complete. All new work is
 simulation/offline only. Initial training implementation:139c4e15; finite Reach
 adaptation/final mechanism implementation:acb481dd; baseline:5a403e04.
 Latest completed outcomes and the continuation decision are in the final
@@ -12,11 +15,11 @@ as history, not descriptions of currently running processes.
 | Required question | Evidence-supported answer now | Remaining evidence |
 |---|---|---|
 | Why did Piper Payload fail to learn? | Original Iso is not immobile:0.424m path but only0.0684m gap reduction; detour and EA each succeed10/10 on the same diagnostic layouts. This identifies ineffective learned routing/progress, not a globally unreachable task. | No isolated causal proof that reward, values or exploration alone caused the failure. |
-| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods. Both300K endpoints are complete: Iso100/10/66.67%, EA83.33/23.33/63.33% nominal/geometry/scale safe success. | Matched-five-candidate independent closure remains pending. No initialization-only causal attribution or solved-robustness claim. |
+| Which repair helps? | Common Reach-Actor transfer plus profiled updates yields a useful validation-selected Iso60K candidate:100/100/100% independent success; EA120K96/75/98%. Actual branch training was300K each; poor fixed300K endpoints remain separately preserved. | No initialization-only causal attribution, cross-training-seed or physical zero-risk claim. |
 | Has Reach geometry improved? | Independent-layout Iso400K success100/72/99%; EA400K100/70/100% for nominal/55mm/scale. Both received100K adaptation. | Geometry violations28/30% exceed the10% release rule.55mm was in training: no unseen-radius claim. |
-| Does EA's gain survive equal adaptation? | PointGoal's frozen independent EA policy has35.43goals/21.32cost versus Iso28.29/26.85. Equal Reach adaptation does not show an EA advantage; Iso is2points higher at55mm. | Payload300K independent comparison;4080 Panda repair. Three-seed fixed10M PointGoal remains separate from selected-policy tests. |
+| Does EA's gain survive equal adaptation? | PointGoal's frozen independent EA policy has35.43goals/21.32cost versus Iso28.29/26.85. Equal Reach adaptation does not show an EA advantage; selected Payload Iso has higher safe success/lower violations, EA faster successful completion. |4080 Panda repair. Three-seed fixed10M PointGoal remains separate from selected-policy tests. No universal EA dominance. |
 | Is training genuinely faster? | Profile complete SPS10.63→57.66; actual EA100K transfer34.97SPS including evaluation/save, within20–40SPS engineering target. | Optimization/update counts changed and shared load is uncontrolled; no learning-equivalence or hardware-only speedup claim. |
-| What can be taken to deployment? | Actual frozen400K Reach bundles, EMA margin/normalizer, offline replay and90-episode on-site protocol are delivered in reach_adapted_release/ and deployment/piper/. | Not eligible for motion: independent geometry violations are too high. Deployment-PC latency, calibrated frames/TCP/limits and现场确认 remain outstanding. No physical connection. |
+| What can be taken to deployment? | Actual frozen Reach and selected Payload bundles, EMA margin/normalizer, offline replay and90-episode Reach on-site protocol are delivered. Payload remains offline only. | Not eligible for motion: Reach geometry violations are too high; useful Payload simulation does not calibrate hardware. Deployment-PC timing/frames/TCP/limits and现场确认 remain outstanding. |
 
 Source tables and actual receipts: [Piper curves/efficiency](piper_results/README.md),
 [independent Reach/bundles](reach_adapted_release/README.md),
