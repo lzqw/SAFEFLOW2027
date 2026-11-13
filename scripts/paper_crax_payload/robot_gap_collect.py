@@ -43,8 +43,10 @@ def main():
     campaign = json.loads(campaign_path.read_text()) if campaign_path.exists() else {}
     followup_path = args.campaign_root/'followup_status.json'
     followup = json.loads(followup_path.read_text()) if followup_path.exists() else {}
+    continuation_path = args.campaign_root/'continuation_status.json'
+    continuation = json.loads(continuation_path.read_text()) if continuation_path.exists() else {}
     new_jobs = []
-    for job in campaign.get('jobs', [])+followup.get('jobs', []):
+    for job in campaign.get('jobs', [])+followup.get('jobs', [])+continuation.get('jobs', []):
         row = {key: job[key] for key in ('name', 'status', 'pid', 'target_steps', 'engineering')}
         run = Path(job['output'])
         receipt_path = run/'receipt.json'
@@ -63,14 +65,16 @@ def main():
             row['actual_steps'] = 0
         new_jobs.append(row)
     followup_reserved = followup.get('reserved_new_training',0)
+    continuation_reserved = continuation.get('reserved_new_training',0)
     budget = dict(as_of=now, source='actual existing receipts and current new-run status; no historical audit rerun',
         new_round_cap=2200000, initial_phase_reserved=230000,
         initial_phase_reservation_breakdown=dict(three_profiles=30000, paired_transfer=200000),
         reach_geometry_followup_reserved=followup_reserved,
-        total_new_round_reserved=230000+followup_reserved,
+        payload_continuation_reserved=continuation_reserved,
+        total_new_round_reserved=230000+followup_reserved+continuation_reserved,
         actually_launched_target=sum(r['target_steps'] for r in new_jobs),
         observed_new_training_including_partial_prefixes=sum(r['actual_steps'] for r in new_jobs),
-        unreserved_later_allowance=1970000-followup_reserved, pointgoal_new_training=0,
+        unreserved_later_allowance=1970000-followup_reserved-continuation_reserved, pointgoal_new_training=0,
         old_piper_completed_candidates=len(old_piper),
         old_piper_actual_candidate_transitions=sum(r['newly_collected_transitions'] for r in old_piper),
         old_pointgoal_formal_completed=len(pointgoal),
@@ -79,7 +83,8 @@ def main():
         physical_robot_interactions=0, other_projects_modified=False)
     release_path=args.campaign_root/'reach-release/status.json'
     release=json.loads(release_path.read_text()) if release_path.exists() else {}
-    snapshot = dict(as_of=now, campaign=campaign, reach_followups=followup, reach_release=release, budget=budget,
+    snapshot = dict(as_of=now, campaign=campaign, reach_followups=followup,
+        payload_continuation=continuation, reach_release=release, budget=budget,
         live_process_proof='Snapshot alone is not proof of liveness; confirm its recorded PID on host',
         all_results_development_not_independent_test=True)
     (args.output/'TASK_STATUS.json').write_text(json.dumps(snapshot, indent=2)+'\n')
