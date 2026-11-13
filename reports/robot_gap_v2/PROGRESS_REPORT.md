@@ -3,6 +3,9 @@
 This is an interim report, not the final2.2M decision report. All new work is
 simulation/offline only. Initial training implementation:139c4e15; finite Reach
 adaptation/final mechanism implementation:acb481dd; baseline:5a403e04.
+Latest completed outcomes and the continuation decision are in the final
+section, datedNovember14+08. Earlier timestamped execution snapshots are retained
+as history, not descriptions of currently running processes.
 
 ## Actual old Piper finals
 
@@ -214,3 +217,76 @@ calibrated safety result. EA server CPU batch1 p50/p95 is10.235/10.432ms;
 Iso1.510/1.569ms and Iso-Low1.500/1.576ms. Real deployment-computer timing and
 hardware calibration remain pending; all bundle motion flags remain false.
 Large per-episode validation records remain on A100's data disk.
+
+## November14: completed transfer/adaptation and the paired continuation
+
+Both original100K transfer branches and both100K Reach geometry adaptations
+finished normally. The full36 condition-row curve table, four completion
+receipts, actual timing/update counts and PNG/PDF figure are in `piper_results/`.
+No new evaluation was run to create this summary.
+
+| Fixed endpoint | Nominal safe success | New geometry | Scale0.85 | Full segment SPS | New training violations |
+|---|---:|---:|---:|---:|---:|
+| Payload Transfer-Iso100K |50%|3.33%|56.67%|62.80|226|
+| Payload Transfer-EA100K |66.67%|10%|70%|34.97|366|
+| Reach Iso300K+100K |100%|80%|100%|66.53|421|
+| Reach EA300K+100K |100%|73.33%|100%|38.73|407|
+
+All rows use one training seed41027 and30 fixed development episodes/condition.
+They are not independent tests or cross-training-seed estimates. Safety
+violations here include crossing the safety distance, not necessarily collision;
+zero collisions do not erase the reported violations.
+
+Payload initialization now learns nontrivial task behavior, but not stably:
+Iso60K achieved100% nominal,96.67% geometry and100% scale success, then fell to
+50%/3.33%/56.67% at100K. EA20/40K hadzero nominal success,60K26.67%,80K6.67%,
+100K66.67%. The full curves are preserved. EA has better100K task scores but
+more training violations than Iso; this is not a universal safety improvement.
+Actor transfer is bundled with the profiled execution/update configuration, so
+the gain over old scratch Iso cannot be attributed exclusively to initialization.
+
+Reach adaptation meets the development targets (nominal≥95%, geometry≥70%) for
+both methods. Compared with their original300K fixed endpoints, new-geometry
+success improves Iso30→80% and EA33.33→73.33%. Iso is slightly higher after
+equal additional budgets; no EA superiority is claimed. Geometry violations
+remain20%/26.67%, so neither is risk-qualified by the earlier≤10%-each-condition
+deployment rule. That rule and common-validation data are distinct from these
+30-episode development results.
+
+Both transfer endpoints meet the plan's≥50% nominal learning signal. Continue
+exactly those fixed100K full states by200K each to300K, not the best-looking
+intermediate snapshot. Native configuration, critics, replay, RNG, episode
+partial state, optimizers and dual are retained; no reward/noise/margin/radius
+change and no curriculum. Controller PID1263416 and both workers1263426/1263428
+were confirmed live at01:19+08. The implementation source matches the previously
+tested training-core bytes. Source/config/evidence are checked before launch;
+controllers never preempt foreign jobs, retry failures, or expand budgets.
+
+New reservation is830K (profiles30K, Reach200K, Payload600K), of which430K is
+fully completed; the01:18:55+08 collector observed431K including partial new
+work. Unreserved allowance1.37M is not a spending target. Real Payload100K
+segment times were26.54min Iso and47.66min EA, including evaluation/save.
+The EA segment achieves the20–40SPS engineering target; learning regression
+prevents a claim of optimization equivalence. Shared GPU load is uncontrolled.
+
+Original Reach inference bundles and2250 common-validation episodes are already
+published. Adapted400K models are not silently substituted into that frozen
+release. Actual hardware latency/calibration remain pending. Final PointGoal
+mechanism is waiting for≥8GiB free memory; its live controller has not run native
+queries yet.4080 still has no route at its reconfirmed address; Panda repair
+is not launched. No5080 or physical robot is used.
+
+Native SAC batch1 CPU timing is now also measured with the exact frozen
+selected native policy/normalizer, on the same genuine observation fixture as
+Flow: p50/p950.301/0.337ms,20warmup+200measurements. JIT compile0.154s is excluded.
+Normalization, stochastic Actor, RNG split and host return are included; no
+simulator or training is instantiated. JAX CPU and Torch CPU runtime/threading
+are not identical; do not call their ratio a hardware-normalized speedup or
+deployment-computer control latency. Raw receipt is in `paper/`.
+
+The CPU preflight exposed a missing native CRAX PYTHONPATH in the waiting
+mechanism launcher. The own waiting controller was explicitly checked, stopped
+and replaced before any query/output existed. Its previous status is preserved
+on the data disk. The fixed launcher supplies the pinned native checkout and
+waits for the Payload continuation pair too; no training core or foreign job
+was changed and no mechanism experiment was restarted.

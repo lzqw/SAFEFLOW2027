@@ -9,20 +9,31 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Old Piper Reach/Payload300K candidates | All six completed on A100 | Compact final evaluations/receipts |
 | Payload failure diagnosis | Fixed10-layout diagnostic completed, no training | See diagnostic_motion_episodes.csv and diagnostic_summary.json |
 | Piper speed | Three10K profiles complete:10.63/32.46/57.66SPS | Batched-large chosen; all short scores zero, no learning-equivalence claim |
-| Reach→Payload | Matched100K Iso/EA branches running on A100GPU0/1 | Same fixed original Reach/Iso300K Actor parent |
-| Reach geometry adaptation≤0.20M | One Iso/EA100K pair queued after each own transfer slot | Shared radii45/50/55mm; fixed-radius evaluation unchanged |
+| Reach→Payload | Matched100K pair complete; both200K additional continuations running | Fixed100K endpoint parents, identical full-state resume to300K; no curriculum |
+| Reach geometry adaptation≤0.20M | Both100K adaptations complete | New-geometry safe success Iso80%, EA73.33%; nominal/scale100% both |
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
 | Final PointGoal mechanism/efficiency/figures | Three-seed figures/efficiency and Flow CPU latency complete; mechanism queued | Final-selected64×32/four samplers, after Piper work and≥8GiB free GPU memory |
 | Reach deployment candidate/control program | All15 candidates/2250 validation episodes complete; three native bundles and offline replays exported | See reach_release/README.md; geometry remains weak, hardware eligibility false |
 
-Snapshot:2026-11-13T13:03:17UTC (21:03:17+08). A100 campaign controller PID1039792
-launched Iso PID1062014 and EA PID1062015. New training totals125K including
-30K profiles and95K combined transfer prefixes; these are not final results or
-perpetual liveness guarantees. Reach followup scheduler PID1064715 checks
-every30minutes and launches only the queued100K/method finite-radius fork when
-that method's own transfer is complete and≥2GiB GPU memory remains. Final
-mechanism scheduler PID1068085 waits for Piper followups and≥8GiB. Neither
-preempts other projects or restarts a failed job. All outputs use the data disk.
+Snapshot:2026-11-13T17:18:55UTC (November14,01:18:55+08). Initial campaign and
+Reach followup controllers exited after completing all their jobs. New controller
+PID1263416 launched Payload Iso PID1263426 and EA PID1263428, each200K additional
+transitions from its fixed100K endpoint. All three processes were confirmed live
+at01:19+08. Observed new training is431K including a1K continuation prefix, not
+a final result or perpetual liveness guarantee. Controllers check every30minutes,
+retain other projects and never restart failed jobs. Final mechanism controller
+was replaced before any query to explicitly supply the pinned native CRAX
+source path; its current PID/state are in TASK_STATUS.json. It waits for the
+Payload continuations and≥8GiB shared GPU memory. All outputs use the
+data disk; no additional PointGoal RL is run.
+
+Transfer100K nominal/new-geometry/scale safe success: Iso50%/3.33%/56.67%,
+EA66.67%/10%/70%. Iso briefly reached100%/96.67%/100% at60K then regressed;
+all five checkpoints are retained in piper_results/, not hidden behind the
+endpoint. The evidence permits the planned matched continuation, not an
+automatic claim that transfer or EA solves robustness. Original Reach geometry
+adaptation improved both methods substantially; Iso is slightly better than EA
+on the fixed new-geometry development set. These are one-training-seed results.
 
 Latest A100 finals change the older plan snapshot: original Payload EA at300K has
 nominal90%, new geometry53.33%, execution-scale63.33% safe success (30 development
@@ -47,12 +58,14 @@ critics,margin,replay,optimizers,dual,alpha and counters. Legacy resume stays st
 serial/process parity. Local base Python lacks panda_gym; no extra installation
 was performed to force that environment to run these tests.
 
-Reservation: profiles30K + transfer2×100K + Reach2×100K =430K, against the2.20M
-cap. Actual observed new transitions are125K at this snapshot. The1.77M remaining
+Reservation: profiles30K + transfer2×100K + Reach2×100K + Payload continuation
+2×200K =830K, against the2.20M cap. Actual observed new transitions are431K at
+this snapshot. The1.37M remaining
 unreserved allowance is not a spending target. The Reach decision follows the
 fixed risk diagnostic: a radius prior corrected values without changing the
 paired frozen rollout outcomes, so one shared finite-radius training family is
-used instead. No curriculum, optional continuation, or matrix is auto-launched.
+used instead. The original paired transfer has learning signals; only its
+authorized200K/method continuation is now launched. No curriculum or matrix.
 Profiles force full geometry to measure tail/VJP costs within10K; these are
 engineering/short-learning diagnostics, not formal algorithm comparisons.
 All scientific transfer runs restore the native transition geometry ramp.

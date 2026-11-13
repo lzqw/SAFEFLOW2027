@@ -21,8 +21,12 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,required=True)
     parser.add_argument('--native-python',type=Path,required=True)
+    parser.add_argument('--native-source-root',type=Path,required=True)
     args=parser.parse_args()
     root=args.root.resolve()
+    native_source=args.native_source_root.resolve(strict=True)
+    if not (native_source/'crax/__init__.py').is_file():
+        raise ValueError('Require the installed pinned native CRAX checkout')
     status_path=root/'final_analysis_status.json'
     output=root/'pointgoal-final64x32'
     if status_path.exists() or output.exists():
@@ -32,11 +36,16 @@ def main():
     status=dict(state='waiting_for_Piper_slots_and_shared_GPU_memory',controller_pid=os.getpid(),
         interval_seconds=1800,minimum_free_GPU_MiB=8192,training_transitions=0,
         planned_native_controls=16704,automatic_failed_job_restart=False,physical_robot_interactions=0)
+    status['native_source_root']=str(native_source)
     while True:
         followup_path=root/'followup_status.json'
         followup=json.loads(followup_path.read_text()) if followup_path.exists() else {}
         jobs=followup.get('jobs',[])
         idle=len(jobs)==2 and all(j['status'] in ('completed','failed_no_automatic_restart') for j in jobs)
+        continuation_path=root/'continuation_status.json'
+        continuation=json.loads(continuation_path.read_text()) if continuation_path.exists() else {}
+        if continuation and continuation.get('state') not in ('completed_pending_scientific_decision','needs_inspection_no_restart'):
+            idle=False
         status.update(updated_unix=time.time(),Piper_followup_state=followup.get('state'))
         free={}
         if idle:
@@ -59,6 +68,7 @@ def main():
                 '--minimum-training-steps','8000000','--query-batch-size','64']
             environment=dict(os.environ,CUDA_VISIBLE_DEVICES=str(gpu),XLA_PYTHON_CLIENT_PREALLOCATE='false',
                 JAX_COMPILATION_CACHE_DIR=str(root/'cache/jax-final-mechanism'))
+            environment['PYTHONPATH']=str(native_source)+os.pathsep+environment.get('PYTHONPATH','')
             with (root/'logs/pointgoal-final64x32.log').open('x') as stream:
                 process=subprocess.Popen(command,env=environment,stdout=stream,stderr=subprocess.STDOUT)
                 status.update(state='running',GPU=gpu,free_GPU_MiB_at_launch=free[gpu],pid=process.pid,

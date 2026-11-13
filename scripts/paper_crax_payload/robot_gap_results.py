@@ -81,7 +81,7 @@ def main():
         right=ax.bar([v+width/2 for v in x],adapted,width,label='+100K shared radius adaptation',color='#2274a5')
         ax.bar_label(left,fmt='%.0f',fontsize=8); ax.bar_label(right,fmt='%.0f',fontsize=8)
         ax.set_xticks(x,('Nominal','New geometry','Scale 0.85'))
-        ax.set(title=f'Reach — {method}',ylabel='Safe success (%)',ylim=(0,118))
+        ax.set(title=f'Reach — {method}',ylabel='Safe success (%)',ylim=(0,130))
         ax.legend(fontsize=7,loc='upper left'); ax.grid(axis='y',alpha=.2)
     figure.suptitle('Piper Robot-Gap v2 — one training seed; 30 development episodes / condition')
     figure.text(.5,.012,'No independent-test claim. Equal adaptation budget; method-matched Reach parents. Shared GPU load uncontrolled.',

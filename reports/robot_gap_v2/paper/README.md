@@ -35,6 +35,13 @@ on the physical deployment computer. The old4M common-state pool is a timing
 fixture only. EA uses4 base integration steps; a complete action has20 measured
 velocity forwards and4 batched-head VJP traversals including the tail work.
 
+`pointgoal-native-sac-latency-cpu.json` completes the exact selected native SAC
+measurement on that same timing fixture: p50/p950.301/0.337ms;20warmup+200
+measurements. It includes native normalization, stochastic policy, RNG split
+and host return; JIT compile0.154s is excluded. No arm policy is substituted.
+The JAX CPU runtime/thread configuration differs from the Torch CPU timing;
+this is not an exactly matched backend or certified deployment latency.
+
 Generation uses `scripts.paper_crax_payload.pointgoal_paperpack`, completed
 formal receipts, the existing common-selection JSON and locked independent
 summary. Figure inputs and receipt hashes are retained. A trailing literal
