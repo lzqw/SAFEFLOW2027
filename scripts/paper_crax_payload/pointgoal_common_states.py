@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import inspect
 import json
+import os
 from pathlib import Path
 import subprocess
 import time
@@ -124,13 +125,22 @@ def main():
     if states==64 and selection is None:raise ValueError('Final64-state study requires the frozen final selection')
     if args.output.exists():raise FileExistsError('No overwrite or automatic restart of an admitted analysis')
     if file_sha(__file__)!=args.analysis_sha256:raise ValueError('Analysis source not pinned to admitted bytes')
+    device=torch.device(args.device)
+    if device.type=='cpu':
+        os.environ['JAX_PLATFORMS']='cpu';os.environ['CUDA_VISIBLE_DEVICES']=''
+        os.environ.setdefault('OMP_NUM_THREADS','1')
+        os.environ.setdefault('XLA_FLAGS','--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1')
     import jax
     from jax import numpy as jp
     from scripts.paper_crax_payload.crax_env import PointGoalTorch
     from scripts.paper_crax_payload.crax_models import CumulativeFlowLearner,UpdateGeometry
     from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
-    if torch.device(args.device).type!='cuda' or len(jax.local_devices())!=1:raise ValueError('One shared admitted GPU required')
-    torch.cuda.set_device(args.device);torch.set_num_threads(1);started=time.monotonic()
+    backend='cpu' if device.type=='cpu' else 'gpu'
+    if (device.type not in ('cpu','cuda') or len(jax.local_devices())!=1
+            or jax.local_devices()[0].platform!=backend):
+        raise ValueError('Require one native backend matching the frozen Actor device')
+    if device.type=='cuda':torch.cuda.set_device(args.device)
+    torch.set_num_threads(1);started=time.monotonic()
     loaded=[]
     for path in args.checkpoints:
         if path.name=='full_latest.pt':
@@ -219,7 +229,7 @@ def main():
         raise FloatingPointError('Nonfinite frozen actions;no native queries have executed')
     # All learned actions are now fixed. Oracle finite differences are LABELS
     # only and cannot affect any sampler or action-selection branch above.
-    torch.cuda.synchronize()
+    if device.type=='cuda':torch.cuda.synchronize()
     positions=lambda state:state.pipeline_state.xpos[:,native._agent_body,:2]
     rect=jp.array([h.hazard_type=='rect' for h in native._hazard_manager.hazards])
     sizes=jp.array([float(h.size) if np.isscalar(h.size) else 0. for h in native._hazard_manager.hazards])
@@ -262,6 +272,7 @@ def main():
         physical_profile=effective,fd_epsilon=epsilon,planned_fd_controls=expected_fd,
         planned_sampling_controls=expected_samples,planned_total_controls=expected_fd+expected_samples,
         sampler_interventions=args.samplers,physical_query_batch_size=args.query_batch_size,
+        execution_device=str(device),native_backend=backend,common_noise_generator_device=str(common_device),
         frozen_final_selection_digest=selection.get('freeze_digest') if selection else None,
         training_transitions=0,optimizer_steps=0,independent_test=False,
         matching='sameActor/commonGaussianincrements;Iso-vs-PBsameinjectiontrace,notmatchedspectrumorendpointtrace'))
@@ -323,6 +334,7 @@ def main():
         states=states,draws_per_state=draws,models=2,samplers_per_actor=len(args.samplers),physical_controls=controls,
         finite_difference_controls=expected_fd,sampled_action_controls=expected_samples,
         native_horizon=native.episode_length,
+        execution_device=str(device),native_backend=backend,
         training_transitions=0,optimizer_steps=0,real_interactions=0,independent_test=False,
         oracle_actions_selected=0,native_resets_executed=0,elapsed_seconds=time.monotonic()-started,
         no_pool_reselection_after_cost_labels=True,
