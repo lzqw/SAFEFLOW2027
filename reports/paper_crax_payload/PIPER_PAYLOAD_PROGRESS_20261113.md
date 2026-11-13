@@ -9,8 +9,8 @@ robot connection or motion is enabled.
   transitions/s after optimizer warm-up.
 - Iso: completed 300k/300k transitions on A100 GPU0 at about 26.1
   transitions/s; its terminal checkpoint and evaluation are recorded below.
-- Iso-Low: running on the released A100 GPU0; latest snapshot is 68k/300k
-  transitions at about 26.54 transitions/s after warm-up. Remaining time is
+- Iso-Low: running on the released A100 GPU0; latest snapshot is 70k/300k
+  transitions at about 26.40 transitions/s after warm-up. Remaining time is
   roughly 2.4 hours at this rate.
 
 The two live status receipts are `piper-progress-20261113/PAYLOAD_*_STATUS_LATEST.json`.
