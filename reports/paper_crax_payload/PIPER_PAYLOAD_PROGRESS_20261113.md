@@ -5,17 +5,17 @@ standard Piper model and gripper, seed 41027, common 300k transition budget,
 and `piper_sim_v1.json` configuration are shared across methods. No physical
 robot connection or motion is enabled.
 
-- EA: running on A100 GPU1; latest snapshot 123k/300k transitions, about 10.3
+- EA: running on A100 GPU1; latest snapshot 139k/300k transitions, about 10.3
   transitions/s after optimizer warm-up.
 - Iso: completed 300k/300k transitions on A100 GPU0 at about 26.1
   transitions/s; its terminal checkpoint and evaluation are recorded below.
-- Iso-Low: running on the released A100 GPU0; latest snapshot is 8k/300k
-  transitions at about 35.8 transitions/s after warm-up. Remaining time is
-  roughly 2.3 hours at this early steady-state rate.
+- Iso-Low: running on the released A100 GPU0; latest snapshot is 52k/300k
+  transitions at about 28.4 transitions/s after warm-up. Remaining time is
+  roughly 2.4 hours at this rate.
 
 The two live status receipts are `piper-progress-20261113/PAYLOAD_*_STATUS_LATEST.json`.
-At the observed speeds, EA is estimated at roughly 4.8 hours and Iso-Low at
-roughly 2.3 hours. These are estimates, not completion results. Checkpoints remain on
+At the observed speeds, EA is estimated at roughly 4.4 hours and Iso-Low at
+roughly 2.4 hours. These are estimates, not completion results. Checkpoints remain on
 the server and only compact receipts/results are committed to GitHub.
 
 Iso also produced an interim 60k evaluation (30 episodes per condition): all
