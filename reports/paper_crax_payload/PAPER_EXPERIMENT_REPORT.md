@@ -78,7 +78,7 @@ selection.
   SDK motion, or random physical exploration was enabled.
 - Piper Payload has a validated simulation/smoke and constructive-feasibility
   path. The learned 300k candidates are now running on two A100 GPUs: EA is at
-  89k/300k transitions and Iso at 219k/300k in the latest compact receipts;
+  89k/300k transitions and Iso at 220k/300k in the latest compact receipts;
   Iso-Low is queued until one slot is released. These are interim training
   states, not final learned-policy results, and remain separate from the
   completed CRAX Payload experiments. Iso's 120k interim evaluation had
