@@ -75,3 +75,29 @@ diagnosis and Reach adaptation;4080 Payload repair; final-selected PointGoal
 deployment-device latency and operator-ready read-only/replay program. Existing
 offline controller refuses physical transport; TCP,frames,period,speed and
 workspace require现场确认. No real-world outcome or calibrated safety is claimed.
+
+## A100 storage completion (November13)
+
+The authorized home-to-data migration completed at20:29:27+08:00. Five
+directories (PAPER runs/artifacts, A100 runs/recovery_backups, ARM runs) were
+checksum-compared before their original locations became compatibility
+symlinks. Their logical sizes total73,597,662,059bytes (68.54GiB); hardlinks,
+sparse allocation and filesystem rounding make this different from physical
+space released. `/home` available space rose from approximately79GiB to145GiB;
+`/storage_0` has approximately75GiB available after migration. No unique result
+was discarded. Source/environment directories and other users' jobs were not
+relocated. Mapping and checksum evidence remain in the operation directory.
+
+New experiments and future caches/temp files use
+`/storage_0/SAFEFLOW2027_lzqw_uid1007`; launch checks retain40GiB headroom.
+An existing path that resolves through a migrated symlink already writes to
+the data disk. Do not recreate those paths as physical home directories.
+
+The next frozen CPU diagnostic fixes ten development layouts and state
+times0,10,20,30 before measuring anything. It reports missing states after early
+termination without replacement, original-margin value errors/false-safe counts,
+physical finite-difference response along the learned outward direction, and
+a paired frozen-Actor new-radius rollout with the diagnostic radius prior.
+These labels are actual control-interval minimum distances, not endpoint
+proxies or a safety certificate. It consumes no RL transitions and selects no
+action using the physical counterfactual labels.
