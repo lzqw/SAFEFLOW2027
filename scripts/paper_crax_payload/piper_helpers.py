@@ -93,6 +93,57 @@ class PiperTrainingEnvironment(PiperSimulation):
             learned_action_oracle_selection=False)
 
 
+class PiperFiniteRadiusEnvironment(PiperTrainingEnvironment):
+    """Training-only three-radius family; evaluation still uses fixed fixtures.
+
+    A deterministic round-robin reset schedule is common to all methods. It
+    changes only sphere radius; reward, safety distance, layouts and substeps
+    remain native. Static unused spheres stay outside the workspace.
+    """
+    def __init__(self, assets, config, radius_values):
+        values = tuple(float(v) for v in radius_values)
+        if config.task != 'Reach' or values != (.045, .05, .055):
+            raise ValueError('Only the predeclared finite Reach radius family is supported')
+        super().__init__(assets, config)
+        self.radius_values = values
+        self.radius_bodies = {config.obstacle_radius_m: self.obstacle}
+        for radius in values:
+            if radius not in self.radius_bodies:
+                shape = self.b('createCollisionShape', bullet.GEOM_SPHERE, radius=radius)
+                self.radius_bodies[radius] = self.b('createMultiBody', baseMass=0.,
+                    baseCollisionShapeIndex=shape, basePosition=[2., 2., 2.])
+        self.radius_next_index = 0
+
+    def _activate_radius(self, radius):
+        for body in self.radius_bodies.values():
+            self.b('resetBasePositionAndOrientation', body, [2., 2., 2.], [0., 0., 0., 1.])
+        self.obstacle = self.radius_bodies[radius]
+        self.config.obstacle_radius_m = radius
+
+    def reset(self, *, seed=None, options=None):
+        if seed is not None:
+            self.radius_next_index = int(seed) % len(self.radius_values)
+        radius = self.radius_values[self.radius_next_index]
+        self.radius_next_index = (self.radius_next_index+1) % len(self.radius_values)
+        self._activate_radius(radius)
+        return super().reset(seed=seed, options=options)
+
+    def radius_schedule_state(self):
+        return dict(values=self.radius_values, next_index=self.radius_next_index,
+                    active_radius_m=self.config.obstacle_radius_m)
+
+    def restore_radius_schedule_state(self, state):
+        if tuple(state['values']) != self.radius_values:
+            raise ValueError('Finite training geometry family differs')
+        self._activate_radius(state['active_radius_m'])
+        self.radius_next_index = state['next_index']
+
+    def definition(self):
+        return super().definition() | dict(training_radius_values=self.radius_values,
+            training_radius_schedule='round-robin at resets, seeded initial index; no outcome selection',
+            evaluation_geometry_randomized=False)
+
+
 def capture_piper_environment(env):
     if hasattr(env, 'capture'):
         return env.capture()
@@ -114,12 +165,18 @@ def capture_piper_environment(env):
         state['payload'] = dict(position=position, orientation=orientation, linear=linear, angular=angular)
     else:
         state['payload'] = None
+    if hasattr(env, 'radius_schedule_state'):
+        state['radius_schedule'] = env.radius_schedule_state()
     return state
 
 
 def restore_piper_environment(env, state):
     if hasattr(env, 'restore'):
         return env.restore(state)
+    if 'radius_schedule' in state:
+        if not hasattr(env, 'restore_radius_schedule_state'):
+            raise ValueError('Restore the actual finite-radius training environment')
+        env.restore_radius_schedule_state(state['radius_schedule'])
     if (state['payload'] is None) != (env.payload is None):
         raise ValueError('Cannot restore a Reach state into Payload or vice versa')
     if state['joints'] != env.arm_joints + env.finger_joints:

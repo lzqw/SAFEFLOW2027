@@ -1,7 +1,7 @@
-"""Prepared SMALL PointGoal common-state mechanism, NOT run without admission.
+"""Bounded genuine PointGoal common-state mechanism, zero SGD.
 
-32 genuine frozen MJX states x16 draws x2 Actors x2 samplers, plus160
-finite-difference labels =2208 native one-control-step queries, zero SGD.
+The historical32x16/two-sampler study remains the default. The final-selected
+study explicitly requests64x32/four samplers and its frozen selection record.
 Oracle labels are computed only AFTER all learned actions are fixed; they
 never choose/replace an action. The actual native horizon remains1000.
 """
@@ -79,6 +79,28 @@ def file_sha(path):
     return subprocess.run(['sha256sum','--',str(path)],check=True,capture_output=True,text=True).stdout.split()[0]
 
 
+def verify_selected_checkpoint(path,state,selection):
+    """Bind the full snapshot to the exact validation-selected policy bytes."""
+    method=state['learner']['settings']['method']
+    selected=selection['methods'][method]['selected']
+    if (path.parent.name!=selected['run'] or state['steps']!=selected['checkpoint_steps'] or
+            selection.get('independent_test_used') is not False):
+        raise ValueError('Use the frozen final selected run/checkpoint, never a replacement')
+    policy_path=path.parent/f"policy_{state['steps']}.pt"
+    if file_sha(policy_path)!=selected['policy_sha256']:
+        raise ValueError('Selected native policy digest mismatch')
+    policy=torch.load(policy_path,map_location='cpu',weights_only=False)
+    for block in ('actor','margin_geometry'):
+        left,right=policy['learner']['models'][block],state['learner']['models'][block]
+        if left.keys()!=right.keys() or any(not torch.equal(left[k],right[k]) for k in left):
+            raise ValueError('Full snapshot weights differ from the selected policy')
+    for key,value in policy['normalizer'].items():
+        other=state['normalizer'][key]
+        if torch.is_tensor(value):
+            if not torch.equal(value,other):raise ValueError('Selected normalizer differs')
+        elif value!=other:raise ValueError('Selected normalizer metadata differs')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--checkpoints',nargs=2,type=Path,required=True,metavar=('ISO_FULL','EA_FULL'))
@@ -87,7 +109,19 @@ def main():
     parser.add_argument('--device',default='cuda:0')
     parser.add_argument('--minimum-training-steps',type=int,default=2000000)
     parser.add_argument('--seed',type=int,default=8630027)
+    parser.add_argument('--states',type=int,default=32)
+    parser.add_argument('--draws',type=int,default=16)
+    parser.add_argument('--samplers',nargs='+',choices=('iso_reference','local','endpoint_direct','endpoint_pullback'),
+                        default=['iso_reference','endpoint_pullback'])
+    parser.add_argument('--selection-record',type=Path)
+    parser.add_argument('--query-batch-size',type=int,default=64)
     args=parser.parse_args()
+    states,draws=args.states,args.draws
+    if not 4<=states<=64 or states%2 or not 2<=draws<=32 or not 1<=args.query_batch_size<=128:
+        raise ValueError('Use bounded even state count, draws and physical-query batch size')
+    if len(args.samplers)!=len(set(args.samplers)):raise ValueError('Duplicate sampler intervention')
+    selection=json.loads(args.selection_record.read_text()) if args.selection_record else None
+    if states==64 and selection is None:raise ValueError('Final64-state study requires the frozen final selection')
     if args.output.exists():raise FileExistsError('No overwrite or automatic restart of an admitted analysis')
     if file_sha(__file__)!=args.analysis_sha256:raise ValueError('Analysis source not pinned to admitted bytes')
     import jax
@@ -110,6 +144,7 @@ def main():
             raise ValueError('Snapshot changed while being read')
         required={'learner','environment','normalizer','replay','partial','rng','rollout_rng','steps','source_commit'}
         if not required<=set(state) or state['steps']<args.minimum_training_steps:raise ValueError('Genuine sufficiently trained fullMJX checkpoint required')
+        if selection is not None:verify_selected_checkpoint(path,state,selection)
         settings=state['learner']['settings']
         permitted=set(inspect.signature(CumulativeFlowLearner.__init__).parameters)-{'self','device'}
         constructor={k:v for k,v in settings.items() if k in permitted}
@@ -125,7 +160,7 @@ def main():
     shared=('obs_dim','action_dim','variance','rho','flow_steps')
     if any(tuple(x['learner'].settings[k] for k in shared)!=tuple(loaded[0]['learner'].settings[k] for k in shared) for x in loaded):
         raise ValueError('Shared common-noise comparison requires the same action/reference/discretization dimensions')
-    environment=PointGoalTorch(32,args.seed,args.device);native=environment.native
+    environment=PointGoalTorch(states,args.seed,args.device);native=environment.native
     effective=environment.effective_config()
     physical_keys=('env_id','difficulty','episode_length','physics_timestep','frame_skip','control_period',
         'action_dim','obs_dim','goals','hazards','hazard_types','hazard_collidable','reward_goal',
@@ -138,7 +173,7 @@ def main():
         source=saved_env['state'];n=saved_env['num_envs']
         if source.obs.shape[0]!=n:raise ValueError('Unexpected MJX batch/shard shape')
         margins=static_proxy(native,source);fingerprints=physical_fingerprints(source)
-        indices=select_strata(margins,fingerprints,seen,args.seed+source_index)
+        indices=select_strata(margins,fingerprints,seen,args.seed+source_index,count=states//2)
         def select(value):
             if not hasattr(value,'ndim') or value.ndim==0:return value
             if value.shape[0]!=n:raise ValueError('Unexpected nonbatched snapshot array leaf')
@@ -157,14 +192,14 @@ def main():
         return a
     common=jax.tree_util.tree_map(join,*selected_parts)
     strata={name:sum(r['state_stratum']==name for r in pool) for name in ('unsafe_proxy','near_boundary','interior')}
-    if len(pool)!=32 or len(seen)!=32 or strata['near_boundary']+strata['unsafe_proxy']<8 or strata['interior']<8:
-        raise ValueError('Require32distinct mixed-source states with both near-boundary and interior strata')
+    if len(pool)!=states or len(seen)!=states:
+        raise ValueError('Require the declared distinct physical states; never pad or replace a pool')
     args.output.mkdir(parents=True)
     atomic_json(args.output/'pool.json',dict(records=pool,strata=strata,old_pool_reused=False,
-        selection='16distinct states/source;prioritizeup-to2unsafe,8near-or-unsafe,remainderinterior;nooracle-actionfilter',
+        selection=f'{states//2}distinct states/source;prioritizeup-to2unsafe,halfnear-or-unsafe,remainderinterior;nooracle-actionfilter',
         selection_margin_scope='observable static endpoint-clearance proxy,not native cost or interval minimum',
         native_resets_executed=0))
-    draws=16;dimension=environment.action_dim
+    dimension=environment.action_dim
     torch_obs=torch.utils.dlpack.from_dlpack(common.obs)
     batch=torch_obs.repeat_interleave(draws,0)
     common_device=loaded[0]['learner'].device
@@ -173,8 +208,8 @@ def main():
     interventions=[];owners=[]
     for item in loaded:
         learner=item['learner'];obs=item['normalizer'].transform(batch)
-        for sampler in ('iso_reference','endpoint_pullback'):
-            geometry=None if sampler=='iso_reference' else UpdateGeometry(learner.margin_geometry,'endpoint_pullback')
+        for sampler in args.samplers:
+            geometry=None if sampler=='iso_reference' else UpdateGeometry(learner.margin_geometry,sampler)
             if geometry is not None:geometry.set_margin_updates(learner.margin_updates)
             with torch.no_grad():actions,energy,diag=learner.actor(obs,geometry=geometry,noise_increments=common_noise)
             owners.append(actions)
@@ -206,11 +241,19 @@ def main():
             (center_before-center_after)[:,None]),axis=-1)
     def repeat_state(state,count):
         return jax.tree_util.tree_map(lambda v:jp.repeat(v,count,axis=0) if hasattr(v,'ndim') and v.ndim else v,state)
+    def bounded_query(state,actions):
+        # Avoid a2048-state MJX compilation on GPUs shared with other projects.
+        labels=[]
+        for start in range(0,len(actions),args.query_batch_size):
+            stop=min(len(actions),start+args.query_batch_size)
+            chunk=jax.tree_util.tree_map(lambda v:v[start:stop] if hasattr(v,'ndim') and v.ndim else v,state)
+            labels.append(np.asarray(native_query(chunk,actions[start:stop])))
+        return np.concatenate(labels,axis=0)
     epsilon=.05
     offsets=np.concatenate((np.zeros((1,dimension)),epsilon*np.eye(dimension),-epsilon*np.eye(dimension)),axis=0).astype(np.float32)
-    fd_actions=jp.tile(jp.asarray(offsets),(32,1));fd_state=repeat_state(common,len(offsets))
-    expected_fd=32*(1+2*dimension);expected_samples=len(interventions)*32*draws
-    atomic_json(args.output/'plan.json',dict(analysis_sha256=args.analysis_sha256,states=32,draws_per_state=16,
+    fd_actions=jp.tile(jp.asarray(offsets),(states,1));fd_state=repeat_state(common,len(offsets))
+    expected_fd=states*(1+2*dimension);expected_samples=len(interventions)*states*draws
+    atomic_json(args.output/'plan.json',dict(analysis_sha256=args.analysis_sha256,states=states,draws_per_state=draws,
         checkpoints=[dict(path=str(i['path']),sha256=i['sha256'],steps=i['state']['steps'],source_commit=i['state']['source_commit'],
             method=i['learner'].method,normalizer_mode=i['normalizer'].mode,
             frozen_normalizer_count=float(i['normalizer'].count.cpu())) for i in loaded],
@@ -218,10 +261,12 @@ def main():
             environment=file_sha(inspect.getfile(PointGoalTorch)),normalizer=file_sha(inspect.getfile(ObservationNormalizer))),
         physical_profile=effective,fd_epsilon=epsilon,planned_fd_controls=expected_fd,
         planned_sampling_controls=expected_samples,planned_total_controls=expected_fd+expected_samples,
+        sampler_interventions=args.samplers,physical_query_batch_size=args.query_batch_size,
+        frozen_final_selection_digest=selection.get('freeze_digest') if selection else None,
         training_transitions=0,optimizer_steps=0,independent_test=False,
         matching='sameActor/commonGaussianincrements;Iso-vs-PBsameinjectiontrace,notmatchedspectrumorendpointtrace'))
     atomic_json(args.output/'status.json',dict(status='fd_label_query',completed_controls=0,in_flight_upper_bound=expected_fd))
-    fd=np.asarray(native_query(fd_state,fd_actions)).reshape(32,len(offsets),-1)
+    fd=bounded_query(fd_state,fd_actions).reshape(states,len(offsets),-1)
     if not np.isfinite(fd).all():
         atomic_json(args.output/'receipt.json',dict(status='failed_nonfinite_native_FD_labels',physical_controls=expected_fd,
             training_transitions=0,optimizer_steps=0,real_interactions=0,automatic_restart=False))
@@ -232,34 +277,40 @@ def main():
     sample_state=repeat_state(common,draws);rows=[];per_state=[];controls=expected_fd
     for value in interventions:
         atomic_json(args.output/'status.json',dict(status='sample_label_query',method=value['method'],sampler=value['sampler'],
-            completed_controls=controls,in_flight_upper_bound=32*draws))
+            completed_controls=controls,in_flight_upper_bound=states*draws))
         # Modern object protocol plus retained Torch owners avoids temporary
         # external-buffer lifetime pitfalls; no per-control host action copies.
         action_jax=jax.dlpack.from_dlpack(value['actions'].detach().contiguous())
-        labels=np.asarray(native_query(sample_state,action_jax)).reshape(32,draws,-1);controls+=32*draws
+        labels=bounded_query(sample_state,action_jax).reshape(states,draws,-1);controls+=states*draws
         if not np.isfinite(labels).all():
             atomic_json(args.output/'receipt.json',dict(status='failed_nonfinite_native_sample_labels',physical_controls=controls,
                 training_transitions=0,optimizer_steps=0,real_interactions=0,automatic_restart=False))
             raise FloatingPointError('Native sample labels nonfinite;retain actual charged prefix')
-        actions=value['actions'].detach().cpu().numpy().reshape(32,draws,dimension)
+        actions=value['actions'].detach().cpu().numpy().reshape(states,draws,dimension)
         state_rows=[]
-        for index in range(32):
+        for index in range(states):
             state_rows.append(dict(state_index=index,source_stratum=pool[index]['state_stratum'],
                 native_mean_cost=float(labels[index,:,0].mean()),native_cost_positive_fraction=float((labels[index,:,0]>0).mean()),
                 native_mean_goals=float(labels[index,:,1].mean()),native_distance_reward_delta_m=float(labels[index,:,2].mean()),
                 mean_source_goal_center_progress_m=float(labels[index,:,7].mean()),
                 mean_displacement_m=float(np.linalg.norm(labels[index,:,3:5],axis=-1).mean()),
                 endpoint_proxy_unsafe_fraction=float((labels[index,:,5]>0).mean()),
+                mean_endpoint_proxy_margin_m=float(labels[index,:,5].mean()),
                 native_done_fraction=float(labels[index,:,6].mean()),
                 action_endpoint=endpoint_projection(actions[index],normals[index])))
         valid=[r['action_endpoint'] for r in state_rows if r['action_endpoint']['common_axis_valid']]
-        rows.append(dict(method=value['method'],checkpoint_steps=value['checkpoint_steps'],sampler=value['sampler'],states=32,draws=16,
+        positive=labels[:,:,0]>0
+        rows.append(dict(method=value['method'],checkpoint_steps=value['checkpoint_steps'],sampler=value['sampler'],states=states,draws=draws,
             native_mean_cost=float(labels[:,:,0].mean()),native_cost_positive_fraction=float((labels[:,:,0]>0).mean()),
+            native_cost_events_discriminative=bool(positive.any() and not positive.all()),
+            native_cost_all_zero=bool(not positive.any()),native_cost_all_positive=bool(positive.all()),
             native_mean_goals=float(labels[:,:,1].mean()),native_distance_reward_delta_m=float(labels[:,:,2].mean()),
             mean_source_goal_center_progress_m=float(labels[:,:,7].mean()),
             endpoint_proxy_unsafe_fraction=float((labels[:,:,5]>0).mean()),valid_common_action_axes=len(valid),
+            mean_endpoint_proxy_margin_m=float(labels[:,:,5].mean()),
             endpoint_vn=float(np.mean([x['vn'] for x in valid])) if valid else None,
             endpoint_vt=float(np.mean([x['vt'] for x in valid])) if valid else None,
+            matched_reference_path_energy_mean=float(value['energy'].mean().cpu()),
             clipping_fraction=float(value['clipping'].mean().cpu()),geometry_activation=float(value['activation'].mean().cpu())))
         per_state.append(dict(method=value['method'],sampler=value['sampler'],states=state_rows))
     for item in loaded:
@@ -269,11 +320,12 @@ def main():
         source_zero_action_oracle=fd[:,0].tolist(),common_action_normals=normals.tolist(),common_gradient_magnitudes=magnitude.tolist(),
         normal_scope='native one-step endpoint-clearance PROXY finite differences at commonzeroaction;not cost-Q or interval-minimum certificate'))
     atomic_json(args.output/'receipt.json',dict(status='completed',analysis_sha256=args.analysis_sha256,
-        states=32,draws_per_state=16,models=2,samplers_per_actor=2,physical_controls=controls,
+        states=states,draws_per_state=draws,models=2,samplers_per_actor=len(args.samplers),physical_controls=controls,
         finite_difference_controls=expected_fd,sampled_action_controls=expected_samples,
         native_horizon=native.episode_length,
         training_transitions=0,optimizer_steps=0,real_interactions=0,independent_test=False,
         oracle_actions_selected=0,native_resets_executed=0,elapsed_seconds=time.monotonic()-started,
+        no_pool_reselection_after_cost_labels=True,
         scope='small training-distribution common-state mechanism;not main episode evaluation'))
 
 

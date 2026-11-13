@@ -4,6 +4,7 @@ No Panda policy is loaded. No CAN/SDK/socket transport exists in this runner.
 Physical deployment remains disabled even after a useful simulated candidate.
 """
 import argparse
+from copy import deepcopy
 from collections import deque
 import hashlib
 from importlib.metadata import version
@@ -24,7 +25,7 @@ from scripts.star.arm_safe_entropy.stability_models import StableArmLearner
 from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore_rng, isolated_rng
 from scripts.star.arm_safe_entropy.train import Replay, atomic_json
 from scripts.paper_crax_payload.piper_helpers import (
-    PiperTrainingEnvironment, capture_piper_environment, restore_piper_environment)
+    PiperTrainingEnvironment, PiperFiniteRadiusEnvironment, capture_piper_environment, restore_piper_environment)
 from scripts.paper_crax_payload.crax_models import UpdateGeometry
 from scripts.paper_crax_payload.piper_parallel import PiperProcessEnvironment
 
@@ -117,11 +118,61 @@ class PiperFlowLearner(StableArmLearner):
             self._last_metrics['q_replay_above_upper_fraction'] = (values > upper+.01).float().mean()
 
 
-def make_piper_env(config, assets, task, overrides=None):
+def make_piper_env(config, assets, task, overrides=None, *, training=False):
     if task not in config['tasks'] or assets['model_commit'] != config['model_commit']:
         raise ValueError('Native task and pinned official model must match')
     settings = dict(config['simulation']) | (overrides or {})
+    if training and config.get('training_radius_values'):
+        return PiperFiniteRadiusEnvironment(assets, PiperSimConfig(task=task, **settings), config['training_radius_values'])
     return PiperTrainingEnvironment(assets, PiperSimConfig(task=task, **settings))
+
+
+def initialize_geometry_adaptation(learner, replay, config, assets, args):
+    """Explicit same-task distribution fork; identical-config resume stays strict."""
+    saved = torch.load(args.adapt_from, map_location=learner.device, weights_only=False)
+    if (saved.get('format') != FORMAT or saved.get('robot_family') != 'Piper' or
+            saved.get('task') != 'Reach' or args.task != 'Reach' or saved.get('method') != args.method or
+            args.method not in ('Iso', 'EA') or saved.get('steps') != 300000 or saved.get('engineering') or
+            saved.get('model_commit') != assets['model_commit'] or saved.get('training_seed') != args.seed or
+            saved.get('model_source_urdf_sha256') != assets['source_sha256']):
+        raise ValueError('Use the original method-matched native Reach300K parent for this paired fork')
+    if config.get('training_radius_values') != [.045, .05, .055] or args.steps != 400000:
+        raise ValueError('Exactly100K additional Reach transitions with the declared radius family')
+    parent = saved['configuration']
+    # Only the declared radius family and already-profiled execution batching
+    # may differ. No reward/noise/layout/margin/safety rewrite is admitted.
+    candidate, original = deepcopy(config), deepcopy(parent)
+    for key in ('training_radius_values', 'num_envs', 'parallel_environments',
+                'profile_full_geometry', 'synchronized_profile_timing'):
+        candidate.pop(key, None); original.pop(key, None)
+    for key in ('batch_size', 'updates_per_vector_step', 'batched_geometry', 'batched_targets'):
+        candidate['shared_learner'].pop(key, None); original['shared_learner'].pop(key, None)
+    if candidate != original:
+        raise ValueError('Geometry adaptation may not silently change another scientific setting')
+    learner_state = deepcopy(saved['learner'])
+    previous_settings = learner_state['ea_stability_v2']['settings']
+    current_settings = deepcopy(learner.settings)
+    left, right = deepcopy(previous_settings), deepcopy(current_settings)
+    left.pop('piper_batching', None); right.pop('piper_batching', None)
+    if left != right:
+        raise ValueError('Native learning settings differ beyond the declared execution batching')
+    # The fork explicitly records this supported execution-path revision.
+    # Normal strict load_state_dict and normal --resume checks are unchanged.
+    learner_state['ea_stability_v2']['settings'] = current_settings
+    learner.load_state_dict(learner_state)
+    replay.load_state_dict(saved['replay'])
+    digest = hashlib.sha256()
+    with args.adapt_from.open('rb') as stream:
+        for block in iter(lambda: stream.read(4*1024*1024), b''):
+            digest.update(block)
+    return saved, dict(kind='same_task_finite_radius_distribution_adaptation',
+        parent_checkpoint=str(args.adapt_from), parent_sha256=digest.hexdigest(), parent_training_steps=300000,
+        parent_method=args.method, parent_source_commit=saved['source_commit'],
+        retained=['actor', 'target_actor', 'reward_Q', 'cost_Q', 'online_margin', 'EMA_margin',
+                  'replay', 'optimizers', 'alpha', 'dual', 'learner_counters'],
+        environment_partial_episodes='new fork starts fresh episodes; parent states/results retained',
+        radius_values=config['training_radius_values'], previous_execution_settings=previous_settings.get('piper_batching'),
+        new_execution_settings=current_settings.get('piper_batching'), physical_robot_interactions=0)
 
 
 def evaluate_piper(learner, config, assets, task, episodes, seed_start, conditions=None):
@@ -189,8 +240,9 @@ def train(args):
         raise ValueError('Native task and pinned official model must match')
     if config.get('profile_full_geometry') and not args.engineering:
         raise ValueError('Forced full geometry is engineering-only, never scientific training')
-    if args.resume and args.init_from:
-        raise ValueError('Task transfer and identical-task resume are different operations')
+    adapt_from = getattr(args, 'adapt_from', None)
+    if sum(bool(v) for v in (args.resume, args.init_from, adapt_from)) > 1:
+        raise ValueError('Resume, task transfer and distribution adaptation are separate operations')
     if bool(args.init_from) != bool(args.task_transfer):
         raise ValueError('Use explicit --init-from together with --task-transfer')
     if args.output.exists():
@@ -214,15 +266,28 @@ def train(args):
         raise ValueError('Explicit positive integer updates_per_vector_step required')
     update_rounds = int(update_rounds)
     transfer = initialize_actor_transfer(learner, config, assets, args) if args.init_from else None
-    envs = ([PiperProcessEnvironment(assets, dict(config['simulation'], task=args.task))
+    training_settings = dict(config['simulation'], task=args.task)
+    if config.get('training_radius_values'):
+        if args.task != 'Reach' or args.steps != 400000 or not (adapt_from or args.resume):
+            raise ValueError('Finite Reach geometry is an explicit100K fork, not undeclared fresh training')
+        training_settings['training_radius_values'] = config['training_radius_values']
+    envs = ([PiperProcessEnvironment(assets, training_settings)
              for _ in range(config['num_envs'])] if config.get('parallel_environments', False)
-            else [make_piper_env(config, assets, args.task) for _ in range(config['num_envs'])])
+            else [make_piper_env(config, assets, args.task, training=True) for _ in range(config['num_envs'])])
     replay = Replay(shared['replay_capacity'], 34)
     steps = violations = episodes = successes = timeouts = evaluation_controls = evaluation_substeps = 0
     partial_returns = np.zeros(len(envs)); partial_costs = np.zeros(len(envs))
     partial_lengths = np.zeros(len(envs), dtype=np.int64)
     recent = deque(maxlen=100)
     previous_elapsed = 0.
+    adaptation = None
+    if adapt_from:
+        saved, adaptation = initialize_geometry_adaptation(learner, replay, config, assets, args)
+        steps = saved['steps']
+        violations, episodes = saved['violations'], saved['episodes']
+        successes, timeouts = saved['safe_successes'], saved['safe_timeouts']
+        previous_elapsed = saved['cumulative_elapsed_seconds']
+        del saved
     if args.resume:
         saved = torch.load(args.resume, map_location=args.device, weights_only=False)
         if (saved.get('format') != FORMAT or saved['configuration'] != config or saved['task'] != args.task or
@@ -235,6 +300,8 @@ def train(args):
             if b'piper_train' in command and str(args.resume.parent).encode() in command:
                 raise ValueError('Do not duplicate live native Piper training')
         learner.load_state_dict(saved['learner']); replay.load_state_dict(saved['replay'])
+        adaptation = saved.get('geometry_adaptation')
+        transfer = saved.get('task_transfer', transfer)
         steps, violations, episodes = saved['steps'], saved['violations'], saved['episodes']
         successes, timeouts = saved['safe_successes'], saved['safe_timeouts']
         evaluation_controls, evaluation_substeps = saved['evaluation_controls'], saved['evaluation_substeps']
@@ -248,6 +315,8 @@ def train(args):
     if steps >= args.steps:
         raise ValueError('Native continuation must collect additional actual transitions')
     initial_steps, initial_evaluation_controls, initial_evaluation_substeps = steps, evaluation_controls, evaluation_substeps
+    initial_learner_updates, initial_actor_updates = learner.updates, learner.actor_updates
+    initial_violations, initial_successes = violations, successes
     initial_training_physics_substeps = sum(env.total_physics_substeps for env in envs) if args.resume else 0
     initial_training_distance_queries = sum(env.total_distance_queries for env in envs) if args.resume else 0
     learner.set_transitions(steps)
@@ -263,12 +332,14 @@ def train(args):
         native_pid=os.getpid(), host=platform.node(), device=args.device,
         visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'), initial_steps=steps, total_transition_budget=args.steps,
         initialization=('native_Piper_full_continuation' if args.resume else
-                        'Piper_Reach_actor_only_to_Payload' if transfer else 'fresh_Piper_no_Panda_transfer'),
+                        'Piper_Reach_actor_only_to_Payload' if transfer else
+                        'Piper_Reach_finite_radius_adaptation' if adaptation else 'fresh_Piper_no_Panda_transfer'),
         task_transfer=transfer,
+        geometry_adaptation=adaptation,
         updates_per_vector_step=update_rounds,
         learner_updates_per_transition=update_rounds/len(envs),
         replay_samples_per_transition=update_rounds*shared['batch_size']/len(envs),
-        parent_checkpoint=str(args.resume) if args.resume else None, engineering=args.engineering,
+        parent_checkpoint=str(args.resume or adapt_from) if (args.resume or adapt_from) else None, engineering=args.engineering,
         reference_variance=learner.actor.variance, energy_target=learner.energy_target,
         initial_alpha=shared['kinetic_alpha_per_variance']*learner.actor.variance,
         sampling_and_energy_same_reference=True, normalizer='identity_after_explicit_simulator_units',
@@ -284,7 +355,8 @@ def train(args):
             torch.cuda.synchronize(learner.device)
         return time.monotonic()
     last_log = last_checkpoint = steps
-    milestones = [] if args.engineering else sorted(set(int(args.steps*f) for f in config['checkpoint_fractions'] if steps < int(args.steps*f) <= args.steps))
+    milestones = ([] if args.engineering else [400000] if adaptation else
+        sorted(set(int(args.steps*f) for f in config['checkpoint_fractions'] if steps < int(args.steps*f) <= args.steps)))
     if any(s % len(envs) for s in milestones):
         raise ValueError('Checkpoint fractions must align with vector boundaries')
     stream = (args.output/'progress.jsonl').open('w')
@@ -292,6 +364,7 @@ def train(args):
     def checkpoint(filename='latest_full.pt'):
         checkpoint_started = time.monotonic()
         state = dict(format=FORMAT, robot_family='Piper', configuration=config, model_commit=config['model_commit'],
+            geometry_adaptation=adaptation, task_transfer=transfer,
             model_source_urdf_sha256=assets['source_sha256'],
             source_commit=args.source_commit, task=args.task, method=args.method, training_seed=args.seed,
             engineering=args.engineering, learner=learner.state_dict(), replay=replay.state_dict(),
@@ -309,6 +382,9 @@ def train(args):
             method=args.method, training_seed=args.seed, training_steps=steps, initial_steps=initial_steps,
             newly_collected_transitions=steps-initial_steps, model_commit=config['model_commit'],
             training_source_commit=args.source_commit, training_violation_count=violations,
+            new_training_violations=violations-initial_violations,
+            new_training_safe_successes=successes-initial_successes,
+            geometry_adaptation=adaptation,
             training_episodes=episodes, training_safe_successes=successes, training_safe_timeouts=timeouts,
             reference_variance=learner.actor.variance, energy_target=learner.energy_target,
             new_simulation_evaluation_control_intervals=evaluation_controls-initial_evaluation_controls,
@@ -316,6 +392,8 @@ def train(args):
             new_training_physics_substeps=sum(env.total_physics_substeps for env in envs)-initial_training_physics_substeps,
             new_training_distance_queries=sum(env.total_distance_queries for env in envs)-initial_training_distance_queries,
             learner_updates=learner.updates, reward_updates=learner.reward_updates, actor_updates=learner.actor_updates,
+            new_learner_updates=learner.updates-initial_learner_updates,
+            new_actor_updates=learner.actor_updates-initial_actor_updates,
             segment_elapsed_seconds=time.monotonic()-started,
             cumulative_elapsed_seconds=previous_elapsed+time.monotonic()-started,
             engineering=args.engineering, physical_robot_interactions=0, physical_motion_enabled=False)
@@ -476,6 +554,7 @@ def main():
     p.add_argument('--resume', type=Path)
     p.add_argument('--init-from', type=Path)
     p.add_argument('--task-transfer', choices=['Reach_to_Payload'])
+    p.add_argument('--adapt-from', type=Path, help='Explicit native Reach300K ->400K finite-radius fork')
     p.add_argument('--engineering', action='store_true')
     p.set_defaults(run=train)
     p = sub.add_parser('evaluate', parents=[common])

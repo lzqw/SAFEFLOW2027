@@ -92,23 +92,24 @@ def main():
     parser.add_argument('--assets-receipt', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    if args.output.exists():
+    if args.output.exists() and any(args.output.iterdir()):
         raise FileExistsError('Do not repeat an existing validation/release')
     config = json.loads(args.config.read_text())
     plan = config['evaluation']
     count, first = plan['validation_episodes_per_condition'], plan['validation_layout_seed_start']
     if count != 50 or first != 61027 or len(plan['conditions']) != 3:
         raise ValueError('Use the existing common validation stream and three conditions')
-    args.output.mkdir(parents=True)
     torch.set_num_threads(1)
     candidates = []
     for method in METHODS:
-        run = args.original_root/'runs'/f'piper-reach-{method.lower()}-41027-v1'
+        suffix = {'Iso': 'iso', 'Iso-Low': 'isolow', 'EA': 'ea'}[method]
+        run = args.original_root/'runs'/f'piper-reach-{suffix}-41027-v1'
         for step in STEPS:
             checkpoint, receipt = run/f'full_{step}.pt', run/f'training_receipt_{step}.json'
             if not checkpoint.is_file() or not receipt.is_file():
                 raise FileNotFoundError(f'Complete equal candidate opportunity required: {checkpoint}')
             candidates.append(dict(method=method, steps=step, checkpoint=str(checkpoint), receipt=str(receipt)))
+    args.output.mkdir(parents=True, exist_ok=True)
     atomic_json(args.output/'plan.json', dict(cohort='original_native_Reach_seed41027',
         methods=METHODS, steps=STEPS, candidates=candidates, validation_layouts=list(range(first, first+count)),
         conditions=plan['conditions'], risk_limit_each_condition=.1,

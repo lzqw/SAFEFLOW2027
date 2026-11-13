@@ -4,7 +4,7 @@ import traceback
 
 from deployment.piper.simulation import PiperSimConfig
 from scripts.paper_crax_payload.piper_helpers import (
-    PiperTrainingEnvironment, capture_piper_environment, restore_piper_environment)
+    PiperTrainingEnvironment, PiperFiniteRadiusEnvironment, capture_piper_environment, restore_piper_environment)
 
 COUNTERS = ('total_control_intervals', 'total_physics_substeps', 'total_distance_queries')
 
@@ -12,7 +12,10 @@ COUNTERS = ('total_control_intervals', 'total_physics_substeps', 'total_distance
 def _worker(connection, assets, settings):
     env = None
     try:
-        env = PiperTrainingEnvironment(assets, PiperSimConfig(**settings))
+        settings = dict(settings)
+        radii = settings.pop('training_radius_values', None)
+        env = (PiperTrainingEnvironment(assets, PiperSimConfig(**settings)) if radii is None else
+               PiperFiniteRadiusEnvironment(assets, PiperSimConfig(**settings), radii))
         while True:
             operation, payload = connection.recv()
             if operation == 'close':
