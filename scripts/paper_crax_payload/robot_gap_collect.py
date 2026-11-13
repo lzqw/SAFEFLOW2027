@@ -85,8 +85,11 @@ def main():
     release=json.loads(release_path.read_text()) if release_path.exists() else {}
     final_path=args.campaign_root/'final_analysis_status.json'
     final=json.loads(final_path.read_text()) if final_path.exists() else {}
+    adapted_path=args.campaign_root/'reach-adapted-release/status.json'
+    adapted=json.loads(adapted_path.read_text()) if adapted_path.exists() else {}
     snapshot = dict(as_of=now, campaign=campaign, reach_followups=followup,
-        payload_continuation=continuation, reach_release=release, final_pointgoal_analysis=final, budget=budget,
+        payload_continuation=continuation, reach_release=release,
+        reach_adapted_release=adapted,final_pointgoal_analysis=final,budget=budget,
         live_process_proof='Snapshot alone is not proof of liveness; confirm its recorded PID on host',
         all_results_development_not_independent_test=True)
     (args.output/'TASK_STATUS.json').write_text(json.dumps(snapshot, indent=2)+'\n')

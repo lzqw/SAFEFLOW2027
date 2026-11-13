@@ -43,9 +43,13 @@ It requires native training provenance and rejects Panda/untrained policies.
 `FrozenPiperPolicy` keeps input gradients for pullback without updating model
 parameters. A deployment bundle is **not** a full replay/recovery checkpoint.
 Iso-Low must actually have lower reference variance, not just a renamed label.
-There are currently **no trained Piper deployment candidates**; see
-`candidates_pending.json`. The model smoke and synthetic dry-run must not be
-reported as learned success, candidate generation, or real interactions.
+Three genuine frozen Reach bundles are now delivered in
+[`reports/robot_gap_v2/reach_release`](../../reports/robot_gap_v2/reach_release/README.md).
+The legacy filename `candidates_pending.json` now indexes those actual bundles;
+it no longer means training has not started. Iso180K and EA300K are explicit
+Pareto candidates that fail the cross-condition risk criterion. Iso-Low120K
+haszero task success despitezero violations. None is marked eligible for
+physical deployment. Model smokes and dry-runs are not physical interactions.
 
 Training must use `scripts.paper_crax_payload.piper_helpers.PiperTrainingEnvironment`
 and its declared common configuration, not the provisional zero-action CLI.
@@ -54,12 +58,54 @@ wrapper uses the same actual solver with1200 iterations, static safe/reachable
 endpoint admission, and actual payload-centroid completion; constructive
 feasibility is recorded separately, not counted as a learned policy result.
 
-The real experiment generator produces 360 **planned** trials, interleaving
-Iso/Iso-Low/EA within task/condition/repetition blocks. A separately enabled
-on-site implementation is needed before execution. Protection parameters must
-be common across methods. Physical robot training/real adaptation is not enabled.
+The current Robot-Gap v2 first on-site plan is Reach only:90 **planned**, not
+executed trials,3methods×3conditions×10 interleaved repeats, in
+[`planned_onsite_reach90.json`](../../reports/robot_gap_v2/reach_release/planned_onsite_reach90.json).
+The older360-trial Reach/Payload generator below is retained as historical
+preparation, not the current execution request. An independently reviewed
+on-site transport and calibrated common protection conditions are still needed.
+Physical robot training/adaptation is not enabled.
 
-## Simulation candidates: Reach running, Payload queue prepared
+## Current offline entry point
+
+All six original Reach/Payload×Iso/Iso-Low/EA300K runs completed on A100.
+The common Reach selection evaluated15 original candidates,2250 episodes;
+actual three-method bundle replays each logged30 proposals,zero missed
+deadlines andzero physical commands. Their observation fixture is simulated,
+not a recording from physical hardware. Replay acceptance is not a safety
+certificate. CPU p50/p95 on the training server is Iso1.510/1.569ms,
+Iso-Low1.500/1.576ms and EA10.235/10.432ms. Timing on the actual deployment
+computer remains pending.
+
+Example from the repository root, using the genuine exported EA policy:
+
+```bash
+python -m deployment.piper.replay_policy \
+  --bundle reports/robot_gap_v2/reach_release/bundles/ea \
+  --observations reports/robot_gap_v2/reach_release/observations.jsonl \
+  --output /path/on/data-disk/new-offline-replay.jsonl \
+  --device cpu
+```
+
+`replay_policy` measures full action inference and records raw actions, bounded
+proposals, timeouts and deadlines. It cannot connect to or move the robot.
+Do not describe proposed actions as measured executed actions.
+
+Equal100K/method Reach geometry adaptation subsequently reached nominal/new
+geometry/scale safe success Iso100%/80%/100% and EA100%/73.33%/100% on30 fixed
+development episodes/condition. These are one-training-seed results, not
+independent tests or the50-episode common-selection scores. Geometry violations
+remain20%/26.67%; the adapted policies are not risk-qualified or substituted
+into the frozen original release. Payload transfer continuations are still
+running. Current budget/results are in
+[`Robot-Gap status`](../../reports/robot_gap_v2/STATUS.md).
+
+## Historical engineering and queue registration (superseded execution state)
+
+The paragraphs below retain the original launch history, not current process
+state. In particular, the old4080 Payload queue was superseded by completion
+on A100, and old training caps are not a new allowance. The Robot-Gap v2 new
+round remains capped at2.20M with current reservations in TASK_STATUS.json.
 
 The approved native Payload Iso-Low CPU engineering run completed3210→3220
 transitions with full replay/RNG/partial-state recovery, source70269ac. Its

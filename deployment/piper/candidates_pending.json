@@ -1,14 +1,22 @@
 {
   "schema_version": 1,
-  "status": "native_Piper_training_not_started",
+  "status": "original_native_training_and_Reach_offline_release_completed_hardware_pending",
   "robot_family": "Piper",
   "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
   "methods": ["Iso", "Iso-Low", "EA"],
   "tasks": ["Reach", "Payload"],
-  "trained_candidates": [],
-  "simulation_development_cap_transitions": 3000000,
-  "new_training_transitions": 0,
+  "trained_candidates": [
+    {"task": "Reach", "method": "Iso", "selected_steps": 180000, "bundle": "../../reports/robot_gap_v2/reach_release/bundles/iso", "risk_qualified": false, "physical_deployment_eligible": false},
+    {"task": "Reach", "method": "Iso-Low", "selected_steps": 120000, "bundle": "../../reports/robot_gap_v2/reach_release/bundles/iso-low", "risk_qualified": true, "task_progress_observed": false, "physical_deployment_eligible": false},
+    {"task": "Reach", "method": "EA", "selected_steps": 300000, "bundle": "../../reports/robot_gap_v2/reach_release/bundles/ea", "risk_qualified": false, "physical_deployment_eligible": false}
+  ],
+  "original_native_candidate_transitions": 1800000,
+  "original_candidate_count": 6,
+  "original_candidate_tasks": ["Reach", "Payload"],
+  "current_training_budget_authority": "../../reports/robot_gap_v2/TASK_STATUS.json",
+  "selection_authority": "../../reports/robot_gap_v2/reach_release/selection.json",
+  "adapted_Reach400K_does_not_replace_frozen_original_release": true,
   "real_interactions": 0,
   "physical_motion_enabled": false,
-  "reason": "User confirmed Piper standard version and standard gripper; the pinned standard official model is selected for native simulation training when a shared slot is available. Physical firmware/TCP/calibration/limits remain pending. No native Piper policy has yet been trained or selected; old Panda weights are not converted or relabelled."
+  "reason": "All six original native Piper300K candidates completed. The original Reach policies were selected with equal five-checkpoint opportunity and2250 common-validation episodes and exported with actual frozen weights. Iso and EA fail the cross-condition risk criterion; Iso-Low haszero task success. None is eligible for physical deployment. The newer100K/method geometry adaptations improved development success but have not replaced this frozen selection. Firmware/TCP/calibration/limits and deployment-computer latency remain pending; no Panda weights are converted or relabelled."
 }
