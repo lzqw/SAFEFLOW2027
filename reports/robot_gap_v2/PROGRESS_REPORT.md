@@ -1,7 +1,8 @@
-# Robot-Gap v2 — first execution snapshot
+# Robot-Gap v2 — execution progress
 
 This is an interim report, not the final2.2M decision report. All new work is
-simulation/offline only. Source implementation:139c4e15; baseline:5a403e04.
+simulation/offline only. Initial training implementation:139c4e15; finite Reach
+adaptation/final mechanism implementation:acb481dd; baseline:5a403e04.
 
 ## Actual old Piper finals
 
@@ -48,8 +49,8 @@ The latter two use independent-process environments, batched per-head VJP and
 packed frozen target samples. All retain20 physics substeps and every distance
 query. Their replay sample processing/transition is256, while optimizer-update
 counts differ and must be reported. Full geometry is forced only in engineering
-profiles; normal adaptation uses the native transition ramp. No measured speedup
-is claimed until complete training time, updates and short learning are collected.
+profiles; normal transfer uses the native transition ramp. Completed profile
+timings below are throughput evidence, not long-budget learning equivalence.
 The shared A100 workload is uncontrolled and must be disclosed in timing results.
 
 12 focused tests pass on A100, including real official-Piper serial/process
@@ -61,20 +62,22 @@ installation or repeated validation campaign was undertaken.
 
 Receipt refresh confirms1.80M completed old Piper candidate transitions and
 90,001,920 completed old formal PointGoal transitions. Neither is newly charged
-to this round. This round reserves230K for profiles and initial paired transfer;
-later allowance1.97M remains unspent/unreserved. The cap is2.20M, not a target.
+to this round. The initial reservation was230K for profiles and paired transfer;
+the diagnosed Reach followup adds200K, for430K reserved and1.77M unreserved.
+Actual observed prefixes are in TASK_STATUS.json. The cap is2.20M, not a target.
 
 The A100 controller starts the paired transfer after profiles, without waiting
 for another turn. Healthy foreign jobs remain untouched.4080's confirmed address
 172.21.221.238 still returns no route to host. No5080 is used. New artifacts go
 to `/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2`, not/home.
 
-Still pending: transfer outcomes and paired decision; frozen risk/gradient
-diagnosis and Reach adaptation;4080 Payload repair; final-selected PointGoal
-64×32 mechanism study and complete efficiency/figures; Reach bundle selection,
-deployment-device latency and operator-ready read-only/replay program. Existing
-offline controller refuses physical transport; TCP,frames,period,speed and
-workspace require现场确认. No real-world outcome or calibrated safety is claimed.
+Still pending: complete transfer outcomes and paired decision; queued Reach
+adaptation;4080 Payload repair; queued final-selected PointGoal64×32 mechanism;
+Reach selection/release completion and actual deployment-machine latency.
+Figures, full training efficiency and frozen risk diagnosis are complete below.
+The executable offline policy replay cannot open physical transport; TCP,
+frames,period,speed and workspace require现场确认. No real-world outcome or
+calibrated safety is claimed.
 
 ## A100 storage completion (November13)
 
@@ -101,3 +104,83 @@ a paired frozen-Actor new-radius rollout with the diagnostic radius prior.
 These labels are actual control-interval minimum distances, not endpoint
 proxies or a safety certificate. It consumes no RL transitions and selects no
 action using the physical counterfactual labels.
+
+## Frozen geometry diagnosis and the bounded Reach decision
+
+The fixed pool retained29 Reach and38 Payload physical states; early-terminal
+missing time indices were reported without replacement. At55mm obstacle radius:
+
+| Frozen EA margin | Original MAE | Radius-prior MAE | Original false-safe labels | Prior false-safe labels |
+|---|---:|---:|---:|---:|
+| Reach |10.321mm|0.178mm|15/116|0/116|
+| Payload |10.447mm|0.209mm|10/152|1/152|
+
+These denominators are fixed state/action probes, not independent episodes.
+Outward physical finite-difference risk responses were positive in99.1% of
+Reach and82.9% of Payload probes; most of the remainder were near-zero.
+The original nominal margin MAE was only0.179/0.209mm. This supports a radius
+value-extrapolation error on this pool rather than broadly reversed directions.
+It is not a global model-calibration claim.
+
+Actual paired frozen new-radius rollouts stayed4/10 safe successes and6/10
+violations for BOTH tasks with or without the prior. Correct values alone did
+not improve these frozen behaviors. There is no repeated constant tuning or
+test-pool reselection. One Reach adaptation pair is therefore queued: original
+Iso/EA300K parents, each100K extra transitions, shared45/50/55mm reset radius
+family. Native reward/noise/safety/layout definitions remain fixed; evaluations
+remain nominal/new_geometry/execution_scale_085. Replay,critics,EMA margin,
+optimizers,dual and learning counters continue; environment episodes start
+fresh under the explicit distribution fork. This adapts two already trained
+systems, not common-Actor initialization or a from-scratch sample-efficiency
+comparison. Strict normal resume is retained.
+
+## Completed profiles and current execution
+
+| Profile | E/B/G | Complete10K SPS | Learner updates | Actor updates |
+|---|---|---:|---:|---:|
+| Reference |2/256/2|10.626|8000|3500|
+| Balanced |8/512/4|32.456|4000|1500|
+| Large |8/1024/2|57.664|2000|500|
+
+Time includes action generation, unchanged native environment/substeps, replay,
+learner and checkpoint writes; the separate post-profile10-episode evaluation
+is excluded. All profiles havezero short nominal successes. The selected large
+profile is5.43× the reference throughput here, not a claim of equivalent
+optimization/long-budget performance. Histories include the same2K random
+warmup but different numbers of effective preheat/Actor updates. Learner/replay
+dominates the reference timing (796s out of941s); with the selected profile,
+that component falls to138s out of173s. Foreign GPU load is uncontrolled.
+Both initial transfer runs are active on separate A100 GPUs; normal geometry
+ramp is restored, and the requested100K budget is retained.
+
+Reservation is430K (initial230K plus Reach200K), observed actual prefixes78K
+at12:54:55UTC, and unreserved later allowance1.77M.30minute schedulers wait for
+the corresponding own transfer slot and sufficient free memory; they do not
+stop another project or spend optional curriculum/continuation budget.
+
+## Paper and offline release progress
+
+The `paper/` directory contains all-three-training-seed fixed10M results,
+five-checkpoint learning curves, full training efficiency and the separately
+labelled selected-policy independent-test figure/CSV. Fixed10M mean goals/cost:
+SAC36.24/41.28, Iso11.87/22.26, EA27.47/21.97. Cross-training-seed variability is
+retained; selected EA8M independent results do not replace these endpoints.
+No new PointGoal RL training was run.
+
+Full batch1 Flow inference on the A100 server CPU (one thread,20warmup+200
+measurements): Iso p50/p951.849/1.890ms; EA9.617/9.764ms. EA executes20
+velocity-network forwards,4 margin-ensemble forwards and4 batched VJP traversals
+(8 per-head gradients), including tail/input gradients. These are server CPU
+measurements, not deployment-machine measurements or SAC timings. The old4M
+physical-state pool is only a fixed timing fixture; it is not relabelled as
+the final-model mechanism study.
+
+The final64×32 mechanism source is bound to the exact selected Actor/EMA/
+normalizer bytes, four sampler interventions and16704 native one-step queries.
+It is queued after Piper followups with≥8GiB shared-GPU free memory; no results
+are claimed yet. Reach common validation runs all15 original checkpoint/control
+candidates on50episodes×3conditions each, followed by actual bundle export and
+measured offline replay. At20:53+08,10/15 candidates were complete. The source
+includes a balanced90-episode on-site Reach plan, but no physical command
+implementation.4080 remains unreachable at its reconfirmed address; existing
+Panda Payload repair still awaits access.

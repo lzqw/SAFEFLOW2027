@@ -1,0 +1,50 @@
+{
+  "training_transitions": 0,
+  "physical_controls": 0,
+  "selection_repeated": false,
+  "training_seeds_are_replication_unit": true,
+  "smoothing": false,
+  "missing_values_filled": false,
+  "selected_policy_replaces_fixed_endpoint": false,
+  "selection_sha256": "5aaaf7892dabde38fcb773c92154add02e4a540f14c9dc404fd802224510aba6",
+  "independent_sha256": "945d8d9cb66d4b2d9c480d7b7bec9ae675d4d1d894791201adb09b88ffbec5ff",
+  "receipts": [
+    {
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "receipt_sha256": "cea9fa4b841586f559747ea7560b7eef6b238007fe05af61e6e1e3b823426cfb"
+    },
+    {
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "receipt_sha256": "55d975586f7ff42e736e0031c7fa98f1065bb79adb812ef6755b4ee8318b4cb7"
+    },
+    {
+      "run": "crax-formal-sac_lag-51029-10m-v1",
+      "receipt_sha256": "6b3a474a73d06a770e6aa398fbd41eb3cc8489d9c542b8a10bb157716c7433e0"
+    },
+    {
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "receipt_sha256": "7bedc9e454c99c8e199bd0430c275125b28c1b9de9101de56d3bec6fd2f7f3fe"
+    },
+    {
+      "run": "crax-formal-stable_iso-51028-10m-v1",
+      "receipt_sha256": "80861b94826ca85621b38cfcc446e8f3c6c4c945c408ef54f7481ca2ef4f12a5"
+    },
+    {
+      "run": "crax-formal-stable_iso-51029-10m-v1",
+      "receipt_sha256": "52e849c087672731df8de5ceb1e2f704851e7c473a8abfc83334ae5297ab1be6"
+    },
+    {
+      "run": "crax-formal-ea-51027-10m-v1",
+      "receipt_sha256": "59a7c72991696ed81ddb4ae71eba2eaff61f964071c4bf4c882ce70732c58166"
+    },
+    {
+      "run": "crax-formal-ea-51028-10m-v1",
+      "receipt_sha256": "eae4b35c08b06c22ee9aeec24a3932838050b5c99243e77224efcc9592efcfa4"
+    },
+    {
+      "run": "crax-formal-ea-51029-10m-v1",
+      "receipt_sha256": "c5a1b4e803ab3fe463e13f474901ace0571680539ef72ae578602db49d3b8b42"
+    }
+  ],
+  "shared_GPU_load_uncontrolled": true
+}

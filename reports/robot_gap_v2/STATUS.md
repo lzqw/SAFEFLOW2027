@@ -8,18 +8,21 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 |---|---|---|
 | Old Piper Reach/Payload300K candidates | All six completed on A100 | Compact final evaluations/receipts |
 | Payload failure diagnosis | Fixed10-layout diagnostic completed, no training | See diagnostic_motion_episodes.csv and diagnostic_summary.json |
-| Piper speed | Reference10K profile running; next two queued, total30K | Full synchronized SPS, stage time, updates and nominal learning |
-| Reach→Payload | Explicit actor-only transfer implemented | One fixed Iso/300K parent, paired100K Iso/EA |
-| Reach geometry adaptation≤0.20M | Not launched | Frozen risk-value/direction diagnosis first |
+| Piper speed | Three10K profiles complete:10.63/32.46/57.66SPS | Batched-large chosen; all short scores zero, no learning-equivalence claim |
+| Reach→Payload | Matched100K Iso/EA branches running on A100GPU0/1 | Same fixed original Reach/Iso300K Actor parent |
+| Reach geometry adaptation≤0.20M | One Iso/EA100K pair queued after each own transfer slot | Shared radii45/50/55mm; fixed-radius evaluation unchanged |
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
-| Final PointGoal mechanism/efficiency/figures | Pending; no new RL training | Selected final models,64 states×32 samples |
-| Reach deployment candidate/control program | Existing offline interface retained; further work pending | Common validation selection, bundles, complete latency and replay |
+| Final PointGoal mechanism/efficiency/figures | Three-seed figures/efficiency and Flow CPU latency complete; mechanism queued | Final-selected64×32/four samplers, after Piper work and≥8GiB free GPU memory |
+| Reach deployment candidate/control program | Common validation10/15 candidates complete at20:53+08; release pipeline running | Five checkpoints/control; actual bundles/latency/replay after selection |
 
-Actual A100 campaign controller PID1039792; first profile PID1039826, confirmed
-live during this snapshot. These are host-local observations, not perpetual
-liveness guarantees. The controller will run the other two bounded profiles,
-then launch the matched Iso/EA100K transfers on GPU0/GPU1 respectively. It does
-not launch later adaptation/curriculum stages. All outputs are on the data disk.
+Snapshot:2026-11-13T12:54:55UTC (20:54:55+08). A100 campaign controller PID1039792
+launched Iso PID1062014 and EA PID1062015. Receipts/status showed28K/100K and
+20K/100K respectively; these are timestamped prefixes, not final results or
+perpetual liveness guarantees. Reach followup scheduler PID1064715 checks
+every30minutes and launches only the queued100K/method finite-radius fork when
+that method's own transfer is complete and≥2GiB GPU memory remains. Final
+mechanism scheduler PID1068085 waits for Piper followups and≥8GiB. Neither
+preempts other projects or restarts a failed job. All outputs use the data disk.
 
 Latest A100 finals change the older plan snapshot: original Payload EA at300K has
 nominal90%, new geometry53.33%, execution-scale63.33% safe success (30 development
@@ -44,17 +47,22 @@ critics,margin,replay,optimizers,dual,alpha and counters. Legacy resume stays st
 serial/process parity. Local base Python lacks panda_gym; no extra installation
 was performed to force that environment to run these tests.
 
-Initial-phase reservation: profiles30K + transfer2×100K =230K, charged against the
-2.20M cap. Later phases require actual profile/diagnostic/adaptation results;
-no curriculum, selected continuation, or additional matrix is auto-launched.
+Reservation: profiles30K + transfer2×100K + Reach2×100K =430K, against the2.20M
+cap. Actual observed new transitions are78K at this snapshot. The1.77M remaining
+unreserved allowance is not a spending target. The Reach decision follows the
+fixed risk diagnostic: a radius prior corrected values without changing the
+paired frozen rollout outcomes, so one shared finite-radius training family is
+used instead. No curriculum, optional continuation, or matrix is auto-launched.
 Profiles force full geometry to measure tail/VJP costs within10K; these are
 engineering/short-learning diagnostics, not formal algorithm comparisons.
 All scientific transfer runs restore the native transition geometry ramp.
 
 All large new artifacts belong on A100 data disk under
 `/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2`. Source and compact reports are
-uploaded through the local branch. A100's older data migration is still live in
-checksum verification; do not duplicate it or write new outputs into its source.
+uploaded through the local branch. A100's migration completed: five experiment
+directories totaling68.54GiB logically moved, each checksum-compared before
+switching the old path to a symlink. `/home` free space rose approximately79→145GiB.
+New launch/cache/temp paths use the data disk and retain40GiB free headroom.
 Other projects remain running, GPU sharing continues,5080 is not used and no
 physical robot transport is opened. Final physical calibration/activation needs
 现场人员确认; simulation action scales are not calibrated physical limits.

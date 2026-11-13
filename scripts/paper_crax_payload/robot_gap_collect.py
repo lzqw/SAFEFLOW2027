@@ -41,8 +41,10 @@ def main():
         pointgoal.append(dict(run=path.parent.name, **json.loads(path.read_text())))
     campaign_path = args.campaign_root/'campaign_status.json'
     campaign = json.loads(campaign_path.read_text()) if campaign_path.exists() else {}
+    followup_path = args.campaign_root/'followup_status.json'
+    followup = json.loads(followup_path.read_text()) if followup_path.exists() else {}
     new_jobs = []
-    for job in campaign.get('jobs', []):
+    for job in campaign.get('jobs', [])+followup.get('jobs', []):
         row = {key: job[key] for key in ('name', 'status', 'pid', 'target_steps', 'engineering')}
         run = Path(job['output'])
         receipt_path = run/'receipt.json'
@@ -54,25 +56,30 @@ def main():
                 learner_updates=receipt['learner_updates'], actor_updates=receipt['actor_updates'])
         elif progress_path.exists():
             progress = json.loads(progress_path.read_text())
-            row.update(actual_steps=progress.get('steps', 0),
+            row.update(actual_steps=max(0,progress.get('steps', 0)-job.get('initial_steps',0)),
                 complete_training_sps=progress.get('complete_training_sps'),
                 learner_updates=progress.get('learner_updates'), actor_updates=progress.get('actor_updates'))
         else:
             row['actual_steps'] = 0
         new_jobs.append(row)
+    followup_reserved = followup.get('reserved_new_training',0)
     budget = dict(as_of=now, source='actual existing receipts and current new-run status; no historical audit rerun',
         new_round_cap=2200000, initial_phase_reserved=230000,
         initial_phase_reservation_breakdown=dict(three_profiles=30000, paired_transfer=200000),
-        actually_launched_target=campaign.get('launched_training_target', 0),
+        reach_geometry_followup_reserved=followup_reserved,
+        total_new_round_reserved=230000+followup_reserved,
+        actually_launched_target=sum(r['target_steps'] for r in new_jobs),
         observed_new_training_including_partial_prefixes=sum(r['actual_steps'] for r in new_jobs),
-        unreserved_later_allowance=1970000, pointgoal_new_training=0,
+        unreserved_later_allowance=1970000-followup_reserved, pointgoal_new_training=0,
         old_piper_completed_candidates=len(old_piper),
         old_piper_actual_candidate_transitions=sum(r['newly_collected_transitions'] for r in old_piper),
         old_pointgoal_formal_completed=len(pointgoal),
         old_pointgoal_actual_transitions=sum(r.get('steps', r.get('training_steps', 0)) for r in pointgoal),
         old_remaining_is_not_reused_as_new_budget=True,
         physical_robot_interactions=0, other_projects_modified=False)
-    snapshot = dict(as_of=now, campaign=campaign, budget=budget,
+    release_path=args.campaign_root/'reach-release/status.json'
+    release=json.loads(release_path.read_text()) if release_path.exists() else {}
+    snapshot = dict(as_of=now, campaign=campaign, reach_followups=followup, reach_release=release, budget=budget,
         live_process_proof='Snapshot alone is not proof of liveness; confirm its recorded PID on host',
         all_results_development_not_independent_test=True)
     (args.output/'TASK_STATUS.json').write_text(json.dumps(snapshot, indent=2)+'\n')

@@ -1,2 +1,6 @@
 name,status,pid,target_steps,engineering,actual_steps,complete_training_sps,learner_updates,actor_updates
-profile-reference,running,1039826,10000,True,4000,17.488216192121648,2000,500
+profile-reference,completed,1039826,10000,True,10000,10.626051450328628,8000,3500
+profile-batch_balanced,completed,1054619,10000,True,10000,32.45646760314146,4000,1500
+profile-batch_large,completed,1059238,10000,True,10000,57.66402972220084,2000,500
+transfer-iso-100k,running,1062014,100000,False,28000,67.34103480696359,6500,2750
+transfer-ea-100k,running,1062015,100000,False,20000,60.598043693659115,4500,1750
