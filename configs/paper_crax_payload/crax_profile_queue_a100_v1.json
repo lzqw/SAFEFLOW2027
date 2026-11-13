@@ -1,0 +1,13 @@
+{
+  "project":"/home/lzqw/SAFEFLOW2027_PAPER/project",
+  "python":"/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+  "slots":1,
+  "state":"/home/lzqw/SAFEFLOW2027_PAPER/queues/crax-profile-v1.json",
+  "launch_precondition":"Actual check_crax_bridge receipt completed;CUDA_VISIBLE_DEVICES=1;no inferred device proof",
+  "maximum_new_training_transitions":98304,
+  "jobs":[
+    {"name":"crax-profile-balanced","module":"scripts.paper_crax_payload.train_crax","arguments":["--config","configs/paper_crax_payload/master_v1.json","--method","ea","--profile","balanced","--seed","41994","--steps","32768","--profile-only","--eval-envs","0"],"output":"/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-profile-balanced-v1","log":"/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-profile-balanced-v1.log"},
+    {"name":"crax-profile-fast","module":"scripts.paper_crax_payload.train_crax","arguments":["--config","configs/paper_crax_payload/master_v1.json","--method","ea","--profile","fast","--seed","41994","--steps","32768","--profile-only","--eval-envs","0"],"output":"/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-profile-fast-v1","log":"/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-profile-fast-v1.log"},
+    {"name":"crax-profile-learn-heavy","module":"scripts.paper_crax_payload.train_crax","arguments":["--config","configs/paper_crax_payload/master_v1.json","--method","ea","--profile","learn_heavy","--seed","41994","--steps","32768","--profile-only","--eval-envs","0"],"output":"/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-profile-learn-heavy-v1","log":"/home/lzqw/SAFEFLOW2027_PAPER/logs/crax-profile-learn-heavy-v1.log"}
+  ]
+}

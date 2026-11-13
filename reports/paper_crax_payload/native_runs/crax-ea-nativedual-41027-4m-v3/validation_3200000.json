@@ -1,0 +1,424 @@
+{
+  "seed": 61027,
+  "episodes": 50,
+  "records": [
+    {
+      "native_return": 5.0,
+      "episode_cost": 24.997150421142578,
+      "goals": 5.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 18.0,
+      "episode_cost": 150.62428283691406,
+      "goals": 18.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.559999942779541,
+      "first_goal_seconds": 2.559999942779541
+    },
+    {
+      "native_return": 10.0,
+      "episode_cost": 66.85394287109375,
+      "goals": 10.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 8.239999815821648,
+      "first_goal_seconds": 8.239999815821648
+    },
+    {
+      "native_return": 17.0,
+      "episode_cost": 48.4654655456543,
+      "goals": 17.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 19.0,
+      "episode_cost": 75.48033142089844,
+      "goals": 19.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.1999999284744263,
+      "first_goal_seconds": 3.1999999284744263
+    },
+    {
+      "native_return": 6.0,
+      "episode_cost": 81.93574523925781,
+      "goals": 6.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.7199999392032623,
+      "first_goal_seconds": 2.7199999392032623
+    },
+    {
+      "native_return": 6.0,
+      "episode_cost": 26.65996742248535,
+      "goals": 6.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.7199999392032623,
+      "first_goal_seconds": 2.7199999392032623
+    },
+    {
+      "native_return": 13.0,
+      "episode_cost": 55.6300163269043,
+      "goals": 13.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 14.0,
+      "episode_cost": 63.70723342895508,
+      "goals": 14.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 6.07999986410141,
+      "first_goal_seconds": 6.07999986410141
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 27.10862159729004,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.319999948143959,
+      "first_goal_seconds": 2.319999948143959
+    },
+    {
+      "native_return": 15.0,
+      "episode_cost": 100.44265747070312,
+      "goals": 15.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 6.719999849796295,
+      "first_goal_seconds": 6.719999849796295
+    },
+    {
+      "native_return": 3.0,
+      "episode_cost": 0.0,
+      "goals": 3.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.8799999356269836,
+      "first_goal_seconds": 2.8799999356269836
+    },
+    {
+      "native_return": 25.0,
+      "episode_cost": 86.05089569091797,
+      "goals": 25.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 9.039999797940254,
+      "first_goal_seconds": 9.039999797940254
+    },
+    {
+      "native_return": 25.0,
+      "episode_cost": 102.8401107788086,
+      "goals": 25.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 16.0,
+      "episode_cost": 74.20648956298828,
+      "goals": 16.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.8799999356269836,
+      "first_goal_seconds": 2.8799999356269836
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 21.297698974609375,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.279999926686287,
+      "first_goal_seconds": 3.279999926686287
+    },
+    {
+      "native_return": 9.0,
+      "episode_cost": 22.227012634277344,
+      "goals": 9.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.5999999195337296,
+      "first_goal_seconds": 3.5999999195337296
+    },
+    {
+      "native_return": 4.0,
+      "episode_cost": 26.746543884277344,
+      "goals": 4.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.799999937415123,
+      "first_goal_seconds": 2.799999937415123
+    },
+    {
+      "native_return": 9.0,
+      "episode_cost": 96.79708862304688,
+      "goals": 9.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.9599999338388443,
+      "first_goal_seconds": 2.9599999338388443
+    },
+    {
+      "native_return": 7.0,
+      "episode_cost": 50.844940185546875,
+      "goals": 7.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 10.0,
+      "episode_cost": 31.583158493041992,
+      "goals": 10.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.8799999356269836,
+      "first_goal_seconds": 2.8799999356269836
+    },
+    {
+      "native_return": 13.0,
+      "episode_cost": 48.7585334777832,
+      "goals": 13.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.279999926686287,
+      "first_goal_seconds": 3.279999926686287
+    },
+    {
+      "native_return": 7.0,
+      "episode_cost": 30.84621238708496,
+      "goals": 7.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.9599999338388443,
+      "first_goal_seconds": 2.9599999338388443
+    },
+    {
+      "native_return": 6.0,
+      "episode_cost": 15.636445045471191,
+      "goals": 6.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 5.0,
+      "episode_cost": 14.026095390319824,
+      "goals": 5.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.039999932050705,
+      "first_goal_seconds": 3.039999932050705
+    },
+    {
+      "native_return": 0.0,
+      "episode_cost": 18.302818298339844,
+      "goals": 0.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 79.99999821186066,
+      "first_goal_seconds": null
+    },
+    {
+      "native_return": 3.0,
+      "episode_cost": 31.112812042236328,
+      "goals": 3.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 13.0,
+      "episode_cost": 67.90351867675781,
+      "goals": 13.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.559999942779541,
+      "first_goal_seconds": 2.559999942779541
+    },
+    {
+      "native_return": 7.0,
+      "episode_cost": 19.700241088867188,
+      "goals": 7.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 4.719999894499779,
+      "first_goal_seconds": 4.719999894499779
+    },
+    {
+      "native_return": 3.0,
+      "episode_cost": 35.82124710083008,
+      "goals": 3.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 4.239999905228615,
+      "first_goal_seconds": 4.239999905228615
+    },
+    {
+      "native_return": 20.0,
+      "episode_cost": 80.28836822509766,
+      "goals": 20.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 7.0,
+      "episode_cost": 53.26295471191406,
+      "goals": 7.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.559999942779541,
+      "first_goal_seconds": 2.559999942779541
+    },
+    {
+      "native_return": 18.0,
+      "episode_cost": 80.47848510742188,
+      "goals": 18.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 26.0,
+      "episode_cost": 93.45600128173828,
+      "goals": 26.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 4.159999907016754,
+      "first_goal_seconds": 4.159999907016754
+    },
+    {
+      "native_return": 21.0,
+      "episode_cost": 109.14077758789062,
+      "goals": 21.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 2.0,
+      "episode_cost": 65.63904571533203,
+      "goals": 2.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.6399999409914017,
+      "first_goal_seconds": 2.6399999409914017
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 4.464130878448486,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.3999999463558197,
+      "first_goal_seconds": 2.3999999463558197
+    },
+    {
+      "native_return": 11.0,
+      "episode_cost": 22.965164184570312,
+      "goals": 11.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.799999937415123,
+      "first_goal_seconds": 2.799999937415123
+    },
+    {
+      "native_return": 21.0,
+      "episode_cost": 51.03560256958008,
+      "goals": 21.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.3999999463558197,
+      "first_goal_seconds": 2.3999999463558197
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 9.560245513916016,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.519999921321869,
+      "first_goal_seconds": 3.519999921321869
+    },
+    {
+      "native_return": 2.0,
+      "episode_cost": 5.566277980804443,
+      "goals": 2.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.7199999392032623,
+      "first_goal_seconds": 2.7199999392032623
+    },
+    {
+      "native_return": 7.0,
+      "episode_cost": 73.2494125366211,
+      "goals": 7.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 6.688519477844238,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.039999932050705,
+      "first_goal_seconds": 3.039999932050705
+    },
+    {
+      "native_return": 4.0,
+      "episode_cost": 46.286415100097656,
+      "goals": 4.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 9.0,
+      "episode_cost": 40.92369842529297,
+      "goals": 9.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.039999932050705,
+      "first_goal_seconds": 3.039999932050705
+    },
+    {
+      "native_return": 17.0,
+      "episode_cost": 47.73644256591797,
+      "goals": 17.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.279999926686287,
+      "first_goal_seconds": 3.279999926686287
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 23.43013572692871,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 5.279999881982803,
+      "first_goal_seconds": 5.279999881982803
+    },
+    {
+      "native_return": 4.0,
+      "episode_cost": 8.02327823638916,
+      "goals": 4.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.4799999445676804,
+      "first_goal_seconds": 2.4799999445676804
+    },
+    {
+      "native_return": 1.0,
+      "episode_cost": 10.178412437438965,
+      "goals": 1.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 3.1199999302625656,
+      "first_goal_seconds": 3.1199999302625656
+    },
+    {
+      "native_return": 10.0,
+      "episode_cost": 23.33580780029297,
+      "goals": 10.0,
+      "length": 1000.0,
+      "capped_first_goal_seconds": 2.9599999338388443,
+      "first_goal_seconds": 2.9599999338388443
+    }
+  ],
+  "native_return": 9.48,
+  "episode_cost": 47.44632905960083,
+  "goals_per_episode": 9.48,
+  "at_least_one_goal": 0.98,
+  "budget_compliant_fraction": 0.34,
+  "budget_compliant_return": 4.0,
+  "budget_compliant_episodes": 17,
+  "physical_controls": 50000,
+  "capped_first_goal_seconds": 4.852799891531467,
+  "conditional_first_goal_seconds": 3.3191835992798513,
+  "elapsed_seconds": 32.50037044286728,
+  "training_updates": 0,
+  "dual_updates": 0,
+  "actor_margin_normalizer_dual_frozen": true,
+  "checkpoint_steps": 3200000,
+  "training_cumulative_cost": 82235.828125,
+  "completed_training_episodes": 3072,
+  "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af"
+}

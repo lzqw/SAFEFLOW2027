@@ -1,0 +1,106 @@
+{
+  "analysis_sha256": "161637c588264ba2c6c6dd59ab1dfc2f7db8bcf532402bbecc7f9706524ee7ac",
+  "states": 32,
+  "draws_per_state": 16,
+  "checkpoints": [
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-iso-nativedual-41027-4m-v3/full_latest.pt",
+      "sha256": "6b9c39f0a78886851c597b589d8d75cd4b42e5cac91ff689173b9e990ae56990",
+      "steps": 4000000,
+      "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+      "method": "stable_iso",
+      "normalizer_mode": "running_acme",
+      "frozen_normalizer_count": 4000000.0
+    },
+    {
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-ea-nativedual-41027-4m-v3/full_latest.pt",
+      "sha256": "dee8708ff31ea9c88916ddf0f1487356b94425709b159ee185181aab802248f4",
+      "steps": 4000000,
+      "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+      "method": "ea",
+      "normalizer_mode": "running_acme",
+      "frozen_normalizer_count": 4000000.0
+    }
+  ],
+  "runtime_source_sha256": {
+    "learner": "156f93f8dc2bffef443c94314dca73dbb440499db74b21486c38595c6d5f9c9d",
+    "environment": "a5bb0f8df29178a59db86937624bf4648bf5b84788bdb616b58a964575f00d7f",
+    "normalizer": "7c3889bfd1dc900408c27fb75d2ee6c42467188d953e0c08192001479d5772f3"
+  },
+  "physical_profile": {
+    "crax_version_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "env_id": "safe_goal_point",
+    "difficulty": 1,
+    "episode_length": 1000,
+    "physics_timestep": 0.019999999552965164,
+    "frame_skip": 4,
+    "control_period": 0.07999999821186066,
+    "action_dim": 2,
+    "obs_dim": 62,
+    "action_limits": [
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        -1.0,
+        1.0
+      ]
+    ],
+    "action_limits_source": "native_MJX_Model_not_filtered_legacy_Brax_actuator",
+    "goals": 2,
+    "hazards": 16,
+    "hazard_types": [
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "rect",
+      "rect",
+      "rect",
+      "rect"
+    ],
+    "hazard_collidable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "reward_goal": 1.0,
+    "reward_distance_scale": 0.0,
+    "proximity_cost_scale": 2.0,
+    "collision_cost": 3.0,
+    "native_goal_refresh": true,
+    "cost_termination_added": false,
+    "margin_label": "negative_endpoint_clearance_proxy_metres;not_interval_minimum;not_native_cost",
+    "reset": "fresh_native_reset_masked_in_device_after_preserving_terminal_observation"
+  },
+  "fd_epsilon": 0.05,
+  "planned_fd_controls": 160,
+  "planned_sampling_controls": 2048,
+  "planned_total_controls": 2208,
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "independent_test": false,
+  "matching": "sameActor/commonGaussianincrements;Iso-vs-PBsameinjectiontrace,notmatchedspectrumorendpointtrace"
+}

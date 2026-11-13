@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "analysis_source_sha256": "358dec6c615839dfc17a7193f88ce417f9feeb0d52574569cd3c3dd4aee284e0",
+  "training_transitions": 0,
+  "optimizer_updates": 0,
+  "dual_updates": 0,
+  "real_interactions": 0,
+  "physical_controls": 500000,
+  "expected_physical_controls": 500000,
+  "result_rows": 5,
+  "candidates_per_run": 5,
+  "runs": 1,
+  "seeds": [
+    71027,
+    71028,
+    71029,
+    71030,
+    71031
+  ],
+  "episodes_per_seed": 100,
+  "environment_instances_created": 1,
+  "compilation_calls": 1,
+  "compile_seconds": 77.20370519906282,
+  "elapsed_seconds": 109.1802195450291,
+  "original_checkpoints_modified": false,
+  "independent_test_executed": true,
+  "primary_endpoint_rows_not_replaced": true,
+  "automatic_restart": false
+}

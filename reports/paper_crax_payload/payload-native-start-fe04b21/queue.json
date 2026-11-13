@@ -1,0 +1,70 @@
+{
+  "pid": 3401203,
+  "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "payload-sac-41027",
+      "pid": 3401225,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--method",
+        "sac_lag",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--phase",
+        "development",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41027-v1",
+        "--source-commit",
+        "fe04b21b574da0b3bf326699feacb5b58de043ea"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41027-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-sac-41027-v1.log",
+      "status": "running",
+      "started_unix": 1794455088.1721435
+    },
+    {
+      "name": "payload-iso-41027",
+      "pid": 3401226,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--method",
+        "s_iso",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--phase",
+        "development",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41027-v1",
+        "--source-commit",
+        "fe04b21b574da0b3bf326699feacb5b58de043ea"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41027-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-iso-41027-v1.log",
+      "status": "running",
+      "started_unix": 1794455088.1753755
+    }
+  ],
+  "pending": 4,
+  "live_native_pids": [
+    3401225,
+    3401226
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false
+}

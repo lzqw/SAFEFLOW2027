@@ -1,0 +1,30 @@
+{
+  "scope": "Payload implementation engineering before six development trials",
+  "actual_new_training_transitions": 3220,
+  "actual_nontraining_control_intervals": 222,
+  "physical_robot_interactions": 0,
+  "training_segments": [
+    {"host": "4080", "run": "engineering-ea-41999-v1", "actual_new_transitions": 3210},
+    {"host": "4080", "run": "engineering-ea-41999-v1-resume1", "initial_steps": 3210, "final_steps": 3220, "actual_new_transitions": 10}
+  ],
+  "nontraining": [
+    {"source": "local exploratory actual step probes", "physical_control_intervals": 6},
+    {"source": "local four focused contracts", "physical_control_intervals": 5},
+    {"source": "native4080 four focused contracts", "physical_control_intervals": 5},
+    {"source": "native common constructive path fiveconditions", "physical_control_intervals": 206}
+  ],
+  "resume_proof": {
+    "before_steps": 3210, "after_steps": 3220,
+    "before_replay_count": 3210, "after_replay_count": 3220,
+    "before_learner_updates": 1210, "after_learner_updates": 1220,
+    "before_actor_updates": 105, "after_actor_updates": 110,
+    "before_partial_episode_lengths": [94, 61],
+    "after_partial_episode_lengths": [99, 66],
+    "next_physical_interval_test": "passed;no partial episode reset or extra restore physics"
+  },
+  "focused_contracts": {"local": {"passed": 4, "elapsed_seconds": 1.52}, "native4080": {"passed": 4, "elapsed_seconds": 1.59}},
+  "discovery_failure": "first nativepytest failed beforecollection through unrelatedtypeguardautoload;0physics;PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 only,no packageupgrade",
+  "counts_exclude_reset_settling_as_training": true,
+  "synthetic_unit_updates_are_not_environment_transitions": true,
+  "scientific_development_300k_results_complete": false
+}

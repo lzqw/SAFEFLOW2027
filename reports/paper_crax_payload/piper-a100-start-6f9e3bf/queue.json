@@ -1,0 +1,46 @@
+{
+  "pid": 57815,
+  "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "piper-reach-iso-41027",
+      "pid": 57816,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.piper_train",
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Reach",
+        "--method",
+        "Iso",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0",
+        "--output",
+        "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1",
+        "--source-commit",
+        "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/piper-reach-iso-41027-v1.log",
+      "status": "running",
+      "started_unix": 1794464310.439905
+    }
+  ],
+  "pending": 2,
+  "live_native_pids": [
+    57816
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false
+}

@@ -1,0 +1,29 @@
+{
+  "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+  "source_commit": "86669eeffeeb89a669537987eff8e2ce89c3ef0b",
+  "method": "sac_lag_native",
+  "env_id": "safe_goal_point",
+  "difficulty": 1,
+  "phase": "reference",
+  "requested_steps": 1000000,
+  "seed": 41027,
+  "episode_length": 1000,
+  "num_envs": 256,
+  "batch_size": 1024,
+  "grad_updates_per_step": 4,
+  "replay_exposure": 16.0,
+  "safety_bound": 25.0,
+  "cost_q": "official_unbounded_discounted_cost",
+  "discount": 0.99,
+  "reward_scaling": 1.0,
+  "cost_scaling": 1.0,
+  "normalize_observations": false,
+  "dual": "official_perstep_bound25/horizon;effective_lr0.01/horizon;lambda_max2",
+  "api_fixes": [
+    "fresh_full_state_autoreset",
+    "pre_reset_terminal_observation",
+    "raw_collected_cost"
+  ],
+  "checkpoint_kind": "policy_and_normalizer_only_not_full_resume",
+  "training_early_stop": false
+}

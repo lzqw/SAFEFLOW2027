@@ -1,0 +1,638 @@
+{
+  "status": "completed",
+  "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+  "steps": 2000128,
+  "requested_steps": 2000000,
+  "initial_steps": 500224,
+  "new_training_transitions": 1499904,
+  "total_training_cumulative_cost": 40196.99609375,
+  "completed_training_episodes": 1792,
+  "evaluation_controls": 200000,
+  "new_real_robot_interactions": 0,
+  "learner_updates": 30940,
+  "reward_updates": 61880,
+  "actor_updates": 14970,
+  "margin_updates": 30940,
+  "reset_compile_seconds": 3.876352570950985,
+  "first_step_compile_seconds": 15.412768481997773,
+  "elapsed_seconds": 1520.0204738259781,
+  "full_training_including_compile_eval_save_sps": 986.7656560076828,
+  "evaluation_seconds": 164.87325587728992,
+  "save_seconds": 4.357663140166551,
+  "profile_only": false,
+  "profile_component_events": 0,
+  "profile_components": {
+    "actor_cuda_ms_per_vector_step": null,
+    "environment_bridge_cuda_ms_per_vector_step": null,
+    "replay_learner_cuda_ms_per_vector_step": null
+  },
+  "total_device_shared_memory_samples": [
+    {
+      "steps": 510208,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 520192,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 530176,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 540160,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 550144,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 560128,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 570112,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 74 %"
+    },
+    {
+      "steps": 580096,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 590080,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 88 %\n1, 3768 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 600064,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 610048,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 92 %"
+    },
+    {
+      "steps": 620032,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 630016,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 98 %\n1, 3768 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 640000,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 649984,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 94 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 659968,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 669952,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 98 %\n1, 3768 MiB, 81920 MiB, 81 %"
+    },
+    {
+      "steps": 679936,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 689920,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 87 %"
+    },
+    {
+      "steps": 699904,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 709888,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 719872,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 729856,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 87 %"
+    },
+    {
+      "steps": 739840,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 92 %"
+    },
+    {
+      "steps": 749824,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 83 %"
+    },
+    {
+      "steps": 759808,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 769792,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 93 %\n1, 3768 MiB, 81920 MiB, 87 %"
+    },
+    {
+      "steps": 779776,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 97 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 789760,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 98 %\n1, 3768 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 799744,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3768 MiB, 81920 MiB, 94 %"
+    },
+    {
+      "steps": 809728,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 819712,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 98 %\n1, 3840 MiB, 81920 MiB, 80 %"
+    },
+    {
+      "steps": 829696,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 839680,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 849664,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 859648,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 869632,
+      "nvidia_smi": "0, 4572 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 92 %"
+    },
+    {
+      "steps": 879616,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 81 %"
+    },
+    {
+      "steps": 889600,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 899584,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 909568,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 96 %\n1, 3840 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 919552,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 929536,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 939520,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 949504,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 96 %\n1, 3840 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 959488,
+      "nvidia_smi": "0, 4574 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 89 %"
+    },
+    {
+      "steps": 969472,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 95 %\n1, 3840 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 979456,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 80 %\n1, 3840 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 989440,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 89 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 999424,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 93 %\n1, 3840 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1009408,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 1019392,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 89 %"
+    },
+    {
+      "steps": 1029376,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 93 %\n1, 3840 MiB, 81920 MiB, 94 %"
+    },
+    {
+      "steps": 1039360,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 91 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1049344,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 69 %\n1, 3840 MiB, 81920 MiB, 94 %"
+    },
+    {
+      "steps": 1059328,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 94 %\n1, 3840 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1069312,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 91 %"
+    },
+    {
+      "steps": 1079296,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 87 %\n1, 3840 MiB, 81920 MiB, 36 %"
+    },
+    {
+      "steps": 1089280,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 92 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1099264,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1109248,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 91 %\n1, 3840 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1119232,
+      "nvidia_smi": "0, 2648 MiB, 81920 MiB, 92 %\n1, 3840 MiB, 81920 MiB, 91 %"
+    },
+    {
+      "steps": 1129216,
+      "nvidia_smi": "0, 3078 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1139200,
+      "nvidia_smi": "0, 3752 MiB, 81920 MiB, 90 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1149184,
+      "nvidia_smi": "0, 3752 MiB, 81920 MiB, 91 %\n1, 3840 MiB, 81920 MiB, 85 %"
+    },
+    {
+      "steps": 1159168,
+      "nvidia_smi": "0, 3816 MiB, 81920 MiB, 91 %\n1, 3840 MiB, 81920 MiB, 87 %"
+    },
+    {
+      "steps": 1169152,
+      "nvidia_smi": "0, 3890 MiB, 81920 MiB, 99 %\n1, 3840 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1179136,
+      "nvidia_smi": "0, 3890 MiB, 81920 MiB, 98 %\n1, 3840 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1189120,
+      "nvidia_smi": "0, 3890 MiB, 81920 MiB, 98 %\n1, 3840 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 1199104,
+      "nvidia_smi": "0, 3914 MiB, 81920 MiB, 98 %\n1, 3840 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1209088,
+      "nvidia_smi": "0, 3914 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 81 %"
+    },
+    {
+      "steps": 1219072,
+      "nvidia_smi": "0, 3914 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1229056,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1239040,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1249024,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1259008,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1268992,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 91 %\n1, 3926 MiB, 81920 MiB, 57 %"
+    },
+    {
+      "steps": 1278976,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1288960,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 89 %\n1, 3926 MiB, 81920 MiB, 89 %"
+    },
+    {
+      "steps": 1298944,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1308928,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 91 %"
+    },
+    {
+      "steps": 1318912,
+      "nvidia_smi": "0, 3916 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 92 %"
+    },
+    {
+      "steps": 1328896,
+      "nvidia_smi": "0, 3918 MiB, 81920 MiB, 94 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1338880,
+      "nvidia_smi": "0, 3918 MiB, 81920 MiB, 92 %\n1, 3926 MiB, 81920 MiB, 85 %"
+    },
+    {
+      "steps": 1348864,
+      "nvidia_smi": "0, 3920 MiB, 81920 MiB, 93 %\n1, 3926 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1358848,
+      "nvidia_smi": "0, 3924 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1368832,
+      "nvidia_smi": "0, 3924 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1378816,
+      "nvidia_smi": "0, 3924 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1388800,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1398784,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1408768,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 1418752,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1428736,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 81 %"
+    },
+    {
+      "steps": 1438720,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1448704,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 96 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1458688,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1468672,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 100 %"
+    },
+    {
+      "steps": 1478656,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1488640,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1498624,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1508608,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1518592,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1528576,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 1538560,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1548544,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 90 %\n1, 3926 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 1558528,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 94 %"
+    },
+    {
+      "steps": 1568512,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1578496,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 1588480,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1598464,
+      "nvidia_smi": "0, 3990 MiB, 81920 MiB, 90 %\n1, 3926 MiB, 81920 MiB, 85 %"
+    },
+    {
+      "steps": 1608448,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1618432,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 87 %"
+    },
+    {
+      "steps": 1628416,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1638400,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1648384,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 1658368,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1668352,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1678336,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 1688320,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1698304,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 1708288,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 100 %"
+    },
+    {
+      "steps": 1718272,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 1728256,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 1738240,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1748224,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 1758208,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 89 %\n1, 3926 MiB, 81920 MiB, 82 %"
+    },
+    {
+      "steps": 1768192,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 1778176,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 91 %"
+    },
+    {
+      "steps": 1788160,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1798144,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 93 %"
+    },
+    {
+      "steps": 1808128,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 91 %\n1, 3926 MiB, 81920 MiB, 85 %"
+    },
+    {
+      "steps": 1818112,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1828096,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1838080,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1848064,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 90 %"
+    },
+    {
+      "steps": 1858048,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 83 %"
+    },
+    {
+      "steps": 1868032,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1878016,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1888000,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 91 %"
+    },
+    {
+      "steps": 1897984,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 96 %"
+    },
+    {
+      "steps": 1907968,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 67 %"
+    },
+    {
+      "steps": 1917952,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1927936,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 99 %"
+    },
+    {
+      "steps": 1937920,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 97 %\n1, 3926 MiB, 81920 MiB, 86 %"
+    },
+    {
+      "steps": 1947904,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 86 %"
+    },
+    {
+      "steps": 1957888,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 95 %"
+    },
+    {
+      "steps": 1967872,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 93 %"
+    },
+    {
+      "steps": 1977856,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    },
+    {
+      "steps": 1987840,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 97 %"
+    },
+    {
+      "steps": 1997824,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 99 %\n1, 3926 MiB, 81920 MiB, 88 %"
+    },
+    {
+      "steps": 2000128,
+      "nvidia_smi": "0, 4076 MiB, 81920 MiB, 98 %\n1, 3926 MiB, 81920 MiB, 98 %"
+    }
+  ],
+  "torch_peak_memory_is_not_total_device_memory": true,
+  "full_replay_environment_partial_episode_rng_saved": true,
+  "note": "profile-only is engineering training,not a candidate;all actual rounded transitions charged"
+}

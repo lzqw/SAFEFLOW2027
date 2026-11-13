@@ -1,0 +1,52 @@
+{
+  "time_utc": "2026-11-12T11:10:42.542890+00:00",
+  "observer_pid": 3627156,
+  "interval_seconds": 1800,
+  "sample": 12,
+  "project": "/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "actual_native_processes": [],
+  "nvidia_smi": "0, NVIDIA GeForce RTX 4080 SUPER, 4066 MiB, 11999 MiB, 56 %",
+  "load_average": [
+    3.65869140625,
+    3.9853515625,
+    5.67138671875
+  ],
+  "free_disk_bytes": 1321870753792,
+  "native_receipts": [
+    {
+      "run": "payload-ea-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-ea-41028-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-iso-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-iso-41028-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-sac-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-sac-41028-v1",
+      "status": "completed",
+      "steps": 300000
+    }
+  ],
+  "whole_goal_complete": false,
+  "automatic_restart": false,
+  "training_launches": 0,
+  "foreign_processes_changed": false,
+  "idle_observation_only_not_goal_completion": true
+}

@@ -1,0 +1,5 @@
+{
+ "base_config":"pointgoal_normalized_v2.json",
+ "reason":"Prospective shared cumulative-cost controller recipe: Iso500k had low cost but0.12goals, weightedcost-gradient18.44x reward and negativecost-Q; normalizedSAC3M achieved33.86goals butcost84.44>25. Align native per-step units/budget25/H/cap2 and use shared baseLR0.1 (10x official0.01) for the paired Flow controls and a fairly tuned SAC candidate. This changes the controller recipe,not merely a numerical unit label; no causal success or critic-optimism repair is claimed. Keep all old outcomes.",
+ "overrides":{"pointgoal":{"shared_learner":{"dual_rule":"native_per_step","lagrangian_lr":0.1}}}
+}

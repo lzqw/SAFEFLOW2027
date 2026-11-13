@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "standard_model_identified_calibration_and_limits_pending",
+  "robot_family": "Piper",
+  "robot_model": "Piper standard version (user confirmed)",
+  "serial_or_asset_id": null,
+  "firmware_version": null,
+  "gripper_model": "standard gripper (user confirmed)",
+  "model_identification_source": "user: piper标准版夹爪也是标准的",
+  "selected_official_urdf": "src/piper_description/urdf/piper_description.urdf",
+  "gripper_opening_m": null,
+  "tcp_from_flange_m_xyzw": null,
+  "world_from_base_m_xyzw": null,
+  "control_period_s": null,
+  "max_tcp_speed_m_s": null,
+  "max_payload_kg": null,
+  "workspace_min_m": null,
+  "workspace_max_m": null,
+  "emergency_stop_confirmed": false,
+  "operator_on_site": false,
+  "motion_enabled": false,
+  "requirement": "Standard model/gripper are user identified; firmware, measured opening, TCP, transforms and physical limits remain unverified. Do not guess them from Panda or generic vendor limits. Offline simulation values are separate and are not an authorization."
+}

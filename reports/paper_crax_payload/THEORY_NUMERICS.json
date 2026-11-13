@@ -1,0 +1,207 @@
+{
+  "status": "completed",
+  "seed": 20261112,
+  "synthetic_draws_per_gaussian_experiment": 200000,
+  "synthetic_total_gaussian_draws": 400000,
+  "random_spd_proposals": 40000,
+  "new_training_transitions": 0,
+  "simulator_queries": 0,
+  "real_interactions": 0,
+  "endpoint_pullback": {
+    "tail": [
+      [
+        1.0,
+        0.8,
+        -0.3
+      ],
+      [
+        0.1,
+        0.6,
+        0.2
+      ],
+      [
+        0.2,
+        -0.4,
+        1.1
+      ]
+    ],
+    "terminal_gradient": [
+      0.2716072381275556,
+      -0.6337502222976297,
+      0.7242859683401482
+    ],
+    "pullback_gradient": [
+      0.35308940956582224,
+      -0.4526787302125926,
+      0.5884823492763706
+    ],
+    "covariance": [
+      [
+        0.04669961193305845,
+        0.010641523162745572,
+        -0.013833980111569246
+      ],
+      [
+        0.010641523162745572,
+        0.041357021586223626,
+        0.017735871937909292
+      ],
+      [
+        -0.013833980111569246,
+        0.017735871937909292,
+        0.03194336648071792
+      ]
+    ],
+    "dt": 0.25,
+    "endpoint_formula": 0.001689754098360655,
+    "pullback_formula": 0.001689754098360655,
+    "empirical_variance": 0.0016885735691599076,
+    "formula_absolute_error": 0.0,
+    "empirical_relative_error": 0.000698639643420762,
+    "passed": true
+  },
+  "direction_misalignment": [
+    {
+      "angle_degrees": 0,
+      "matrix_variance": 0.00675901639344262,
+      "sin_squared_formula": 0.006759016393442623,
+      "absolute_error": 2.6020852139652106e-18,
+      "passed": true
+    },
+    {
+      "angle_degrees": 15,
+      "matrix_variance": 0.008796473500725757,
+      "sin_squared_formula": 0.008796473500725752,
+      "absolute_error": 5.204170427930421e-18,
+      "passed": true
+    },
+    {
+      "angle_degrees": 30,
+      "matrix_variance": 0.014362909836065566,
+      "sin_squared_formula": 0.014362909836065573,
+      "absolute_error": 6.938893903907228e-18,
+      "passed": true
+    },
+    {
+      "angle_degrees": 45,
+      "matrix_variance": 0.02196680327868852,
+      "sin_squared_formula": 0.02196680327868852,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "angle_degrees": 60,
+      "matrix_variance": 0.029570696721311473,
+      "sin_squared_formula": 0.029570696721311473,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "angle_degrees": 90,
+      "matrix_variance": 0.03717459016393443,
+      "sin_squared_formula": 0.03717459016393443,
+      "absolute_error": 0.0,
+      "passed": true
+    }
+  ],
+  "constrained_logdet": [
+    {
+      "cap": 0.01,
+      "trace": 0.12,
+      "vn": 0.01,
+      "vt": 0.055,
+      "active": true,
+      "optimum_logdet": -10.406014373487425,
+      "feasible_random_matrices": 1929,
+      "max_feasible_sample_logdet": -10.58741519573742,
+      "largest_numerical_advantage_over_optimum": -0.18140082224999432,
+      "stationarity_max_abs": 1.4210854715202004e-14,
+      "complementarity": 1.4193192076173875e-16,
+      "covariance": [
+        [
+          0.04669961193305845,
+          0.010641523162745572,
+          -0.013833980111569246
+        ],
+        [
+          0.010641523162745572,
+          0.041357021586223626,
+          0.017735871937909292
+        ],
+        [
+          -0.013833980111569246,
+          0.017735871937909292,
+          0.03194336648071792
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "cap": 0.06,
+      "trace": 0.12,
+      "vn": 0.04,
+      "vt": 0.039999999999999994,
+      "active": false,
+      "optimum_logdet": -9.656627474604603,
+      "feasible_random_matrices": 15766,
+      "max_feasible_sample_logdet": -9.688015363948779,
+      "largest_numerical_advantage_over_optimum": -0.03138788934417569,
+      "stationarity_max_abs": 3.552713678800501e-15,
+      "complementarity": -0.0,
+      "covariance": [
+        [
+          0.039999999999999994,
+          -1.6408977822725073e-18,
+          2.1331671169542597e-18
+        ],
+        [
+          -1.6408977822725073e-18,
+          0.039999999999999994,
+          -2.734829637120846e-18
+        ],
+        [
+          2.1331671169542597e-18,
+          -2.734829637120846e-18,
+          0.04
+        ]
+      ],
+      "passed": true
+    }
+  ],
+  "same_covariance_relative_entropy": {
+    "mean0": [
+      0.1,
+      -0.2,
+      0.05
+    ],
+    "mean1": [
+      -0.03,
+      0.08,
+      0.2
+    ],
+    "covariance": [
+      [
+        0.04669961193305845,
+        0.010641523162745572,
+        -0.013833980111569246
+      ],
+      [
+        0.010641523162745572,
+        0.041357021586223626,
+        0.017735871937909292
+      ],
+      [
+        -0.013833980111569246,
+        0.017735871937909292,
+        0.03194336648071792
+      ]
+    ],
+    "analytic_kl": 1.5018406720613853,
+    "empirical_mean_logratio": 1.5050776851402183,
+    "empirical_standard_error": 0.0038676671467763085,
+    "empirical_z_error": 0.8369420004332857,
+    "passed": true
+  },
+  "all_checks_passed": true,
+  "interpretation": "Linear Gaussian identities and constrained Gaussian entropy allocation only;not a theorem of arbitrary nonlinear dynamics safety or real-robot generalization"
+}

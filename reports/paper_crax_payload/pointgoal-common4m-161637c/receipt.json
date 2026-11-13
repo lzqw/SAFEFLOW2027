@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "analysis_sha256": "161637c588264ba2c6c6dd59ab1dfc2f7db8bcf532402bbecc7f9706524ee7ac",
+  "states": 32,
+  "draws_per_state": 16,
+  "models": 2,
+  "samplers_per_actor": 2,
+  "physical_controls": 2208,
+  "finite_difference_controls": 160,
+  "sampled_action_controls": 2048,
+  "native_horizon": 1000,
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "real_interactions": 0,
+  "independent_test": false,
+  "oracle_actions_selected": 0,
+  "native_resets_executed": 0,
+  "elapsed_seconds": 81.2324054648634,
+  "scope": "small training-distribution common-state mechanism;not main episode evaluation"
+}

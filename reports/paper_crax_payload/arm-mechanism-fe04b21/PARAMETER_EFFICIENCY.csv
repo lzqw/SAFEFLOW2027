@@ -1,0 +1,17 @@
+sampler,batch_size,repeats,p50_seconds,p95_seconds,scope,compile_seconds,framework,variant,training_seed
+local,1,100,0.01128562109079212,0.012961632537189871,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2027
+endpoint_direct,1,100,0.013784559443593025,0.015598584932740777,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2027
+endpoint_pullback,1,100,0.019797881483100355,0.02280858386075124,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2027
+random,1,100,0.018660288536921144,0.02203867438947782,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2027
+local,1,100,0.01027287996839732,0.010598632437177003,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2028
+endpoint_direct,1,100,0.012468664441257715,0.0129716930212453,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2028
+endpoint_pullback,1,100,0.01968389342073351,0.021117255731951445,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2028
+random,1,100,0.020176243968307972,0.022706615447532386,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_iso,2028
+local,1,100,0.01058333192486316,0.010963154328055679,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2027
+endpoint_direct,1,100,0.012722934014163911,0.013445183215662838,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2027
+endpoint_pullback,1,100,0.019224027055315673,0.019882674305699767,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2027
+random,1,100,0.017752742511220276,0.018475626839790493,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2027
+local,1,100,0.011121456045657396,0.012379110755864531,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2028
+endpoint_direct,1,100,0.012522662989795208,0.014889403991401193,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2028
+endpoint_pullback,1,100,0.018552119960077107,0.018939824355766178,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2028
+random,1,100,0.018631741986609995,0.01896791150793433,frozen_single_action_no_training_no_environment,0.0,eager_PyTorch,s_ea,2028

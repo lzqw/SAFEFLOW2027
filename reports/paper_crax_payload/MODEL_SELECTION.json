@@ -1,0 +1,64 @@
+{
+  "schema": "paper_crax_payload_model_selection_v2",
+  "status": "complete_frozen_selection",
+  "protocol": "EXPERIMENT_PROTOCOL.md",
+  "rule": "common_risk_requirement_then_task_then_capped_time; independent test locked after selection",
+  "common_validation": {
+    "seeds": [61027, 61028, 61029, 61030, 61031],
+    "episodes_per_seed": 50,
+    "mean_episode_cost_max": 25.0,
+    "candidate_evaluations": 225
+  },
+  "independent_test": {
+    "seeds": [71027, 71028, 71029, 71030, 71031],
+    "episodes_per_seed": 100,
+    "used_for_selection": false,
+    "summary": "pointgoal-formal-selection-20261113/POINTGOAL_INDEPENDENT_TEST_SUMMARY.json"
+  },
+  "selected_candidates": [
+    {
+      "method": "sac_lag",
+      "training_seed": 51029,
+      "checkpoint_steps": 2016256,
+      "common_mean_cost": 11.63,
+      "common_goals_per_episode": 1.66,
+      "common_at_least_one_goal": 0.808,
+      "independent_mean_cost": 13.20,
+      "independent_goals_per_episode": 1.93,
+      "independent_at_least_one_goal": 0.840,
+      "independent_budget_compliant_fraction": 0.880
+    },
+    {
+      "method": "stable_iso",
+      "training_seed": 51028,
+      "checkpoint_steps": 10000128,
+      "common_mean_cost": 24.02,
+      "common_goals_per_episode": 27.52,
+      "common_at_least_one_goal": 1.0,
+      "independent_mean_cost": 26.85,
+      "independent_goals_per_episode": 28.29,
+      "independent_at_least_one_goal": 1.0,
+      "independent_budget_compliant_fraction": 0.562
+    },
+    {
+      "method": "ea",
+      "training_seed": 51029,
+      "checkpoint_steps": 8000000,
+      "common_mean_cost": 22.00,
+      "common_goals_per_episode": 35.26,
+      "common_at_least_one_goal": 1.0,
+      "independent_mean_cost": 21.32,
+      "independent_goals_per_episode": 35.43,
+      "independent_at_least_one_goal": 1.0,
+      "independent_budget_compliant_fraction": 0.732
+    }
+  ],
+  "overall_deployment_candidate": {
+    "method": "ea",
+    "training_seed": 51029,
+    "checkpoint_steps": 8000000,
+    "reason": "highest task progress among risk-qualified candidates while retaining lower independent mean cost than Stable-Iso"
+  },
+  "full_selection_receipt": "pointgoal-formal-selection-20261113/POINTGOAL_MODEL_SELECTION.json",
+  "piper_selection": "simulation_only; physical motion not authorized or performed"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "method": "s_ea",
+  "training_seed": 41999,
+  "phase": "engineering",
+  "steps": 3210,
+  "initial_steps": 0,
+  "newly_collected_transitions": 3210,
+  "training_violation_count": 38,
+  "training_episodes": 59,
+  "training_safe_successes": 0,
+  "training_safe_timeouts": 21,
+  "new_physical_evaluation_transitions": 0,
+  "physical_evaluation_transitions": 0,
+  "segment_elapsed_seconds": 17.84440953801095,
+  "cumulative_elapsed_seconds": 17.844410082005197,
+  "learner_updates": 1210,
+  "reward_updates": 2420,
+  "actor_updates": 105,
+  "source_commit": "working-tree-payload-v1-sha256-in-manifest"
+}

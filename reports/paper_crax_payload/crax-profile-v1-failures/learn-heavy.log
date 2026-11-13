@@ -1,0 +1,15 @@
+/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/io/mjcf.py:492: UserWarning: Brax System, piplines and environments are not actively being maintained. Please see MJX for a well maintained JAX-based physics engine: https://github.com/google-deepmind/mujoco/tree/main/mjx. For a host of environments that use MJX, see: https://github.com/google-deepmind/mujoco_playground.
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/train_crax.py", line 246, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/train_crax.py", line 179, in main
+    raw=totals.cpu().tolist(); metrics=learner.metrics()
+                                       ^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/project/scripts/paper_crax_payload/crax_models.py", line 219, in metrics
+    values = torch.stack([self.last_metrics[k] for k in keys]).detach().cpu().tolist()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: stack expects a non-empty TensorList

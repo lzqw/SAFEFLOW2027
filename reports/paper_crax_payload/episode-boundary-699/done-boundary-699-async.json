@@ -1,0 +1,31 @@
+{
+  "physical_controls": 256,
+  "new_training_transitions": 0,
+  "real_interactions": 0,
+  "synthetic_elapsed_boundary": true,
+  "asynchronous_consumers": true,
+  "before": [
+    256.0,
+    256.0,
+    0.0
+  ],
+  "done_dtype": "torch.bool",
+  "done_unique": [
+    true
+  ],
+  "reset_steps": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "before_record": 256,
+  "after_record": 256,
+  "recorded_episode_count": 256.0,
+  "final_partial_length": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "target_steps": 4096,
+  "prefill_steps": 128,
+  "actor_steps": 8,
+  "actor_epoch_steps": 32,
+  "total_epochs": 16,
+  "candidate_count": 5,
+  "actual_rounded_final_steps": 4224,
+  "candidate_epochs": [
+    3,
+    6,
+    10,
+    13,
+    16
+  ],
+  "format": "SAFEFlow-native-SAC-Lag-full-host-epoch-v1",
+  "resume_available": false,
+  "initial_steps": 0,
+  "fixed_native_train_sha256": "e4d73d7d16e06ef6d50cd907b75ceba2622f108594a7b2cc483d845c1910baa4",
+  "selection": "exactly declared candidate_epochs;other host epochs ineligible"
+}

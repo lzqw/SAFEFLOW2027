@@ -1,0 +1,69 @@
+{
+  "as_of": "2026-11-12T16:11:00+08:00",
+  "whole_goal_complete": false,
+  "PointGoal_development": {
+    "cap_training_transitions": 24000000,
+    "observed_completed_training_including_engineering": 19640320,
+    "failed_profile_source_inferred_training_not_in_observed_total": 29696,
+    "conservative_failed_profile_reservation_instead_of_inferred_total": 98304,
+    "conservatively_charged": 19738624,
+    "major_configurations_launched": 6,
+    "major_configuration_cap": 6,
+    "formal_training_started": true,
+    "formal_budget_not_spent_or_reclassified_as_development": true,
+    "remaining_after_completed_and_failed_reservation": 4261376,
+    "active_new_training_reservations": {},
+    "total_reserved_completed_plus_active_targets": 19738624,
+    "remaining_after_active_target_reservations": 4261376
+  },
+  "Payload_development": {
+    "cap_training_transitions": 3000000,
+    "engineering_actual_training": 3220,
+    "six_initial_jobs_total_reserved": 1800000,
+    "remaining_targeted_repair_allowance_after_initial_six": 1196780,
+    "completed_initial_jobs": 3,
+    "live_initial_jobs": 2,
+    "pending_initial_jobs": 1,
+    "confirmation_training_started": false,
+    "whole_payload_training_cap": 12000000
+  },
+  "Piper_simulation": {
+    "cap_training_transitions": 3000000,
+    "engineering_actual_training": 3220,
+    "six_proposed_candidate_jobs_total": 1800000,
+    "candidate_jobs_launched": 1,
+    "remaining_after_proposed_six": 1196780,
+    "physical_interactions": 0,
+    "physical_connection_authorized": false,
+    "candidate_queue_jobs_reserved_A100": 3,
+    "candidate_queue_jobs_prepared_4080": 3,
+    "observed_new_candidate_training_lower_bound": 60000
+  },
+  "Arm_mechanism": {
+    "cap_new_training": 3000000,
+    "actual_new_training": 0,
+    "actual_nontraining_simulator_controls": 437685
+  },
+  "notes": [
+    "Query controls and training transitions are separately charged;no zero-cost relabeling of failed prefixes.",
+    "NativeProgress is a compact-run snapshot and does not itself include every engineering receipt;TrialLedger holds supplemental rows.",
+    "Budget reservation is not an observed actual sample count.",
+    "Live and pending status is a timestamped snapshot,not continuous liveness proof."
+  ],
+  "PointGoal_formal": {
+    "status": "frozen_queue_active",
+    "common_steps_per_seed": 10000000,
+    "registered_runs": 9,
+    "nominal_training_reservation": 90000000,
+    "estimated_vector_host_rounding_upper_extra": 1920,
+    "actual_counts_authority": "allnativerunreceipts;neverrounddownactualsampling",
+    "first_completed_actual": 10000384,
+    "completed_runs_observed": 1,
+    "total_PointGoal_cap_with_common10M": 150000000,
+    "optional_CVPO_started": false
+  },
+  "PointGoal_mechanisms": {
+    "actual_training": 0,
+    "actual_nontraining_simulator_controls": 2208
+  }
+}

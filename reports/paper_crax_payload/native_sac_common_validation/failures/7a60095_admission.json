@@ -1,0 +1,13 @@
+{
+  "status": "failed_during_lower_compile_before_execution",
+  "analysis_source_sha256": "7a60095bdc07741a487f9a334b466c7ba1e9f976f540f6ab61e2991ff1c74cf3",
+  "native_pid": 28054,
+  "exception": "flax.errors.ScopeParamShapeError",
+  "cause": "Stored policy export retains singleton pmap axis: kernel(1,62,256), native inference expects(62,256)",
+  "training_transitions": 0,
+  "optimizer_updates": 0,
+  "physical_controls": 0,
+  "environment_instances_created": 1,
+  "real_interactions": 0,
+  "retry_scope": "New evaluator source explicitly removes exactly one validated singleton pmap axis; no learner/source/checkpoint mutation"
+}

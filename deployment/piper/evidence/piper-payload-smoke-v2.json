@@ -1,0 +1,86 @@
+{
+  "status": "completed_official_model_simulation_smoke",
+  "definition": {
+    "robot_family": "Piper",
+    "config": {
+      "task": "Payload",
+      "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+      "horizon": 100,
+      "physics_dt_s": 0.002,
+      "substeps": 20,
+      "displacement_scale_m": 0.01,
+      "safety_distance_m": 0.015,
+      "success_distance_m": 0.03,
+      "obstacle_radius_m": 0.045,
+      "payload_half_extents_m": [
+        0.025,
+        0.018,
+        0.025
+      ],
+      "payload_mass_kg": 0.05,
+      "tcp_from_flange_m": [
+        0.0,
+        0.0,
+        0.1358
+      ],
+      "start_tcp_base_m": [
+        0.32,
+        -0.12,
+        0.28
+      ],
+      "goal_tcp_base_m": [
+        0.32,
+        0.12,
+        0.28
+      ],
+      "workspace_min_m": [
+        0.05,
+        -0.45,
+        0.05
+      ],
+      "workspace_max_m": [
+        0.65,
+        0.45,
+        0.65
+      ],
+      "hardware_matched": false
+    },
+    "model_source": "https://github.com/agilexrobotics/piper_ros.git",
+    "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+    "observation_units": "joint rad/pi; joint velocity rad/s /4; positions/extent m; quaternion xyzw; mass kg",
+    "action": "normalized deltaXYZ in robot base, fixed reset orientation",
+    "task_geometry": "provisional reach/payload around spherical obstacle, not calibrated real robot",
+    "physical_connection": false,
+    "hardware_matched": false
+  },
+  "reset": {
+    "minimum_distance": 0.033597476259891165,
+    "arm_distance": 0.034380713284449416,
+    "payload_distance": 0.033597476259891165,
+    "reset_ik_error_m": 0.015327268773591342,
+    "hardware_matched": false
+  },
+  "records": [
+    {
+      "step": 1,
+      "reward": -0.00991866542846955,
+      "cost": 0.0,
+      "safe_success": false,
+      "violation": false,
+      "collision": false,
+      "arm_minimum_distance": 0.034380713284449416,
+      "payload_minimum_distance": 0.033597476259891165,
+      "minimum_distance": 0.033597476259891165,
+      "local_margin": -0.018597476259891166,
+      "true_horizon_terminal": false,
+      "workspace_clipped": false,
+      "control_dt": 0.04,
+      "physical_connection": false
+    }
+  ],
+  "new_training_transitions": 0,
+  "new_simulation_control_intervals": 1,
+  "new_physics_substeps": 20,
+  "real_interactions": 0,
+  "candidate_policies_generated": 0
+}

@@ -8,6 +8,7 @@ artifacts/**/replay/
 artifacts/**/runtime/
 artifacts/**/videos/
 cache/
+**/jax-compilation-cache/
 checkpoints/
 replay_buffers/
 videos/

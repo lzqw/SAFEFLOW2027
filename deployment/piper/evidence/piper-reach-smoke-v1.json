@@ -1,0 +1,118 @@
+{
+  "status": "completed_official_model_simulation_smoke",
+  "definition": {
+    "robot_family": "Piper",
+    "config": {
+      "task": "Reach",
+      "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+      "horizon": 100,
+      "physics_dt_s": 0.002,
+      "substeps": 20,
+      "displacement_scale_m": 0.01,
+      "safety_distance_m": 0.015,
+      "success_distance_m": 0.03,
+      "obstacle_radius_m": 0.045,
+      "payload_half_extents_m": [
+        0.025,
+        0.018,
+        0.025
+      ],
+      "payload_mass_kg": 0.05,
+      "tcp_from_flange_m": [
+        0.0,
+        0.0,
+        0.1358
+      ],
+      "start_tcp_base_m": [
+        0.32,
+        -0.12,
+        0.28
+      ],
+      "goal_tcp_base_m": [
+        0.32,
+        0.12,
+        0.28
+      ],
+      "workspace_min_m": [
+        0.05,
+        -0.45,
+        0.05
+      ],
+      "workspace_max_m": [
+        0.65,
+        0.45,
+        0.65
+      ],
+      "hardware_matched": false
+    },
+    "model_source": "https://github.com/agilexrobotics/piper_ros.git",
+    "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+    "observation_units": "joint rad/pi; joint velocity rad/s /4; positions/extent m; quaternion xyzw; mass kg",
+    "action": "normalized deltaXYZ in robot base, fixed reset orientation",
+    "task_geometry": "provisional reach/payload around spherical obstacle, not calibrated real robot",
+    "physical_connection": false,
+    "hardware_matched": false
+  },
+  "reset": {
+    "minimum_distance": 0.0440672423458513,
+    "arm_distance": 0.0440672423458513,
+    "payload_distance": 2.0,
+    "reset_ik_error_m": 0.015327268773591342,
+    "hardware_matched": false
+  },
+  "records": [
+    {
+      "step": 1,
+      "reward": -0.009912049573422557,
+      "cost": 0.0,
+      "safe_success": false,
+      "violation": false,
+      "collision": false,
+      "arm_minimum_distance": 0.03547120246196331,
+      "payload_minimum_distance": 2.0,
+      "minimum_distance": 0.03547120246196331,
+      "local_margin": -0.02047120246196331,
+      "true_horizon_terminal": false,
+      "workspace_clipped": false,
+      "control_dt": 0.04,
+      "physical_connection": false
+    },
+    {
+      "step": 2,
+      "reward": -0.009982539427365314,
+      "cost": 0.0,
+      "safe_success": false,
+      "violation": false,
+      "collision": false,
+      "arm_minimum_distance": 0.034542184093246595,
+      "payload_minimum_distance": 2.0,
+      "minimum_distance": 0.034542184093246595,
+      "local_margin": -0.019542184093246595,
+      "true_horizon_terminal": false,
+      "workspace_clipped": false,
+      "control_dt": 0.04,
+      "physical_connection": false
+    },
+    {
+      "step": 3,
+      "reward": -0.009989382039493474,
+      "cost": 0.0,
+      "safe_success": false,
+      "violation": false,
+      "collision": false,
+      "arm_minimum_distance": 0.03442948152546359,
+      "payload_minimum_distance": 2.0,
+      "minimum_distance": 0.03442948152546359,
+      "local_margin": -0.019429481525463588,
+      "true_horizon_terminal": false,
+      "workspace_clipped": false,
+      "control_dt": 0.04,
+      "physical_connection": false
+    }
+  ],
+  "new_training_transitions": 0,
+  "new_simulation_control_intervals": 3,
+  "new_physics_substeps": 60,
+  "real_interactions": 0,
+  "candidate_policies_generated": 0
+}

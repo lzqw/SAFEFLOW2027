@@ -1,0 +1,221 @@
+{
+  "schema": "payload_independent_test_summary_v2",
+  "status": "complete",
+  "selection_freeze": "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/PAYLOAD_SELECTION_FREEZE_DEVELOPMENT.json",
+  "independent_test_used_for_selection": false,
+  "candidates": [
+    {
+      "candidate_id": "development:s_ea:41028:000240000",
+      "policy_sha256": "fc422c62af36d6a54b5316486d620fd1b42894628df6f951c5e289a1fe5099d6",
+      "selection_freeze_digest": "143372ca6767a5f9da6e8d125fbcdf4c4dafaea94c6ffea6b3e2ffe6ee22b227",
+      "split": "independent_test",
+      "conditions": [
+        {
+          "condition": "nominal",
+          "episodes": 100,
+          "safe_success_count": 99,
+          "violation_count": 1,
+          "reset_failure_count": 0,
+          "safe_success": 0.99,
+          "violation": 0.01,
+          "time_to_goal_seconds": 0.7280808080808082,
+          "time_to_goal_capped_seconds": 0.7608,
+          "physical_evaluation_transitions": 1805
+        },
+        {
+          "condition": "radius_075_heldout",
+          "episodes": 100,
+          "safe_success_count": 73,
+          "violation_count": 27,
+          "reset_failure_count": 1,
+          "safe_success": 0.73,
+          "violation": 0.27,
+          "time_to_goal_seconds": 0.7189041095890409,
+          "time_to_goal_capped_seconds": 1.6048,
+          "physical_evaluation_transitions": 1585
+        },
+        {
+          "condition": "payload_shape_heldout",
+          "episodes": 100,
+          "safe_success_count": 90,
+          "violation_count": 10,
+          "reset_failure_count": 0,
+          "safe_success": 0.9,
+          "violation": 0.1,
+          "time_to_goal_seconds": 0.7226666666666666,
+          "time_to_goal_capped_seconds": 1.0504,
+          "physical_evaluation_transitions": 1725
+        },
+        {
+          "condition": "execution_scale_080_heldout",
+          "episodes": 100,
+          "safe_success_count": 98,
+          "violation_count": 2,
+          "reset_failure_count": 0,
+          "safe_success": 0.98,
+          "violation": 0.02,
+          "time_to_goal_seconds": 0.8885714285714287,
+          "time_to_goal_capped_seconds": 0.9508,
+          "physical_evaluation_transitions": 2183
+        },
+        {
+          "condition": "offset_route_candidate",
+          "episodes": 100,
+          "safe_success_count": 74,
+          "violation_count": 26,
+          "reset_failure_count": 0,
+          "safe_success": 0.74,
+          "violation": 0.26,
+          "time_to_goal_seconds": 0.9637837837837839,
+          "time_to_goal_capped_seconds": 1.7532000000000003,
+          "physical_evaluation_transitions": 2000
+        }
+      ],
+      "physical_evaluation_transitions": 9298,
+      "reset_failure_total": 1,
+      "oracle_used_for_action_selection": false
+    },
+    {
+      "candidate_id": "development:s_iso:41028:000120000",
+      "policy_sha256": "64409a8937ab4ed99040f2c5e10964eac95bef88469aefa771493a8ec2afe571",
+      "selection_freeze_digest": "143372ca6767a5f9da6e8d125fbcdf4c4dafaea94c6ffea6b3e2ffe6ee22b227",
+      "split": "independent_test",
+      "conditions": [
+        {
+          "condition": "nominal",
+          "episodes": 100,
+          "safe_success_count": 95,
+          "violation_count": 5,
+          "reset_failure_count": 0,
+          "safe_success": 0.95,
+          "violation": 0.05,
+          "time_to_goal_seconds": 0.7292631578947368,
+          "time_to_goal_capped_seconds": 0.8928000000000001,
+          "physical_evaluation_transitions": 1765
+        },
+        {
+          "condition": "radius_075_heldout",
+          "episodes": 100,
+          "safe_success_count": 93,
+          "violation_count": 7,
+          "reset_failure_count": 1,
+          "safe_success": 0.93,
+          "violation": 0.07,
+          "time_to_goal_seconds": 0.7260215053763442,
+          "time_to_goal_capped_seconds": 0.9552,
+          "physical_evaluation_transitions": 1719
+        },
+        {
+          "condition": "payload_shape_heldout",
+          "episodes": 100,
+          "safe_success_count": 94,
+          "violation_count": 6,
+          "reset_failure_count": 0,
+          "safe_success": 0.94,
+          "violation": 0.06,
+          "time_to_goal_seconds": 0.7263829787234043,
+          "time_to_goal_capped_seconds": 0.9228000000000001,
+          "physical_evaluation_transitions": 1725
+        },
+        {
+          "condition": "execution_scale_080_heldout",
+          "episodes": 100,
+          "safe_success_count": 96,
+          "violation_count": 4,
+          "reset_failure_count": 0,
+          "safe_success": 0.96,
+          "violation": 0.04,
+          "time_to_goal_seconds": 0.8795833333333335,
+          "time_to_goal_capped_seconds": 1.0044000000000002,
+          "physical_evaluation_transitions": 2122
+        },
+        {
+          "condition": "offset_route_candidate",
+          "episodes": 100,
+          "safe_success_count": 13,
+          "violation_count": 86,
+          "reset_failure_count": 0,
+          "safe_success": 0.13,
+          "violation": 0.86,
+          "time_to_goal_seconds": 0.7692307692307693,
+          "time_to_goal_capped_seconds": 3.58,
+          "physical_evaluation_transitions": 604
+        }
+      ],
+      "physical_evaluation_transitions": 7935,
+      "reset_failure_total": 1,
+      "oracle_used_for_action_selection": false
+    },
+    {
+      "candidate_id": "development:sac_lag:41028:000300000",
+      "policy_sha256": "4f1deec334150d1bd4cb82dfa6a3e15a567b782afa22c1f7d3de13338c79bdbe",
+      "selection_freeze_digest": "143372ca6767a5f9da6e8d125fbcdf4c4dafaea94c6ffea6b3e2ffe6ee22b227",
+      "split": "independent_test",
+      "conditions": [
+        {
+          "condition": "nominal",
+          "episodes": 100,
+          "safe_success_count": 99,
+          "violation_count": 1,
+          "reset_failure_count": 0,
+          "safe_success": 0.99,
+          "violation": 0.01,
+          "time_to_goal_seconds": 0.7131313131313132,
+          "time_to_goal_capped_seconds": 0.7460000000000001,
+          "physical_evaluation_transitions": 1783
+        },
+        {
+          "condition": "radius_075_heldout",
+          "episodes": 100,
+          "safe_success_count": 86,
+          "violation_count": 14,
+          "reset_failure_count": 1,
+          "safe_success": 0.86,
+          "violation": 0.14,
+          "time_to_goal_seconds": 0.7102325581395347,
+          "time_to_goal_capped_seconds": 1.1708,
+          "physical_evaluation_transitions": 1710
+        },
+        {
+          "condition": "payload_shape_heldout",
+          "episodes": 100,
+          "safe_success_count": 95,
+          "violation_count": 5,
+          "reset_failure_count": 0,
+          "safe_success": 0.95,
+          "violation": 0.05,
+          "time_to_goal_seconds": 0.7107368421052631,
+          "time_to_goal_capped_seconds": 0.8752000000000001,
+          "physical_evaluation_transitions": 1752
+        },
+        {
+          "condition": "execution_scale_080_heldout",
+          "episodes": 100,
+          "safe_success_count": 94,
+          "violation_count": 6,
+          "reset_failure_count": 0,
+          "safe_success": 0.94,
+          "violation": 0.06,
+          "time_to_goal_seconds": 0.8668085106382978,
+          "time_to_goal_capped_seconds": 1.0548000000000002,
+          "physical_evaluation_transitions": 2159
+        },
+        {
+          "condition": "offset_route_candidate",
+          "episodes": 100,
+          "safe_success_count": 90,
+          "violation_count": 9,
+          "reset_failure_count": 0,
+          "safe_success": 0.9,
+          "violation": 0.09,
+          "time_to_goal_seconds": 0.9213333333333333,
+          "time_to_goal_capped_seconds": 1.2292,
+          "physical_evaluation_transitions": 2295
+        }
+      ],
+      "physical_evaluation_transitions": 9699,
+      "reset_failure_total": 1,
+      "oracle_used_for_action_selection": false
+    }
+  ]
+}\n

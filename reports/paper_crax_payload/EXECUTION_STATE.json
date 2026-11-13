@@ -1,0 +1,221 @@
+{
+  "status": "active_implementation_and_fresh_development",
+  "baseline_commit": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+  "branch": "codex/paper-crax-payload-v1",
+  "whole_goal_complete": false,
+  "scientific_targets_achieved": false,
+  "task_file": "MASTER_TASK.md",
+  "previous_goal_turn_classification": "progress;publishedreal2Moutcomes_and_launchedpairedEA_andnativePiper",
+  "payload": {
+    "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+    "host": "4080",
+    "queue_pid": 3401203,
+    "native_pids": [
+      3520324,
+      3715064
+    ],
+    "queue_state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
+    "declared_scientific_transitions": 1800000,
+    "initial_jobs": "SAC41027/Iso41027/SAC41028 completed;EA41027+Iso41028 live;EA41028 pending",
+    "observed_at_local": "2026-11-12 14:24 Asia/Taipei",
+    "engineering_new_training": 3220,
+    "engineering_nontraining_sim_controls": 222,
+    "full_native_resume_passed": true,
+    "completed_development_endpoints": 3,
+    "latest_native_snapshot": "NATIVE_PROGRESS.json;actualobservedcountersandtimestampsinrawnative_runs"
+  },
+  "arm_mechanism": {
+    "source_commit": "fe04b21b574da0b3bf326699feacb5b58de043ea",
+    "host": "tjucta-a100",
+    "gpu": 1,
+    "native_pid": 4016671,
+    "output": "/home/lzqw/SAFEFLOW2027_PAPER/analysis/arm-mechanism-fe04b21",
+    "states": 128,
+    "draws_per_state": 64,
+    "new_training": 0,
+    "status": "completed",
+    "new_nontraining_simulator_controls": 437685
+  },
+  "CRAX": {
+    "official_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "isolated_env": "/home/lzqw/SAFEFLOW2027_PAPER/env",
+    "status": "development_under_cap_completed;formal_common10M_frozen_and_native_queue_active",
+    "download_acceleration": "4080_4T_official_wheel_cache_relay_to_A100_no_local_bigfile_staging",
+    "full_training_profile_completed": true,
+    "native_SAC_reference_started": true,
+    "configuration_registry": "CONFIGURATION_REGISTRY.json",
+    "episode_boundary_bookkeeping": "development directbooleanDLPackrepair validated;formal runners are nativeSAC or same formal Flow code and preserve all receipts",
+    "formal_runs_started": true,
+    "independent_test_consumed": false,
+    "common_SAC_validation": {
+      "status": "completed",
+      "nontraining_controls": 500000,
+      "eligible_development_candidate": {
+        "configuration": "SAC_norm_full_v2",
+        "checkpoint": 1808128,
+        "goals": 3.12,
+        "mean_cost": 18.572626,
+        "at_least_one_goal": 0.9,
+        "budget_compliance": 0.74
+      },
+      "independent_test_used": false
+    },
+    "completed_training_transitions_including_engineering_before_active_continuation": 19640320,
+    "latest_Iso_development": {
+      "steps": 4000000,
+      "goals": 12.42,
+      "at_least_one_goal": 0.98,
+      "mean_cost": 43.670701949596406,
+      "budget_compliance": 0.44,
+      "budget_compliant_return": 4.909090909090909,
+      "task_learned": true,
+      "safety_target_met": false
+    },
+    "active_native_jobs": "dynamic:authoritativequeues/pointgoal-formal-v1.json;initial180139/180140;firstSACcompletedandnextjobautofilled",
+    "latest_EA_screen": {
+      "steps": 4000000,
+      "goals": 18.22,
+      "cost": 46.61016037464142,
+      "at_least_one_goal": 1,
+      "budget_compliance": 0.36,
+      "task_learned": true,
+      "safety_target_met": false
+    },
+    "second_Iso_development": {
+      "training_seed": 41028,
+      "steps": 2000128,
+      "goals": 10.5,
+      "at_least_one_goal": 1,
+      "mean_cost": 81.62013145685196,
+      "budget_compliance": 0.34,
+      "intermediate_1600000": {
+        "goals": 1.54,
+        "cost": 17.6152827549,
+        "at_least_one_goal": 0.88
+      },
+      "interpretation": "earlybudgetedprogressfollowedbyhigherunsafeendpoint;preserveboth"
+    },
+    "formal_admission": "frozen;common10M;all9registered;formalnativequeueactive",
+    "second_EA_development": {
+      "training_seed": 41028,
+      "steps": 2000128,
+      "goals": 5.28,
+      "at_least_one_goal": 1,
+      "mean_cost": 66.58321972846984,
+      "budget_compliance": 0.44
+    },
+    "formal_controller_pid": 180138,
+    "formal_source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
+    "formal_completed_runs_observed": 3,
+    "small_common_state_mechanism": {
+      "status": "completed",
+      "states": 32,
+      "draws": 16,
+      "nontraining_controls": 2208,
+      "training_steps": 0,
+      "raw": "pointgoal-common4m-161637c/receipt.json",
+      "not_independent_test": true
+    },
+    "formal_latest_queue": {
+      "controller_pid": 180138,
+      "live_native_pids": [
+        200904,
+        291182
+      ],
+      "pending": 4,
+      "status": "running",
+      "admission_wait_reason": null
+    },
+    "formal_first_two_completed": [
+      {
+        "run": "crax-formal-sac_lag-51027-10m-v1",
+        "actual_steps": 10000384,
+        "elapsed_seconds": 833.50554,
+        "full_sps": 11997.98144
+      },
+      {
+        "run": "crax-formal-sac_lag-51028-10m-v1",
+        "actual_steps": 10000384,
+        "elapsed_seconds": 1149.4298656
+      }
+    ],
+    "formal_completed_run_ids": [
+      "crax-formal-sac_lag-51027-10m-v1",
+      "crax-formal-sac_lag-51028-10m-v1",
+      "crax-formal-stable_iso-51027-10m-v1"
+    ],
+    "formal_latest_iso51027": {
+      "actual_steps": 10000128,
+      "goals": 1.38,
+      "cost": 28.7090650105,
+      "at_least_one_goal": 0.76,
+      "budget_compliance": 0.86,
+      "full_runner_sps": 2031.20170771094
+    }
+  },
+  "Piper": {
+    "user_identified_model": "Piper standard",
+    "user_identified_gripper": "standard",
+    "real_hardware_connection_enabled": false,
+    "real_interactions": 0,
+    "official_model_smoke_sim_controls": 8,
+    "trained_native_candidates": 0,
+    "physical_calibration_firmware_workspace_limits": "pending_operator_confirmation;not_a_blocker_for_simulation",
+    "engineering_training": 3220,
+    "nontraining_sim_controls": 130,
+    "native_sim_candidate_training_started": true,
+    "queue_pid": 57815,
+    "native_pid": 57816,
+    "host": "tjucta-a100",
+    "gpu": 0,
+    "actual_observed_training_steps": 60000,
+    "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+    "shared_slot": true,
+    "native_sim_candidates_completed": 0,
+    "remaining4080Payload_plan": "prepared_not_launched",
+    "first_development_validation": {
+      "episodes_per_condition": 30,
+      "nominal_safe_success": 0.16666666666666666,
+      "nominal_violation": 0.8333333333333334,
+      "geometry_safe_success": 0.03333333333333333,
+      "geometry_violation": 0.9666666666666667,
+      "qualified_for_deployment": false
+    }
+  },
+  "next_required_actions": [
+    "complete remaining six formal PointGoal10M runs;then equal common validation and locked independent test",
+    "finishscientificanalyseswithoutfurtherconfigurationsearch;all6recipesretained",
+    "runregisteredformal3methods3seedsandfaircommonvalidation",
+    "finishsixPayload300kdevelopmentandfair0.6Mconfirmation",
+    "selected-policyindependentgeneralizationandPointGoalcommonstates",
+    "nativePiperReachandPayloadcandidatesplusfrozenvalidation/bundles/dryrun;nophysicalmotion",
+    "publishallendpoints,failures,budgetsandfinalsixquestionreport"
+  ],
+  "foreign_workloads_changed": false,
+  "5080_used": false,
+  "historical_results_modified": false,
+  "observed_at_local": "2026-11-12 17:34 Asia/Taipei",
+  "observers": {
+    "interval_seconds": 1800,
+    "A100": {
+      "pid": 4191500,
+      "snapshot": "/home/lzqw/SAFEFLOW2027_PAPER/queues/paper-observer-latest.json"
+    },
+    "RTX4080": {
+      "pid": 3627156,
+      "snapshot": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/paper-observer-latest.json"
+    },
+    "read_only": true,
+    "automatic_restart": false
+  },
+  "archive": {
+    "status": "completed_verified_archive",
+    "completed_scientific_runs": 5,
+    "files": 44,
+    "bytes": 2565010425,
+    "destination_host": "4080",
+    "destination_root": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/crax-development-6f9e3bf",
+    "A100_originals_retained": true,
+    "manifest": "CRAX_DEVELOPMENT_ARCHIVE_6f9e3bf.json"
+  }
+}

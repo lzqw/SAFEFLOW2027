@@ -1,0 +1,248 @@
+{
+  "master": {
+    "baseline_commit": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+    "branch": "codex/paper-crax-payload-v1",
+    "crax_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "development_seeds": [
+      41027,
+      41028
+    ],
+    "formal_training_seeds": [
+      51027,
+      51028,
+      51029
+    ],
+    "validation_seeds": [
+      61027,
+      61028,
+      61029,
+      61030,
+      61031
+    ],
+    "independent_test_seeds": [
+      71027,
+      71028,
+      71029,
+      71030,
+      71031
+    ],
+    "budgets": {
+      "pointgoal_development_transitions": 24000000,
+      "pointgoal_mechanism_parameter_transitions": 6000000,
+      "pointgoal_formal_steps_per_seed_preferred": 5000000,
+      "pointgoal_formal_steps_per_seed_optional_common": 10000000,
+      "pointgoal_total_cap_preferred": 90000000,
+      "pointgoal_total_cap_optional_common": 150000000,
+      "payload_development_transitions": 3000000,
+      "payload_total_training_transitions": 12000000,
+      "arm_mechanism_parameter_repairs_transitions": 3000000,
+      "piper_simulation_development_transitions": 3000000,
+      "physical_robot_interactions_authorized": 0
+    },
+    "pointgoal": {
+      "env_id": "safe_goal_point",
+      "difficulty": 1,
+      "task_mode": "cumulative",
+      "episodic_cost_budget": 25.0,
+      "discount": 0.99,
+      "reward_scaling": 1.0,
+      "cost_scaling": 1.0,
+      "observation_normalization": "none_initial_shared_with_reference",
+      "environment_overrides": {},
+      "profiles": {
+        "balanced": {
+          "E": 256,
+          "F": 1,
+          "B": 1024,
+          "G": 4,
+          "replay_exposure": 16
+        },
+        "fast": {
+          "E": 512,
+          "F": 1,
+          "B": 1024,
+          "G": 4,
+          "replay_exposure": 8
+        },
+        "learn_heavy": {
+          "E": 128,
+          "F": 1,
+          "B": 512,
+          "G": 8,
+          "replay_exposure": 32
+        }
+      },
+      "shared_learner": {
+        "hidden_width": 256,
+        "actor_lr": 0.0001,
+        "critic_lr": 0.0003,
+        "reward_loss": "huber_beta1",
+        "reward_updates_per_round": 2,
+        "actor_update_interval": 2,
+        "reward_target_samples": 4,
+        "flow_steps": 4,
+        "reference_variance": 0.04,
+        "normal_variance_ratio": 0.25,
+        "replay_capacity": 1000000,
+        "margin_ema_tau": 0.005,
+        "geometry_margin_updates_start": 1000,
+        "geometry_margin_updates_full": 5000,
+        "kinetic_alpha_per_variance": 0.02,
+        "energy_target_per_action": 0.25,
+        "random_prefill_transitions": 20000,
+        "critic_only_updates": 1000
+      },
+      "development": {
+        "reference_initial_steps": 1000000,
+        "candidate_steps": 500000,
+        "survivor_steps": 2000000,
+        "best_shared_steps": [
+          3000000,
+          5000000
+        ],
+        "maximum_major_configurations": 6
+      },
+      "methods": [
+        "sac_lag",
+        "stable_iso",
+        "ea"
+      ],
+      "optional_baseline": "cvpo"
+    },
+    "payload": {
+      "env_id": "SafePayloadTransport-v1",
+      "task_mode": "episodic_binary",
+      "initial_steps": 300000,
+      "confirmation_initial_steps": 600000,
+      "confirmation_optional_common_steps": 1000000,
+      "methods": [
+        "sac_lag",
+        "stable_iso",
+        "ea"
+      ]
+    },
+    "selection": {
+      "rule": "risk_qualified_then_task_then_capped_time;otherwise_explicit_pareto",
+      "candidate_checkpoint_fractions": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0
+      ],
+      "maximum_checkpoints_per_seed": 5,
+      "equal_candidate_access_for_all_methods": true,
+      "validation_episodes_per_condition": 50,
+      "independent_test_episodes_per_condition": 100,
+      "pointgoal_risk_requirement": "mean_episode_cost<=25",
+      "payload_risk_requirement": "nominal_violation<=0.05;stress_violation<=0.10",
+      "test_reused_for_selection": false
+    },
+    "resource_policy": {
+      "a100_gpu0": "crax_reference_then_flow",
+      "a100_gpu1": "crax_flow_geometry",
+      "4080": "payload_then_arm_mechanisms_piper_simulation",
+      "foreign_workload_stop": false,
+      "5080_enabled": false,
+      "monitor_interval_seconds": 1800,
+      "queue_type": "simple_finite_slots_no_restart_watchdog"
+    }
+  },
+  "profile_name": "fast",
+  "phase": "engineering_profile",
+  "profile": {
+    "E": 512,
+    "F": 1,
+    "B": 1024,
+    "G": 4,
+    "replay_exposure": 8
+  },
+  "method": "ea",
+  "seed": 41994,
+  "source_commit": "f6731395bc5e2b06eed4641ab4242f6fd0b73a6e",
+  "task": {
+    "crax_version_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "env_id": "safe_goal_point",
+    "difficulty": 1,
+    "episode_length": 1000,
+    "physics_timestep": 0.019999999552965164,
+    "frame_skip": 4,
+    "control_period": 0.07999999821186066,
+    "action_dim": 2,
+    "obs_dim": 62,
+    "action_limits": [
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        -1.0,
+        1.0
+      ]
+    ],
+    "action_limits_source": "native_MJX_Model_not_filtered_legacy_Brax_actuator",
+    "goals": 2,
+    "hazards": 16,
+    "hazard_types": [
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "rect",
+      "rect",
+      "rect",
+      "rect"
+    ],
+    "hazard_collidable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "reward_goal": 1.0,
+    "reward_distance_scale": 0.0,
+    "proximity_cost_scale": 2.0,
+    "collision_cost": 3.0,
+    "native_goal_refresh": true,
+    "cost_termination_added": false,
+    "margin_label": "negative_endpoint_clearance_proxy_metres;not_interval_minimum;not_native_cost",
+    "reset": "fresh_native_reset_masked_in_device_after_preserving_terminal_observation"
+  },
+  "requested_steps": 32768,
+  "actual_target_steps": 32768,
+  "initial_steps": 0,
+  "task_mode": "cumulative",
+  "cost_q": "unbounded_discounted_raw_cost",
+  "float32_matmul_precision": "high",
+  "cuda_matmul_allow_tf32": true,
+  "dual": "raw_completed_episode_batch_mean;lr0.01;EMA0.05;clip0_100;not_native_SAC_perstep_rule",
+  "u": 0.0078125,
+  "replay_exposure": 8.0,
+  "energy_target": 12.5,
+  "jax_preallocate": "false",
+  "jax_compilation_cache_dir": "/home/lzqw/SAFEFLOW2027_PAPER/project/runs/jax-compilation-cache",
+  "engineering_profile_overrides": {
+    "critic_only_updates": 0,
+    "geometry_beta": 1.0
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "time_utc": "2026-11-12T10:40:44.111711+00:00",
+  "observer_pid": 4191500,
+  "interval_seconds": 1800,
+  "sample": 11,
+  "project": "/home/lzqw/SAFEFLOW2027_PAPER/project",
+  "actual_native_processes": [
+    {
+      "pid": 57815,
+      "module": "scripts.paper_crax_payload.run_queue",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.run_queue",
+        "--plan",
+        "configs/paper_crax_payload/piper_queue_a100_reach_v1.json",
+        "--source-commit",
+        "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af"
+      ]
+    },
+    {
+      "pid": 180138,
+      "module": "scripts.paper_crax_payload.run_queue",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.run_queue",
+        "--plan",
+        "configs/paper_crax_payload/pointgoal_formal_queue_a100_v1.json",
+        "--source-commit",
+        "cca402e011054cf57a0700d9f0612bb2c436efed"
+      ]
+    },
+    {
+      "pid": 291182,
+      "module": "scripts.paper_crax_payload.train_crax",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_crax",
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "stable_iso",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51028",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json",
+        "--output",
+        "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-stable_iso-51028-10m-v1",
+        "--source-commit",
+        "cca402e011054cf57a0700d9f0612bb2c436efed"
+      ]
+    },
+    {
+      "pid": 306801,
+      "module": "scripts.paper_crax_payload.piper_train",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.piper_train",
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Reach",
+        "--method",
+        "Iso-Low",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0",
+        "--output",
+        "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1",
+        "--source-commit",
+        "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af"
+      ]
+    },
+    {
+      "pid": 321169,
+      "module": "scripts.paper_crax_payload.train_crax",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_crax",
+        "--config",
+        "configs/paper_crax_payload/pointgoal_native_dual_v3.json",
+        "--method",
+        "ea",
+        "--profile",
+        "balanced",
+        "--seed",
+        "51028",
+        "--steps",
+        "10000000",
+        "--eval-envs",
+        "50",
+        "--phase",
+        "formal",
+        "--formal-plan",
+        "configs/paper_crax_payload/pointgoal_formal_plan_v1.json",
+        "--output",
+        "/home/lzqw/SAFEFLOW2027_PAPER/runs/crax-formal-ea-51028-10m-v1",
+        "--source-commit",
+        "cca402e011054cf57a0700d9f0612bb2c436efed"
+      ]
+    }
+  ],
+  "nvidia_smi": "0, NVIDIA A100 80GB PCIe, 2021 MiB, 79029 MiB, 91 %\n1, NVIDIA A100 80GB PCIe, 13262 MiB, 67788 MiB, 76 %",
+  "load_average": [
+    7.78,
+    7.65,
+    7.77
+  ],
+  "free_disk_bytes": 17947398144,
+  "native_receipts": [
+    {
+      "run": "crax-ea-nativedual-41027-2m-v3",
+      "status": "completed",
+      "steps": 2000128
+    },
+    {
+      "run": "crax-ea-nativedual-41027-4m-v3",
+      "status": "completed",
+      "steps": 4000000
+    },
+    {
+      "run": "crax-ea-nativedual-41027-500k-v3",
+      "status": "completed",
+      "steps": 500224
+    },
+    {
+      "run": "crax-ea-nativedual-41028-2m-v3",
+      "status": "completed",
+      "steps": 2000128
+    },
+    {
+      "run": "crax-formal-ea-51027-10m-v1",
+      "status": "completed",
+      "steps": 10000128
+    },
+    {
+      "run": "crax-formal-sac_lag-51027-10m-v1",
+      "status": "completed",
+      "steps": 10000384
+    },
+    {
+      "run": "crax-formal-sac_lag-51028-10m-v1",
+      "status": "completed",
+      "steps": 10000384
+    },
+    {
+      "run": "crax-formal-stable_iso-51027-10m-v1",
+      "status": "completed",
+      "steps": 10000128
+    },
+    {
+      "run": "crax-iso-nativedual-41027-2m-v3",
+      "status": "completed",
+      "steps": 2000128
+    },
+    {
+      "run": "crax-iso-nativedual-41027-4m-v3",
+      "status": "completed",
+      "steps": 4000000
+    },
+    {
+      "run": "crax-iso-nativedual-41027-500k-v3",
+      "status": "completed",
+      "steps": 500224
+    },
+    {
+      "run": "crax-iso-nativedual-41028-2m-v3",
+      "status": "completed",
+      "steps": 2000128
+    },
+    {
+      "run": "crax-iso-norm-balanced-41027-500k-v1",
+      "status": "completed",
+      "steps": 500224
+    },
+    {
+      "run": "crax-profile-balanced-v2",
+      "status": "completed",
+      "steps": 32768
+    },
+    {
+      "run": "crax-profile-fast-batched-v3",
+      "status": "completed",
+      "steps": 32768
+    },
+    {
+      "run": "crax-profile-fast-v2",
+      "status": "completed",
+      "steps": 32768
+    },
+    {
+      "run": "crax-profile-learn-heavy-v2",
+      "status": "completed",
+      "steps": 32768
+    },
+    {
+      "run": "crax-sac-norm-41027-3m-v2",
+      "status": "completed",
+      "steps": 3000064
+    },
+    {
+      "run": "crax-sac-norm-lagrate01-41027-3m-v3",
+      "status": "completed",
+      "steps": 3000064
+    },
+    {
+      "run": "crax-sac-ref-41027-v1",
+      "status": "completed",
+      "steps": 1000192
+    },
+    {
+      "run": "piper-reach-iso-41027-v1",
+      "status": "completed",
+      "steps": null
+    }
+  ],
+  "whole_goal_complete": false,
+  "automatic_restart": false,
+  "training_launches": 0,
+  "foreign_processes_changed": false,
+  "idle_observation_only_not_goal_completion": false
+}

@@ -1,0 +1,18 @@
+{
+  "source_host": "tjucta-a100",
+  "source_root": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3",
+  "destination_host": "4080",
+  "destination_root": "/home/carla/4T/SAFEFLOW2027_PAPER/archives/native-sac-resume-dc197f3",
+  "transfer": "streamed_tar_through_host_no_local_large_file_staging",
+  "source_originals_retained": true,
+  "all_three_sizes_and_sha256_matched": true,
+  "files": [
+    {"path": "uninterrupted/full_latest.pkl", "bytes": 10793913, "sha256": "fe195787768f8343268784087af7900750424fc4287eb3e00b6bd3facd15d076"},
+    {"path": "prefix/full_latest.pkl", "bytes": 10793328, "sha256": "7d89b6bad2388e19459b92fc2a5082ec9280ab9b92da454fe1035c7743bffda2"},
+    {"path": "resumed/full_latest.pkl", "bytes": 10794073, "sha256": "3f4113f4430192d32ec43ca52638c192fd5506dbd8348c8581836a4f055f1766"}
+  ],
+  "large_checkpoints_in_GitHub": false,
+  "new_training_transitions": 8448,
+  "evaluation_controls": 0,
+  "new_real_interactions": 0
+}

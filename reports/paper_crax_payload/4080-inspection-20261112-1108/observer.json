@@ -1,0 +1,86 @@
+{
+  "time_utc": "2026-11-12T10:40:42.516191+00:00",
+  "observer_pid": 3627156,
+  "interval_seconds": 1800,
+  "sample": 11,
+  "project": "/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "actual_native_processes": [
+    {
+      "pid": 3401203,
+      "module": "scripts.paper_crax_payload.run_queue",
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.run_queue",
+        "--plan",
+        "configs/paper_crax_payload/payload_queue_4080_v1.json",
+        "--source-commit",
+        "fe04b21b574da0b3bf326699feacb5b58de043ea"
+      ]
+    },
+    {
+      "pid": 3900460,
+      "module": "scripts.paper_crax_payload.payload_train",
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--method",
+        "s_ea",
+        "--seed",
+        "41028",
+        "--steps",
+        "300000",
+        "--phase",
+        "development",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1",
+        "--source-commit",
+        "fe04b21b574da0b3bf326699feacb5b58de043ea"
+      ]
+    }
+  ],
+  "nvidia_smi": "0, NVIDIA GeForce RTX 4080 SUPER, 3610 MiB, 12454 MiB, 71 %",
+  "load_average": [
+    20.3603515625,
+    21.720703125,
+    13.7490234375
+  ],
+  "free_disk_bytes": 1352918691840,
+  "native_receipts": [
+    {
+      "run": "payload-ea-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-iso-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-iso-41028-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-sac-41027-v1",
+      "status": "completed",
+      "steps": 300000
+    },
+    {
+      "run": "payload-sac-41028-v1",
+      "status": "completed",
+      "steps": 300000
+    }
+  ],
+  "whole_goal_complete": false,
+  "automatic_restart": false,
+  "training_launches": 0,
+  "foreign_processes_changed": false,
+  "idle_observation_only_not_goal_completion": false
+}

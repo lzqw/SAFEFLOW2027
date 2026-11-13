@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "schema": "pointgoal_flow_common_validation_v1",
+  "analysis_source_commit": "79f57b2",
+  "training_transitions": 0,
+  "optimizer_updates": 0,
+  "dual_updates": 0,
+  "real_interactions": 0,
+  "physical_controls": 7500000,
+  "result_rows": 150,
+  "runs": 6,
+  "checkpoints_per_run": 5,
+  "seeds": [
+    61027,
+    61028,
+    61029,
+    61030,
+    61031
+  ],
+  "episodes_per_seed": 50,
+  "independent_test_executed": false,
+  "original_checkpoints_modified": false,
+  "elapsed_seconds": 4110.155387826264
+}

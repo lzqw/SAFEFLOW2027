@@ -1,0 +1,96 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_PAPER/queues/piper-payload-candidates-4080-v1.json",
+  "maximum_new_training_transitions": 900000,
+  "piper_total_training_budget": 3000000,
+  "already_charged_engineering_training_transitions": 3220,
+  "admission": {
+    "status": "prepared_not_launched",
+    "priority": "primary Payload development queue before Piper Payload; explicit resource admission",
+    "prerequisites": [
+      "primaryPayloadpending0 and sufficient verified released slots",
+      "fresh actual GPU/disk/process inspection and coordinator approval",
+      "official pinned assets and exact native Piper source ready",
+      "this queue state and all three outputs/logs absent",
+      "all legacy all4080 combined/partition Piper plans superseded; Reach only in A100 plan"
+    ],
+    "foreign_process_stop_allowed": false,
+    "physical_motion_allowed": false,
+    "prerequisites_checked_by": "coordinator preflight, not extra scheduler/watchdog"
+  },
+  "jobs": [
+    {
+      "name": "piper-payload-iso-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Payload",
+        "--method",
+        "Iso",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/piper-payload-iso-41027-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/piper-payload-iso-41027-v1.log"
+    },
+    {
+      "name": "piper-payload-isolow-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Payload",
+        "--method",
+        "Iso-Low",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/piper-payload-isolow-41027-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/piper-payload-isolow-41027-v1.log"
+    },
+    {
+      "name": "piper-payload-ea-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Payload",
+        "--method",
+        "EA",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/piper-payload-ea-41027-v1",
+      "log": "/home/carla/4T/SAFEFLOW2027_PAPER/logs/piper-payload-ea-41027-v1.log"
+    }
+  ],
+  "total_cross_host_scientific_training_transitions": 1800000,
+  "total_cross_host_training_with_engineering": 1803220
+}

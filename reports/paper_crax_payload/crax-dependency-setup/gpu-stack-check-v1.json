@@ -1,0 +1,34 @@
+{
+  "status": "completed_single_process_real_GPU_stack_check",
+  "python_executable": "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+  "torch_module_path": "/home/lzqw/anaconda3/lib/python3.11/site-packages/torch/__init__.py",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "torch_device": "NVIDIA A100 80GB PCIe",
+  "torch_cuda": "11.8",
+  "torch_cudnn_version": 92801,
+  "dlpack_roundtrip": true,
+  "jax_jit_GPU": true,
+  "torch_GPU_convolution": true,
+  "torch_numpy_CPU": true,
+  "versions": {
+    "jax": "0.6.0",
+    "jaxlib": "0.6.0",
+    "jax-cuda12-plugin": "0.6.0",
+    "flax": "0.10.6",
+    "optax": "0.2.4",
+    "orbax-checkpoint": "0.11.13",
+    "mujoco": "3.11.0",
+    "mujoco-mjx": "3.11.0",
+    "numpy": "2.2.6",
+    "scipy": "1.17.1",
+    "torch": "2.7.1+cu118",
+    "nvidia-cudnn-cu12": "9.28.1.4"
+  },
+  "elapsed_s": 4.908977508544922,
+  "new_training_transitions": 0,
+  "environment_objects_created": 0,
+  "environment_steps": 0,
+  "real_interactions": 0
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "model_repository": "https://github.com/agilexrobotics/piper_ros.git",
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "model_package": "src/piper_description",
+  "provisional_urdf": "urdf/piper_description.urdf",
+  "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+  "provisional_robot_family": "Piper",
+  "hardware_match_status": "user_identified_Piper_standard_and_standard_gripper;calibration_firmware_and_limits_pending",
+  "sdk_repository": "https://github.com/agilexrobotics/pyAgxArm.git",
+  "sdk_commit": "d90e234ba8e408cfa964b38aa9120b3131fc9f85",
+  "sdk_cartesian_command_source": "pyAgxArm/protocols/can_protocol/msgs/piper/default/transmit/arm_end_pose_ctrl.py",
+  "sdk_position_unit_m": 0.000001,
+  "sdk_angle_unit_rad": 0.000017453292519943296,
+  "physical_transport_implemented": false,
+  "physical_motion_authorized": false,
+  "notes": "User identified Piper standard version with standard gripper, selecting this official standard URDF. Physical firmware, measured dimensions, TCP, base calibration and limits remain pending. Model identification is not deployment certification or motion authorization. No SDK or CAN interface is opened."
+}

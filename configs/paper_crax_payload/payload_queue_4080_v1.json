@@ -1,0 +1,15 @@
+{
+  "project":"/home/carla/4T/SAFEFLOW2027_PAPER/project",
+  "python":"/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots":2,
+  "state":"/home/carla/4T/SAFEFLOW2027_PAPER/queues/payload-development-v1.json",
+  "maximum_new_training_transitions":1800000,
+  "jobs":[
+    {"name":"payload-sac-41027","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","sac_lag","--seed","41027","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41027-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-sac-41027-v1.log"},
+    {"name":"payload-iso-41027","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","s_iso","--seed","41027","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41027-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-iso-41027-v1.log"},
+    {"name":"payload-ea-41027","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","s_ea","--seed","41027","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41027-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-ea-41027-v1.log"},
+    {"name":"payload-sac-41028","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","sac_lag","--seed","41028","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41028-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-sac-41028-v1.log"},
+    {"name":"payload-iso-41028","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","s_iso","--seed","41028","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41028-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-iso-41028-v1.log"},
+    {"name":"payload-ea-41028","module":"scripts.paper_crax_payload.payload_train","arguments":["--config","configs/paper_crax_payload/payload_v1.json","--method","s_ea","--seed","41028","--steps","300000","--phase","development"],"output":"/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1","log":"/home/carla/4T/SAFEFLOW2027_PAPER/logs/payload-ea-41028-v1.log"}
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "status": "saved_host_boundary",
+  "format": "SAFEFlow-native-SAC-Lag-full-host-epoch-v1",
+  "steps": 4224,
+  "initial_steps": 384,
+  "new_training_transitions": 3840,
+  "gradient_steps": 512,
+  "training_cumulative_cost": 699.019287109375,
+  "training_cumulative_goals": 0.0,
+  "evaluation_calls": 0,
+  "candidate_checkpoints": [
+    {
+      "completed_epoch": 3,
+      "steps": 896,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3/resumed/policy_normalizer_896.pkl"
+    },
+    {
+      "completed_epoch": 6,
+      "steps": 1664,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3/resumed/policy_normalizer_1664.pkl"
+    },
+    {
+      "completed_epoch": 10,
+      "steps": 2688,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3/resumed/policy_normalizer_2688.pkl"
+    },
+    {
+      "completed_epoch": 13,
+      "steps": 3456,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3/resumed/policy_normalizer_3456.pkl"
+    },
+    {
+      "completed_epoch": 16,
+      "steps": 4224,
+      "path": "/home/lzqw/SAFEFLOW2027_PAPER/engineering/native-sac-resume-dc197f3/resumed/policy_normalizer_4224.pkl"
+    }
+  ],
+  "selection_opportunity_limit": 5,
+  "epoch_plan": {
+    "target_steps": 4096,
+    "prefill_steps": 128,
+    "actor_steps": 8,
+    "actor_epoch_steps": 32,
+    "total_epochs": 16,
+    "candidate_count": 5,
+    "actual_rounded_final_steps": 4224,
+    "candidate_epochs": [
+      3,
+      6,
+      10,
+      13,
+      16
+    ]
+  },
+  "full_state_fields": [
+    "buffer_state",
+    "env_state",
+    "evaluator_key",
+    "local_key",
+    "training_state"
+  ],
+  "checkpoint_seconds_this_invocation": 0.6012516480404884
+}

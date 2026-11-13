@@ -1,0 +1,121 @@
+{
+  "project": "/home/lzqw/SAFEFLOW2027_PAPER/project",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 1,
+  "state": "/home/lzqw/SAFEFLOW2027_PAPER/queues/piper-reach-candidates-a100-v1.json",
+  "maximum_new_training_transitions": 900000,
+  "piper_total_training_budget": 3000000,
+  "already_charged_engineering_training_transitions": 3220,
+  "admission": {
+    "status": "coordinator_approved_pending_final_resource_and_path_check",
+    "priority": "one shared A100GPU0 Piper slot; PointGoal remains priority and may share the card",
+    "controller_launch_priority": "nice -n10",
+    "prerequisites": [
+      "fresh actual GPU0/freeRAM/disk/nativeprocess inspection",
+      "official pinned assets/sourceURDF/mesh digests agree",
+      "native Piper code pinnedf35, no running CRAX source changes",
+      "all three unique outputs/logs and this queue state absent",
+      "legacy all4080 Piper plans superseded; only Reach here, only Payload in current4080 plan"
+    ],
+    "foreign_process_stop_allowed": false,
+    "dependency_upgrades_allowed": false,
+    "global_GPU_configuration_changes_allowed": false,
+    "physical_motion_allowed": false,
+    "prerequisites_checked_by": "coordinator and bounded deployment preflight; no restart watchdog"
+  },
+  "jobs": [
+    {
+      "name": "piper-reach-iso-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Reach",
+        "--method",
+        "Iso",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/piper-reach-iso-41027-v1.log",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "name": "piper-reach-isolow-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Reach",
+        "--method",
+        "Iso-Low",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/piper-reach-isolow-41027-v1.log",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "name": "piper-reach-ea-41027",
+      "module": "scripts.paper_crax_payload.piper_train",
+      "arguments": [
+        "train",
+        "--config",
+        "configs/paper_crax_payload/piper_sim_v1.json",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--task",
+        "Reach",
+        "--method",
+        "EA",
+        "--seed",
+        "41027",
+        "--steps",
+        "300000",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1",
+      "log": "/home/lzqw/SAFEFLOW2027_PAPER/logs/piper-reach-ea-41027-v1.log",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    }
+  ],
+  "total_cross_host_scientific_training_transitions": 1800000,
+  "total_cross_host_training_with_engineering": 1803220,
+  "base_program_source_commit": "f35ccdca5754ef1217aa633dbb952e505e914020"
+}
