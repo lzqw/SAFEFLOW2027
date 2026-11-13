@@ -12,7 +12,7 @@ as history, not descriptions of currently running processes.
 | Required question | Evidence-supported answer now | Remaining evidence |
 |---|---|---|
 | Why did Piper Payload fail to learn? | Original Iso is not immobile:0.424m path but only0.0684m gap reduction; detour and EA each succeed10/10 on the same diagnostic layouts. This identifies ineffective learned routing/progress, not a globally unreachable task. | No isolated causal proof that reward, values or exploration alone caused the failure. |
-| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods at100K. Iso50% and EA66.67% nominal; strong intermediate regression is retained. | Fixed300K continuation and its matched-five-candidate independent closure are still running/waiting. No initialization-only causal attribution. |
+| Which repair helps? | Common Reach-Actor transfer plus the profiled update setting produces learning for both methods at100K. Iso now completes300K with100% nominal, but only10% geometry and66.67% scale success. | EA300K continuation and matched-five-candidate independent closure remain pending. No initialization-only causal attribution or solved-robustness claim. |
 | Has Reach geometry improved? | Independent-layout Iso400K success100/72/99%; EA400K100/70/100% for nominal/55mm/scale. Both received100K adaptation. | Geometry violations28/30% exceed the10% release rule.55mm was in training: no unseen-radius claim. |
 | Does EA's gain survive equal adaptation? | PointGoal's frozen independent EA policy has35.43goals/21.32cost versus Iso28.29/26.85. Equal Reach adaptation does not show an EA advantage; Iso is2points higher at55mm. | Payload300K independent comparison;4080 Panda repair. Three-seed fixed10M PointGoal remains separate from selected-policy tests. |
 | Is training genuinely faster? | Profile complete SPS10.63→57.66; actual EA100K transfer34.97SPS including evaluation/save, within20–40SPS engineering target. | Optimization/update counts changed and shared load is uncontrolled; no learning-equivalence or hardware-only speedup claim. |
@@ -359,3 +359,25 @@ receipts, then validates each candidate once, freezes both selected identities
 and evaluates independent layouts. No optional training/curriculum is enabled.
 Original scratch trials remain separate references with different pretraining
 and update histories, not a common-initialization sample-efficiency comparison.
+
+## November14,02:19+08 — first completed300K Payload continuation
+
+Iso's exact100K endpoint continuation finished normally at300K. Fixed endpoint
+nominal/geometry/scale safe success is100%/10%/66.67%, with0%/90%/33.33%
+violations on30 development episodes/condition. Geometry success at120/180/240K
+was66.67/43.33/56.67%; all points and the poor300K endpoint are preserved.
+This is nominal learning without stable robustness, not a reason to extend
+training or replace the endpoint by an intermediate maximum. Its200K segment
+took3019.12s at66.24SPS, with456 additional training violations (682 cumulative
+Payload violations). The five completed-branch efficiency table now has48
+condition/checkpoint rows and common x-axis scales.
+
+EA was confirmed live at239K/300K,38.20SPS prefix. At unchanged prefix speed the
+remaining61K takes about27minutes, plus remaining evaluation/save. This is an
+estimate for this training branch, not an ETA for independent closure or the
+whole project. Current observed new RL is769K, including630K complete and139K
+EA continuation prefix; reservation remains830K. The CPU closure still waits
+for both complete receipts. GPU0 has5.28GiB free despite0% instantaneous compute
+utilization: other projects retain the remaining memory. The final mechanism's
+8GiB launch condition is not met, and no foreign process is stopped. Data free
+space is approximately74GiB; home remains145GiB.4080 still has no route.

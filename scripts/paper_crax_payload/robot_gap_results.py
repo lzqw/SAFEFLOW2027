@@ -61,6 +61,7 @@ def main():
     conditions=('nominal','new_geometry','execution_scale_085')
     labels=('Nominal','New geometry','Execution scale 0.85')
     colors=('#2274a5','#e08621','#27864e')
+    maximum_payload_steps=max(r['checkpoint_steps'] for r in curves if r['task']=='Payload')
     for column,method in enumerate(('Iso','EA')):
         ax=axes[0,column]
         for condition,label,color in zip(conditions,labels,colors):
@@ -68,7 +69,7 @@ def main():
             ax.plot([r['checkpoint_steps']/1000 for r in selected],
                 [r['safe_success']*100 for r in selected],'-o',label=label,color=color)
         ax.set(title=f'Payload transfer — {method}',xlabel='New Payload transitions (thousands)',
-            ylabel='Safe success (%)',ylim=(-3,103))
+            ylabel='Safe success (%)',ylim=(-3,103),xlim=(0,maximum_payload_steps/1000*1.03))
         ax.legend(fontsize=8); ax.grid(alpha=.2)
         ax=axes[1,column]
         parent=[next(float(r['safe_success'])*100 for r in old

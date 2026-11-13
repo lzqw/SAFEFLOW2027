@@ -1,7 +1,8 @@
 # Completed Piper transfer and geometry adaptation
 
-`piper_new_learning_curve.csv` retains all36 condition/checkpoint rows from
-the first four completed branches; `piper_new_efficiency.csv` records exact
+`piper_new_learning_curve.csv` retains all48 condition/checkpoint rows from
+five completed branches, including the Iso300K continuation;
+`piper_new_efficiency.csv` records exact
 new transitions, elapsed time, stage timing, update counts and new violations.
 `receipts/` contains the corresponding genuine completion receipts. Raw
 episode trajectories remain on the A100 data disk and in the local source
@@ -27,9 +28,22 @@ The condition retains its original name `new_geometry`, but55mm is included
 in the adaptation training-radius family. This is geometry-distribution repair,
 not extrapolation to an unseen radius. Independent-layout tests are separate.
 
-The planned continuation uses each fixed100K Payload endpoint, with200K more
-per method and identical full-state resume. No curriculum, geometry change or
-additional candidate search. Its results will be appended only when complete.
+The continuation uses each fixed100K Payload endpoint, with200K more per
+method and identical full-state resume. No curriculum, geometry change or
+additional candidate search. Iso is complete: its300K endpoint has100% nominal,
+10% geometry and66.67% scale safe success, with0%/90%/33.33% violations.
+Its geometry success was66.67% at120K,43.33% at180K and56.67% at240K;
+the poor300K endpoint is preserved rather than silently replaced. Nominal
+learning has stabilized more than robustness. The200K continuation took
+3019.12s (66.24SPS) with456 new training violations; cumulative Payload
+training violations are682 including the first100K. These are development
+results, not the pending common-validation/independent closure.
+
+EA's continuation was still live at239K/300K at02:19+08 November14. Its
+partially completed segment is deliberately not folded into this completed-run
+efficiency/curve table. The figure uses identical x-axis scales for both
+methods; missing later EA points mean pending results, not zero success.
+Do not compare the two methods as if both300K endpoints were already available.
 
 Regenerate from retained input records:
 

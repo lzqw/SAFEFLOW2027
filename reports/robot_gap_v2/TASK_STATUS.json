@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-13T17:44:40.762723+00:00",
+  "as_of": "2026-11-13T18:19:19.178178+00:00",
   "campaign": {
     "protocol": "SAFEFlow_Robot_Gap_v2",
     "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
@@ -424,7 +424,7 @@
         "name": "transfer-iso-300k",
         "method": "Iso",
         "pid": 1263426,
-        "status": "running",
+        "status": "completed",
         "target_steps": 200000,
         "cumulative_target_steps": 300000,
         "initial_steps": 100000,
@@ -457,7 +457,10 @@
           "--resume",
           "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_100000.pt"
         ],
-        "started_unix": 1794590312.803914
+        "started_unix": 1794590312.803914,
+        "exit_code": 0,
+        "actual_steps": 200000,
+        "finished_unix": 1794593912.8671997
       },
       {
         "name": "transfer-ea-300k",
@@ -499,7 +502,7 @@
         "started_unix": 1794590312.826513
       }
     ],
-    "updated_unix": 1794590312.826516
+    "updated_unix": 1794593912.8676157
   },
   "reach_release": {
     "state": "completed_offline_preparation",
@@ -520,7 +523,7 @@
     "automatic_failed_job_restart": false,
     "physical_robot_interactions": 0,
     "native_source_root": "/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
-    "updated_unix": 1794590566.943402,
+    "updated_unix": 1794592366.9440265,
     "Piper_followup_state": "completed_pending_scientific_decision"
   },
   "pointgoal_selected_examples": {
@@ -565,7 +568,7 @@
     "training_transitions": 0
   },
   "budget": {
-    "as_of": "2026-11-13T17:44:40.762723+00:00",
+    "as_of": "2026-11-13T18:19:19.178178+00:00",
     "source": "actual existing receipts and current new-run status; no historical audit rerun",
     "new_round_cap": 2200000,
     "initial_phase_reserved": 230000,
@@ -577,7 +580,7 @@
     "payload_continuation_reserved": 400000,
     "total_new_round_reserved": 830000,
     "actually_launched_target": 830000,
-    "observed_new_training_including_partial_prefixes": 592000,
+    "observed_new_training_including_partial_prefixes": 769000,
     "unreserved_later_allowance": 1370000,
     "pointgoal_new_training": 0,
     "old_piper_completed_candidates": 6,
