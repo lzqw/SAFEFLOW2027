@@ -5,16 +5,18 @@ standard Piper model and gripper, seed 41027, common 300k transition budget,
 and `piper_sim_v1.json` configuration are shared across methods. No physical
 robot connection or motion is enabled.
 
-- EA: running on A100 GPU1; latest snapshot 102k/300k transitions, about 10.6
+- EA: running on A100 GPU1; latest snapshot 120k/300k transitions, about 10.5
   transitions/s after optimizer warm-up.
-- Iso: running on A100 GPU0; latest snapshot 249k/300k transitions, about 26.1
-  transitions/s after optimizer warm-up.
-- Iso-Low: queued until one A100 slot is released; it will use the same seed,
-  budget, and source commit without duplicating either active run.
+- Iso: completed 300k/300k transitions on A100 GPU0 at about 26.1
+  transitions/s; its terminal checkpoint and evaluation are recorded below.
+- Iso-Low: now running on the released A100 GPU0; latest warm-up snapshot is
+  2k/300k transitions at about 208 transitions/s, so its steady-state rate is
+  not yet meaningful.
 
 The two live status receipts are `piper-progress-20261113/PAYLOAD_*_STATUS_LATEST.json`.
-At the observed speeds, EA is estimated at roughly 5.2 hours and Iso at roughly
-0.55 hours; these are estimates, not completion results. Checkpoints remain on
+At the observed speed, EA is estimated at roughly 4.8 hours. Iso-Low's remaining
+time is not estimated until warm-up finishes. These are estimates, not completion
+results. Checkpoints remain on
 the server and only compact receipts/results are committed to GitHub.
 
 Iso also produced an interim 60k evaluation (30 episodes per condition): all
@@ -42,3 +44,9 @@ Nominal and execution-scale had 0 violations and 30/30 timeouts; new-geometry
 had 6/30 violations and 24/30 timeouts. No collision or physical-robot
 interaction was recorded. This remains an interim diagnostic while the 300k
 training run is still live.
+
+Iso's terminal 300k evaluation also had 0/30 safe successes in all conditions.
+Nominal and execution-scale had 0 violations and 30/30 timeouts; new-geometry
+had 1/30 violation and 29/30 timeouts. No collision or physical-robot
+interaction was recorded. The terminal receipt reports 178,020 physics
+substeps and 187,101 distance queries.
