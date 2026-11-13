@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-13T12:23:41.843164+00:00",
+  "as_of": "2026-11-13T12:26:46.468019+00:00",
   "campaign": {
     "protocol": "SAFEFlow_Robot_Gap_v2",
     "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
@@ -52,7 +52,7 @@
     "updated_unix": 1794572540.2561114
   },
   "budget": {
-    "as_of": "2026-11-13T12:23:41.843164+00:00",
+    "as_of": "2026-11-13T12:26:46.468019+00:00",
     "source": "actual existing receipts and current new-run status; no historical audit rerun",
     "new_round_cap": 2200000,
     "initial_phase_reserved": 230000,
@@ -61,7 +61,7 @@
       "paired_transfer": 200000
     },
     "actually_launched_target": 10000,
-    "observed_new_training_including_partial_prefixes": 2000,
+    "observed_new_training_including_partial_prefixes": 4000,
     "unreserved_later_allowance": 1970000,
     "pointgoal_new_training": 0,
     "old_piper_completed_candidates": 6,
