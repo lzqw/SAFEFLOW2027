@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "analysis_sha256": "81d9edd7a5bf19d66bd2b151bc655f5da6668d79558ca65d635d9ba2c2f67480",
+  "states": 64,
+  "draws_per_state": 32,
+  "models": 2,
+  "samplers_per_actor": 4,
+  "physical_controls": 16704,
+  "finite_difference_controls": 320,
+  "sampled_action_controls": 16384,
+  "native_horizon": 1000,
+  "execution_device": "cpu",
+  "native_backend": "cpu",
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "real_interactions": 0,
+  "independent_test": false,
+  "oracle_actions_selected": 0,
+  "native_resets_executed": 0,
+  "elapsed_seconds": 50.72795738093555,
+  "no_pool_reselection_after_cost_labels": true,
+  "scope": "small training-distribution common-state mechanism;not main episode evaluation"
+}

@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import shutil
 
 
 METHODS = ('stable_iso', 'ea')
@@ -70,6 +71,10 @@ def main():
     selection = json.loads(args.selection.read_text())
     rows, diagnostic = prepare(**data, selection=selection)
     args.output.mkdir(parents=True, exist_ok=True)
+    native = args.output / 'native'
+    native.mkdir(exist_ok=True)
+    for path in files.values():
+        shutil.copy2(path, native / path.name)
     with (args.output / 'mechanism_summary.csv').open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
@@ -104,11 +109,16 @@ def main():
     audit = dict(status='completed_postprocessing_only', input_sha256={
         name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in files.items()},
         frozen_selection_digest=selection['freeze_digest'], summary_rows=8,
+        execution_device=data['receipt'].get('execution_device', 'not_recorded'),
+        native_backend=data['receipt'].get('native_backend', 'not_recorded'),
         native_controls_already_in_source_receipt=data['receipt']['physical_controls'],
         new_native_controls=0, training_transitions=0, physical_robot_interactions=0,
         event_rate_diagnostics=diagnostic, normal_scope=data['results']['normal_scope'])
     (args.output / 'figure_receipt.json').write_text(json.dumps(audit, indent=2) + '\n')
     notes = ['# Final selected-model PointGoal mechanism', '',
+             f"Execution device: `{audit['execution_device']}`; native backend: `{audit['native_backend']}`. "
+             'CPU/GPU execution and Gaussian generators are not claimed bitwise equivalent. '
+             'The device was fixed before any sampled native label; all sampler arms share the same noise.', '',
              'Actual64×32 study, two frozen Actors and all four sampler interventions. '
              'These are common-state training-distribution diagnostics, not independent episode tests. '
              'VN/VT is the ratio of the mean within-state variances on valid common axes; '
@@ -116,6 +126,8 @@ def main():
              'The normal comes from native one-control endpoint-clearance proxy finite differences '
              'at zero action, after sampled actions were frozen. It is not a learned cost-Q normal '
              'or a minimum-distance-over-the-control-interval certificate.', '',
+             'The raw `native_cost_events_discriminative` flag denotes a mixed-cost pool, '
+             'not a detected difference between samplers. The table below measures the latter directly.', '',
              '| Actor | States whose event rates differ across samplers | All-zero states | All-positive states |',
              '|---|---:|---:|---:|']
     for method, value in diagnostic.items():
@@ -123,7 +135,8 @@ def main():
                      f"{value['states_all_zero_every_sampler']}|{value['states_all_positive_every_sampler']}|")
     notes.extend(['', 'Identical event rates do not prove equal native cost magnitudes. If event rates '
                   'do not change, this fixed pool cannot establish an event-safety benefit. No pool '
-                  'replacement, extra sampling or retraining is authorized by this report.', '',
+                  'replacement, extra sampling or retraining is authorized by this report. '
+                  'The original plan, pool, per-state labels and receipt are retained under `native/`.', '',
                   '![Native final-model mechanism](mechanism.png)', ''])
     (args.output / 'README.md').write_text('\n'.join(notes))
     print(json.dumps(dict(rows=8, new_native_controls=0, training_transitions=0)))

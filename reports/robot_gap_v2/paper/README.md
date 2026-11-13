@@ -49,13 +49,25 @@ summary. Figure inputs and receipt hashes are retained. A trailing literal
 all scientific values are unchanged. No training or simulation was executed to
 produce these figures.
 
-The final selected-model64×32/four-intervention mechanism source is prepared.
-It verifies Actor,EMA-margin and normalizer against the selected policy bytes,
-uses bounded native-query batches, and keeps a single fixed pool even if cost
-events are all zero or all positive. Its actual execution/results remain pending
-a suitable shared-GPU memory window; the historical4M study is not relabelled.
+The final selected-model64×32/four-intervention mechanism is now complete in
+[final_mechanism/](final_mechanism/README.md). Actor,EMA-margin and normalizer
+are bound to the exact selected policies. Native CPU execution took50.73s and
+16,704 actual controls,zero RL. This avoids the unavailable8GiB GPU window,
+not native physics or queries; CPU/GPU Gaussian generators are not bitwise
+equivalent. No earlier GPU mechanism query/output existed before dispatch.
+The historical4M study is not relabelled.
 
-After its genuine completion, render the eight-row table and figure without
+Endpoint VN/VT changes Iso0.3482→0.3274 and EA0.4514→0.4308 for reference→
+pullback. Local/direct ratios are lower still; this does not demonstrate
+pullback superiority. Native mean costs change Iso0.009484→0.009440 and
+EA0.009718→0.009733: no consistent improvement. All methods/samplers have
+the same6.25% cost-positive fraction. More importantly, within each of64
+states the event rates are identical across all four samplers (60 always-zero,
+4 always-positive states). This fixed pool cannot show an event-safety gain;
+it is retained without reselection or further sampling. Native proxy labels
+are not arm control-interval minimum distances or safety certificates.
+
+Reproduce the eight-row table and figure from its completed records without
 loading models, simulating, choosing states or drawing more actions:
 
 ```bash
@@ -68,8 +80,8 @@ python -m scripts.paper_crax_payload.pointgoal_mechanism_pack \
 The command refuses the old32×16 study, partial receipts, wrong model steps,
 missing sampler arms or duplicate states. It preserves nondiscrimination:
 even a mixed-cost pool does not show an event-safety effect if every sampler
-has identical event rates within each state. This preparation is not a claim
-that final mechanism results already exist.
+has identical event rates within each state. The actual results and original
+source records are now included.
 
 `selected_examples/` now separately delivers two genuine native trajectories
 on the prospectively fixed first development layout61027. Iso36goals/17.76cost,

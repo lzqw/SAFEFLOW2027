@@ -69,9 +69,9 @@
     "optional_CVPO_started": false
   },
   "RobotGap_v2": {
-    "as_of": "2026-11-13T18:19:19.178178+00:00",
+    "as_of": "2026-11-13T18:29:06.142165+00:00",
     "actual_completed_new_training": 630000,
-    "observed_new_training_including_partial_prefixes": 769000,
+    "observed_new_training_including_partial_prefixes": 790000,
     "new_training_cap": 2200000,
     "initial_profile_reservation": 30000,
     "initial_paired_transfer_reservation": 200000,
@@ -86,12 +86,16 @@
   },
   "PointGoal_mechanisms": {
     "actual_training": 0,
-    "actual_nontraining_simulator_controls": 2208
+    "actual_nontraining_simulator_controls": 18912,
+    "historical4M_controls": 2208,
+    "final_selected64x32_controls": 16704,
+    "final_selected_authority": "../robot_gap_v2/paper/final_mechanism/native/receipt.json",
+    "final_selected_execution_backend": "cpu"
   },
   "PointGoal_selected_trajectory_examples": {
     "actual_training": 0,
     "actual_nontraining_simulator_controls": 2000,
     "authority": "../robot_gap_v2/paper/selected_examples/receipt.json",
-    "not_the_queued_final64x32_mechanism": true
+    "not_the_final64x32_mechanism": true
   }
 }

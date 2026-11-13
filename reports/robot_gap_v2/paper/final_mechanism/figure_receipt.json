@@ -1,0 +1,32 @@
+{
+  "status": "completed_postprocessing_only",
+  "input_sha256": {
+    "plan": "5a421f987efb3b921c0d037b9f20230930393e5c4ad97feda64456760f7b9775",
+    "receipt": "6b9298d74334293c4fb9b657cbb4b18cc297accbc4aefb0c40890775d1b704bd",
+    "results": "1d71617dac89a7cd0a3556b23a8c296002f84319029663cb7e2cdf1bf15bc89f",
+    "pool": "78eddd2a5a9c62e8b122843b9eef1a8d4196772e896105884ddf65fb3f54285d"
+  },
+  "frozen_selection_digest": "bb57d6466973774d5d956090e1bb85abf79fbae96da5104dc727492fbbfec718",
+  "summary_rows": 8,
+  "execution_device": "cpu",
+  "native_backend": "cpu",
+  "native_controls_already_in_source_receipt": 16704,
+  "new_native_controls": 0,
+  "training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "event_rate_diagnostics": {
+    "stable_iso": {
+      "states_with_different_cost_event_rates": 0,
+      "states_all_zero_every_sampler": 60,
+      "states_all_positive_every_sampler": 4,
+      "note": "Within-Actor descriptive comparison; not a significance test or episode safety claim"
+    },
+    "ea": {
+      "states_with_different_cost_event_rates": 0,
+      "states_all_zero_every_sampler": 60,
+      "states_all_positive_every_sampler": 4,
+      "note": "Within-Actor descriptive comparison; not a significance test or episode safety claim"
+    }
+  },
+  "normal_scope": "native one-step endpoint-clearance PROXY finite differences at commonzeroaction;not cost-Q or interval-minimum certificate"
+}

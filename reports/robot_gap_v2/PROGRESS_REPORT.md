@@ -381,3 +381,32 @@ for both complete receipts. GPU0 has5.28GiB free despite0% instantaneous compute
 utilization: other projects retain the remaining memory. The final mechanism's
 8GiB launch condition is not met, and no foreign process is stopped. Data free
 space is approximately74GiB; home remains145GiB.4080 still has no route.
+
+## November14,02:29+08 — final PointGoal mechanism completed on native CPU
+
+Rather than reduce GPU headroom or interrupt another project, the exact native
+analysis gained an explicit CPU backend. Six focused pool/identity/output
+contract tests passed. The waiting GPU controller1267618 was verified before
+any query job log/output existed, stopped, and its status archived. CPU
+controller1319063/worker1319072 then completed once in50.73s. Execution source
+1322745e, analysis SHA81d9edd7; same64-state selection rule,32 draws, four
+samplers, two exact selected Actors and16,704 genuine native controls. Torch
+CPU/GPU random generators are not bitwise equivalent; CPU was declared before
+sampling, all arms share the same CPU increments, and no label-driven selection
+or retry occurred. No training core, physics semantics or GPU workload changed.
+
+The eight-row CSV, figure, original pool/plan/per-state labels/receipt are in
+paper/final_mechanism/. Reference→pullback VN/VT is Iso0.3482→0.3274,
+EA0.4514→0.4308. Local/direct have still lower ratios; no pullback superiority
+is established. Native mean cost changes Iso0.009484→0.009440 and
+EA0.009718→0.009733, so there is no consistent native-cost reduction. All
+samplers have identical within-state event rates:60 states always zero and4
+always positive. A mixed global pool (6.25% positive) does not make this a
+discriminative event-safety experiment. The negative/inconclusive event result
+is retained without new states/samples. Proxy normals remain one-step endpoint
+clearance probes, not arm interval-minimum or cost-Q certificates.
+
+The02:29 collector now observes790K newly trained transitions,630K complete
+plus160K of EA's200K continuation (260K cumulative Payload). Payload closure,
+4080 repair access and actual deployment-PC latency remain outstanding; this
+is not a completed-round claim.
