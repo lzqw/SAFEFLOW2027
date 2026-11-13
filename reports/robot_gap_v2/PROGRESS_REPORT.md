@@ -73,7 +73,8 @@ to `/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2`, not/home.
 
 Still pending: complete transfer outcomes and paired decision; queued Reach
 adaptation;4080 Payload repair; queued final-selected PointGoal64×32 mechanism;
-Reach selection/release completion and actual deployment-machine latency.
+actual deployment-machine latency. Original Reach selection and offline release
+are complete; see the final section and reach_release/README.md.
 Figures, full training efficiency and frozen risk diagnosis are complete below.
 The executable offline policy replay cannot open physical transport; TCP,
 frames,period,speed and workspace require现场确认. No real-world outcome or
@@ -153,8 +154,8 @@ that component falls to138s out of173s. Foreign GPU load is uncontrolled.
 Both initial transfer runs are active on separate A100 GPUs; normal geometry
 ramp is restored, and the requested100K budget is retained.
 
-Reservation is430K (initial230K plus Reach200K), observed actual prefixes78K
-at12:54:55UTC, and unreserved later allowance1.77M.30minute schedulers wait for
+Reservation is430K (initial230K plus Reach200K), observed actual prefixes125K
+at13:03:17UTC, and unreserved later allowance1.77M.30minute schedulers wait for
 the corresponding own transfer slot and sufficient free memory; they do not
 stop another project or spend optional curriculum/continuation budget.
 
@@ -178,9 +179,38 @@ the final-model mechanism study.
 The final64×32 mechanism source is bound to the exact selected Actor/EMA/
 normalizer bytes, four sampler interventions and16704 native one-step queries.
 It is queued after Piper followups with≥8GiB shared-GPU free memory; no results
-are claimed yet. Reach common validation runs all15 original checkpoint/control
-candidates on50episodes×3conditions each, followed by actual bundle export and
-measured offline replay. At20:53+08,10/15 candidates were complete. The source
-includes a balanced90-episode on-site Reach plan, but no physical command
-implementation.4080 remains unreachable at its reconfirmed address; existing
-Panda Payload repair still awaits access.
+are claimed yet. Reach common validation completed all15 original checkpoint/
+control candidates on50episodes×3conditions each (2250 total), followed by actual
+bundle export and measured offline replay. The source includes a balanced
+90-episode on-site Reach plan, but no physical command implementation.4080
+remains unreachable at its reconfirmed address; existing Panda Payload repair
+still awaits access.
+
+## Completed original Reach common selection and offline release
+
+These are validation results from one training seed, not independent tests.
+All methods received the same five checkpoint opportunities and fixed layouts.
+Selected-checkpoint safe successes are:
+
+| Method | Selected steps | Nominal | New geometry | Execution scale0.85 | Selection status |
+|---|---:|---:|---:|---:|---|
+| Iso |180K|94%|28%|86%|Pareto tradeoff; not risk qualified|
+| Iso-Low |120K|0%|0%|0%|Risk-qualified by violations, but stagnant|
+| EA |300K|98%|24%|88%|Pareto tradeoff; not risk qualified|
+
+The risk rule requires violation≤10% in every condition. Iso/EA new-geometry
+violations are72%/76%; execution-scale violations are14%/12%. Thus neither
+qualifies. Iso-Low's zero violation is not useful task success. These results
+do not replace the fixed300K development endpoints or establish deployability.
+They reinforce the already queued bounded geometry adaptation, without adding
+new checkpoint sweeps or repeating validation.
+
+`reach_release/` contains the actual Actor/EMA-margin/normalizer inference
+bundles, manifests, all45 condition summary rows, frozen selection, simulated
+observation fixture, recorded raw/proposed actions, latency and completion
+receipt. All three replays accepted30 proposals withzero deadline misses and
+zero physical commands. Acceptance is an offline limit/latency result, not a
+calibrated safety result. EA server CPU batch1 p50/p95 is10.235/10.432ms;
+Iso1.510/1.569ms and Iso-Low1.500/1.576ms. Real deployment-computer timing and
+hardware calibration remain pending; all bundle motion flags remain false.
+Large per-episode validation records remain on A100's data disk.

@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-13T12:54:55.656487+00:00",
+  "as_of": "2026-11-13T13:03:17.625865+00:00",
   "campaign": {
     "protocol": "SAFEFlow_Robot_Gap_v2",
     "source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
@@ -287,18 +287,12 @@
     "updated_unix": 1794574265.073751
   },
   "reach_release": {
-    "state": "validation",
-    "completed_candidates": 11,
-    "total_candidates": 15,
-    "active_candidate": {
-      "method": "EA",
-      "steps": 120000,
-      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_120000.pt",
-      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_120000.json"
-    }
+    "state": "completed_offline_preparation",
+    "completed_candidates": 15,
+    "total_candidates": 15
   },
   "budget": {
-    "as_of": "2026-11-13T12:54:55.656487+00:00",
+    "as_of": "2026-11-13T13:03:17.625865+00:00",
     "source": "actual existing receipts and current new-run status; no historical audit rerun",
     "new_round_cap": 2200000,
     "initial_phase_reserved": 230000,
@@ -309,7 +303,7 @@
     "reach_geometry_followup_reserved": 200000,
     "total_new_round_reserved": 430000,
     "actually_launched_target": 230000,
-    "observed_new_training_including_partial_prefixes": 78000,
+    "observed_new_training_including_partial_prefixes": 125000,
     "unreserved_later_allowance": 1770000,
     "pointgoal_new_training": 0,
     "old_piper_completed_candidates": 6,

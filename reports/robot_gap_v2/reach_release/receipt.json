@@ -1,0 +1,47 @@
+{
+  "status": "completed_offline_preparation",
+  "validation_candidates": 15,
+  "validation_episodes": 2250,
+  "bundles": [
+    "Iso",
+    "Iso-Low",
+    "EA"
+  ],
+  "fixture_work": {
+    "controls": 30,
+    "substeps": 600,
+    "distance_queries": 632,
+    "source_is_not_physical_recording": true
+  },
+  "offline_replays": {
+    "Iso": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    },
+    "Iso-Low": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    },
+    "EA": {
+      "records": 30,
+      "accepted": 30,
+      "deadline_misses": 0,
+      "rejected": 0,
+      "physical_commands_sent": 0,
+      "real_interactions": 0
+    }
+  },
+  "training_transitions": 0,
+  "independent_test_executed": false,
+  "physical_robot_interactions": 0,
+  "real_deployment_machine_latency_pending": true,
+  "physical_motion_enabled": false
+}

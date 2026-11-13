@@ -1,0 +1,515 @@
+{
+  "methods": {
+    "Iso": {
+      "candidate": {
+        "method": "Iso",
+        "steps": 180000,
+        "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_180000.pt",
+        "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_180000.json",
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.6933333333333334,
+          "macro_capped_seconds": 2.0728000000000004,
+          "per_condition_violation": [
+            0.06,
+            0.72,
+            0.14
+          ],
+          "per_condition_safe_success": [
+            0.94,
+            0.28,
+            0.86
+          ]
+        },
+        "validation_file": "validation-iso-180000.json"
+      },
+      "selection": {
+        "robot_family": "Piper",
+        "task": "Reach",
+        "method": "Iso",
+        "selected_checkpoint_steps": 180000,
+        "selection_split": "validation",
+        "independent_test_used_for_selection": false,
+        "risk_qualified": false,
+        "status": "pareto_tradeoff_not_risk_qualified",
+        "candidate_count": 5,
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.6933333333333334,
+          "macro_capped_seconds": 2.0728000000000004,
+          "per_condition_violation": [
+            0.06,
+            0.72,
+            0.14
+          ],
+          "per_condition_safe_success": [
+            0.94,
+            0.28,
+            0.86
+          ]
+        },
+        "physical_deployment_eligible": false,
+        "hardware_calibration_pending": true
+      }
+    },
+    "Iso-Low": {
+      "candidate": {
+        "method": "Iso-Low",
+        "steps": 120000,
+        "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_120000.pt",
+        "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_120000.json",
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": false,
+          "macro_safe_success": 0.0,
+          "macro_capped_seconds": 4.0,
+          "per_condition_violation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "validation_file": "validation-iso-low-120000.json"
+      },
+      "selection": {
+        "robot_family": "Piper",
+        "task": "Reach",
+        "method": "Iso-Low",
+        "selected_checkpoint_steps": 120000,
+        "selection_split": "validation",
+        "independent_test_used_for_selection": false,
+        "risk_qualified": true,
+        "status": "risk_qualified_but_stagnant",
+        "candidate_count": 5,
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": false,
+          "macro_safe_success": 0.0,
+          "macro_capped_seconds": 4.0,
+          "per_condition_violation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_deployment_eligible": false,
+        "hardware_calibration_pending": true
+      }
+    },
+    "EA": {
+      "candidate": {
+        "method": "EA",
+        "steps": 300000,
+        "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_300000.pt",
+        "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_300000.json",
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.7000000000000001,
+          "macro_capped_seconds": 2.0389333333333335,
+          "per_condition_violation": [
+            0.02,
+            0.76,
+            0.12
+          ],
+          "per_condition_safe_success": [
+            0.98,
+            0.24,
+            0.88
+          ]
+        },
+        "validation_file": "validation-ea-300000.json"
+      },
+      "selection": {
+        "robot_family": "Piper",
+        "task": "Reach",
+        "method": "EA",
+        "selected_checkpoint_steps": 300000,
+        "selection_split": "validation",
+        "independent_test_used_for_selection": false,
+        "risk_qualified": false,
+        "status": "pareto_tradeoff_not_risk_qualified",
+        "candidate_count": 5,
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.7000000000000001,
+          "macro_capped_seconds": 2.0389333333333335,
+          "per_condition_violation": [
+            0.02,
+            0.76,
+            0.12
+          ],
+          "per_condition_safe_success": [
+            0.98,
+            0.24,
+            0.88
+          ]
+        },
+        "physical_deployment_eligible": false,
+        "hardware_calibration_pending": true
+      }
+    }
+  },
+  "candidates": [
+    {
+      "method": "Iso",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_60000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.12,
+        "macro_capped_seconds": 3.674933333333333,
+        "per_condition_violation": [
+          0.78,
+          0.96,
+          0.9
+        ],
+        "per_condition_safe_success": [
+          0.22,
+          0.04,
+          0.1
+        ]
+      },
+      "validation_file": "validation-iso-60000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_120000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6466666666666666,
+        "macro_capped_seconds": 2.1656,
+        "per_condition_violation": [
+          0.06,
+          0.8,
+          0.2
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.2,
+          0.8
+        ]
+      },
+      "validation_file": "validation-iso-120000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_180000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6933333333333334,
+        "macro_capped_seconds": 2.0728000000000004,
+        "per_condition_violation": [
+          0.06,
+          0.72,
+          0.14
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.28,
+          0.86
+        ]
+      },
+      "validation_file": "validation-iso-180000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_240000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.54,
+        "macro_capped_seconds": 2.4816,
+        "per_condition_violation": [
+          0.22,
+          0.92,
+          0.24
+        ],
+        "per_condition_safe_success": [
+          0.78,
+          0.08,
+          0.76
+        ]
+      },
+      "validation_file": "validation-iso-240000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_300000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6333333333333333,
+        "macro_capped_seconds": 2.2322666666666673,
+        "per_condition_violation": [
+          0.06,
+          0.84,
+          0.2
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.16,
+          0.8
+        ]
+      },
+      "validation_file": "validation-iso-300000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_60000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": false,
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "per_condition_violation": [
+          0.0,
+          0.64,
+          0.06
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "validation_file": "validation-iso-low-60000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_120000.json",
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": false,
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "validation_file": "validation-iso-low-120000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_180000.json",
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": false,
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "validation_file": "validation-iso-low-180000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_240000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": false,
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "per_condition_violation": [
+          0.0,
+          0.2,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "validation_file": "validation-iso-low-240000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_300000.json",
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": false,
+        "macro_safe_success": 0.0,
+        "macro_capped_seconds": 4.0,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "validation_file": "validation-iso-low-300000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_60000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.30666666666666664,
+        "macro_capped_seconds": 3.4309333333333334,
+        "per_condition_violation": [
+          0.0,
+          0.12,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.38,
+          0.32,
+          0.22
+        ]
+      },
+      "validation_file": "validation-ea-60000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_120000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6866666666666666,
+        "macro_capped_seconds": 2.070933333333333,
+        "per_condition_violation": [
+          0.1,
+          0.7,
+          0.14
+        ],
+        "per_condition_safe_success": [
+          0.9,
+          0.3,
+          0.86
+        ]
+      },
+      "validation_file": "validation-ea-120000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_180000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6666666666666666,
+        "macro_capped_seconds": 2.1384000000000003,
+        "per_condition_violation": [
+          0.06,
+          0.74,
+          0.2
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.26,
+          0.8
+        ]
+      },
+      "validation_file": "validation-ea-180000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_240000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.5133333333333333,
+        "macro_capped_seconds": 2.5464,
+        "per_condition_violation": [
+          0.2,
+          0.92,
+          0.34
+        ],
+        "per_condition_safe_success": [
+          0.8,
+          0.08,
+          0.66
+        ]
+      },
+      "validation_file": "validation-ea-240000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_300000.json",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.7000000000000001,
+        "macro_capped_seconds": 2.0389333333333335,
+        "per_condition_violation": [
+          0.02,
+          0.76,
+          0.12
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.24,
+          0.88
+        ]
+      },
+      "validation_file": "validation-ea-300000.json"
+    }
+  ],
+  "independent_test_used_for_selection": false,
+  "fixed_300K_endpoints_not_replaced": true
+}

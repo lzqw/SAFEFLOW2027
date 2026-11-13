@@ -13,11 +13,11 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 | Reach geometry adaptation≤0.20M | One Iso/EA100K pair queued after each own transfer slot | Shared radii45/50/55mm; fixed-radius evaluation unchanged |
 | Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
 | Final PointGoal mechanism/efficiency/figures | Three-seed figures/efficiency and Flow CPU latency complete; mechanism queued | Final-selected64×32/four samplers, after Piper work and≥8GiB free GPU memory |
-| Reach deployment candidate/control program | Common validation10/15 candidates complete at20:53+08; release pipeline running | Five checkpoints/control; actual bundles/latency/replay after selection |
+| Reach deployment candidate/control program | All15 candidates/2250 validation episodes complete; three native bundles and offline replays exported | See reach_release/README.md; geometry remains weak, hardware eligibility false |
 
-Snapshot:2026-11-13T12:54:55UTC (20:54:55+08). A100 campaign controller PID1039792
-launched Iso PID1062014 and EA PID1062015. Receipts/status showed28K/100K and
-20K/100K respectively; these are timestamped prefixes, not final results or
+Snapshot:2026-11-13T13:03:17UTC (21:03:17+08). A100 campaign controller PID1039792
+launched Iso PID1062014 and EA PID1062015. New training totals125K including
+30K profiles and95K combined transfer prefixes; these are not final results or
 perpetual liveness guarantees. Reach followup scheduler PID1064715 checks
 every30minutes and launches only the queued100K/method finite-radius fork when
 that method's own transfer is complete and≥2GiB GPU memory remains. Final
@@ -48,7 +48,7 @@ serial/process parity. Local base Python lacks panda_gym; no extra installation
 was performed to force that environment to run these tests.
 
 Reservation: profiles30K + transfer2×100K + Reach2×100K =430K, against the2.20M
-cap. Actual observed new transitions are78K at this snapshot. The1.77M remaining
+cap. Actual observed new transitions are125K at this snapshot. The1.77M remaining
 unreserved allowance is not a spending target. The Reach decision follows the
 fixed risk diagnostic: a radius prior corrected values without changing the
 paired frozen rollout outcomes, so one shared finite-radius training family is
