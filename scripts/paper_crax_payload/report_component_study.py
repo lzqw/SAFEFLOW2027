@@ -39,6 +39,8 @@ def report(directories, output):
                     mean_return=float(np.mean([r['episode_return'] for r in records])),
                     mean_minimum_distance_m=float(np.mean([r['minimum_distance_m'] for r in records])),
                     training_cumulative_violations=next(r['training_violations'] for r in progress[name] if r['steps']==step),
+                    full_training_seconds=receipt['elapsed_seconds'],
+                    full_training_including_eval_save_sps=receipt['steps']/receipt['elapsed_seconds'],
                     actual_total_training_transitions=receipt['steps'],source_commit=receipt['source_commit']))
     names=['iso','noise-only','metric-only','full','full-rho010','full-rho050']
     if set(progress)!=set(names):raise ValueError('Keep all six registered arms, not only favorable results')
