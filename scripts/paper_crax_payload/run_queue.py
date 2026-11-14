@@ -47,6 +47,16 @@ def main():
             if code is not None:
                 stream.close();record.update(exit_code=code,status='completed' if code==0 else 'failed_not_restarted',finished_unix=time.time());del live[pid]
         while jobs and len(live)<plan['slots']:
+            occupied = 0
+            for external in plan.get('existing_healthy_jobs', []):
+                try:
+                    cmd = Path('/proc',str(external['pid']),'cmdline').read_bytes()
+                    occupied += int(external['expected_output'].encode() in cmd and b'payload_train' in cmd)
+                except OSError:
+                    pass
+            if len(live) + occupied >= plan['slots']:
+                admission_wait_reason='existing_healthy_project_job_retains_shared_slot'
+                break
             minimum_free=plan.get('minimum_free_disk_bytes',0)
             if minimum_free and shutil.disk_usage(project).free<minimum_free:
                 admission_wait_reason='waiting_for_disk_space;active_jobs_not_stopped'

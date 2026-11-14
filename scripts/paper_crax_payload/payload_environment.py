@@ -211,6 +211,7 @@ class PayloadFiniteRadiusEnvironment(SafePayloadTransport):
                 ghost=False, rgba_color=np.array([.85, .12, .12, 1.]))
             self.radius_bodies[radius] = self.sim._bodies_idx[name]
         self.radius_next_index = 0
+        self.radius_reset_retry_batches = 0
 
     def activate_radius(self, radius):
         for body in self.radius_bodies.values():
@@ -224,11 +225,21 @@ class PayloadFiniteRadiusEnvironment(SafePayloadTransport):
             self.radius_next_index = int(seed) % len(self.radius_values)
         self.activate_radius(self.radius_values[self.radius_next_index])
         self.radius_next_index = (self.radius_next_index + 1) % len(self.radius_values)
-        return super().reset(seed=seed, options=options)
+        # Native reset already rejects30 unsafe/unreachable layouts. A geometry
+        # switch can exhaust that finite batch; try at most ten batches with
+        # the SAME radius and unchanged admissibility, never an unsafe start.
+        for attempt in range(10):
+            try:
+                return super().reset(seed=seed if attempt == 0 else None, options=options)
+            except RuntimeError as error:
+                if str(error) != 'Cannot obtain safe reachable arm AND payload endpoints' or attempt == 9:
+                    raise
+                self.radius_reset_retry_batches += 1
 
     def definition(self):
         return super().definition() | dict(training_radius_values=self.radius_values,
-            training_radius_schedule='round-robin per reset; no policy-outcome selection')
+            training_radius_schedule='round-robin per reset; no policy-outcome selection',
+            static_reset_attempt_cap=300, static_reset_safety_and_reachability_unchanged=True)
 
 
 def capture_payload_environment(env):
@@ -237,7 +248,8 @@ def capture_payload_environment(env):
     linear, angular = env.client.getBaseVelocity(env.payload_body)
     if isinstance(env, PayloadFiniteRadiusEnvironment):
         state['radius_schedule'] = dict(values=env.radius_values,
-            active_radius=env.config.obstacle_radius, next_index=env.radius_next_index)
+            active_radius=env.config.obstacle_radius, next_index=env.radius_next_index,
+            reset_retry_batches=env.radius_reset_retry_batches)
     return state | dict(payload_position=position, payload_orientation=orientation,
                         payload_linear_velocity=linear, payload_angular_velocity=angular)
 
@@ -249,6 +261,7 @@ def restore_payload_environment(env, state):
             raise ValueError('Resume requires the identical finite-radius environment')
         env.activate_radius(radius['active_radius'])
         env.radius_next_index = radius['next_index']
+        env.radius_reset_retry_batches = radius.get('reset_retry_batches', 0)
     # Restore the carried body's pose/velocity BEFORE base reconstruction checks
     # the full45D observation; restore does not step or reset a partial episode.
     env.client.resetBasePositionAndOrientation(env.payload_body, state['payload_position'], state['payload_orientation'])

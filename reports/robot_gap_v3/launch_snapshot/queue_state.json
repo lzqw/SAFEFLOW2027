@@ -1,0 +1,75 @@
+{
+  "pid": 2990142,
+  "source_commit": "a7b909f0fafed93524b397349deeef4183bb743f",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "ea-nominal-control-41028-plus100k",
+      "pid": 2990144,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_v1.json",
+        "--method",
+        "s_ea",
+        "--seed",
+        "41028",
+        "--steps",
+        "340000",
+        "--adapt-from",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k",
+        "--source-commit",
+        "a7b909f0fafed93524b397349deeef4183bb743f"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/ea-nominal-control-41028-plus100k.log",
+      "status": "running",
+      "started_unix": 1794621673.5898173,
+      "slot_id": 0,
+      "visible_devices": "0"
+    },
+    {
+      "name": "ea-radius-repair-41028-plus100k",
+      "pid": 2990146,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_repair_v3.json",
+        "--method",
+        "s_ea",
+        "--seed",
+        "41028",
+        "--steps",
+        "340000",
+        "--adapt-from",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k",
+        "--source-commit",
+        "a7b909f0fafed93524b397349deeef4183bb743f"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/ea-radius-repair-41028-plus100k.log",
+      "status": "running",
+      "started_unix": 1794621673.602203,
+      "slot_id": 1,
+      "visible_devices": "0"
+    }
+  ],
+  "pending": 2,
+  "live_native_pids": [
+    2990144,
+    2990146
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

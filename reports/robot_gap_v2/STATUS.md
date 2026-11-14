@@ -1,5 +1,11 @@
 # SAFEFlow Robot-Gap v2
 
+November14 follow-up: the separately registered v3 bounded Panda repair has now
+launched on4080. This v2 page remains the historical completed830K snapshot;
+see [current v3 status](../robot_gap_v3/STATUS_ZH.md) for its additional400K
+reservation and real native handles.5080 is the deployment PC and remains idle
+for this project, as requested. No physical robot transport is opened.
+
 Parent PR14: `5a403e04d3064c2a02d8c28023bb050e3098040c`.
 User plan: PointGoal closure; Piper Payload learning/transfer; Piper Reach geometry/deployment;
 existing Payload targeted geometry repair. New training cap2.20M, not a spending target.

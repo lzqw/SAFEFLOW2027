@@ -244,6 +244,9 @@ def main():
                 observation, reward, done, truncated, info = env.step(actions[index])
                 replay.add(obs=observations[index], action=actions[index], reward=reward,
                     next_obs=observation, done=float(done or truncated), cost=info['cost'], margin=info['local_margin'])
+                # Count a real transition before a subsequent reset can fail.
+                # On healthy vector steps the action/update schedule is identical.
+                steps += 1
                 violations += int(info['violation'])
                 episode_returns[index] += reward; episode_costs[index] += info['cost']; episode_lengths[index] += 1
                 if done or truncated:
@@ -257,7 +260,6 @@ def main():
                     episode_returns[index] = episode_costs[index] = episode_lengths[index] = 0
                     observation, _ = env.reset()
                 observations[index] = observation
-            steps += num_envs
             learner.set_transitions(steps)
             if steps > shared['random_transitions'] and replay.count >= shared['batch_size']:
                 for _ in range(num_envs * shared['learner_updates_per_transition']):

@@ -48,3 +48,23 @@ def test_radius_fork_uses_actual_collision_body_and_preserves_schedule_on_resume
         np.testing.assert_allclose(a._obs(), b._obs(), rtol=0., atol=2e-6)
     finally:
         a.close(); b.close(); nominal.close()
+
+
+def test_static_retry_does_not_advance_radius_or_relax_safety(monkeypatch):
+    env = PayloadFiniteRadiusEnvironment()
+    native = SafePayloadTransport.reset
+    calls = []
+    def transient_failure(self, **kwargs):
+        calls.append((self.config.obstacle_radius, kwargs.get('seed')))
+        if len(calls) == 1:
+            raise RuntimeError('Cannot obtain safe reachable arm AND payload endpoints')
+        return native(self, **kwargs)
+    monkeypatch.setattr(SafePayloadTransport, 'reset', transient_failure)
+    try:
+        _, info = env.reset(seed=42027)
+        assert len(calls) == 2 and calls[0][0] == calls[1][0]
+        assert calls[1][1] is None and env.radius_next_index == 1
+        assert env.radius_reset_retry_batches == 1
+        assert info['minimum_distance'] > env.config.safety_distance + .005
+    finally:
+        env.close()
