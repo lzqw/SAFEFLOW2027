@@ -38,6 +38,8 @@ python -m scripts.paper_crax_payload.report_cvpo_campaign \
 输出固定10M逐seed和均值±样本SD、全部学习节点、四方法完整学习曲线和
 选中单策略独立结果，各表分开，不以选择后分数替换固定终点。
 同时记录训练累计成本、完整训练墙钟与SPS、输入文件SHA和零新增训练／仿真收据。
+`cvpo_training_efficiency.csv`单列每seed官方policy更新数、原生评测控制数和实际新增步数；
+更新单位与旧SAC／Flow不同，不将其冒充等价optimizer机会。
 共享GPU、后端和更新组织不同均披露，不能把实际墙钟差当纯算法加速比。
 
 一个合成全流程CPU测试通过，覆盖60个总学习节点、12个固定终点、四个独立策略、

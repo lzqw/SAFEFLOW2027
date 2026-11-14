@@ -175,7 +175,14 @@ def prepare(runs, closure, historical):
             values = [float(r[metric]) for r in rows]
             result.update({metric + '_mean': mean(values), metric + '_sd': stdev(values)})
         summary.append(result)
+    efficiency = [dict(method='cvpo', training_seed=r['training_seed'],
+        actual_training_transitions=r['steps'], actual_new_transitions_in_this_run=r['actual_new_transitions'],
+        training_cumulative_cost=r['training_cost'], official_policy_updates=r['official_updates'],
+        native_evaluation_controls=r['evaluation_controls'], full_training_seconds=r['elapsed_seconds'],
+        full_training_including_eval_save_sps=r['complete_train_sps'],
+        source_commit=r['source_commit'], official_source_commit=r['official_source_commit']) for r in receipts]
     return dict(curves=curves, endpoints=endpoints, selected=selected, summary=summary,
+        efficiency=efficiency,
         source_records=inputs, cvpo_actual_training_transitions=sum(r['steps'] for r in receipts),
         selection_freeze_digest=identity, cvpo_selection_status=selection['status'])
 
@@ -200,7 +207,8 @@ def report(runs, closure, historical, output):
     for name, key in [('four_method_fixed_10m_by_seed', 'endpoints'),
                       ('four_method_fixed_10m_summary', 'summary'),
                       ('four_method_learning_curves', 'curves'),
-                      ('four_method_selected_independent', 'selected')]:
+                      ('four_method_selected_independent', 'selected'),
+                      ('cvpo_training_efficiency', 'efficiency')]:
         write_csv(output / (name + '.csv'), data[key])
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
     for method in ('sac_lag', 'stable_iso', 'ea', 'cvpo'):
@@ -242,6 +250,8 @@ def report(runs, closure, historical, output):
         f"CVPO候选资格状态：{data['cvpo_selection_status']}；测试分数不用于重选。", '',
         '学习曲线含全部五节点、薄线为每训练seed、阴影为样本SD；成本预算25。',
         '训练累计成本、更新方式、原始时间与SPS单列。历史共享负载未严格控制，',
+        'CVPO逐seed官方policy更新数和评测控制数见cvpo_training_efficiency.csv；',
+        '不同算法的更新单位不等价，不据此假定相同optimizer机会。',
         '后端、向量数与更新组织不同，不以纯算法加速比解释墙钟差。',
         '新CVPO真实步数30,000,384（向量取整额外384）；不计入组件1.8M。',
         '汇总零新训练、零仿真、零机器人交互；未加载policy、replay或原始训练轨迹。']

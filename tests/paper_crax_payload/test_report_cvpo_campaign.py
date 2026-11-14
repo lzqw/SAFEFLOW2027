@@ -31,6 +31,7 @@ def test_complete_report_retains_originals_and_rejects_tampered_or_partial_recor
         directory = runs / f'cvpo-{seed}-10m'
         directory.mkdir(parents=True)
         receipt = dict(status='completed', steps=10000128, training_seed=seed,
+            actual_new_transitions=10000128, official_updates=100, evaluation_controls=1250000,
             evaluated_milestones=MILESTONES, training_cost=1000., elapsed_seconds=100.,
             complete_train_sps=100001.28, source_commit='fixture',
             official_source_commit=config['official_source_commit'])
@@ -67,6 +68,7 @@ def test_complete_report_retains_originals_and_rejects_tampered_or_partial_recor
     assert len(value['curves']) == 60 and len(value['endpoints']) == 12
     assert len(value['selected']) == 4 and len(value['summary']) == 4
     assert value['cvpo_actual_training_transitions'] == 30000384
+    assert value['efficiency'][0]['official_policy_updates'] == 100
     final = next(r for r in value['summary'] if r['method'] == 'cvpo')
     assert final['mean_goals_per_episode_mean'] == 5.
     assert final['mean_goals_per_episode_sd'] == 0.
