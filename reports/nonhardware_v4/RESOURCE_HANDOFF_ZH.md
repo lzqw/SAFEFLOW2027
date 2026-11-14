@@ -26,4 +26,29 @@ CVPO继续从原`formal-source-v1`执行，正式源码7abb6ebb不变。
 机器差异披露：Iso／Metric-only／两个参数点在4080，Full／Noise-only在A100。
 CPU/GPU数值和共享负载不是受控的跨机器吞吐对照；不得将实际用时差直接归为纯算法收益。
 
-本页为执行前登记。只有真实交接收据和新控制器句柄核对后，才能宣称资源接续已部署。
+## 已实际部署与核对
+
+执行前登记提交effa8d4a。17:02 UTC完成[只退役调度器的交接收据](resource_handoff/receipt.json)，
+17:05 UTC再次读取`ps`确认以下句柄在关闭SSH启动连接后仍存活：
+
+| 对象 | 原生PID | 状态 |
+|---|---:|---|
+| A100 Full训练 |1825421|原进程保留，未发信号|
+| A100 Noise-only训练 |1825547|原进程保留，未发信号|
+| 4080 Metric-only训练 |3348196|原进程保留，未发信号|
+| 4080参数调度器 |3377002|[pending2，等待Metric-only收据](resource_handoff/parameter-queue.json)|
+| A100 CVPO调度器 |1842989|[pending4，等待Full收据](resource_handoff/cvpo-queue.json)|
+| 本地只读收集器 |673280|保留原收集目录及Iso，使用新位置读取参数臂|
+
+收据的`replacement_controllers_not_yet_launched=true`是17:02第一阶段状态，
+随后两个新调度器已启动并经上述实际进程核对，不表示当前仍未启动。
+退役的只有调度器1825419、1825545、1831775及旧本地收集器646574；
+没有中断或重启任何科学训练，没有停止其他项目，没有删除原结果。
+原CVPO队列状态已完整移到`resource-handoff-v4b/formal-queue-v1.retired.json`，
+新调度器继续写原稳定state路径，既有观察器1831776未受影响。
+
+最后原收集器实测为16:56:22 UTC：Full／Noise-only125K、Metric-only75K，
+三worker命令匹配、errors为空；[完整清单](runtime/check_20261114_1656/collector-status.json)保留。
+新收集器首次读取17:26:16 UTC，此后每1800秒；不是又完成一轮远程采样的声明。
+数据盘实际剩余A10087GB、4080643GB，均高于本次接续门槛。
+未来训练任务仍未开始，不能把调度接纳当作参数实验或CVPO完成。

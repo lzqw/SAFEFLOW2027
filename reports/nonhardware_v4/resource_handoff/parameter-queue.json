@@ -1,0 +1,11 @@
+{
+  "pid": 3377002,
+  "source_commit": "b31878c0",
+  "status": "running",
+  "jobs": [],
+  "pending": 2,
+  "live_native_pids": [],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": "waiting_for_registered_predecessor_receipts;no_extra_GPU_slot"
+}
