@@ -74,6 +74,10 @@ def report(directories, output):
                     actual_total_training_transitions=receipt['steps'],source_commit=receipt['source_commit']))
     names=['iso','noise-only','metric-only','full','full-rho010','full-rho050']
     if set(progress)!=set(names):raise ValueError('Keep all six registered arms, not only favorable results')
+    action_directory=output.parent/'action_structure'
+    if action_directory.is_dir():
+        from scripts.paper_crax_payload.component_action_structure import summarize_diagnostics
+        summarize_diagnostics(action_directory,output.parent/'action_structure_results')
     plot_evaluation_history(rows,names,output)
     with (output/'all_checkpoints.csv').open('x',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)

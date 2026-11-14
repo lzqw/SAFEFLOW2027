@@ -5,6 +5,7 @@ Common states are the first32 episode starts, before inspecting their outcomes.
 Only within-state stochastic covariance is measured, not covariance across states.
 """
 import argparse
+import csv
 import gzip
 import hashlib
 import json
@@ -78,6 +79,52 @@ def action_statistics(samples):
         sample_covariance=covariance.tolist(), covariance_trace=float(np.trace(covariance)),
         covariance_eigenvalues=np.linalg.eigvalsh(covariance).tolist(),
         final_action_boundary_fraction=float(np.mean(np.any(np.abs(samples) >= 1., axis=-1))))
+
+
+def summarize_diagnostics(directory, output):
+    """Tabulate all six original diagnostics without loading models or resampling."""
+    directory, output = Path(directory), Path(output)
+    if output.exists():
+        raise FileExistsError('Preserve the previous action-structure table')
+    names = ('iso', 'noise-only', 'metric-only', 'full', 'full-rho010', 'full-rho050')
+    values = [json.loads((directory / (name + '.json')).read_text()) for name in names]
+    identities = {(v['pool_sha256'], v['analysis_script_sha256'], v['draws_per_state']) for v in values}
+    if len(identities) != 1:
+        raise ValueError('Require identical common state pool, analysis and draw count')
+    rows = []
+    for name, value in zip(names, values):
+        if (value['arm']['name'] != name or value['steps'] != 300000
+                or value['training_seed'] != 2027 or value['source_commit'] != 'b31878c0'
+                or value['device'] != 'cpu' or value['generated_actions'] != 2048
+                or value['draws_per_state'] != 64 or len(value['states']) != 32
+                or value['new_simulation_controls'] != 0 or value['new_training_transitions'] != 0
+                or value['risk_projection'] or value['independent_confirmation']
+                or [s['state_index'] for s in value['states']] != list(range(32))):
+            raise ValueError('Require all six original descriptive fixed300K diagnostics')
+        covariance = np.asarray([s['sample_covariance'] for s in value['states']], dtype=np.float64)
+        boundary = np.asarray([s['final_action_boundary_fraction'] for s in value['states']])
+        trace = np.asarray([s['covariance_trace'] for s in value['states']])
+        if (covariance.shape != (32, 3, 3) or not np.isfinite(covariance).all()
+                or not np.isfinite(boundary).all() or np.any((boundary < 0) | (boundary > 1))
+                or not np.allclose(np.trace(covariance, axis1=1, axis2=2), trace)
+                or not np.isclose(trace.mean(), value['mean_within_state_covariance_trace'])):
+            raise ValueError('Invalid within-state covariance statistics')
+        diagonal = np.diagonal(covariance, axis1=1, axis2=2).mean(axis=0)
+        rows.append(dict(arm=name,steps=300000,training_seed=2027,states=32,draws_per_state=64,
+            mean_within_state_covariance_trace=float(trace.mean()),
+            mean_covariance_xx=float(diagonal[0]),mean_covariance_yy=float(diagonal[1]),
+            mean_covariance_zz=float(diagonal[2]),mean_action_boundary_fraction=float(boundary.mean()),
+            pool_sha256=value['pool_sha256'],checkpoint_sha256=value['checkpoint_sha256']))
+    output.mkdir(parents=True)
+    with (output / 'fixed_endpoint_action_structure.csv').open('x', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader(); writer.writerows(rows)
+    write_new(output / 'receipt.json', dict(status='completed_from_existing_six_diagnostics',
+        inputs=[dict(arm=name,sha256=digest_file(directory / (name + '.json'))) for name in names],
+        new_training_transitions=0,new_simulation_controls=0,new_generated_actions=0,
+        training_seed_count=1,independent_confirmation=False,risk_projection=False,
+        scientific_scope='descriptive_within_state_final_action_covariance_not_risk_or_exploration_proof'))
+    return rows
 
 
 def measure(directory, pool_path, output):
