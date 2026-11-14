@@ -23,6 +23,8 @@ FILES=('run_config.json','receipt.json','progress.jsonl',
        'evaluation_100000.json','evaluation_200000.json','evaluation_300000.json')
 A100='/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4'
 RTX='/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4'
+ACTION_TOOLS='action-structure-51b0bf99'
+ACTION_POOL_SHA256='d07dc681f0a51f39ab7b5eb6d05d72a3a34eec2abdac99f0b5f687e0a7a9e59e'
 
 
 def placements(pending_parameters_on4080=False):
@@ -107,6 +109,36 @@ def collect_one(item,output):
         new_training_transitions=0,new_simulation_controls=0))
 
 
+def collect_action_structure(item,output):
+    """One CPU-only endpoint diagnostic; never retry an uncertain launch."""
+    directory=output/'action_structure';directory.mkdir(exist_ok=True)
+    local=directory/(item['arm']+'.json')
+    if not local.exists():
+        remote=f'{item["root"]}/{ACTION_TOOLS}/{item["arm"]}.json'
+        exists=ssh(item['host'],f'test -f {shlex.quote(remote)} && echo yes || echo no').strip()=='yes'
+        if not exists:
+            marker=directory/(item['arm']+'-remote-started.json')
+            if marker.exists():
+                raise RuntimeError('A prior action diagnostic started without a result; inspect, do not launch twice')
+            atomic_json(marker,dict(started_utc=datetime.now(timezone.utc).isoformat(),
+                remote_output=remote,automatic_retry=False,new_training_transitions=0))
+            command=[item['python'],f'{item["root"]}/{ACTION_TOOLS}/component_action_structure.py',
+                '--run',f'{item["root"]}/runs/{item["arm"]}',
+                '--pool',f'{item["root"]}/{ACTION_TOOLS}/common-pool.json','--output',remote]
+            environment=f'OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONPATH={shlex.quote(item["root"]+"/source")}'
+            if item['host']=='tjucta-a100':
+                command=['bash','/storage_0/SAFEFLOW2027_lzqw_uid1007/operations/a100_home_to_storage_20261113/run-with-storage.sh',*command]
+            ssh(item['host'],environment+' '+shlex.join(command),timeout=900)
+        fetch(item,remote,local)
+    data=json.loads(local.read_text())
+    if (data['arm']['name']!=item['arm'] or data['steps']!=300000
+            or data['pool_sha256']!=ACTION_POOL_SHA256 or data['device']!='cpu'
+            or data['generated_actions']!=2048 or data['new_simulation_controls']!=0
+            or data['new_training_transitions']!=0 or data['training_seed']!=2027
+            or data['source_commit']!='b31878c0'):
+        raise ValueError('Wrong fixed-endpoint action diagnostic')
+
+
 def finalize(output):
     from scripts.paper_crax_payload.report_component_study import report as report_study
     from scripts.paper_crax_payload.report_component_exploration import report as report_exploration
@@ -126,6 +158,8 @@ def finalize(output):
         all_six_arms_retained=True,training_transitions_represented=1800000,
         new_training_transitions=0,new_simulation_controls=0,physical_robot_interactions=0,
         whole_goal_complete=False,CVPO_results_still_separate=True,
+        final_action_diagnostics_collected=all(
+            (output/'action_structure'/(arm+'.json')).exists() for arm in ARMS),
         github_publication='pending_next_agent_review'))
 
 
@@ -136,6 +170,8 @@ def main():
     p.add_argument('--samples',type=int,default=336)
     p.add_argument('--pending-parameters-on4080',action='store_true',
         help='Read only the two never-started relocated parameter arms from4080; no training action')
+    p.add_argument('--final-action-structure',action='store_true',
+        help='Collect once-only CPU endpoint diagnostics from predeployed tools/common state pool')
     args=p.parse_args()
     if args.interval<1800 or not 1<=args.samples<=336 or not 0<=args.initial_delay_seconds<=1800:
         p.error('Finite half-hour observation only')
@@ -159,7 +195,9 @@ def main():
             if not row['receipt']:continue
             try:
                 require_completion(row['receipt'],row['arm'])
-                collect_one(next(i for i in items if i['arm']==row['arm']),output)
+                item=next(i for i in items if i['arm']==row['arm'])
+                collect_one(item,output)
+                if args.final_action_structure:collect_action_structure(item,output)
                 errors.pop(row['arm'],None)
             except (OSError,ValueError,RuntimeError,subprocess.SubprocessError) as error:
                 errors[row['arm']]=str(error)
@@ -170,7 +208,9 @@ def main():
             new_training_transitions=0,new_simulation_controls=0,automatic_training_restart=False)
         atomic_json(output/'status.json',status)
         print(json.dumps({k:v for k,v in status.items() if k!='native_inventory'}),flush=True)
-        if len(collected)==6:
+        actions_complete=(not args.final_action_structure or all(
+            (output/'action_structure'/(arm+'.json')).exists() and arm not in errors for arm in ARMS))
+        if len(collected)==6 and actions_complete:
             try:finalize(output)
             except BaseException as error:
                 atomic_json(output/'report_interruption.json',dict(error=str(error),automatic_retry=False))
