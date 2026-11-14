@@ -1,5 +1,6 @@
 {
   "protocol": "robot_gap_v3_e01_stage1",
+  "superseded_by": "payload_repair_v3_recovery_queue.json; preserve the healthy original EA child",
   "project": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/project",
   "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
   "state": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/queue_state.json",
