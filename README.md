@@ -30,6 +30,21 @@
 
 --------------------------------------------------------------------------------
 
+## SAFEFlow：当前实验与程序入口
+
+本分支的非实机实验仍在推进，不把历史阶段完成或已上传视为全目标完成。
+固定训练终点、验证选中候选、开发节点及独立测试分别报告；负面结果完整保留。
+
+- [非实机统一总报告](reports/nonhardware_v4/NONHARDWARE_REPORT_ZH.md)、[六个研究问题的证据](reports/nonhardware_v4/RQ1_RQ6_EVIDENCE_ZH.md)与[当前状态](reports/nonhardware_v4/STATUS_ZH.md)。
+- [固定300K组件／参数结果](reports/nonhardware_v4/FIXED_300K_COMPONENT_RESULTS_ZH.md)，以及[全部开发节点](reports/nonhardware_v4/PROVISIONAL_RESULTS_ZH.md)。
+- [组件训练程序](scripts/paper_crax_payload/train_component_study.py)、[四组件实现](scripts/paper_crax_payload/component_models.py)与[注册配置](configs/paper_crax_payload/component_study_v4.json)。
+- [CVPO训练入口](scripts/paper_crax_payload/train_cvpo.py)、[正式科学协议](reports/nonhardware_v4/E08_FORMAL_PROTOCOL_ZH.md)与[两共享槽接续记录](reports/nonhardware_v4/E08_RELEASED_SLOT_HANDOFF_ZH.md)。
+- [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
+
+当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
+分支发布不表示已合并main。5080／实机按用户要求暂缓，不发送邮件。
+下方STAR与OmniSafe内容保留为历史方法入口及上游框架说明，不代表最新训练状态。
+
 > **SAFEFLOW2027 / STAR:** 本仓库以固定的 OmniSafe 基线开发安全关键参考熵方法。
 > RTX 3090 服务器上的 P0/P1 环境、语义测试、吞吐标定和复现命令见
 > [scripts/star/README.md](scripts/star/README.md)。P4.1 正确性修复、旧模型长度审计和
