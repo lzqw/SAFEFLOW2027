@@ -11,6 +11,7 @@ import torch
 
 from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
 from scripts.star.arm_safe_entropy.stability_runtime import capture_rng
+from scripts.star.arm_safe_entropy.stability_runtime import restore_rng
 
 
 UPSTREAM_COMMIT='e056fc9498d5d037869533da7cf976acf462f918'
@@ -51,7 +52,7 @@ class NormalizedReplayView:
         return self[indices],indices
 
 
-def build_policy(obs_dim, action_dim, horizon, device='cpu', seed=51027):
+def build_policy(obs_dim, action_dim, horizon, device='cpu', seed=51027, configuration=None):
     import gymnasium as gym
     from fsrl.agent import CVPOAgent
     env=SimpleNamespace(observation_space=gym.spaces.Box(-np.inf,np.inf,(obs_dim,),dtype=np.float32),
@@ -59,9 +60,12 @@ def build_policy(obs_dim, action_dim, horizon, device='cpu', seed=51027):
         spec=SimpleNamespace(max_episode_steps=horizon))
     # Standard official Gaussian/trust-region method, not a Flow architecture.
     # Shared gamma, cost25 and Acme normalization are explicit benchmark choices.
-    return CVPOAgent(env,cost_limit=25.,device=device,thread=1,seed=seed,
-        gamma=.99,n_step=2,hidden_sizes=(128,128),actor_lr=5e-4,critic_lr=1e-3,
-        tau=.05,sample_act_num=16,deterministic_eval=False).policy
+    config=configuration or {}
+    return CVPOAgent(env,cost_limit=config.get('cost_limit',25.),device=device,thread=1,seed=seed,
+        gamma=config.get('gamma',.99),n_step=config.get('n_step',2),hidden_sizes=(128,128),
+        actor_lr=config.get('actor_lr',5e-4),critic_lr=config.get('critic_lr',1e-3),
+        tau=config.get('tau',.05),sample_act_num=config.get('sample_act_num',16),
+        deterministic_eval=False).policy
 
 
 def export_full_policy_state(policy):
@@ -72,6 +76,20 @@ def export_full_policy_state(policy):
         mstep_dual_mu=policy.mstep_dual_mu.detach().clone(),
         mstep_dual_std=policy.mstep_dual_std.detach().clone(),mstep_optimizer=policy.mstep_optim.state_dict(),
         official_source_commit=UPSTREAM_COMMIT)
+
+
+def restore_full_policy_state(policy, state):
+    if state['official_source_commit']!=UPSTREAM_COMMIT:raise ValueError('Official algorithm source changed')
+    policy.load_state_dict(state['policy'])
+    policy.actor_optim.load_state_dict(state['actor_optimizer'])
+    policy.critics_optim.load_state_dict(state['critic_optimizer'])
+    policy.pre_update_fn()
+    with torch.no_grad():
+        policy.estep_dual.copy_(state['estep_dual'].to(policy.device))
+        policy.mstep_dual_mu.copy_(state['mstep_dual_mu'].to(policy.device))
+        policy.mstep_dual_std.copy_(state['mstep_dual_std'].to(policy.device))
+    policy.estep_optim.load_state_dict(state['estep_optimizer'])
+    policy.mstep_optim.load_state_dict(state['mstep_optimizer'])
 
 
 def synthetic_smoke(upstream):
@@ -114,12 +132,26 @@ def synthetic_smoke(upstream):
     assert all(torch.isfinite(p).all() for p in policy.parameters())
     full=export_full_policy_state(policy)
     assert full['estep_optimizer']['state'] and full['mstep_optimizer']['state']
+    # Serialize before either branch mutates state_dict's referenced tensors.
+    import io
+    stream=io.BytesIO();torch.save(full,stream);data=stream.getvalue()
+    rng=capture_rng()
+    policy.pre_update_fn();policy.update(8,view);policy.post_update_fn()
+    restored=build_policy(5,2,1000)
+    restore_full_policy_state(restored,torch.load(io.BytesIO(data),weights_only=False))
+    restore_rng(rng)
+    restored.pre_update_fn();restored.update(8,view);restored.post_update_fn()
+    assert all(torch.equal(a,b) for a,b in zip(policy.parameters(),restored.parameters()))
+    assert torch.equal(policy.estep_dual,restored.estep_dual)
+    assert torch.equal(policy.mstep_dual_mu,restored.mstep_dual_mu)
+    assert torch.equal(policy.mstep_dual_std,restored.mstep_dual_std)
     return dict(status='official_synthetic_bridge_smoke_passed',official_source_commit=UPSTREAM_COMMIT,
         source_path=str(source),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
         torch_version=str(torch.__version__),numpy_version=np.__version__,tianshou_version=tianshou.__version__,
         terminal_and_truncation_bootstrap_checked=True,raw_replay_and_current_normalization_checked=True,
-        official_updates=2,native_training_transitions=0,synthetic_fixture_transitions=12,
+        official_updates=4,native_training_transitions=0,synthetic_fixture_transitions=12,
         official_dual_optimizer_recovery_state_explicit=True,cost_limit=25.,
+        synthetic_next_collection_resume_bitwise_equal=True,
         discounted_qc_threshold=policy.qc_thres[0],physical_robot_interactions=0,
         real_environment_compatibility_proven=False,formal_baseline_started=False)
 
