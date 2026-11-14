@@ -1,0 +1,18 @@
+{
+  "status": "completed_independent_test",
+  "source_commit": "dc6aebe7",
+  "validation_plan_sha256": "07bfdbd09668cbf6a85702febbf565d243f670d0d2a0587d9881c6814f84bd0b",
+  "validation_receipt_sha256": "418fa8b2f6a8db73da57b9c869926944168419bc9eb39f9eb2d4bfa614a180d9",
+  "validation_selection_sha256": "a54c2fa3f137607f4ec748c7f6f61593c474b4f8fae134021aa1367e2f027f43",
+  "review_sha256": "3d58a99437c4d2921cba36c8cec2f006c229528d31250aabda59cca3709bdc36",
+  "frozen_manifest_sha256": "9ed262e56118794b51cba5a2b3b8e2becf35fc569c8dc733ebbba61a89610c58",
+  "independent_episodes": 1600,
+  "independent_arms": 4,
+  "native_evaluation_controls": 30617,
+  "new_training_transitions": 0,
+  "total_E01_training_including_failure": 400325,
+  "conditional_second_stage_launched": false,
+  "final_test_reselection": false,
+  "physical_robot_interactions": 0,
+  "elapsed_seconds": 116.17980182997417
+}
