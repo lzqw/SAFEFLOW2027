@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -9,6 +10,7 @@ import numpy as np
 import torch
 
 from scripts.paper_crax_payload.observation_normalizer import ObservationNormalizer
+from scripts.star.arm_safe_entropy.stability_runtime import capture_rng
 
 
 UPSTREAM_COMMIT='e056fc9498d5d037869533da7cf976acf462f918'
@@ -122,14 +124,51 @@ def synthetic_smoke(upstream):
         real_environment_compatibility_proven=False,formal_baseline_started=False)
 
 
+def native_smoke(output):
+    """Exactly32 real native transitions, two official updates, engineering only."""
+    from tianshou.data import VectorReplayBuffer, Batch
+    from scripts.paper_crax_payload.crax_env import PointGoalTorch
+    if os.environ.get('CUDA_VISIBLE_DEVICES')!='' or os.environ.get('JAX_PLATFORMS')!='cpu':
+        raise ValueError('This bounded engineering probe is CPU-only')
+    env=PointGoalTorch(2,51027,'cpu');obs=env.reset(seed=51027)
+    policy=build_policy(env.obs_dim,env.action_dim,env.native.episode_length)
+    norm=ObservationNormalizer(env.obs_dim,'cpu','running_acme')
+    replay=VectorReplayBuffer(128,2);view=NormalizedReplayView(replay,norm)
+    costs=returns=0.;steps=updates=0
+    started=__import__('time').monotonic()
+    while steps<32:
+        norm.update(obs)
+        with torch.no_grad():action=policy(Batch(obs=norm.transform(obs))).act.clamp(-1,1)
+        following,reward,done,info=env.step(action)
+        replay.add(transition_batch(obs,action,reward,info),buffer_ids=np.arange(2))
+        steps+=2;costs+=float(info['cost'].sum());returns+=float(reward.sum());obs=following
+    policy.pre_update_fn()
+    for _ in range(2):policy.update(8,view);updates+=1
+    policy.post_update_fn()
+    if not all(torch.isfinite(p).all() for p in policy.parameters()):raise FloatingPointError('Official update is nonfinite')
+    result=dict(status='completed_native_engineering_smoke',steps=steps,official_updates=updates,
+        native_training_transitions=steps,engineering_only=True,formal_baseline_started=False,
+        native_cost_sum=costs,native_return_sum=returns,environment=env.effective_config(),
+        source_commit=os.environ.get('SAFEFLOW_SOURCE_COMMIT'),official_source_commit=UPSTREAM_COMMIT,
+        elapsed_seconds_after_reset=__import__('time').monotonic()-started,device='cpu',
+        physical_robot_interactions=0,independent_test_used=False)
+    # Actual simulator/replay and official dual/optimizer state, not actor-only.
+    torch.save(dict(receipt=result,policy=export_full_policy_state(policy),replay=replay,
+        normalizer=norm.state_dict(),environment=env.state_dict(),rng=capture_rng(),
+        partial_episode_observation=obs,steps=steps),output.with_suffix('.pt'))
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--synthetic-smoke',action='store_true',required=True)
+    mode=p.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--synthetic-smoke',action='store_true')
+    mode.add_argument('--native-smoke',action='store_true')
     p.add_argument('--upstream',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     args=p.parse_args()
     if args.output.exists():raise FileExistsError('Preserve previous evidence')
     torch.set_num_threads(1)
-    result=synthetic_smoke(args.upstream)
+    result=synthetic_smoke(args.upstream) if args.synthetic_smoke else native_smoke(args.output)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 
