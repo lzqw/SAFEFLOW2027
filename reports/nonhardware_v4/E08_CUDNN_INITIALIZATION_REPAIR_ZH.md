@@ -35,3 +35,9 @@ JAX两元素jit加法在cuda:0执行完成，Torch两元素平方梯度为[2,2]�
 [修复收据](cvpo_runtimefix/repair_receipt.json)同步到本地。
 22:38已通过原CRAX构造／reset并创建初始完整检查点，首块编译／采集仍在进行，
 尚无进度行，不把进程启动或探针通过称为完整训练验证。
+
+后续22:41已实际进入训练，首轮实测36864步、1280官方更新；
+[首份取回原生状态](cvpo_runtimefix/first_training_status.json)为49152步、2048更新，
+[配置与环境身份](cvpo_runtimefix/native_run_config.json)保留。
+22:44进一步复用GPU1原组件释放槽，见[只转移尚未启动seed的接续记录](E08_RELEASED_SLOT_HANDOFF_ZH.md)。
+原seed51027 worker始终保留，无再次重启或科学配置变化。

@@ -1,0 +1,18 @@
+{
+  "status": "released_shared_slot_handoff_deployed_and_verified",
+  "time_utc": "2026-11-14T22:46:00Z",
+  "retired_controller": 1864682,
+  "preserved_original_worker": 1864692,
+  "original_worker_start_time_unchanged": true,
+  "training_workers_signaled": 0,
+  "controllers": {"gpu0_follow": 1866845, "gpu1": 1866846, "closure": 1866848},
+  "gpu1_worker": 1866873,
+  "native_process_commands_verified": true,
+  "gpu1_free_mib_at_admission": 5448,
+  "scientific_configuration_changed": false,
+  "new_scientific_budget": 0,
+  "maximum_parallel_training_slots": 2,
+  "independent_closure_requires_all_three_complete_receipts": true,
+  "other_projects_stopped": false,
+  "automatic_failed_restart": false
+}

@@ -28,7 +28,7 @@ EA封顶用时1.5528秒对Iso2.6084秒，短40.5%；55mm几何EA77%成功／23%�
 Iso99%／1%，不能把效率优势写成更安全。
 见[完整前沿与外推](../robot_gap_v3/frozen_final/INTERPRETATION_ZH.md)。
 额外CVPO已接入并在槽释放后接续；首次零步cuDNN初始化失败已人工修复加载路径，
-新原生worker首块编译／采集待记录，三seed正式30M结果尚缺。
+两个原生worker已在GPU0／GPU1真实训练，第三seed按完整收据等待；三seed正式30M结果尚缺。
 训练、固定终点与验证后独立测试见[事前协议](E08_FORMAL_PROTOCOL_ZH.md)，
 不把队列控制器或零步探针当作正式训练成绩，修复证据见状态表。
 
