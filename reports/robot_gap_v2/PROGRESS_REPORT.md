@@ -2,7 +2,10 @@
 
 This file preserves the execution history. Current conclusions are in
 [FINAL_DECISION_REPORT.md](FINAL_DECISION_REPORT.md); the whole goal remains
-incomplete because4080 repair access and deployment-PC timing are outstanding.
+incomplete because4080 repair execution and deployment-PC timing are outstanding.
+November14,09:26+08:4080 access is restored over IPv6 and six full300K files
+are present, not yet loaded; see4080_RECOVERY_STATUS.md. Historical no-route
+statements below retain their original timestamps and are superseded for connectivity.
 All launched A100 training/evaluations are complete. All new work is
 simulation/offline only. Initial training implementation:139c4e15; finite Reach
 adaptation/final mechanism implementation:acb481dd; baseline:5a403e04.

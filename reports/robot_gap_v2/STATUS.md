@@ -7,8 +7,11 @@ existing Payload targeted geometry repair. New training cap2.20M, not a spending
 Current decisions and unresolved external conditions:
 [FINAL_DECISION_REPORT.md](FINAL_DECISION_REPORT.md). A100's launched training,
 Payload independent closure and final PointGoal mechanism are complete. The
-whole goal is not complete:4080 parent access/repair and actual deployment-PC
-latency remain outstanding. No further RL is launched to fill idle capacity.
+whole goal is not complete:4080 parent compatibility/repair and actual deployment-PC
+latency remain outstanding. November14,09:26+08 update:4080 IPv6 connection is
+restored; six original300K full-checkpoint files are present, not yet loaded or
+resumed. See [connection recovery](4080_RECOVERY_STATUS.md) and the
+[Chinese key-results summary](KEY_RESULTS_ZH.md). No further RL is launched to fill idle capacity.
 
 | Task | State | Next evidence |
 |---|---|---|
@@ -17,7 +20,7 @@ latency remain outstanding. No further RL is launched to fill idle capacity.
 | Piper speed | Three10K profiles complete:10.63/32.46/57.66SPS | Batched-large chosen; all short scores zero, no learning-equivalence claim |
 | Reach→Payload | Both matched300K continuations complete | Iso100%/10%/66.67%, EA83.33%/23.33%/63.33% nominal/geometry/scale development success |
 | Reach geometry adaptation≤0.20M | Both100K adaptations complete | New-geometry safe success Iso80%, EA73.33%; nominal/scale100% both |
-| Existing Payload repair≤1.00M | Not launched;4080 original IP unreachable | Recover connection; preserve shared adaptation budget |
+| Existing Payload repair≤1.00M | Not launched;4080 IPv6 access restored, six full300K files present | Confirm parent compatibility before the bounded repair; no scratch replacement |
 | Final PointGoal mechanism/efficiency/figures | Complete: final selected64×32/four samplers on native CPU,16,704 controls, zero RL | paper/final_mechanism/: small covariance changes, no within-state cost-event-rate differences |
 | Reach deployment candidate/control program | Adapted endpoints frozen and tested on900 independent-layout episodes; actual bundles/replay exported | See reach_adapted_release/README.md; geometry violations28%/30%, hardware eligibility false |
 | Payload post-training closure | Complete:1500 common-validation+600 independent episodes; selected Iso60K and EA120K | Independent success Iso100/100/100%, EA96/75/98%; actual frozen bundles in payload_closure/ |
@@ -58,7 +61,7 @@ Payload-Iso's completed300K endpoint is100% nominal,10% geometry and66.67%
 scale safe success (30 development episodes/condition), with0%/90%/33.33%
 violations. Its120/180/240K geometry scores66.67/43.33/56.67% also remain in
 the full curve. Continued nominal learning did not fix robustness. The fixed
-endpoint is retained separately from the queued matched-five-candidate
+endpoint is retained separately from the completed matched-five-candidate
 validation/independent selection. EA's300K nominal/geometry/scale success is
 83.33%/23.33%/63.33%, with16.67%/76.67%/36.67% violations. Its120K values
 96.67%/80%/96.67% fell sharply at240K, then only partially recovered at300K.
