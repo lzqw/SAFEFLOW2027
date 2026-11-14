@@ -1,0 +1,17 @@
+{
+  "state": "waiting_for_full_stage1_training",
+  "native_pid": 3036894,
+  "source_commit": "3bf58094d97d977ff96c450b18b5b45491259db7",
+  "plan_sha256": "07bfdbd09668cbf6a85702febbf565d243f670d0d2a0587d9881c6814f84bd0b",
+  "new_training_transitions": 0,
+  "independent_test_executed": false,
+  "automatic_restart": false,
+  "completed_candidates": 0,
+  "training": {
+    "EA-control": "completed",
+    "EA-repair": "completed",
+    "Iso-repair": "completed",
+    "SAC-repair": "waiting_for_finite_queue_admission"
+  },
+  "elapsed_seconds": 1800.8862508099992
+}

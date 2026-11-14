@@ -1,0 +1,80 @@
+{
+  "pid": 3036887,
+  "source_commit": "3bf58094d97d977ff96c450b18b5b45491259db7",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "iso-radius-repair-41028-plus100k",
+      "pid": 3036890,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_repair_v3.json",
+        "--method",
+        "s_iso",
+        "--seed",
+        "41028",
+        "--steps",
+        "220000",
+        "--adapt-from",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41028-v1/full_120000.pt",
+        "--cuda-memory-fraction",
+        "0.125",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k",
+        "--source-commit",
+        "3bf58094d97d977ff96c450b18b5b45491259db7"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/iso-radius-repair-41028-plus100k.log",
+      "status": "completed",
+      "started_unix": 1794627256.9590952,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "exit_code": 0,
+      "finished_unix": 1794629056.9592988
+    },
+    {
+      "name": "sac-radius-repair-41028-plus100k",
+      "pid": 3050862,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_repair_v3.json",
+        "--method",
+        "sac_lag",
+        "--seed",
+        "41028",
+        "--steps",
+        "400000",
+        "--adapt-from",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41028-v1/full_300000.pt",
+        "--cuda-memory-fraction",
+        "0.125",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k",
+        "--source-commit",
+        "3bf58094d97d977ff96c450b18b5b45491259db7"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/sac-radius-repair-41028-plus100k.log",
+      "status": "running",
+      "started_unix": 1794629057.8444142,
+      "slot_id": 0,
+      "visible_devices": "0"
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    3050862
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}
