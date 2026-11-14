@@ -24,3 +24,23 @@ def test_default_real_preparation_is_only_the_balanced_unexecuted_reach90():
     counts = Counter((r['method'],r['condition']) for r in rows)
     assert len(counts) == 9 and set(counts.values()) == {10}
     assert all(r['status'] == 'planned_not_executed' for r in rows)
+
+
+def test_bounded_benchmark_can_include_offline_postprocessing():
+    import numpy as np
+    import torch
+    from deployment.piper.replay_policy import benchmark
+    class Policy:
+        device='cpu';geometry=None
+        manifest={'action_scale_m':.01}
+        class actor:
+            num_steps=4
+            net=torch.nn.Identity()
+        def action(self,obs):
+            self.actor.net(torch.zeros(1,3))
+            return np.zeros((1,3))
+    obs=np.zeros(34);obs[12:15]=[.3,0,.3]
+    value=benchmark(Policy(),[(0.,obs)],warmup=1,samples=3,include_postprocessing=True)
+    assert value['measured_actions']==len(value['raw_action_latencies_s'])==3
+    assert value['postprocessing_included'] and value['physical_commands_sent']==0
+    assert value['diagnostic_deadline_misses'] is None

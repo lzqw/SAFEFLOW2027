@@ -1,0 +1,124 @@
+{
+  "results": [
+    {
+      "arm": "full",
+      "source_commit": "b31878c0",
+      "steps": 4,
+      "successes": 0,
+      "violations": 0,
+      "timeouts": 0,
+      "censored_episodes": 2,
+      "explicit_trace_end": true,
+      "completed_receipt": true,
+      "windows": [
+        {
+          "start": 0,
+          "end": 100000,
+          "transitions": 4,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 8,
+          "successful_episode_count": 0
+        },
+        {
+          "start": 100000,
+          "end": 200000,
+          "transitions": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 0,
+          "successful_episode_count": 0
+        },
+        {
+          "start": 200000,
+          "end": 300000,
+          "transitions": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 0,
+          "successful_episode_count": 0
+        }
+      ],
+      "curve": []
+    },
+    {
+      "arm": "iso",
+      "source_commit": "b31878c0",
+      "steps": 4,
+      "successes": 0,
+      "violations": 0,
+      "timeouts": 0,
+      "censored_episodes": 2,
+      "explicit_trace_end": true,
+      "completed_receipt": true,
+      "windows": [
+        {
+          "start": 0,
+          "end": 100000,
+          "transitions": 4,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 8,
+          "successful_episode_count": 0
+        },
+        {
+          "start": 100000,
+          "end": 200000,
+          "transitions": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 0,
+          "successful_episode_count": 0
+        },
+        {
+          "start": 200000,
+          "end": 300000,
+          "transitions": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0,
+          "routes": {},
+          "unique_world_cells": 0,
+          "successful_episode_count": 0
+        }
+      ],
+      "curve": []
+    }
+  ],
+  "matched_success_coverage": [],
+  "equal_violation_budget": [
+    {
+      "maximum_training_violations": 0,
+      "arms": [
+        {
+          "arm": "full",
+          "steps": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0
+        },
+        {
+          "arm": "iso",
+          "steps": 0,
+          "successes": 0,
+          "violations": 0,
+          "timeouts": 0
+        }
+      ]
+    }
+  ],
+  "descriptive_world_grid_only": true,
+  "legal_route_or_homotopy_proof": false,
+  "independent_training_seed_statistics": false,
+  "unfinished_episodes_not_failures": true
+}

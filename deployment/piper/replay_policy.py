@@ -7,6 +7,7 @@ measured inference latency. Output actions are proposals, never executions.
 import argparse
 from dataclasses import asdict
 import json
+import os
 from pathlib import Path
 import platform
 import time
@@ -58,18 +59,25 @@ def latency_summary(times, period_s=None):
         period_physically_calibrated=False)
 
 
-def benchmark(policy, observations, warmup=20, samples=200, period_s=None):
+def benchmark(policy, observations, warmup=20, samples=200, period_s=None,
+              include_postprocessing=False):
     """Batch1 wall time includes normalization, geometry/tail/VJPs and D2H."""
     if warmup < 0 or samples < 1:
         raise ValueError('Invalid bounded benchmark size')
     if period_s is not None and (not np.isfinite(period_s) or period_s <= 0):
         raise ValueError('A supplied diagnostic deadline must be positive')
     times = []
+    controller = OfflineController(OfflineLimits(action_scale_m=policy.manifest['action_scale_m'])) if include_postprocessing else None
     for index in range(warmup+samples):
         obs = observations[index % len(observations)][1][None]
         synchronize(policy.device)
         start = time.perf_counter()
-        policy.action(obs)
+        raw = policy.action(obs)
+        if controller is not None:
+            # Monotone synthetic replay time, not a calibrated robot clock.
+            stamp = index * controller.limits.period_s
+            controller.propose(raw[0], obs[0,12:15], stamp, now_s=stamp,
+                               inference_latency_s=0.)
         synchronize(policy.device)
         if index >= warmup:
             times.append(time.perf_counter()-start)
@@ -91,10 +99,14 @@ def benchmark(policy, observations, warmup=20, samples=200, period_s=None):
     count['per_head_input_VJPs'] = 2*count['margin_ensemble_forwards']
     return dict(host=platform.node(), platform=platform.platform(), device=str(policy.device),
         torch_version=str(torch.__version__), threads=torch.get_num_threads(),
+        cpu=platform.processor(), logical_cpu_count=os.cpu_count(),
+        load_average=os.getloadavg(),
         hardware_label='measurement host only; not certified deployment-machine latency',
         batch_size=1, warmup=warmup, measured_actions=samples,
         **latency_summary(times,period_s),
-        includes='normalization, base integration, geometry/tail/input gradients, host return',
+        includes='normalization, base integration, geometry/tail/input gradients, host return'
+                 + (', offline action scaling/clipping/speed/workspace checks' if controller is not None else ''),
+        postprocessing_included=controller is not None,
         excludes='bundle load, physical observation acquisition, transport, actuation',
         base_integration_steps=policy.actor.num_steps, actual_forward_counts=count,
         parameter_updates=0, physical_commands_sent=0)
@@ -133,6 +145,9 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--benchmark', action='store_true')
+    parser.add_argument('--warmup',type=int,default=20)
+    parser.add_argument('--samples',type=int,default=200)
+    parser.add_argument('--include-postprocessing',action='store_true')
     parser.add_argument('--period-s',type=float,
         help='Optional offline diagnostic deadline, never a claim of calibrated control period')
     args = parser.parse_args()
@@ -142,7 +157,8 @@ def main():
             raise FileExistsError('Preserve an existing timing result')
         _, observations = read_observations(args.observations)
         policy = FrozenPiperPolicy(args.bundle, args.device)
-        result = benchmark(policy, observations, period_s=args.period_s)
+        result = benchmark(policy, observations, warmup=args.warmup, samples=args.samples,
+                           period_s=args.period_s, include_postprocessing=args.include_postprocessing)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2)+'\n')
     else:

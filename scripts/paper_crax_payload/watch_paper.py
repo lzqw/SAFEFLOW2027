@@ -15,7 +15,8 @@ import time
 
 MODULES={'scripts.paper_crax_payload.train_crax','scripts.paper_crax_payload.native_sac_reference',
     'scripts.paper_crax_payload.native_sac_checkpoint','scripts.paper_crax_payload.payload_train',
-    'scripts.paper_crax_payload.piper_train','scripts.paper_crax_payload.run_queue'}
+    'scripts.paper_crax_payload.piper_train','scripts.paper_crax_payload.run_queue',
+    'scripts.paper_crax_payload.train_component_study'}
 
 
 def own_processes(project):
