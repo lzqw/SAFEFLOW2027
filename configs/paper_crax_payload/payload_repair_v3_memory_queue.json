@@ -1,0 +1,31 @@
+{
+  "protocol": "robot_gap_v3_e01_remaining_measured_memory_serial",
+  "project": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/project-memory-v1",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/memory-v1-queue-state.json",
+  "slots": 1,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3072},
+  "minimum_free_disk_bytes": 42949672960,
+  "poll_interval_seconds": 1800,
+  "new_training_reservation": 200000,
+  "completed_scientific_transitions": 200000,
+  "retained_failed_engineering_transitions": 325,
+  "engineering_amendment": "MEMORY_ADMISSION_AMENDMENT.md",
+  "jobs": [
+    {
+      "name": "iso-radius-repair-41028-plus100k",
+      "module": "scripts.paper_crax_payload.payload_train",
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/iso-radius-repair-41028-plus100k.log",
+      "arguments": ["--config", "configs/paper_crax_payload/payload_repair_v3.json", "--method", "s_iso", "--seed", "41028", "--steps", "220000", "--adapt-from", "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41028-v1/full_120000.pt", "--cuda-memory-fraction", "0.125"]
+    },
+    {
+      "name": "sac-radius-repair-41028-plus100k",
+      "module": "scripts.paper_crax_payload.payload_train",
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/sac-radius-repair-41028-plus100k.log",
+      "arguments": ["--config", "configs/paper_crax_payload/payload_repair_v3.json", "--method", "sac_lag", "--seed", "41028", "--steps", "400000", "--adapt-from", "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41028-v1/full_300000.pt", "--cuda-memory-fraction", "0.125"]
+    }
+  ]
+}

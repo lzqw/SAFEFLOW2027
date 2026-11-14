@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "method": "s_ea",
+  "training_seed": 41028,
+  "phase": "development",
+  "steps": 340000,
+  "initial_steps": 240000,
+  "newly_collected_transitions": 100000,
+  "training_violation_count": 1064,
+  "training_episodes": 15709,
+  "training_safe_successes": 14131,
+  "training_safe_timeouts": 514,
+  "new_physical_evaluation_transitions": 12380,
+  "physical_evaluation_transitions": 33042,
+  "segment_elapsed_seconds": 4101.906065114017,
+  "cumulative_elapsed_seconds": 13425.513538700994,
+  "learner_updates": 338000,
+  "reward_updates": 676000,
+  "actor_updates": 168500,
+  "segment_counts": {
+    "violations": 316,
+    "episodes": 5623,
+    "safe_successes": 5307,
+    "safe_timeouts": 0,
+    "learner_updates": 100000,
+    "reward_updates": 200000,
+    "actor_updates": 50000
+  },
+  "source_commit": "a7b909f0fafed93524b397349deeef4183bb743f"
+}

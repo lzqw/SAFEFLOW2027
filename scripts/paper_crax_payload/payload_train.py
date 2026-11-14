@@ -108,6 +108,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--device', default='cuda:0')
+    parser.add_argument('--cuda-memory-fraction', type=float, default=None,
+        help='Optional own-process CUDA allocator cap; never changes the learner configuration')
     parents = parser.add_mutually_exclusive_group()
     parents.add_argument('--resume', type=Path)
     parents.add_argument('--adapt-from', type=Path,
@@ -134,6 +136,10 @@ def main():
     if args.steps % num_envs:
         parser.error('Exact transition budget must be divisible by the environment batch')
     torch.set_num_threads(1)
+    if args.cuda_memory_fraction is not None:
+        if torch.device(args.device).type != 'cuda' or not 0 < args.cuda_memory_fraction <= 1:
+            parser.error('CUDA allocator fraction requires a CUDA device and fraction in (0,1]')
+        torch.cuda.set_per_process_memory_fraction(args.cuda_memory_fraction, torch.device(args.device))
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.seed)
@@ -194,6 +200,7 @@ def main():
         method=args.method, training_seed=args.seed, source_commit=args.source_commit,
         configuration=config, task_definition=envs[0].definition(),
         native_pid=os.getpid(), host=platform.node(), device=args.device,
+        cuda_allocator_fraction_cap=args.cuda_memory_fraction,
         visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'),
         initialization=('native_full_distribution_fork' if args.adapt_from else
             'native_full_continuation' if args.resume else 'fresh'),
