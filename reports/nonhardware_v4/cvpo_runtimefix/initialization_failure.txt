@@ -1,0 +1,55 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jaxopt/__init__.py:59: DeprecationWarning: JAXopt is no longer maintained. See https://docs.jax.dev/en/latest/ for alternatives.
+  warnings.warn(
+E1115 06:33:50.365047 1863821 cuda_dnn.cc:520] Loaded runtime CuDNN library: 9.1.0 but source was compiled with: 9.8.0.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+E1115 06:33:50.369511 1863821 cuda_dnn.cc:520] Loaded runtime CuDNN library: 9.1.0 but source was compiled with: 9.8.0.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+E1115 06:33:50.463462 1863821 cuda_dnn.cc:520] Loaded runtime CuDNN library: 9.1.0 but source was compiled with: 9.8.0.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+E1115 06:33:50.477843 1863821 cuda_dnn.cc:520] Loaded runtime CuDNN library: 9.1.0 but source was compiled with: 9.8.0.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-source-v1/scripts/paper_crax_payload/train_cvpo.py", line 230, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-source-v1/scripts/paper_crax_payload/train_cvpo.py", line 91, in main
+    env=PointGoalTorch(config['num_envs'],args.seed,args.device);obs=env.reset(seed=args.seed)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-source-v1/scripts/paper_crax_payload/crax_env.py", line 33, in __init__
+    self.base = envs.get_environment('safe_goal_point', level=1)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/envs/__init__.py", line 190, in get_environment
+    base_env = env_cls(**kwargs)
+               ^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/CRAX/crax/envs/safe_goal.py", line 195, in __init__
+    self._goal_keepouts = jp.array(
+                          ^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/numpy/lax_numpy.py", line 5548, in array
+    out_array: Array = lax_internal._convert_element_type(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/lax/lax.py", line 1727, in _convert_element_type
+    return convert_element_type_p.bind(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/core.py", line 496, in bind
+    return self._true_bind(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/core.py", line 512, in _true_bind
+    return self.bind_with_trace(prev_trace, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/lax/lax.py", line 4875, in _convert_element_type_bind_with_trace
+    operand = core.Primitive.bind_with_trace(convert_element_type_p, trace, args, params)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/core.py", line 517, in bind_with_trace
+    return trace.process_primitive(self, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/core.py", line 1017, in process_primitive
+    return primitive.impl(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/jax/_src/dispatch.py", line 89, in apply_primitive
+    outs = fun(*args)
+           ^^^^^^^^^^
+jaxlib.xla_extension.XlaRuntimeError: FAILED_PRECONDITION: DNN library initialization failed. Look at the errors above for more details.
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

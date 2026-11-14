@@ -31,7 +31,7 @@ JAX两元素jit加法在cuda:0执行完成，Torch两元素平方梯度为[2,2]�
 后续异常保留证据，不盲目重新提交。
 
 22:37已实际接续，新调度器1864682、worker1864692，原生`/proc`命令与run_config均匹配。
-原状态已归档，原错误日志、[旧队列](cvpo_runtimefix/retired-queue.json)及
+原状态已归档，[原错误日志](cvpo_runtimefix/initialization_failure.txt)、[旧队列](cvpo_runtimefix/retired-queue.json)及
 [修复收据](cvpo_runtimefix/repair_receipt.json)同步到本地。
 22:38已通过原CRAX构造／reset并创建初始完整检查点，首块编译／采集仍在进行，
 尚无进度行，不把进程启动或探针通过称为完整训练验证。
