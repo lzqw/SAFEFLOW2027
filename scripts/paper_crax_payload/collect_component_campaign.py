@@ -25,10 +25,11 @@ A100='/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4'
 RTX='/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4'
 
 
-def placements():
-    return [dict(arm=arm,host='4080' if arm in ('iso','metric-only') else 'tjucta-a100',
-        root=RTX if arm in ('iso','metric-only') else A100,
-        python='/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python' if arm in ('iso','metric-only')
+def placements(pending_parameters_on4080=False):
+    on_rtx=('iso','metric-only','full-rho010','full-rho050') if pending_parameters_on4080 else ('iso','metric-only')
+    return [dict(arm=arm,host='4080' if arm in on_rtx else 'tjucta-a100',
+        root=RTX if arm in on_rtx else A100,
+        python='/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python' if arm in on_rtx
                else '/home/lzqw/SAFEFLOW2027_ARM/env/bin/python') for arm in ARMS]
 
 
@@ -132,13 +133,16 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--interval',type=int,default=1800)
     p.add_argument('--initial-delay-seconds',type=int,default=0)
-    p.add_argument('--samples',type=int,default=336);args=p.parse_args()
+    p.add_argument('--samples',type=int,default=336)
+    p.add_argument('--pending-parameters-on4080',action='store_true',
+        help='Read only the two never-started relocated parameter arms from4080; no training action')
+    args=p.parse_args()
     if args.interval<1800 or not 1<=args.samples<=336 or not 0<=args.initial_delay_seconds<=1800:
         p.error('Finite half-hour observation only')
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
     lock=(output/'collector.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     if (output/'receipt.json').exists():raise FileExistsError('Already collected; no new report run')
-    items=placements();errors={}
+    items=placements(args.pending_parameters_on4080);errors={}
     if args.initial_delay_seconds:
         atomic_json(output/'status.json',dict(state='initial_wait_for_next_half_hour',collector_pid=os.getpid(),
             next_check_unix=time.time()+args.initial_delay_seconds,interval_seconds=args.interval,

@@ -20,3 +20,15 @@ def test_completion_gate_rejects_wrong_budget_seed_source_and_smoke():
                       ('source_commit','another-experiment'),('engineering_only',True)]:
         with pytest.raises(ValueError):require_completion(receipt|{key:value},'full')
     with pytest.raises(ValueError):require_completion(receipt,'iso')
+
+
+def test_relocation_changes_only_pending_parameter_locations_not_cohort():
+    original={r['arm']:r for r in placements()}
+    relocated={r['arm']:r for r in placements(True)}
+    assert set(original)==set(relocated)
+    for arm in original:
+        if arm in ('full-rho010','full-rho050'):
+            assert relocated[arm]['host']=='4080'
+            assert relocated[arm]['root']==relocated['iso']['root']
+        else:
+            assert original[arm]==relocated[arm]
