@@ -24,7 +24,7 @@ def report(directories, output):
         name=manifest['arm']['name']
         if name in progress:raise ValueError('Duplicate arm')
         progress[name]=[json.loads(line) for line in (directory/'progress.jsonl').read_text().splitlines() if line.strip()]
-        receipts.append(dict(arm=name,**receipt))
+        receipts.append(dict(receipt,arm=name))
         for step in manifest['configuration']['evaluation']['milestones']:
             data=json.loads((directory/f'evaluation_{step}.json').read_text())
             expected='independent_fixed_endpoint' if step==300000 else 'development'
