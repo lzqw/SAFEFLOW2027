@@ -22,11 +22,25 @@ import torch
 from scripts.star.arm_safe_entropy.train import Replay, atomic_json
 from scripts.star.arm_safe_entropy.stability_runtime import capture_rng, restore_rng, isolated_rng
 from scripts.paper_crax_payload.payload_environment import (
-    PayloadConfig, SafePayloadTransport, capture_payload_environment, restore_payload_environment)
+    PayloadConfig, SafePayloadTransport, PayloadFiniteRadiusEnvironment,
+    capture_payload_environment, restore_payload_environment)
 from scripts.paper_crax_payload.payload_models import build_payload_learner
 
 
 FORMAT = 'paper_payload_v1_full'
+
+
+def validate_parent(saved, config, method, seed, adaptation=False):
+    parent_config = dict(saved['configuration'])
+    child_config = dict(config)
+    if adaptation:
+        parent_config.pop('training_radius_family', None)
+        child_config.pop('training_radius_family', None)
+        if saved['configuration'].get('training_radius_family'):
+            raise ValueError('A distribution fork starts only from the registered nominal parent')
+    if (saved.get('format') != FORMAT or parent_config != child_config or
+            saved['method'] != method or saved['training_seed'] != seed):
+        raise ValueError('Native full parent/configuration mismatch; no scratch reconstruction')
 
 
 def evaluate_payload(learner, config, episodes, seed_start=None, conditions=None):
@@ -94,10 +108,18 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--device', default='cuda:0')
-    parser.add_argument('--resume', type=Path)
+    parents = parser.add_mutually_exclusive_group()
+    parents.add_argument('--resume', type=Path)
+    parents.add_argument('--adapt-from', type=Path,
+        help='Explicit reset-distribution fork; retains full learner/replay and censors parent partials')
     parser.add_argument('--phase', choices=['engineering', 'development', 'confirmation'], default='development')
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
+    family = config.get('training_radius_family')
+    if family is not None and tuple(family) != PayloadFiniteRadiusEnvironment.radius_values:
+        parser.error('Only the registered60/67.5/75mm repair family is supported')
+    if args.adapt_from and not 0 < args.steps <= 1000000:
+        parser.error('Use a finite total target for an explicit adaptation fork')
     if args.output.exists():
         parser.error('Preserve every original run; use a new output directory')
     if args.phase == 'development' and args.seed not in config['development_seeds']:
@@ -117,7 +139,8 @@ def main():
         torch.cuda.manual_seed_all(args.seed)
     learner = build_payload_learner(config, args.method, args.device)
     shared = config['shared_learner']
-    envs = [SafePayloadTransport(PayloadConfig(**config['task'])) for _ in range(num_envs)]
+    environment = PayloadFiniteRadiusEnvironment if family else SafePayloadTransport
+    envs = [environment(PayloadConfig(**config['task'])) for _ in range(num_envs)]
     replay = Replay(shared['replay_capacity'], 45)
     steps = violations = episodes = successes = timeouts = evaluation_transitions = 0
     episode_returns = np.zeros(num_envs)
@@ -125,16 +148,16 @@ def main():
     episode_lengths = np.zeros(num_envs, dtype=np.int64)
     recent = deque(maxlen=100)
     previous_elapsed = 0.
-    if args.resume:
-        saved = torch.load(args.resume, map_location=args.device, weights_only=False)
-        if (saved.get('format') != FORMAT or saved['configuration'] != config or
-                saved['method'] != args.method or saved['training_seed'] != args.seed):
-            raise ValueError('Only an identical native Payload full checkpoint can continue')
-        prior = json.loads((args.resume.parent/'run_config.json').read_text())
+    parent = args.resume or args.adapt_from
+    censored_partials = []
+    if parent:
+        saved = torch.load(parent, map_location=args.device, weights_only=False)
+        validate_parent(saved, config, args.method, args.seed, adaptation=bool(args.adapt_from))
+        prior = json.loads((parent.parent/'run_config.json').read_text())
         proc = Path('/proc', str(prior['native_pid']), 'cmdline')
         if prior['host'] == platform.node() and proc.exists():
             command = proc.read_bytes()
-            if b'payload_train' in command and str(args.resume.parent).encode() in command:
+            if b'payload_train' in command and str(parent.parent).encode() in command:
                 raise ValueError('Do not duplicate a live native Payload run')
         learner.load_state_dict(saved['learner']); replay.load_state_dict(saved['replay'])
         steps, violations, episodes = saved['steps'], saved['violations'], saved['episodes']
@@ -144,7 +167,18 @@ def main():
             ('episode_returns', 'episode_costs', 'episode_lengths')]
         recent = deque(saved['recent'], maxlen=100)
         previous_elapsed = saved['cumulative_elapsed_seconds']
-        observations = np.stack([restore_payload_environment(e, s) for e, s in zip(envs, saved['environments'])])
+        if args.adapt_from:
+            # Same explicit fresh-episode fork for nominal control and repair.
+            # Retain data, optimizers, dual and RNG; never invent terminal labels.
+            censored_partials = [dict(index=i, length=int(episode_lengths[i]),
+                episode_return=float(episode_returns[i]), cost=float(episode_costs[i]))
+                for i in range(num_envs)]
+            for env, state in zip(envs, saved['environments']):
+                env.np_random.bit_generator.state = state['rng']
+            observations = np.stack([env.reset()[0] for env in envs])
+            episode_returns.fill(0); episode_costs.fill(0); episode_lengths.fill(0)
+        else:
+            observations = np.stack([restore_payload_environment(e, s) for e, s in zip(envs, saved['environments'])])
         restore_rng(saved['rng'])
     else:
         observations = np.stack([env.reset(seed=args.seed + 997*i)[0] for i, env in enumerate(envs)])
@@ -152,14 +186,21 @@ def main():
         raise ValueError('Continuation must add actual transitions')
     learner.set_transitions(steps)
     initial_steps, initial_evaluation = steps, evaluation_transitions
+    initial_counts = dict(violations=violations, episodes=episodes, safe_successes=successes,
+        safe_timeouts=timeouts, learner_updates=learner.updates,
+        reward_updates=learner.reward_updates, actor_updates=learner.actor_updates)
     args.output.mkdir(parents=True)
     manifest = dict(protocol=config['protocol'], task='SafePayloadTransport-v1', phase=args.phase,
         method=args.method, training_seed=args.seed, source_commit=args.source_commit,
         configuration=config, task_definition=envs[0].definition(),
         native_pid=os.getpid(), host=platform.node(), device=args.device,
         visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'),
-        initialization='native_full_continuation' if args.resume else 'fresh',
-        parent_checkpoint=str(args.resume) if args.resume else None,
+        initialization=('native_full_distribution_fork' if args.adapt_from else
+            'native_full_continuation' if args.resume else 'fresh'),
+        parent_checkpoint=str(parent) if parent else None,
+        parent_sha256=hashlib.sha256(parent.read_bytes()).hexdigest() if parent else None,
+        censored_parent_partial_episodes=censored_partials,
+        censored_partials_counted_as_completed=False, initial_counts=initial_counts,
         initial_steps=steps, total_transition_budget=args.steps,
         cost_mode='episodic_binary', episode_budget=learner.cost_limit,
         full_resume='learner_optimizers_replay_RNG_partial_episodes_robot_and_payload_observed_state;not_bitwise_solver_cache',
@@ -172,9 +213,13 @@ def main():
     atomic_json(args.output/'run_config.json', manifest)
     started = time.monotonic()
     last_log = last_checkpoint = steps
+    # Adaptation candidates use equal fractions of the NEW budget. Legacy
+    # identical-config continuation retains its original total-step semantics.
+    milestone_origin = initial_steps if args.adapt_from else 0
     milestones = [] if args.phase == 'engineering' else sorted(set(
-        int(args.steps * fraction) for fraction in config['model_selection']['checkpoint_fractions']
-        if steps < int(args.steps * fraction) <= args.steps))
+        milestone_origin + int((args.steps-milestone_origin) * fraction)
+        for fraction in config['model_selection']['checkpoint_fractions']
+        if steps < milestone_origin + int((args.steps-milestone_origin) * fraction) <= args.steps))
     if any(s % num_envs for s in milestones):
         raise ValueError('Candidate checkpoint fractions must land on exact vector boundaries')
     stream = (args.output/'progress.jsonl').open('w')
@@ -252,6 +297,10 @@ def main():
             segment_elapsed_seconds=time.monotonic()-started,
             cumulative_elapsed_seconds=previous_elapsed+time.monotonic()-started,
             learner_updates=learner.updates, reward_updates=learner.reward_updates, actor_updates=learner.actor_updates,
+            segment_counts={key: value-initial_counts[key] for key, value in dict(
+                violations=violations, episodes=episodes, safe_successes=successes, safe_timeouts=timeouts,
+                learner_updates=learner.updates, reward_updates=learner.reward_updates,
+                actor_updates=learner.actor_updates).items()},
             source_commit=args.source_commit))
         atomic_json(args.output/'status.json', dict(state='completed', steps=steps))
     except BaseException as error:

@@ -52,6 +52,13 @@ def main():
                 admission_wait_reason='waiting_for_disk_space;active_jobs_not_stopped'
                 break
             admission_wait_reason=None
+            if plan.get('gpu_admission'):
+                admission = plan['gpu_admission']
+                free = int(subprocess.check_output(['nvidia-smi', '-i', str(admission['index']),
+                    '--query-gpu=memory.free', '--format=csv,noheader,nounits'], text=True, timeout=15).strip())
+                if free < admission['minimum_free_mib']:
+                    admission_wait_reason='waiting_for_shared_GPU_memory;foreign_jobs_not_stopped'
+                    break
             slot=next_slot([item[2] for item in live.values()],plan['slots'])
             job=jobs.pop(0);log=Path(job['log']);log.parent.mkdir(parents=True,exist_ok=True)
             if Path(job['output']).exists():raise FileExistsError('Preserve original run output')
@@ -63,7 +70,7 @@ def main():
             record=dict(name=job['name'],pid=proc.pid,command=command,output=job['output'],log=str(log),status='running',started_unix=time.time(),slot_id=slot,visible_devices=env.get('CUDA_VISIBLE_DEVICES'))
             records.append(record);live[proc.pid]=(proc,stream,record)
         save()
-        if jobs or live:time.sleep(5)
+        if jobs or live:time.sleep(plan.get('poll_interval_seconds',5))
 
 
 if __name__=='__main__':main()
