@@ -1,11 +1,11 @@
 # 非实机补强：已启动，尚未全部完成
 
-最新核心结果见[阶段结果总表](PROVISIONAL_RESULTS_ZH.md)：Iso与Metric-only300K独立测试完成，
-四臂共同100K开发结果已齐：Metric-only在本节点未劣于Full，
-不能声称配套二者缺一不可；完整六臂／参数／CVPO仍待完成。
-Metric-only300K固定终点三个条件各100回合，安全成功100／100／99、违规0／0／1，
-Iso为95／89／96成功、5／11／4违规；这是Metric-only消融，不是Full终点成绩。
-Full／Noise-only与两个参数点的终点仍待完成，不把两臂结果写成完整归因。
+最新核心结果见[固定300K总表](FIXED_300K_COMPONENT_RESULTS_ZH.md)：
+四组件及rho0.1均完成，五条完整轨迹与动作诊断已收回，errors为空。
+Metric-only／Full／rho0.1三条件安全成功均100／100／99（每条件100），
+Iso95／89／96、Noise-only92／81／92；不能声称配套二者缺一不可。
+Full训练成功更少、违规更多，不能把终点收益解释成探索代价也更低。
+rho0.5、六臂统一图表与CVPO仍待完成。
 共同200K开发四臂已齐：Noise-only成功20／20／20、Metric-only20／20／19、
 Iso18／18／18、Full16／14／17（每条件20回合，无安全超时）。
 Full出现回落，保留负面结果，不据此改预算或重选节点。
@@ -17,9 +17,9 @@ Full出现回落，保留负面结果，不据此改预算或重选节点。
 
 | 机器 | 正在运行 | 排队接续 | 各自预算 |
 |---|---|---|---:|
-| A100 GPU0 | Full | CVPO（独立30M包） | Full300K，CVPO另计 |
-| A100 GPU1 | Noise-only | 不追加新训练 | 300K |
-| 4080 | Full rho0.1运行中（Iso／Metric-only已完成） | Full rho0.5顺序接续 | 各300K |
+| A100 GPU0 | Full已完成，等待CVPO接纳 | CVPO（独立30M包） | CVPO另计 |
+| A100 GPU1 | Noise-only已完成 | 不追加新训练 | 300K已完成 |
+| 4080 | rho0.1已完成，等待rho0.5接纳 | Full rho0.5顺序接续 | 300K |
 
 真实初始worker：A100 Full1825421、Noise-only1825547，4080 Iso3281022。
 真实初始控制器：1825419、1825545、3281020；前两者现已退役，原训练worker保留。

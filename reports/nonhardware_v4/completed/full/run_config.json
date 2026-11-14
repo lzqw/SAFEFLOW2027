@@ -1,0 +1,146 @@
+{
+  "format": "component_study_v4_full",
+  "protocol": "nonhardware_RQ3_RQ4_RQ6_component_study_v4",
+  "configuration": {
+    "protocol": "nonhardware_RQ3_RQ4_RQ6_component_study_v4",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "training_seed": 2027,
+    "steps_per_run": 300000,
+    "num_envs": 2,
+    "arms": [
+      {
+        "name": "iso",
+        "component": "iso",
+        "rho": 0.25
+      },
+      {
+        "name": "noise-only",
+        "component": "noise_only",
+        "rho": 0.25
+      },
+      {
+        "name": "metric-only",
+        "component": "metric_only",
+        "rho": 0.25
+      },
+      {
+        "name": "full",
+        "component": "full",
+        "rho": 0.25
+      },
+      {
+        "name": "full-rho010",
+        "component": "full",
+        "rho": 0.1
+      },
+      {
+        "name": "full-rho050",
+        "component": "full",
+        "rho": 0.5
+      }
+    ],
+    "new_training_reservation": 1800000,
+    "shared_learner": {
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 256,
+      "replay_capacity": 300000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "actor_update_interval": 2,
+      "utd": 1,
+      "reward_updates_per_round": 2,
+      "target_samples": 4,
+      "reference_variance": 0.04,
+      "energy_target": 18.75,
+      "flow_steps": 4,
+      "width": 128
+    },
+    "geometry": {
+      "ema_tau": 0.005,
+      "ramp_start": 10000,
+      "ramp_end": 30000
+    },
+    "evaluation": {
+      "milestones": [
+        100000,
+        200000,
+        300000
+      ],
+      "development_layout_seed_start": 6100027,
+      "independent_layout_seed_start": 6300027,
+      "development_episodes_each": 20,
+      "independent_episodes_each": 100,
+      "action_seed": 6400027,
+      "conditions": [
+        {
+          "name": "nominal",
+          "radius": 0.06,
+          "action_scale": 1.0
+        },
+        {
+          "name": "radius065",
+          "radius": 0.065,
+          "action_scale": 1.0
+        },
+        {
+          "name": "execution085",
+          "radius": 0.06,
+          "action_scale": 0.85
+        }
+      ],
+      "fixed_endpoint_primary": true,
+      "independent_test_reselection": false
+    },
+    "trajectory_analysis": {
+      "record": "initial observation/layout/TCP plus every real control/action/reward/cost/margin/terminal class",
+      "windows": [
+        [
+          0,
+          100000
+        ],
+        [
+          100000,
+          200000
+        ],
+        [
+          200000,
+          300000
+        ]
+      ],
+      "world_grid_m": 0.02,
+      "arclength_spacing_m": 0.005,
+      "success_matching": "first chronological min(success counts across four arms) per fixed window; disclose all counts",
+      "route_classes": "descriptive signed TCP x-offset at obstacle y-plane; not a homotopy or legal-route proof"
+    },
+    "scientific_early_stopping": false,
+    "automatic_failed_run_retry": false,
+    "physical_robot_interactions": 0,
+    "old_1M_rho_plan_executed": false
+  },
+  "arm": {
+    "name": "full",
+    "component": "full",
+    "rho": 0.25
+  },
+  "source_commit": "b31878c0",
+  "config_sha256": "fb59122dfb8b82dc7787c5471b15eb4925d52177c385c44ce2fcdad22027472b",
+  "native_pid": 1825421,
+  "host": "CTAlab",
+  "device": "cuda:0",
+  "initial_network_sha256": "1e4aa11c89b3ebdf70300ae29ecacf296b1a6c7bdc8da6d7dbc59d1cfc66cf11",
+  "initial_alpha": 0.0007999999215826392,
+  "energy_target": 18.75,
+  "initialization": "fresh_same_seed_all_networks",
+  "target_transitions": 300000,
+  "engineering_only": false,
+  "software": {
+    "torch": "2.7.1+cu118",
+    "cuda": "11.8",
+    "numpy": "1.24.3"
+  },
+  "trajectory_scope": "all initial states and actual transitions, including failures and unfinished episodes",
+  "cuda_allocator_fraction_cap": 0.025,
+  "automatic_restart": false,
+  "physical_motion": false
+}
