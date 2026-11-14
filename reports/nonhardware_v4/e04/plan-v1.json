@@ -1,0 +1,33 @@
+{
+  "plan": {
+    "protocol": "E04_Piper_Reach_fixed_constructive_route_pairs_v4",
+    "task": "Reach",
+    "data_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4",
+    "assets_receipt": "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+    "frozen_config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/reach-radius-iso-100k.json",
+    "bundles": {
+      "Iso": "reports/robot_gap_v2/reach_adapted_release/bundles/iso",
+      "EA": "reports/robot_gap_v2/reach_adapted_release/bundles/ea"
+    },
+    "policy_sha256": {
+      "Iso": "408df3a77e7dd55a73dd759c3a55af1280a3866a614262e2172a0a05aa8264ea",
+      "EA": "9d472b6c04d89a5ffcb534c7cd088e5c15e6287320192027462bb61cd7d8e868"
+    },
+    "layout_seed_start": 6500027,
+    "maximum_layout_attempts": 100,
+    "target_admitted_pairs": 25,
+    "obstacle_shift_x_m": 0.06,
+    "constructive_detour_x_m": 0.1,
+    "constructive_lift_z_m": 0.04,
+    "waypoint_tolerance_m": 0.02,
+    "action_seed_start": 6600027,
+    "device": "cpu",
+    "training_transitions": 0,
+    "physical_robot_interactions": 0,
+    "qualification": "both nominal fixed detours safely succeed; both shifted starts and goals safe/reachable; each same-side fixed detour violates while opposite-side fixed detour safely succeeds",
+    "selection": "geometry and fixed controllers only, no learned policy loaded until the admitted layouts are frozen",
+    "claim_boundary": "canonical fixed routes are not automatically a learned policy's usual route; report actual nominal route usage and counterfactual blockage separately",
+    "no_automatic_controller_revision_or_replacement_layout_search_after_policy_evaluation": true
+  },
+  "source_commit": "c80c631c"
+}
