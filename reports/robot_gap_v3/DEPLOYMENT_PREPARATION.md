@@ -1,5 +1,8 @@
 # Deployment preparation: no5080 load and no physical transport
 
+[现场交接与未执行的CPU计时命令](ONSITE_HANDOFF_ZH.md)明确现有包路径、
+计时范围和待测字段；只提供后续操作步骤，本次没有执行5080命令或机器人动作。
+
 User identified5080 as the deployment PC but asked to avoid using it. No5080
 program is run in this phase; a short CPU-only offline timing window was asked
 about asynchronously. Simulation/analysis continue without waiting for it.
