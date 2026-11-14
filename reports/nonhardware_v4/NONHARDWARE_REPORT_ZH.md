@@ -53,7 +53,9 @@ EA封顶用时1.5528秒对Iso2.6084秒，短40.5%，路径0.3522m对0.4082m，�
 这是已知训练seed上的选定候选，不是跨seed算法优势。
 全部尺度、冻结规则及独立分母见[E02/E03完整结果](../robot_gap_v3/frozen_final/INTERPRETATION_ZH.md)。
 
-CVPO独立三seed×10M基线仍等待已登记的组件槽释放；正式结果尚缺，
+CVPO独立三seed×10M基线已在组件槽释放后接续；首次零步库初始化失败经
+[项目级加载路径人工修复](E08_CUDNN_INITIALIZATION_REPAIR_ZH.md)，新worker首块编译／采集待记录。
+正式结果尚缺，
 既有主结果不被重跑或替换。见[事前训练与选择协议](E08_FORMAL_PROTOCOL_ZH.md)。
 
 ## RQ2：为什么不是把所有随机性一起缩小？

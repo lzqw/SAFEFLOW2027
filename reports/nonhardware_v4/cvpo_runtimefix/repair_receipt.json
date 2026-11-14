@@ -1,0 +1,28 @@
+{
+  "status": "manual_loader_repair_deployed_native_worker_verified",
+  "time_utc": "2026-11-14T22:38:00Z",
+  "retired_controller_pid": 1842989,
+  "failed_initialization_worker_pid": 1863821,
+  "failed_attempt_training_transitions": 0,
+  "replacement_controller_pid": 1864682,
+  "replacement_worker_pid": 1864692,
+  "replacement_native_command_verified": true,
+  "scientific_source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "training_seed": 51027,
+  "scientific_configuration_changed": false,
+  "global_environment_modified": false,
+  "foreign_processes_signaled": 0,
+  "automatic_failed_restart": false,
+  "joint_runtime_probe": {
+    "torch": "2.7.1+cu118",
+    "jax": "0.6.0",
+    "runtime_cudnn_version": 92801,
+    "jax_device": "cuda:0",
+    "torch_gradient": [2.0, 2.0],
+    "new_training_transitions": 0,
+    "new_simulation_controls": 0
+  },
+  "native_progress_at_observation": "environment_initialized_run_config_and_initial_full_checkpoint_exist_first_compilation_or_collection_pending",
+  "formal_training_completion": false,
+  "rtx4080_rho050_native_pid": 3492616
+}
