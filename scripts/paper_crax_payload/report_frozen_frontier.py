@@ -111,7 +111,7 @@ def main():
         lines.extend(['Independent evaluation and/or unseen-condition work is still running; do not call this final.',''])
     for name in plots:
         lines.extend([f'![{name}]({name}.png)',''])
-    (args.output/'README.md').write_text('\n'.join(lines)+'\n')
+    (args.output/'README.md').write_text('\n'.join(lines).rstrip()+'\n')
 
 
 if __name__=='__main__':

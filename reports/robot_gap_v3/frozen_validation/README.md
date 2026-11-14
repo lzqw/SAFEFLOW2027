@@ -13,4 +13,3 @@ All compact episode rows: `episodes.csv`. Missing/admissibility denominators are
 Independent evaluation and/or unseen-condition work is still running; do not call this final.
 
 ![E02_validation_frontier](E02_validation_frontier.png)
-
