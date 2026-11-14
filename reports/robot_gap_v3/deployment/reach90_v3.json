@@ -1,0 +1,765 @@
+{
+  "schema_version": 2,
+  "protocol": "reach90",
+  "status": "planned_not_authorized_for_execution",
+  "physical_motion_authorized": false,
+  "real_interactions": 0,
+  "fixed_policy_episodes": 90,
+  "rows": [
+    {
+      "order": 1,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 2,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 3,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 4,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 5,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 6,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 7,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 8,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 9,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 1,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 10,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 11,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 12,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 13,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 14,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 15,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 16,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 17,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 18,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 2,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 19,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 20,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 21,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 22,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 23,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 24,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 25,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 26,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 27,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 3,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 28,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 29,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 30,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 31,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 32,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 33,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 34,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 35,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 36,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 4,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 37,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 38,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 39,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 40,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 41,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 42,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 43,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 44,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 45,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 5,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 46,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 47,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 48,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 49,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 50,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 51,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 52,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 53,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 54,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 6,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 55,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 56,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 57,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 58,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 59,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 60,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 61,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 62,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 63,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 7,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 64,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 65,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 66,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 67,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 68,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 69,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 70,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 71,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 72,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 8,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 73,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 74,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 75,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 76,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 77,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 78,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 79,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 80,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 81,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 9,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 82,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 83,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "Iso-Low",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 84,
+      "task": "Reach",
+      "condition": "Nominal",
+      "method": "EA",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 85,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso-Low",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 86,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "EA",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 87,
+      "task": "Reach",
+      "condition": "UnseenGeometry",
+      "method": "Iso",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 88,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "EA",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 89,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    },
+    {
+      "order": 90,
+      "task": "Reach",
+      "condition": "ExecutionVariation",
+      "method": "Iso-Low",
+      "repeat": 10,
+      "status": "planned_not_executed"
+    }
+  ],
+  "metrics": [
+    "safe_success",
+    "unassisted_safe_success",
+    "violation",
+    "hard_collision",
+    "protection_intervention_rate",
+    "action_modification_m",
+    "minimum_distance_m",
+    "capped_completion_s",
+    "inference_p50_s",
+    "inference_p95_s",
+    "inference_p99_s",
+    "deadline_miss_rate"
+  ],
+  "activation_requires": "on-site TCP/frame/period/workspace/speed calibration and explicit operator confirmation; no stress fixture automatically copied from simulation",
+  "finetune": {
+    "status": "conditional_not_launched",
+    "requires": "separate on-site operator enable and retained adaptation-efficiency claim",
+    "task_count": 1,
+    "branches": [
+      "Iso-FT",
+      "Iso-Low-FT",
+      "EA-FT"
+    ],
+    "episodes_per_branch": 50,
+    "desired_independent_repeats": 2,
+    "evaluation_nodes": [
+      0,
+      10,
+      25,
+      50
+    ],
+    "frozen_pretrained_reference": true,
+    "original_and_measured_executed_actions_required": true
+  }
+}

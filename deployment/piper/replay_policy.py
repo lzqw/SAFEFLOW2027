@@ -44,10 +44,26 @@ def synchronize(device):
         torch.cuda.synchronize(device)
 
 
-def benchmark(policy, observations, warmup=20, samples=200):
+def latency_summary(times, period_s=None):
+    times = np.asarray(times,dtype=float)
+    if times.ndim != 1 or not len(times) or not np.isfinite(times).all() or np.any(times < 0):
+        raise ValueError('Require finite nonnegative action latencies')
+    if period_s is not None and (not np.isfinite(period_s) or period_s <= 0):
+        raise ValueError('A supplied diagnostic deadline must be positive')
+    return dict(p50_s=float(np.quantile(times,.5)),p95_s=float(np.quantile(times,.95)),
+        p99_s=float(np.quantile(times,.99)),mean_s=float(times.mean()),max_s=float(times.max()),
+        raw_action_latencies_s=times.tolist(),diagnostic_period_s=period_s,
+        diagnostic_deadline_misses=int((times>period_s).sum()) if period_s is not None else None,
+        diagnostic_deadline_miss_rate=float((times>period_s).mean()) if period_s is not None else None,
+        period_physically_calibrated=False)
+
+
+def benchmark(policy, observations, warmup=20, samples=200, period_s=None):
     """Batch1 wall time includes normalization, geometry/tail/VJPs and D2H."""
     if warmup < 0 or samples < 1:
         raise ValueError('Invalid bounded benchmark size')
+    if period_s is not None and (not np.isfinite(period_s) or period_s <= 0):
+        raise ValueError('A supplied diagnostic deadline must be positive')
     times = []
     for index in range(warmup+samples):
         obs = observations[index % len(observations)][1][None]
@@ -77,8 +93,7 @@ def benchmark(policy, observations, warmup=20, samples=200):
         torch_version=str(torch.__version__), threads=torch.get_num_threads(),
         hardware_label='measurement host only; not certified deployment-machine latency',
         batch_size=1, warmup=warmup, measured_actions=samples,
-        p50_s=float(np.quantile(times, .5)), p95_s=float(np.quantile(times, .95)),
-        mean_s=float(np.mean(times)), max_s=float(np.max(times)),
+        **latency_summary(times,period_s),
         includes='normalization, base integration, geometry/tail/input gradients, host return',
         excludes='bundle load, physical observation acquisition, transport, actuation',
         base_integration_steps=policy.actor.num_steps, actual_forward_counts=count,
@@ -118,6 +133,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--benchmark', action='store_true')
+    parser.add_argument('--period-s',type=float,
+        help='Optional offline diagnostic deadline, never a claim of calibrated control period')
     args = parser.parse_args()
     torch.set_num_threads(1)
     if args.benchmark:
@@ -125,7 +142,7 @@ def main():
             raise FileExistsError('Preserve an existing timing result')
         _, observations = read_observations(args.observations)
         policy = FrozenPiperPolicy(args.bundle, args.device)
-        result = benchmark(policy, observations)
+        result = benchmark(policy, observations, period_s=args.period_s)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2)+'\n')
     else:

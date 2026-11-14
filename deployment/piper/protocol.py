@@ -10,7 +10,20 @@ import random
 METRICS = ['safe_success', 'unassisted_safe_success', 'violation', 'hard_collision',
            'protection_intervention_rate', 'action_modification_m',
            'minimum_distance_m', 'capped_completion_s',
-           'inference_p50_s', 'inference_p95_s', 'deadline_miss_rate']
+           'inference_p50_s', 'inference_p95_s', 'inference_p99_s', 'deadline_miss_rate']
+
+
+def reach90_schedule():
+    """Current first-stage plan; no Payload/online RL is silently added."""
+    methods = ['Iso','Iso-Low','EA']
+    rows = []
+    for repeat in range(10):
+        for ci, condition in enumerate(('Nominal','UnseenGeometry','ExecutionVariation')):
+            offset = (repeat+ci) % len(methods)
+            for method in methods[offset:]+methods[:offset]:
+                rows.append(dict(order=len(rows)+1,task='Reach',condition=condition,
+                    method=method,repeat=repeat+1,status='planned_not_executed'))
+    return rows
 
 
 def fixed_policy_schedule(seed=72027):
@@ -35,13 +48,16 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--seed',type=int,default=72027)
+    parser.add_argument('--protocol',choices=['reach90','legacy360'],default='reach90')
     args=parser.parse_args()
     if args.output.exists():
         parser.error('Preserve earlier experiment protocol')
-    result=dict(schema_version=1,status='planned_not_authorized_for_execution',
+    rows = reach90_schedule() if args.protocol == 'reach90' else fixed_policy_schedule(args.seed)
+    result=dict(schema_version=2,protocol=args.protocol,status='planned_not_authorized_for_execution',
                 physical_motion_authorized=False,real_interactions=0,
-                fixed_policy_episodes=360,rows=fixed_policy_schedule(args.seed),
+                fixed_policy_episodes=len(rows),rows=rows,
                 metrics=METRICS,
+                activation_requires='on-site TCP/frame/period/workspace/speed calibration and explicit operator confirmation; no stress fixture automatically copied from simulation',
                 finetune=dict(status='conditional_not_launched',
                     requires='separate on-site operator enable and retained adaptation-efficiency claim',
                     task_count=1,branches=['Iso-FT','Iso-Low-FT','EA-FT'],
@@ -50,7 +66,7 @@ def main():
                     original_and_measured_executed_actions_required=True))
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+'\n')
-    print(json.dumps(dict(planned_fixed_policy_episodes=360,real_interactions=0)))
+    print(json.dumps(dict(planned_fixed_policy_episodes=len(rows),real_interactions=0)))
 
 
 if __name__=='__main__':

@@ -1,0 +1,22 @@
+{
+  "status": "partial_completed_groups_only",
+  "source_files_sha256": {
+    "E02-validation-ea-scale0.6.json": "406c39d91aeef3ac1484451859cccf6133782f2600c270685490c26c114bdc7a",
+    "E02-validation-ea-scale0.8.json": "7285a27808f5a5fd752bb10fe91decce7a87b9724e48d6640218765ed60ac539",
+    "E02-validation-ea-scale1.json": "8bcc8d4877f5c8a6c5eb9197716a0c40c3e0161877bb46daa320a950cfe8b2e7",
+    "E02-validation-iso-scale0.6.json": "da1bb323f603dbd6e4ced38601fd83514054dbeda8076dc1860a642b0896c3e5",
+    "E02-validation-iso-scale0.8.json": "50ded64e546a9e545ef43624ef6e94e99cc1e809f30284c18cae0f2292b5db40",
+    "E02-validation-iso-scale1.json": "94a86c88652a19a461a8c7d4ba661800617edf4a11819ffcb5faf78309917452",
+    "selection.json": "583bd6d3e67631fb3f97034e417b5bd672943f6d994950187b922293d340dd13"
+  },
+  "condition_rows": 18,
+  "episode_rows": 900,
+  "source_worker_receipt": null,
+  "source_receipt_sha256": null,
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "policy_reselection": false,
+  "plots": [
+    "E02_validation_frontier"
+  ]
+}
