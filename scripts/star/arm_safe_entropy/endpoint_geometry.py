@@ -102,7 +102,7 @@ class StableFlowActor(ArmFlowActor):
     """Same velocity network, K/noise/energy, with an explicit geometry site."""
 
     def forward(self, obs, deterministic=False, geometry=None, return_reference=False,
-                noise_increments=None):
+                noise_increments=None, sampling_directional=True, energy_directional=True):
         if self.reference_control != 'aligned':
             raise ValueError('EA-STAB does not add a random-direction behavior variant')
         action = torch.zeros((*obs.shape[:-1], 3), device=obs.device, dtype=obs.dtype)
@@ -122,9 +122,14 @@ class StableFlowActor(ArmFlowActor):
                 normal, weight, diagnostic = geometry.query(self, obs, midpoint, injection, index, True)
                 bad = diagnostic['zero_gradient']
             vn, vt = reference_variances(weight, self.variance, self.rho)
+            # Opt-in component study: legacy callers retain the identical shared-D path.
+            energy_vn, energy_vt = (vn, vt) if energy_directional else (
+                torch.full_like(vn, self.variance), torch.full_like(vt, self.variance))
             vnormal = (velocity * normal).sum(-1)
             vtangent2 = (velocity.square().sum(-1) - vnormal.square()).clamp_min(0.)
-            energy = energy + .5 * dt * (vnormal.square() / vn + vtangent2 / vt)
+            energy = energy + .5 * dt * (vnormal.square() / energy_vn + vtangent2 / energy_vt)
+            if not sampling_directional:
+                vn, vt = torch.full_like(vn, self.variance), torch.full_like(vt, self.variance)
             if deterministic:
                 noise = torch.zeros_like(action)
             elif noise_increments is not None:

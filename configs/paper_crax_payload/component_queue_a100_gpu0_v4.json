@@ -1,0 +1,26 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/source",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/queue-gpu0.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 42949672960,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3072},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "full",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "full", "--cuda-memory-fraction", "0.025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/full",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/full.log"
+    },
+    {
+      "name": "full-rho010",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "full-rho010", "--cuda-memory-fraction", "0.025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/full-rho010",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/full-rho010.log"
+    }
+  ]
+}
