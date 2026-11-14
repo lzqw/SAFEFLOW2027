@@ -1,0 +1,19 @@
+{
+  "analysis": "posthoc_descriptive_common_layout_bootstrap",
+  "source_episodes_sha256_lf_normalized": "3cc93b61daad9b7b045523bac6bef7d050e7999bd4061f5b3a7c0e661c3252b4",
+  "selection_sha256": "583bd6d3e67631fb3f97034e417b5bd672943f6d994950187b922293d340dd13",
+  "selected_scales": {
+    "Iso": 1.0,
+    "EA": 1.0
+  },
+  "rng_seed": 20261114,
+  "bootstrap_resamples": 10000,
+  "resampling_unit": "layout within condition, keeping the two policies paired",
+  "interval": "percentile95; unadjusted descriptive intervals, not preregistered hypothesis tests",
+  "training_seed_count": 1,
+  "paired_layouts": 300,
+  "new_rollouts": 0,
+  "new_training_transitions": 0,
+  "policy_reselection": false,
+  "risk_equivalence_test": false
+}
