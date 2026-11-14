@@ -1,0 +1,16 @@
+{
+  "review_completed": false,
+  "decision": "pending_validation_review",
+  "conditional_continuation": null,
+  "independent_test_labels_seen": false,
+  "reason": null,
+  "validation_plan_sha256": null,
+  "validation_receipt_sha256": null,
+  "validation_selection_sha256": null,
+  "selected_checkpoint_sha256": {
+    "EA-control": null,
+    "EA-repair": null,
+    "Iso-repair": null,
+    "SAC-repair": null
+  }
+}

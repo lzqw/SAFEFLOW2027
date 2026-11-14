@@ -40,3 +40,11 @@ Otherwise seeing final labels and then deciding on another200K would turn the
 "final" test into development. After stage1 review, freeze configuration and
 candidate identities before using any genuinely final test. The325 prefix
 also reduces the remaining E01-specific1M allowance as already amended.
+
+The guarded offline entry point is `payload_repair_independent.py`. It is
+prepared but not launched: it requires a completed stage1 receipt, a
+validation-only review file binding plan/receipt/selection hashes, all four
+selected checkpoint hashes, `conditional_continuation=false`, and hidden CUDA.
+The checked-in `payload_repair_v3_review_PENDING.json` intentionally fails that
+gate. Three admission tests cover pending review, prefix/identity mismatch and
+post-test exposure; no final-test labels have been read.
