@@ -40,6 +40,13 @@ scientific budget; failed325 remain extra engineering, total reservation now
 1,230,325 against2,200,000. Iso/SAC still receive100K each. Later3×200K is
 still conditional. No automatic failed-job retry is authorized.
 
+The325 also counts against the E01-specific1M ceiling, not only the global
+ceiling. Consequently later admission must deduct this prefix rather than
+mechanically queue another600K: after stage1, at most599,675 transitions
+remain under E01. If three equal two-environment branches are extended, each
+could receive at most199,890 (total E01 including failure999,995), not200,000.
+No such second-stage reservation or launch is made before the scientific review.
+
 The new controller counts the existing healthy nominal EA as an occupied
 slot, so combined parallelism stays≤2; it never changes foreign jobs. The new
 source is deployed to a separate immutable code-only project directory, not

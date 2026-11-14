@@ -1,0 +1,34 @@
+{
+  "status": "completed_descriptive_bridge",
+  "training_seed": 41027,
+  "matched_new_payload_transitions_each": 300000,
+  "shared_reach_parent_steps": 300000,
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0,
+  "source_sha256": {
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v3_sources/training_logs/iso-initial100k.jsonl": "3082062d17e6fb52c33126aeb32132b5c9a2dc6f49dfb1863b09eca6172bb330",
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v3_sources/training_logs/iso-continuation300k.jsonl": "16a0ecfd78555ec1b07916878726c981cb9f4f9051db3f13b692114655e1b374",
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v3_sources/training_logs/ea-initial100k.jsonl": "1a5655040c05d7bbf344fc33b1e773d4220c5421075a1bdafbf76afea3b19863",
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v3_sources/training_logs/ea-continuation300k.jsonl": "80294bcc8eb8405106e9a6869476a9547823d1d20c6a61ba0ff97fa02cfb879f",
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v2_sources/payload_closure/independent-iso.json": "c87eb1336bdb781a5ea322f2180fb72b6b7517cf4b0055632d2411d0879b792e",
+    "/home/lzqw/SAFEFLOW2027_delivery/robot_gap_v2_sources/payload_closure/independent-ea.json": "0f85daab34bcbcefb4d3a279b5374b1c454e3b32e1616192e177b0f66682e0a7"
+  },
+  "fixed_transition_targets": [
+    50000,
+    100000,
+    150000,
+    200000,
+    250000,
+    300000
+  ],
+  "violation_budgets": [
+    100,
+    200,
+    400,
+    600
+  ],
+  "training_trajectory_coverage_available": false,
+  "selected_policy_occupancy_is_not_training_coverage": true,
+  "route_diversity_claim_supported": false
+}
