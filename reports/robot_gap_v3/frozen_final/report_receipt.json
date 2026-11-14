@@ -1,0 +1,47 @@
+{
+  "status": "completed",
+  "source_files_sha256": {
+    "E02-independent_test-ea-scale0.6.json": "c78c0840d75eec30e4c5cc1ea8a8e00d681584b13e099024afadefbcacb512b8",
+    "E02-independent_test-ea-scale0.8.json": "b202cf47f35d4de34be79d19cd3252fe4f27761abc3565c0fccf113b7059f0c2",
+    "E02-independent_test-ea-scale1.json": "d5b5222ef2584275cd4e5c25845216db5d2fcfa6e2c10ea24320de07b453b3ba",
+    "E02-independent_test-iso-scale0.6.json": "df0851844c6971f7c89a40d18f6f778d84aae512eaa5973558427f2e71a5fd52",
+    "E02-independent_test-iso-scale0.8.json": "3f6e8bdd9c571d8422f0175e80fdac64ab4c487db6df6dd5719e79c893dc2f13",
+    "E02-independent_test-iso-scale1.json": "1f0230c783a605add32bfedebd11c53bb35a11c938be866cb169b4aba1997059",
+    "E02-validation-ea-scale0.6.json": "406c39d91aeef3ac1484451859cccf6133782f2600c270685490c26c114bdc7a",
+    "E02-validation-ea-scale0.8.json": "7285a27808f5a5fd752bb10fe91decce7a87b9724e48d6640218765ed60ac539",
+    "E02-validation-ea-scale1.json": "8bcc8d4877f5c8a6c5eb9197716a0c40c3e0161877bb46daa320a950cfe8b2e7",
+    "E02-validation-iso-scale0.6.json": "da1bb323f603dbd6e4ced38601fd83514054dbeda8076dc1860a642b0896c3e5",
+    "E02-validation-iso-scale0.8.json": "50ded64e546a9e545ef43624ef6e94e99cc1e809f30284c18cae0f2292b5db40",
+    "E02-validation-iso-scale1.json": "94a86c88652a19a461a8c7d4ba661800617edf4a11819ffcb5faf78309917452",
+    "E03-independent_test-ea-scale1.json": "3274892dce0c73b6f6afe9e066a5eb93030c5859adfb3a96e8f1cc81a6ae07f3",
+    "E03-independent_test-iso-scale1.json": "f27703a31145b95797b3d66d205b66ffc381069168877a15eaa00a7e5b1e7890",
+    "selection.json": "583bd6d3e67631fb3f97034e417b5bd672943f6d994950187b922293d340dd13"
+  },
+  "condition_rows": 42,
+  "episode_rows": 3300,
+  "source_worker_receipt": {
+    "status": "completed",
+    "source_commit": "fe9fb873024e9395c50cf4fb169c4788475c7548",
+    "plan_sha256": "d9356b21fc509f06199bee35d6cc5016ce29ee031c1224fbf406d86ab177a79d",
+    "selection_sha256": "583bd6d3e67631fb3f97034e417b5bd672943f6d994950187b922293d340dd13",
+    "training_transitions": 0,
+    "attempted_episodes": 3300,
+    "static_admissible_episodes": 3300,
+    "physical_control_intervals": 165269,
+    "physics_substeps": 3305380,
+    "distance_queries": 3477291,
+    "static_admissibility_shared": true,
+    "elapsed_seconds": 1868.5313236378133,
+    "physical_robot_interactions": 0,
+    "actual_deployment_pc_timing": false,
+    "automatic_restart": false
+  },
+  "source_receipt_sha256": "1da7574fdbb5a5a7c9e006196bf0a3da85d0c65a01158b3b89055bfe2c82143d",
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "policy_reselection": false,
+  "plots": [
+    "E02_validation_frontier",
+    "E02_independent_test_frontier"
+  ]
+}
