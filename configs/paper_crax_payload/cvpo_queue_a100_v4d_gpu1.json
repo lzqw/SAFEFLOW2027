@@ -1,0 +1,59 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-source-v1",
+  "python": "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-queue-gpu1-v1.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 60129542144,
+  "gpu_admission": {
+    "index": 1,
+    "minimum_free_mib": 5120
+  },
+  "prerequisite_receipts": [
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/full/receipt.json",
+      "steps": 300000
+    },
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/noise-only/receipt.json",
+      "steps": 300000
+    }
+  ],
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "1"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "cvpo-51028-10m",
+      "require_completed_receipt": true,
+      "required_steps": 10000128,
+      "module": "scripts.paper_crax_payload.train_cvpo",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--seed",
+        "51028",
+        "--upstream",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/safeflow-cvpo-exec.n27CHx:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/overlay:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed:/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "NUMBA_CACHE_DIR": "/tmp/safeflow-cvpo-exec.n27CHx/numba",
+        "JAX_COMPILATION_CACHE_DIR": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/jax-cache",
+        "OPENBLAS_NUM_THREADS": "1",
+        "JAX_PLATFORMS": "cuda",
+        "LD_LIBRARY_PATH": "/home/lzqw/SAFEFLOW2027_PAPER/env/lib/python3.11/site-packages/nvidia/cudnn/lib"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-10m",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51028-10m-cudnnfix-v1.log"
+    }
+  ],
+  "resource_reassignment_only": true,
+  "supersedes_controller": 1864682,
+  "manual_initialization_repair_only": true,
+  "failed_attempt_training_transitions": 0,
+  "failed_initialization_log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51027-10m.log",
+  "existing_original_worker_preserved": 1864692
+}
