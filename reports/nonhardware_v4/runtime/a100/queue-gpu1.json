@@ -1,0 +1,40 @@
+{
+  "pid": 1825545,
+  "source_commit": "b31878c0",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "noise-only",
+      "pid": 1825547,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_component_study",
+        "--config",
+        "configs/paper_crax_payload/component_study_v4.json",
+        "--arm",
+        "noise-only",
+        "--cuda-memory-fraction",
+        "0.025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/noise-only",
+        "--source-commit",
+        "b31878c0"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/noise-only",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/noise-only.log",
+      "status": "running",
+      "started_unix": 1794662342.8994272,
+      "slot_id": 0,
+      "visible_devices": "1"
+    }
+  ],
+  "pending": 1,
+  "live_native_pids": [
+    1825547
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

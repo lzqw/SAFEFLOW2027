@@ -1,0 +1,40 @@
+{
+  "pid": 3281020,
+  "source_commit": "b31878c0",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "iso",
+      "pid": 3281022,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_component_study",
+        "--config",
+        "configs/paper_crax_payload/component_study_v4.json",
+        "--arm",
+        "iso",
+        "--cuda-memory-fraction",
+        "0.125",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/iso",
+        "--source-commit",
+        "b31878c0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/iso",
+      "log": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/logs/iso.log",
+      "status": "running",
+      "started_unix": 1794662291.7191107,
+      "slot_id": 0,
+      "visible_devices": "0"
+    }
+  ],
+  "pending": 1,
+  "live_native_pids": [
+    3281022
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}
