@@ -7,6 +7,36 @@ from pathlib import Path
 import numpy as np
 
 
+def plot_evaluation_history(rows, names, output):
+    """Do not draw a learning segment across the development/test split."""
+    import matplotlib.pyplot as plt
+    conditions=list(dict.fromkeys(row['condition'] for row in rows))
+    metrics=[('safe_success','Safe success fraction'),('violation','Violation fraction'),
+             ('capped_seconds','Failure-capped completion time (s)')]
+    fig,axes=plt.subplots(len(conditions),len(metrics),figsize=(13,3*len(conditions)),squeeze=False)
+    for row_axes,condition in zip(axes,conditions):
+        for ax,(metric,label) in zip(row_axes,metrics):
+            for name in names:
+                selected=sorted([r for r in rows if r['condition']==condition and r['arm']==name],
+                                key=lambda r:r['steps'])
+                development=[r for r in selected if r['split']=='development']
+                endpoint=[r for r in selected if r['split']=='independent_fixed_endpoint']
+                line,=ax.plot([r['steps']/1000 for r in development],
+                              [r[metric] for r in development],marker='o',ms=3,lw=1.1,label=name)
+                ax.scatter([r['steps']/1000 for r in endpoint],[r[metric] for r in endpoint],
+                           marker='D',s=32,facecolors='none',edgecolors=line.get_color())
+            ax.set(title=condition,ylabel=label,xlabel='Native training transitions (K)',xticks=[100,200,300])
+            if metric!='capped_seconds':ax.set_ylim(-.03,1.03)
+            ax.grid(alpha=.2)
+    axes[0,-1].legend(fontsize=7)
+    fig.suptitle('One development training seed2027; circles: development20/condition; '
+                 'unconnected diamonds: fixed independent100/condition',fontsize=9)
+    fig.tight_layout(rect=(0,0,1,.96))
+    fig.savefig(Path(output)/'evaluation_learning.png',dpi=170)
+    fig.savefig(Path(output)/'evaluation_learning.pdf')
+    plt.close(fig)
+
+
 def report(directories, output):
     import matplotlib
     matplotlib.use('Agg')
@@ -44,6 +74,7 @@ def report(directories, output):
                     actual_total_training_transitions=receipt['steps'],source_commit=receipt['source_commit']))
     names=['iso','noise-only','metric-only','full','full-rho010','full-rho050']
     if set(progress)!=set(names):raise ValueError('Keep all six registered arms, not only favorable results')
+    plot_evaluation_history(rows,names,output)
     with (output/'all_checkpoints.csv').open('x',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
     final=[r for r in rows if r['split']=='independent_fixed_endpoint']
