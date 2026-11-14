@@ -55,6 +55,14 @@ queued: review stage1 task/risk learning and geometry failure modes first;
 no requirement EA must win. Stage1 reserves400K, raising total reservation
 from830K to1.23M against2.20M. Stage2 could raise this to1.83M, never automatic.
 
+Engineering amendments supersede the nominal arithmetic/resource assumptions above:
+the retained325 failed steps count against E01's1M ceiling, so three later equal
+two-environment continuations could be at most199,890 each, not200K.
+See[failed-prefix amendment](ENGINEERING_AMENDMENT.md). After both EA100K
+completions, the remaining Iso/SAC resource plan is separately amended to one
+measured-memory capped GPU slot; see[resource-only amendment](MEMORY_ADMISSION_AMENDMENT.md).
+This does not add training or alter scientific acceptance/validation conditions.
+
 ## Resources and remaining lines
 
 4080 uses its4T data disk, maximum two shared jobs,≥6GiB free GPU memory before

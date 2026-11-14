@@ -1,5 +1,12 @@
 # E01 stage1 validation admission, no final-test peeking
 
+Operational update11:34: the still-idle original waiting controller3016444
+was retired after exact command/child checks, with no evaluation executed.
+Its replacement3036894 uses `payload_repair_v3_memory_validation.json` and
+`stage1-validation-memory-v1`, observing the new serial memory-capped queue.
+Only queue binding/output change; all scientific validation fields are equal.
+See[resource-only amendment](MEMORY_ADMISSION_AMENDMENT.md).
+
 The original plan already fixed five NEW20/40/60/80/100K candidates for each
 of four arms,50 common layouts81027–81076 and four conditions: nominal,70mm
 radius,wide payload,execution0.85. This is exactly20×4×50=4000 validation
