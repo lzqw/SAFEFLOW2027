@@ -1,10 +1,10 @@
 {
   "protocol": "direction_development_v5_normal_shrink_outward",
-  "completed_runs": 4,
+  "completed_runs": 5,
   "expected_runs": 5,
-  "actual_recorded_training_steps": 705000,
+  "actual_recorded_training_steps": 750000,
   "finite_development_budget": 750000,
-  "development_condition_rows": 42,
+  "development_condition_rows": 45,
   "training_seed_count": 1,
   "independent_confirmation": false,
   "method_selected": false,
@@ -18,12 +18,20 @@
       "sha256": "505a497f928d151ae8f8d18b564f38462b34ff4d543f321b37f504f8c080b324"
     },
     {
+      "path": "full-seed2028/evaluation_150000.json",
+      "sha256": "641a02cf5f658ca7286168c26f0be4f0ef2521d6b7f9ff18c2acadf14b1a8a9b"
+    },
+    {
       "path": "full-seed2028/evaluation_50000.json",
       "sha256": "96f4dac3e3f264ab28d401392b4abc1e649f6ce4501f5fb65d77b29c5f571688"
     },
     {
       "path": "full-seed2028/progress.jsonl",
-      "sha256": "f56ccf015fdc84f070d6092e69f89ba4a686c74f6e3ee86e4dbf38206e3f9679"
+      "sha256": "2c8a069e649d8d2a1546832a8f0f81f790718bb9e61c6c02e0aa21a43fada433"
+    },
+    {
+      "path": "full-seed2028/receipt.json",
+      "sha256": "91b31f054b5daefb8cbb93619c6a34786ec8d4b0aa9f1ee78a8d0125f772bef8"
     },
     {
       "path": "full-seed2028/run_config.json",
@@ -31,7 +39,7 @@
     },
     {
       "path": "full-seed2028/status.json",
-      "sha256": "6dadb6aebb1d73391e8402a59964df306fb484c2834790e5c56a1ff729cc8443"
+      "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
     },
     {
       "path": "iso-seed2028/evaluation_100000.json",
