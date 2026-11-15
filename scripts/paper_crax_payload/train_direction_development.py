@@ -48,7 +48,7 @@ def validate_config(config):
         raise ValueError('Use the registered reliability/ramp without additional tuning')
 
 
-def main():
+def main(*, validator=validate_config, builder=build_development, format_name=FORMAT):
     from scripts.paper_crax_payload.train_component_study import initial_digest
     from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
     from scripts.star.arm_safe_entropy.train import Replay, atomic_json
@@ -61,7 +61,7 @@ def main():
     parser.add_argument('--cuda-memory-fraction', type=float, default=.08)
     parser.add_argument('--smoke-steps', type=int, default=0)
     parser.add_argument('--resume', type=Path)
-    args = parser.parse_args(); config = json.loads(args.config.read_text()); validate_config(config)
+    args = parser.parse_args(); config = json.loads(args.config.read_text()); validator(config)
     arm = next(a for a in config['arms'] if a['name'] == args.arm)
     target = args.smoke_steps or config['steps_per_run']
     if (target % 2 or (args.smoke_steps and not 2 <= target <= 100)
@@ -75,7 +75,7 @@ def main():
         torch.cuda.set_per_process_memory_fraction(args.cuda_memory_fraction, torch.device(args.device))
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     if torch.cuda.is_available(): torch.cuda.manual_seed_all(args.seed)
-    learner = build_development(config, arm, args.seed, args.device)
+    learner = builder(config, arm, args.seed, args.device)
     digest = initial_digest(learner); shared = config['shared_learner']
     steps = episodes = violations = successes = timeouts = evaluation_controls = 0
     episode_ids = [0, 0]; lengths = [0, 0]; returns = [0., 0.]
@@ -87,7 +87,7 @@ def main():
                 or status['state'] != 'stopped_at_safe_boundary'):
             raise ValueError('Resume requires the explicit signal-safe boundary; arbitrary stale-prefix replay is forbidden')
         resume = torch.load(args.resume, map_location=args.device, weights_only=False)
-        if (resume['format'] != FORMAT or resume['configuration'] != config or resume['arm'] != arm
+        if (resume['format'] != format_name or resume['configuration'] != config or resume['arm'] != arm
                 or resume['seed'] != args.seed or resume['source_commit'] != args.source_commit
                 or resume['steps'] != status['steps'] or resume['steps'] >= target or args.smoke_steps):
             raise ValueError('Resume the same incomplete native scientific job, not a revision')
@@ -98,7 +98,7 @@ def main():
         evaluations = resume['evaluations']; prior_elapsed = resume['elapsed_seconds']
     else:
         args.output.mkdir()
-        atomic_json(args.output/'run_config.json', dict(format=FORMAT, configuration=config, arm=arm,
+        atomic_json(args.output/'run_config.json', dict(format=format_name, configuration=config, arm=arm,
             source_commit=args.source_commit, config_sha256=hashlib.sha256(args.config.read_bytes()).hexdigest(),
             native_pid=os.getpid(), host=platform.node(), device=args.device, training_seed=args.seed,
             initial_network_sha256=digest, target_transitions=target, engineering_only=bool(args.smoke_steps),
@@ -119,7 +119,7 @@ def main():
     def elapsed(): return prior_elapsed+time.monotonic()-started
     def checkpoint(name):
         trajectory.flush(); progress.flush()
-        state = dict(format=FORMAT, configuration=config, arm=arm, seed=args.seed, source_commit=args.source_commit,
+        state = dict(format=format_name, configuration=config, arm=arm, seed=args.seed, source_commit=args.source_commit,
             learner=learner.state_dict(), replay=replay.state_dict(), rng=capture_rng(),
             environments=[capture_environment(e) for e in envs], observations=observations.copy(),
             steps=steps, episodes=episodes, violations=violations, successes=successes, timeouts=timeouts,

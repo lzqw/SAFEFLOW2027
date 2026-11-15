@@ -97,3 +97,36 @@ def test_complete_five_arm_comparison_matches_chronological_successes():
                for r in result['equal_violation_budget'][0]['arms'])
     assert not result['independent_confirmation'] and not result['method_selected']
     with pytest.raises(ValueError, match='all five'): combine(config, summaries[:-1])
+
+
+def test_confirmation_cannot_start_from_development_or_reinterpret_selected_method():
+    from copy import deepcopy
+    from scripts.paper_crax_payload.train_direction_confirmation import (
+        configuration_digest, validate_confirmation)
+    development = json.loads(Path('configs/paper_crax_payload/direction_development_v5.json').read_text())
+    with pytest.raises(ValueError, match='confirmation freeze'): validate_confirmation(development)
+    # Synthetic registration fixture only: no real receipts or test layouts are
+    # manufactured, no file is written, no simulator or training is executed.
+    config = dict(protocol='direction_confirmation_v5_frozen',
+        status='frozen_before_confirmation_training_and_independent_test',
+        task_version=development['task_version'], num_envs=2, training_seeds=[2031, 2032, 2033],
+        steps_per_run=300000, new_training_budget=2700000,
+        arms=[a for a in development['arms'] if a['name'] in ('iso', 'metric-only', 'normal-shrink-dir')],
+        shared_learner=deepcopy(development['shared_learner']), geometry=development['geometry'],
+        evaluation=deepcopy(development['evaluation']), scientific_early_stopping=False,
+        automatic_failed_run_retry=False, physical_robot_interactions=0,
+        development_selection=dict(completed_runs=5, actual_training_steps=750000,
+            selected_arm='normal-shrink-dir', review_rationale='synthetic fixture, not a scientific decision',
+            full_learning_curve_review=True, independent_test_used_for_selection=False,
+            run_receipt_sha256={a['name']: '0'*64 for a in development['arms']},
+            trajectory_summary_sha256={a['name']: '0'*64 for a in development['arms']}),
+        independent_closure=dict(status='not_opened_requires_all_nine_final_policy_hashes',
+            checkpoint_rule='fixed300K_all_three_seeds_no_reselection',
+            episodes_per_condition_per_policy=100, fresh_layout_seed_commitment_sha256='0'*64))
+    config['shared_learner']['replay_capacity'] = 300000
+    config['evaluation']['milestones'] = [50000, 100000, 150000, 200000, 250000, 300000]
+    config['freeze_sha256'] = configuration_digest(config)
+    validate_confirmation(config)
+    config['arms'][-1]['direction_weight'] = .5
+    config['freeze_sha256'] = configuration_digest(config)
+    with pytest.raises(ValueError, match='retune'): validate_confirmation(config)

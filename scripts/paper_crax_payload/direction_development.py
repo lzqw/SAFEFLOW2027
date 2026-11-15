@@ -105,6 +105,11 @@ class DirectionDevelopmentLearner(ComponentLearner):
 def build_development(config, arm, seed, device):
     if seed not in config['development_training_seeds']:
         raise ValueError('Use a predeclared development training seed')
+    return build_registered_model(config, arm, device)
+
+
+def build_registered_model(config, arm, device):
+    """Same model settings; calling protocols own their explicit seed budgets."""
     shared = config['shared_learner']
     return DirectionDevelopmentLearner(component=arm['component'], rho=arm['rho'], device=device,
         normal_shrink=arm['normal_shrink'], direction_weight=arm['direction_weight'],
