@@ -117,6 +117,7 @@ def prepare(runs, closure, historical):
     curves = [dict(r) for r in history_curves]
     endpoints = [dict(r) for r in history_fixed]
     receipts = []
+    resume_accounting = {}
     registered = json.loads((Path(__file__).resolve().parents[2] /
                              'configs/paper_crax_payload/cvpo_formal_v4.json').read_text())
     for seed in SEEDS:
@@ -138,6 +139,29 @@ def prepare(runs, closure, historical):
         if receipt not in fixed['receipts']:
             raise ValueError('Fixed summary does not retain the native training receipts')
         receipts.append(receipt)
+        if manifest.get('resume_parent'):
+            lineage = read(directory / 'resume_lineage.json')
+            prefix = read(directory / 'prefix_a100/status.json')
+            if (lineage['training_seed'] != seed or lineage['source_commit'] != receipt['source_commit']
+                    or lineage['cumulative_transitions'] != receipt['steps']
+                    or lineage['prefix_steps'] != prefix['steps']
+                    or lineage['suffix_actual_new_transitions'] != receipt['actual_new_transitions']
+                    or prefix['steps'] + receipt['actual_new_transitions'] != receipt['steps']
+                    or lineage['cumulative_official_updates'] != receipt['official_updates']
+                    or prefix['official_updates'] != lineage['prefix_official_updates']
+                    or prefix['elapsed_seconds'] >= receipt['elapsed_seconds']
+                    or lineage['previous_evaluations_not_repeated'] is not True
+                    or lineage['training_budget_not_extended'] is not True):
+                raise ValueError('Wrong cumulative native resource-resume accounting')
+            resume_accounting[seed] = dict(prefix_training_transitions=prefix['steps'],
+                prefix_active_seconds=prefix['elapsed_seconds'],
+                suffix_active_seconds=receipt['elapsed_seconds'] - prefix['elapsed_seconds'],
+                timing_scope='sum_native_prefix_suffix_active_runtime;transfer_and_wait_excluded',
+                resource_resume=True)
+        else:
+            resume_accounting[seed] = dict(prefix_training_transitions=0, prefix_active_seconds=0,
+                suffix_active_seconds=receipt['elapsed_seconds'],
+                timing_scope='single_native_run_elapsed_including_evaluation_and_save', resource_resume=False)
         for step in MILESTONES:
             candidate = next(r for r in candidates if (r['training_seed'], r['checkpoint_steps']) == (seed, step))
             path = directory / f'validation_{step}.json'
@@ -180,7 +204,8 @@ def prepare(runs, closure, historical):
         training_cumulative_cost=r['training_cost'], official_policy_updates=r['official_updates'],
         native_evaluation_controls=r['evaluation_controls'], full_training_seconds=r['elapsed_seconds'],
         full_training_including_eval_save_sps=r['complete_train_sps'],
-        source_commit=r['source_commit'], official_source_commit=r['official_source_commit']) for r in receipts]
+        source_commit=r['source_commit'], official_source_commit=r['official_source_commit'],
+        **resume_accounting[r['training_seed']]) for r in receipts]
     return dict(curves=curves, endpoints=endpoints, selected=selected, summary=summary,
         efficiency=efficiency,
         source_records=inputs, cvpo_actual_training_transitions=sum(r['steps'] for r in receipts),
@@ -248,10 +273,22 @@ def report(runs, closure, historical, output):
     lines += ['', '全部15个CVPO候选保留，先共同验证冻结再打开500独立回合；',
         '选中单策略结果见four_method_selected_independent.csv，不替代上表三seed均值。',
         f"CVPO候选资格状态：{data['cvpo_selection_status']}；测试分数不用于重选。", '',
+        '## 共同验证选中单策略：各500独立回合，不是三训练seed均值', '',
+        '| 方法 | 目标／回合 | 原生成本 | 回合成本≤25比例 | 选中训练seed／实际快照 |',
+        '|---|---:|---:|---:|---|']
+    for row in data['selected']:
+        lines.append(f"|{row['method']}|{float(row['mean_goals_per_episode']):.3f}|"
+                     f"{float(row['mean_episode_cost']):.3f}|"
+                     f"{float(row['mean_budget_compliant_fraction']):.1%}|"
+                     f"{row['training_seed']}／{row['checkpoint_steps']}|")
+    lines += ['',
         '学习曲线含全部五节点、薄线为每训练seed、阴影为样本SD；成本预算25。',
         '训练累计成本、更新方式、原始时间与SPS单列。历史共享负载未严格控制，',
         'CVPO逐seed官方policy更新数和评测控制数见cvpo_training_efficiency.csv；',
         '不同算法的更新单位不等价，不据此假定相同optimizer机会。',
+        '资源续跑的累计时间为原prefix与suffix的原生活跃时间之和，含各自评测／保存，',
+        '不含中间断点传输／接纳／排队；不能称为从首次启动至结束的完整墙钟。',
+        '效率表同时保留原始累计receipt与后缀实际新增步数，并明确两段步数和时间范围。',
         '后端、向量数与更新组织不同，不以纯算法加速比解释墙钟差。',
         '新CVPO真实步数30,000,384（向量取整额外384）；不计入组件1.8M。',
         '汇总零新训练、零仿真、零机器人交互；未加载policy、replay或原始训练轨迹。']

@@ -112,4 +112,5 @@ Full相对Iso早期覆盖更大，但后两窗更小；早期匹配平均路径F
 
 ![训练期任务发现与真实安全开销](exploration_results/task_discovery_and_risk.png)
 
-本1.8M组件／参数与同批探索交付已完成；尚余CVPO三seed与独立闭合，全目标未完成。
+本1.8M组件／参数与同批探索交付已完成；11月15日06:54 UTC，CVPO也已完整闭合，
+见[四方法完整结果](e08/four_method_final/INTERPRETATION_ZH.md)与[最终汇总及保留范围](FINAL_SUMMARY_ZH.md)。

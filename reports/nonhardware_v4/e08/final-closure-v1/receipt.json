@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "training_transitions": 0,
+  "independent_episodes": 500,
+  "native_controls": 500000,
+  "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "selection_freeze_digest": "18ced3eb8ddb2c4cb7df5636af6fa9d0f7faccfc298d137dbbce89e50a69647e",
+  "elapsed_seconds": 341.1190221090801,
+  "physical_robot_interactions": 0,
+  "existing_three_method_results_not_changed": true,
+  "automatic_failed_restart": false
+}

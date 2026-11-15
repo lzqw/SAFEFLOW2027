@@ -1,0 +1,19 @@
+{
+  "state": "engineering_stop_at_complete_collection_boundary",
+  "steps": 5363968,
+  "target": 10000128,
+  "official_updates": 334224,
+  "episodes": 5120,
+  "training_cost": 138527.95705389977,
+  "training_return": 83334.0,
+  "elapsed_seconds": 24708.236241451,
+  "complete_train_sps": 217.0923066853295,
+  "official_qc_threshold": 2.4998920718814706,
+  "evaluated_milestones": [
+    2000128,
+    4000000
+  ],
+  "evaluation_controls": 500000,
+  "native_pid": 1866873,
+  "automatic_restart": false
+}
