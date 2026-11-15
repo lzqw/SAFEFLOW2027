@@ -1,6 +1,6 @@
 arm,training_seed,state,actual_steps,target_steps,training_violations,safe_successes,safe_timeouts,completed,source_commit,initial_network_sha256
 iso,2028,not_started,0,150000,,,,False,,
-metric-only,2028,running,11000,150000,35,0,100,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf
-full,2028,running,4000,150000,33,0,30,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf
+metric-only,2028,running,60000,150000,92,143,493,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf
+full,2028,running,24000,150000,39,0,230,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf
 normal-shrink,2028,not_started,0,150000,,,,False,,
-normal-shrink-dir,2028,running,11000,150000,35,0,100,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf
+normal-shrink-dir,2028,running,60000,150000,75,231,458,False,721bf6bbdba5943c800498557e9b0203f73cc3bf,3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf

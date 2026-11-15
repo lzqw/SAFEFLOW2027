@@ -1,0 +1,7 @@
+arm,training_seed,milestone,condition,episodes,safe_successes,violations,safe_timeouts,mean_return,mean_capped_seconds,split
+metric-only,2028,50000,nominal,30,4,5,21,-1.336956308665886,3.6213333333333333,development_only
+metric-only,2028,50000,radius065,30,6,2,22,0.397210044605498,3.4426666666666668,development_only
+metric-only,2028,50000,execution085,30,4,3,23,-0.7960979038675474,3.676,development_only
+normal-shrink-dir,2028,50000,nominal,30,13,6,11,2.281625723372492,3.046666666666667,development_only
+normal-shrink-dir,2028,50000,radius065,30,14,5,11,3.0156962907488873,2.8706666666666663,development_only
+normal-shrink-dir,2028,50000,execution085,30,17,4,9,4.551809916257807,2.7306666666666666,development_only
