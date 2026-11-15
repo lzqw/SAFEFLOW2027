@@ -1,0 +1,53 @@
+{
+  "protocol": "direction_development_v5_normal_shrink_outward",
+  "completed_runs": 0,
+  "expected_runs": 5,
+  "actual_recorded_training_steps": 26000,
+  "finite_development_budget": 750000,
+  "development_condition_rows": 0,
+  "training_seed_count": 1,
+  "independent_confirmation": false,
+  "method_selected": false,
+  "new_training_transitions": 0,
+  "source_commits": [
+    "721bf6bbdba5943c800498557e9b0203f73cc3bf"
+  ],
+  "inputs": [
+    {
+      "path": "full-seed2028/progress.jsonl",
+      "sha256": "7429dd3274ece1fc30023efc86524d8d9310a6fe677afc86e56441282d2aa1e8"
+    },
+    {
+      "path": "full-seed2028/run_config.json",
+      "sha256": "c573d48383d6bc1e32c4eb3526accb00bfafcc0f4b89a4b426120fe86147c29f"
+    },
+    {
+      "path": "full-seed2028/status.json",
+      "sha256": "ba3c21d10474d9d44a435c59084b2e8e351da7dda41e33e073f75e7a4764f536"
+    },
+    {
+      "path": "metric-only-seed2028/progress.jsonl",
+      "sha256": "9e91b4defb3e16e58c72f681eea254da9b1ab86d78dfb002dcdbd15f44ac3188"
+    },
+    {
+      "path": "metric-only-seed2028/run_config.json",
+      "sha256": "de12c3d46275dd8e9e8a0d80ac63f3422a3c5290588adb233cbf032f97a173ed"
+    },
+    {
+      "path": "metric-only-seed2028/status.json",
+      "sha256": "c41d0fdd4647270fd8d498f3de8ca76a88a4c4afa3668d94d9ae96bba3d8c42c"
+    },
+    {
+      "path": "normal-shrink-dir-seed2028/progress.jsonl",
+      "sha256": "1346683e7592458611e76b6e20078278c828b03337bd71ef9e85a1c74bc26d31"
+    },
+    {
+      "path": "normal-shrink-dir-seed2028/run_config.json",
+      "sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588"
+    },
+    {
+      "path": "normal-shrink-dir-seed2028/status.json",
+      "sha256": "3fadfa1760bdbe1f2d0c850a1d52c81ec2ea3e1cce6f4a537175f20bd7807deb"
+    }
+  ]
+}
