@@ -1,10 +1,10 @@
 {
   "protocol": "direction_development_v5_normal_shrink_outward",
-  "completed_runs": 2,
+  "completed_runs": 4,
   "expected_runs": 5,
-  "actual_recorded_training_steps": 614000,
+  "actual_recorded_training_steps": 705000,
   "finite_development_budget": 750000,
-  "development_condition_rows": 33,
+  "development_condition_rows": 42,
   "training_seed_count": 1,
   "independent_confirmation": false,
   "method_selected": false,
@@ -14,12 +14,16 @@
   ],
   "inputs": [
     {
+      "path": "full-seed2028/evaluation_100000.json",
+      "sha256": "505a497f928d151ae8f8d18b564f38462b34ff4d543f321b37f504f8c080b324"
+    },
+    {
       "path": "full-seed2028/evaluation_50000.json",
       "sha256": "96f4dac3e3f264ab28d401392b4abc1e649f6ce4501f5fb65d77b29c5f571688"
     },
     {
       "path": "full-seed2028/progress.jsonl",
-      "sha256": "96c342740ef4d7d2543e9a0568663cbfb4281320ce4ebc864f9918ffbb4a0cac"
+      "sha256": "f56ccf015fdc84f070d6092e69f89ba4a686c74f6e3ee86e4dbf38206e3f9679"
     },
     {
       "path": "full-seed2028/run_config.json",
@@ -27,11 +31,15 @@
     },
     {
       "path": "full-seed2028/status.json",
-      "sha256": "68bff5f18547faa08a0e3ffefbd56a6ef6f396ddec256adad1655c5007174af1"
+      "sha256": "6dadb6aebb1d73391e8402a59964df306fb484c2834790e5c56a1ff729cc8443"
     },
     {
       "path": "iso-seed2028/evaluation_100000.json",
       "sha256": "4b5df683c9acdacfc394a4c44e30445adf80d4790905da1d8c8695f1cee023db"
+    },
+    {
+      "path": "iso-seed2028/evaluation_150000.json",
+      "sha256": "08ca49b7552196099c61430b71faa9bb61ba6be8bbe1c94c58b0e54925754226"
     },
     {
       "path": "iso-seed2028/evaluation_50000.json",
@@ -39,7 +47,11 @@
     },
     {
       "path": "iso-seed2028/progress.jsonl",
-      "sha256": "6ea2b242677895c2a3cb5f2afb4ae0e64d9c6f06f0992d06823e2a7787479dff"
+      "sha256": "75b7fa32af46c064dece43ed42fd0f4d0af7e31568dd2aef80259062d6f479a1"
+    },
+    {
+      "path": "iso-seed2028/receipt.json",
+      "sha256": "a69e878cdad323fe5dd880bbb2686999c4930ae42d29a82a9587087456eaa7e2"
     },
     {
       "path": "iso-seed2028/run_config.json",
@@ -47,7 +59,7 @@
     },
     {
       "path": "iso-seed2028/status.json",
-      "sha256": "330265549573511af6f51d5f28f62314c0dd79f27b17da08bab1c7ebd6728e6d"
+      "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
     },
     {
       "path": "metric-only-seed2028/evaluation_100000.json",
@@ -110,12 +122,20 @@
       "sha256": "358bd5b7a180ff3025878886294eea5c12e5bf1eb33e6b46ec72e6d831846497"
     },
     {
+      "path": "normal-shrink-seed2028/evaluation_150000.json",
+      "sha256": "e50c122f0a7d0bbaf5a8458cb64168d80782cd22c71cd26d7a5eccf3f8adba06"
+    },
+    {
       "path": "normal-shrink-seed2028/evaluation_50000.json",
       "sha256": "f421f36a3eebc9d6f9d7276101ee8965ef40b802b5fb32293950828df7b490a5"
     },
     {
       "path": "normal-shrink-seed2028/progress.jsonl",
-      "sha256": "16dab934c25288771e4a7ac139e345cf64a0274acc06961388f74ef85f5360da"
+      "sha256": "b328cdec6776ce3f5a6abaff1c310c8e17701faf6ea5e9c90e96962bf76673c6"
+    },
+    {
+      "path": "normal-shrink-seed2028/receipt.json",
+      "sha256": "f812075987f6b99d74ab038b3f7839c6f7dee12b2b60c1a0df52497ce5d9d514"
     },
     {
       "path": "normal-shrink-seed2028/run_config.json",
@@ -123,7 +143,7 @@
     },
     {
       "path": "normal-shrink-seed2028/status.json",
-      "sha256": "c38ba26fc8ca994be1af7c66a2bea6a68b507d675815238dc38728ee4088f6d5"
+      "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
     }
   ],
   "figures": [
