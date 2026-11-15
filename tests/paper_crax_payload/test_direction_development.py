@@ -1,0 +1,71 @@
+import json
+from pathlib import Path
+
+import pytest
+import torch
+
+from scripts.paper_crax_payload.component_models import ComponentLearner
+from scripts.paper_crax_payload.direction_development import DirectionDevelopmentLearner, outward_loss
+from scripts.paper_crax_payload.train_direction_development import validate_config
+
+
+class FixedGeometry:
+    def query(self, actor, obs, midpoint, proposal, step, diagnostics):
+        normal = torch.zeros_like(proposal); normal[:, 0] = 1.
+        weight = torch.ones_like(proposal[:, 0])
+        return normal, weight, {'zero_gradient': torch.zeros_like(weight, dtype=torch.bool)}
+
+
+def test_outward_loss_unweighted_detached_scale_and_one_sided_gradient():
+    velocity = torch.tensor([[[2., 1., 0.]], [[-2., 1., 0.]]], requires_grad=True)
+    normal = torch.tensor([[[1., 0., 0.]], [[1., 0., 0.]]])
+    weights = torch.tensor([[.1], [1.]])
+    loss = outward_loss(velocity, normal, weights, 1.)
+    assert loss.item() == pytest.approx(.04, rel=1e-5)
+    loss.backward()
+    assert velocity.grad[0, 0, 0] > 0
+    assert torch.equal(velocity.grad[:, :, 1:], torch.zeros(2, 1, 2))
+    assert torch.equal(velocity.grad[1], torch.zeros(1, 3))
+    assert outward_loss(velocity.detach(), normal, weights*.1, 1.) == pytest.approx(loss.item()*.1)
+
+
+def test_shared_shrink_covariance_and_no_rng_or_weight_reinitialization():
+    torch.manual_seed(2028); old = ComponentLearner('full')
+    torch.manual_seed(2028); new = DirectionDevelopmentLearner(component='full', normal_shrink=True, direction_weight=1.)
+    assert all(torch.equal(v, new.actor.state_dict()[k]) for k, v in old.actor.state_dict().items())
+    obs = torch.zeros(4, 25); noise = torch.ones(4, 4, 3)*.1
+    action, energy, clips, trace = new.actor(obs, geometry=FixedGeometry(), noise_increments=noise, return_reference=True)
+    torch.testing.assert_close(trace['vn'], torch.full((4, 4), .01))
+    torch.testing.assert_close(trace['vt'], torch.full((4, 4), .04))
+    v = trace['velocities']
+    expected = (.5*.25*(v[..., 0].square()/.01 + v[..., 1:].square().sum(-1)/.04)).sum(-1)
+    torch.testing.assert_close(energy, expected)
+    (energy.mean()*.01 + new.actor_regularizer(trace) + action.square().mean()).backward()
+    assert all(p.grad is None or torch.isfinite(p.grad).all() for p in new.actor.parameters())
+    with pytest.raises(ValueError, match='reinterpret'):
+        DirectionDevelopmentLearner(component='full', normal_shrink=True).load_state_dict(new.state_dict())
+
+
+def test_old_control_update_identical_and_new_update_roundtrip():
+    torch.set_num_threads(1)
+    obs = torch.zeros(8, 25)
+    batch = dict(obs=obs, next_obs=obs, action=torch.zeros(8, 3), reward=torch.ones(8),
+                 done=torch.zeros(8), cost=torch.zeros(8), margin=torch.zeros(8))
+    results = []
+    for cls in (ComponentLearner, DirectionDevelopmentLearner):
+        torch.manual_seed(41); learner = cls(component='full', critic_only_updates=0, actor_interval=1)
+        learner.set_transitions(31000); learner.update(batch)
+        results.append(learner)
+    assert all(torch.equal(v, results[1].actor.state_dict()[k]) for k, v in results[0].actor.state_dict().items())
+    new = DirectionDevelopmentLearner(component='full', normal_shrink=True, direction_weight=1.,
+                                       critic_only_updates=0, actor_interval=1)
+    new.set_transitions(31000); new.update(batch)
+    restored = DirectionDevelopmentLearner(component='full', normal_shrink=True, direction_weight=1.,
+                                            critic_only_updates=0, actor_interval=1)
+    restored.load_state_dict(new.state_dict())
+    assert restored.metrics() == new.metrics()
+    assert new.actor_updates == 1 and new.reward_updates == 2
+    config = json.loads(Path('configs/paper_crax_payload/direction_development_v5.json').read_text())
+    validate_config(config)
+    config['evaluation']['independent_layout_seed_start'] = 999
+    with pytest.raises(ValueError, match='development-only'): validate_config(config)

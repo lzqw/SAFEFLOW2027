@@ -1,0 +1,19 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_development_v5/source",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_development_v5/queue.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 60129542144,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 5120},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "full-seed2028", "module": "scripts.paper_crax_payload.train_direction_development",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_development_v5.json", "--arm", "full", "--seed", "2028", "--cuda-memory-fraction", "0.025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_development_v5/runs/full-seed2028",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_development_v5/logs/full-seed2028.log",
+      "require_completed_receipt": true, "required_steps": 150000
+    }
+  ]
+}

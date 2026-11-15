@@ -76,6 +76,10 @@ class StableArmLearner(ArmLearner):
             return
         super().record_episode(episode_cost)
 
+    def actor_regularizer(self, trace):
+        """Explicit opt-in development hook; historical learners add exactly zero."""
+        return 0.
+
     def update(self, batch):
         obs,action,reward,next_obs,done = [batch[k] for k in ('obs','action','reward','next_obs','done')]
         alpha = self.log_alpha.detach().exp()
@@ -139,6 +143,7 @@ class StableArmLearner(ArmLearner):
                 policy_q = self.q(obs,generated).min(0).values
                 policy_cost = self.cost_q(obs,generated).mean(0)
                 actor_loss = (alpha*energy-policy_q+self.safety_multiplier*policy_cost).mean()
+                actor_loss = actor_loss + self.actor_regularizer(trace)
                 self.actor_opt.zero_grad(set_to_none=True)
                 actor_loss.backward()
                 nn.utils.clip_grad_norm_(self.actor.parameters(),10.)

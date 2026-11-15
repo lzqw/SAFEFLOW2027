@@ -1,0 +1,40 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/source",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/queue.json",
+  "slots": 2,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 60129542144,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 6000},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "normal-shrink-dir-seed2028", "module": "scripts.paper_crax_payload.train_direction_development",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_development_v5.json", "--arm", "normal-shrink-dir", "--seed", "2028", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/logs/normal-shrink-dir-seed2028.log",
+      "require_completed_receipt": true, "required_steps": 150000
+    },
+    {
+      "name": "metric-only-seed2028", "module": "scripts.paper_crax_payload.train_direction_development",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_development_v5.json", "--arm", "metric-only", "--seed", "2028", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/metric-only-seed2028",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/logs/metric-only-seed2028.log",
+      "require_completed_receipt": true, "required_steps": 150000
+    },
+    {
+      "name": "normal-shrink-seed2028", "module": "scripts.paper_crax_payload.train_direction_development",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_development_v5.json", "--arm", "normal-shrink", "--seed", "2028", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-seed2028",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/logs/normal-shrink-seed2028.log",
+      "require_completed_receipt": true, "required_steps": 150000
+    },
+    {
+      "name": "iso-seed2028", "module": "scripts.paper_crax_payload.train_direction_development",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_development_v5.json", "--arm", "iso", "--seed", "2028", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/iso-seed2028",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/logs/iso-seed2028.log",
+      "require_completed_receipt": true, "required_steps": 150000
+    }
+  ]
+}
