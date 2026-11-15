@@ -32,7 +32,15 @@
 
 ## SAFEFlow：当前实验与程序入口
 
-本分支获授权的非实机补强包已于2026-11-15完成：六臂1.8M及CVPO三seed30M、15候选、500独立回合均齐。
+2026-11-15最新：用户追加授权的方法改进v5正在开发，不代表已经选出有效最终版本。
+[当前结果与进程](reports/direction_development_v5/STATUS_ZH.md)、
+[不足分析／有限开发与确认预算](reports/direction_development_v5/PLAN_ZH.md)、
+[方法实现](scripts/paper_crax_payload/direction_development.py)、
+[新训练入口](scripts/paper_crax_payload/train_direction_development.py)与
+[五版本配置](configs/paper_crax_payload/direction_development_v5.json)。
+全部节点只作开发用途，旧独立测试不用于选新方法；不使用5080或实机。
+
+上一轮获授权的非实机补强包已于2026-11-15完成：六臂1.8M及CVPO三seed30M、15候选、500独立回合均齐。
 5080部署机计时按用户要求暂缓；E04没有合法路线接纳、E14不作因果贡献，不冒充已完成。
 固定训练终点、验证选中候选、开发节点及独立测试分别报告；负面结果完整保留。
 
