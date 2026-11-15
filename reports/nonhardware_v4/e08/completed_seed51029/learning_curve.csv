@@ -1,0 +1,6 @@
+training_seed,checkpoint_steps,mean_native_return,mean_goals_per_episode,mean_episode_cost,budget_compliant_fraction,evaluation_episodes,role
+51029,2000128,6.324,6.324,33.44700838661194,0.496,250,common_validation_not_independent
+51029,4000000,5.708,5.708,38.668997941493984,0.432,250,common_validation_not_independent
+51029,6000128,2.796,2.796,23.691322796821595,0.632,250,common_validation_not_independent
+51029,8000000,3.108,3.108,35.65432109642029,0.468,250,common_validation_not_independent
+51029,10000128,1.196,1.196,17.939596992969513,0.744,250,common_validation_not_independent

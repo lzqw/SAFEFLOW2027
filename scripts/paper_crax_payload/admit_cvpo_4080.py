@@ -190,4 +190,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except subprocess.CalledProcessError as error:
+        # Do not dump the entire remote program in a connection-error traceback.
+        print(json.dumps(dict(event='transfer_or_observation_failed',
+                              subprocess_exit_code=error.returncode,
+                              automatic_retry=False)), file=sys.stderr, flush=True)
+        raise SystemExit(1)

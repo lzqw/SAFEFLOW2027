@@ -1,0 +1,30 @@
+{
+  "schema": "observed_completed_4080_seed_admission_v1",
+  "observed_at_utc": "2026-11-15 04:01:07",
+  "source_host_alias": "4080",
+  "source_native_pid": 3580633,
+  "source_kernel_starttime": "34840532",
+  "source_worker_terminal": true,
+  "transfer_tool_exit_code": 0,
+  "observed_transfer_event": "admitted_completed_seed",
+  "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "training_seed": 51029,
+  "steps": 10000128,
+  "transferred_regular_files": 15,
+  "transferred_bytes": 8852165,
+  "destination": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51029-10m",
+  "all_transferred_file_sha256_equal": true,
+  "original_receipt_sha256": "e0a933a9c5f73de91da5db19ee945821ae370cc926a8476655770429c13cd02b",
+  "policy_sha256": {
+    "2000128": "fddb9d5e8a7f29dc1173e6e4c0cb49bf1fbfd12beb0d0a8a42829c1c1818d92d",
+    "4000000": "82b6a9367463478b136904492d5e4fd38648cc878e45f1e9b7eae562dbde2c0e",
+    "6000128": "b1f2b97743c878e0cebe487134d67149e5925c454afb9db170605d5c51ef4098",
+    "8000000": "cfacb7507261d8938b70c45968954951fac296ecf4abcc57acb65301e0f3b25e",
+    "10000128": "05268ea5e89ac6937e40094c6d17a8ecfe393f0b852c9d69b4a422975e9994d4"
+  },
+  "training_or_evaluation_controls": 0,
+  "full_replay_checkpoints_transferred": false,
+  "local_model_files_written": false,
+  "original_a100_closure_pid": 1866848,
+  "other_two_full_receipts_still_required": true
+}

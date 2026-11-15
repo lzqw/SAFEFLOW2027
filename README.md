@@ -41,7 +41,7 @@
 - [组件训练程序](scripts/paper_crax_payload/train_component_study.py)、[四组件实现](scripts/paper_crax_payload/component_models.py)与[注册配置](configs/paper_crax_payload/component_study_v4.json)。
 - [CVPO训练入口](scripts/paper_crax_payload/train_cvpo.py)、[正式科学协议](reports/nonhardware_v4/E08_FORMAL_PROTOCOL_ZH.md)与[两共享槽接续记录](reports/nonhardware_v4/E08_RELEASED_SLOT_HANDOFF_ZH.md)。
 - CVPO三seed全预算仍在推进；[已完成的三个2M共同验证前缀](reports/nonhardware_v4/e08/development_2m/README.md)不替代10M终点或独立测试。
-- 4080释放槽后已[实际接续第三个CVPO seed](reports/nonhardware_v4/E08_4080_PORTABILITY_ZH.md)，与A100两条并行；源码／预算／注册配置不变，完整证据仍待训练结束。
+- CVPO三seed[共同4M节点](reports/nonhardware_v4/e08/development_4m/README.md)已齐；[4080 seed51029完整10M及五节点](reports/nonhardware_v4/e08/completed_seed51029/README.md)已完成并接入原A100闭合目录，另两seed与独立测试仍待完成。
 - [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
 
 当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
