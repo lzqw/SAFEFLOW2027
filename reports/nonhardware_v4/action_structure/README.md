@@ -15,6 +15,7 @@
 | Metric-only |32×64|0.03773943|0.4384765625|
 | Full rho0.25 |32×64|0.03306937|0.6513671875|
 | Full rho0.1 |32×64|0.03140008|0.76025390625|
+| Full rho0.5 |32×64|0.03192009|0.58935546875|
 
 Iso平均协方差对角为[0.01477945, 0.00624003, 0.01299571]。
 Metric-only为[0.01638480, 0.00881359, 0.01254104]。
@@ -24,11 +25,15 @@ Metric-only整体trace更大而边界比例更低，但没有真实风险法向�
 参考噪声每维方差为0.04、trace0.12；经过策略动力学及限幅后的最终动作方差不同，
 因此不能把训练`mean_reference_vn/vt`叫作最终动作`VN/VT`。
 边界比例不是违规率；此诊断没有环境查询或真实风险法向投影。
-现有五臂均已完成同预算固定终点，rho0.5仍待完成；不用中间模型补齐，不预判优劣。
+六臂均已完成同预算固定终点，未使用中间模型补齐。
+完整汇总见[六臂CSV](../action_structure_results/fixed_endpoint_action_structure.csv)，
+各测量使用相同池及同版本分析脚本；三个Full参数的trace较接近，
+边界比例却不同，不能将其中任一值单独解释为风险或探索效果。
 
 原始[共同状态池](common-pool.json)、[Iso逐状态结果及模型SHA](iso.json)和
 [Metric-only逐状态结果及模型SHA](metric-only.json)保留。
 [Noise-only](noise-only.json)、[Full](full.json)、[rho0.1](full-rho010.json)也保留。
+[rho0.5](full-rho050.json)已于11月15日01:29 UTC收回；六臂原始JSON齐备。
 Noise-only／Full采样在原A100，其余在原4080，均单CPU执行；
 无训练、optimizer更新、环境导入、仿真控制或实体交互。
 完整检查点和replay未传回本地。几何保持输入梯度，未使用全局inference_mode。
@@ -46,5 +51,5 @@ python -m scripts.paper_crax_payload.component_action_structure \
 
 测量工具与结果原路径：
 `/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/action-structure-51b0bf99/`。
-后续在各臂原服务器使用同一池及同版本程序补齐，仅运行已完成300K收据对应模型；
-不用该诊断更换状态、seed、参数或检查点。全部完成后再解释组件间动作结构。
+各臂均在原服务器使用同一池及同版本程序，只运行已完成300K收据对应模型一次；
+不用该诊断更换状态、seed、参数或检查点。无需重复采样。

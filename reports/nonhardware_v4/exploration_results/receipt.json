@@ -1,0 +1,11 @@
+{
+  "status": "completed_from_existing_summaries",
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0,
+  "all_six_arms_retained": true,
+  "training_seed_count": 1,
+  "examples": "first_three_chronological_successes_per_fixed_window",
+  "raw_trajectories_not_copied": true,
+  "legal_route_or_homotopy_proof": false
+}

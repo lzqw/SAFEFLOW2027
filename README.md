@@ -37,8 +37,10 @@
 
 - [非实机统一总报告](reports/nonhardware_v4/NONHARDWARE_REPORT_ZH.md)、[六个研究问题的证据](reports/nonhardware_v4/RQ1_RQ6_EVIDENCE_ZH.md)与[当前状态](reports/nonhardware_v4/STATUS_ZH.md)。
 - [固定300K组件／参数结果](reports/nonhardware_v4/FIXED_300K_COMPONENT_RESULTS_ZH.md)，以及[全部开发节点](reports/nonhardware_v4/PROVISIONAL_RESULTS_ZH.md)。
+- 六臂1.8M补强已全部完成：[学习曲线](reports/nonhardware_v4/component_results/evaluation_learning.png)、[风险—执行效率](reports/nonhardware_v4/component_results/fixed_endpoint_risk_efficiency.png)、[完整探索曲线与轨迹](reports/nonhardware_v4/exploration_results/INTERPRETATION_ZH.md)。
 - [组件训练程序](scripts/paper_crax_payload/train_component_study.py)、[四组件实现](scripts/paper_crax_payload/component_models.py)与[注册配置](configs/paper_crax_payload/component_study_v4.json)。
 - [CVPO训练入口](scripts/paper_crax_payload/train_cvpo.py)、[正式科学协议](reports/nonhardware_v4/E08_FORMAL_PROTOCOL_ZH.md)与[两共享槽接续记录](reports/nonhardware_v4/E08_RELEASED_SLOT_HANDOFF_ZH.md)。
+- CVPO三seed全预算仍在推进；[已完成的两个2M共同验证前缀](reports/nonhardware_v4/e08/development_2m/README.md)不替代10M终点或独立测试。
 - [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
 
 当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
