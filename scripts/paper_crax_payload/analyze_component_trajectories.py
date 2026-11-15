@@ -33,9 +33,10 @@ def route(points, obstacle):
     return 'no_y_plane_crossing'
 
 
-def analyze(directory):
+def analyze(directory, *, trajectory_analysis=None):
     directory=Path(directory);manifest=json.loads((directory/'run_config.json').read_text())
-    config=manifest['configuration']['trajectory_analysis']
+    config=(manifest['configuration']['trajectory_analysis'] if trajectory_analysis is None
+            else trajectory_analysis)
     windows=[dict(start=a,end=b,transitions=0,successes=0,violations=0,timeouts=0,
                   all_cells=set(),successful=[],routes={},first_success_examples=[]) for a,b in config['windows']]
     active={};curve=[];total=successes=violations=timeouts=0;explicit_end=False
@@ -106,15 +107,16 @@ def compact_summary(result):
     return result
 
 
-def compare_summaries(results):
+def compare_summaries(results, *, matching_arms=None):
     """Merge independently computed remote summaries, preserving actual counts."""
     if len({r['arm'] for r in results})!=len(results):raise ValueError('Duplicate arm')
     if (len({r['configuration_digest'] for r in results})!=1
             or len({r['source_commit'] for r in results})!=1):
         raise ValueError('Do not mix scientific configurations or execution sources')
-    core=[r for r in results if r['arm'] in ('iso','noise-only','metric-only','full')]
+    required=('iso','noise-only','metric-only','full') if matching_arms is None else tuple(matching_arms)
+    core=[r for r in results if r['arm'] in required]
     matching=[]
-    if len(core)==4:
+    if len(core)==len(required):
         for i,w in enumerate(core[0]['windows']):
             count=min(r['windows'][i]['successful_episode_count'] for r in core)
             rows=[]

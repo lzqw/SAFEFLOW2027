@@ -69,3 +69,31 @@ def test_old_control_update_identical_and_new_update_roundtrip():
     validate_config(config)
     config['evaluation']['independent_layout_seed_start'] = 999
     with pytest.raises(ValueError, match='development-only'): validate_config(config)
+
+
+def test_complete_five_arm_comparison_matches_chronological_successes():
+    from scripts.paper_crax_payload.analyze_component_trajectories import compact_summary
+    from scripts.paper_crax_payload.analyze_direction_development import combine
+    config = json.loads(Path('configs/paper_crax_payload/direction_development_v5.json').read_text())
+    summaries = []
+    for arm in config['arms']:
+        count = 1 if arm['name'] == 'normal-shrink-dir' else 2
+        summary = compact_summary(dict(arm=arm['name'], configuration_digest='same', source_commit='fixture',
+            initial_network_sha256='paired', training_seed=2028, steps=150000, successes=count,
+            analysis_script_sha256='same-analysis', shared_analysis_sha256='same-shared-analysis',
+            trajectory_analysis=dict(windows=[[0, 150000]], world_grid_m=.02, arclength_spacing_m=.005),
+            violations=1, timeouts=0, completed_receipt=True, explicit_trace_end=True,
+            independent_confirmation=False,
+            curve=[dict(steps=10, successes=1, violations=0, timeouts=0),
+                   dict(steps=150000, successes=count, violations=1, timeouts=0)],
+            windows=[dict(start=0, end=150000, all_cells={(0, 0, 0)},
+                successful=[dict(cells={(i, 0, 0)}, path_m=float(i+1)) for i in range(count)])]))
+        summaries.append(summary)
+    result = combine(config, summaries)
+    rows = result['matched_success_coverage'][0]['arms']
+    assert len(rows) == 5 and all(r['matched_episodes'] == r['unique_world_cells'] == 1 for r in rows)
+    assert all(r['mean_path_m'] == 1. for r in rows)
+    assert all(r['successes'] == 1 and r['violations'] == 0
+               for r in result['equal_violation_budget'][0]['arms'])
+    assert not result['independent_confirmation'] and not result['method_selected']
+    with pytest.raises(ValueError, match='all five'): combine(config, summaries[:-1])
