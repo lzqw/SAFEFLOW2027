@@ -32,4 +32,41 @@ configuration字节、环境、batch、更新量和五节点验证／500独立�
 7. 仅原三seed全预算齐备后由原闭合控制器执行原冻结规则／500独立回合。
    如果续跑失败，保留全部历史、报告工程故障，不自动重试或额外从头训练。
 
-当前仅事前登记；实际停止、断点步数、SHA、续跑worker及完成结果须以随后原生证据为准。
+## 04:43 UTC：已按完整状态实际续跑
+
+04:32原worker1864692在4,401,408步、274064次官方更新边界完整保存并退出，
+状态为`engineering_stop_at_complete_collection_boundary`，evaluated仍为2M／4M。
+另一worker1866873的完整命令SHA及内核starttime前后相同。
+原A100 Python构建未暴露`os.pidfd_open`（两次调用在任何信号／操作目录建立之前失败），
+因此使用同一Linux pidfd系统调用绑定原PID，再只发一次SIGTERM；没有训练失败重试。
+全部[事前进程记录](cvpo_resource_resume_51027/before.json)及
+[完整边界](cvpo_resource_resume_51027/boundary.json)保留。
+
+原完整断点与必要小型记录在04:40之前通过压缩管道直接传到4080的
+`e08-fsrl/resume-prefix-51027-v1`，原文件仍保留A100。
+源／目标interrupted_full的SHA均为
+`69502891c4d9eff39118450a9c136e1b9197c03ca77c53524bd7783b3a95436e`。
+科学train_cvpo.py与注册configuration SHA仍为原
+`4ba046e2fde2c80209f9d2e52df36623dbc41857c99ff8cb6355c3cbdaf89742`／
+`619d7920a5cb40b327bd506303e9649e0ceaa8f64c2d6464681577f5d6ae40b0`。
+
+04:40:23 UTC用原namespace入口及`--resume`启动新output
+`runs/cvpo-51027-resume4080-v1`，wrapper3643537、原生worker3643539，
+启动时GPU空闲11690MiB、4T盘余量超过56GiB，所有输出均在4T盘。
+[原始启动记录](cvpo_resource_resume_51027/launch.json)保留命令、时间和原预算。
+04:43真实cmdline匹配，已推进到4,516,096步／281232次更新，
+evaluation_controls保持500000、evaluated仍2M／4M，证明原节点没有重跑。
+[新manifest](cvpo_resource_resume_51027/resume_run_config.json)及
+[首份实际学习心跳](cvpo_resource_resume_51027/first_learning_status.json)已收回，
+不是只启动一个空shell或从头随机训练。
+
+仅需新增5,598,720步，累计目标仍10,000,128；没有新增seed或隐藏旧累计成本。
+`close_cvpo_resource_resume.py`已订阅原生worker3643539的退出事件：仅完整完成后，
+验证prefix／suffix节点互斥、原policy SHA、累计623984官方更新和1250000评测控制，
+保存两份原manifest／日志并拼接完整时间顺序记录。
+再通过小型压缩管道传A100，将原prefix完整归档后原子接纳canonical完整结果。
+原A100闭合控制器不变；它仍须等全部三seed完整收据。
+
+两项新CPU契约检查通过（0.02秒）：完整后缀合并保持5,598,720新增步及原始记录，
+拒绝重复节点；原子接纳保留完整原prefix。零模型执行／原生rollout。
+真实后缀完成及最终接纳仍待观察，不把这些工程检查或首次心跳冒充完整10M。

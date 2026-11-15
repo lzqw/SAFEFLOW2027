@@ -42,6 +42,7 @@
 - [CVPO训练入口](scripts/paper_crax_payload/train_cvpo.py)、[正式科学协议](reports/nonhardware_v4/E08_FORMAL_PROTOCOL_ZH.md)与[两共享槽接续记录](reports/nonhardware_v4/E08_RELEASED_SLOT_HANDOFF_ZH.md)。
 - CVPO三seed全预算仍在推进；[已完成的三个2M共同验证前缀](reports/nonhardware_v4/e08/development_2m/README.md)不替代10M终点或独立测试。
 - CVPO三seed[共同4M节点](reports/nonhardware_v4/e08/development_4m/README.md)已齐；[4080 seed51029完整10M及五节点](reports/nonhardware_v4/e08/completed_seed51029/README.md)已完成并接入原A100闭合目录，另两seed与独立测试仍待完成。
+- 已释放的4080槽继续[完整状态续跑seed51027后缀](reports/nonhardware_v4/E08_FULLSTATE_RESOURCE_RESUME_ZH.md)，保留A100原prefix，不改科学预算／配置，不重复旧评测。
 - [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
 
 当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
