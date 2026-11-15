@@ -105,15 +105,21 @@ def plot_development(config, inventory, training, evaluation, output):
     for ax, condition in zip(axes[1], conditions):
         observed = [row for row in evaluation if row['condition'] == condition]
         maximum = max([100*r['violations']/r['episodes'] for r in observed] or [0])
+        label_occupancy = {}
         for name in names:
             rows = sorted([row for row in observed if row['arm'] == name], key=lambda r: r['milestone'])
             if not rows: continue
             x = [100*r['violations']/r['episodes'] for r in rows]
             y = [100*r['safe_successes']/r['episodes'] for r in rows]
             ax.plot(x, y, 'o-', color=colors[name], lw=1., ms=4)
+            grouped = {}
             for xx, yy, row in zip(x, y, rows):
-                ax.annotate(f"{row['milestone']//1000}K", (xx, yy),
-                            xytext=(4, -12 if yy >= 90 else 5), textcoords='offset points', fontsize=7)
+                grouped.setdefault((xx, yy), []).append(str(row['milestone']//1000))
+            for (xx, yy), milestones in grouped.items():
+                count = label_occupancy.get((xx, yy), 0); label_occupancy[(xx, yy)] = count+1
+                offset = (-12-12*count) if yy >= 90 else (5+12*count)
+                ax.annotate('/'.join(milestones)+'K', (xx, yy), color=colors[name],
+                            xytext=(4, offset), textcoords='offset points', fontsize=7)
         ax.set(title=condition+' (development only)', xlabel='Evaluation violations (%) - lower is better',
                ylabel='Safe successes (%) - higher is better', xlim=(-1, max(10, maximum*1.25)), ylim=(-2, 105))
         ax.grid(alpha=.2)

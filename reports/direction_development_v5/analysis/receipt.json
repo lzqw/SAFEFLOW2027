@@ -1,10 +1,10 @@
 {
   "protocol": "direction_development_v5_normal_shrink_outward",
-  "completed_runs": 0,
+  "completed_runs": 2,
   "expected_runs": 5,
-  "actual_recorded_training_steps": 260000,
+  "actual_recorded_training_steps": 375000,
   "finite_development_budget": 750000,
-  "development_condition_rows": 12,
+  "development_condition_rows": 21,
   "training_seed_count": 1,
   "independent_confirmation": false,
   "method_selected": false,
@@ -14,8 +14,12 @@
   ],
   "inputs": [
     {
+      "path": "full-seed2028/evaluation_50000.json",
+      "sha256": "96f4dac3e3f264ab28d401392b4abc1e649f6ce4501f5fb65d77b29c5f571688"
+    },
+    {
       "path": "full-seed2028/progress.jsonl",
-      "sha256": "0a4033cf27a672f2da186b1d6743a5486736b752d0855fc324892d1d8b1ced60"
+      "sha256": "acab4fded9a60d059c0a5b88e2571f0e0bfaa03aed4c90706364401374b77950"
     },
     {
       "path": "full-seed2028/run_config.json",
@@ -23,11 +27,27 @@
     },
     {
       "path": "full-seed2028/status.json",
-      "sha256": "1eea6643272f4b952673e683a49174083f6087c4992c88f569563f40d9d03a2c"
+      "sha256": "f3e7c33f0780234865ef71bae5bd690484cc91fd150d22dd7379370a2cf46223"
+    },
+    {
+      "path": "iso-seed2028/progress.jsonl",
+      "sha256": "955c7800eaf2baf2b65b55845ee76452902a8070ce78486d6989f057597030a9"
+    },
+    {
+      "path": "iso-seed2028/run_config.json",
+      "sha256": "db2a8710893ee5af89cd86560dfc6401da392df4ee36141f9cb80e22be732122"
+    },
+    {
+      "path": "iso-seed2028/status.json",
+      "sha256": "e1ab2b66026a1cfaa3651c06858c4dfde2992e3817f1a821463e778b1247805c"
     },
     {
       "path": "metric-only-seed2028/evaluation_100000.json",
       "sha256": "0a0ea0e6bfc2490b925e07276a8385e6e911b1ab119e18161539f13e0556f3ee"
+    },
+    {
+      "path": "metric-only-seed2028/evaluation_150000.json",
+      "sha256": "d49c3e6701c6de8dcca0b7cd6aaea5c6919e20ba277aef1208822bfef94afe39"
     },
     {
       "path": "metric-only-seed2028/evaluation_50000.json",
@@ -35,7 +55,11 @@
     },
     {
       "path": "metric-only-seed2028/progress.jsonl",
-      "sha256": "fc6d152da6603827523624a632e501d363a6e012bd92e23084723f58c89578a4"
+      "sha256": "b0c961621d80bf9e808d3f0308869c7121c3705928c17b64eececf0d4eead066"
+    },
+    {
+      "path": "metric-only-seed2028/receipt.json",
+      "sha256": "011b8cd857974c800ef2d3b06113bec79fa37225ec79fbc7513729cadbf2944f"
     },
     {
       "path": "metric-only-seed2028/run_config.json",
@@ -43,11 +67,15 @@
     },
     {
       "path": "metric-only-seed2028/status.json",
-      "sha256": "81380c561bc5a5a679968b517a262f77c8633c62378811916f2df32e781b4ecf"
+      "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
     },
     {
       "path": "normal-shrink-dir-seed2028/evaluation_100000.json",
       "sha256": "e92c6cd6bd89a0945dda2c7057708a9cd258a1c7b70f742a1adf4174ffacbd8a"
+    },
+    {
+      "path": "normal-shrink-dir-seed2028/evaluation_150000.json",
+      "sha256": "717a288b5fab32acd1ef0736b7a4a44af0dc85787d8709ea5b93f177aec66327"
     },
     {
       "path": "normal-shrink-dir-seed2028/evaluation_50000.json",
@@ -55,7 +83,11 @@
     },
     {
       "path": "normal-shrink-dir-seed2028/progress.jsonl",
-      "sha256": "d1a192a445afecb576865604154acf801b6fbfce911d207eb5a5af0f1ff4324f"
+      "sha256": "ba6733eed90503d949dac04ef2e44fc6e9e75be57eb0937e3e12a59c7d805811"
+    },
+    {
+      "path": "normal-shrink-dir-seed2028/receipt.json",
+      "sha256": "5607a7fb61c14c8f7dd5f231013be5c2114ba3c59f2c18e63e65ce6128ad41a3"
     },
     {
       "path": "normal-shrink-dir-seed2028/run_config.json",
@@ -63,7 +95,19 @@
     },
     {
       "path": "normal-shrink-dir-seed2028/status.json",
-      "sha256": "c36e4ea77e52f25a88dc377f1025f3881be96d2bad0146d9abc65087d25df38f"
+      "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
+    },
+    {
+      "path": "normal-shrink-seed2028/progress.jsonl",
+      "sha256": "161bdf1474685e8359931fdeac8f654b222af2719b8b09334c731b5fd53d7c63"
+    },
+    {
+      "path": "normal-shrink-seed2028/run_config.json",
+      "sha256": "2e24c789eb248e831b18e0bb423efa13c71ce44d63d13fb03b4d19975cd9cf1c"
+    },
+    {
+      "path": "normal-shrink-seed2028/status.json",
+      "sha256": "857a4da98db6ec09424e94baafdc39c1db3aea17fc93cd31b4362c49a6c25adf"
     }
   ],
   "figures": [
