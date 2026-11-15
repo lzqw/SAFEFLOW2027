@@ -55,5 +55,8 @@
   "manual_initialization_repair_only": true,
   "failed_attempt_training_transitions": 0,
   "failed_initialization_log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51027-10m.log",
-  "existing_original_worker_preserved": 1864692
+  "existing_original_worker_preserved": 1864692,
+  "superseded_by": "cvpo_queue_4080_v4e_seed51029.json",
+  "retired_waiting_controller_only": 1866845,
+  "retirement_training_processes_signalled": 0
 }

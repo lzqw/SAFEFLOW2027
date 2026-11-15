@@ -2,15 +2,19 @@
 
 此页登记结果完成后的交付方式；CVPO已复用两个释放槽并行训练，尚无正式30M完整结果。
 原首次库初始化失败的修复与后续排队安排见[实际接续记录](E08_RELEASED_SLOT_HANDOFF_ZH.md)。
+11月15日02:20 UTC，第三seed已[实际接续4080](E08_4080_PORTABILITY_ZH.md)，三条同时推进。
 报告工具不部署到正在运行的训练源码，不改变CVPO配置、模型选择或独立测试。
 
 ## 只同步紧凑数据
 
 原A100数据盘`nonhardware_v4/e08-fsrl/`中的三条run各同步：
+其中第三seed的原始训练在4080；完整收据齐备后先把该条原manifest、receipt、progress、
+五个validation和五个policy直接暂存到A100原run-root，完成后原子接纳，供原闭合核对policy SHA。
+不搬大型full／replay、不复制残缺收据或先行独立评测。
 `run_config.json`、`receipt.json`、`progress.jsonl`、五个`validation_<实际步数>.json`。
 报告直接读取原生验证JSON中的全部回合与指标，不需要下载policy、full检查点或replay。
 最终闭合目录`final-closure-v1/`同步：`receipt.json`、`selection.json`、`fixed_10m.json`、
-`independent.json`和五个`independent_<评测seed>.json`。所有完整模型仍留A100数据盘。
+`independent.json`和五个`independent_<评测seed>.json`。完整full／replay留各自原服务器数据盘。
 
 `report_cvpo_campaign.py`读取以上小文件，并复用原`reports/robot_gap_v2/paper/`的
 三方法完整CSV，不修改或重新生成历史候选身份。它在建立任何输出目录前要求：

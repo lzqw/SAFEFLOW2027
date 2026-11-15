@@ -23,6 +23,7 @@ exec bwrap --unshare-user --new-session \
     --setenv PYTHONPATH "$logical_root/e08-fsrl/overlay:$logical_root/e08-fsrl/upstream-fixed:$logical_root/e08-fsrl/CRAX:$logical_root/e08-fsrl/env/lib/python3.11/site-packages:$arm_env/lib/python3.11/site-packages:$shared_torch_env/lib/python3.11/site-packages" \
     --setenv LD_LIBRARY_PATH "$logical_root/e08-fsrl/env/lib/python3.11/site-packages/nvidia/cudnn/lib" \
     --setenv JAX_PLATFORMS cuda --setenv XLA_PYTHON_CLIENT_PREALLOCATE false \
+    --setenv TF_FORCE_GPU_ALLOW_GROWTH true \
     --setenv NUMBA_CACHE_DIR "$logical_root/e08-fsrl/numba-cache" \
     --setenv JAX_COMPILATION_CACHE_DIR "$logical_root/e08-fsrl/jax-cache" \
     --setenv XDG_CACHE_HOME "$logical_root/e08-fsrl/cache" \

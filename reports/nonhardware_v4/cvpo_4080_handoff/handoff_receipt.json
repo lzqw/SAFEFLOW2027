@@ -1,0 +1,38 @@
+{
+  "status": "resource_only_handoff_with_actual_native_learning",
+  "time_utc": "2026-11-15T02:20:27Z",
+  "scientific_source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "training_seed": 51029,
+  "target_actual_transitions": 10000128,
+  "new_scientific_budget_added": 0,
+  "retired_a100_waiting_controller": 1866845,
+  "retired_controller_had_pending_jobs": 1,
+  "retired_controller_had_live_native_pids": [],
+  "training_processes_signalled": 0,
+  "foreign_processes_signalled": 0,
+  "original_a100_workers_unchanged_before_after": [
+    {"pid": 1864692, "kernel_starttime": "230187193", "cmdline_sha256": "9941063327f1076b87ebf9f9e5edac462a387e5dab3c2d81909cf5a4da4ec657"},
+    {"pid": 1866873, "kernel_starttime": "230232622", "cmdline_sha256": "eb24a60e73d01f3ac6755b77f198cc382317cdda75eb2e5be9acd8998329f995"}
+  ],
+  "new_namespace_wrapper_pid": 3580629,
+  "new_native_queue_pid": 3580631,
+  "new_native_training_pid": 3580633,
+  "first_observed_training_steps": 73728,
+  "first_observed_official_updates": 3584,
+  "matching_native_manifest_and_command": true,
+  "torch": "2.7.1+cu118",
+  "jax": "0.6.0",
+  "GPU_import_probe_native_controls": 0,
+  "GPU_import_probe_training_transitions": 0,
+  "scientific_file_sha256_identical_to_a100": {
+    "scripts/paper_crax_payload/train_cvpo.py": "4ba046e2fde2c80209f9d2e52df36623dbc41857c99ff8cb6355c3cbdaf89742",
+    "scripts/paper_crax_payload/crax_env.py": "a5bb0f8df29178a59db86937624bf4648bf5b84788bdb616b58a964575f00d7f",
+    "configs/paper_crax_payload/cvpo_formal_v4.json": "619d7920a5cb40b327bd506303e9649e0ceaa8f64c2d6464681577f5d6ae40b0"
+  },
+  "original_official_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+  "physical_output_root": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/e08-fsrl",
+  "namespace_data_root_matches_original_registration": true,
+  "automatic_failed_restart": false,
+  "physical_robot_interactions": 0,
+  "final_independent_test_still_pending": true
+}
