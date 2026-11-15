@@ -2,9 +2,9 @@
   "protocol": "direction_development_v5_normal_shrink_outward",
   "completed_runs": 2,
   "expected_runs": 5,
-  "actual_recorded_training_steps": 493000,
+  "actual_recorded_training_steps": 614000,
   "finite_development_budget": 750000,
-  "development_condition_rows": 27,
+  "development_condition_rows": 33,
   "training_seed_count": 1,
   "independent_confirmation": false,
   "method_selected": false,
@@ -19,7 +19,7 @@
     },
     {
       "path": "full-seed2028/progress.jsonl",
-      "sha256": "4962a6a8b3c6db86d4e73748b9cf8fb9fabe7c3e42c0e19f4cc7b0fbd498e86f"
+      "sha256": "96c342740ef4d7d2543e9a0568663cbfb4281320ce4ebc864f9918ffbb4a0cac"
     },
     {
       "path": "full-seed2028/run_config.json",
@@ -27,7 +27,11 @@
     },
     {
       "path": "full-seed2028/status.json",
-      "sha256": "334320216a44407bbe7e6c857df5a4cecd83394710634d4aa22e541051608764"
+      "sha256": "68bff5f18547faa08a0e3ffefbd56a6ef6f396ddec256adad1655c5007174af1"
+    },
+    {
+      "path": "iso-seed2028/evaluation_100000.json",
+      "sha256": "4b5df683c9acdacfc394a4c44e30445adf80d4790905da1d8c8695f1cee023db"
     },
     {
       "path": "iso-seed2028/evaluation_50000.json",
@@ -35,7 +39,7 @@
     },
     {
       "path": "iso-seed2028/progress.jsonl",
-      "sha256": "43fac41961cbb1aa31809d0b6436050a15d8ec4e2d717c523ebbacfa49636401"
+      "sha256": "6ea2b242677895c2a3cb5f2afb4ae0e64d9c6f06f0992d06823e2a7787479dff"
     },
     {
       "path": "iso-seed2028/run_config.json",
@@ -43,7 +47,7 @@
     },
     {
       "path": "iso-seed2028/status.json",
-      "sha256": "2934169c6ec6c3a26c976606f3a69f89c3ef515275438940f9521db162d2e44a"
+      "sha256": "330265549573511af6f51d5f28f62314c0dd79f27b17da08bab1c7ebd6728e6d"
     },
     {
       "path": "metric-only-seed2028/evaluation_100000.json",
@@ -102,12 +106,16 @@
       "sha256": "d3a124e2bf25c3ebe72574088d0f93a5cc60eb9c3523f37d3329a84c8eb8d197"
     },
     {
+      "path": "normal-shrink-seed2028/evaluation_100000.json",
+      "sha256": "358bd5b7a180ff3025878886294eea5c12e5bf1eb33e6b46ec72e6d831846497"
+    },
+    {
       "path": "normal-shrink-seed2028/evaluation_50000.json",
       "sha256": "f421f36a3eebc9d6f9d7276101ee8965ef40b802b5fb32293950828df7b490a5"
     },
     {
       "path": "normal-shrink-seed2028/progress.jsonl",
-      "sha256": "9aa6896707c32a955e656f9e876e607a9e1df6643567edb4663cda132f15e3b1"
+      "sha256": "16dab934c25288771e4a7ac139e345cf64a0274acc06961388f74ef85f5360da"
     },
     {
       "path": "normal-shrink-seed2028/run_config.json",
@@ -115,7 +123,7 @@
     },
     {
       "path": "normal-shrink-seed2028/status.json",
-      "sha256": "8d811cbdc79526e30bf5332ca48efd1ea9c40854c47f673ef47a998a04742217"
+      "sha256": "c38ba26fc8ca994be1af7c66a2bea6a68b507d675815238dc38728ee4088f6d5"
     }
   ],
   "figures": [
