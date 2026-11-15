@@ -1,0 +1,22 @@
+{
+  "schema": "native_fullstate_resource_resume_v1",
+  "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "training_seed": 51027,
+  "prefix_steps": 4401408,
+  "suffix_actual_new_transitions": 5598720,
+  "cumulative_transitions": 10000128,
+  "prefix_official_updates": 274064,
+  "cumulative_official_updates": 623984,
+  "parent_interrupted_checkpoint_sha256": "69502891c4d9eff39118450a9c136e1b9197c03ca77c53524bd7783b3a95436e",
+  "original_prefix_manifest_sha256": "181bb684211a6182e4b36e7d834951df25496ac8b8185862306b07b1c174dcca",
+  "original_prefix_status_sha256": "1ecd1e64cd98094119aed716086821a506fe7049c276b8b4000ee2beb5e67c62",
+  "original_prefix_progress_sha256": "bb43a42aa910ec8a0f15cadfd4ec37477d7ba7449f4913bd464deb04d16255b2",
+  "original_prefix_episodes_sha256": "0490264290af3ed481f1e760d2ab75b594a20f84da186f6c31b30843184b95aa",
+  "original_prefix_large_checkpoints_preserved_on_a100": true,
+  "suffix_large_checkpoints_preserved_on_4080": true,
+  "previous_evaluations_not_repeated": true,
+  "training_budget_not_extended": true,
+  "receipt_time_is_cumulative_active_runtime_not_transfer_wait_wallclock": true,
+  "native_controls_added_by_merge": 0,
+  "assembled_at_utc": "2026-11-15T05:37:00.340024+00:00"
+}

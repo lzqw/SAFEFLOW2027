@@ -88,3 +88,23 @@ evaluation_controls保持500000、evaluated仍2M／4M，证明原节点没有重
 对应路径、归档和新增步数按seed派生，不复用或覆盖另一条输出。
 两项原CPU契约检查在参数化后再次通过，零新增模型执行／rollout。
 此段是事前登记，不代表51028已经迁移或完成；须保留随后的真实边界与新PID。
+
+05:38 UTC：51027原worker3643539已自然结束，真实10M收据和五个节点通过互斥合并／SHA核对，
+完整包已原子接纳A100；旧prefix全部保存在`runs/cvpo-51027-prefix-a100-v1`，没有数据删除。
+[全部结果及原生连续性收据](e08/completed_seed51027/README.md)已保存。
+51028原worker1866873也已在5,363,968步／334224官方更新完整边界退出，
+evaluated仍2M／4M，剩余4,636,160步；[边界证据](cvpo_resource_resume_51028/boundary.json)保留。
+原控制器1866846仅在其worker已经退出、子进程全部为已退出Z状态后退役，避免旧队列误报或重复接纳。
+原闭合控制器1866848命令不变；最后断点传输进行中，不提前打开独立测试。
+
+05:46:46 UTC：最后51028的完整断点也已直传且SHA一致：
+`07c0bc57e4c4cf75f535048125028505d97206f38e7e539c3241bdce63dbbaae`。
+确认51027原生worker已退出且completed收据存在、GPU空闲15557MiB、磁盘大于56GiB后，
+用原入口／配置／科学源码启动51028原状态后缀，wrapper3672459、原生worker3672461。
+[启动记录](cvpo_resource_resume_51028/launch.json)／
+[新manifest](cvpo_resource_resume_51028/resume_run_config.json)／
+[首份学习心跳](cvpo_resource_resume_51028/first_learning_status.json)均已保存。
+05:48命令匹配，已推进5,449,984步／339600更新，evaluated仍2M／4M、evaluation_controls500000，
+表明没有从头重跑或重复旧评测。只需后缀4,636,160步，累计仍原10M。
+新退出事件订阅已绑定原生worker3672461，完整后用显式seed51028／prefix步数与updates接纳，
+原A100闭合控制器继续等最后一份完整收据；不在本阶段挑选策略／打开独立测试。

@@ -1,0 +1,9 @@
+{
+  "retired_scheduler_pid": 1866846,
+  "only_already_exited_children": [
+    "1866873"
+  ],
+  "reason": "original_seed_fullstate_continues_4080_no_duplicate_admission",
+  "original_worker_already_safe_boundary": true,
+  "closure_pid_preserved": 1866848
+}

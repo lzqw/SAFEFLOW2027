@@ -1,0 +1,22 @@
+{
+  "state": "completed",
+  "steps": 10000128,
+  "target": 10000128,
+  "official_updates": 623984,
+  "episodes": 9984,
+  "training_cost": 265045.0640434027,
+  "training_return": 56393.0,
+  "elapsed_seconds": 24687.37065776589,
+  "complete_train_sps": 1660.19762752408,
+  "official_qc_threshold": 2.4998920718814706,
+  "evaluated_milestones": [
+    2000128,
+    4000000,
+    6000128,
+    8000000,
+    10000128
+  ],
+  "evaluation_controls": 1250000,
+  "native_pid": 3643539,
+  "automatic_restart": false
+}
