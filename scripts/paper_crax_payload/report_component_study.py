@@ -7,6 +7,35 @@ from pathlib import Path
 import numpy as np
 
 
+def plot_endpoint_efficiency(rows, names, output):
+    """Show task efficiency even when endpoint success/risk counts coincide.
+
+    Points are recorded means, not an interpolated Pareto frontier. Failed
+    episodes already receive the common time cap in the native evaluations.
+    """
+    import matplotlib.pyplot as plt
+    conditions=list(dict.fromkeys(row['condition'] for row in rows))
+    fig,axes=plt.subplots(1,len(conditions),figsize=(4*len(conditions),3.8),squeeze=False)
+    markers=['o','s','^','D','v','P']
+    for ax,condition in zip(axes[0],conditions):
+        for index,name in enumerate(names):
+            row=next(r for r in rows if r['arm']==name and r['condition']==condition)
+            ax.scatter(row['violation'],row['capped_seconds'],s=55,
+                       marker=markers[index % len(markers)],color=f'C{index}',
+                       facecolors='none',linewidths=1.3,label=name)
+        ax.set(title=condition,xlabel='Violation fraction (lower better)',
+               ylabel='Failure-capped completion time (s; lower better)')
+        ax.set_xlim(left=-.01)
+        ax.grid(alpha=.2)
+    axes[0,-1].legend(fontsize=7)
+    fig.suptitle('Fixed300K independent100/condition; one development training seed2027; '
+                 'points only, no frontier interpolation',fontsize=9)
+    fig.tight_layout(rect=(0,0,1,.95))
+    fig.savefig(Path(output)/'fixed_endpoint_risk_efficiency.png',dpi=170)
+    fig.savefig(Path(output)/'fixed_endpoint_risk_efficiency.pdf')
+    plt.close(fig)
+
+
 def plot_evaluation_history(rows, names, output):
     """Do not draw a learning segment across the development/test split."""
     import matplotlib.pyplot as plt
@@ -105,6 +134,7 @@ def report(directories, output):
     fig.suptitle('Fixed300K independent episodes; one development-selected training seed2027')
     fig.tight_layout();fig.savefig(output/'fixed_endpoint_task_risk.png',dpi=170)
     fig.savefig(output/'fixed_endpoint_task_risk.pdf');plt.close(fig)
+    plot_endpoint_efficiency(final,names,output)
     value=dict(status='completed_from_existing_native_results',training_transitions=sum(r['steps'] for r in receipts),
         new_training_transitions=0,new_simulation_controls=0,physical_robot_interactions=0,
         training_seed_count=1,development_selected_training_seed=2027,best_checkpoint_reselection=False,
