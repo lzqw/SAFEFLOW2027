@@ -1,6 +1,6 @@
 """Merge a complete native resource-resumed CVPO seed, preserving both prefixes.
 
-One-off seed51027 handoff only. No model imports, learning, evaluation, or retries.
+Registered seed51027/51028 handoff only. No model imports, learning, evaluation, or retries.
 Run after the original resume worker has genuinely completed.
 """
 import argparse
@@ -25,6 +25,25 @@ A100 = Path('/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl')
 TARGET = A100 / 'runs/cvpo-51027-10m'
 ARCHIVE = A100 / 'runs/cvpo-51027-prefix-a100-v1'
 LOGICAL_PARENT = str(A100 / 'resume-prefix-51027-v1/interrupted_full.pt')
+SEED = 51027
+PREFIX_STEPS = 4401408
+PREFIX_UPDATES = 274064
+
+
+def configure(seed, prefix_steps, prefix_updates):
+    global SEED, PREFIX_STEPS, PREFIX_UPDATES, PREFIX, SUFFIX, TARGET, ARCHIVE, LOGICAL_PARENT
+    if seed not in (51027, 51028) or not 4000000 < prefix_steps < 6000128:
+        raise ValueError('Only the registered two prefixes after4M and before6M may migrate')
+    SEED, PREFIX_STEPS, PREFIX_UPDATES = seed, prefix_steps, prefix_updates
+    PREFIX = PHYSICAL / f'resume-prefix-{seed}-v1'
+    SUFFIX = PHYSICAL / f'runs/cvpo-{seed}-resume4080-v1'
+    TARGET = A100 / f'runs/cvpo-{seed}-10m'
+    ARCHIVE = A100 / f'runs/cvpo-{seed}-prefix-a100-v1'
+    LOGICAL_PARENT = str(A100 / f'resume-prefix-{seed}-v1/interrupted_full.pt')
+
+
+def registration():
+    return dict(seed=SEED, prefix_steps=PREFIX_STEPS, prefix_updates=PREFIX_UPDATES)
 
 
 def read(path):
@@ -61,13 +80,13 @@ def assemble(prefix, suffix, parent_sha, destination_parent):
     original = read(prefix / 'run_config.json')
     config = original['configuration']
     if (before['state'] != 'engineering_stop_at_complete_collection_boundary'
-            or before['steps'] != 4401408 or before['official_updates'] != 274064
+            or before['steps'] != PREFIX_STEPS or before['official_updates'] != PREFIX_UPDATES
             or before['evaluated_milestones'] != MILESTONES[:2]
-            or manifest['configuration'] != config or manifest['training_seed'] != 51027
-            or original['training_seed'] != 51027 or original['source_commit'] != COMMIT
+            or manifest['configuration'] != config or manifest['training_seed'] != SEED
+            or original['training_seed'] != SEED or original['source_commit'] != COMMIT
             or manifest['source_commit'] != COMMIT or manifest['resume_parent'] != LOGICAL_PARENT
             or receipt['status'] != 'completed' or receipt['steps'] != MILESTONES[-1]
-            or receipt['training_seed'] != 51027 or receipt['source_commit'] != COMMIT
+            or receipt['training_seed'] != SEED or receipt['source_commit'] != COMMIT
             or receipt['actual_new_transitions'] != MILESTONES[-1] - before['steps']
             or receipt['official_updates'] != 623984
             or receipt['evaluated_milestones'] != MILESTONES or receipt['evaluation_controls'] != 1250000
@@ -83,14 +102,14 @@ def assemble(prefix, suffix, parent_sha, destination_parent):
         if (other / validation.name).exists() or (other / policy.name).exists():
             raise ValueError('Repeated milestone; preserve original evaluations, never choose between reruns')
         record = read(validation)
-        if (record['steps'] != step or record['training_seed'] != 51027
+        if (record['steps'] != step or record['training_seed'] != SEED
                 or record['split'] != 'common_validation' or record['independent_test_used'] is not False
                 or record['policy_sha256'] != sha(policy)
                 or [r['seed'] for r in record['results']] != config['development_evaluation_seeds']
                 or any(r['episodes'] != 50 or len(r['records']) != 50 for r in record['results'])):
             raise ValueError('Wrong native evaluation identity')
         pairs.extend([validation, policy])
-    stage = Path(tempfile.mkdtemp(prefix='completed-resume-51027-', dir=destination_parent))
+    stage = Path(tempfile.mkdtemp(prefix=f'completed-resume-{SEED}-', dir=destination_parent))
     for path in [*pairs, suffix / 'run_config.json', suffix / 'receipt.json', suffix / 'status.json']:
         shutil.copyfile(path, stage / path.name)
     # Keep both original manifests/logs as well as cumulative chronological logs.
@@ -105,7 +124,7 @@ def assemble(prefix, suffix, parent_sha, destination_parent):
                 with (source / name).open('rb') as stream:
                     shutil.copyfileobj(stream, output)
     lineage = dict(schema='native_fullstate_resource_resume_v1', source_commit=COMMIT,
-        training_seed=51027, prefix_steps=before['steps'], suffix_actual_new_transitions=receipt['actual_new_transitions'],
+        training_seed=SEED, prefix_steps=before['steps'], suffix_actual_new_transitions=receipt['actual_new_transitions'],
         cumulative_transitions=receipt['steps'], prefix_official_updates=before['official_updates'],
         cumulative_official_updates=receipt['official_updates'],
         parent_interrupted_checkpoint_sha256=parent_sha,
@@ -132,7 +151,7 @@ def require_a100_space(size):
 
 def admit(stage, expected):
     stage = Path(stage)
-    if stage.parent != TARGET.parent or not stage.name.startswith('.cvpo-51027-incoming-'):
+    if stage.parent != TARGET.parent or not stage.name.startswith(f'.cvpo-{SEED}-incoming-'):
         raise ValueError('Wrong canonical staging family')
     if inventory(stage) != expected or ARCHIVE.exists() or ARCHIVE.is_symlink():
         raise ValueError('Changed transfer bytes or archive already exists; do not overwrite')
@@ -155,16 +174,18 @@ def admit(stage, expected):
     except BaseException:
         os.rename(ARCHIVE, TARGET)
         raise
-    result = dict(event='complete_resumed_seed_atomically_admitted', training_seed=51027,
+    result = dict(event='complete_resumed_seed_atomically_admitted', training_seed=SEED,
         destination=str(TARGET), preserved_original_prefix=str(ARCHIVE),
         fullstate_parent_sha256=lineage['parent_interrupted_checkpoint_sha256'],
-        steps=10000128, actual_new_transitions=5598720,
+        steps=10000128, actual_new_transitions=10000128 - PREFIX_STEPS,
         all_transferred_files_sha_equal=True, controls_added_by_transfer=0)
     write(TARGET / 'resource_admission.json', result)
     return result
 
 
 def remote_action(operation, payload):
+    if 'registration' in payload:
+        configure(**payload['registration'])
     if operation == 'wait':
         if not (SUFFIX / 'receipt.json').exists():
             pid = payload['pid']
@@ -172,9 +193,9 @@ def remote_action(operation, payload):
             try:
                 command = Path(f'/proc/{pid}/cmdline').read_bytes().replace(b'\0', b' ').decode()
                 if ('scripts.paper_crax_payload.train_cvpo ' not in command
-                        or '--seed 51027 ' not in command
+                        or f'--seed {SEED} ' not in command
                         or f'--resume {LOGICAL_PARENT}' not in command
-                        or f'--output {A100}/runs/cvpo-51027-resume4080-v1 ' not in command):
+                        or f'--output {A100}/runs/cvpo-{SEED}-resume4080-v1 ' not in command):
                     raise ValueError('Not the exact native fullstate continuation worker')
                 print(json.dumps(dict(event='waiting_for_native_resume_exit', pid=pid,
                                       command=command)), flush=True)
@@ -188,7 +209,7 @@ def remote_action(operation, payload):
         require_a100_space(sum(r['bytes'] for r in payload['files'].values()))
         if ARCHIVE.exists() or (TARGET / 'receipt.json').exists():
             raise FileExistsError('Prior admission exists; do not retry automatically')
-        return tempfile.mkdtemp(prefix='.cvpo-51027-incoming-', dir=TARGET.parent)
+        return tempfile.mkdtemp(prefix=f'.cvpo-{SEED}-incoming-', dir=TARGET.parent)
     if operation == 'admit':
         return admit(payload['stage'], payload['files'])
     raise ValueError(operation)
@@ -199,6 +220,7 @@ def ssh(host, command):
 
 
 def remote(host, operation, payload):
+    payload = dict(payload, registration=registration())
     python = '/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python' if host == 'tjucta-a100' else 'python3'
     command = shlex.join([python, '-c', Path(__file__).read_text(), '--remote', operation, json.dumps(payload)])
     return json.loads(subprocess.check_output(ssh(host, command), text=True))
@@ -211,10 +233,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--parent-sha256', required=True)
     parser.add_argument('--wait-for-pid', type=int)
+    parser.add_argument('--seed', type=int, default=51027)
+    parser.add_argument('--prefix-steps', type=int, default=4401408)
+    parser.add_argument('--prefix-updates', type=int, default=274064)
     args = parser.parse_args()
+    configure(args.seed, args.prefix_steps, args.prefix_updates)
     if args.wait_for_pid:
         command = shlex.join(['python3', '-u', '-c', Path(__file__).read_text(), '--remote', 'wait',
-                              json.dumps(dict(pid=args.wait_for_pid))])
+                              json.dumps(dict(pid=args.wait_for_pid, registration=registration()))])
         subprocess.run(ssh('4080', command), check=True)
     combined = remote('4080', 'assemble', dict(parent_sha=args.parent_sha256))
     stage = remote('tjucta-a100', 'stage', dict(files=combined['files']))
