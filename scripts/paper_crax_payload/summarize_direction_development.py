@@ -82,17 +82,70 @@ def write_csv(path, rows):
         writer.writeheader(); writer.writerows(rows)
 
 
+def plot_development(config, inventory, training, evaluation, output):
+    """All observed steps/nodes only; no interpolation of a risk frontier."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    names = [arm['name'] for arm in config['arms']]
+    colors = dict(zip(names, plt.get_cmap('tab10').colors))
+    fig, axes = plt.subplots(2, 3, figsize=(14, 7.8))
+    metrics = [('safe_successes', 'Cumulative safe successes'),
+               ('training_violations', 'Cumulative training violations'),
+               ('safe_timeouts', 'Cumulative safe timeouts')]
+    for name in names:
+        rows = [row for row in training if row['arm'] == name]
+        for ax, (key, label) in zip(axes[0], metrics):
+            if rows:
+                ax.plot([0, *[r['steps']/1000 for r in rows]], [0, *[r[key] for r in rows]],
+                        color=colors[name], lw=1.3, label=name)
+            ax.set(xlabel='Actual training transitions (K)', ylabel=label)
+            ax.grid(alpha=.2)
+    conditions = [condition['name'] for condition in config['evaluation']['conditions']]
+    for ax, condition in zip(axes[1], conditions):
+        observed = [row for row in evaluation if row['condition'] == condition]
+        maximum = max([100*r['violations']/r['episodes'] for r in observed] or [0])
+        for name in names:
+            rows = sorted([row for row in observed if row['arm'] == name], key=lambda r: r['milestone'])
+            if not rows: continue
+            x = [100*r['violations']/r['episodes'] for r in rows]
+            y = [100*r['safe_successes']/r['episodes'] for r in rows]
+            ax.plot(x, y, 'o-', color=colors[name], lw=1., ms=4)
+            for xx, yy, row in zip(x, y, rows):
+                ax.annotate(f"{row['milestone']//1000}K", (xx, yy),
+                            xytext=(4, -12 if yy >= 90 else 5), textcoords='offset points', fontsize=7)
+        ax.set(title=condition+' (development only)', xlabel='Evaluation violations (%) - lower is better',
+               ylabel='Safe successes (%) - higher is better', xlim=(-1, max(10, maximum*1.25)), ylim=(-2, 105))
+        ax.grid(alpha=.2)
+    completed = sum(row['completed'] for row in inventory)
+    pending = [row['arm'] for row in inventory if row['state'] == 'not_started']
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(.5, .947), ncol=5, fontsize=8)
+    fig.suptitle(f"v5 development seed2028: {completed}/{len(inventory)} runs complete; all observed nodes retained", y=.99)
+    note = ('Top: flushed 1K-step snapshots, not an exact equal-violation frontier. '
+            'Bottom: 30 shared layouts/condition, connected in time, not a safety guarantee.')
+    if pending: note += '\nNot started: '+', '.join(pending)+'. No independent confirmation or method selection.'
+    else: note += '\nNo independent confirmation or method selection.'
+    fig.text(.5, .006, note, ha='center', va='bottom', fontsize=8)
+    fig.tight_layout(rect=(0, .065, 1, .92))
+    path = output/'development_learning_and_risk.png'
+    fig.savefig(path, dpi=160); plt.close(fig)
+    return [path.name]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--runs', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--plot', action='store_true')
     args = parser.parse_args(); config = load(args.config)
     inventory, training, evaluation = summarize(config, args.runs)
     args.output.mkdir(parents=True, exist_ok=True)
     write_csv(args.output/'training_inventory.csv', inventory)
     write_csv(args.output/'training_curve.csv', training)
     write_csv(args.output/'development_evaluations.csv', evaluation)
+    figures = plot_development(config, inventory, training, evaluation, args.output) if args.plot else []
     inputs = [dict(path=str(path.relative_to(args.runs)), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         for path in sorted(args.runs.rglob('*')) if path.is_file()]
     value = dict(protocol=config['protocol'], completed_runs=sum(r['completed'] for r in inventory),
@@ -101,7 +154,7 @@ def main():
         development_condition_rows=len(evaluation), training_seed_count=len(config['development_training_seeds']),
         independent_confirmation=False, method_selected=False, new_training_transitions=0,
         source_commits=sorted({r['source_commit'] for r in inventory if r['source_commit']}),
-        inputs=inputs)
+        inputs=inputs, figures=figures)
     (args.output/'receipt.json').write_text(json.dumps(value, indent=2)+'\n')
     print(json.dumps({k: v for k, v in value.items() if k != 'inputs'}))
 
