@@ -82,7 +82,9 @@ def summarize(config, root, output, plot=False):
     for filename, rows in [('training_inventory',inventory),('training_curve',training),
                            ('development_evaluations',evaluations),('gradient_diagnostics',gradients)]:
         csv_output(output/(filename+'.csv'), rows)
-    if plot: plot_curves(config, inventory, training, evaluations, output)
+    if plot:
+        plot_curves(config, inventory, training, evaluations, output)
+        plot_gradient_curves(config, gradients, output)
     result = dict(protocol=config['protocol'], completed_runs=sum(r['completed'] for r in inventory), expected_runs=3,
         actual_new_training_steps=sum(r['actual_new_steps'] for r in inventory), finite_new_training_budget=450000,
         common_observed_parent_prefix_steps=100000, training_seed_count=1, independent_confirmation=False,
@@ -115,6 +117,36 @@ def plot_curves(config, inventory, training, evaluations, output):
     if handles: fig.legend(handles,labels,loc='upper center',bbox_to_anchor=(.5,.96),ncol=3)
     fig.suptitle(f"v6 paired observed100K fork: {sum(r['completed'] for r in inventory)}/3 complete; one training seed")
     fig.tight_layout(rect=(0,.02,1,.9)); fig.savefig(output/'paired_fork_learning.png',dpi=140); plt.close(fig)
+
+
+def plot_gradient_curves(config, gradients, output):
+    """All fixed-probe nodes, including zero gradients; descriptive, not causal."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    fig, axes = plt.subplots(2, 3, figsize=(13, 7), sharex=True, sharey='row')
+    for column, arm in enumerate(config['arms']):
+        rows = [r for r in gradients if r['arm'] == arm['name']]
+        steps = [r['absolute_steps']/1000 for r in rows]
+        top, bottom = axes[:, column]
+        for term in ('reward', 'cost', 'energy', 'direction'):
+            top.plot(steps, [r['norm_'+term] for r in rows], 'o-', markersize=3, label=term)
+        top.set_yscale('symlog', linthresh=1e-5)
+        top.set(title=arm['name'], ylabel='Actor gradient norm (symlog; zero retained)')
+        for pair in ('reward__energy', 'reward__direction', 'energy__direction'):
+            bottom.plot(steps, [float('nan') if r['cos_'+pair] is None else r['cos_'+pair]
+                               for r in rows], 'o-', markersize=3, label=pair.replace('__', ' / '))
+        bottom.set(ylim=(-1.05, 1.05), xlabel='Absolute transitions (K)', ylabel='Gradient cosine')
+        bottom.axhline(0, color='gray', linewidth=.5)
+        for axis in (top, bottom):
+            axis.grid(alpha=.2)
+            axis.axvline(150, color='gray', linestyle=':', linewidth=.8)
+        top.legend(fontsize=8)
+        bottom.legend(fontsize=8)
+    fig.suptitle('Same64 parent-replay states + fixed noise; one training seed; descriptive DEV only')
+    fig.tight_layout(rect=(0, 0, 1, .95))
+    fig.savefig(output/'fixed_probe_gradient_learning.png', dpi=140)
+    plt.close(fig)
 
 
 def main():
