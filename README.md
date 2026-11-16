@@ -32,13 +32,15 @@
 
 ## SAFEFlow：当前实验与程序入口
 
-2026-11-16最新：用户已明确授权v6三分支后期退火，从共同100K完整状态各新增150K到250K。
+2026-11-16最新：v6三分支从共同100K完整状态各新增150K到250K，450K及1080开发回合已完成。
+[v6最终完整审查](reports/direction_annealing_v6/FINAL_DEVELOPMENT_REVIEW_ZH.md)：
+A终点88/90、B90/90、C86/90；B训练违规比A多27.4%，没有同时改善训练安全和执行的统一赢家。
 [v6方案与预算调整](reports/direction_annealing_v6/PLAN_ZH.md)、
-[v6当前运行状态](reports/direction_annealing_v6/STATUS_ZH.md)、
+[v6完成状态及运行历史](reports/direction_annealing_v6/STATUS_ZH.md)、
 [v6冻结配置](configs/paper_crax_payload/direction_annealing_v6.json)和
 [显式父状态分叉入口](scripts/paper_crax_payload/train_direction_annealing.py)。
 新增450K、剩余确认2250K，总3450K不增加；旧2700K／300K确认入口已禁止启动。
-确认仍需候选选择和新冻结，不自动执行；未宣称退火有效。
+确认仍需明确取舍和新冻结，不自动执行；B仅保留为执行优先候选，不宣称全面安全改进。
 
 2026-11-15方法改进v5五臂750K开发及1350回合全部完成，两个候选固定终点均未通过，未选定有效最终版本。
 [完整开发审查与下一步边界](reports/direction_development_v5/FINAL_DEVELOPMENT_REVIEW_ZH.md)、

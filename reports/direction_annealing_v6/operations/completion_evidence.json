@@ -1,0 +1,58 @@
+{
+  "scope": "complete_registered450K_v6_development_and_review_not_proof_of_method_success",
+  "verified_at_utc": "2026-11-16T07:51:48Z",
+  "execution_request_sha256": "97afb641009ad24feca3c0ed8e162eee53496eff37a2422b1cfcb3a837770e10",
+  "replacement_upload_identical_to_original": true,
+  "scientific_source_commit": "33d31709",
+  "completed_runs": 3,
+  "new_training_steps": 450000,
+  "expected_development_episodes": 1080,
+  "collected_development_episodes": 1080,
+  "collected_condition_rows": 36,
+  "collected_fixed_probe_rows": 48,
+  "suffix_step_records_checked": 450000,
+  "all_registered_milestones_per_run": [125000, 150000, 200000, 250000],
+  "all_registered_probe_steps_per_run": [100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000],
+  "native_training_pids_confirmed_absent": [66438, 66441, 2074630, 260247],
+  "final_full_checkpoints_retained_on4080_data_disk": {
+    "A-fixed": {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed/full_250000.pt",
+      "sha256": "8811fccf1bce402aa994156469edec205ed38e9ef1ce5308b755ab15d964fd5d"
+    },
+    "B-loss-anneal": {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/B-loss-anneal/full_250000.pt",
+      "sha256": "9cd38d4674c3c267f9de690759a911b0a2c25b5ca91546fd4c0649d144ac294f"
+    },
+    "C-joint-anneal": {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/C-joint-anneal/full_250000.pt",
+      "sha256": "2ab2c126ef9f4375aaf16f148c43d96198feaa0ccb756131796ebb69380e098f"
+    }
+  },
+  "budget": {
+    "v5_scientific_steps_completed": 750000,
+    "v6_scientific_steps_completed": 450000,
+    "confirmation_unspent_steps": 2250000,
+    "scientific_ceiling": 3450000,
+    "separately_accounted_engineering_probe_steps": 8
+  },
+  "additional_common_development_validation_executed": false,
+  "confirmation_launched": false,
+  "independent_test_opened": false,
+  "joint_training_and_execution_improvement_demonstrated": false,
+  "execution_priority_candidate": "B-loss-anneal_not_yet_confirmation_frozen",
+  "training_safety_reference": "A-fixed",
+  "extra_rho_relaxation_adopted": false,
+  "new_training_from_completion_analysis": 0,
+  "new_simulation_controls_from_completion_analysis": 0,
+  "physical_robot_interactions": 0,
+  "foreign_processes_changed": false,
+  "original_a100_prefix_preserved": true,
+  "observers_remain_read_only_half_hour": true,
+  "authoritative_tables": [
+    "../analysis/receipt.json",
+    "../analysis/training_inventory.csv",
+    "../analysis/development_evaluations.csv",
+    "../analysis/paired_development_receipt.json",
+    "../analysis/three_arm_exact_suffix_comparison.json"
+  ]
+}

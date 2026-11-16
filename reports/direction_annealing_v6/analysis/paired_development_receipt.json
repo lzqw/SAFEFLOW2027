@@ -53,16 +53,16 @@
     {
       "arm": "C-joint-anneal",
       "steps": 200000,
-      "available": false
+      "available": true
     },
     {
       "arm": "C-joint-anneal",
       "steps": 250000,
-      "available": false
+      "available": true
     }
   ],
-  "executed_episode_records": 900,
-  "violating_controls": 31,
+  "executed_episode_records": 1080,
+  "violating_controls": 35,
   "fixed_unique_layouts": 30,
   "training_seed_count": 1,
   "independent_confirmation": false,
@@ -107,6 +107,14 @@
     {
       "path": "C-joint-anneal/evaluation_150000.json",
       "sha256": "d353a4bdddb21f18952b596e2d555ade33ca1ac9999dbd74a43ce06733963794"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_200000.json",
+      "sha256": "0d5531ce3034ba22fe6e8becdce6bde0ad07535bb1dca6855276a418461253b6"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_250000.json",
+      "sha256": "ad349f6823824c2cc63e5d45c08c7b7c47b36689846655bc5739e33ccb3b99df"
     }
   ],
   "new_simulation_controls": 0,
