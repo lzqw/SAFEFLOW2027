@@ -18,7 +18,8 @@ MODULES={'scripts.paper_crax_payload.train_crax','scripts.paper_crax_payload.nat
     'scripts.paper_crax_payload.piper_train','scripts.paper_crax_payload.run_queue',
     'scripts.paper_crax_payload.train_component_study','scripts.paper_crax_payload.train_cvpo',
     'scripts.paper_crax_payload.cvpo_campaign','scripts.paper_crax_payload.train_direction_development',
-    'scripts.paper_crax_payload.train_direction_confirmation'}
+    'scripts.paper_crax_payload.train_direction_confirmation',
+    'scripts.paper_crax_payload.train_direction_annealing'}
 
 
 def own_processes(project):

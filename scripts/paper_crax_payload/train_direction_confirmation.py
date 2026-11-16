@@ -84,4 +84,7 @@ def build_confirmation(config, arm, seed, device):
 
 
 if __name__ == '__main__':
-    train_native(validator=validate_confirmation, builder=build_confirmation, format_name=FORMAT)
+    raise SystemExit('Superseded: original2.7M/300K confirmation is not launchable. '
+                     'v6 reallocates450K development and reserves2.25M for a NEW '
+                     'three-method/three-seed250K freeze after development selection. '
+                     'Historical validator retained for provenance only.')

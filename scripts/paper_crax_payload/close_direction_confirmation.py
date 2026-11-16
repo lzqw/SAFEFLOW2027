@@ -150,4 +150,6 @@ def main():
     close(json.loads(args.config.read_text()), args.runs, args.seed_plan, args.output)
 
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    raise SystemExit('Original300K confirmation closure superseded by the v6 budget reallocation; '
+                     'do not open independent tests before a new250K selection/freeze.')
