@@ -1,0 +1,84 @@
+{
+  "status": "completed",
+  "format": "direction_annealing_v6_full",
+  "arm": {
+    "name": "B-loss-anneal",
+    "schedule": "loss_only"
+  },
+  "parent": {
+    "checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+    "manifest_sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588",
+    "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/full_100000.pt",
+    "manifest": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/run_config.json",
+    "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+    "initial_network_sha256": "3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf",
+    "fork_kind": "explicit_new_development_branch_not_same_configuration_resume",
+    "observed_parent_selection": true,
+    "prefix": {
+      "steps": 100000,
+      "episodes": 2803,
+      "training_violations": 273,
+      "safe_successes": 2034,
+      "safe_timeouts": 496,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000
+    },
+    "inherited_environment_lengths": [
+      1,
+      5
+    ],
+    "inherited_episode_ids": [
+      1406,
+      1397
+    ]
+  },
+  "configuration_sha256": "53892a4e65d2e4aca663fd981aba32d00cac7124daada8cb95520f071278fb44",
+  "source_commit": "33d31709",
+  "training_seed": 2028,
+  "steps": 250000,
+  "new_training_transitions": 150000,
+  "parent_prefix_steps": 100000,
+  "safe_successes": 10385,
+  "training_violations": 691,
+  "safe_timeouts": 498,
+  "episodes": 11574,
+  "new_safe_successes": 8351,
+  "new_training_violations": 418,
+  "new_safe_timeouts": 2,
+  "learner_updates": 248000,
+  "new_learner_updates": 150000,
+  "actor_updates": 123500,
+  "reward_updates": 496000,
+  "elapsed_seconds": 6966.391899526001,
+  "evaluations": [
+    125000,
+    150000,
+    200000,
+    250000
+  ],
+  "evaluation_controls": 6429,
+  "diagnosis_steps": [
+    100000,
+    110000,
+    120000,
+    130000,
+    140000,
+    150000,
+    160000,
+    170000,
+    180000,
+    190000,
+    200000,
+    210000,
+    220000,
+    230000,
+    240000,
+    250000
+  ],
+  "probe_sha256": "defdf465bfeb1a8d313906b4d3a3de569039ac1329d6ba0b7ccf7e5b2d36cec6",
+  "engineering_only": false,
+  "independent_endpoint_test_executed": false,
+  "all_suffix_step_trajectories_retained": true,
+  "physical_robot_interactions": 0
+}

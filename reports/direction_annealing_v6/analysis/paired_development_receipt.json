@@ -18,7 +18,7 @@
     {
       "arm": "A-fixed",
       "steps": 250000,
-      "available": false
+      "available": true
     },
     {
       "arm": "B-loss-anneal",
@@ -38,7 +38,7 @@
     {
       "arm": "B-loss-anneal",
       "steps": 250000,
-      "available": false
+      "available": true
     },
     {
       "arm": "C-joint-anneal",
@@ -61,8 +61,8 @@
       "available": false
     }
   ],
-  "executed_episode_records": 720,
-  "violating_controls": 29,
+  "executed_episode_records": 900,
+  "violating_controls": 31,
   "fixed_unique_layouts": 30,
   "training_seed_count": 1,
   "independent_confirmation": false,
@@ -81,6 +81,10 @@
       "sha256": "fba3f7383e2e53819d73978f588075f66f4e6b4e2e4f4c303da2ceb227daac43"
     },
     {
+      "path": "A-fixed/evaluation_250000.json",
+      "sha256": "566d7ad8f004adf628d1e35d5fce89a3f9f8fb21b50917f65b0d652480f76510"
+    },
+    {
       "path": "B-loss-anneal/evaluation_125000.json",
       "sha256": "c6fdac59fb8fed23fff969e578e42fc030e0b3ce552fbc3955c50b6d8194c022"
     },
@@ -91,6 +95,10 @@
     {
       "path": "B-loss-anneal/evaluation_200000.json",
       "sha256": "9b284f6e77e984fd3e4d7291a06a5a67c6baffa591ffed0e87782c09401bc27f"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_250000.json",
+      "sha256": "bb81300f40f2d9ac7bc13c5cafeaaff3ef84eee578b0e7d2ca0bdffda5b042f7"
     },
     {
       "path": "C-joint-anneal/evaluation_125000.json",
