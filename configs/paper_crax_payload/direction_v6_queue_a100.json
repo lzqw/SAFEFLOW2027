@@ -1,0 +1,18 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/source",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/queue.json",
+  "slots": 1, "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 47244640256,
+  "gpu_admission": {"index": 1, "minimum_free_mib": 3000},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "1"}],
+  "jobs": [
+    {
+      "name": "C-joint-anneal", "module": "scripts.paper_crax_payload.train_direction_annealing",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_annealing_v6.json", "--arm", "C-joint-anneal", "--fork-parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/parents/normal-shrink-dir-seed2028/full_100000.pt", "--parent-manifest", "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/parents/normal-shrink-dir-seed2028/run_config.json", "--parent-sha256", "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2", "--cuda-memory-fraction", "0.025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/runs/C-joint-anneal",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/logs/C-joint-anneal.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    }
+  ]
+}
