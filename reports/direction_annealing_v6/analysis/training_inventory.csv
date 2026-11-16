@@ -1,4 +1,4 @@
 arm,state,completed,actual_absolute_steps,actual_new_steps,new_target_steps,new_safe_successes,new_training_violations,new_safe_timeouts,safe_successes,training_violations,parent_checkpoint_sha256
-A-fixed,running,False,180000,80000,150000,4427,218,6,6461,491,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
-B-loss-anneal,running,False,179000,79000,150000,4398,224,1,6432,497,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
-C-joint-anneal,running,False,136000,36000,150000,2015,118,2,4049,391,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
+A-fixed,running,False,218000,118000,150000,6510,276,6,8544,549,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
+B-loss-anneal,running,False,218000,118000,150000,6556,348,2,8590,621,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
+C-joint-anneal,running,False,153000,53000,150000,2948,195,3,4982,468,2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2
