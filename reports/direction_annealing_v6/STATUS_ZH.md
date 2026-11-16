@@ -36,6 +36,11 @@ C跨硬件差异约1e-7量级。任务与方向cosine约−0.175，能量与方�
 [三分支运行表](analysis/training_inventory.csv)、[新增训练曲线](analysis/training_curve.csv)、
 [四项梯度表](analysis/gradient_diagnostics.csv)、[紧凑来源SHA](analysis/receipt.json)均已生成。
 
+03:36 UTC离线准备：新增完整后缀统计入口，明确父回合继承与新增计数，
+一个微型合成轨迹测试通过，未读取运行中的gzip、没有新增仿真/训练或改变活源码。
+只允许完整250K收据和轨迹闭合后分析，三分支齐备后才合并精确风险前沿。
+该准备不是新训练结果；下一运行检查仍为03:53:04 UTC，不提前反复查询服务器。
+
 ## 启动前准备（历史，最新实际运行以上方为准）
 
 - 已完整读取用户683行执行稿，SHA256 `97afb641009ad24feca3c0ed8e162eee53496eff37a2422b1cfcb3a837770e10`。
