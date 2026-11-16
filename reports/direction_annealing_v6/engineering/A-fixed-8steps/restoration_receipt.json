@@ -1,0 +1,41 @@
+{
+  "parent": {
+    "checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+    "manifest_sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588",
+    "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/full_100000.pt",
+    "manifest": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/run_config.json",
+    "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+    "initial_network_sha256": "3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf",
+    "fork_kind": "explicit_new_development_branch_not_same_configuration_resume",
+    "observed_parent_selection": true,
+    "prefix": {
+      "steps": 100000,
+      "episodes": 2803,
+      "training_violations": 273,
+      "safe_successes": 2034,
+      "safe_timeouts": 496,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000
+    },
+    "inherited_environment_lengths": [
+      1,
+      5
+    ],
+    "inherited_episode_ids": [
+      1406,
+      1397
+    ]
+  },
+  "observed_state_restored": true,
+  "replay_count": 100000,
+  "replay_cursor": 100000,
+  "rng_restored": true,
+  "all_learner_state_restored": true,
+  "no_environment_controls_for_restore": true,
+  "solver_warm_start_cache_bitwise_equivalence_claimed": false,
+  "learner_updates": 98000,
+  "actor_updates": 48500,
+  "reward_updates": 196000,
+  "absolute_steps": 100000
+}

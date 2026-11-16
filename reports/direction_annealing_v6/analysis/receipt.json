@@ -1,0 +1,79 @@
+{
+  "protocol": "direction_annealing_v6_paired_fullstate_fork",
+  "completed_runs": 0,
+  "expected_runs": 3,
+  "actual_new_training_steps": 3000,
+  "finite_new_training_budget": 450000,
+  "common_observed_parent_prefix_steps": 100000,
+  "training_seed_count": 1,
+  "independent_confirmation": false,
+  "method_selected": false,
+  "condition_rows": 0,
+  "gradient_probe_rows": 3,
+  "new_training_transitions_from_analysis": 0,
+  "source_commits": [
+    "33d31709"
+  ],
+  "inputs": [
+    {
+      "path": "A-fixed/gradient_diagnostics.jsonl",
+      "sha256": "a7eaf97b1555377134a52b4daf353aeec118f4e032a211d982ae89dc7b0b5844"
+    },
+    {
+      "path": "A-fixed/progress.jsonl",
+      "sha256": "974568dd828d9a38811ba5832c34a23fa7eb3978e45a6edcc93c9ee9d5c4adf7"
+    },
+    {
+      "path": "A-fixed/restoration_receipt.json",
+      "sha256": "b81ec92f222395a6f1a1092202348ba1e32eeb0a6562d0f52820c1106ed4d8ec"
+    },
+    {
+      "path": "A-fixed/run_config.json",
+      "sha256": "6c8591365485fe2d5140b7be28ceeb84c0ebdd66710aa3eac0c8f3002c991946"
+    },
+    {
+      "path": "A-fixed/status.json",
+      "sha256": "f35417b58d0adb6cebc1f7f331c52809a399d678438730e76c114f86d4566ab5"
+    },
+    {
+      "path": "B-loss-anneal/gradient_diagnostics.jsonl",
+      "sha256": "a7eaf97b1555377134a52b4daf353aeec118f4e032a211d982ae89dc7b0b5844"
+    },
+    {
+      "path": "B-loss-anneal/progress.jsonl",
+      "sha256": "d8f151a1c6ba54f5566a95e4dc92a3bf6b8b09962c74de4ee16dd8915140182c"
+    },
+    {
+      "path": "B-loss-anneal/restoration_receipt.json",
+      "sha256": "b81ec92f222395a6f1a1092202348ba1e32eeb0a6562d0f52820c1106ed4d8ec"
+    },
+    {
+      "path": "B-loss-anneal/run_config.json",
+      "sha256": "d7e8e42d253dbceaad235d783ae8a5bcfaa65f9b2aaca1516b2c680b281908ad"
+    },
+    {
+      "path": "B-loss-anneal/status.json",
+      "sha256": "a93973d6ddac89eb8b0d59f7559d5d8d105cd758ae8f1f8e7ce11144e4b74234"
+    },
+    {
+      "path": "C-joint-anneal/gradient_diagnostics.jsonl",
+      "sha256": "1c745cf02f2b3b34b8a8adf2ac8074df19f0823b5cbd72584d84c92351d9b306"
+    },
+    {
+      "path": "C-joint-anneal/progress.jsonl",
+      "sha256": "b62572d7a55df4c3fbe01112bc89bfbcd7ad58fdd5746209004a5f97c90e1670"
+    },
+    {
+      "path": "C-joint-anneal/restoration_receipt.json",
+      "sha256": "e3d538e938595557c8e3e53321902cbe9a5d5400bd46ef15b083de9be8f6908a"
+    },
+    {
+      "path": "C-joint-anneal/run_config.json",
+      "sha256": "13e53ac28fc090a9565e9b679fded16a66ac2486315b67c57fcebe19ae931c50"
+    },
+    {
+      "path": "C-joint-anneal/status.json",
+      "sha256": "1a36e73a94ac31b3271502c1793ab7734c1495e43c9dcf5469d84fd3386b845a"
+    }
+  ]
+}
