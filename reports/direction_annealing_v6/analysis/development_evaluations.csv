@@ -2,6 +2,15 @@ arm,steps,condition,episodes,safe_successes,violations,safe_timeouts,mean_return
 A-fixed,125000,nominal,30,29,1,0,10.771793018449223,0.796,paired_fork_development_only
 A-fixed,125000,radius065,30,30,0,0,11.52087780653168,0.6893333333333332,paired_fork_development_only
 A-fixed,125000,execution085,30,29,1,0,10.736263138713971,0.9000000000000004,paired_fork_development_only
+A-fixed,150000,nominal,30,29,1,0,10.771820674705248,0.804,paired_fork_development_only
+A-fixed,150000,radius065,30,29,1,0,10.80447436549932,0.8106666666666668,paired_fork_development_only
+A-fixed,150000,execution085,30,26,4,0,8.557178767201076,1.2226666666666672,paired_fork_development_only
 B-loss-anneal,125000,nominal,30,29,1,0,10.77893960595855,0.7973333333333333,paired_fork_development_only
 B-loss-anneal,125000,radius065,30,30,0,0,11.529735355618694,0.6946666666666667,paired_fork_development_only
 B-loss-anneal,125000,execution085,30,29,1,0,10.736199722003258,0.8960000000000004,paired_fork_development_only
+B-loss-anneal,150000,nominal,30,29,1,0,10.771703944887513,0.8000000000000002,paired_fork_development_only
+B-loss-anneal,150000,radius065,30,30,0,0,11.525849847548184,0.6933333333333334,paired_fork_development_only
+B-loss-anneal,150000,execution085,30,24,6,0,7.1853785216993735,1.4266666666666663,paired_fork_development_only
+C-joint-anneal,125000,nominal,30,29,1,0,10.758980891898245,0.8000000000000002,paired_fork_development_only
+C-joint-anneal,125000,radius065,30,30,0,0,11.511985172710752,0.7053333333333333,paired_fork_development_only
+C-joint-anneal,125000,execution085,30,29,1,0,10.720087269058821,0.918666666666667,paired_fork_development_only
