@@ -1,0 +1,84 @@
+{
+  "protocol": "direction_optimization_v7_continuous_development",
+  "request_sha256": "e5562de2e91c3fb35301100592f7a4ec4e92f9770ec2e03f10197ad113b986ac",
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "num_envs": 2,
+  "training_seed": 2028,
+  "absolute_target_steps": 250000,
+  "budget": {
+    "historical_v5": 750000, "historical_v6": 450000,
+    "development_ceiling": 750000, "confirmation_reserved": 1500000,
+    "total_ceiling": 3450000,
+    "confirmation_methods": ["iso", "metric-only", "selected-version"],
+    "confirmation_seeds": [2031, 2032], "confirmation_steps_each": 250000,
+    "automatic_confirmation_after_selection": true,
+    "old_three_seed2250K_confirmation": "superseded_not_launchable"
+  },
+  "goals": {
+    "safe_successes": 88, "preferred_safe_successes": 89,
+    "execution085_successes": 29, "comparative_training_violations": 344,
+    "preferred_training_violations": 328, "comparative_training_successes": 7885,
+    "preferred_training_successes": 8300, "comparative_training_timeouts_reference": 6,
+    "scope": "development_selection_targets_not_statistical_significance"
+  },
+  "shared_learner": {
+    "actor_lr": 0.0001, "critic_lr": 0.0003, "batch_size": 256,
+    "replay_capacity": 150000, "random_transitions": 2000,
+    "critic_only_updates": 1000, "actor_update_interval": 2, "utd": 1,
+    "reward_updates_per_round": 2, "target_samples": 4,
+    "reference_variance": 0.04, "energy_target": 18.75, "flow_steps": 4, "width": 128
+  },
+  "geometry": {"ema_tau": 0.005, "ramp_start": 10000, "ramp_end": 30000},
+  "rho": 0.25, "tangential_variance": 0.04, "cost_limit": 0.1,
+  "common_parent100K_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+  "parents": {
+    "v5-dir100": {
+      "steps": 100000, "format": "direction_development_v5_full",
+      "arm": "normal-shrink-dir", "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+      "checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+      "manifest_sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588"
+    },
+    "v6-A150": {
+      "steps": 150000, "format": "direction_annealing_v6_full", "arm": "A-fixed",
+      "source_commit": "33d31709",
+      "checkpoint_sha256": "7ffcdd685088dd8967c00bbb40699f4caf1ce8844454f7dba5f7566e078e5bd1",
+      "manifest_sha256": "6c8591365485fe2d5140b7be28ceeb84c0ebdd66710aa3eac0c8f3002c991946"
+    },
+    "v6-B150": {
+      "steps": 150000, "format": "direction_annealing_v6_full", "arm": "B-loss-anneal",
+      "source_commit": "33d31709",
+      "checkpoint_sha256": "f8f417a3628d6946f7b157a8faef4244a38013d387a14225a0fe4f113605db5e",
+      "manifest_sha256": "d7e8e42d253dbceaad235d783ae8a5bcfaa65f9b2aaca1516b2c680b281908ad"
+    }
+  },
+  "candidates": [
+    {"name": "P1-floor030", "parent": "v5-dir100",
+     "direction": {"start": 100000, "end": 150000, "floor": 0.3},
+     "actor_lr": {"start": 150000, "end": 200000, "final": 0.0001},
+     "rationale": "B late low-direction phase increased risk; test only a stronger floor."},
+    {"name": "P2-late", "parent": "v6-A150",
+     "direction": {"start": 175000, "end": 225000, "floor": 0.1},
+     "actor_lr": {"start": 150000, "end": 200000, "final": 0.0001},
+     "rationale": "Keep A-identical prefix; shorten the low-direction phase only."},
+    {"name": "P3-B-lr", "parent": "v6-B150",
+     "direction": {"start": 100000, "end": 150000, "floor": 0.1},
+     "actor_lr": {"start": 150000, "end": 200000, "final": 0.00003},
+     "rationale": "Keep B-identical prefix; change only later actor update magnitude."}
+  ],
+  "evaluation": {
+    "milestones": [125000, 150000, 200000, 250000],
+    "development_layout_seed_start": 7100027, "development_episodes_each": 30,
+    "action_seed": 7200027,
+    "conditions": [
+      {"name": "nominal", "radius": 0.06, "action_scale": 1.0},
+      {"name": "radius065", "radius": 0.065, "action_scale": 1.0},
+      {"name": "execution085", "radius": 0.06, "action_scale": 0.85}
+    ],
+    "split": "development_only_even_at_final"
+  },
+  "gradient_diagnosis": {
+    "interval": 10000, "batch_size": 64, "parent_replay_index_seed": 612028, "noise_seed": 622028
+  },
+  "scientific_early_stopping": false, "automatic_failed_run_retry": false,
+  "physical_robot_interactions": 0
+}
