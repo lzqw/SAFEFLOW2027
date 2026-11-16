@@ -1,0 +1,4 @@
+steps,condition,left,right,paired_layouts,both_success,left_only_success,right_only_success,neither_success
+125000,nominal,A-fixed,B-loss-anneal,30,29,0,0,1
+125000,radius065,A-fixed,B-loss-anneal,30,30,0,0,0
+125000,execution085,A-fixed,B-loss-anneal,30,29,0,0,1
