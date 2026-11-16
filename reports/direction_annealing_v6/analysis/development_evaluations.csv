@@ -1,0 +1,7 @@
+arm,steps,condition,episodes,safe_successes,violations,safe_timeouts,mean_return,mean_capped_seconds,split
+A-fixed,125000,nominal,30,29,1,0,10.771793018449223,0.796,paired_fork_development_only
+A-fixed,125000,radius065,30,30,0,0,11.52087780653168,0.6893333333333332,paired_fork_development_only
+A-fixed,125000,execution085,30,29,1,0,10.736263138713971,0.9000000000000004,paired_fork_development_only
+B-loss-anneal,125000,nominal,30,29,1,0,10.77893960595855,0.7973333333333333,paired_fork_development_only
+B-loss-anneal,125000,radius065,30,30,0,0,11.529735355618694,0.6946666666666667,paired_fork_development_only
+B-loss-anneal,125000,execution085,30,29,1,0,10.736199722003258,0.8960000000000004,paired_fork_development_only
