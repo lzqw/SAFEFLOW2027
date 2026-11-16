@@ -1,0 +1,18 @@
+{
+  "status": "completed",
+  "source_commit": "c80c631c",
+  "qualified_changed_layouts": 0,
+  "target_changed_layouts": 50,
+  "full_target_met": false,
+  "policy_episodes": 0,
+  "constructive_attempts": 100,
+  "controls": 33504,
+  "physics_substeps": 670080,
+  "distance_queries": 705980,
+  "layout_freeze_sha256": "3e995d15107071779b690a1cf74ac528e53c4c10a0b2f9efe582ad6ffc73384f",
+  "elapsed_seconds": 233.23249269695953,
+  "new_training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "more_training_routes_discovered_claim": false,
+  "actual_usual_route_restriction_requires_nominal_replay_analysis": true
+}

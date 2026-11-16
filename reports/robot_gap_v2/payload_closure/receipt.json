@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "common_validation_episodes": 1500,
+  "independent_test_episodes": 600,
+  "selection_sha256": "2ded883a239df2958a438d1d5be5aca5d1ae896cb06cf8416a4c7ccc9f7ae576",
+  "selection_frozen_before_test": true,
+  "native_simulation_controls": 74988,
+  "native_physics_substeps": 1499760,
+  "distance_queries": 1578950,
+  "training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "fixed300K_endpoints_preserved": true
+}

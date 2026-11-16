@@ -1,0 +1,26 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/source",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/queue.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 42949672960,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3072},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "iso",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "iso", "--cuda-memory-fraction", "0.125"],
+      "output": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/iso",
+      "log": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/logs/iso.log"
+    },
+    {
+      "name": "metric-only",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "metric-only", "--cuda-memory-fraction", "0.125"],
+      "output": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/metric-only",
+      "log": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/logs/metric-only.log"
+    }
+  ]
+}

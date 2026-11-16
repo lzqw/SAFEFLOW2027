@@ -1,0 +1,18 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/source",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/queue-r1.json",
+  "slots": 1, "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 47244640256,
+  "gpu_admission": {"index": 1, "minimum_free_mib": 3000},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "1"}],
+  "jobs": [
+    {
+      "name": "P3-B-lr", "module": "scripts.paper_crax_payload.train_direction_optimization",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_optimization_v7.json", "--arm", "P3-B-lr", "--fork-parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/parents/B-150/full_150000.pt", "--parent-run", "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/parents/B-150", "--cuda-memory-fraction", "0.025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/runs/P3-B-lr",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_optimization_v7/logs/P3-B-lr.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    }
+  ]
+}

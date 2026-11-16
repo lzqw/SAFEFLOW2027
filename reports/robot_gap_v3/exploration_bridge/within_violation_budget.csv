@@ -1,0 +1,9 @@
+method,violation_budget,last_logged_steps_within_budget,actual_logged_violations,cumulative_safe_successes,log_grid_resolution_steps,interpolation_used
+iso,100,66000,100,212,1000,False
+iso,200,95000,188,844,1000,False
+iso,400,176000,400,2943,1000,False
+iso,600,263000,598,5685,1000,False
+ea,100,43000,89,134,1000,False
+ea,200,66000,196,589,1000,False
+ea,400,107000,397,1485,1000,False
+ea,600,217000,597,4802,1000,False

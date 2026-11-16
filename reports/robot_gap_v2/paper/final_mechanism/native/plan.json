@@ -1,0 +1,117 @@
+{
+  "analysis_sha256": "81d9edd7a5bf19d66bd2b151bc655f5da6668d79558ca65d635d9ba2c2f67480",
+  "states": 64,
+  "draws_per_state": 32,
+  "checkpoints": [
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/home_offload_20261113/SAFEFLOW2027_PAPER/runs/crax-formal-stable_iso-51028-10m-v1/full_10000128.pt",
+      "sha256": "4fdc4ac0ee7c52ce37f9c0b314ebb069e7af66e3fff5c479777d8f929554a953",
+      "steps": 10000128,
+      "source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
+      "method": "stable_iso",
+      "normalizer_mode": "running_acme",
+      "frozen_normalizer_count": 10000128.0
+    },
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/home_offload_20261113/SAFEFLOW2027_PAPER/runs/crax-formal-ea-51029-10m-v1/full_8000000.pt",
+      "sha256": "67fa17eec8e03f523a38b2b25f98996acacb5f342d8008cb0cab0697548a5ea1",
+      "steps": 8000000,
+      "source_commit": "cca402e011054cf57a0700d9f0612bb2c436efed",
+      "method": "ea",
+      "normalizer_mode": "running_acme",
+      "frozen_normalizer_count": 8000000.0
+    }
+  ],
+  "runtime_source_sha256": {
+    "learner": "156f93f8dc2bffef443c94314dca73dbb440499db74b21486c38595c6d5f9c9d",
+    "environment": "a5bb0f8df29178a59db86937624bf4648bf5b84788bdb616b58a964575f00d7f",
+    "normalizer": "7c3889bfd1dc900408c27fb75d2ee6c42467188d953e0c08192001479d5772f3"
+  },
+  "physical_profile": {
+    "crax_version_commit": "63504b540705be98024abd675e646ff5e046c6c2",
+    "env_id": "safe_goal_point",
+    "difficulty": 1,
+    "episode_length": 1000,
+    "physics_timestep": 0.019999999552965164,
+    "frame_skip": 4,
+    "control_period": 0.07999999821186066,
+    "action_dim": 2,
+    "obs_dim": 62,
+    "action_limits": [
+      [
+        -1.0,
+        1.0
+      ],
+      [
+        -1.0,
+        1.0
+      ]
+    ],
+    "action_limits_source": "native_MJX_Model_not_filtered_legacy_Brax_actuator",
+    "goals": 2,
+    "hazards": 16,
+    "hazard_types": [
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "cylinder",
+      "rect",
+      "rect",
+      "rect",
+      "rect"
+    ],
+    "hazard_collidable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "reward_goal": 1.0,
+    "reward_distance_scale": 0.0,
+    "proximity_cost_scale": 2.0,
+    "collision_cost": 3.0,
+    "native_goal_refresh": true,
+    "cost_termination_added": false,
+    "margin_label": "negative_endpoint_clearance_proxy_metres;not_interval_minimum;not_native_cost",
+    "reset": "fresh_native_reset_masked_in_device_after_preserving_terminal_observation"
+  },
+  "fd_epsilon": 0.05,
+  "planned_fd_controls": 320,
+  "planned_sampling_controls": 16384,
+  "planned_total_controls": 16704,
+  "sampler_interventions": [
+    "iso_reference",
+    "local",
+    "endpoint_direct",
+    "endpoint_pullback"
+  ],
+  "physical_query_batch_size": 64,
+  "execution_device": "cpu",
+  "native_backend": "cpu",
+  "common_noise_generator_device": "cpu",
+  "frozen_final_selection_digest": "bb57d6466973774d5d956090e1bb85abf79fbae96da5104dc727492fbbfec718",
+  "training_transitions": 0,
+  "optimizer_steps": 0,
+  "independent_test": false,
+  "matching": "sameActor/commonGaussianincrements;Iso-vs-PBsameinjectiontrace,notmatchedspectrumorendpointtrace"
+}

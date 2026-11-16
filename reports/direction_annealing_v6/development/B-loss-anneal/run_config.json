@@ -1,0 +1,183 @@
+{
+  "format": "direction_annealing_v6_full",
+  "configuration": {
+    "protocol": "direction_annealing_v6_paired_fullstate_fork",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "training_seed": 2028,
+    "num_envs": 2,
+    "parent": {
+      "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+      "arm": "normal-shrink-dir",
+      "absolute_steps": 100000,
+      "checkpoint_filename": "full_100000.pt",
+      "checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+      "manifest_sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588",
+      "scope": "observed_development_checkpoint_not_blind_selection"
+    },
+    "absolute_target_steps": 250000,
+    "new_steps_per_branch": 150000,
+    "new_training_budget": 450000,
+    "arms": [
+      {
+        "name": "A-fixed",
+        "schedule": "fixed"
+      },
+      {
+        "name": "B-loss-anneal",
+        "schedule": "loss_only"
+      },
+      {
+        "name": "C-joint-anneal",
+        "schedule": "loss_and_rho"
+      }
+    ],
+    "schedule": {
+      "clock": "absolute_environment_transitions",
+      "start": 100000,
+      "end": 150000,
+      "shape": "half_cosine",
+      "lambda_initial": 1.0,
+      "lambda_final": 0.1,
+      "rho_initial": 0.25,
+      "rho_final": 0.5,
+      "tangential_variance": 0.04,
+      "sampling_and_energy_share_current_covariance": true
+    },
+    "shared_learner": {
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 256,
+      "replay_capacity": 150000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "actor_update_interval": 2,
+      "utd": 1,
+      "reward_updates_per_round": 2,
+      "target_samples": 4,
+      "reference_variance": 0.04,
+      "energy_target": 18.75,
+      "flow_steps": 4,
+      "width": 128
+    },
+    "geometry": {
+      "ema_tau": 0.005,
+      "ramp_start": 10000,
+      "ramp_end": 30000
+    },
+    "cost_limit_unchanged": 0.1,
+    "evaluation": {
+      "milestones": [
+        125000,
+        150000,
+        200000,
+        250000
+      ],
+      "development_layout_seed_start": 7100027,
+      "development_episodes_each": 30,
+      "action_seed": 7200027,
+      "conditions": [
+        {
+          "name": "nominal",
+          "radius": 0.06,
+          "action_scale": 1.0
+        },
+        {
+          "name": "radius065",
+          "radius": 0.065,
+          "action_scale": 1.0
+        },
+        {
+          "name": "execution085",
+          "radius": 0.06,
+          "action_scale": 0.85
+        }
+      ],
+      "split": "development_only_even_at_final",
+      "new_common_validation": "not_registered_or_executed;optional_once_after_all_branches_review"
+    },
+    "gradient_diagnosis": {
+      "interval": 10000,
+      "batch_size": 64,
+      "parent_replay_index_seed": 612028,
+      "noise_seed": 622028,
+      "scope": "fixed_parent_replay_batch_common_across_branches_not_independent_test",
+      "terms": [
+        "reward",
+        "cost",
+        "energy",
+        "direction"
+      ],
+      "updates": false
+    },
+    "budget_reallocation": {
+      "total_training_ceiling": 3450000,
+      "v5_completed": 750000,
+      "v6_development": 450000,
+      "remaining_confirmation": 2250000,
+      "confirmation_methods": [
+        "iso",
+        "metric-only",
+        "one_selected_version"
+      ],
+      "confirmation_seeds": [
+        2031,
+        2032,
+        2033
+      ],
+      "confirmation_steps_each": 250000,
+      "confirmation_status": "not_launched_requires_selection_and_new_freeze",
+      "old_2700000_300K_confirmation": "superseded_not_authorized_for_launch"
+    },
+    "scientific_early_stopping": false,
+    "automatic_failed_run_retry": false,
+    "physical_robot_interactions": 0,
+    "engineering_probe_max_new_steps": 8
+  },
+  "arm": {
+    "name": "B-loss-anneal",
+    "schedule": "loss_only"
+  },
+  "parent": {
+    "checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+    "manifest_sha256": "5d463fbcbc594439002fb4cabb0bf287c8256dcaf40af86ab48bf9ac7f1a4588",
+    "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/full_100000.pt",
+    "manifest": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/run_config.json",
+    "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+    "initial_network_sha256": "3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf",
+    "fork_kind": "explicit_new_development_branch_not_same_configuration_resume",
+    "observed_parent_selection": true,
+    "prefix": {
+      "steps": 100000,
+      "episodes": 2803,
+      "training_violations": 273,
+      "safe_successes": 2034,
+      "safe_timeouts": 496,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000
+    },
+    "inherited_environment_lengths": [
+      1,
+      5
+    ],
+    "inherited_episode_ids": [
+      1406,
+      1397
+    ]
+  },
+  "native_pid": 66441,
+  "host": "447",
+  "source_commit": "33d31709",
+  "training_seed": 2028,
+  "target_transitions": 250000,
+  "new_target_transitions": 150000,
+  "parent_checkpoint_sha256": "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+  "probe_sha256": "defdf465bfeb1a8d313906b4d3a3de569039ac1329d6ba0b7ccf7e5b2d36cec6",
+  "config_sha256": "53892a4e65d2e4aca663fd981aba32d00cac7124daada8cb95520f071278fb44",
+  "engineering_only": false,
+  "device": "cuda:0",
+  "cuda_allocator_fraction_cap": 0.1,
+  "automatic_retry": false,
+  "physical_robot_interactions": 0,
+  "state_portability": "observed_markov_state_not_solver_cache_bitwise_equivalence"
+}

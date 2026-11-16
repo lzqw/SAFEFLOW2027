@@ -1,0 +1,142 @@
+{
+  "status": "completed_from_native_compact_records",
+  "source_records": [
+    {
+      "path": "reports/nonhardware_v4/e08/final-closure-v1/receipt.json",
+      "sha256": "d22c17cd07c20658da6f1ada65de5272bcd8f8c1d50ffb2348ae865a47a88a38"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/final-closure-v1/selection.json",
+      "sha256": "61ec0348d23fc0a8d59f1a9f6e08f4451f530fbafb7bd42808e190640841a60d"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/final-closure-v1/independent.json",
+      "sha256": "3e37c7ce03f6da8d6c52c598442aee30f300d6aa4254c5c9e52222a6d30fdf85"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/final-closure-v1/fixed_10m.json",
+      "sha256": "c9de518a0cdcba9c673fbf1e62341c7457ecbf09f1fb4f8c772e524dcf781ab2"
+    },
+    {
+      "path": "reports/robot_gap_v2/paper/pointgoal_learning_curves.csv",
+      "sha256": "6373d0d7aa665c9635ef938f7ed1babac6a5d7ca6e529cfaa344a8cf062c8292"
+    },
+    {
+      "path": "reports/robot_gap_v2/paper/pointgoal_fixed_10m_by_seed.csv",
+      "sha256": "7e36b6cf9206eb79579309cb03c206e107e7fd488f41656b2fcc3e454d68e2d7"
+    },
+    {
+      "path": "reports/robot_gap_v2/paper/pointgoal_selected_independent.csv",
+      "sha256": "02d8d2c395516f8a9ef9a6ced8d6e6b3955e32308b44dd13ef4a60456c826c94"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/run_config.json",
+      "sha256": "df81712050116ebb1e8cda1b69d2becdf4d797d0a89600342c2ff00ada7d2b7b"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/receipt.json",
+      "sha256": "e1773139207da2177848c22051d514dae9f7cb3c758b247781a91fc99bd5bbb2"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/resume_lineage.json",
+      "sha256": "c394cd074b4c20c99f2900d2365c610f4522214529262641230603e67fe4b5d5"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/prefix_a100/status.json",
+      "sha256": "1ecd1e64cd98094119aed716086821a506fe7049c276b8b4000ee2beb5e67c62"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/validation_2000128.json",
+      "sha256": "e91fc385cc7bdcd470d7edf39a9bc4c1be4a97dcab1d40ed70d4baaefdf49b54"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/validation_4000000.json",
+      "sha256": "a4549811d56d60c1c45b494464c442c4c19785a532998790c3504016306b4e3b"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/validation_6000128.json",
+      "sha256": "eb4e1287fd2125f414a39751ccb2f9553c4f5de3bd012435bb1e54425f350f3b"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/validation_8000000.json",
+      "sha256": "eca10e040693c759b8cdfaf0acb7ddf603f6ddb257eee66599580bea7001d1e3"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51027-10m/validation_10000128.json",
+      "sha256": "5c1c0fbfd417b4d4cf6f4e3938aff1e5873fc9b2d17a36356abca0c36d5447a0"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/run_config.json",
+      "sha256": "3297f704293c52fa6411cf4b6eadbfd8dcdfadd7bc795cc61d8ac027ee065666"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/receipt.json",
+      "sha256": "12b12e2465590feaaa55c80f312aeb62af5ff4a15e527dbac43a672aca4e4c35"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/resume_lineage.json",
+      "sha256": "202ece3d4168dd682ee4c2c5a1856e32c6f94168d2247de74677f5f1ce81a025"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/prefix_a100/status.json",
+      "sha256": "d98de12856f0902c063a78516de7382a421803e11610f4ebf6b747488c88cc35"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/validation_2000128.json",
+      "sha256": "2b8da6bb469097ee63905af32d27512b1535355e8b751eecf3ff50bf4bf12249"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/validation_4000000.json",
+      "sha256": "7cffa1bc9a0e7bf94d4d752ecb0da33e476953ba021443ec54a522e86de319be"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/validation_6000128.json",
+      "sha256": "2b0649915d9f5fc7aa4ee203fb4de5ba1defeba06440ec3a4cb55e7fe812b150"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/validation_8000000.json",
+      "sha256": "c4825f4168abff917f6ff53ed121eed3a6f6b75c6daf21db673eb240d0c4477a"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51028-10m/validation_10000128.json",
+      "sha256": "fe962eebbde073b74d405ffa551241c87dd06ab9fed8d4603b59c14be5858d83"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/run_config.json",
+      "sha256": "b3f0bc3b47413654a0f812b4f75847968c3e2b0ca1a13752bb20b8af6faa60e2"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/receipt.json",
+      "sha256": "e0a933a9c5f73de91da5db19ee945821ae370cc926a8476655770429c13cd02b"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/validation_2000128.json",
+      "sha256": "58ab6866d1f19236c3f4b3adc73d919638e60de4ca3eb6cd5a835ab1f7c07880"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/validation_4000000.json",
+      "sha256": "b474458368a59b85f54565c5049bbd52f84eaa8790cbb6c4bf16b209bd75b6f9"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/validation_6000128.json",
+      "sha256": "eb78b4136d120ce76c97e92b705de9f61327612036eed66797f7c2ad143d38fb"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/validation_8000000.json",
+      "sha256": "e55c34958a53b83ea6b3b977f8aea198c04d84f6d343ef8f4aafb578888582e7"
+    },
+    {
+      "path": "reports/nonhardware_v4/e08/compact_runs/cvpo-51029-10m/validation_10000128.json",
+      "sha256": "dca08c79434ec03683759726004fffdcaebd5d19f08121e679365bfaede79525"
+    }
+  ],
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0,
+  "represented_cvpo_training_transitions": 30000384,
+  "original_three_method_candidates_unchanged": true,
+  "selection_repeated": false,
+  "selection_freeze_digest": "18ced3eb8ddb2c4cb7df5636af6fa9d0f7faccfc298d137dbbce89e50a69647e",
+  "fixed_endpoint_statistics_unit": "three_training_seeds",
+  "selected_policy_training_seed_count": 1
+}

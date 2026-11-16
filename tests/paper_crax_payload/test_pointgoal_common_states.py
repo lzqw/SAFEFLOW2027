@@ -31,3 +31,24 @@ def test_duplicate_physical_fingerprints_are_not_used_as_distinct_states():
     selected=select_strata(margins,fingerprints,set(),123)
     assert len(selected)==16
     assert len({fingerprints[i] for i in selected})==16
+
+
+def test_final_snapshot_is_bound_to_selected_actor_margin_and_normalizer(tmp_path):
+    from copy import deepcopy
+    import hashlib
+    import torch
+    from scripts.paper_crax_payload.pointgoal_common_states import verify_selected_checkpoint
+    directory=tmp_path/'crax-formal-ea-51029-10m-v1'
+    directory.mkdir()
+    state=dict(steps=8000000,learner=dict(settings=dict(method='ea'),models=dict(
+        actor=dict(weight=torch.tensor([1.])),margin_geometry=dict(weight=torch.tensor([2.])))),
+        normalizer=dict(mode='running_acme',mean=torch.tensor([3.])))
+    policy=directory/'policy_8000000.pt'
+    torch.save(state,policy)
+    selection=dict(independent_test_used=False,methods=dict(ea=dict(selected=dict(
+        run=directory.name,checkpoint_steps=8000000,
+        policy_sha256=hashlib.sha256(policy.read_bytes()).hexdigest()))))
+    verify_selected_checkpoint(directory/'full_8000000.pt',state,selection)
+    changed=deepcopy(state);changed['learner']['models']['margin_geometry']['weight']+=1
+    with pytest.raises(ValueError,match='weights differ'):
+        verify_selected_checkpoint(directory/'full_8000000.pt',changed,selection)

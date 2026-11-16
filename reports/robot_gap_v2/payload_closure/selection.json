@@ -1,0 +1,297 @@
+{
+  "methods": {
+    "Iso": {
+      "candidate": {
+        "method": "Iso",
+        "steps": 60000,
+        "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+        "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+        "full_checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2",
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.9933333333333333,
+          "macro_capped_seconds": 2.420266666666667,
+          "per_condition_violation": [
+            0.0,
+            0.02,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.98,
+            1.0
+          ]
+        }
+      },
+      "selection_status": "risk_qualified",
+      "candidate_count": 5,
+      "physical_deployment_eligible": false
+    },
+    "EA": {
+      "candidate": {
+        "method": "EA",
+        "steps": 120000,
+        "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+        "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+        "full_checkpoint_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.9,
+          "macro_capped_seconds": 1.6951999999999998,
+          "per_condition_violation": [
+            0.0,
+            0.28,
+            0.02
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.72,
+            0.98
+          ]
+        }
+      },
+      "selection_status": "pareto_tradeoff_not_risk_qualified",
+      "candidate_count": 5,
+      "physical_deployment_eligible": false
+    }
+  },
+  "candidates": [
+    {
+      "method": "Iso",
+      "steps": 60000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2",
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9933333333333333,
+        "macro_capped_seconds": 2.420266666666667,
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          1.0
+        ]
+      }
+    },
+    {
+      "method": "Iso",
+      "steps": 120000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-300k/full_120000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "f0b7aef628d2d0e5c20f75a01356b571b2e203a64e3d2034fdafca217216c7b9",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.7999999999999999,
+        "macro_capped_seconds": 2.0562666666666667,
+        "per_condition_violation": [
+          0.0,
+          0.52,
+          0.04
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.48,
+          0.92
+        ]
+      }
+    },
+    {
+      "method": "Iso",
+      "steps": 180000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-300k/full_180000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "9b68b61a8686ffd5a1c57fffe651ba7c522254c92eaa4f876e08e081e8f83282",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.7333333333333334,
+        "macro_capped_seconds": 2.030133333333333,
+        "per_condition_violation": [
+          0.02,
+          0.66,
+          0.12
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.34,
+          0.88
+        ]
+      }
+    },
+    {
+      "method": "Iso",
+      "steps": 240000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-300k/full_240000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "42cf01139da0b2b48a35bd0ec4dbc92ef255408500820bb7dc1d88b7b925ce23",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.84,
+        "macro_capped_seconds": 1.7786666666666668,
+        "per_condition_violation": [
+          0.0,
+          0.48,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.52,
+          1.0
+        ]
+      }
+    },
+    {
+      "method": "Iso",
+      "steps": 300000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-300k/full_300000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "293c5dd200cd413aa4d97e71b89202a2b75185c2c86031d3ebbef716196a58d4",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6066666666666668,
+        "macro_capped_seconds": 2.3714666666666666,
+        "per_condition_violation": [
+          0.1,
+          0.76,
+          0.32
+        ],
+        "per_condition_safe_success": [
+          0.9,
+          0.24,
+          0.68
+        ]
+      }
+    },
+    {
+      "method": "EA",
+      "steps": 60000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-100k/full_60000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "315e2b19200f62fc83e3dbef66e6c824275017d19c3de19b60bcb46c559dde4e",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.09333333333333332,
+        "macro_capped_seconds": 3.7621333333333333,
+        "per_condition_violation": [
+          0.72,
+          1.0,
+          0.96
+        ],
+        "per_condition_safe_success": [
+          0.24,
+          0.0,
+          0.04
+        ]
+      }
+    },
+    {
+      "method": "EA",
+      "steps": 120000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9,
+        "macro_capped_seconds": 1.6951999999999998,
+        "per_condition_violation": [
+          0.0,
+          0.28,
+          0.02
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.72,
+          0.98
+        ]
+      }
+    },
+    {
+      "method": "EA",
+      "steps": 180000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_180000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "f8724d2d49027b8f688758fd2e76889f3f7df5843aa61053803d2768caf66f50",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.7999999999999999,
+        "macro_capped_seconds": 1.9362666666666666,
+        "per_condition_violation": [
+          0.02,
+          0.58,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.42,
+          1.0
+        ]
+      }
+    },
+    {
+      "method": "EA",
+      "steps": 240000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_240000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "4e65aeaf1b97f967b7bace71866f2453d0fe2719c01883c3da7fbe5321d96f38",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.3866666666666667,
+        "macro_capped_seconds": 2.9576000000000007,
+        "per_condition_violation": [
+          0.4,
+          0.96,
+          0.48
+        ],
+        "per_condition_safe_success": [
+          0.6,
+          0.04,
+          0.52
+        ]
+      }
+    },
+    {
+      "method": "EA",
+      "steps": 300000,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_300000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "9aabd6a81139856b806c3a704e7ccba5517cf129b345bd30f4623a3f2686bb75",
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.6133333333333334,
+        "macro_capped_seconds": 2.3400000000000003,
+        "per_condition_violation": [
+          0.08,
+          0.84,
+          0.24
+        ],
+        "per_condition_safe_success": [
+          0.92,
+          0.16,
+          0.76
+        ]
+      }
+    }
+  ],
+  "plan_sha256": "9425ff8304c8f9b2b6a3f704e5b7bd7f251c3553cca29430fec5d125ffa0ad40",
+  "independent_test_used_for_selection": false,
+  "fixed300K_endpoints_not_replaced": true,
+  "shared_Reach_parent_steps": 300000,
+  "new_Payload_transitions_each": 300000
+}

@@ -1,0 +1,20 @@
+{
+  "status": "completed_report",
+  "source_sha256": {
+    "freeze.json": "9ed262e56118794b51cba5a2b3b8e2becf35fc569c8dc733ebbba61a89610c58",
+    "independent-EA-control.json": "2f582e917e000fc951106b09ba8b6137aad77d2114b18d3e9019adae91cac52d",
+    "independent-EA-repair.json": "90e01043ae68677d8ab71d7585baa1193c5599d0349d1d1ce47e41ed6e01bff6",
+    "independent-Iso-repair.json": "abfba51708a702c91d3aac8b6d9706c8cb477141c117188ac8cce48bdf465e0e",
+    "independent-SAC-repair.json": "c54a81b7f6b69fee46579b476ffe1ceac60fc952842d6431b6109a72296a41f4",
+    "independent_episodes.csv": "24642953c54f0444cd18a5639b03588963b2bbc5248064f9c12436867cb703e0",
+    "independent_summary.csv": "6e7cd2b263e85fefb6a6a565b7b047218264dd272a082f3a0ab27770f25a3cf6",
+    "receipt.json": "1d1a9d440c5df906c66ee322ad66a744425a1870b49fd64148898e706f9ec2f1",
+    "status.json": "0f125d9c36935725e658a651095a05ec3511a181612fcafbdb42c7bb5853f49f"
+  },
+  "retained_episodes": 1600,
+  "retained_conditions": 16,
+  "new_rollouts": 0,
+  "new_training_transitions": 0,
+  "candidate_reselection": false,
+  "source_raw_files_are_retained_on_data_disk_and_local_delivery": true
+}

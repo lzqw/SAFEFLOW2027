@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "steps": 10000128,
+  "training_seed": 51027,
+  "actual_new_transitions": 5598720,
+  "training_cost": 265045.0640434027,
+  "episodes": 9984,
+  "official_updates": 623984,
+  "evaluated_milestones": [
+    2000128,
+    4000000,
+    6000128,
+    8000000,
+    10000128
+  ],
+  "evaluation_controls": 1250000,
+  "elapsed_seconds": 24687.37050067389,
+  "complete_train_sps": 405.07060075614334,
+  "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "official_source_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+  "new_real_robot_interactions": 0,
+  "independent_test_used": false,
+  "component_training_budget_unchanged": true
+}

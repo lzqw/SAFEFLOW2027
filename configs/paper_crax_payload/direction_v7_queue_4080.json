@@ -1,0 +1,25 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/source",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/queue-r1.json",
+  "slots": 2, "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 47244640256,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3000},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "P1-floor030", "module": "scripts.paper_crax_payload.train_direction_optimization",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_optimization_v7.json", "--arm", "P1-floor030", "--fork-parent", "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028/full_100000.pt", "--parent-run", "/home/carla/4T/SAFEFLOW2027_DIRECTION_V5/runs/normal-shrink-dir-seed2028", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P1-floor030",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/logs/P1-floor030.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    },
+    {
+      "name": "P2-late", "module": "scripts.paper_crax_payload.train_direction_optimization",
+      "arguments": ["--config", "configs/paper_crax_payload/direction_optimization_v7.json", "--arm", "P2-late", "--fork-parent", "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed/full_150000.pt", "--parent-run", "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed", "--cuda-memory-fraction", "0.10"],
+      "output": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P2-late",
+      "log": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/logs/P2-late.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    }
+  ]
+}

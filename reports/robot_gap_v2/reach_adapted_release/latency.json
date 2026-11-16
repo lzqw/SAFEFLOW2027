@@ -1,0 +1,77 @@
+{
+  "Iso": {
+    "host": "CTAlab",
+    "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.31",
+    "device": "cpu",
+    "torch_version": "2.7.1+cu118",
+    "threads": 1,
+    "hardware_label": "measurement host only; not certified deployment-machine latency",
+    "batch_size": 1,
+    "warmup": 20,
+    "measured_actions": 200,
+    "p50_s": 0.0015289816074073315,
+    "p95_s": 0.0015976759139448404,
+    "mean_s": 0.0015423555206507443,
+    "max_s": 0.005094686057418585,
+    "includes": "normalization, base integration, geometry/tail/input gradients, host return",
+    "excludes": "bundle load, physical observation acquisition, transport, actuation",
+    "base_integration_steps": 4,
+    "actual_forward_counts": {
+      "velocity_network_forwards": 8,
+      "margin_ensemble_forwards": 0,
+      "per_head_input_VJPs": 0
+    },
+    "parameter_updates": 0,
+    "physical_commands_sent": 0
+  },
+  "Iso-Low": {
+    "host": "CTAlab",
+    "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.31",
+    "device": "cpu",
+    "torch_version": "2.7.1+cu118",
+    "threads": 1,
+    "hardware_label": "measurement host only; not certified deployment-machine latency",
+    "batch_size": 1,
+    "warmup": 20,
+    "measured_actions": 200,
+    "p50_s": 0.0015383635181933641,
+    "p95_s": 0.0015937373740598558,
+    "mean_s": 0.0015580005734227597,
+    "max_s": 0.004659837577491999,
+    "includes": "normalization, base integration, geometry/tail/input gradients, host return",
+    "excludes": "bundle load, physical observation acquisition, transport, actuation",
+    "base_integration_steps": 4,
+    "actual_forward_counts": {
+      "velocity_network_forwards": 8,
+      "margin_ensemble_forwards": 0,
+      "per_head_input_VJPs": 0
+    },
+    "parameter_updates": 0,
+    "physical_commands_sent": 0
+  },
+  "EA": {
+    "host": "CTAlab",
+    "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.31",
+    "device": "cpu",
+    "torch_version": "2.7.1+cu118",
+    "threads": 1,
+    "hardware_label": "measurement host only; not certified deployment-machine latency",
+    "batch_size": 1,
+    "warmup": 20,
+    "measured_actions": 200,
+    "p50_s": 0.01041854452341795,
+    "p95_s": 0.010655147559009492,
+    "mean_s": 0.010408265034202486,
+    "max_s": 0.010851662140339613,
+    "includes": "normalization, base integration, geometry/tail/input gradients, host return",
+    "excludes": "bundle load, physical observation acquisition, transport, actuation",
+    "base_integration_steps": 4,
+    "actual_forward_counts": {
+      "velocity_network_forwards": 20,
+      "margin_ensemble_forwards": 4,
+      "per_head_input_VJPs": 8
+    },
+    "parameter_updates": 0,
+    "physical_commands_sent": 0
+  }
+}

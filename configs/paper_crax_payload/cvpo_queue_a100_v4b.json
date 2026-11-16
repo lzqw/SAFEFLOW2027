@@ -1,0 +1,116 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-source-v1",
+  "python": "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python",
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/formal-queue-v1.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 60129542144,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 5120
+  },
+  "prerequisite_receipts": [
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/full/receipt.json",
+      "steps": 300000
+    }
+  ],
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "cvpo-51027-10m",
+      "require_completed_receipt": true,
+      "required_steps": 10000128,
+      "module": "scripts.paper_crax_payload.train_cvpo",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--seed",
+        "51027",
+        "--upstream",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/safeflow-cvpo-exec.n27CHx:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/overlay:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed:/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "NUMBA_CACHE_DIR": "/tmp/safeflow-cvpo-exec.n27CHx/numba",
+        "JAX_COMPILATION_CACHE_DIR": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/jax-cache",
+        "OPENBLAS_NUM_THREADS": "1",
+        "JAX_PLATFORMS": "cuda"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51027-10m",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51027-10m.log"
+    },
+    {
+      "name": "cvpo-51028-10m",
+      "require_completed_receipt": true,
+      "required_steps": 10000128,
+      "module": "scripts.paper_crax_payload.train_cvpo",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--seed",
+        "51028",
+        "--upstream",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/safeflow-cvpo-exec.n27CHx:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/overlay:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed:/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "NUMBA_CACHE_DIR": "/tmp/safeflow-cvpo-exec.n27CHx/numba",
+        "JAX_COMPILATION_CACHE_DIR": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/jax-cache",
+        "OPENBLAS_NUM_THREADS": "1",
+        "JAX_PLATFORMS": "cuda"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-10m",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51028-10m.log"
+    },
+    {
+      "name": "cvpo-51029-10m",
+      "require_completed_receipt": true,
+      "required_steps": 10000128,
+      "module": "scripts.paper_crax_payload.train_cvpo",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--seed",
+        "51029",
+        "--upstream",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/safeflow-cvpo-exec.n27CHx:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/overlay:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed:/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "NUMBA_CACHE_DIR": "/tmp/safeflow-cvpo-exec.n27CHx/numba",
+        "JAX_COMPILATION_CACHE_DIR": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/jax-cache",
+        "OPENBLAS_NUM_THREADS": "1",
+        "JAX_PLATFORMS": "cuda"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51029-10m",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-51029-10m.log"
+    },
+    {
+      "name": "cvpo-validation-freeze-independent-closure",
+      "module": "scripts.paper_crax_payload.cvpo_campaign",
+      "require_completed_receipt": true,
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--run-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/safeflow-cvpo-exec.n27CHx:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/overlay:/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed:/home/lzqw/SAFEFLOW2027_PAPER/CRAX",
+        "NUMBA_CACHE_DIR": "/tmp/safeflow-cvpo-exec.n27CHx/numba",
+        "JAX_COMPILATION_CACHE_DIR": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/jax-cache",
+        "OPENBLAS_NUM_THREADS": "1",
+        "JAX_PLATFORMS": "cuda"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/final-closure-v1",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/logs/cvpo-final-closure-v1.log"
+    }
+  ],
+  "resource_reassignment_only": true,
+  "supersedes_controller": 1831775
+}

@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "arm": {
+    "name": "iso",
+    "component": "iso",
+    "rho": 0.25
+  },
+  "steps": 4,
+  "engineering_only": true,
+  "training_seed": 2027,
+  "initial_network_sha256": "1e4aa11c89b3ebdf70300ae29ecacf296b1a6c7bdc8da6d7dbc59d1cfc66cf11",
+  "episodes": 0,
+  "training_violations": 0,
+  "safe_successes": 0,
+  "safe_timeouts": 0,
+  "learner_updates": 0,
+  "reward_updates": 0,
+  "actor_updates": 0,
+  "elapsed_seconds": 0.2420992209808901,
+  "evaluation_controls": 0,
+  "native_training_controls": 4,
+  "native_training_physics_substeps": 80,
+  "reset_and_static_admission_work_not_in_substep_counter": true,
+  "all_step_trajectories_retained": true,
+  "independent_endpoint_test_executed": false,
+  "source_commit": "b31878c0",
+  "new_training_transitions": 4,
+  "physical_robot_interactions": 0
+}

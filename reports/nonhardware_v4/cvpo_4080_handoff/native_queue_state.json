@@ -1,0 +1,42 @@
+{
+  "pid": 3580631,
+  "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "cvpo-51029-10m",
+      "pid": 3580633,
+      "command": [
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_cvpo",
+        "--config",
+        "configs/paper_crax_payload/cvpo_formal_v4.json",
+        "--seed",
+        "51029",
+        "--upstream",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51029-10m",
+        "--source-commit",
+        "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51029-10m",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/logs/cvpo-51029-10m.log",
+      "status": "running",
+      "started_unix": 1794709117.9718409,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 10000128
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    3580633
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

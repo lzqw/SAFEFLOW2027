@@ -1,0 +1,20 @@
+{
+  "status": "official_synthetic_bridge_smoke_passed",
+  "official_source_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+  "source_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed/fsrl/policy/cvpo.py",
+  "source_sha256": "bec8d72e6654d39063c988cc0d3d34ef4ce7659748e62ac70f23e9643e9ca902",
+  "torch_version": "2.7.1+cu118",
+  "numpy_version": "1.26.4",
+  "tianshou_version": "0.5.1",
+  "terminal_and_truncation_bootstrap_checked": true,
+  "raw_replay_and_current_normalization_checked": true,
+  "official_updates": 2,
+  "native_training_transitions": 0,
+  "synthetic_fixture_transitions": 12,
+  "official_dual_optimizer_recovery_state_explicit": true,
+  "cost_limit": 25.0,
+  "discounted_qc_threshold": 2.4998920718814706,
+  "physical_robot_interactions": 0,
+  "real_environment_compatibility_proven": false,
+  "formal_baseline_started": false
+}

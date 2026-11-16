@@ -1,0 +1,28 @@
+{
+  "event": "original_fullstate_resume_launched",
+  "wrapper_pid": 3643537,
+  "command": [
+    "bash",
+    "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/e08-fsrl/namespace-python.sh",
+    "-u",
+    "-m",
+    "scripts.paper_crax_payload.train_cvpo",
+    "--config",
+    "configs/paper_crax_payload/cvpo_formal_v4.json",
+    "--seed",
+    "51027",
+    "--upstream",
+    "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed",
+    "--output",
+    "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51027-resume4080-v1",
+    "--source-commit",
+    "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+    "--resume",
+    "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/resume-prefix-51027-v1/interrupted_full.pt"
+  ],
+  "parent_steps": 4401408,
+  "remaining_transitions": 5598720,
+  "gpu_free_mib": 11690,
+  "started_at_utc": "2026-11-15T04:40:23.086363+00:00",
+  "automatic_retry": false
+}

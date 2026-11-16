@@ -1,0 +1,144 @@
+{
+  "training_seed_count": 3,
+  "by_training_seed": [
+    {
+      "method": "cvpo",
+      "run": "cvpo-51027-10m",
+      "training_seed": 51027,
+      "checkpoint_steps": 10000128,
+      "policy_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51027-10m/policy_10000128.pt",
+      "policy_sha256": "72034e877899513c217cbd4ae021ed8109a39702750170638dc5f749ae05c863",
+      "validation_sha256": "5c1c0fbfd417b4d4cf6f4e3938aff1e5873fc9b2d17a36356abca0c36d5447a0",
+      "mean_native_return": 3.788,
+      "mean_episode_cost": 12.334132907390595,
+      "mean_goals_per_episode": 3.788,
+      "mean_capped_first_goal_seconds": 6.031999865174294,
+      "budget_compliant_fraction": 0.8200000000000001
+    },
+    {
+      "method": "cvpo",
+      "run": "cvpo-51028-10m",
+      "training_seed": 51028,
+      "checkpoint_steps": 10000128,
+      "policy_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-10m/policy_10000128.pt",
+      "policy_sha256": "9fcad3f2bf802aff3584263e5c69890d6a39929428c17b1a7b24ca9f147a4d41",
+      "validation_sha256": "fe962eebbde073b74d405ffa551241c87dd06ab9fed8d4603b59c14be5858d83",
+      "mean_native_return": 27.355999999999998,
+      "mean_episode_cost": 22.46762826681137,
+      "mean_goals_per_episode": 27.355999999999998,
+      "mean_capped_first_goal_seconds": 3.115839930355549,
+      "budget_compliant_fraction": 0.676
+    },
+    {
+      "method": "cvpo",
+      "run": "cvpo-51029-10m",
+      "training_seed": 51029,
+      "checkpoint_steps": 10000128,
+      "policy_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51029-10m/policy_10000128.pt",
+      "policy_sha256": "05268ea5e89ac6937e40094c6d17a8ecfe393f0b852c9d69b4a422975e9994d4",
+      "validation_sha256": "dca08c79434ec03683759726004fffdcaebd5d19f08121e679365bfaede79525",
+      "mean_native_return": 1.196,
+      "mean_episode_cost": 17.939596992969513,
+      "mean_goals_per_episode": 1.196,
+      "mean_capped_first_goal_seconds": 23.403519476890562,
+      "budget_compliant_fraction": 0.744
+    }
+  ],
+  "statistics_unit": "training_seed;not_evaluation_episode",
+  "mean_and_sample_SD": {
+    "mean_native_return": {
+      "mean": 10.78,
+      "sd": 14.413620225328541
+    },
+    "mean_episode_cost": {
+      "mean": 17.580452722390493,
+      "sd": 5.0762851087353145
+    },
+    "mean_goals_per_episode": {
+      "mean": 10.78,
+      "sd": 14.413620225328541
+    },
+    "mean_capped_first_goal_seconds": {
+      "mean": 10.850453090806802,
+      "sd": 10.968619054440264
+    },
+    "budget_compliant_fraction": {
+      "mean": 0.7466666666666667,
+      "sd": 0.0720370275159472
+    }
+  },
+  "receipts": [
+    {
+      "status": "completed",
+      "steps": 10000128,
+      "training_seed": 51027,
+      "actual_new_transitions": 5598720,
+      "training_cost": 265045.0640434027,
+      "episodes": 9984,
+      "official_updates": 623984,
+      "evaluated_milestones": [
+        2000128,
+        4000000,
+        6000128,
+        8000000,
+        10000128
+      ],
+      "evaluation_controls": 1250000,
+      "elapsed_seconds": 24687.37050067389,
+      "complete_train_sps": 405.07060075614334,
+      "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+      "official_source_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+      "new_real_robot_interactions": 0,
+      "independent_test_used": false,
+      "component_training_budget_unchanged": true
+    },
+    {
+      "status": "completed",
+      "steps": 10000128,
+      "training_seed": 51028,
+      "actual_new_transitions": 4636160,
+      "training_cost": 256205.459492445,
+      "episodes": 9984,
+      "official_updates": 623984,
+      "evaluated_milestones": [
+        2000128,
+        4000000,
+        6000128,
+        8000000,
+        10000128
+      ],
+      "evaluation_controls": 1250000,
+      "elapsed_seconds": 27148.166299464123,
+      "complete_train_sps": 368.35371823947224,
+      "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+      "official_source_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+      "new_real_robot_interactions": 0,
+      "independent_test_used": false,
+      "component_training_budget_unchanged": true
+    },
+    {
+      "status": "completed",
+      "steps": 10000128,
+      "training_seed": 51029,
+      "actual_new_transitions": 10000128,
+      "training_cost": 265167.04625570774,
+      "episodes": 9984,
+      "official_updates": 623984,
+      "evaluated_milestones": [
+        2000128,
+        4000000,
+        6000128,
+        8000000,
+        10000128
+      ],
+      "evaluation_controls": 1250000,
+      "elapsed_seconds": 5314.473568760033,
+      "complete_train_sps": 1881.6780006322736,
+      "source_commit": "7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e",
+      "official_source_commit": "e056fc9498d5d037869533da7cf976acf462f918",
+      "new_real_robot_interactions": 0,
+      "independent_test_used": false,
+      "component_training_budget_unchanged": true
+    }
+  ]
+}

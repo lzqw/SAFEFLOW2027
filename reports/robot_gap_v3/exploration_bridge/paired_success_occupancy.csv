@@ -1,0 +1,7 @@
+condition,method,independent_safe_success_count,paired_successful_layouts,grid_spacing_m,arclength_spacing_m,occupied_world_cells,total_logged_control_points,total_arclength_samples,total_logged_polyline_length_m,initial_to_first_step_missing_in_legacy_data,evidence_kind,homotopy_route_count_supported
+nominal,iso,100,96,0.02,0.005,130,5574,7868,38.62526534397293,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False
+nominal,ea,96,96,0.02,0.005,96,3322,6905,33.81232266195291,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False
+new_geometry,iso,100,75,0.02,0.005,111,4329,6105,29.96570809200418,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False
+new_geometry,ea,75,75,0.02,0.005,83,2576,5366,26.24688749834911,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False
+execution_scale_085,iso,100,98,0.02,0.005,121,6411,7987,39.19495739314445,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False
+execution_scale_085,ea,98,98,0.02,0.005,97,3862,6924,33.88956874110684,True,descriptive_frozen_successful_policy_occupancy_not_training_exploration,False

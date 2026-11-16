@@ -1,0 +1,90 @@
+{
+  "time_utc": "2026-11-14T13:24:59.212160+00:00",
+  "observer_pid": 1826186,
+  "interval_seconds": 1800,
+  "sample": 1,
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/source",
+  "actual_native_processes": [
+    {
+      "pid": 1825419,
+      "module": "scripts.paper_crax_payload.run_queue",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.run_queue",
+        "--plan",
+        "configs/paper_crax_payload/component_queue_a100_gpu0_v4.json",
+        "--source-commit",
+        "b31878c0"
+      ]
+    },
+    {
+      "pid": 1825421,
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_component_study",
+        "--config",
+        "configs/paper_crax_payload/component_study_v4.json",
+        "--arm",
+        "full",
+        "--cuda-memory-fraction",
+        "0.025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/full",
+        "--source-commit",
+        "b31878c0"
+      ]
+    },
+    {
+      "pid": 1825545,
+      "module": "scripts.paper_crax_payload.run_queue",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.run_queue",
+        "--plan",
+        "configs/paper_crax_payload/component_queue_a100_gpu1_v4.json",
+        "--source-commit",
+        "b31878c0"
+      ]
+    },
+    {
+      "pid": 1825547,
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_component_study",
+        "--config",
+        "configs/paper_crax_payload/component_study_v4.json",
+        "--arm",
+        "noise-only",
+        "--cuda-memory-fraction",
+        "0.025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/runs/noise-only",
+        "--source-commit",
+        "b31878c0"
+      ]
+    }
+  ],
+  "nvidia_smi": "0, NVIDIA A100 80GB PCIe, 76187 MiB, 4863 MiB, 100 %\n1, NVIDIA A100 80GB PCIe, 76143 MiB, 4907 MiB, 100 %",
+  "load_average": [
+    5.53,
+    5.18,
+    4.58
+  ],
+  "free_disk_bytes": 93293072384,
+  "native_receipts": [],
+  "whole_goal_complete": false,
+  "automatic_restart": false,
+  "training_launches": 0,
+  "foreign_processes_changed": false,
+  "idle_observation_only_not_goal_completion": false
+}

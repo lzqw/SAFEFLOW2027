@@ -1,0 +1,64 @@
+{
+  "protocol": "robot_gap_v3_E02_E03_frozen",
+  "data_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v3",
+  "assets_receipt": "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+  "storage_headroom_bytes": 42949672960,
+  "device": "cpu",
+  "torch_threads": 1,
+  "training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "E02": {
+    "prior_selection": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/payload-closure/selection.json",
+    "methods": ["Iso", "EA"],
+    "task": "Payload",
+    "checkpoint_steps": {"Iso": 60000, "EA": 120000},
+    "training_seed": 41027,
+    "full_checkpoint_sha256": {
+      "Iso": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2",
+      "EA": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75"
+    },
+    "action_scales": [0.6, 0.8, 1.0],
+    "conditions": [
+      {"name": "nominal", "simulation_overrides": {}},
+      {"name": "radius_055", "simulation_overrides": {"obstacle_radius_m": 0.055}},
+      {"name": "execution_scale_085", "simulation_overrides": {}, "action_scale": 0.85}
+    ],
+    "validation": {"episodes": 50, "layout_seed_start": 81027},
+    "independent_test": {"episodes": 100, "layout_seed_start": 91027},
+    "risk_caps_each_condition": [0.05, 0.1],
+    "ranking": "risk-qualified then macro safe success then capped completion time then smaller action scale; otherwise minimum worst-condition violation, explicit nonqualified tradeoff",
+    "test_all_three_scales_after_freeze": true,
+    "final_test_reselection": false,
+    "action_sampling_seed_start": 790000,
+    "action_rng": "reset for each layout; common method/scale seed per condition and episode",
+    "maximum_episodes": 2700
+  },
+  "E03": {
+    "prior_selection": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/reach-adapted-release/selection.json",
+    "methods": ["Iso", "EA"],
+    "task": "Reach",
+    "checkpoint_steps": {"Iso": 400000, "EA": 400000},
+    "training_seed": 41027,
+    "full_checkpoint_sha256": {
+      "Iso": "b25befa9a9daaacbb8c8e41a312de695e76a9aad3aeda8f5b6ea316a66edafc0",
+      "EA": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b"
+    },
+    "training_radii_m": [0.045, 0.05, 0.055],
+    "prior_selection_geometry_m": [0.045, 0.055],
+    "prior_selection_execution_scales": [0.85, 1.0],
+    "conditions": [
+      {"name": "unseen_radius_0575", "simulation_overrides": {"obstacle_radius_m": 0.0575}},
+      {"name": "unseen_radius_060", "simulation_overrides": {"obstacle_radius_m": 0.060}},
+      {"name": "unseen_execution_scale_115", "simulation_overrides": {}, "action_scale": 1.15}
+    ],
+    "independent_test": {"episodes": 100, "layout_seed_start": 101027},
+    "action_sampling_seed_start": 890000,
+    "static_invalid_layouts": "record explicitly, no easier replacement; disclose attempted/admitted denominators and compare common admissibility",
+    "new_candidate_selection": false,
+    "maximum_episodes": 600
+  },
+  "no_new_seed_search": true,
+  "no_hardware_transport": true,
+  "automatic_restart": false,
+  "resource_monitor_interval_seconds": 1800
+}

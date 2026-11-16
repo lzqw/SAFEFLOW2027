@@ -1,0 +1,137 @@
+{
+  "format": "direction_development_v5_full",
+  "configuration": {
+    "protocol": "direction_development_v5_normal_shrink_outward",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "development_training_seeds": [
+      2028
+    ],
+    "steps_per_run": 150000,
+    "num_envs": 2,
+    "arms": [
+      {
+        "name": "iso",
+        "component": "iso",
+        "rho": 0.25,
+        "normal_shrink": false,
+        "direction_weight": 0.0
+      },
+      {
+        "name": "metric-only",
+        "component": "metric_only",
+        "rho": 0.25,
+        "normal_shrink": false,
+        "direction_weight": 0.0
+      },
+      {
+        "name": "full",
+        "component": "full",
+        "rho": 0.25,
+        "normal_shrink": false,
+        "direction_weight": 0.0
+      },
+      {
+        "name": "normal-shrink",
+        "component": "full",
+        "rho": 0.25,
+        "normal_shrink": true,
+        "direction_weight": 0.0
+      },
+      {
+        "name": "normal-shrink-dir",
+        "component": "full",
+        "rho": 0.25,
+        "normal_shrink": true,
+        "direction_weight": 1.0
+      }
+    ],
+    "new_development_training_budget": 750000,
+    "shared_learner": {
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 256,
+      "replay_capacity": 150000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "actor_update_interval": 2,
+      "utd": 1,
+      "reward_updates_per_round": 2,
+      "target_samples": 4,
+      "reference_variance": 0.04,
+      "energy_target": 18.75,
+      "flow_steps": 4,
+      "width": 128
+    },
+    "geometry": {
+      "ema_tau": 0.005,
+      "ramp_start": 10000,
+      "ramp_end": 30000
+    },
+    "evaluation": {
+      "milestones": [
+        50000,
+        100000,
+        150000
+      ],
+      "development_layout_seed_start": 7100027,
+      "development_episodes_each": 30,
+      "action_seed": 7200027,
+      "conditions": [
+        {
+          "name": "nominal",
+          "radius": 0.06,
+          "action_scale": 1.0
+        },
+        {
+          "name": "radius065",
+          "radius": 0.065,
+          "action_scale": 1.0
+        },
+        {
+          "name": "execution085",
+          "radius": 0.06,
+          "action_scale": 0.85
+        }
+      ],
+      "split": "development_only_even_at_final",
+      "candidate_reselection": true
+    },
+    "confirmation": {
+      "status": "not_launched_requires_development_review_and_new_freeze",
+      "maximum_training_budget": 2700000,
+      "methods": "Iso, Metric-only, one development-selected new version",
+      "training_seeds": [
+        2031,
+        2032,
+        2033
+      ],
+      "steps_per_run": 300000,
+      "test_layouts": "must freeze a fresh unopened set after method selection; never reuse v4 independent layouts"
+    },
+    "scientific_early_stopping": false,
+    "automatic_failed_run_retry": false,
+    "physical_robot_interactions": 0
+  },
+  "arm": {
+    "name": "iso",
+    "component": "iso",
+    "rho": 0.25,
+    "normal_shrink": false,
+    "direction_weight": 0.0
+  },
+  "source_commit": "721bf6bbdba5943c800498557e9b0203f73cc3bf",
+  "config_sha256": "149039e7f95a6b27e9bec4c2fbf50bcce17193e6a41132cc3d271f6f3eb00c24",
+  "native_pid": 3755998,
+  "host": "447",
+  "device": "cuda:0",
+  "training_seed": 2028,
+  "initial_network_sha256": "3a81b7f0b88eff6ae128a273c79ecbd5779d8ecbb89d1d12ba4c52186abee4cf",
+  "target_transitions": 150000,
+  "engineering_only": false,
+  "cuda_allocator_fraction_cap": 0.1,
+  "torch": "2.7.1+cu118",
+  "numpy": "1.24.3",
+  "evaluation_scope": "development_only_including_final",
+  "automatic_retry": false,
+  "physical_robot_interactions": 0
+}

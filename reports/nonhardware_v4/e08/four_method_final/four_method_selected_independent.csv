@@ -1,0 +1,5 @@
+method,run,training_seed,checkpoint_steps,episodes,mean_native_return,mean_episode_cost,mean_goals_per_episode,mean_budget_compliant_fraction,role
+ea,crax-formal-ea-51029-10m-v1,51029,8000000,500,35.428000000000004,21.32175540542603,35.428000000000004,0.732,one_validation_selected_policy_per_method; not_three_training_seed_mean
+sac_lag,crax-formal-sac_lag-51029-10m-v1,51029,2016256,500,1.9299999952316285,13.197517204284669,1.9299999952316285,0.8800000000000001,one_validation_selected_policy_per_method; not_three_training_seed_mean
+stable_iso,crax-formal-stable_iso-51028-10m-v1,51028,10000128,500,28.288,26.852341888904572,28.288,0.562,one_validation_selected_policy_per_method; not_three_training_seed_mean
+cvpo,cvpo-51028-10m,51028,10000128,500,27.332,22.15565406680107,27.332,0.686,one_validation_selected_policy_per_method; not_three_training_seed_mean

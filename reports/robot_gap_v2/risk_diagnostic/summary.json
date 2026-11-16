@@ -1,0 +1,314 @@
+{
+  "protocol": "fixed_piper_margin_diagnosis_v1",
+  "split": "development",
+  "training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "layout_seeds": [
+    650000,
+    650001,
+    650002,
+    650003,
+    650004,
+    650005,
+    650006,
+    650007,
+    650008,
+    650009
+  ],
+  "prospective_state_times": [
+    0,
+    10,
+    20,
+    30
+  ],
+  "no_state_pool_reselection": true,
+  "labels": "true control-interval minimum distance; positive margin is unsafe",
+  "finite_difference_action_epsilon": 0.2,
+  "provenance": [
+    {
+      "task": "Reach",
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_300000.pt",
+      "sha256": "c8f0f8277d9c82596bbea414bc0f8b906160b9ac1512052e2a8d09c0f576acae",
+      "training_seed": 41027,
+      "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+      "pool_states": 29,
+      "missing_prospective_states": [
+        {
+          "layout": 650000,
+          "time": 30
+        },
+        {
+          "layout": 650001,
+          "time": 30
+        },
+        {
+          "layout": 650002,
+          "time": 30
+        },
+        {
+          "layout": 650003,
+          "time": 30
+        },
+        {
+          "layout": 650004,
+          "time": 20
+        },
+        {
+          "layout": 650004,
+          "time": 30
+        },
+        {
+          "layout": 650005,
+          "time": 30
+        },
+        {
+          "layout": 650006,
+          "time": 30
+        },
+        {
+          "layout": 650007,
+          "time": 30
+        },
+        {
+          "layout": 650008,
+          "time": 30
+        },
+        {
+          "layout": 650009,
+          "time": 30
+        }
+      ],
+      "pool_generation_work": {
+        "controls": 273,
+        "substeps": 5460,
+        "distance_queries": 5753
+      },
+      "original_rollout_work": {
+        "controls": 157,
+        "substeps": 3140,
+        "distance_queries": 3317
+      },
+      "radius_response_rollout_work": {
+        "controls": 157,
+        "substeps": 3140,
+        "distance_queries": 3317
+      }
+    },
+    {
+      "task": "Payload",
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-payload-ea-41027-v1/full_300000.pt",
+      "sha256": "88b899dd0529cb0513f82f846925556da65454cdd6c25ee387fc5512eae12e20",
+      "training_seed": 41027,
+      "source_commit": "6f9e3bf3488164cabf1fe4e3dcc51b695d85b5af",
+      "pool_states": 38,
+      "missing_prospective_states": [
+        {
+          "layout": 650004,
+          "time": 30
+        },
+        {
+          "layout": 650007,
+          "time": 30
+        }
+      ],
+      "pool_generation_work": {
+        "controls": 298,
+        "substeps": 5960,
+        "distance_queries": 6278
+      },
+      "original_rollout_work": {
+        "controls": 248,
+        "substeps": 4960,
+        "distance_queries": 5228
+      },
+      "radius_response_rollout_work": {
+        "controls": 248,
+        "substeps": 4960,
+        "distance_queries": 5228
+      }
+    }
+  ],
+  "margin_summary": [
+    {
+      "task": "Reach",
+      "radius_m": 0.045,
+      "model": "original",
+      "samples": 116,
+      "mean_error_m": 2.2692912849163998e-05,
+      "mean_absolute_error_m": 0.0001786212193318709,
+      "true_unsafe_count": 0,
+      "predicted_safe_count": 116,
+      "false_safe_count": 0,
+      "false_safe_among_predicted_safe": 0.0,
+      "missed_unsafe_fraction": null,
+      "valid_gradient_count": 116,
+      "mean_true_outward_minus_inward_margin_m": 0.0021591737787070397,
+      "outward_increases_true_risk_fraction": 0.9913793103448276,
+      "near_zero_physical_direction_response_fraction": 0.008620689655172414,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Reach",
+      "radius_m": 0.045,
+      "model": "radius_response",
+      "samples": 116,
+      "mean_error_m": 2.2692904820521113e-05,
+      "mean_absolute_error_m": 0.00017862121130322802,
+      "true_unsafe_count": 0,
+      "predicted_safe_count": 116,
+      "false_safe_count": 0,
+      "false_safe_among_predicted_safe": 0.0,
+      "missed_unsafe_fraction": null,
+      "valid_gradient_count": 116,
+      "mean_true_outward_minus_inward_margin_m": 0.0021591737787070397,
+      "outward_increases_true_risk_fraction": 0.9913793103448276,
+      "near_zero_physical_direction_response_fraction": 0.008620689655172414,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Reach",
+      "radius_m": 0.055,
+      "model": "original",
+      "samples": 116,
+      "mean_error_m": -0.010320847227843963,
+      "mean_absolute_error_m": 0.010320847227843963,
+      "true_unsafe_count": 15,
+      "predicted_safe_count": 116,
+      "false_safe_count": 15,
+      "false_safe_among_predicted_safe": 0.12931034482758622,
+      "missed_unsafe_fraction": 1.0,
+      "valid_gradient_count": 116,
+      "mean_true_outward_minus_inward_margin_m": 0.0021264125640317617,
+      "outward_increases_true_risk_fraction": 0.9913793103448276,
+      "near_zero_physical_direction_response_fraction": 0.008620689655172414,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Reach",
+      "radius_m": 0.055,
+      "model": "radius_response",
+      "samples": 116,
+      "mean_error_m": 2.0212638292553804e-05,
+      "mean_absolute_error_m": 0.00017837808420256731,
+      "true_unsafe_count": 15,
+      "predicted_safe_count": 100,
+      "false_safe_count": 0,
+      "false_safe_among_predicted_safe": 0.0,
+      "missed_unsafe_fraction": 0.0,
+      "valid_gradient_count": 116,
+      "mean_true_outward_minus_inward_margin_m": 0.0021264125640317617,
+      "outward_increases_true_risk_fraction": 0.9913793103448276,
+      "near_zero_physical_direction_response_fraction": 0.008620689655172414,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Payload",
+      "radius_m": 0.045,
+      "model": "original",
+      "samples": 152,
+      "mean_error_m": -4.659282291840237e-05,
+      "mean_absolute_error_m": 0.0002087430680679368,
+      "true_unsafe_count": 0,
+      "predicted_safe_count": 152,
+      "false_safe_count": 0,
+      "false_safe_among_predicted_safe": 0.0,
+      "missed_unsafe_fraction": null,
+      "valid_gradient_count": 152,
+      "mean_true_outward_minus_inward_margin_m": 0.0019566404946950223,
+      "outward_increases_true_risk_fraction": 0.8486842105263158,
+      "near_zero_physical_direction_response_fraction": 0.1513157894736842,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Payload",
+      "radius_m": 0.045,
+      "model": "radius_response",
+      "samples": 152,
+      "mean_error_m": -4.659282291840237e-05,
+      "mean_absolute_error_m": 0.0002087430680679368,
+      "true_unsafe_count": 0,
+      "predicted_safe_count": 152,
+      "false_safe_count": 0,
+      "false_safe_among_predicted_safe": 0.0,
+      "missed_unsafe_fraction": null,
+      "valid_gradient_count": 152,
+      "mean_true_outward_minus_inward_margin_m": 0.0019566404946950223,
+      "outward_increases_true_risk_fraction": 0.8486842105263158,
+      "near_zero_physical_direction_response_fraction": 0.1513157894736842,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Payload",
+      "radius_m": 0.055,
+      "model": "original",
+      "samples": 152,
+      "mean_error_m": -0.010446965673306831,
+      "mean_absolute_error_m": 0.010446965673306831,
+      "true_unsafe_count": 10,
+      "predicted_safe_count": 152,
+      "false_safe_count": 10,
+      "false_safe_among_predicted_safe": 0.06578947368421052,
+      "missed_unsafe_fraction": 1.0,
+      "valid_gradient_count": 152,
+      "mean_true_outward_minus_inward_margin_m": 0.0019300760549769936,
+      "outward_increases_true_risk_fraction": 0.8289473684210527,
+      "near_zero_physical_direction_response_fraction": 0.17105263157894737,
+      "direction_is_original_model_finite_difference": true
+    },
+    {
+      "task": "Payload",
+      "radius_m": 0.055,
+      "model": "radius_response",
+      "samples": 152,
+      "mean_error_m": -4.653380235830818e-05,
+      "mean_absolute_error_m": 0.00020934042398042105,
+      "true_unsafe_count": 10,
+      "predicted_safe_count": 143,
+      "false_safe_count": 1,
+      "false_safe_among_predicted_safe": 0.006993006993006993,
+      "missed_unsafe_fraction": 0.1,
+      "valid_gradient_count": 152,
+      "mean_true_outward_minus_inward_margin_m": 0.0019300760549769936,
+      "outward_increases_true_risk_fraction": 0.8289473684210527,
+      "near_zero_physical_direction_response_fraction": 0.17105263157894737,
+      "direction_is_original_model_finite_difference": true
+    }
+  ],
+  "rollout_summary": [
+    {
+      "task": "Reach",
+      "model": "original",
+      "episodes": 10,
+      "safe_success_count": 4,
+      "violation_count": 6
+    },
+    {
+      "task": "Reach",
+      "model": "radius_response",
+      "episodes": 10,
+      "safe_success_count": 4,
+      "violation_count": 6
+    },
+    {
+      "task": "Payload",
+      "model": "original",
+      "episodes": 10,
+      "safe_success_count": 4,
+      "violation_count": 6
+    },
+    {
+      "task": "Payload",
+      "model": "radius_response",
+      "episodes": 10,
+      "safe_success_count": 4,
+      "violation_count": 6
+    }
+  ],
+  "counterfactual_work": {
+    "controls": 1608,
+    "substeps": 32160,
+    "distance_queries": 33768
+  },
+  "radius_response_not_a_dynamics_or_safety_guarantee": true,
+  "no_adaptation_or_deployment_decision_automatically_made": true
+}

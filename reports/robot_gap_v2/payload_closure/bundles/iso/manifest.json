@@ -1,0 +1,61 @@
+{
+  "robot_family": "Piper",
+  "training_robot_family": "Piper",
+  "task": "Payload",
+  "method": "Iso",
+  "observation_dim": 34,
+  "action_dim": 3,
+  "training_steps": 60000,
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "training_source_commit": "139c4e15e0986d7eb0eed95f205823cdc4a4468b",
+  "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+  "normalizer_frozen": true,
+  "action_frame": "robot_base",
+  "action_unit": "normalized_delta_xyz",
+  "action_scale_m": 0.01,
+  "hidden_width": 128,
+  "flow_steps": 4,
+  "reference_variance": 0.04,
+  "iso_reference_variance": 0.04,
+  "physical_motion_enabled": false,
+  "hardware_matched": false,
+  "selection": {
+    "robot_family": "Piper",
+    "task": "Payload",
+    "method": "Iso",
+    "selected_checkpoint_steps": 60000,
+    "selection_split": "validation",
+    "independent_test_used_for_selection": false,
+    "candidate_count": 5,
+    "risk_qualified": true,
+    "status": "risk_qualified",
+    "score": {
+      "risk_qualified": true,
+      "task_progress_observed": true,
+      "macro_safe_success": 0.9933333333333333,
+      "macro_capped_seconds": 2.420266666666667,
+      "per_condition_violation": [
+        0.0,
+        0.02,
+        0.0
+      ],
+      "per_condition_safe_success": [
+        1.0,
+        0.98,
+        1.0
+      ]
+    },
+    "original_selection_sha256": "2ded883a239df2958a438d1d5be5aca5d1ae896cb06cf8416a4c7ccc9f7ae576",
+    "actual_Payload_training_consumed_each_branch": 300000,
+    "shared_Reach_parent_training_steps": 300000,
+    "physical_deployment_eligible": false,
+    "hardware_calibration_pending": true
+  },
+  "task_semantics": "native Piper simulation; IK1200/shared endpoint admissibility; Payload centroid success",
+  "schema_version": 1,
+  "policy_sha256": "ac6df2481096c311fd03199cf3208bf1f20a56d304f1f9cd1be174d03c7e6572",
+  "normalizer_sha256": "08c75064794375d77f12f22dd1675c93250b1eb3d8296d87ab54e49285fa494f",
+  "training_receipt_sha256": "d75d9f47fab6b6747d637c5f00e7f774ec9533929fa707a9e4cb8ec86a00b966",
+  "hardware_transport_available": false,
+  "recovery_checkpoint": false
+}

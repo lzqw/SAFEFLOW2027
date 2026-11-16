@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "arm": {
+    "name": "full-rho050",
+    "component": "full",
+    "rho": 0.5
+  },
+  "steps": 300000,
+  "engineering_only": false,
+  "training_seed": 2027,
+  "initial_network_sha256": "1e4aa11c89b3ebdf70300ae29ecacf296b1a6c7bdc8da6d7dbc59d1cfc66cf11",
+  "episodes": 14403,
+  "training_violations": 862,
+  "safe_successes": 13098,
+  "safe_timeouts": 443,
+  "learner_updates": 298000,
+  "reward_updates": 596000,
+  "actor_updates": 148500,
+  "elapsed_seconds": 9599.210396069975,
+  "evaluation_controls": 7596,
+  "native_training_controls": 300000,
+  "native_training_physics_substeps": 6000000,
+  "reset_and_static_admission_work_not_in_substep_counter": true,
+  "all_step_trajectories_retained": true,
+  "independent_endpoint_test_executed": true,
+  "source_commit": "b31878c0",
+  "new_training_transitions": 300000,
+  "physical_robot_interactions": 0
+}

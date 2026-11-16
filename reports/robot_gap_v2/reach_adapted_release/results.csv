@@ -1,0 +1,16 @@
+method,steps,cohort,split,condition,episodes,safe_success,violation,time_to_goal_capped_seconds
+Iso,400000,matched_radius_adaptation_endpoint,validation,nominal,50,1.0,0.0,1.1888
+Iso,400000,matched_radius_adaptation_endpoint,validation,new_geometry,50,0.76,0.24,1.88
+Iso,400000,matched_radius_adaptation_endpoint,validation,execution_scale_085,50,0.96,0.04,1.5016
+EA,400000,matched_radius_adaptation_endpoint,validation,nominal,50,1.0,0.0,1.1600000000000001
+EA,400000,matched_radius_adaptation_endpoint,validation,new_geometry,50,0.72,0.28,1.9560000000000002
+EA,400000,matched_radius_adaptation_endpoint,validation,execution_scale_085,50,1.0,0.0,1.3488000000000002
+Iso,400000,matched_radius_adaptation_endpoint,independent_test,nominal,100,1.0,0.0,1.1924
+Iso,400000,matched_radius_adaptation_endpoint,independent_test,new_geometry,100,0.72,0.28,1.9848
+Iso,400000,matched_radius_adaptation_endpoint,independent_test,execution_scale_085,100,0.99,0.0,1.4224000000000003
+EA,400000,matched_radius_adaptation_endpoint,independent_test,nominal,100,1.0,0.0,1.1608
+EA,400000,matched_radius_adaptation_endpoint,independent_test,new_geometry,100,0.7,0.3,2.0168
+EA,400000,matched_radius_adaptation_endpoint,independent_test,execution_scale_085,100,1.0,0.0,1.3472000000000002
+Iso-Low,120000,original_selected_stagnant_reference,independent_test,nominal,100,0.0,0.0,4.0
+Iso-Low,120000,original_selected_stagnant_reference,independent_test,new_geometry,100,0.0,0.0,4.0
+Iso-Low,120000,original_selected_stagnant_reference,independent_test,execution_scale_085,100,0.0,0.0,4.0

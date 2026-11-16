@@ -1,0 +1,48 @@
+{
+  "pid": 2074610,
+  "source_commit": "33d31709",
+  "status": "completed_with_failures",
+  "jobs": [
+    {
+      "name": "C-joint-anneal",
+      "pid": 2074630,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_direction_annealing",
+        "--config",
+        "configs/paper_crax_payload/direction_annealing_v6.json",
+        "--arm",
+        "C-joint-anneal",
+        "--fork-parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/parents/normal-shrink-dir-seed2028/full_100000.pt",
+        "--parent-manifest",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/parents/normal-shrink-dir-seed2028/run_config.json",
+        "--parent-sha256",
+        "2787bd966b6380fc1cac058f1f00efac7474969ef808dfef411063de28669fc2",
+        "--cuda-memory-fraction",
+        "0.025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/runs/C-joint-anneal",
+        "--source-commit",
+        "33d31709"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/runs/C-joint-anneal",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/direction_annealing_v6/logs/C-joint-anneal.log",
+      "status": "failed_not_restarted",
+      "started_unix": 1794799384.8425062,
+      "slot_id": 0,
+      "visible_devices": "1",
+      "require_completed_receipt": true,
+      "required_steps": 250000,
+      "exit_code": 0,
+      "finished_unix": 1794808384.9033408
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

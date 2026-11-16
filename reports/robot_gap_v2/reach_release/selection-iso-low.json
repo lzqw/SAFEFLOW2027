@@ -1,0 +1,29 @@
+{
+  "robot_family": "Piper",
+  "task": "Reach",
+  "method": "Iso-Low",
+  "selected_checkpoint_steps": 120000,
+  "selection_split": "validation",
+  "independent_test_used_for_selection": false,
+  "risk_qualified": true,
+  "status": "risk_qualified_but_stagnant",
+  "candidate_count": 5,
+  "score": {
+    "risk_qualified": true,
+    "task_progress_observed": false,
+    "macro_safe_success": 0.0,
+    "macro_capped_seconds": 4.0,
+    "per_condition_violation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "per_condition_safe_success": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "physical_deployment_eligible": false,
+  "hardware_calibration_pending": true
+}

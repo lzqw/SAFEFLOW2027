@@ -1,0 +1,32 @@
+{
+  "robot_family": "Piper",
+  "task": "Payload",
+  "method": "Iso",
+  "selected_checkpoint_steps": 60000,
+  "selection_split": "validation",
+  "independent_test_used_for_selection": false,
+  "candidate_count": 5,
+  "risk_qualified": true,
+  "status": "risk_qualified",
+  "score": {
+    "risk_qualified": true,
+    "task_progress_observed": true,
+    "macro_safe_success": 0.9933333333333333,
+    "macro_capped_seconds": 2.420266666666667,
+    "per_condition_violation": [
+      0.0,
+      0.02,
+      0.0
+    ],
+    "per_condition_safe_success": [
+      1.0,
+      0.98,
+      1.0
+    ]
+  },
+  "original_selection_sha256": "2ded883a239df2958a438d1d5be5aca5d1ae896cb06cf8416a4c7ccc9f7ae576",
+  "actual_Payload_training_consumed_each_branch": 300000,
+  "shared_Reach_parent_training_steps": 300000,
+  "physical_deployment_eligible": false,
+  "hardware_calibration_pending": true
+}

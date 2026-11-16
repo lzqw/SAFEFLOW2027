@@ -1,0 +1,40 @@
+{
+  "protocol": "SAFEFlow_Robot_Gap_v2",
+  "parent_commit": "5a403e04d3064c2a02d8c28023bb050e3098040c",
+  "branch": "codex/paper-robot-gap-v2",
+  "new_training_cap": 2200000,
+  "category_caps": {
+    "piper_payload_transfer_curriculum_and_selected_continuation": 800000,
+    "piper_reach_geometry_adaptation": 200000,
+    "piper_profiles_and_light_supplements": 150000,
+    "existing_payload_repair": 1000000,
+    "other_necessary_engineering_training": 50000
+  },
+  "pointgoal_new_training": 0,
+  "profile_steps_each": 10000,
+  "profiles": [
+    {"name": "reference", "num_envs": 2, "batch_size": 256, "updates_per_vector_step": 2, "parallel_environments": false, "batched": false},
+    {"name": "batch_balanced", "num_envs": 8, "batch_size": 512, "updates_per_vector_step": 4, "parallel_environments": true, "batched": true},
+    {"name": "batch_large", "num_envs": 8, "batch_size": 1024, "updates_per_vector_step": 2, "parallel_environments": true, "batched": true}
+  ],
+  "profile_nominal_episodes_each": 10,
+  "profile_selection": "Report learning and throughput together. Among profiles within0.1 nominal success of the best short profile, use highest synchronized complete-training SPS. All-zero learning is explicitly inconclusive, not proof of equivalence.",
+  "transfer_parent": {
+    "path": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_300000.pt",
+    "task": "Reach", "method": "Iso", "steps": 300000,
+    "selection": "fixed by user plan, never reselected on Payload test performance"
+  },
+  "transfer_steps_each": 100000,
+  "transfer_methods": ["Iso", "EA"],
+  "transfer_gpu_ids": {"Iso": 0, "EA": 1},
+  "transfer_only": ["actor_weights", "compatible_identity34D_input_processing"],
+  "task_learning_reinitialized": ["reward_Q", "cost_Q", "margin", "margin_EMA", "replay", "optimizers", "dual", "alpha", "counters"],
+  "profile_full_geometry_is_engineering_only": true,
+  "physical_connection_authorized": false,
+  "use_5080": false,
+  "stop_foreign_jobs": false,
+  "scientific_early_stopping": false,
+  "automatic_failed_job_restart": false,
+  "data_root": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2",
+  "storage_headroom_bytes": 42949672960
+}

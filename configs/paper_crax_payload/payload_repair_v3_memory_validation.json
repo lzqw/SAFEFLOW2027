@@ -1,0 +1,28 @@
+{
+  "protocol": "robot_gap_v3_E01_stage1_common_validation",
+  "root": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3",
+  "training_seed": 41028,
+  "new_training_target_each": 100000,
+  "new_candidate_steps": [20000, 40000, 60000, 80000, 100000],
+  "validation_episodes_per_condition": 50,
+  "validation_layout_seed_start": 81027,
+  "conditions": ["nominal", "radius_070", "payload_wide", "execution_scale_085"],
+  "risk_limits": [0.05, 0.1, 0.1, 0.1],
+  "jobs": [
+    {"label": "EA-control", "method": "s_ea", "run": "ea-nominal-control-41028-plus100k", "initial_steps": 240000},
+    {"label": "EA-repair", "method": "s_ea", "run": "ea-radius-repair-41028-plus100k-recovery-b1", "initial_steps": 240000},
+    {"label": "Iso-repair", "method": "s_iso", "run": "iso-radius-repair-41028-plus100k", "initial_steps": 120000},
+    {"label": "SAC-repair", "method": "sac_lag", "run": "sac-radius-repair-41028-plus100k", "initial_steps": 300000}
+  ],
+  "queue_state": "memory-v1-queue-state.json",
+  "queue_expected_command": "payload_repair_v3_memory_queue.json",
+  "poll_interval_seconds": 1800,
+  "storage_headroom_bytes": 42949672960,
+  "device": "cpu",
+  "maximum_validation_episodes": 4000,
+  "independent_test_executed": false,
+  "independent_test_reserved_layout_seed_start": 91027,
+  "next_phase": "review completed stage1; decide whether any conditional continuation is warranted BEFORE opening final test labels",
+  "new_training_transitions": 0,
+  "automatic_restart": false
+}

@@ -1,0 +1,17 @@
+{
+  "review_completed": true,
+  "reviewed_at_utc": "2026-11-14T07:04:00Z",
+  "decision": "finalize_after_stage1",
+  "conditional_continuation": false,
+  "independent_test_labels_seen": false,
+  "reason": "All four equal-NEW100K arms and all20 validation candidates completed. EA repair has risk-qualified60K/80K candidates and its validation-selected80K achieves200/200 safe successes; Iso80K achieves198/200 and SAC40K200/200. Thus useful frozen candidates already exist. Later EA and Iso regression and higher training cost remain disclosed; spending the conditional600K is not needed to require every checkpoint or seed to succeed. Freeze the existing common-validation choices, preserve the good historical parents and all negative curves, and run the originally reserved independent layouts exactly once. This is not evidence that EA universally beats SAC, old good parents or unseen geometry.",
+  "validation_plan_sha256": "07bfdbd09668cbf6a85702febbf565d243f670d0d2a0587d9881c6814f84bd0b",
+  "validation_receipt_sha256": "418fa8b2f6a8db73da57b9c869926944168419bc9eb39f9eb2d4bfa614a180d9",
+  "validation_selection_sha256": "a54c2fa3f137607f4ec748c7f6f61593c474b4f8fae134021aa1367e2f027f43",
+  "selected_checkpoint_sha256": {
+    "EA-control": "a50f593ee9a50a034ac3f58d618b941dc1216e6cfb3514f859b08933600d447a",
+    "EA-repair": "f6f3da3ebd17bd3c7f284049b6af0f21a7403abfa6addaba6ff3233aed9273f0",
+    "Iso-repair": "fee78803805847db399d564d65d3bcc44aefc9f94487fc146d750bb87bd84276",
+    "SAC-repair": "02d7275e839d392eefec07a07e8e685dcd75f44f8e4f5394e510166251969767"
+  }
+}

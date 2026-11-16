@@ -1,0 +1,44 @@
+{
+  "pid": 2997418,
+  "source_commit": "cc1ebb97c089a31fcbe4d4d65c5b560571b0b1a7",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "ea-radius-repair-41028-plus100k-recovery-b1",
+      "pid": 2997420,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.payload_train",
+        "--config",
+        "configs/paper_crax_payload/payload_repair_v3.json",
+        "--method",
+        "s_ea",
+        "--seed",
+        "41028",
+        "--steps",
+        "340000",
+        "--adapt-from",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1",
+        "--source-commit",
+        "cc1ebb97c089a31fcbe4d4d65c5b560571b0b1a7"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/ea-radius-repair-41028-plus100k-recovery-b1.log",
+      "status": "running",
+      "started_unix": 1794622141.1807628,
+      "slot_id": 0,
+      "visible_devices": "0"
+    }
+  ],
+  "pending": 2,
+  "live_native_pids": [
+    2997420
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": "existing_healthy_project_job_retains_shared_slot"
+}

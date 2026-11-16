@@ -1,0 +1,36 @@
+{
+  "status": "completed_from_existing_six_diagnostics",
+  "inputs": [
+    {
+      "arm": "iso",
+      "sha256": "f5c4d561fd0e046f1e0c231704e14a9a3d7f2b545c0cbbb4072c768d227fa21f"
+    },
+    {
+      "arm": "noise-only",
+      "sha256": "e9811c899d541ca73ec54b27d0c5fcd0d8be50e614b9eb06f444e8e12fa7bacb"
+    },
+    {
+      "arm": "metric-only",
+      "sha256": "609f5860327cee821b720e6b2637c272dd21b2278129f80be9bf08f5fc5c8cff"
+    },
+    {
+      "arm": "full",
+      "sha256": "02fbf1f400f8127529d26f9f288e24dc6e0a073d6998fd20113889ef88bb1177"
+    },
+    {
+      "arm": "full-rho010",
+      "sha256": "4d57185106fb31a05fed3db63dd3c3313c86955017f02f0a9d59d8235d145814"
+    },
+    {
+      "arm": "full-rho050",
+      "sha256": "f383ac7fe9fdb7d07c37decb3cf2d3b45b221437479ff5d005a36a2fbfe27461"
+    }
+  ],
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "new_generated_actions": 0,
+  "training_seed_count": 1,
+  "independent_confirmation": false,
+  "risk_projection": false,
+  "scientific_scope": "descriptive_within_state_final_action_covariance_not_risk_or_exploration_proof"
+}

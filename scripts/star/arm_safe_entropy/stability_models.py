@@ -76,6 +76,10 @@ class StableArmLearner(ArmLearner):
             return
         super().record_episode(episode_cost)
 
+    def actor_regularizer(self, trace):
+        """Explicit opt-in development hook; historical learners add exactly zero."""
+        return 0.
+
     def update(self, batch):
         obs,action,reward,next_obs,done = [batch[k] for k in ('obs','action','reward','next_obs','done')]
         alpha = self.log_alpha.detach().exp()
@@ -101,12 +105,24 @@ class StableArmLearner(ArmLearner):
         with torch.no_grad():
             for p,pt in zip(self.cost_q.parameters(),self.cost_qt.parameters()):
                 pt.lerp_(p,.005)
-        for _ in range(2):
+        # Opt-in Piper engineering path: both independent four-sample reward
+        # groups share one frozen target-actor traversal. Keep Qt evaluation
+        # inside each round because its Polyak state changes after round one.
+        packed = None
+        if getattr(self, 'batch_reward_targets', False):
+            with torch.no_grad():
+                packed = self.target_actor(next_obs.repeat(8, 1), geometry=self.geometry)
+        for reward_index in range(2):
             with torch.no_grad():
                 expanded = next_obs.repeat(4,1)
                 # The sampler passes THIS target generator into its geometry
                 # query; therefore the deterministic tail is also target-owned.
-                next_action,next_energy,_ = self.target_actor(expanded,geometry=self.geometry)
+                if packed is None:
+                    next_action,next_energy,_ = self.target_actor(expanded,geometry=self.geometry)
+                else:
+                    begin = reward_index * 4 * len(obs)
+                    end = begin + 4 * len(obs)
+                    next_action, next_energy = packed[0][begin:end], packed[1][begin:end]
                 future = (self.qt(expanded,next_action).min(0).values-alpha*next_energy).reshape(4,-1).mean(0)
                 target = reward+.99*(1.-done)*future
             prediction = self.q(obs,action)
@@ -127,6 +143,7 @@ class StableArmLearner(ArmLearner):
                 policy_q = self.q(obs,generated).min(0).values
                 policy_cost = self.cost_q(obs,generated).mean(0)
                 actor_loss = (alpha*energy-policy_q+self.safety_multiplier*policy_cost).mean()
+                actor_loss = actor_loss + self.actor_regularizer(trace)
                 self.actor_opt.zero_grad(set_to_none=True)
                 actor_loss.backward()
                 nn.utils.clip_grad_norm_(self.actor.parameters(),10.)

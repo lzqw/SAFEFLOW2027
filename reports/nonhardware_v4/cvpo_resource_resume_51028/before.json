@@ -1,0 +1,8 @@
+{
+  "pid": 1866873,
+  "kernel_starttime": "230232622",
+  "command": "/home/lzqw/SAFEFLOW2027_PAPER/env/bin/python -u -m scripts.paper_crax_payload.train_cvpo --config configs/paper_crax_payload/cvpo_formal_v4.json --seed 51028 --upstream /storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/upstream-fixed --output /storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-10m --source-commit 7abb6ebb8e139992fc88a9bcbd2fcebc8e55227e ",
+  "closure_pid": 1866848,
+  "closure_command_sha256": "064a8e99a707b670c15a0aded4f9507a6bfd317ae1f18d5d6f57dc5693b050ad",
+  "status": "single_SIGTERM_requested_at_complete_boundary"
+}

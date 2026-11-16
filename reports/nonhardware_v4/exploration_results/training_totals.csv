@@ -1,0 +1,7 @@
+arm,steps,safe_successes,training_violations,safe_timeouts,censored_episodes
+iso,300000,13906,796,372,2
+noise-only,300000,12728,897,550,2
+metric-only,300000,14050,776,371,2
+full,300000,13003,967,516,2
+full-rho010,300000,13566,940,398,2
+full-rho050,300000,13098,862,443,2

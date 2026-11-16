@@ -1,0 +1,30 @@
+{
+  "E02": {
+    "Iso": {
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-iso-100k.json",
+      "full_checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2",
+      "steps": 60000
+    },
+    "EA": {
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/transfer-ea-100k.json",
+      "full_checkpoint_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "steps": 120000
+    }
+  },
+  "E03": {
+    "Iso": {
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-iso-100k/full_400000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/reach-radius-iso-100k.json",
+      "full_checkpoint_sha256": "b25befa9a9daaacbb8c8e41a312de695e76a9aad3aeda8f5b6ea316a66edafc0",
+      "steps": 400000
+    },
+    "EA": {
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+      "config": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/configs/reach-radius-ea-100k.json",
+      "full_checkpoint_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "steps": 400000
+    }
+  }
+}

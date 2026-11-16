@@ -1,0 +1,11 @@
+{
+  "event": "complete_resumed_seed_atomically_admitted",
+  "training_seed": 51028,
+  "destination": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-10m",
+  "preserved_original_prefix": "/storage_0/SAFEFLOW2027_lzqw_uid1007/nonhardware_v4/e08-fsrl/runs/cvpo-51028-prefix-a100-v1",
+  "fullstate_parent_sha256": "07c0bc57e4c4cf75f535048125028505d97206f38e7e539c3241bdce63dbbaae",
+  "steps": 10000128,
+  "actual_new_transitions": 4636160,
+  "all_transferred_files_sha_equal": true,
+  "controls_added_by_transfer": 0
+}

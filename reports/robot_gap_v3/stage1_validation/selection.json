@@ -1,0 +1,721 @@
+{
+  "selected": {
+    "EA-control": {
+      "candidate": {
+        "label": "EA-control",
+        "method": "s_ea",
+        "steps": 100000,
+        "full_checkpoint_steps": 340000,
+        "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_340000.pt",
+        "full_checkpoint_sha256": "a50f593ee9a50a034ac3f58d618b941dc1216e6cfb3514f859b08933600d447a",
+        "training_seed": 41028,
+        "new_training_violations": 316,
+        "new_training_safe_successes": 5307,
+        "score": {
+          "risk_qualified": false,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.9199999999999999,
+          "macro_capped_seconds": 1.019,
+          "per_condition_violation": [
+            0.0,
+            0.18,
+            0.14,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            0.82,
+            0.86,
+            1.0
+          ]
+        }
+      },
+      "status": "pareto_tradeoff_not_risk_qualified",
+      "candidate_count": 5
+    },
+    "EA-repair": {
+      "candidate": {
+        "label": "EA-repair",
+        "method": "s_ea",
+        "steps": 80000,
+        "full_checkpoint_steps": 320000,
+        "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_320000.pt",
+        "full_checkpoint_sha256": "f6f3da3ebd17bd3c7f284049b6af0f21a7403abfa6addaba6ff3233aed9273f0",
+        "training_seed": 41028,
+        "new_training_violations": 390,
+        "new_training_safe_successes": 4141,
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": true,
+          "macro_safe_success": 1.0,
+          "macro_capped_seconds": 0.7834,
+          "per_condition_violation": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "status": "risk_qualified",
+      "candidate_count": 5
+    },
+    "Iso-repair": {
+      "candidate": {
+        "label": "Iso-repair",
+        "method": "s_iso",
+        "steps": 80000,
+        "full_checkpoint_steps": 200000,
+        "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_200000.pt",
+        "full_checkpoint_sha256": "fee78803805847db399d564d65d3bcc44aefc9f94487fc146d750bb87bd84276",
+        "training_seed": 41028,
+        "new_training_violations": 371,
+        "new_training_safe_successes": 4258,
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": true,
+          "macro_safe_success": 0.99,
+          "macro_capped_seconds": 0.8126000000000001,
+          "per_condition_violation": [
+            0.0,
+            0.0,
+            0.02,
+            0.02
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            1.0,
+            0.98,
+            0.98
+          ]
+        }
+      },
+      "status": "risk_qualified",
+      "candidate_count": 5
+    },
+    "SAC-repair": {
+      "candidate": {
+        "label": "SAC-repair",
+        "method": "sac_lag",
+        "steps": 40000,
+        "full_checkpoint_steps": 340000,
+        "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_340000.pt",
+        "full_checkpoint_sha256": "02d7275e839d392eefec07a07e8e685dcd75f44f8e4f5394e510166251969767",
+        "training_seed": 41028,
+        "new_training_violations": 129,
+        "new_training_safe_successes": 2171,
+        "score": {
+          "risk_qualified": true,
+          "task_progress_observed": true,
+          "macro_safe_success": 1.0,
+          "macro_capped_seconds": 0.7683999999999999,
+          "per_condition_violation": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "per_condition_safe_success": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "status": "risk_qualified",
+      "candidate_count": 5
+    }
+  },
+  "candidates": [
+    {
+      "label": "EA-control",
+      "method": "s_ea",
+      "steps": 20000,
+      "full_checkpoint_steps": 260000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_260000.pt",
+      "full_checkpoint_sha256": "18dfaafee85b389d88f34b1d606e708b1a67fe24fd7220b07c84c7a42710f533",
+      "training_seed": 41028,
+      "new_training_violations": 64,
+      "new_training_safe_successes": 1063,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.555,
+        "macro_capped_seconds": 2.1925999999999997,
+        "per_condition_violation": [
+          0.18,
+          0.72,
+          0.68,
+          0.2
+        ],
+        "per_condition_safe_success": [
+          0.82,
+          0.28,
+          0.32,
+          0.8
+        ]
+      }
+    },
+    {
+      "label": "EA-control",
+      "method": "s_ea",
+      "steps": 40000,
+      "full_checkpoint_steps": 280000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_280000.pt",
+      "full_checkpoint_sha256": "b35cf188c1b65ac845d7abbd8df7d54dfda6c7d9862621d3d4d9509e332b09ba",
+      "training_seed": 41028,
+      "new_training_violations": 122,
+      "new_training_safe_successes": 2124,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.87,
+        "macro_capped_seconds": 1.186,
+        "per_condition_violation": [
+          0.0,
+          0.2,
+          0.3,
+          0.02
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.8,
+          0.7,
+          0.98
+        ]
+      }
+    },
+    {
+      "label": "EA-control",
+      "method": "s_ea",
+      "steps": 60000,
+      "full_checkpoint_steps": 300000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_300000.pt",
+      "full_checkpoint_sha256": "57e3356d62cb2f37b6caea941caf9107f59f8827b74e5c7d3dcc387403bad71e",
+      "training_seed": 41028,
+      "new_training_violations": 188,
+      "new_training_safe_successes": 3185,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.62,
+        "macro_capped_seconds": 1.9908000000000001,
+        "per_condition_violation": [
+          0.12,
+          0.66,
+          0.7,
+          0.04
+        ],
+        "per_condition_safe_success": [
+          0.88,
+          0.34,
+          0.3,
+          0.96
+        ]
+      }
+    },
+    {
+      "label": "EA-control",
+      "method": "s_ea",
+      "steps": 80000,
+      "full_checkpoint_steps": 320000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_320000.pt",
+      "full_checkpoint_sha256": "b38af7ca8ec89f6a238ab6ba0fcde778b6f7b817088a9d079e8d4df252b6f5e3",
+      "training_seed": 41028,
+      "new_training_violations": 250,
+      "new_training_safe_successes": 4252,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.795,
+        "macro_capped_seconds": 1.4243999999999999,
+        "per_condition_violation": [
+          0.02,
+          0.4,
+          0.4,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.6,
+          0.6,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "EA-control",
+      "method": "s_ea",
+      "steps": 100000,
+      "full_checkpoint_steps": 340000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k/full_340000.pt",
+      "full_checkpoint_sha256": "a50f593ee9a50a034ac3f58d618b941dc1216e6cfb3514f859b08933600d447a",
+      "training_seed": 41028,
+      "new_training_violations": 316,
+      "new_training_safe_successes": 5307,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9199999999999999,
+        "macro_capped_seconds": 1.019,
+        "per_condition_violation": [
+          0.0,
+          0.18,
+          0.14,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.82,
+          0.86,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "EA-repair",
+      "method": "s_ea",
+      "steps": 20000,
+      "full_checkpoint_steps": 260000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_260000.pt",
+      "full_checkpoint_sha256": "747385615edb882d338626809e8596fddc0e8b557e5662e588c64e5b7f9bc61c",
+      "training_seed": 41028,
+      "new_training_violations": 110,
+      "new_training_safe_successes": 1029,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9149999999999999,
+        "macro_capped_seconds": 1.0328,
+        "per_condition_violation": [
+          0.0,
+          0.14,
+          0.18,
+          0.02
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.86,
+          0.82,
+          0.98
+        ]
+      }
+    },
+    {
+      "label": "EA-repair",
+      "method": "s_ea",
+      "steps": 40000,
+      "full_checkpoint_steps": 280000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_280000.pt",
+      "full_checkpoint_sha256": "69f7d5353d6de18e695465c1d057305eff7673968b09bb2c6c80532c2ad45f7c",
+      "training_seed": 41028,
+      "new_training_violations": 206,
+      "new_training_safe_successes": 2070,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.945,
+        "macro_capped_seconds": 0.941,
+        "per_condition_violation": [
+          0.0,
+          0.06,
+          0.16,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          0.84,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "EA-repair",
+      "method": "s_ea",
+      "steps": 60000,
+      "full_checkpoint_steps": 300000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_300000.pt",
+      "full_checkpoint_sha256": "b33d53d2d22fa4a48fe8e68a6b16fd63c9cb8bca338beddd616e954b6fc8c80a",
+      "training_seed": 41028,
+      "new_training_violations": 304,
+      "new_training_safe_successes": 3104,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.985,
+        "macro_capped_seconds": 0.8328,
+        "per_condition_violation": [
+          0.0,
+          0.04,
+          0.02,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.96,
+          0.98,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "EA-repair",
+      "method": "s_ea",
+      "steps": 80000,
+      "full_checkpoint_steps": 320000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_320000.pt",
+      "full_checkpoint_sha256": "f6f3da3ebd17bd3c7f284049b6af0f21a7403abfa6addaba6ff3233aed9273f0",
+      "training_seed": 41028,
+      "new_training_violations": 390,
+      "new_training_safe_successes": 4141,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 1.0,
+        "macro_capped_seconds": 0.7834,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "EA-repair",
+      "method": "s_ea",
+      "steps": 100000,
+      "full_checkpoint_steps": 340000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1/full_340000.pt",
+      "full_checkpoint_sha256": "f06bdb330a4667527d3e47fc11092f9c61455e4e2b3c4d0afe9cba21dd511af9",
+      "training_seed": 41028,
+      "new_training_violations": 457,
+      "new_training_safe_successes": 5190,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9299999999999999,
+        "macro_capped_seconds": 0.9878,
+        "per_condition_violation": [
+          0.02,
+          0.08,
+          0.16,
+          0.02
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.92,
+          0.84,
+          0.98
+        ]
+      }
+    },
+    {
+      "label": "Iso-repair",
+      "method": "s_iso",
+      "steps": 20000,
+      "full_checkpoint_steps": 140000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_140000.pt",
+      "full_checkpoint_sha256": "7568e5c226923ac9e250fda7d7bd3d15ad579a2c60780f8caa71aa25da8082b2",
+      "training_seed": 41028,
+      "new_training_violations": 72,
+      "new_training_safe_successes": 1091,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.95,
+        "macro_capped_seconds": 0.9171999999999999,
+        "per_condition_violation": [
+          0.04,
+          0.02,
+          0.08,
+          0.06
+        ],
+        "per_condition_safe_success": [
+          0.96,
+          0.98,
+          0.92,
+          0.94
+        ]
+      }
+    },
+    {
+      "label": "Iso-repair",
+      "method": "s_iso",
+      "steps": 40000,
+      "full_checkpoint_steps": 160000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_160000.pt",
+      "full_checkpoint_sha256": "6511ef5522e84554fd6ef69f37dc90b7e74fc0d051c09ddc419ad4c010260246",
+      "training_seed": 41028,
+      "new_training_violations": 152,
+      "new_training_safe_successes": 2189,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.8999999999999999,
+        "macro_capped_seconds": 1.0617999999999999,
+        "per_condition_violation": [
+          0.06,
+          0.12,
+          0.16,
+          0.06
+        ],
+        "per_condition_safe_success": [
+          0.94,
+          0.88,
+          0.84,
+          0.94
+        ]
+      }
+    },
+    {
+      "label": "Iso-repair",
+      "method": "s_iso",
+      "steps": 60000,
+      "full_checkpoint_steps": 180000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_180000.pt",
+      "full_checkpoint_sha256": "0519dffc7bebef28c3cd197a481d463595c415b8c060b43b018c3034bcae1530",
+      "training_seed": 41028,
+      "new_training_violations": 261,
+      "new_training_safe_successes": 3231,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.84,
+        "macro_capped_seconds": 1.2755999999999998,
+        "per_condition_violation": [
+          0.02,
+          0.24,
+          0.3,
+          0.08
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.76,
+          0.7,
+          0.92
+        ]
+      }
+    },
+    {
+      "label": "Iso-repair",
+      "method": "s_iso",
+      "steps": 80000,
+      "full_checkpoint_steps": 200000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_200000.pt",
+      "full_checkpoint_sha256": "fee78803805847db399d564d65d3bcc44aefc9f94487fc146d750bb87bd84276",
+      "training_seed": 41028,
+      "new_training_violations": 371,
+      "new_training_safe_successes": 4258,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.99,
+        "macro_capped_seconds": 0.8126000000000001,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.02,
+          0.02
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          1.0,
+          0.98,
+          0.98
+        ]
+      }
+    },
+    {
+      "label": "Iso-repair",
+      "method": "s_iso",
+      "steps": 100000,
+      "full_checkpoint_steps": 220000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k/full_220000.pt",
+      "full_checkpoint_sha256": "b2f32fceb37572b04204b1ff2366966e60c70909cb4733abe279bcf4857fc29f",
+      "training_seed": 41028,
+      "new_training_violations": 474,
+      "new_training_safe_successes": 5284,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.94,
+        "macro_capped_seconds": 0.9621999999999997,
+        "per_condition_violation": [
+          0.0,
+          0.04,
+          0.18,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          0.82,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SAC-repair",
+      "method": "sac_lag",
+      "steps": 20000,
+      "full_checkpoint_steps": 320000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_320000.pt",
+      "full_checkpoint_sha256": "a79d7cd13f3a463ecc8d28c3dfbd7e49df45952dd91ae6fab0112c916d3b9c89",
+      "training_seed": 41028,
+      "new_training_violations": 75,
+      "new_training_safe_successes": 1080,
+      "score": {
+        "risk_qualified": false,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.9,
+        "macro_capped_seconds": 1.0675999999999999,
+        "per_condition_violation": [
+          0.02,
+          0.12,
+          0.2,
+          0.06
+        ],
+        "per_condition_safe_success": [
+          0.98,
+          0.88,
+          0.8,
+          0.94
+        ]
+      }
+    },
+    {
+      "label": "SAC-repair",
+      "method": "sac_lag",
+      "steps": 40000,
+      "full_checkpoint_steps": 340000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_340000.pt",
+      "full_checkpoint_sha256": "02d7275e839d392eefec07a07e8e685dcd75f44f8e4f5394e510166251969767",
+      "training_seed": 41028,
+      "new_training_violations": 129,
+      "new_training_safe_successes": 2171,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 1.0,
+        "macro_capped_seconds": 0.7683999999999999,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SAC-repair",
+      "method": "sac_lag",
+      "steps": 60000,
+      "full_checkpoint_steps": 360000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_360000.pt",
+      "full_checkpoint_sha256": "6de89843acc358be8c42418ca8f24d03e43dcb698cd3825ea8c4d3c46ad1844d",
+      "training_seed": 41028,
+      "new_training_violations": 186,
+      "new_training_safe_successes": 3269,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.99,
+        "macro_capped_seconds": 0.763,
+        "per_condition_violation": [
+          0.0,
+          0.0,
+          0.04,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          1.0,
+          0.96,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SAC-repair",
+      "method": "sac_lag",
+      "steps": 80000,
+      "full_checkpoint_steps": 380000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_380000.pt",
+      "full_checkpoint_sha256": "ec152ca8dfe19f7be5d5c39c6676141d0e70c7b7e17a9ec7a833c35f7318da5a",
+      "training_seed": 41028,
+      "new_training_violations": 233,
+      "new_training_safe_successes": 4376,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.99,
+        "macro_capped_seconds": 0.7791999999999999,
+        "per_condition_violation": [
+          0.0,
+          0.02,
+          0.02,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.98,
+          0.98,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SAC-repair",
+      "method": "sac_lag",
+      "steps": 100000,
+      "full_checkpoint_steps": 400000,
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k/full_400000.pt",
+      "full_checkpoint_sha256": "c101c8262e1e141ed71e65b3e7fc02771352d8f52b70afe621259e5cb628973f",
+      "training_seed": 41028,
+      "new_training_violations": 284,
+      "new_training_safe_successes": 5476,
+      "score": {
+        "risk_qualified": true,
+        "task_progress_observed": true,
+        "macro_safe_success": 0.985,
+        "macro_capped_seconds": 0.7836,
+        "per_condition_violation": [
+          0.0,
+          0.06,
+          0.0,
+          0.0
+        ],
+        "per_condition_safe_success": [
+          1.0,
+          0.94,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "independent_test_used": false,
+  "next_phase": "review completed stage1; decide whether any conditional continuation is warranted BEFORE opening final test labels",
+  "source_commit": "3bf58094d97d977ff96c450b18b5b45491259db7"
+}

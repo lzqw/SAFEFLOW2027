@@ -1,5 +1,6 @@
 {
-  "as_of": "2026-11-12T16:11:00+08:00",
+  "as_of": "2026-11-13T12:23:41.843164+00:00",
+  "refresh_scope": "Actual A100 Piper and formal PointGoal receipts refreshed once; other historical sections retain their earlier evidence. Payload4080 live status is unavailable, not revalidated.",
   "whole_goal_complete": false,
   "PointGoal_development": {
     "cap_training_transitions": 24000000,
@@ -31,13 +32,17 @@
     "cap_training_transitions": 3000000,
     "engineering_actual_training": 3220,
     "six_proposed_candidate_jobs_total": 1800000,
-    "candidate_jobs_launched": 1,
+    "candidate_jobs_launched": 6,
+    "candidate_jobs_completed": 6,
     "remaining_after_proposed_six": 1196780,
     "physical_interactions": 0,
     "physical_connection_authorized": false,
     "candidate_queue_jobs_reserved_A100": 3,
     "candidate_queue_jobs_prepared_4080": 3,
-    "observed_new_candidate_training_lower_bound": 60000
+    "observed_new_candidate_training_lower_bound": 1800000,
+    "actual_completed_candidate_training": 1800000,
+    "historical_engineering_remains_separately_charged": true,
+    "new_RobotGap_budget_is_separate": true
   },
   "Arm_mechanism": {
     "cap_new_training": 3000000,
@@ -51,19 +56,56 @@
     "Live and pending status is a timestamped snapshot,not continuous liveness proof."
   ],
   "PointGoal_formal": {
-    "status": "frozen_queue_active",
+    "status": "all_nine_formal_runs_completed_no_new_PointGoal_training",
     "common_steps_per_seed": 10000000,
     "registered_runs": 9,
     "nominal_training_reservation": 90000000,
     "estimated_vector_host_rounding_upper_extra": 1920,
     "actual_counts_authority": "allnativerunreceipts;neverrounddownactualsampling",
     "first_completed_actual": 10000384,
-    "completed_runs_observed": 1,
+    "completed_runs_observed": 9,
+    "actual_completed_transitions": 90001920,
     "total_PointGoal_cap_with_common10M": 150000000,
     "optional_CVPO_started": false
   },
+  "RobotGap_v2": {
+    "as_of": "2026-11-13T19:30:13.882190+00:00",
+    "actual_completed_new_training": 830000,
+    "observed_new_training_including_partial_prefixes": 830000,
+    "new_training_cap": 2200000,
+    "initial_profile_reservation": 30000,
+    "initial_paired_transfer_reservation": 200000,
+    "piper_reach_geometry_reservation": 200000,
+    "piper_payload_continuation_reservation": 400000,
+    "total_new_round_reservation": 830000,
+    "remaining_unreserved_later_allowance": 1370000,
+    "current_actual_and_live_prefix_authority": "../robot_gap_v2/TASK_STATUS.json",
+    "PointGoal_new_training": 0,
+    "curriculum_not_launched": true,
+    "no_5080_or_foreign_job_interruption": true
+  },
   "PointGoal_mechanisms": {
     "actual_training": 0,
-    "actual_nontraining_simulator_controls": 2208
+    "actual_nontraining_simulator_controls": 18912,
+    "historical4M_controls": 2208,
+    "final_selected64x32_controls": 16704,
+    "final_selected_authority": "../robot_gap_v2/paper/final_mechanism/native/receipt.json",
+    "final_selected_execution_backend": "cpu"
+  },
+  "Piper_Payload_v2_closure": {
+    "actual_training": 0,
+    "actual_common_validation_episodes": 1500,
+    "actual_independent_test_episodes": 600,
+    "actual_nontraining_simulator_controls": 74988,
+    "actual_physics_substeps": 1499760,
+    "actual_distance_queries": 1578950,
+    "authority": "../robot_gap_v2/payload_closure/receipt.json",
+    "selected_snapshot_steps_are_not_actual_branch_training_expenditure": true
+  },
+  "PointGoal_selected_trajectory_examples": {
+    "actual_training": 0,
+    "actual_nontraining_simulator_controls": 2000,
+    "authority": "../robot_gap_v2/paper/selected_examples/receipt.json",
+    "not_the_final64x32_mechanism": true
   }
 }

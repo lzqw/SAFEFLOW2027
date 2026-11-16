@@ -30,6 +30,45 @@
 
 --------------------------------------------------------------------------------
 
+## SAFEFlow：当前实验与程序入口
+
+2026-11-16最新：v6三分支从共同100K完整状态各新增150K到250K，450K及1080开发回合已完成。
+[v6最终完整审查](reports/direction_annealing_v6/FINAL_DEVELOPMENT_REVIEW_ZH.md)：
+A终点88/90、B90/90、C86/90；B训练违规比A多27.4%，没有同时改善训练安全和执行的统一赢家。
+[v6方案与预算调整](reports/direction_annealing_v6/PLAN_ZH.md)、
+[v6完成状态及运行历史](reports/direction_annealing_v6/STATUS_ZH.md)、
+[v6冻结配置](configs/paper_crax_payload/direction_annealing_v6.json)和
+[显式父状态分叉入口](scripts/paper_crax_payload/train_direction_annealing.py)。
+新增450K、剩余确认2250K，总3450K不增加；旧2700K／300K确认入口已禁止启动。
+确认仍需明确取舍和新冻结，不自动执行；B仅保留为执行优先候选，不宣称全面安全改进。
+
+2026-11-15方法改进v5五臂750K开发及1350回合全部完成，两个候选固定终点均未通过，未选定有效最终版本。
+[完整开发审查与下一步边界](reports/direction_development_v5/FINAL_DEVELOPMENT_REVIEW_ZH.md)、
+[当前结果与进程](reports/direction_development_v5/STATUS_ZH.md)、
+[不足分析／有限开发与确认预算](reports/direction_development_v5/PLAN_ZH.md)、
+[方法实现](scripts/paper_crax_payload/direction_development.py)、
+[新训练入口](scripts/paper_crax_payload/train_direction_development.py)与
+[五版本配置](configs/paper_crax_payload/direction_development_v5.json)。
+全部节点只作开发用途，旧独立测试不用于选新方法；原预留三seed确认未启动，后续修改需明确新方案。
+不使用5080或实机，研究目标未因本轮训练结束而视为完成。
+
+上一轮获授权的非实机补强包已于2026-11-15完成：六臂1.8M及CVPO三seed30M、15候选、500独立回合均齐。
+5080部署机计时按用户要求暂缓；E04没有合法路线接纳、E14不作因果贡献，不冒充已完成。
+固定训练终点、验证选中候选、开发节点及独立测试分别报告；负面结果完整保留。
+
+- [最终汇总与结论边界](reports/nonhardware_v4/FINAL_SUMMARY_ZH.md)、[非实机统一总报告](reports/nonhardware_v4/NONHARDWARE_REPORT_ZH.md)、[六个研究问题的证据](reports/nonhardware_v4/RQ1_RQ6_EVIDENCE_ZH.md)与[状态／历史](reports/nonhardware_v4/STATUS_ZH.md)。
+- [固定300K组件／参数结果](reports/nonhardware_v4/FIXED_300K_COMPONENT_RESULTS_ZH.md)，以及[全部开发节点](reports/nonhardware_v4/PROVISIONAL_RESULTS_ZH.md)。
+- 六臂1.8M补强已全部完成：[学习曲线](reports/nonhardware_v4/component_results/evaluation_learning.png)、[风险—执行效率](reports/nonhardware_v4/component_results/fixed_endpoint_risk_efficiency.png)、[完整探索曲线与轨迹](reports/nonhardware_v4/exploration_results/INTERPRETATION_ZH.md)。
+- [组件训练程序](scripts/paper_crax_payload/train_component_study.py)、[四组件实现](scripts/paper_crax_payload/component_models.py)与[注册配置](configs/paper_crax_payload/component_study_v4.json)。
+- [CVPO训练入口](scripts/paper_crax_payload/train_cvpo.py)、[正式科学协议](reports/nonhardware_v4/E08_FORMAL_PROTOCOL_ZH.md)与[两共享槽接续记录](reports/nonhardware_v4/E08_RELEASED_SLOT_HANDOFF_ZH.md)。
+- [PointGoal四方法最终表／学习曲线／独立测试](reports/nonhardware_v4/e08/four_method_final/INTERPRETATION_ZH.md)：原三方法不重选，CVPO全部三seed10M及500独立回合已完成，固定终点与选定策略分开。
+- [原状态续跑资源交接](reports/nonhardware_v4/E08_FULLSTATE_RESOURCE_RESUME_ZH.md)：所有原prefix同盘归档，全部科学预算完成，不改配置、不重复旧评测；大检查点不上传GitHub。
+- [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
+
+当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
+分支发布不表示已合并main。5080／实机按用户要求暂缓，不发送邮件。
+下方STAR与OmniSafe内容保留为历史方法入口及上游框架说明，不代表最新训练状态。
+
 > **SAFEFLOW2027 / STAR:** 本仓库以固定的 OmniSafe 基线开发安全关键参考熵方法。
 > RTX 3090 服务器上的 P0/P1 环境、语义测试、吞吐标定和复现命令见
 > [scripts/star/README.md](scripts/star/README.md)。P4.1 正确性修复、旧模型长度审计和

@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "source_commit": "fe9fb873024e9395c50cf4fb169c4788475c7548",
+  "plan_sha256": "d9356b21fc509f06199bee35d6cc5016ce29ee031c1224fbf406d86ab177a79d",
+  "selection_sha256": "583bd6d3e67631fb3f97034e417b5bd672943f6d994950187b922293d340dd13",
+  "training_transitions": 0,
+  "attempted_episodes": 3300,
+  "static_admissible_episodes": 3300,
+  "physical_control_intervals": 165269,
+  "physics_substeps": 3305380,
+  "distance_queries": 3477291,
+  "static_admissibility_shared": true,
+  "elapsed_seconds": 1868.5313236378133,
+  "physical_robot_interactions": 0,
+  "actual_deployment_pc_timing": false,
+  "automatic_restart": false
+}

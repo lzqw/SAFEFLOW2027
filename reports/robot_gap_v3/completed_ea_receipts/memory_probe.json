@@ -1,0 +1,34 @@
+{
+  "probe": "bounded_disposable_native_parent_updates",
+  "native_pid": 3034069,
+  "source_script_sha256": "c2a5304de76071976e0d992804de1e6ccfb7cb4bd1ed58d81b8e5233f8fbee66",
+  "cuda_allocator_fraction_cap": 0.125,
+  "updates_are_discarded": true,
+  "new_environment_transitions": 0,
+  "scientific_checkpoints_changed": false,
+  "result_cannot_bound_foreign_memory_growth": true,
+  "methods": [
+    {
+      "method": "s_iso",
+      "parent": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41028-v1/full_120000.pt",
+      "native_parent_steps": 120000,
+      "batch_size": 256,
+      "disposable_update_rounds": 4,
+      "disposable_actor_updates": 2,
+      "peak_allocated_bytes": 24788480,
+      "peak_reserved_bytes": 29360128,
+      "observed_process_gpu_mib": 332
+    },
+    {
+      "method": "sac_lag",
+      "parent": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41028-v1/full_300000.pt",
+      "native_parent_steps": 300000,
+      "batch_size": 256,
+      "disposable_update_rounds": 4,
+      "disposable_actor_updates": 2,
+      "peak_allocated_bytes": 21912064,
+      "peak_reserved_bytes": 27262976,
+      "observed_process_gpu_mib": 330
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "status": "only_original_schedulers_retired_workers_preserved",
+  "time_utc": "2026-11-14T17:02:29.281018+00:00",
+  "retired_controller_pids": [
+    1825419,
+    1825545,
+    1831775
+  ],
+  "preserved_worker_pids": [
+    1825421,
+    1825547
+  ],
+  "parameter_runs_were_never_started": true,
+  "foreign_processes_signaled": false,
+  "training_workers_signaled": false,
+  "training_restarts": 0,
+  "science_budget_unchanged": true,
+  "replacement_controllers_not_yet_launched": true
+}

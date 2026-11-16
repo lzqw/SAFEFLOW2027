@@ -1,0 +1,139 @@
+{
+  "protocol": "direction_annealing_v6_paired_fullstate_fork",
+  "completed_runs": 3,
+  "expected_runs": 3,
+  "actual_new_training_steps": 450000,
+  "finite_new_training_budget": 450000,
+  "common_observed_parent_prefix_steps": 100000,
+  "training_seed_count": 1,
+  "independent_confirmation": false,
+  "method_selected": false,
+  "condition_rows": 36,
+  "gradient_probe_rows": 48,
+  "new_training_transitions_from_analysis": 0,
+  "source_commits": [
+    "33d31709"
+  ],
+  "inputs": [
+    {
+      "path": "A-fixed/evaluation_125000.json",
+      "sha256": "3f056922fdf3384e029bad70abdf64be1023517817b0de59110a65260f0e2c0e"
+    },
+    {
+      "path": "A-fixed/evaluation_150000.json",
+      "sha256": "4ea38abe90f9db89bfb21f85df10d20f584af8fc344215feea0f8e1fc79505ac"
+    },
+    {
+      "path": "A-fixed/evaluation_200000.json",
+      "sha256": "fba3f7383e2e53819d73978f588075f66f4e6b4e2e4f4c303da2ceb227daac43"
+    },
+    {
+      "path": "A-fixed/evaluation_250000.json",
+      "sha256": "566d7ad8f004adf628d1e35d5fce89a3f9f8fb21b50917f65b0d652480f76510"
+    },
+    {
+      "path": "A-fixed/gradient_diagnostics.jsonl",
+      "sha256": "a5307dc0d28cb0cad9a15225e27bb1fd6a58d1c6b856424aa52d3a30df3c82d8"
+    },
+    {
+      "path": "A-fixed/progress.jsonl",
+      "sha256": "0eb680eb072495d75c84634301882876fa2582a039013261f4b0526f51f2c7c0"
+    },
+    {
+      "path": "A-fixed/receipt.json",
+      "sha256": "a5e34e6804928848a34e377d6f100c62078a8bfeeb2135148e4f11efbd9c051c"
+    },
+    {
+      "path": "A-fixed/restoration_receipt.json",
+      "sha256": "b81ec92f222395a6f1a1092202348ba1e32eeb0a6562d0f52820c1106ed4d8ec"
+    },
+    {
+      "path": "A-fixed/run_config.json",
+      "sha256": "6c8591365485fe2d5140b7be28ceeb84c0ebdd66710aa3eac0c8f3002c991946"
+    },
+    {
+      "path": "A-fixed/status.json",
+      "sha256": "d949c6c4ce692d06ce6e67f4432118566f366853cd76e75a369be726f8334784"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_125000.json",
+      "sha256": "c6fdac59fb8fed23fff969e578e42fc030e0b3ce552fbc3955c50b6d8194c022"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_150000.json",
+      "sha256": "f55e9de467c4f39bb376580dbd34c36894c645a84ffa197ba27cf0d11bb83306"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_200000.json",
+      "sha256": "9b284f6e77e984fd3e4d7291a06a5a67c6baffa591ffed0e87782c09401bc27f"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_250000.json",
+      "sha256": "bb81300f40f2d9ac7bc13c5cafeaaff3ef84eee578b0e7d2ca0bdffda5b042f7"
+    },
+    {
+      "path": "B-loss-anneal/gradient_diagnostics.jsonl",
+      "sha256": "af37ec0164abe9731963434cbbd5bba2da6f849f5ba27d0fabe3c59239ad2464"
+    },
+    {
+      "path": "B-loss-anneal/progress.jsonl",
+      "sha256": "436e806c085a56b6bda3cbbc0a59a8e1cb96cf6c803e0a17085ca1f219d30de5"
+    },
+    {
+      "path": "B-loss-anneal/receipt.json",
+      "sha256": "6de252f61d53e7c0e3bd2ae28c537f5e57caab354d9a1d74731f40235aa26e28"
+    },
+    {
+      "path": "B-loss-anneal/restoration_receipt.json",
+      "sha256": "b81ec92f222395a6f1a1092202348ba1e32eeb0a6562d0f52820c1106ed4d8ec"
+    },
+    {
+      "path": "B-loss-anneal/run_config.json",
+      "sha256": "d7e8e42d253dbceaad235d783ae8a5bcfaa65f9b2aaca1516b2c680b281908ad"
+    },
+    {
+      "path": "B-loss-anneal/status.json",
+      "sha256": "d949c6c4ce692d06ce6e67f4432118566f366853cd76e75a369be726f8334784"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_125000.json",
+      "sha256": "266716c2235fbb761062141d6f080127fedf702741ce51e6f59f41c87c6ef29c"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_150000.json",
+      "sha256": "d353a4bdddb21f18952b596e2d555ade33ca1ac9999dbd74a43ce06733963794"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_200000.json",
+      "sha256": "0d5531ce3034ba22fe6e8becdce6bde0ad07535bb1dca6855276a418461253b6"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_250000.json",
+      "sha256": "ad349f6823824c2cc63e5d45c08c7b7c47b36689846655bc5739e33ccb3b99df"
+    },
+    {
+      "path": "C-joint-anneal/gradient_diagnostics.jsonl",
+      "sha256": "672aa0d4d8785a70cace0174762da506c21268ead7662fff7d22ee565168d505"
+    },
+    {
+      "path": "C-joint-anneal/progress.jsonl",
+      "sha256": "1b0c8b5d78a12704a88da55c55135f3926d4950c79b94232c2682470dfce5bc4"
+    },
+    {
+      "path": "C-joint-anneal/receipt.json",
+      "sha256": "243efa2e64ce74427d6aa6cc7f8200748b688ddfb56ffa97ad69ab3c2125b8f9"
+    },
+    {
+      "path": "C-joint-anneal/restoration_receipt.json",
+      "sha256": "e3d538e938595557c8e3e53321902cbe9a5d5400bd46ef15b083de9be8f6908a"
+    },
+    {
+      "path": "C-joint-anneal/run_config.json",
+      "sha256": "13e53ac28fc090a9565e9b679fded16a66ac2486315b67c57fcebe19ae931c50"
+    },
+    {
+      "path": "C-joint-anneal/status.json",
+      "sha256": "d949c6c4ce692d06ce6e67f4432118566f366853cd76e75a369be726f8334784"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "robot_family": "Piper",
+  "task": "Reach",
+  "method": "EA",
+  "selected_checkpoint_steps": 400000,
+  "selection_split": "validation",
+  "independent_test_used_for_selection": false,
+  "risk_qualified": false,
+  "status": "pareto_tradeoff_not_risk_qualified",
+  "candidate_count": 1,
+  "score": {
+    "risk_qualified": false,
+    "task_progress_observed": true,
+    "macro_safe_success": 0.9066666666666666,
+    "macro_capped_seconds": 1.4882666666666668,
+    "per_condition_violation": [
+      0.0,
+      0.28,
+      0.0
+    ],
+    "per_condition_safe_success": [
+      1.0,
+      0.72,
+      1.0
+    ]
+  },
+  "checkpoint_rule": "sole fixed400K adaptation endpoint, never intermediate reselection",
+  "physical_deployment_eligible": false,
+  "hardware_calibration_pending": true
+}

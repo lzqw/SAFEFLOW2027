@@ -1,14 +1,24 @@
 {
   "schema_version": 1,
-  "status": "native_Piper_training_not_started",
+  "status": "adapted_Reach_independent_layout_test_and_offline_release_completed_hardware_pending",
   "robot_family": "Piper",
   "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
   "methods": ["Iso", "Iso-Low", "EA"],
   "tasks": ["Reach", "Payload"],
-  "trained_candidates": [],
-  "simulation_development_cap_transitions": 3000000,
-  "new_training_transitions": 0,
+  "trained_candidates": [
+    {"task": "Reach", "method": "Iso", "selected_steps": 400000, "bundle": "../../reports/robot_gap_v2/reach_adapted_release/bundles/iso", "risk_qualified": false, "physical_deployment_eligible": false},
+    {"task": "Reach", "method": "Iso-Low", "selected_steps": 120000, "bundle": "../../reports/robot_gap_v2/reach_adapted_release/bundles/iso-low", "risk_qualified": true, "task_progress_observed": false, "physical_deployment_eligible": false},
+    {"task": "Reach", "method": "EA", "selected_steps": 400000, "bundle": "../../reports/robot_gap_v2/reach_adapted_release/bundles/ea", "risk_qualified": false, "physical_deployment_eligible": false}
+  ],
+  "original_native_candidate_transitions": 1800000,
+  "original_candidate_count": 6,
+  "original_candidate_tasks": ["Reach", "Payload"],
+  "current_training_budget_authority": "../../reports/robot_gap_v2/TASK_STATUS.json",
+  "selection_authority": "../../reports/robot_gap_v2/reach_adapted_release/selection.json",
+  "original_frozen_release_preserved": "../../reports/robot_gap_v2/reach_release/selection.json",
+  "adapted_independent_test_episodes": 900,
+  "Iso_Low_not_given_matched_adaptation_budget": true,
   "real_interactions": 0,
   "physical_motion_enabled": false,
-  "reason": "User confirmed Piper standard version and standard gripper; the pinned standard official model is selected for native simulation training when a shared slot is available. Physical firmware/TCP/calibration/limits remain pending. No native Piper policy has yet been trained or selected; old Panda weights are not converted or relabelled."
+  "reason": "Original six native Piper300K runs and original2250-episode Reach selection are preserved. The sole matched100K-adapted Iso/EA400K endpoints were validated, frozen before independent labels, exported and tested on900 independent-layout episodes including the unchanged original Iso-Low reference. Independent nominal/geometry/scale safe success: Iso100/72/99%, EA100/70/100%; Iso-Low0 throughout.55mm is in the adaptation training family, not an unseen radius. Iso and EA still fail the cross-condition risk criterion; none is eligible for physical deployment. Firmware/TCP/calibration/limits and deployment-computer latency remain pending; no Panda weights are converted or relabelled."
 }

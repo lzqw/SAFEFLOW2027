@@ -1,0 +1,20 @@
+{
+  "state": "evaluating",
+  "native_pid": 1665563,
+  "source_commit": "fe9fb873024e9395c50cf4fb169c4788475c7548",
+  "plan_sha256": "d9356b21fc509f06199bee35d6cc5016ce29ee031c1224fbf406d86ab177a79d",
+  "training_transitions": 0,
+  "physical_robot_interactions": 0,
+  "automatic_restart": false,
+  "results": [
+    "E02-validation-iso-scale0.6.json",
+    "E02-validation-iso-scale0.8.json"
+  ],
+  "stage": "E02",
+  "method": "Iso",
+  "action_scale": 1.0,
+  "split": "validation",
+  "condition": "execution_scale_085",
+  "active_condition_completed_episodes": 10,
+  "elapsed_seconds": 255.60299265990034
+}

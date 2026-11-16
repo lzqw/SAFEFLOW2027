@@ -1,0 +1,180 @@
+{
+  "cohort": "original_native_Reach_seed41027",
+  "methods": [
+    "Iso",
+    "Iso-Low",
+    "EA"
+  ],
+  "steps": [
+    60000,
+    120000,
+    180000,
+    240000,
+    300000
+  ],
+  "candidates": [
+    {
+      "method": "Iso",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_60000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_120000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_180000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_240000.json"
+    },
+    {
+      "method": "Iso",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-iso-41027-v1/training_receipt_300000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_60000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_120000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_180000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_240000.json"
+    },
+    {
+      "method": "Iso-Low",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-isolow-41027-v1/training_receipt_300000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 60000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_60000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_60000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 120000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_120000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_120000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 180000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_180000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_180000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 240000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_240000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_240000.json"
+    },
+    {
+      "method": "EA",
+      "steps": 300000,
+      "checkpoint": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/full_300000.pt",
+      "receipt": "/home/lzqw/SAFEFLOW2027_PAPER/runs/piper-reach-ea-41027-v1/training_receipt_300000.json"
+    }
+  ],
+  "validation_layouts": [
+    61027,
+    61028,
+    61029,
+    61030,
+    61031,
+    61032,
+    61033,
+    61034,
+    61035,
+    61036,
+    61037,
+    61038,
+    61039,
+    61040,
+    61041,
+    61042,
+    61043,
+    61044,
+    61045,
+    61046,
+    61047,
+    61048,
+    61049,
+    61050,
+    61051,
+    61052,
+    61053,
+    61054,
+    61055,
+    61056,
+    61057,
+    61058,
+    61059,
+    61060,
+    61061,
+    61062,
+    61063,
+    61064,
+    61065,
+    61066,
+    61067,
+    61068,
+    61069,
+    61070,
+    61071,
+    61072,
+    61073,
+    61074,
+    61075,
+    61076
+  ],
+  "conditions": [
+    {
+      "name": "nominal",
+      "simulation_overrides": {}
+    },
+    {
+      "name": "new_geometry",
+      "simulation_overrides": {
+        "obstacle_radius_m": 0.055
+      }
+    },
+    {
+      "name": "execution_scale_085",
+      "simulation_overrides": {},
+      "action_scale": 0.85
+    }
+  ],
+  "risk_limit_each_condition": 0.1,
+  "selection": "risk-qualified then macro safe success then capped time then earliest checkpoint; otherwise Pareto",
+  "independent_test_used_for_selection": false,
+  "new_training_transitions": 0
+}

@@ -1,0 +1,35 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/source",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/pending-parameter-queue-v2.json",
+  "slots": 1,
+  "poll_interval_seconds": 1800,
+  "minimum_free_disk_bytes": 42949672960,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3072},
+  "prerequisite_receipts": [
+    {"path": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/metric-only/receipt.json", "steps": 300000}
+  ],
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "resource_reassignment_only": true,
+  "supersedes_pending_jobs": ["A100 queue-gpu0 full-rho010", "A100 queue-gpu1 full-rho050"],
+  "jobs": [
+    {
+      "name": "full-rho010",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "full-rho010", "--cuda-memory-fraction", "0.125"],
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "output": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/full-rho010",
+      "log": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/logs/full-rho010.log"
+    },
+    {
+      "name": "full-rho050",
+      "module": "scripts.paper_crax_payload.train_component_study",
+      "arguments": ["--config", "configs/paper_crax_payload/component_study_v4.json", "--arm", "full-rho050", "--cuda-memory-fraction", "0.125"],
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "output": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/runs/full-rho050",
+      "log": "/home/carla/4T/SAFEFLOW2027_NONHARDWARE_V4/logs/full-rho050.log"
+    }
+  ]
+}

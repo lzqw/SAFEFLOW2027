@@ -24,6 +24,18 @@ def validate_slot_environments(plan):
         raise ValueError('GPU binding belongs to the released slot, not the next pending job')
 
 
+def prerequisites_ready(plan):
+    """Optional finite campaign dependency, not permission to restart failed work."""
+    for spec in plan.get('prerequisite_receipts',[]):
+        path=Path(spec['path'])
+        if not path.exists():return False
+        record=json.loads(path.read_text())
+        if record.get('status')!='completed' or record.get('steps')!=spec['steps']:
+            raise ValueError('Prerequisite exists but did not complete the registered budget')
+        if record.get('engineering_only'):raise ValueError('Engineering smoke is not a scientific prerequisite')
+    return True
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--plan',type=Path,required=True)
@@ -37,7 +49,8 @@ def main():
     validate_slot_environments(plan)
     jobs=plan['jobs'];live={};records=[];admission_wait_reason=None
     def save():
-        state=dict(pid=os.getpid(),source_commit=args.source_commit,status='running' if jobs or live else 'completed',
+        terminal='completed_with_failures' if any(r['status']=='failed_not_restarted' for r in records) else 'completed'
+        state=dict(pid=os.getpid(),source_commit=args.source_commit,status='running' if jobs or live else terminal,
             jobs=records,pending=len(jobs),live_native_pids=list(live),automatic_restart=False,foreign_processes_changed=False,
             admission_wait_reason=admission_wait_reason)
         temp=state_path.with_suffix('.tmp');temp.write_text(json.dumps(state,indent=2)+'\n');temp.replace(state_path)
@@ -45,13 +58,42 @@ def main():
         for pid,(proc,stream,record) in list(live.items()):
             code=proc.poll()
             if code is not None:
-                stream.close();record.update(exit_code=code,status='completed' if code==0 else 'failed_not_restarted',finished_unix=time.time());del live[pid]
+                stream.close()
+                success=code==0
+                if success and record.get('require_completed_receipt'):
+                    path=Path(record['output'])/'receipt.json'
+                    try:
+                        receipt=json.loads(path.read_text())
+                        success=receipt.get('status')=='completed'
+                        if record.get('required_steps') is not None:success &= receipt.get('steps')==record['required_steps']
+                    except (OSError,ValueError):success=False
+                record.update(exit_code=code,status='completed' if success else 'failed_not_restarted',finished_unix=time.time());del live[pid]
         while jobs and len(live)<plan['slots']:
+            if not prerequisites_ready(plan):
+                admission_wait_reason='waiting_for_registered_predecessor_receipts;no_extra_GPU_slot'
+                break
+            occupied = 0
+            for external in plan.get('existing_healthy_jobs', []):
+                try:
+                    cmd = Path('/proc',str(external['pid']),'cmdline').read_bytes()
+                    occupied += int(external['expected_output'].encode() in cmd and b'payload_train' in cmd)
+                except OSError:
+                    pass
+            if len(live) + occupied >= plan['slots']:
+                admission_wait_reason='existing_healthy_project_job_retains_shared_slot'
+                break
             minimum_free=plan.get('minimum_free_disk_bytes',0)
             if minimum_free and shutil.disk_usage(project).free<minimum_free:
                 admission_wait_reason='waiting_for_disk_space;active_jobs_not_stopped'
                 break
             admission_wait_reason=None
+            if plan.get('gpu_admission'):
+                admission = plan['gpu_admission']
+                free = int(subprocess.check_output(['nvidia-smi', '-i', str(admission['index']),
+                    '--query-gpu=memory.free', '--format=csv,noheader,nounits'], text=True, timeout=15).strip())
+                if free < admission['minimum_free_mib']:
+                    admission_wait_reason='waiting_for_shared_GPU_memory;foreign_jobs_not_stopped'
+                    break
             slot=next_slot([item[2] for item in live.values()],plan['slots'])
             job=jobs.pop(0);log=Path(job['log']);log.parent.mkdir(parents=True,exist_ok=True)
             if Path(job['output']).exists():raise FileExistsError('Preserve original run output')
@@ -61,9 +103,10 @@ def main():
             if 'slot_environments' in plan:env.update(plan['slot_environments'][slot])
             stream=log.open('x');proc=subprocess.Popen(command,cwd=project,env=env,stdout=stream,stderr=subprocess.STDOUT)
             record=dict(name=job['name'],pid=proc.pid,command=command,output=job['output'],log=str(log),status='running',started_unix=time.time(),slot_id=slot,visible_devices=env.get('CUDA_VISIBLE_DEVICES'))
+            record.update({k:job[k] for k in ('require_completed_receipt','required_steps') if k in job})
             records.append(record);live[proc.pid]=(proc,stream,record)
         save()
-        if jobs or live:time.sleep(5)
+        if jobs or live:time.sleep(plan.get('poll_interval_seconds',5))
 
 
 if __name__=='__main__':main()

@@ -1,0 +1,124 @@
+{
+  "coverage": [
+    {
+      "arm": "A-fixed",
+      "steps": 125000,
+      "available": true
+    },
+    {
+      "arm": "A-fixed",
+      "steps": 150000,
+      "available": true
+    },
+    {
+      "arm": "A-fixed",
+      "steps": 200000,
+      "available": true
+    },
+    {
+      "arm": "A-fixed",
+      "steps": 250000,
+      "available": true
+    },
+    {
+      "arm": "B-loss-anneal",
+      "steps": 125000,
+      "available": true
+    },
+    {
+      "arm": "B-loss-anneal",
+      "steps": 150000,
+      "available": true
+    },
+    {
+      "arm": "B-loss-anneal",
+      "steps": 200000,
+      "available": true
+    },
+    {
+      "arm": "B-loss-anneal",
+      "steps": 250000,
+      "available": true
+    },
+    {
+      "arm": "C-joint-anneal",
+      "steps": 125000,
+      "available": true
+    },
+    {
+      "arm": "C-joint-anneal",
+      "steps": 150000,
+      "available": true
+    },
+    {
+      "arm": "C-joint-anneal",
+      "steps": 200000,
+      "available": true
+    },
+    {
+      "arm": "C-joint-anneal",
+      "steps": 250000,
+      "available": true
+    }
+  ],
+  "executed_episode_records": 1080,
+  "violating_controls": 35,
+  "fixed_unique_layouts": 30,
+  "training_seed_count": 1,
+  "independent_confirmation": false,
+  "method_selected": false,
+  "inputs": [
+    {
+      "path": "A-fixed/evaluation_125000.json",
+      "sha256": "3f056922fdf3384e029bad70abdf64be1023517817b0de59110a65260f0e2c0e"
+    },
+    {
+      "path": "A-fixed/evaluation_150000.json",
+      "sha256": "4ea38abe90f9db89bfb21f85df10d20f584af8fc344215feea0f8e1fc79505ac"
+    },
+    {
+      "path": "A-fixed/evaluation_200000.json",
+      "sha256": "fba3f7383e2e53819d73978f588075f66f4e6b4e2e4f4c303da2ceb227daac43"
+    },
+    {
+      "path": "A-fixed/evaluation_250000.json",
+      "sha256": "566d7ad8f004adf628d1e35d5fce89a3f9f8fb21b50917f65b0d652480f76510"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_125000.json",
+      "sha256": "c6fdac59fb8fed23fff969e578e42fc030e0b3ce552fbc3955c50b6d8194c022"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_150000.json",
+      "sha256": "f55e9de467c4f39bb376580dbd34c36894c645a84ffa197ba27cf0d11bb83306"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_200000.json",
+      "sha256": "9b284f6e77e984fd3e4d7291a06a5a67c6baffa591ffed0e87782c09401bc27f"
+    },
+    {
+      "path": "B-loss-anneal/evaluation_250000.json",
+      "sha256": "bb81300f40f2d9ac7bc13c5cafeaaff3ef84eee578b0e7d2ca0bdffda5b042f7"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_125000.json",
+      "sha256": "266716c2235fbb761062141d6f080127fedf702741ce51e6f59f41c87c6ef29c"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_150000.json",
+      "sha256": "d353a4bdddb21f18952b596e2d555ade33ca1ac9999dbd74a43ce06733963794"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_200000.json",
+      "sha256": "0d5531ce3034ba22fe6e8becdce6bde0ad07535bb1dca6855276a418461253b6"
+    },
+    {
+      "path": "C-joint-anneal/evaluation_250000.json",
+      "sha256": "ad349f6823824c2cc63e5d45c08c7b7c47b36689846655bc5739e33ccb3b99df"
+    }
+  ],
+  "new_simulation_controls": 0,
+  "new_training_transitions": 0,
+  "scope": "paired_development_only_conditions_reuse_layouts_no_independence_claim",
+  "analysis_script_sha256": "f5eee7dcbb5f058fbb62266cac906227168b6d943c74a1df2d449df39b96930a"
+}

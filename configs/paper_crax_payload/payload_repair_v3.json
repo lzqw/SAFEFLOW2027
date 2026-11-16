@@ -1,0 +1,52 @@
+{
+  "protocol": "paper_crax_payload_v1",
+  "baseline_commit": "fc5716e6dc38bc2eefd1b61cc3cb52090b8f07ca",
+  "task": {"version": "SafePayloadTransport-v1"},
+  "training_radius_family": [0.060, 0.0675, 0.075],
+  "methods": ["sac_lag", "s_iso", "s_ea"],
+  "development_seeds": [41027, 41028],
+  "confirmation_seeds": [51027, 51028, 51029],
+  "development_steps": 300000,
+  "development_transition_cap": 3000000,
+  "total_training_transition_cap": 12000000,
+  "confirmation_steps": 600000,
+  "cost": {"mode": "episodic_binary", "episode_budget": 0.1,
+    "definition": "first arm OR payload safety-distance violation terminates; binary episode cost"},
+  "shared_learner": {
+    "hidden_width": 128, "actor_lr": 0.0001, "critic_lr": 0.0003,
+    "batch_size": 256, "replay_capacity": 300000,
+    "random_transitions": 2000, "critic_only_updates": 1000,
+    "learner_updates_per_transition": 1,
+    "reward_updates_per_round": 2, "actor_update_interval": 2,
+    "margin_ema_tau": 0.005, "rho": 0.25,
+    "reference_variance": 0.04, "energy_target": 18.75,
+    "reward_scale": 1.0, "cost_scale": 1.0,
+    "state_scaling": "native q/pi,qdot/4; world SI payload dimensions, pose, mass, velocity",
+    "margin_label": "safety_distance - true full control-interval minimum of arm and payload"
+  },
+  "num_envs": 2,
+  "log_every": 1000,
+  "checkpoint_every": 25000,
+  "evaluation": {
+    "development_episodes_per_condition": 30,
+    "confirmation_episodes_per_condition": 100,
+    "development_layout_seed_start": 450000,
+    "validation_layout_seed_start": 61027,
+    "independent_test_layout_seed_start": 71027,
+    "action_sampling_seed": 490000,
+    "conditions": [
+      {"name": "nominal", "task_overrides": {}},
+      {"name": "radius_070", "task_overrides": {"obstacle_radius": 0.07}},
+      {"name": "payload_wide", "task_overrides": {"payload_half_extents": [0.035, 0.025, 0.02]}},
+      {"name": "execution_scale_085", "task_overrides": {}, "action_scale": 0.85},
+      {"name": "alternative_route", "task_overrides": {}, "obstacle_offset": [0.045, 0.0, 0.04]}
+    ]
+  },
+  "model_selection": {"equal_candidate_count_per_method": true,
+    "checkpoint_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
+    "primary": "validation nominal violation <=0.05 and stress violation <=0.1",
+    "secondary": "higher safe success", "tertiary": "lower capped completion time",
+    "no_feasible_candidate": "explicitly labelled Pareto tradeoff; not a successful deployment"},
+  "initialization": "fresh; no old Reach policy transfer",
+  "simulation_only": true
+}

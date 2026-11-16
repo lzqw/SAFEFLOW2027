@@ -1,0 +1,38 @@
+{
+  "protocol": "RobotGap_v2_Payload_fixed300K_closure",
+  "methods": [
+    "Iso",
+    "EA"
+  ],
+  "checkpoint_steps": [
+    60000,
+    120000,
+    180000,
+    240000,
+    300000
+  ],
+  "checkpoint_source_rule": "60K from the completed100K transfer;120/180/240/300K from its fixed-endpoint full-state continuation",
+  "candidate_opportunities_each": 5,
+  "training_seed": 41027,
+  "shared_Reach_parent_steps": 300000,
+  "new_Payload_training_steps_each": 300000,
+  "training_continuation_starts_from_fixed100K_not_best_intermediate": true,
+  "validation_episodes_per_condition": 50,
+  "validation_layout_seed_start": 61027,
+  "independent_test_episodes_per_condition": 100,
+  "independent_test_layout_seed_start": 71027,
+  "risk_limit_each_condition": 0.1,
+  "ranking": "risk-qualified then macro safe success then capped time;otherwise explicit Pareto tradeoff;earliest step breaks exact ties",
+  "independent_test_used_for_selection": false,
+  "fixed300K_endpoints_not_replaced": true,
+  "extra20_40_80_100K_development_snapshots_are_not_extra_candidates": true,
+  "old_scratch_trials_are_reference_only_not_matched_pretraining": true,
+  "physical_robot_interactions": 0,
+  "new_training_transitions": 0,
+  "resource_check_interval_seconds": 1800,
+  "automatic_restart": false,
+  "plan_sha256": "9425ff8304c8f9b2b6a3f704e5b7bd7f251c3553cca29430fec5d125ffa0ad40",
+  "controller_pid": 1282516,
+  "admitted_unix": 1794591582.6900413,
+  "source_sha256": "391da5cc54014b7aca5ddc0af0d06fd68d832cb595038e4258dc45ba7a6ae53b"
+}

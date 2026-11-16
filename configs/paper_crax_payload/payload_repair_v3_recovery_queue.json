@@ -1,0 +1,38 @@
+{
+  "protocol": "robot_gap_v3_e01_stage1_manual_recovery_b1",
+  "project": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/project-recovery-b1",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/recovery-b1-queue-state.json",
+  "slots": 2,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "existing_healthy_jobs": [{"pid": 2990144, "expected_output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-nominal-control-41028-plus100k"}],
+  "gpu_admission": {"index": 0, "minimum_free_mib": 6144},
+  "minimum_free_disk_bytes": 42949672960,
+  "poll_interval_seconds": 1800,
+  "new_training_reservation": 300000,
+  "prior_healthy_control_reservation": 100000,
+  "retained_failed_engineering_transitions": 325,
+  "jobs": [
+    {
+      "name": "ea-radius-repair-41028-plus100k-recovery-b1",
+      "module": "scripts.paper_crax_payload.payload_train",
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/ea-radius-repair-41028-plus100k-recovery-b1",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/ea-radius-repair-41028-plus100k-recovery-b1.log",
+      "arguments": ["--config", "configs/paper_crax_payload/payload_repair_v3.json", "--method", "s_ea", "--seed", "41028", "--steps", "340000", "--adapt-from", "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt"]
+    },
+    {
+      "name": "iso-radius-repair-41028-plus100k",
+      "module": "scripts.paper_crax_payload.payload_train",
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/iso-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/iso-radius-repair-41028-plus100k.log",
+      "arguments": ["--config", "configs/paper_crax_payload/payload_repair_v3.json", "--method", "s_iso", "--seed", "41028", "--steps", "220000", "--adapt-from", "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-iso-41028-v1/full_120000.pt"]
+    },
+    {
+      "name": "sac-radius-repair-41028-plus100k",
+      "module": "scripts.paper_crax_payload.payload_train",
+      "output": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/runs/sac-radius-repair-41028-plus100k",
+      "log": "/home/carla/4T/SAFEFLOW2027_ROBOT_GAP_V3/logs/sac-radius-repair-41028-plus100k.log",
+      "arguments": ["--config", "configs/paper_crax_payload/payload_repair_v3.json", "--method", "sac_lag", "--seed", "41028", "--steps", "400000", "--adapt-from", "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-sac-41028-v1/full_300000.pt"]
+    }
+  ]
+}
