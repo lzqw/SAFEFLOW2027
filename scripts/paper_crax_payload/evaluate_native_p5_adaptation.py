@@ -65,11 +65,12 @@ def load_frozen_case(case, plan):
 def evaluate_case(case, plan, assets, episodes):
     learner,native,saved=load_frozen_case(case,plan)
     line=plan['lines'][case['line']]
+    saved_source_sha = saved.get('model_source_urdf_sha256',
+        saved['configuration'].get('model_source_urdf_sha256'))
+    saved_model_commit = saved.get('model_commit', saved['configuration'].get('model_commit'))
     if line['robot']=='Piper' and (
-            saved.get('model_source_urdf_sha256', saved['configuration'].get('model_source_urdf_sha256'))
-                != assets['source_sha256']
-            or saved.get('model_commit', saved['configuration'].get('model_commit'))
-                != assets['model_commit']):
+            (saved_source_sha is not None and saved_source_sha != assets['source_sha256'])
+            or saved_model_commit != assets['model_commit']):
         raise ValueError('Native frozen model and pinned official assets differ')
     del saved
     records,work=[],[]
@@ -135,7 +136,8 @@ def main():
     plan=json.loads(args.plan.read_text());freeze=json.loads(args.freeze.read_text())
     allowed_protocols = {
         'v11_once_only_frozen_native_task_independent',
-        'v11_once_only_frozen_native_task_independent_amended_v1'}
+        'v11_once_only_frozen_native_task_independent_amended_v1',
+        'v11_once_only_frozen_native_task_independent_amended_v2'}
     if (freeze['protocol'] not in allowed_protocols
             or not freeze['development_review_completed'] or freeze['plan_sha256']!=sha256(args.plan)
             or freeze['episodes_per_condition']!=100 or freeze['selection_after_independent']):
