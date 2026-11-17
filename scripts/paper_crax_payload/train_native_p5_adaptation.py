@@ -39,6 +39,20 @@ def storage_check(path, growth_gib=10):
         raise OSError('Preserve40GiB data-disk headroom plus projected10GiB growth')
 
 
+def restore_fork_rng(state, line):
+    # Original Piper ran on cuda:1 with TWO visible GPUs. The finite shared
+    # slot exposes ONE GPU: retain the actually used parent's generator, not
+    # index0 by accident, and do not restore nonexistent generators.
+    mapped = dict(state)
+    if torch.cuda.is_available():
+        if torch.cuda.device_count() != 1:
+            raise ValueError('Fork requires one explicitly bound shared GPU')
+        mapped['cuda'] = [state['cuda'][line['parent_rng_cuda_index']]]
+    else:
+        mapped['cuda'] = []
+    restore_rng(mapped)
+
+
 def train(args):
     plan = json.loads(args.plan.read_text())
     line = plan['lines'][args.line]
@@ -127,7 +141,7 @@ def train(args):
         for env, state in zip(envs, parent['environments']):
             restore(env, state)
         observations = np.stack([env.reset()[0] for env in envs])
-        restore_rng(parent['rng'])
+        restore_fork_rng(parent['rng'], line)
     del parent
     learner.set_transitions(steps)
     evaluation = evaluation_config(native, plan, line)
