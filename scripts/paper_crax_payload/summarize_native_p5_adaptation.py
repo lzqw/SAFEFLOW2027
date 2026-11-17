@@ -130,9 +130,19 @@ def main():
     csv_out(args.output/'all_training_progress.csv',training)
     csv_out(args.output/'development_curve.csv',development)
     csv_out(args.output/'matched_training_costs.csv',comparisons)
+    episodes=[]
+    for (line,arm),run in runs.items():
+        for path in sorted(Path(run['path']).glob('development_*.json')):
+            value=json.loads(path.read_text())
+            for condition in value['conditions']:
+                for row in condition['records']:
+                    episodes.append(dict(line=line,arm=arm,new_steps=value['new_steps'],condition=condition['condition'],
+                        **{k:v for k,v in row.items() if k not in ('trajectory','trajectory_payload_xyz')}))
+    csv_out(args.output/'all_development_episodes.csv',episodes)
     receipt=dict(new_training_steps=0,new_simulation_controls=0,
         native_runs=len(runs),completed_native_runs=sum(r['receipt'] is not None for r in runs.values()),
         training_progress_rows=len(training),development_condition_rows=len(development),
+        development_episode_rows=len(episodes),
         truncated_live_stream_last_lines=truncated,independent_test_used=False,
         source_run_directories=[r['path'] for r in runs.values()])
     (args.output/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')

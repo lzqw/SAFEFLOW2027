@@ -1,0 +1,16 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "native_runs": 4,
+  "completed_native_runs": 0,
+  "training_progress_rows": 236,
+  "development_condition_rows": 34,
+  "truncated_live_stream_last_lines": [],
+  "independent_test_used": false,
+  "source_run_directories": [
+    "reports/performance_gaps_v11/check_1445/4080/panda_payload-control",
+    "reports/performance_gaps_v11/check_1445/4080/panda_payload-p5",
+    "reports/performance_gaps_v11/check_1445/a100/piper_reach-control",
+    "reports/performance_gaps_v11/check_1445/a100/piper_reach-p5"
+  ]
+}
