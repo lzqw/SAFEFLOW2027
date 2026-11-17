@@ -65,8 +65,11 @@ def load_frozen_case(case, plan):
 def evaluate_case(case, plan, assets, episodes):
     learner,native,saved=load_frozen_case(case,plan)
     line=plan['lines'][case['line']]
-    if line['robot']=='Piper' and (saved['model_source_urdf_sha256']!=assets['source_sha256']
-            or saved['model_commit']!=assets['model_commit']):
+    if line['robot']=='Piper' and (
+            saved.get('model_source_urdf_sha256', saved['configuration'].get('model_source_urdf_sha256'))
+                != assets['source_sha256']
+            or saved.get('model_commit', saved['configuration'].get('model_commit'))
+                != assets['model_commit']):
         raise ValueError('Native frozen model and pinned official assets differ')
     del saved
     records,work=[],[]
