@@ -96,10 +96,18 @@ def train(args):
                    or sha256(assets['resolved_urdf']) != assets['resolved_sha256']):
         raise ValueError('Pinned native Piper official assets differ')
     if line['robot']=='Piper':
-        if native.get('training_radius_values') != line.get('training_radius_values'):
+        declared_radii = line.get('training_radius_values')
+        native_radii = native.get('training_radius_values')
+        optional_cover = bool(plan.get('optional_candidate') == 'piper_payload_radius_cover')
+        if optional_cover:
+            if args.line != 'piper_payload' or tuple(declared_radii or ()) != (.045, .05, .055):
+                raise ValueError('Only the registered Piper Payload 45/50/55mm coverage candidate is supported')
+        elif native_radii != declared_radii:
             raise ValueError('The first Piper pair must not change training geometry')
         settings = dict(native['simulation'], task=line['task'])
-        if native.get('training_radius_values'):
+        if optional_cover:
+            settings['training_radius_values'] = list(declared_radii)
+        elif native.get('training_radius_values'):
             settings['training_radius_values'] = native['training_radius_values']
         envs = [PiperProcessEnvironment(assets, settings) for _ in range(native['num_envs'])]
         capture, restore = capture_piper_environment, restore_piper_environment

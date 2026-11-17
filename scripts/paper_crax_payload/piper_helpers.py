@@ -102,8 +102,8 @@ class PiperFiniteRadiusEnvironment(PiperTrainingEnvironment):
     """
     def __init__(self, assets, config, radius_values):
         values = tuple(float(v) for v in radius_values)
-        if config.task != 'Reach' or values != (.045, .05, .055):
-            raise ValueError('Only the predeclared finite Reach radius family is supported')
+        if config.task not in ('Reach', 'Payload') or values != (.045, .05, .055):
+            raise ValueError('Only the predeclared finite 45/50/55mm Piper radius family is supported')
         super().__init__(assets, config)
         self.radius_values = values
         self.radius_bodies = {config.obstacle_radius_m: self.obstacle}
@@ -141,7 +141,8 @@ class PiperFiniteRadiusEnvironment(PiperTrainingEnvironment):
     def definition(self):
         return super().definition() | dict(training_radius_values=self.radius_values,
             training_radius_schedule='round-robin at resets, seeded initial index; no outcome selection',
-            evaluation_geometry_randomized=False)
+            evaluation_geometry_randomized=False,
+            training_geometry_task=self.config.task)
 
 
 def capture_piper_environment(env):

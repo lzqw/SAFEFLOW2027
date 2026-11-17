@@ -1,0 +1,35 @@
+{
+  "protocol": "native_task_p5_paired_adaptation_v11",
+  "optional_candidate": "piper_payload_radius_cover",
+  "first_stage_training_steps": 600000,
+  "development_training_ceiling": 900000,
+  "optional_candidates_max": 3,
+  "additional_steps_per_run": 100000,
+  "arms": ["control", "p5"],
+  "actor_lr": {"initial": 0.0001, "floor": 0.00003, "start": 60000, "end": 80000},
+  "p5": {"direction_weight": 1.0, "rho": 0.25, "tangential_variance": 0.04},
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [20000, 40000, 60000, 80000, 100000],
+  "development_episodes_per_condition": 30,
+  "independent_episodes_per_condition": 100,
+  "independent_requires_separate_freeze": true,
+  "lines": {
+    "piper_payload": {
+      "robot": "Piper", "task": "Payload", "seed": 41027, "parent_steps": 120000,
+      "parent_rng_cuda_index": 1,
+      "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+      "training_radius_values": [0.045, 0.05, 0.055],
+      "development_layout_seed_start": 11725000, "action_sampling_seed": 11726000,
+      "diagnostic_layout_seed_start": 11727000,
+      "independent_layout_seed_start": 11729000, "independent_action_seed": 11729500,
+      "conditions": [
+        {"name": "nominal", "simulation_overrides": {}},
+        {"name": "radius_055", "simulation_overrides": {"obstacle_radius_m": 0.055}},
+        {"name": "radius_0575", "simulation_overrides": {"obstacle_radius_m": 0.0575}},
+        {"name": "execution_scale_085", "simulation_overrides": {}, "action_scale": 0.85}
+      ]
+    }
+  }
+}
