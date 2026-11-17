@@ -1,0 +1,30 @@
+{
+  "protocol": "v11_once_only_frozen_native_task_independent_amended_v1",
+  "freeze_sha256": "acac2219ba6a059f3e06aa83d13720a4bd788256705669539bde14a67bda3d1f",
+  "native_pid": 26588,
+  "host": "CTAlab",
+  "source_commit": "02dbd01a",
+  "line": "piper_reach",
+  "cases": [
+    {
+      "name": "piper_reach-control-v11-100k",
+      "line": "piper_reach",
+      "arm": "control",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control/full_new_100000.pt",
+      "checkpoint_sha256": "c6b20ec0335e982d0128e5e2209c49be719d09107029a7704a533e3a70e9b69d",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control/receipt.json",
+      "training_receipt_sha256": "606847d8ed93ad22202e2f4eba519c7103d254eb1f07073bb0edd6cfeaf607a3"
+    },
+    {
+      "name": "piper_reach-p5-v11-100k",
+      "line": "piper_reach",
+      "arm": "p5",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5/full_new_100000.pt",
+      "checkpoint_sha256": "66d125acebc803d9f7b7983b6144db9ba50bc8b032231c7e6fd41baa0c224b26",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5/receipt.json",
+      "training_receipt_sha256": "22549861a31a557d6f627790763a05bf4e3dd180b7cb07787ac5160b55a77f42"
+    }
+  ],
+  "new_training_steps": 0,
+  "automatic_retry": false
+}

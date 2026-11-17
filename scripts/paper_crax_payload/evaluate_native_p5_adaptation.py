@@ -149,7 +149,9 @@ def main():
                 or not freeze['cases'][0].get('historical_reference')
                 or freeze['cases'][0]['line'] != 'piper_payload'):
             raise ValueError('Historical speed reference requires one registered Piper Iso case')
-    if freeze['protocol'].endswith('_amended_v1'):
+    if freeze['protocol'] in {
+            'v11_once_only_frozen_native_task_independent_amended_v1',
+            'v11_once_only_frozen_native_task_independent_amended_v2'}:
         amendment = args.freeze.parent/freeze['engineering_amendment_path']
         if sha256(amendment) != freeze['engineering_amendment_sha256']:
             raise ValueError('The engineering amendment changed')

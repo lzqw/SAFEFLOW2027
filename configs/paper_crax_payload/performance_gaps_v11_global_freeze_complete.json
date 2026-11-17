@@ -1,0 +1,90 @@
+{
+  "protocol": "v11_complete_frozen_results_with_historical_speed_reference",
+  "analysis_manifest_only": true,
+  "generated_after_evaluation": true,
+  "executed_freeze_sha256_by_line": {
+    "panda_payload": "acac2219ba6a059f3e06aa83d13720a4bd788256705669539bde14a67bda3d1f",
+    "piper_reach": "af32a5621e7b41c1709dccaf00b59c4e28b006238cf874573123edf38048e147",
+    "piper_payload": "af32a5621e7b41c1709dccaf00b59c4e28b006238cf874573123edf38048e147",
+    "historical_Iso": "7a3fbbd0abd276486fdaf44890df5a5c3da0ccd50051b4c6351cfd6508c2f4c6"
+  },
+  "case_condition_names": {"piper_payload-iso60k-reference": ["nominal", "radius_055", "execution_scale_085"]},
+  "engineering_amendment_path": "reports/performance_gaps_v11/INDEPENDENT_EVAL_ENGINEERING_AMENDMENT_ZH.md",
+  "engineering_amendment_sha256": "3013a4ed13cb50eedcf585259a0b12fe4144c2cbab48b59e9ff84b5e76d790fd",
+  "previous_failed_freeze_sha256": "acac2219ba6a059f3e06aa83d13720a4bd788256705669539bde14a67bda3d1f",
+  "development_review_completed": true,
+  "development_review_path": "reports/performance_gaps_v11/FINAL_DEV_FREEZE_REVIEW_ZH.md",
+  "development_review_sha256": "1b130316460abd38e74a8354c52736c6849a59c200047e6f4e6357334136e12e",
+  "plan_path": "configs/paper_crax_payload/performance_gaps_v11_independent_eval.json",
+  "plan_sha256": "fc98c39a8416243714e2c745fefaeac7f8f7e2c62d6b9ce325dd2a9f3afb7f6d",
+  "episodes_per_condition": 100,
+  "selection_after_independent": false,
+  "cases": [
+    {
+      "name": "piper_reach-control-v11-100k",
+      "line": "piper_reach",
+      "arm": "control",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control/full_new_100000.pt",
+      "checkpoint_sha256": "c6b20ec0335e982d0128e5e2209c49be719d09107029a7704a533e3a70e9b69d",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control/receipt.json",
+      "training_receipt_sha256": "606847d8ed93ad22202e2f4eba519c7103d254eb1f07073bb0edd6cfeaf607a3"
+    },
+    {
+      "name": "piper_reach-p5-v11-100k",
+      "line": "piper_reach",
+      "arm": "p5",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5/full_new_100000.pt",
+      "checkpoint_sha256": "66d125acebc803d9f7b7983b6144db9ba50bc8b032231c7e6fd41baa0c224b26",
+      "training_receipt": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5/receipt.json",
+      "training_receipt_sha256": "22549861a31a557d6f627790763a05bf4e3dd180b7cb07787ac5160b55a77f42"
+    },
+    {
+      "name": "piper_payload-cover-control-v11-100k",
+      "line": "piper_payload",
+      "arm": "control",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/runs/piper_payload_cover-control/full_new_100000.pt",
+      "checkpoint_sha256": "d5cac038971ae35a41e9f8e714026d88e6a9a89c60f6c5480cce28076df49e3b",
+      "training_receipt": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/runs/piper_payload_cover-control/receipt.json",
+      "training_receipt_sha256": "fc18c3f7f37cf0fa303ffd95fdba743d1fe1001ee851139c074caf96874ea3d4",
+      "training_plan_path": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/source-optional-cover/configs/paper_crax_payload/performance_gaps_v11_optional_payload_cover.json",
+      "training_plan_sha256": "dadfce5ce46ef8887bff25575d8a033c08099fa2a6937e712cc6be099e45745c"
+    },
+    {
+      "name": "piper_payload-cover-p5-v11-100k",
+      "line": "piper_payload",
+      "arm": "p5",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/runs/piper_payload_cover-p5/full_new_100000.pt",
+      "checkpoint_sha256": "b66a28c820277a5ec7bd1e0b693bcfba21297cac93f488f3e252a90d91d39d4b",
+      "training_receipt": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/runs/piper_payload_cover-p5/receipt.json",
+      "training_receipt_sha256": "c0c058c6294ad845527f97c99b5c870cf8b4d51f39a143bcb5ce4449841ef131",
+      "training_plan_path": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/source-optional-cover/configs/paper_crax_payload/performance_gaps_v11_optional_payload_cover.json",
+      "training_plan_sha256": "dadfce5ce46ef8887bff25575d8a033c08099fa2a6937e712cc6be099e45745c"
+    },
+    {
+      "name": "panda_payload-control-v11-100k",
+      "line": "panda_payload",
+      "arm": "control",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-control/full_new_100000.pt",
+      "checkpoint_sha256": "f8ac82834ebe99f9a5fa4852160cea6a4032f045783752027021314e475e87c5",
+      "training_receipt": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-control/receipt.json",
+      "training_receipt_sha256": "3da243aef29a4bf41c16df1e078edcdf5380ba46fae7c04352c4e006e32c040b"
+    },
+    {
+      "name": "panda_payload-p5-v11-100k",
+      "line": "panda_payload",
+      "arm": "p5",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-p5/full_new_100000.pt",
+      "checkpoint_sha256": "42d76cb25638ff703ecf013f0955352c841911728507ea481b397aee7a7c0195",
+      "training_receipt": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-p5/receipt.json",
+      "training_receipt_sha256": "d586329ffddcfa72a8fa287534d0b49305dfe679d591d1250c8f89a8e3c02cc7"
+    },
+    {
+      "name": "piper_payload-iso60k-reference",
+      "line": "piper_payload",
+      "historical_reference": true,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+    "checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2"
+    }
+  ],
+  "historical_reference_added": true
+}

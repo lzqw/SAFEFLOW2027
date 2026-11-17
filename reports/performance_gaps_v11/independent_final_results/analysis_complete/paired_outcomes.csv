@@ -1,0 +1,15 @@
+line,p5_case,comparison_case,condition,common_admitted,p5_only_safe,comparison_only_safe,both_safe,neither_safe,p5_violations,comparison_violations,p5_capped_seconds,comparison_capped_seconds,p5_capped_time_reduction,speed_reference_only,common_action_seeds
+piper_reach,piper_reach-p5-v11-100k,piper_reach-control-v11-100k,nominal,100,0,0,100,0,0,0,1.2028,1.1508,-0.045185957594716664,False,True
+piper_reach,piper_reach-p5-v11-100k,piper_reach-control-v11-100k,radius_0575,100,6,2,87,5,7,11,1.4228,1.488,0.04381720430107516,False,True
+piper_reach,piper_reach-p5-v11-100k,piper_reach-control-v11-100k,radius_060,100,16,3,68,13,16,29,1.6736,1.994,0.1606820461384153,False,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-iso60k-reference,nominal,100,16,0,84,0,0,0,1.3896,2.7412,0.4930687290237853,True,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-iso60k-reference,radius_055,100,17,11,63,9,20,1,1.9144,2.9044,0.3408621402010742,True,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-iso60k-reference,execution_scale_085,100,20,1,79,0,1,0,1.6476,3.0296000000000003,0.4561658304726697,True,False
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-cover-control-v11-100k,nominal,100,0,0,100,0,0,0,1.3896,1.362,-0.02026431718061672,False,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-cover-control-v11-100k,radius_055,100,11,12,69,8,20,19,1.9144,1.87,-0.023743315508021334,False,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-cover-control-v11-100k,radius_0575,100,11,10,52,27,37,38,2.3536,2.3612,0.0032187023547348703,False,True
+piper_payload,piper_payload-cover-p5-v11-100k,piper_payload-cover-control-v11-100k,execution_scale_085,100,0,1,99,0,1,0,1.6476,1.5732,-0.04729214340198329,False,True
+panda_payload,panda_payload-p5-v11-100k,panda_payload-control-v11-100k,nominal,100,0,0,100,0,0,0,0.7656000000000001,0.7424000000000001,-0.03125,False,True
+panda_payload,panda_payload-p5-v11-100k,panda_payload-control-v11-100k,radius_070,100,3,0,97,0,0,3,0.7648,0.8408,0.09039010466222641,False,True
+panda_payload,panda_payload-p5-v11-100k,panda_payload-control-v11-100k,payload_wide,100,2,1,94,3,4,5,0.89,0.9036,0.015050907481186315,False,True
+panda_payload,panda_payload-p5-v11-100k,panda_payload-control-v11-100k,execution_scale_085,100,2,0,98,0,0,2,0.8848,0.9204,0.03867883528900473,False,True

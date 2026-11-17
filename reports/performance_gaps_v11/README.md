@@ -1,10 +1,12 @@
-# v11 原生任务配对适应：运行中结果入口
+# v11 原生任务配对适应：最终结果入口
 
-最新阶段：首批 600K 已完成，见 [完整首批审查](FIRST_STAGE_REVIEW_ZH.md)。Piper Payload 的 55mm 终点仍是主要短板；终止动作诊断支持优先增加 45/50/55mm 训练覆盖。
+**本轮已结束：800K 新训练，2500 个完整独立回合。** 详见 [最终报告](FINAL_RESULTS_ZH.md)，[独立结果表](independent_final_results/analysis_complete/condition_summary.csv) 和 [完整配对记录](independent_final_results/analysis_complete/paired_outcomes.csv)。
 
-当前已登记一组 Piper Payload 覆盖候选（control/P5 各新增100K，共200K），见 [候选登记](OPTIONAL_PAYLOAD_COVER_PREREGISTRATION_ZH.md)。候选运行中，尚未打开独立评测。
+P5 独立安全成功：Reach nominal/57.5/60mm 为100%/93%/84%；Panda nominal/70mm/wide/execution085 为100%/100%/96%/100%；Piper Payload覆盖候选 nominal/55mm/57.5mm/execution085 为100%/80%/63%/99%。Piper Payload几何安全目标未解决，保留负结果。
 
-首批精简曲线、训练代价和终止诊断已发布；原始快照和完整检查点另行本地/服务器归档，不上传 GitHub。
+首批600K和覆盖配对200K均完整收据确认，最后100K额度未使用。独立评测后不再训练或选模。全部原始轨迹和完整检查点在本地/服务器归档；GitHub仅含精简表、曲线、配置、源码和审查。下方是按时间保留的历史记录，其“运行中/尚未测试”描述只对应当时节点。
+
+![最终冻结模型的独立安全成功](independent_final_results/analysis_complete/final_safe_success.png)
 
 最新阶段：2026-11-17 14:29 UTC，[四条训练的首个固定20K节点](FIRST20K_REVIEW_ZH.md)已保留。
 Reach P5的57.5/60mm成功为80%/70%，但违规仍20%/30%；Panda加宽载荷P5仅90%，不掩盖负结果。

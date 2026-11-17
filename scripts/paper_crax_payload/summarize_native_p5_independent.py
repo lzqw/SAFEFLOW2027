@@ -40,10 +40,17 @@ def analyze(root, plan, freeze):
         if name not in expected or spec!=expected[name] or name in cases:
             raise ValueError('Frozen cases changed or duplicate result attempts were mixed')
         line=plan['lines'][spec['line']]
-        if (len(value['records'])!=100*len(line['conditions']) or any(
+        condition_names = freeze.get('case_condition_names', {}).get(name, [c['name'] for c in line['conditions']])
+        if (len(set(condition_names)) != len(condition_names)
+                or not set(condition_names).issubset({c['name'] for c in line['conditions']})):
+            raise ValueError('Frozen case condition subset is invalid')
+        if (len(value['records'])!=100*len(condition_names) or any(
                 r['case']!=name or r['line']!=spec['line'] for r in value['records'])):
             raise ValueError('Case identity or full registered episode cardinality differs')
-        for ci,condition in enumerate(line['conditions']):
+        registered_conditions = [c for c in line['conditions'] if c['name'] in condition_names]
+        if [c['name'] for c in registered_conditions] != condition_names:
+            raise ValueError('Frozen condition ordering differs from the registered plan')
+        for ci,condition in enumerate(registered_conditions):
             records=[r for r in value['records'] if r['condition']==condition['name']]
             if ({r['layout_seed'] for r in records} != set(range(line['independent_layout_seed_start'],
                     line['independent_layout_seed_start']+100)) or len(records)!=100):
@@ -61,7 +68,11 @@ def analyze(root, plan, freeze):
     summary=[]
     for name,value in cases.items():
         spec=value['case']
+        condition_names = freeze.get('case_condition_names', {}).get(name,
+            [c['name'] for c in plan['lines'][spec['line']]['conditions']])
         for condition in plan['lines'][spec['line']]['conditions']:
+            if condition['name'] not in condition_names:
+                continue
             attempted=[r for r in value['records'] if r['condition']==condition['name']]
             admitted=[r for r in attempted if r['admitted']]
             ns=sum(r['safe_success'] for r in admitted);nv=sum(r['violation'] for r in admitted)
@@ -91,6 +102,8 @@ def analyze(root, plan, freeze):
             for condition in line['conditions']:
                 a={r['layout_seed']:r for r in pv['records'] if r['condition']==condition['name']}
                 b={r['layout_seed']:r for r in ov['records'] if r['condition']==condition['name']}
+                if not a or not b:
+                    continue
                 keys=sorted(k for k in a.keys() & b.keys() if a[k]['admitted'] and b[k]['admitted'])
                 pc=mean(a[k]['time_to_goal_capped_seconds'] for k in keys) if keys else None
                 oc=mean(b[k]['time_to_goal_capped_seconds'] for k in keys) if keys else None
@@ -102,7 +115,8 @@ def analyze(root, plan, freeze):
                     p5_violations=sum(a[k]['violation'] for k in keys),comparison_violations=sum(b[k]['violation'] for k in keys),
                     p5_capped_seconds=pc,comparison_capped_seconds=oc,
                     p5_capped_time_reduction=1-pc/oc if oc else None,
-                    speed_reference_only=bool(ov['case'].get('historical_reference'))))
+                    speed_reference_only=bool(ov['case'].get('historical_reference')),
+                    common_action_seeds=all(a[k]['action_seed']==b[k]['action_seed'] for k in keys)))
     return cases,episodes,summary,paired,inputs
 
 

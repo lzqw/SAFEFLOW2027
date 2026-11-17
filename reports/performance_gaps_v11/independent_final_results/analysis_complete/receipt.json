@@ -1,0 +1,55 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "source_results": [
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/iso_reference/piper_payload-iso60k-reference.json",
+      "case": "piper_payload-iso60k-reference",
+      "source_full_result_sha256": "3718a662d3b6c139c00b7e7f5b247f1840c830dfda1853c37ee5ca771c023719"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/panda_payload/panda_payload-control-v11-100k.json",
+      "case": "panda_payload-control-v11-100k",
+      "source_full_result_sha256": "a9610a79637d3277268b29ed0c0e1f6730ad0a33158974a22d2b90419c9a0654"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/panda_payload/panda_payload-p5-v11-100k.json",
+      "case": "panda_payload-p5-v11-100k",
+      "source_full_result_sha256": "d27c6236f4d92bf78e3061ff9e3644565aa8fccc7802541e8f483b49b31e3482"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/piper_payload/piper_payload-cover-control-v11-100k.json",
+      "case": "piper_payload-cover-control-v11-100k",
+      "source_full_result_sha256": "c9bc724b26304eb4ccc55ef4d2c65c0841d6e609f1f5b01ec1766470b47129d9"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/piper_payload/piper_payload-cover-p5-v11-100k.json",
+      "case": "piper_payload-cover-p5-v11-100k",
+      "source_full_result_sha256": "68f40b33f7bdf7594b4d74c41fa1559a17931b559066f5cfc5623a1f18484197"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/reach/piper_reach-control-v11-100k.json",
+      "case": "piper_reach-control-v11-100k",
+      "source_full_result_sha256": "dc6a9d9aa8fdc44a6722ef42d9e249e91315302182c492f5dbc5285435a20a73"
+    },
+    {
+      "path": "reports/performance_gaps_v11/independent_final_results/raw/reach/piper_reach-p5-v11-100k.json",
+      "case": "piper_reach-p5-v11-100k",
+      "source_full_result_sha256": "f15d67f26d94f8b8b19fd606daf3dbc12c99d74e4ca92d3c6cf2f2d5a36e7663"
+    }
+  ],
+  "complete_frozen_case_names": [
+    "panda_payload-control-v11-100k",
+    "panda_payload-p5-v11-100k",
+    "piper_payload-cover-control-v11-100k",
+    "piper_payload-cover-p5-v11-100k",
+    "piper_payload-iso60k-reference",
+    "piper_reach-control-v11-100k",
+    "piper_reach-p5-v11-100k"
+  ],
+  "missing_frozen_cases": [],
+  "attempted_episodes": 2500,
+  "admitted_episodes": 2500,
+  "distinct_layout_seeds": 300,
+  "interpretation": "Descriptive paired layouts; Wilson intervals exclude training-seed uncertainty; no equivalence or model reselection"
+}
