@@ -133,10 +133,17 @@ def main():
     p.add_argument('--source-commit',required=True)
     args=p.parse_args();torch.set_num_threads(1)
     plan=json.loads(args.plan.read_text());freeze=json.loads(args.freeze.read_text())
-    if (freeze['protocol']!='v11_once_only_frozen_native_task_independent'
+    allowed_protocols = {
+        'v11_once_only_frozen_native_task_independent',
+        'v11_once_only_frozen_native_task_independent_amended_v1'}
+    if (freeze['protocol'] not in allowed_protocols
             or not freeze['development_review_completed'] or freeze['plan_sha256']!=sha256(args.plan)
             or freeze['episodes_per_condition']!=100 or freeze['selection_after_independent']):
         raise ValueError('Require a completed global DEV review and exact model/plan freeze')
+    if freeze['protocol'].endswith('_amended_v1'):
+        amendment = args.freeze.parent/freeze['engineering_amendment_path']
+        if sha256(amendment) != freeze['engineering_amendment_sha256']:
+            raise ValueError('The engineering amendment changed')
     review=Path(freeze['development_review_path'])
     if not review.is_absolute():
         review=args.freeze.parent/review
