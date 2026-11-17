@@ -1,0 +1,18 @@
+{
+  "protocol": "v7_once_after_all_six_fixed250K_identities_frozen",
+  "layout_seed_start": 9417027,
+  "episodes_per_condition_per_policy": 100,
+  "action_seed": 9517027,
+  "conditions": [
+    {"name": "nominal", "radius": 0.06, "action_scale": 1.0},
+    {"name": "radius065", "radius": 0.065, "action_scale": 1.0},
+    {"name": "execution085", "radius": 0.06, "action_scale": 0.85}
+  ],
+  "policy_count": 6,
+  "training_seeds": [2031, 2032],
+  "fixed_absolute_policy_steps": 250000,
+  "total_episodes": 1800,
+  "candidate_reselection": false,
+  "known_scale_compensation": false,
+  "status": "preregistered_not_executed_no_environment_instantiated"
+}

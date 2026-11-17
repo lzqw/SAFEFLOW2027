@@ -1,0 +1,74 @@
+{
+  "version": "SafeReach-RelativeLayout-v3",
+  "obstacle": true,
+  "horizon": 100,
+  "substeps": 20,
+  "displacement_scale": 0.025,
+  "safety_distance": 0.015,
+  "success_distance": 0.035,
+  "obstacle_radius": 0.06,
+  "progress_scale": 5.0,
+  "success_bonus": 10.0,
+  "failure_penalty": 10.0,
+  "timeout_penalty": 2.0,
+  "step_penalty": 0.01,
+  "randomize_layout": true,
+  "control_dt": 0.04,
+  "protected_links": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "observations": [
+    "q/pi",
+    "qdot/4",
+    "ee_world_xyz",
+    "goal_world_xyz",
+    "obstacle_world_xyz",
+    "obstacle_radius",
+    "remaining_time"
+  ],
+  "relative_layout_distribution": {
+    "start_center": [
+      -0.25,
+      -0.17,
+      0.25
+    ],
+    "start_jitter_halfwidth": [
+      0.04,
+      0.02,
+      0.03
+    ],
+    "goal_center": [
+      -0.25,
+      0.17,
+      0.25
+    ],
+    "goal_jitter_halfwidth": [
+      0.05,
+      0.02,
+      0.03
+    ],
+    "obstacle_center": [
+      -0.25,
+      0.0,
+      0.25
+    ],
+    "obstacle_jitter_halfwidth": [
+      0.045,
+      0.015,
+      0.025
+    ],
+    "sampling": "independent uniform coordinates and independent start/goal/obstacle draws; no shared translation",
+    "rejection": "same initial protected-link clearance plus a kinematic safe/reachable goal; no policy-return selection"
+  },
+  "algorithm_change": false,
+  "reward_or_cost_change": false
+}

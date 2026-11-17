@@ -1,0 +1,234 @@
+{
+  "status": "completed",
+  "method_freeze_sha256": "354feeb89db6723f1de730430e200ba6e04e31d3d0335a85c933cbc5a5928553",
+  "all_six_methods_and_seeds_retained": true,
+  "development_milestones": 5,
+  "development_episodes": 2700,
+  "independent_episodes": 1800,
+  "independent_distinct_layouts": 100,
+  "training_progress_records": 1500,
+  "training_intervals": 36,
+  "all_negative_outcomes_retained": true,
+  "candidate_reselection": false,
+  "new_training_transitions": 0,
+  "new_simulation_controls": 0,
+  "github_uploads": 0,
+  "inputs": [
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/evaluation_50000.json",
+      "sha256": "cb400e4014f24db549ee0b683740d3dba8e8860a83fc23c5919761b3098a3cd8"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/evaluation_100000.json",
+      "sha256": "c05fb607bef3ef84dce00a92853896751058105e9e1767710d9f5115c17ffa21"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/evaluation_150000.json",
+      "sha256": "09834d2b541d3588c5417cacbf82e529a61b7d046e1c55e17c9f6f9f94e43e6c"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/evaluation_200000.json",
+      "sha256": "4a916c7807ff592156b9c692870a86cafa16ece063e060cbad655542fd3930dc"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/evaluation_250000.json",
+      "sha256": "287b21721d94f7f18cc85fbeeaf5b5f7fab3aa669eb1484f933bf0ced5919ea4"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/iso-seed2031.json",
+      "sha256": "6e8113526473a46655479bca678ba72396fb5e843601dfe4ad02316ea419a726"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/receipt.json",
+      "sha256": "17de20d55804eb0b48cd1c13fbf8e9a364c98bdf2e3350905f5fd39f364df020"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/progress.jsonl",
+      "sha256": "38ad8add271331673c8303fb320269251da72e84e4e96366124b7171b14a7d76"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/run_config.json",
+      "sha256": "29a9f875c9a98982007210c75f6e33931c04677ca0a600905e5fca4c6fded345"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/evaluation_50000.json",
+      "sha256": "73d84ffa009d1886498ee24e6fdb2aa084dedd06af258f1968feccacd77ae95d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/evaluation_100000.json",
+      "sha256": "1c5db384eac99ad138002173314d1ef402c91eb91d38bac1718a61eb59e73a16"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/evaluation_150000.json",
+      "sha256": "ce4dcf437fc285a5c209b40f6b8606717924ddf45b369c3d80b303c5131e7356"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/evaluation_200000.json",
+      "sha256": "7d045718ede0b384975ab6fdcb993244d9c1df4385f04959abe055116d99ac07"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/evaluation_250000.json",
+      "sha256": "a86bdf41ff69a2d1dad7004d275912375a07c4d1e7a0d2f44ea81f416c0e536f"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/metric-only-seed2031.json",
+      "sha256": "af1fb3b0715acf7a3a85032ffcd96579894dd4be0fc2fb0fc19d0057e6749528"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/receipt.json",
+      "sha256": "8581fc12c17fcba986dd83955597a1ee7f151e1aba44de9c8277d33277cc8a13"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/progress.jsonl",
+      "sha256": "43b6f4df144094be830a858b86c0dbb643849310d4562fb376978f98455d661c"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/run_config.json",
+      "sha256": "8ae2702f6d9e39e1799bc311ba42832a0c06e73f1ee6ab4426879785bb5f6c95"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/evaluation_50000.json",
+      "sha256": "3de1d3450dfc43f24c8521e94fb2b655730184c3acfdb629e6b5db6343c31d7b"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/evaluation_100000.json",
+      "sha256": "ffd7ea8ca2d6b24bfbe6d993f18145278eee6d0547bdba944bc9d79f70f9e276"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/evaluation_150000.json",
+      "sha256": "b745f85577fb6f0687ed0571eafeef47436477138a91f9219ec23b932f75d1f3"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/evaluation_200000.json",
+      "sha256": "e68e3882db58da34abd5cfea2a8ef96e1cc127beffe4248315a1d791c97b9874"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/evaluation_250000.json",
+      "sha256": "694e5a6546d2d89d90fa744e3214b41e687dca1badf8ba2a49a4d9c4587cee09"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/selected-version-seed2031.json",
+      "sha256": "152f9a36a76630775eff71a2f10d421110928530b9711d34139368a6b7333c7a"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/receipt.json",
+      "sha256": "34e10aca4d3f5e7e008891610f3c26037863e21c8c3dc0497dcc52f35bed209d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/progress.jsonl",
+      "sha256": "77722fb9a0393618b73fe2d250d5a11f4941794c3f8565373c4997b618d0169f"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/run_config.json",
+      "sha256": "25b5f1269480d7f096f8331870749d850bdc8e2ba16954cb8d1f69d014e96f0f"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/evaluation_50000.json",
+      "sha256": "ed9e2728b8a77f847023b6c673ff330069059ec296411000088b64fdac00fdec"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/evaluation_100000.json",
+      "sha256": "f05ee09a4e3e6c8336bbb9f825dea1982a60da3ec214250993cf4a5c6215a80f"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/evaluation_150000.json",
+      "sha256": "af00623e5f0905971555d3581de9a5b892e4614672ab263082476f9fa2f98818"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/evaluation_200000.json",
+      "sha256": "2c251ca0c91b535ad87a85c9eddb353b5d2d4ca877ad650dd0abc4ad68b4a1f2"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/evaluation_250000.json",
+      "sha256": "80432c716485b69fad336699d631b53d4ac65166d90e0253941b0f4a18a29b9d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/iso-seed2032.json",
+      "sha256": "cdecb51c6d66473455e6bf4a7477de27b20dd23b9c58fc962d73931fe738f36b"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/receipt.json",
+      "sha256": "0a97b30bd7d1913d22f84b2e280c13656de653f31870dd9297d9ae177c01cc60"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/progress.jsonl",
+      "sha256": "f6139f835703cf8095c7b15dd626919cc981c4fe9bb5ae2304a9830e5b74b9de"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/run_config.json",
+      "sha256": "1274a8c0907e390df42396dcd1f516f80ea9defbe33149d5afc3b4a662bb34da"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/evaluation_50000.json",
+      "sha256": "aef6aea712fe160e2621501e3319d2a0366dd45ed6f724492d972d81e8c57ad3"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/evaluation_100000.json",
+      "sha256": "8ac49c54290d1972303d20f68ad9e767b09dbbcf750e91e8250bdac6a872f539"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/evaluation_150000.json",
+      "sha256": "61a99bc18cb5cc7c587aa3a427a3d3d7496e5566ff747cd0b89dee79652a4652"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/evaluation_200000.json",
+      "sha256": "efc05b66377778738e8301ac1e10eb2d889c0ed5b13e98e9fe3280e1e091cf36"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/evaluation_250000.json",
+      "sha256": "4c84508fb4d12aa626dc9321dd4b975d2ba0d9be40c319318ccc32c05366963d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/metric-only-seed2032.json",
+      "sha256": "4e0014728402c825db6d41970d6f4bf342601815a34de12f2ba869934024f9e5"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/receipt.json",
+      "sha256": "8b6725f15781dac0102cd6bf61dd96a7fe7323cba1d9db05ced2a9826ae8529e"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/progress.jsonl",
+      "sha256": "5269c709bc915d870c5be29481b9d94f6a8310139cfd8ca0c5b17d508e3e22aa"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/run_config.json",
+      "sha256": "4f228a932405f30e5354bf60bb87a715430def4c1a40594db87080d021962d87"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/evaluation_50000.json",
+      "sha256": "289fa4c6e0e412e7c5fad31ab1ea941598a57a42fa0e5dcf7e65c969bc3a0c59"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/evaluation_100000.json",
+      "sha256": "b278656105a7da53f1bfe65623bd7f474a320d3dcc274ba51bbac6a6b3ebb93a"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/evaluation_150000.json",
+      "sha256": "5012b0adc5170a9440d41d66a12d9009e71c6b2848be2206db19dfc3afe134d8"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/evaluation_200000.json",
+      "sha256": "071a6d5f9d53eb7129e1b966eb6da8da070bc79229067e0b6837698038543c4a"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/evaluation_250000.json",
+      "sha256": "e1b6c1b76485c306d86c79a58fad7bbd489235283c1cc71dfa354b864e967782"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/selected-version-seed2032.json",
+      "sha256": "b1cdfbff86bebe45b31d667a04e711e33a35d60c8c64ef5e4d9fe73ae4064b15"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/receipt.json",
+      "sha256": "637976421f3a2630d3f02b3640de0b8991c4f0224e6accd065d7955c5827b880"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/progress.jsonl",
+      "sha256": "486782e44d31fc1531ce21a34e5c94e20b56a6943c52f90a3325688bca2ad4be"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/run_config.json",
+      "sha256": "a09a0d21bf4718c85c7e90b537e4a526de89659da2e118b053fc96a0ed43c6aa"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "status": "completed_requirements_verified",
+  "time_utc": "2026-11-17T10:59:42.962486+00:00",
+  "method_freeze_sha256": "354feeb89db6723f1de730430e200ba6e04e31d3d0335a85c933cbc5a5928553",
+  "source_commit": "019833bee9164578ca2917afa308cf2c552dbac6",
+  "fresh_training_seeds": [
+    2031,
+    2032
+  ],
+  "full_fresh_runs": 6,
+  "new_training_transitions": 1500000,
+  "development_episodes": 2700,
+  "development_native_controls": 57486,
+  "independent_episodes": 1800,
+  "independent_native_controls": 32609,
+  "distinct_independent_layouts": 100,
+  "all_fixed250K_policies_frozen_before_test": true,
+  "all_conditions_failures_and_curves_retained": true,
+  "paired_initial_networks_equal_per_seed": true,
+  "independent_results_not_used_for_reselection": true,
+  "selected_both_seeds_enter_original_joint_development_region": [
+    {
+      "seed": 2031,
+      "development_successes": 89,
+      "execution085_successes": 29,
+      "training_successes": 8271,
+      "training_violations": 310,
+      "training_timeouts": 1
+    },
+    {
+      "seed": 2032,
+      "development_successes": 89,
+      "execution085_successes": 29,
+      "training_successes": 8378,
+      "training_violations": 200,
+      "training_timeouts": 0
+    }
+  ],
+  "all_six_native_queue_exit_codes_zero": true,
+  "automatic_retries": 0,
+  "new_training_or_simulation_from_audit": 0,
+  "github_uploads": 0,
+  "emails": 0,
+  "physical_robot_interactions": 0,
+  "limitation": "two training seeds; no statistical equivalence or universal superiority claim",
+  "artifacts": [
+    {
+      "path": "FINAL_INTERPRETATION_ZH.md",
+      "sha256": "e6f4ca67d7d183379663dab60546f4feb28de0c86830df12c6104d114ff76bed"
+    },
+    {
+      "path": "confirmation-summary/FINAL_CONFIRMATION_ZH.md",
+      "sha256": "6f44353edbfc427b7750f545a11c1e1513f7491a2dd17dc68011cf1b405c1261"
+    },
+    {
+      "path": "complete-curve-analysis/complete_learning_curves.png",
+      "sha256": "4711ae8f9c39c0f5571501edf61b8fd52db8d9919ab54c8661adebf46743330c"
+    },
+    {
+      "path": "complete-curve-analysis/all_independent_episodes.csv",
+      "sha256": "3a564867101f8843b03146ddbb1fd5f29f7c2ec69c9dc699502f7c538e77cdd2"
+    },
+    {
+      "path": "complete-curve-analysis/paired_independent_discordance.csv",
+      "sha256": "39ed82e2bb379da4bb3d44acc02b723d278eb7122827bffef6c1174cc24fdbec"
+    },
+    {
+      "path": "complete-curve-analysis/training_intervals.csv",
+      "sha256": "f6ddc476eb76d1c6d6cd22e03a51120cf76823ae8ce8837b0dc92e882829da2a"
+    },
+    {
+      "path": "complete-curve-analysis/all_training_progress.csv",
+      "sha256": "440f2be1f623c50ea578c15682e3959bdebebc3c3cef314a479032cd28e9ee5c"
+    }
+  ]
+}

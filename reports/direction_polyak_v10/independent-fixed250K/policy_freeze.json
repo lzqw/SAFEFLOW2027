@@ -1,0 +1,90 @@
+{
+  "protocol": "v10_all_six_fixed250K_target_policy_identity_freeze",
+  "configuration_sha256": "3398bea67a87126c492c7cb6a79e4efb77152bad672afa3d192eecd0b4adea00",
+  "method_freeze_sha256": "354feeb89db6723f1de730430e200ba6e04e31d3d0335a85c933cbc5a5928553",
+  "policies": [
+    {
+      "arm": {
+        "name": "iso",
+        "component": "iso"
+      },
+      "training_seed": 2031,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/iso-seed2031",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/iso-seed2031/full_250000.pt",
+      "checkpoint_sha256": "9ed963de651a8cff9e082f234553f5d49b8d348ba7e9e52ffeca5134f8a00f40",
+      "receipt_sha256": "17de20d55804eb0b48cd1c13fbf8e9a364c98bdf2e3350905f5fd39f364df020",
+      "manifest_sha256": "29a9f875c9a98982007210c75f6e33931c04677ca0a600905e5fca4c6fded345"
+    },
+    {
+      "arm": {
+        "name": "metric-only",
+        "component": "metric_only"
+      },
+      "training_seed": 2031,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/metric-only-seed2031",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/metric-only-seed2031/full_250000.pt",
+      "checkpoint_sha256": "089ccec8f16d9253c0e1a7584bbffeb665b23887f48aa5ff854ec653b6e97850",
+      "receipt_sha256": "8581fc12c17fcba986dd83955597a1ee7f151e1aba44de9c8277d33277cc8a13",
+      "manifest_sha256": "8ae2702f6d9e39e1799bc311ba42832a0c06e73f1ee6ab4426879785bb5f6c95"
+    },
+    {
+      "arm": {
+        "name": "selected-version",
+        "component": "selected"
+      },
+      "training_seed": 2031,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/selected-version-seed2031",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/selected-version-seed2031/full_250000.pt",
+      "checkpoint_sha256": "cab38c7f2cddf105967fa925be40c6a9aec1d4ae4c327e47065bc69e26b73ad2",
+      "receipt_sha256": "34e10aca4d3f5e7e008891610f3c26037863e21c8c3dc0497dcc52f35bed209d",
+      "manifest_sha256": "25b5f1269480d7f096f8331870749d850bdc8e2ba16954cb8d1f69d014e96f0f"
+    },
+    {
+      "arm": {
+        "name": "iso",
+        "component": "iso"
+      },
+      "training_seed": 2032,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/iso-seed2032",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/iso-seed2032/full_250000.pt",
+      "checkpoint_sha256": "ff6b5ff66995b08143999246794315166ee7e6bd6015c2ff9401ae5d043d8e3c",
+      "receipt_sha256": "0a97b30bd7d1913d22f84b2e280c13656de653f31870dd9297d9ae177c01cc60",
+      "manifest_sha256": "1274a8c0907e390df42396dcd1f516f80ea9defbe33149d5afc3b4a662bb34da"
+    },
+    {
+      "arm": {
+        "name": "metric-only",
+        "component": "metric_only"
+      },
+      "training_seed": 2032,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/metric-only-seed2032",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/metric-only-seed2032/full_250000.pt",
+      "checkpoint_sha256": "ca11023a879f0e769984f7862e91d6a70e1395000bbbbec1330c83fe4e87e7f9",
+      "receipt_sha256": "8b6725f15781dac0102cd6bf61dd96a7fe7323cba1d9db05ced2a9826ae8529e",
+      "manifest_sha256": "4f228a932405f30e5354bf60bb87a715430def4c1a40594db87080d021962d87"
+    },
+    {
+      "arm": {
+        "name": "selected-version",
+        "component": "selected"
+      },
+      "training_seed": 2032,
+      "directory": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/selected-version-seed2032",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_DIRECTION_POLYAK_V10/runs/selected-version-seed2032/full_250000.pt",
+      "checkpoint_sha256": "ce6883c123920587e060fc4510d833c1cc530dca698d4193092d864ad277d8d5",
+      "receipt_sha256": "637976421f3a2630d3f02b3640de0b8991c4f0224e6accd065d7955c5827b880",
+      "manifest_sha256": "a09a0d21bf4718c85c7e90b537e4a526de89659da2e118b053fc96a0ed43c6aa"
+    }
+  ],
+  "independent_protocol_sha256": "5b9dc2805e6ed02d8454bd5c7eee1a483607ee0593107cc7a2996b9a11d4b5d3",
+  "frozen_before_first_independent_environment": true,
+  "frozen_at_utc": "2026-11-17T10:51:41.400425+00:00",
+  "deployment": {
+    "actor": "sole_existing_target_actor",
+    "target_polyak": 0.001,
+    "training_behavior_actor": "online",
+    "same_rule_for_all_three_arms": true,
+    "weight_window_search": false,
+    "online_target_action_mixing": false
+  }
+}

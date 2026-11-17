@@ -1,4 +1,5 @@
 * text eol=lf
+reports/direction_polyak_v10/**/*.csv binary -eol
 *.bat eol=crlf
 *.ipynb linguist-detectable=false
 

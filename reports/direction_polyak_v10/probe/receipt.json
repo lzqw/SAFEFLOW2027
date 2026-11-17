@@ -1,0 +1,93 @@
+{
+  "status": "completed",
+  "registered_cases": 6,
+  "completed_cases": 6,
+  "plan_sha256": "3949851a415ccd7a15ea1f237affed33dc0cff17d62690d553f9e94bc1b2b460",
+  "source_commit": "95a34f28b00ca77eed2cee38286446c957470bdb",
+  "new_training_steps": 0,
+  "actual_new_simulation_controls": 9588,
+  "elapsed_seconds": 76.73083831100666,
+  "eligible_development_candidates": [
+    "A-fixed",
+    "P5-A-lr"
+  ],
+  "new_seed_confirmation_executed": false,
+  "independent_test_opened": false,
+  "all_cases_retained": true,
+  "no_best_checkpoint_or_window_selection": true,
+  "github_uploads": 0,
+  "inputs": [
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed/full_250000.pt",
+      "sha256": "8811fccf1bce402aa994156469edec205ed38e9ef1ce5308b755ab15d964fd5d"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed/receipt.json",
+      "sha256": "a5e34e6804928848a34e377d6f100c62078a8bfeeb2135148e4f11efbd9c051c"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/A-fixed/evaluation_250000.json",
+      "sha256": "566d7ad8f004adf628d1e35d5fce89a3f9f8fb21b50917f65b0d652480f76510"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/B-loss-anneal/full_250000.pt",
+      "sha256": "9cd38d4674c3c267f9de690759a911b0a2c25b5ca91546fd4c0649d144ac294f"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/B-loss-anneal/receipt.json",
+      "sha256": "6de252f61d53e7c0e3bd2ae28c537f5e57caab354d9a1d74731f40235aa26e28"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V6/runs/B-loss-anneal/evaluation_250000.json",
+      "sha256": "bb81300f40f2d9ac7bc13c5cafeaaff3ef84eee578b0e7d2ca0bdffda5b042f7"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P5-A-lr/full_250000.pt",
+      "sha256": "55d5b7f53e7abe1880798761a3ee8972c779cfe0515574ead22b178508ba88d4"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P5-A-lr/receipt.json",
+      "sha256": "ab886f8a4b3c82f9bb87e8ab5bc2bb896de2b0a43fa98b5e273c0277c5c0279b"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P5-A-lr/evaluation_250000.json",
+      "sha256": "a66f82cb7a840ad8154deb4b0b0b7d2bcf0dabff4061e67cf49ccba64a625040"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P3-B-lr/full_250000.pt",
+      "sha256": "b5fd06446497d9df4d272a365140d204527abfc158ff7f289f4854f10576b1b0"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P3-B-lr/receipt.json",
+      "sha256": "e029fad472077ae2bbf2854ae9513049cc82b00bfcc70b5a756fe613a7810109"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V7/runs/P3-B-lr/evaluation_250000.json",
+      "sha256": "c3d5d6421200ee33004055e7e26eaa6b228883639de613d8bd90296351262593"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R1-P5-boundary-corrected/full_250000.pt",
+      "sha256": "f1b4febfc61df594005d1c0e643272cfa68486bfb86e49848ef1d13eaca59a8b"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R1-P5-boundary-corrected/receipt.json",
+      "sha256": "9e5bd2947a967e8320642a07876250dab4e553bdd9979f663936c4bf670c4209"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R1-P5-boundary-corrected/evaluation_250000.json",
+      "sha256": "b0ed3aeeea5dfe20fe7a9296d607f3c508d73adfabcfb09ee0e5d7d0848b24f2"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R2-P3-boundary-corrected/full_250000.pt",
+      "sha256": "410de1813826b9ced61f7108ea21eeebdf2e90ca0548ee7a6298a6a9bf3efc9c"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R2-P3-boundary-corrected/receipt.json",
+      "sha256": "6cc36ccc3bed2aef00bcf52295b2af31c0966c5ec7383285c3c1458fe063e913"
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_DIRECTION_V8/runs/R2-P3-boundary-corrected/evaluation_250000.json",
+      "sha256": "b44516dd44b9141931b8a0943a2d80e6f00d09b56dfbd8c3caff393e18d661cd"
+    }
+  ]
+}

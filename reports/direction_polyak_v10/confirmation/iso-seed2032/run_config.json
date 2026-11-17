@@ -1,0 +1,383 @@
+{
+  "format": "direction_confirmation_v10_full",
+  "configuration": {
+    "protocol": "direction_confirmation_v10_existing_target_two_fresh_seeds",
+    "status": "frozen_before_fresh_training_and_independent_evaluation",
+    "task_version": "SafeReach-RelativeLayout-v3",
+    "num_envs": 2,
+    "training_seeds": [
+      2031,
+      2032
+    ],
+    "steps_per_run": 250000,
+    "new_training_budget": 1500000,
+    "arms": [
+      {
+        "name": "iso",
+        "component": "iso"
+      },
+      {
+        "name": "metric-only",
+        "component": "metric_only"
+      },
+      {
+        "name": "selected-version",
+        "component": "selected"
+      }
+    ],
+    "shared_learner": {
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 256,
+      "replay_capacity": 150000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "actor_update_interval": 2,
+      "utd": 1,
+      "reward_updates_per_round": 2,
+      "target_samples": 4,
+      "reference_variance": 0.04,
+      "energy_target": 18.75,
+      "flow_steps": 4,
+      "width": 128
+    },
+    "geometry": {
+      "ema_tau": 0.005,
+      "ramp_start": 10000,
+      "ramp_end": 30000
+    },
+    "selected_candidate": {
+      "name": "P5-A-lr",
+      "parent": "v6-A150",
+      "direction": {
+        "start": 100000,
+        "end": 150000,
+        "floor": 1
+      },
+      "actor_lr": {
+        "start": 150000,
+        "end": 200000,
+        "final": 3e-05
+      },
+      "rationale": "P3 lowered B violations418 to375 with89/90 but remained above344. Test the same late actorLR decay while keeping A's fixed strong direction constraint; only actorLR differs from A. P3 cross-hardware history prevents a pure causal claim."
+    },
+    "deployment": {
+      "actor": "sole_existing_target_actor",
+      "target_polyak": 0.001,
+      "training_behavior_actor": "online",
+      "same_rule_for_all_three_arms": true,
+      "weight_window_search": false,
+      "online_target_action_mixing": false
+    },
+    "evaluation": {
+      "milestones": [
+        50000,
+        100000,
+        150000,
+        200000,
+        250000
+      ],
+      "development_layout_seed_start": 7100027,
+      "development_episodes_each": 30,
+      "action_seed": 7200027,
+      "conditions": [
+        {
+          "name": "nominal",
+          "radius": 0.06,
+          "action_scale": 1
+        },
+        {
+          "name": "radius065",
+          "radius": 0.065,
+          "action_scale": 1
+        },
+        {
+          "name": "execution085",
+          "radius": 0.06,
+          "action_scale": 0.85
+        }
+      ],
+      "split": "development_only_even_at_final"
+    },
+    "development_selection": {
+      "candidate": "P5-A-lr",
+      "all_cases": [
+        {
+          "status": "completed",
+          "name": "A-fixed",
+          "training_successes": 8300,
+          "training_violations": 328,
+          "training_timeouts": 6,
+          "online_safe_successes": 88,
+          "online_violations": 2,
+          "online_timeouts": 0,
+          "online_execution085_successes": 28,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": true,
+          "online_actor_sha256": "e49a12cdd99a4566694b211edf8e758c188929f2db51af89c418f4f756d082d2",
+          "target_actor_sha256": "9bd0143d9e0cccc772f7b8cac3c4db076771eab9b3b80143314ac96ee60fa21f",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1592,
+          "original_training_source_commit": "33d31709"
+        },
+        {
+          "status": "completed",
+          "name": "B-loss-anneal",
+          "training_successes": 8351,
+          "training_violations": 418,
+          "training_timeouts": 2,
+          "online_safe_successes": 90,
+          "online_violations": 0,
+          "online_timeouts": 0,
+          "online_execution085_successes": 30,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": false,
+          "online_actor_sha256": "274a9857b316f77afacfe0797d8394bcb010385e3fdf51ba95a110d509c2e8a2",
+          "target_actor_sha256": "fa34201ddff4776785cf6068e62f7d8053dfb642548714717eede8792761f71c",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1588,
+          "original_training_source_commit": "33d31709"
+        },
+        {
+          "status": "completed",
+          "name": "P5-A-lr",
+          "training_successes": 8318,
+          "training_violations": 323,
+          "training_timeouts": 6,
+          "online_safe_successes": 87,
+          "online_violations": 3,
+          "online_timeouts": 0,
+          "online_execution085_successes": 28,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": true,
+          "online_actor_sha256": "5d7d87885465d2e4f960e5ffadf8a5f669304d63d0ddfcd609ac3e2b22e847fb",
+          "target_actor_sha256": "67f7b391f0a1db17f0bf47ba8a84ac6e5895c72f4221f4796345773695e39745",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1618,
+          "original_training_source_commit": "3386a9705cc23883ab33e2ba88167498a5f8d5e4"
+        },
+        {
+          "status": "completed",
+          "name": "P3-B-lr",
+          "training_successes": 8392,
+          "training_violations": 375,
+          "training_timeouts": 1,
+          "online_safe_successes": 89,
+          "online_violations": 1,
+          "online_timeouts": 0,
+          "online_execution085_successes": 29,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": false,
+          "online_actor_sha256": "eebd0f16e96dd08e3fb5a9f7209aff988e614edc73bdc79b25e8ae50bdb33c6d",
+          "target_actor_sha256": "133b2ade475fbf34991dad211d24c948e2ef43f698f7a8987b1fe9db382a0218",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1590,
+          "original_training_source_commit": "bfc959c6"
+        },
+        {
+          "status": "completed",
+          "name": "R1-P5-boundary",
+          "training_successes": 8308,
+          "training_violations": 311,
+          "training_timeouts": 7,
+          "online_safe_successes": 85,
+          "online_violations": 5,
+          "online_timeouts": 0,
+          "online_execution085_successes": 28,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": false,
+          "online_actor_sha256": "713c56bc82e42238d760c9e97bea9439d06885b27e7f4daacc455a926c37dba1",
+          "target_actor_sha256": "a10da8575be81a4870568e2dc7b8b749cefd3d1a6176d9edbd57378e7ae58447",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1603,
+          "original_training_source_commit": "6faef7eff8de2f42f15480148cfc5507fbf5ff94"
+        },
+        {
+          "status": "completed",
+          "name": "R2-P3-boundary",
+          "training_successes": 8381,
+          "training_violations": 383,
+          "training_timeouts": 1,
+          "online_safe_successes": 89,
+          "online_violations": 1,
+          "online_timeouts": 0,
+          "online_execution085_successes": 29,
+          "target_safe_successes": 88,
+          "target_violations": 2,
+          "target_timeouts": 0,
+          "target_execution085_successes": 29,
+          "joint_development_target_entered": false,
+          "online_actor_sha256": "e7cacb6aa15dddb104c37959a3905ea04d1f32134e855906a7565a654794c373",
+          "target_actor_sha256": "b20845dd756273f4dca72d6770423fafebd4966b68c939edd519cee16f41104a",
+          "new_training_steps": 0,
+          "actual_new_simulation_controls": 1597,
+          "original_training_source_commit": "6faef7eff8de2f42f15480148cfc5507fbf5ff94"
+        }
+      ],
+      "selected_metrics": {
+        "status": "completed",
+        "name": "P5-A-lr",
+        "training_successes": 8318,
+        "training_violations": 323,
+        "training_timeouts": 6,
+        "online_safe_successes": 87,
+        "online_violations": 3,
+        "online_timeouts": 0,
+        "online_execution085_successes": 28,
+        "target_safe_successes": 88,
+        "target_violations": 2,
+        "target_timeouts": 0,
+        "target_execution085_successes": 29,
+        "joint_development_target_entered": true,
+        "online_actor_sha256": "5d7d87885465d2e4f960e5ffadf8a5f669304d63d0ddfcd609ac3e2b22e847fb",
+        "target_actor_sha256": "67f7b391f0a1db17f0bf47ba8a84ac6e5895c72f4221f4796345773695e39745",
+        "new_training_steps": 0,
+        "actual_new_simulation_controls": 1618,
+        "original_training_source_commit": "3386a9705cc23883ab33e2ba88167498a5f8d5e4"
+      },
+      "independent_test_used": false,
+      "all_negative_candidates_retained": true,
+      "ranking": "max_final_success_then_execution_then_min_training_violations_then_max_training_success"
+    },
+    "evidence": [
+      {
+        "path": "configs/paper_crax_payload/direction_polyak_v10_probe.json",
+        "sha256": "3949851a415ccd7a15ea1f237affed33dc0cff17d62690d553f9e94bc1b2b460"
+      },
+      {
+        "path": "configs/paper_crax_payload/direction_optimization_v7_round2.json",
+        "sha256": "843e3c479bd6cc710eea7ed019e7595ead3d54ba6fda9a334f60a627ba28baa5"
+      },
+      {
+        "path": "reports/direction_polyak_v10/REVIEW_ZH.md",
+        "sha256": "e92e7f18cfbeb7c14b2982c472dfa635eb881fc81a8bcc881b2bf8712d015eaf"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/receipt.json",
+        "sha256": "196d7bcbfd84cfc0a9cb8a97d786edc7cc3504f9215dada7f69b6f089dae8221"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/registration.json",
+        "sha256": "15fd5a6a225e3f6befec25546d66c1c15cf2f0a46bf266fa7cfbdc59f23fc826"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/fixed_endpoint_comparison.csv",
+        "sha256": "d3d330f4d3c29646cc400b7d704d3e4a09e8f4408e7cbc01f1e90c26de103498"
+      },
+      {
+        "path": "reports/direction_optimization_v7/FINAL_DEVELOPMENT_REVIEW_ZH.md",
+        "sha256": "53e6deeed85e56f742db83b3a14c6b1ccdd5a0f87e5a3124c2b319a86f6bac55"
+      },
+      {
+        "path": "reports/direction_optimization_v7/final_campaign_review/receipt.json",
+        "sha256": "4ebac011995027abcca39c6f61c69a698a3712c26c3bbc0ba92d9c428cda1c7e"
+      },
+      {
+        "path": "reports/direction_optimization_v8/ROUND1_REVIEW_ZH.md",
+        "sha256": "5335c780ca75acb1788e18707b5e55749fa0d3e1e9720340b695511cfc086755"
+      },
+      {
+        "path": "reports/direction_optimization_v8/direct_baseline_review/receipt.json",
+        "sha256": "9049fb120581114347605af6c0f83e95c7b14332f8ef68edd6e77ca08af8e062"
+      },
+      {
+        "path": "reports/direction_focus_v9/ROUND2_REVIEW_ZH.md",
+        "sha256": "233ceefee874f703e951d84947b5dff7e002b3fe8e0e4dc57aa6c1e1e5ed8a02"
+      },
+      {
+        "path": "reports/direction_focus_v9/direct_baseline_review/receipt.json",
+        "sha256": "86ee6c382e19963cef734cd62bb2e9e677db00d858df44e094b005899c8b10e9"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/A-fixed/receipt.json",
+        "sha256": "89ad31535f9c6cef5f21e28b08d5439a8ed5082e0a25876d2aeade6558594e42"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/A-fixed/evaluation_250000.json",
+        "sha256": "3ebb18640f5a3b66868475f2efc005b89acd7bffcf3c90955706959b51b771f5"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/B-loss-anneal/receipt.json",
+        "sha256": "a2d5f2c01ff0ff7029728f7637673745caf32b7f6aac49681f8b2f997233bba3"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/B-loss-anneal/evaluation_250000.json",
+        "sha256": "3988ad3ad3cfecd7e5749eddd78ef8012b51a0bff7570f46254d65868f752e2c"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/P5-A-lr/receipt.json",
+        "sha256": "ff128c16db32355daca5d5a6133d8c6e63d1e15d8723ac6622206d1539456e4b"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/P5-A-lr/evaluation_250000.json",
+        "sha256": "80eb88a788fa9a78979498def64f5f70baaa5a92b3d03139782d71c0b8f00506"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/P3-B-lr/receipt.json",
+        "sha256": "3f1bf68dd951479ffdf2406647a940c470ce51db9167a43049ee519c66963972"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/P3-B-lr/evaluation_250000.json",
+        "sha256": "bd570743d92b86ad03268b93d2b5640ebf5156b65e2756b3c724f27c4b3bb0f8"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/R1-P5-boundary/receipt.json",
+        "sha256": "945391c6cca08a74fa7d1ccf1d7f5e34ec3efcaca1f91b76f214a065eff1e43b"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/R1-P5-boundary/evaluation_250000.json",
+        "sha256": "afbaf10ff26d6c2cb340e7050a9c8880f4fd1c71c48924da7356708b8585289c"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/R2-P3-boundary/receipt.json",
+        "sha256": "57593f4c8d5a3666d5badc80f3d2a6c9560d5504e7788aa8403e06d8b4cd2f66"
+      },
+      {
+        "path": "reports/direction_polyak_v10/probe/R2-P3-boundary/evaluation_250000.json",
+        "sha256": "b54b0743a5e6c322ae2f67db68f8984255814ddbe6d3346773d2d34d184cf9b7"
+      }
+    ],
+    "independent_protocol_sha256": "5b9dc2805e6ed02d8454bd5c7eee1a483607ee0593107cc7a2996b9a11d4b5d3",
+    "independent_test_status": "not_opened_require_all_six_fixed250K_checkpoint_hashes",
+    "scientific_early_stopping": false,
+    "automatic_failed_run_retry": false,
+    "physical_robot_interactions": 0,
+    "github_uploads": false,
+    "emails": false,
+    "freeze_sha256": "354feeb89db6723f1de730430e200ba6e04e31d3d0335a85c933cbc5a5928553"
+  },
+  "arm": {
+    "name": "iso",
+    "component": "iso"
+  },
+  "source_commit": "019833bee9164578ca2917afa308cf2c552dbac6",
+  "config_sha256": "3398bea67a87126c492c7cb6a79e4efb77152bad672afa3d192eecd0b4adea00",
+  "native_pid": 2216073,
+  "host": "447",
+  "device": "cuda:0",
+  "training_seed": 2032,
+  "initial_network_sha256": "0340688880a8f782d2ca4d80d1ce06842aeaaa35562697015bcc9cbbb185ab3a",
+  "target_transitions": 250000,
+  "engineering_only": false,
+  "cuda_allocator_fraction_cap": 0.1,
+  "torch": "2.7.1+cu118",
+  "numpy": "1.24.3",
+  "evaluation_scope": "development_only_including_final",
+  "automatic_retry": false,
+  "physical_robot_interactions": 0
+}

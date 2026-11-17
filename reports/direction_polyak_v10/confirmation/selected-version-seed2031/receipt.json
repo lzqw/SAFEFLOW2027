@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "arm": {
+    "name": "selected-version",
+    "component": "selected"
+  },
+  "steps": 250000,
+  "engineering_only": false,
+  "training_seed": 2031,
+  "initial_network_sha256": "58b2a3cd17ee3858ce9d1489f49cfe719c02b45dce36cec6649e7f3af2356beb",
+  "source_commit": "019833bee9164578ca2917afa308cf2c552dbac6",
+  "episodes": 12006,
+  "training_violations": 669,
+  "safe_successes": 10962,
+  "safe_timeouts": 375,
+  "learner_updates": 248000,
+  "actor_updates": 123500,
+  "reward_updates": 496000,
+  "elapsed_seconds": 8521.492454905005,
+  "evaluation_controls": 10856,
+  "evaluations": [
+    50000,
+    100000,
+    150000,
+    200000,
+    250000
+  ],
+  "independent_endpoint_test_executed": false,
+  "all_step_trajectories_retained": true,
+  "new_training_transitions": 250000,
+  "physical_robot_interactions": 0
+}

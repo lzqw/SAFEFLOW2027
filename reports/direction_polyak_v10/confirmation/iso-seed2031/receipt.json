@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "arm": {
+    "name": "iso",
+    "component": "iso"
+  },
+  "steps": 250000,
+  "engineering_only": false,
+  "training_seed": 2031,
+  "initial_network_sha256": "58b2a3cd17ee3858ce9d1489f49cfe719c02b45dce36cec6649e7f3af2356beb",
+  "source_commit": "019833bee9164578ca2917afa308cf2c552dbac6",
+  "episodes": 12089,
+  "training_violations": 816,
+  "safe_successes": 10898,
+  "safe_timeouts": 375,
+  "learner_updates": 248000,
+  "actor_updates": 123500,
+  "reward_updates": 496000,
+  "elapsed_seconds": 8439.758050195,
+  "evaluation_controls": 9047,
+  "evaluations": [
+    50000,
+    100000,
+    150000,
+    200000,
+    250000
+  ],
+  "independent_endpoint_test_executed": false,
+  "all_step_trajectories_retained": true,
+  "new_training_transitions": 250000,
+  "physical_robot_interactions": 0
+}

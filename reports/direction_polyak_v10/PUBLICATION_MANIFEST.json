@@ -1,0 +1,239 @@
+{
+  "publication": "key_results_only_user_authorized_20261117",
+  "branch": "results/v10-confirmation-20261117",
+  "local_complete_archive_commit": "cb4a99d3",
+  "new_training_steps": 0,
+  "new_evaluation_episodes": 0,
+  "files": [
+    {
+      "path": "reports/direction_polyak_v10/COMPLETION_AUDIT.json",
+      "bytes": 2680,
+      "sha256": "099d62337e232551397fa583da91fab4929b8c1377849f84486c8e779f0d2eaa"
+    },
+    {
+      "path": "reports/direction_polyak_v10/COMPLETION_AUDIT_ZH.md",
+      "bytes": 3519,
+      "sha256": "f22484ac226b3d4901f285d1d7196c4009ec3f17e34061c6c8dac2350ef23ca0"
+    },
+    {
+      "path": "reports/direction_polyak_v10/FINAL_INTERPRETATION_ZH.md",
+      "bytes": 6376,
+      "sha256": "e6f4ca67d7d183379663dab60546f4feb28de0c86830df12c6104d114ff76bed"
+    },
+    {
+      "path": "reports/direction_polyak_v10/PLAN_ZH.md",
+      "bytes": 1835,
+      "sha256": "c3f386f8a43743226dfcaa11c5a901b27aa52242c0198186f7e3c71660242593"
+    },
+    {
+      "path": "reports/direction_polyak_v10/README.md",
+      "bytes": 2657,
+      "sha256": "902ada3e91354544414b103357cc63d49e19af80914b05e1467cd53a6ce55816"
+    },
+    {
+      "path": "reports/direction_polyak_v10/REVIEW_ZH.md",
+      "bytes": 3792,
+      "sha256": "e92e7f18cfbeb7c14b2982c472dfa635eb881fc81a8bcc881b2bf8712d015eaf"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/all_independent_episodes.csv",
+      "bytes": 179004,
+      "sha256": "3a564867101f8843b03146ddbb1fd5f29f7c2ec69c9dc699502f7c538e77cdd2"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/all_training_progress.csv",
+      "bytes": 802267,
+      "sha256": "440f2be1f623c50ea578c15682e3959bdebebc3c3cef314a479032cd28e9ee5c"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/complete_development_curve.csv",
+      "bytes": 7390,
+      "sha256": "6184d8935d6602cc143436fc08da723eb9319ebaabf11bd8c38d561ac1a8d5b3"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/complete_learning_curves.png",
+      "bytes": 255402,
+      "sha256": "4711ae8f9c39c0f5571501edf61b8fd52db8d9919ab54c8661adebf46743330c"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/paired_independent_discordance.csv",
+      "bytes": 1755,
+      "sha256": "39ed82e2bb379da4bb3d44acc02b723d278eb7122827bffef6c1174cc24fdbec"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/receipt.json",
+      "bytes": 11031,
+      "sha256": "6f945ce428547da184af55fdb3fffd379112ce68436ff639d1c14f4949add1d9"
+    },
+    {
+      "path": "reports/direction_polyak_v10/complete-curve-analysis/training_intervals.csv",
+      "bytes": 2762,
+      "sha256": "f6ddc476eb76d1c6d6cd22e03a51120cf76823ae8ce8837b0dc92e882829da2a"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/receipt.json",
+      "bytes": 817,
+      "sha256": "17de20d55804eb0b48cd1c13fbf8e9a364c98bdf2e3350905f5fd39f364df020"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/run_config.json",
+      "bytes": 14841,
+      "sha256": "29a9f875c9a98982007210c75f6e33931c04677ca0a600905e5fca4c6fded345"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2031/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/receipt.json",
+      "bytes": 820,
+      "sha256": "0a97b30bd7d1913d22f84b2e280c13656de653f31870dd9297d9ae177c01cc60"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/run_config.json",
+      "bytes": 14841,
+      "sha256": "1274a8c0907e390df42396dcd1f516f80ea9defbe33149d5afc3b4a662bb34da"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/iso-seed2032/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/receipt.json",
+      "bytes": 837,
+      "sha256": "8581fc12c17fcba986dd83955597a1ee7f151e1aba44de9c8277d33277cc8a13"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/run_config.json",
+      "bytes": 14857,
+      "sha256": "8ae2702f6d9e39e1799bc311ba42832a0c06e73f1ee6ab4426879785bb5f6c95"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2031/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/receipt.json",
+      "bytes": 833,
+      "sha256": "8b6725f15781dac0102cd6bf61dd96a7fe7323cba1d9db05ced2a9826ae8529e"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/run_config.json",
+      "bytes": 14857,
+      "sha256": "4f228a932405f30e5354bf60bb87a715430def4c1a40594db87080d021962d87"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/metric-only-seed2032/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/probe-fixed250K/receipt.json",
+      "bytes": 4039,
+      "sha256": "196d7bcbfd84cfc0a9cb8a97d786edc7cc3504f9215dada7f69b6f089dae8221"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/receipt.json",
+      "bytes": 839,
+      "sha256": "34e10aca4d3f5e7e008891610f3c26037863e21c8c3dc0497dcc52f35bed209d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/run_config.json",
+      "bytes": 14859,
+      "sha256": "25b5f1269480d7f096f8331870749d850bdc8e2ba16954cb8d1f69d014e96f0f"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2031/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/receipt.json",
+      "bytes": 837,
+      "sha256": "637976421f3a2630d3f02b3640de0b8991c4f0224e6accd065d7955c5827b880"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/run_config.json",
+      "bytes": 14859,
+      "sha256": "a09a0d21bf4718c85c7e90b537e4a526de89659da2e118b053fc96a0ed43c6aa"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation/selected-version-seed2032/task_definition.json",
+      "bytes": 1423,
+      "sha256": "0b263374bce99a0f433ebdb9f0c0732343883801faaf318d3ba073fdadf36571"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/FINAL_CONFIRMATION_ZH.md",
+      "bytes": 1720,
+      "sha256": "6f44353edbfc427b7750f545a11c1e1513f7491a2dd17dc68011cf1b405c1261"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/independent_per_seed.csv",
+      "bytes": 1275,
+      "sha256": "bc8b86f7da8e5606e0ea40b9b9b8fc8b83e572e0a88ec1a357009d5d4c7a626b"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/independent_summary.csv",
+      "bytes": 1487,
+      "sha256": "ff93a80eb8af4d09ba0ef0be1c81ac714793c842087913bcd8f92657f8421d13"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/receipt.json",
+      "bytes": 2905,
+      "sha256": "8adf010dad0778e62b8e01e780cf5ab5601e38f46746125f9bdb33093f77b40d"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/training_per_seed.csv",
+      "bytes": 461,
+      "sha256": "18839fbf7b7e4cfb70873e8c1197c5fa8244e7beb70e115c33d3f729ed9ee3b5"
+    },
+    {
+      "path": "reports/direction_polyak_v10/confirmation-summary/training_summary.csv",
+      "bytes": 555,
+      "sha256": "feb1a4ddf98ffadeb93ffdc1cb28948acb87574b7276e71c8390f6b963ae1da7"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/policy_freeze.json",
+      "bytes": 4429,
+      "sha256": "aa5ab3b3f687e85aea49f54c90416ebe9f37c77d86da1b04a182dda2a48a6928"
+    },
+    {
+      "path": "reports/direction_polyak_v10/independent-fixed250K/receipt.json",
+      "bytes": 5653,
+      "sha256": "b9eef5bcfff0faaf89f7d88605bc3d8d1398c0f13242f60fe03a36266ed0af60"
+    },
+    {
+      "path": "reports/direction_polyak_v10/probe/fixed_endpoint_comparison.csv",
+      "bytes": 1382,
+      "sha256": "d3d330f4d3c29646cc400b7d704d3e4a09e8f4408e7cbc01f1e90c26de103498"
+    },
+    {
+      "path": "reports/direction_polyak_v10/probe/receipt.json",
+      "bytes": 4039,
+      "sha256": "196d7bcbfd84cfc0a9cb8a97d786edc7cc3504f9215dada7f69b6f089dae8221"
+    },
+    {
+      "path": "configs/paper_crax_payload/direction_confirmation_v10_frozen.json",
+      "bytes": 13390,
+      "sha256": "3398bea67a87126c492c7cb6a79e4efb77152bad672afa3d192eecd0b4adea00"
+    },
+    {
+      "path": "configs/paper_crax_payload/direction_v7_independent_protocol.json",
+      "bytes": 652,
+      "sha256": "5b9dc2805e6ed02d8454bd5c7eee1a483607ee0593107cc7a2996b9a11d4b5d3"
+    }
+  ],
+  "total_bytes": 1425092,
+  "excluded": [
+    "full checkpoints",
+    "replay",
+    "raw training trajectories",
+    "detailed per-control evaluation JSON",
+    "full unpublished local source history"
+  ],
+  "pull_request_changes": 0,
+  "email_sends": 0
+}
