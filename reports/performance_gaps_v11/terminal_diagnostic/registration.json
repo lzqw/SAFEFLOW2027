@@ -1,0 +1,60 @@
+{
+  "protocol": {
+    "protocol": "v11_final100k_prospective_terminal_diagnostic",
+    "episodes_per_case": 8,
+    "arms": [
+      "control",
+      "p5"
+    ],
+    "action_difference_epsilon": 0.05,
+    "selection": "all eight fixed new layouts, all terminal actions, no replacements",
+    "lines": {
+      "piper_reach": {
+        "radius_m": 0.06,
+        "layout_seed_start": 11713000,
+        "action_seed_start": 11714000
+      },
+      "piper_payload": {
+        "radius_m": 0.055,
+        "layout_seed_start": 11723000,
+        "action_seed_start": 11724000
+      }
+    },
+    "new_training_steps": 0,
+    "independent_test_used": false,
+    "physical_robot_interactions": 0
+  },
+  "cases": [
+    {
+      "line": "piper_reach",
+      "arm": "control",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control/full_new_100000.pt",
+      "checkpoint_sha256": "c6b20ec0335e982d0128e5e2209c49be719d09107029a7704a533e3a70e9b69d",
+      "receipt_sha256": "606847d8ed93ad22202e2f4eba519c7103d254eb1f07073bb0edd6cfeaf607a3"
+    },
+    {
+      "line": "piper_reach",
+      "arm": "p5",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5/full_new_100000.pt",
+      "checkpoint_sha256": "66d125acebc803d9f7b7983b6144db9ba50bc8b032231c7e6fd41baa0c224b26",
+      "receipt_sha256": "22549861a31a557d6f627790763a05bf4e3dd180b7cb07787ac5160b55a77f42"
+    },
+    {
+      "line": "piper_payload",
+      "arm": "control",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_payload-control/full_new_100000.pt",
+      "checkpoint_sha256": "96516b2926921ea8a37cfcbc525ab45cc50307862d772d659537e16a32f56e3a",
+      "receipt_sha256": "99192a1f8d8892abdbf5c3c696d4d709e062d5dd22543e9a71e91ca26c79819f"
+    },
+    {
+      "line": "piper_payload",
+      "arm": "p5",
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_payload-p5/full_new_100000.pt",
+      "checkpoint_sha256": "bc9384900e2e0cc0a795197ee9d0175b94c004224be32df2e9d399aea145a98a",
+      "receipt_sha256": "eeaaee6897ad6b8e1f4fa5b21bf6425274e211b1d02b4c18ae4f314c4eea669d"
+    }
+  ],
+  "source_commit": "8eb826bc",
+  "automatic_retry": false,
+  "independent_test_used": false
+}

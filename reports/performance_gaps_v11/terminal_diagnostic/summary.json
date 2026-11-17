@@ -1,0 +1,99 @@
+{
+  "status": "completed",
+  "summary": [
+    {
+      "line": "piper_reach",
+      "arm": "control",
+      "episodes": 8,
+      "successes": 7,
+      "violations": 1,
+      "false_safe_terminal_count": 1,
+      "unsafe_mean_margin_error_m": -0.00010681023860843741,
+      "unsafe_gradient_cosines": [
+        0.8674799487344529
+      ]
+    },
+    {
+      "line": "piper_reach",
+      "arm": "p5",
+      "episodes": 8,
+      "successes": 7,
+      "violations": 1,
+      "false_safe_terminal_count": 0,
+      "unsafe_mean_margin_error_m": 0.0005078817286822968,
+      "unsafe_gradient_cosines": [
+        0.9921555479933202
+      ]
+    },
+    {
+      "line": "piper_payload",
+      "arm": "control",
+      "episodes": 8,
+      "successes": 2,
+      "violations": 6,
+      "false_safe_terminal_count": 6,
+      "unsafe_mean_margin_error_m": -0.00993425363428932,
+      "unsafe_gradient_cosines": [
+        0.9707705998911259,
+        0.9233995071512247,
+        0.9975793607540375,
+        0.9958764746636859,
+        0.9827067454137032,
+        0.9370005009932153
+      ]
+    },
+    {
+      "line": "piper_payload",
+      "arm": "p5",
+      "episodes": 8,
+      "successes": 5,
+      "violations": 3,
+      "false_safe_terminal_count": 3,
+      "unsafe_mean_margin_error_m": -0.010439598703049847,
+      "unsafe_gradient_cosines": [
+        0.9779365844233164,
+        0.9715529413552499,
+        0.9897200169624
+      ]
+    }
+  ],
+  "work": [
+    {
+      "line": "piper_reach",
+      "arm": "control",
+      "simulation_controls": 270,
+      "physics_substeps": 5400,
+      "distance_calls": 5686,
+      "extra_closest_queries": 5686
+    },
+    {
+      "line": "piper_reach",
+      "arm": "p5",
+      "simulation_controls": 279,
+      "physics_substeps": 5580,
+      "distance_calls": 5875,
+      "extra_closest_queries": 5875
+    },
+    {
+      "line": "piper_payload",
+      "arm": "control",
+      "simulation_controls": 197,
+      "physics_substeps": 3940,
+      "distance_calls": 4153,
+      "extra_closest_queries": 8306
+    },
+    {
+      "line": "piper_payload",
+      "arm": "p5",
+      "simulation_controls": 263,
+      "physics_substeps": 5260,
+      "distance_calls": 5539,
+      "extra_closest_queries": 11078
+    }
+  ],
+  "new_training_steps": 0,
+  "physical_robot_interactions": 0,
+  "independent_test_used": false,
+  "all_simulation_controls": 1009,
+  "behavior_actions_selected_by_counterfactuals": false
+}
