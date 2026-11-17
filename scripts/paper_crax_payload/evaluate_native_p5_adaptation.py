@@ -137,11 +137,18 @@ def main():
     allowed_protocols = {
         'v11_once_only_frozen_native_task_independent',
         'v11_once_only_frozen_native_task_independent_amended_v1',
-        'v11_once_only_frozen_native_task_independent_amended_v2'}
+        'v11_once_only_frozen_native_task_independent_amended_v2',
+        'v11_historical_speed_reference_v1'}
+    historical_only = freeze['protocol'] == 'v11_historical_speed_reference_v1'
     if (freeze['protocol'] not in allowed_protocols
             or not freeze['development_review_completed'] or freeze['plan_sha256']!=sha256(args.plan)
             or freeze['episodes_per_condition']!=100 or freeze['selection_after_independent']):
         raise ValueError('Require a completed global DEV review and exact model/plan freeze')
+    if historical_only:
+        if (not freeze.get('historical_only') or len(freeze['cases']) != 1
+                or not freeze['cases'][0].get('historical_reference')
+                or freeze['cases'][0]['line'] != 'piper_payload'):
+            raise ValueError('Historical speed reference requires one registered Piper Iso case')
     if freeze['protocol'].endswith('_amended_v1'):
         amendment = args.freeze.parent/freeze['engineering_amendment_path']
         if sha256(amendment) != freeze['engineering_amendment_sha256']:
@@ -154,10 +161,11 @@ def main():
     cases=[c for c in freeze['cases'] if c['line']==args.line]
     if not cases or len({c['name'] for c in cases})!=len(cases):
         raise ValueError('Frozen case list missing or duplicated')
-    for line_name in plan['lines']:
-        pair=[c for c in freeze['cases'] if c['line']==line_name and not c.get('historical_reference')]
-        if len(pair)!=2 or {c['arm'] for c in pair}!=set(plan['arms']):
-            raise ValueError('Global freeze must retain one complete paired comparison per line')
+    if not historical_only:
+        for line_name in plan['lines']:
+            pair=[c for c in freeze['cases'] if c['line']==line_name and not c.get('historical_reference')]
+            if len(pair)!=2 or {c['arm'] for c in pair}!=set(plan['arms']):
+                raise ValueError('Global freeze must retain one complete paired comparison per line')
     for case in cases:
         if not case.get('historical_reference'):
             receipt_path=Path(case['training_receipt'])

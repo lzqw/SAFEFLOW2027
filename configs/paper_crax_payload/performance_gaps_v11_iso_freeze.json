@@ -1,0 +1,20 @@
+{
+  "protocol": "v11_historical_speed_reference_v1",
+  "historical_only": true,
+  "development_review_completed": true,
+  "development_review_path": "reports/performance_gaps_v11/FINAL_DEV_FREEZE_REVIEW_ZH.md",
+  "development_review_sha256": "1b130316460abd38e74a8354c52736c6849a59c200047e6f4e6357334136e12e",
+  "plan_path": "configs/paper_crax_payload/performance_gaps_v11_iso_eval.json",
+  "plan_sha256": "ac4258a1e7df5e20bb391d584f29d7518ae8556c66535c5b3476b39049065e8a",
+  "episodes_per_condition": 100,
+  "selection_after_independent": false,
+  "cases": [
+    {
+      "name": "piper_payload-iso60k-reference",
+      "line": "piper_payload",
+      "historical_reference": true,
+      "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+      "checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2"
+    }
+  ]
+}
