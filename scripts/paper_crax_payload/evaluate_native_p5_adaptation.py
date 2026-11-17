@@ -29,6 +29,16 @@ def load_frozen_case(case, plan):
         raise ValueError('Frozen full-checkpoint identity changed')
     saved=torch.load(path,map_location='cpu',weights_only=False)
     line=plan['lines'][case['line']]
+    training_plan = plan
+    if case.get('training_plan_path'):
+        training_path = Path(case['training_plan_path'])
+        if sha256(training_path) != case.get('training_plan_sha256'):
+            raise ValueError('Optional candidate training-plan identity changed')
+        training_plan = json.loads(training_path.read_text())
+        if training_plan.get('optional_candidate') != 'piper_payload_radius_cover':
+            raise ValueError('Only the registered Piper Payload coverage candidate is admitted')
+        if training_plan['lines'][case['line']]['parent_sha256'] != line['parent_sha256']:
+            raise ValueError('Optional candidate parent differs from the evaluation line')
     if case.get('historical_reference'):
         if (case['line']!='piper_payload' or saved['format']!='paper_native_piper_sim_v1_full'
                 or saved['method']!='Iso' or saved['steps']!=60000 or saved['training_seed']!=41027
@@ -41,9 +51,11 @@ def load_frozen_case(case, plan):
                 or saved['steps']!=line['parent_steps']+100000
                 or saved['learner']['native_p5_adaptation_v11']['parent_sha256']!=line['parent_sha256']):
             raise ValueError('Current evaluator admits only fixed new100K native v11 endpoints')
-        learner=build_native(saved['configuration'],line,'cpu')
+        if case.get('training_plan_path') and saved.get('plan') != training_plan:
+            raise ValueError('Checkpoint does not carry the registered optional training plan')
+        learner=build_native(saved['configuration'],training_plan['lines'][case['line']],'cpu')
         learner.set_transitions(line['parent_steps'])
-        attach_adaptation(learner,plan,case['line'],case['arm'])
+        attach_adaptation(learner,training_plan,case['line'],case['arm'])
     learner.load_state_dict(saved['learner'])
     if learner.settings['target_polyak']!=.001:
         raise ValueError('Common target deployment rule differs')
