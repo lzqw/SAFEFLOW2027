@@ -1,0 +1,34 @@
+{
+  "protocol": "v11_once_only_frozen_native_task_independent",
+  "training_transitions": 0,
+  "requires_campaign_development_review_and_global_freeze": true,
+  "episodes_per_condition": 100,
+  "conditions_and_layout_ranges": "inherit exactly the reserved v11 line-specific independent ranges",
+  "action_rng": "reseed each episode: independent_action_seed + condition_index*1000 + episode_index; shared across methods",
+  "deployment": "sole existing target Actor, Polyak0.001; no online/target mixing",
+  "selection_after_independent": false,
+  "first_stage_pairs_episodes": 2000,
+  "speed_reference": {
+    "line": "piper_payload",
+    "method": "historical_frozen_Iso_reference_only",
+    "checkpoint_steps": 60000,
+    "checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-iso-100k/full_60000.pt",
+    "checkpoint_sha256": "c69d8daa58bcef7800872987f83e1a64b43b97e65e1e0b8b67fabd04588359d2",
+    "conditions": "same three conditions, no additional action scale",
+    "episodes": 300,
+    "not_a_same_round_training_budget_control": true,
+    "purpose": "Compare retained speed at descriptive comparable observed risk; historical age differs and no cross-seed/risk-equivalence claim"
+  },
+  "all_counted_episodes_if_first_stage_pairs_frozen": 2300,
+  "distinct_layout_seeds": 300,
+  "static_reset_failure": "record nonadmitted with original seed; do not replace; report denominators",
+  "required_episode_records": [
+    "layout_seed", "action_seed", "safe_success", "violation", "safe_timeout",
+    "arm_collision", "payload_collision", "episode_return", "actual_length",
+    "full_interval_minimum_distance_m", "time_to_goal_capped_seconds", "task_path_length_m"
+  ],
+  "speed_interpretation": "Only compare capped time including all failures, never success-only timing. Risk is descriptive observed rates, not equivalence.",
+  "training_risk_interpretation": "new100K violations include every actual interaction and preheat; compare same-round control; retain cumulative successes and timeouts",
+  "no_hardware_or_5080": true,
+  "automatic_retry": false
+}

@@ -1,0 +1,15 @@
+line,new_steps,control_violations,p5_violations,violation_reduction,control_successes,p5_successes,control_timeouts,p5_timeouts
+piper_reach,1000,4,0,1.0,29,32,0,0
+piper_reach,2000,7,2,0.7142857142857143,62,62,0,0
+piper_reach,3000,11,3,0.7272727272727273,95,95,0,0
+piper_reach,4000,12,3,0.75,127,128,0,0
+piper_reach,5000,14,3,0.7857142857142857,160,160,0,0
+piper_reach,6000,16,3,0.8125,196,192,0,0
+piper_reach,7000,16,3,0.8125,229,225,0,0
+piper_reach,8000,17,5,0.7058823529411764,261,256,0,0
+panda_payload,1000,21,9,0.5714285714285714,44,48,0,0
+panda_payload,2000,24,15,0.375,97,98,0,0
+panda_payload,3000,29,18,0.3793103448275862,149,148,0,0
+panda_payload,4000,30,22,0.2666666666666667,203,200,0,0
+panda_payload,5000,32,30,0.0625,256,251,0,0
+panda_payload,6000,37,34,0.08108108108108103,307,301,0,0
