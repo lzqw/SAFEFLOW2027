@@ -1,0 +1,83 @@
+{
+  "pid": 4030983,
+  "source_commit": "d97474dac98f91c1fac9cd6b20b0698b7e4fdccb",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "piper_reach-control",
+      "pid": 4031003,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_native_p5_adaptation",
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "control",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control",
+        "--source-commit",
+        "d97474dac98f91c1fac9cd6b20b0698b7e4fdccb"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs-attempt2/piper_reach-control.log",
+      "status": "running",
+      "started_unix": 1794924785.1352077,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-p5",
+      "pid": 4031005,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_native_p5_adaptation",
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "p5",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5",
+        "--source-commit",
+        "d97474dac98f91c1fac9cd6b20b0698b7e4fdccb"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-p5",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs-attempt2/piper_reach-p5.log",
+      "status": "running",
+      "started_unix": 1794924785.1540687,
+      "slot_id": 1,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    }
+  ],
+  "pending": 2,
+  "live_native_pids": [
+    4031003,
+    4031005
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

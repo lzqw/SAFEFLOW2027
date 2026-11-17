@@ -1,0 +1,174 @@
+{
+  "status": "completed",
+  "protocol": "v11_prospective_native_margin_diagnosis",
+  "new_training_steps": 0,
+  "physical_robot_interactions": 0,
+  "source_commit": "1af96e429ec09cfdb3f737a85a30ff6032c8fc74",
+  "samples": 50,
+  "missing_prospective_states": [
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712002,
+      "radius_m": 0.0575,
+      "state_time": 10
+    },
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712002,
+      "radius_m": 0.0575,
+      "state_time": 20
+    },
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712002,
+      "radius_m": 0.06,
+      "state_time": 10
+    },
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712002,
+      "radius_m": 0.06,
+      "state_time": 20
+    },
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712003,
+      "radius_m": 0.06,
+      "state_time": 10
+    },
+    {
+      "line": "piper_reach",
+      "layout_seed": 11712003,
+      "radius_m": 0.06,
+      "state_time": 20
+    },
+    {
+      "line": "piper_payload",
+      "layout_seed": 11722002,
+      "radius_m": 0.055,
+      "state_time": 10
+    },
+    {
+      "line": "piper_payload",
+      "layout_seed": 11722002,
+      "radius_m": 0.055,
+      "state_time": 20
+    },
+    {
+      "line": "piper_payload",
+      "layout_seed": 11722003,
+      "radius_m": 0.055,
+      "state_time": 10
+    },
+    {
+      "line": "piper_payload",
+      "layout_seed": 11722003,
+      "radius_m": 0.055,
+      "state_time": 20
+    }
+  ],
+  "summary": [
+    {
+      "line": "piper_reach",
+      "radius_m": 0.045,
+      "samples": 12,
+      "false_safe_count": 0,
+      "true_unsafe_count": 0,
+      "mean_margin_error_m": 3.562099348260068e-05,
+      "mean_absolute_margin_error_m": 0.00013478493515290424,
+      "mean_gradient_cosine": 0.8838264917188632
+    },
+    {
+      "line": "piper_reach",
+      "radius_m": 0.0575,
+      "samples": 10,
+      "false_safe_count": 0,
+      "true_unsafe_count": 0,
+      "mean_margin_error_m": -0.00011538994066102732,
+      "mean_absolute_margin_error_m": 0.0001944098551291698,
+      "mean_gradient_cosine": 0.8458220296946592
+    },
+    {
+      "line": "piper_reach",
+      "radius_m": 0.06,
+      "samples": 8,
+      "false_safe_count": 0,
+      "true_unsafe_count": 0,
+      "mean_margin_error_m": -0.0002200204236898727,
+      "mean_absolute_margin_error_m": 0.0002200204236898727,
+      "mean_gradient_cosine": 0.875604427755645
+    },
+    {
+      "line": "piper_payload",
+      "radius_m": 0.045,
+      "samples": 12,
+      "false_safe_count": 0,
+      "true_unsafe_count": 0,
+      "mean_margin_error_m": -5.481596845183928e-05,
+      "mean_absolute_margin_error_m": 0.0007814553742955879,
+      "mean_gradient_cosine": 0.7213765346583184
+    },
+    {
+      "line": "piper_payload",
+      "radius_m": 0.055,
+      "samples": 8,
+      "false_safe_count": 0,
+      "true_unsafe_count": 0,
+      "mean_margin_error_m": -0.01022837632863323,
+      "mean_absolute_margin_error_m": 0.01022837632863323,
+      "mean_gradient_cosine": 0.9478546015439007
+    }
+  ],
+  "work": [
+    {
+      "line": "piper_reach",
+      "radius_m": 0.045,
+      "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "controls": 164,
+      "physics_substeps": 3280,
+      "native_distance_calls": 3452,
+      "diagnostic_extra_closest_point_queries": 3452
+    },
+    {
+      "line": "piper_reach",
+      "radius_m": 0.0575,
+      "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "controls": 136,
+      "physics_substeps": 2720,
+      "native_distance_calls": 2864,
+      "diagnostic_extra_closest_point_queries": 2864
+    },
+    {
+      "line": "piper_reach",
+      "radius_m": 0.06,
+      "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "controls": 104,
+      "physics_substeps": 2080,
+      "native_distance_calls": 2192,
+      "diagnostic_extra_closest_point_queries": 2192
+    },
+    {
+      "line": "piper_payload",
+      "radius_m": 0.045,
+      "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "controls": 164,
+      "physics_substeps": 3280,
+      "native_distance_calls": 3452,
+      "diagnostic_extra_closest_point_queries": 6904
+    },
+    {
+      "line": "piper_payload",
+      "radius_m": 0.055,
+      "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "controls": 107,
+      "physics_substeps": 2140,
+      "native_distance_calls": 2255,
+      "diagnostic_extra_closest_point_queries": 4510
+    }
+  ],
+  "total_simulated_controls": 675,
+  "actor": "original_native_parent_existing_target",
+  "finite_difference_state": "exact Bullet save/restore",
+  "actions_not_selected_from_counterfactual_labels": true,
+  "independent_test_used": false
+}

@@ -1,0 +1,79 @@
+{
+  "pid": 2857770,
+  "source_commit": "f618f23d573b91ced461775ac7fa4125e12ffec4",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "panda_payload-control",
+      "pid": 2857773,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_native_p5_adaptation",
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "panda_payload",
+        "--arm",
+        "control",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11",
+        "--cuda-memory-fraction",
+        ".10",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-control",
+        "--source-commit",
+        "f618f23d573b91ced461775ac7fa4125e12ffec4"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-control",
+      "log": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/logs/panda_payload-control.log",
+      "status": "running",
+      "started_unix": 1794924690.024052,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    },
+    {
+      "name": "panda_payload-p5",
+      "pid": 2857775,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_native_p5_adaptation",
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "panda_payload",
+        "--arm",
+        "p5",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11",
+        "--cuda-memory-fraction",
+        ".10",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-p5",
+        "--source-commit",
+        "f618f23d573b91ced461775ac7fa4125e12ffec4"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-p5",
+      "log": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/logs/panda_payload-p5.log",
+      "status": "running",
+      "started_unix": 1794924690.0378346,
+      "slot_id": 1,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    2857773,
+    2857775
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}
