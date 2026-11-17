@@ -1,0 +1,110 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/source",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/queue_state.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2700
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "piper_reach-control",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "control",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs/piper_reach-control",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs/piper_reach-control.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-p5",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "p5",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs/piper_reach-p5",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs/piper_reach-p5.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_payload-control",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_payload",
+        "--arm",
+        "control",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs/piper_payload-control",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs/piper_payload-control.log",
+      "require_completed_receipt": true,
+      "required_steps": 220000
+    },
+    {
+      "name": "piper_payload-p5",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "piper_payload",
+        "--arm",
+        "p5",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11",
+        "--cuda-memory-fraction",
+        ".025",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs/piper_payload-p5",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/logs/piper_payload-p5.log",
+      "require_completed_receipt": true,
+      "required_steps": 220000
+    }
+  ]
+}

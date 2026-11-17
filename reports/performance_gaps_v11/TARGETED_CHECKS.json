@@ -1,0 +1,8 @@
+{
+  "new_training_environment_steps": 0,
+  "physical_robot_interactions": 0,
+  "passed_native_parent_lines": ["piper_reach", "piper_payload", "panda_payload"],
+  "checks": ["exact_native_parent_sha256", "paired_actor_and_target_identity", "native_backward_both_arms", "new_step_lr_schedule", "strict_resume_arm", "target_context_restoration"],
+  "environment_resolution": "A100 PAPER env lacked gymnasium; reused existing ARM env with installed native simulation dependencies, without installing packages or changing shared environments",
+  "new_training_started_during_checks": false
+}

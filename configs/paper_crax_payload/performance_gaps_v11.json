@@ -1,0 +1,62 @@
+{
+  "protocol": "native_task_p5_paired_adaptation_v11",
+  "first_stage_training_steps": 600000,
+  "development_training_ceiling": 900000,
+  "optional_candidates_max": 3,
+  "additional_steps_per_run": 100000,
+  "arms": ["control", "p5"],
+  "actor_lr": {"initial": 0.0001, "floor": 0.00003, "start": 60000, "end": 80000},
+  "p5": {"direction_weight": 1.0, "rho": 0.25, "tangential_variance": 0.04},
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [20000, 40000, 60000, 80000, 100000],
+  "development_episodes_per_condition": 30,
+  "independent_episodes_per_condition": 100,
+  "independent_requires_separate_freeze": true,
+  "diagnostic": {"layouts": 4, "state_times": [0, 10, 20], "action_difference_epsilon": 0.05},
+  "lines": {
+    "piper_reach": {
+      "robot": "Piper", "task": "Reach", "seed": 41027, "parent_steps": 400000,
+      "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+      "training_radius_values": [0.045, 0.05, 0.055],
+      "development_layout_seed_start": 11710000, "action_sampling_seed": 11711000,
+      "diagnostic_layout_seed_start": 11712000,
+      "independent_layout_seed_start": 11719000, "independent_action_seed": 11719500,
+      "conditions": [
+        {"name": "nominal", "simulation_overrides": {}},
+        {"name": "radius_0575", "simulation_overrides": {"obstacle_radius_m": 0.0575}},
+        {"name": "radius_060", "simulation_overrides": {"obstacle_radius_m": 0.06}}
+      ]
+    },
+    "piper_payload": {
+      "robot": "Piper", "task": "Payload", "seed": 41027, "parent_steps": 120000,
+      "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+      "development_layout_seed_start": 11720000, "action_sampling_seed": 11721000,
+      "diagnostic_layout_seed_start": 11722000,
+      "independent_layout_seed_start": 11729000, "independent_action_seed": 11729500,
+      "conditions": [
+        {"name": "nominal", "simulation_overrides": {}},
+        {"name": "radius_055", "simulation_overrides": {"obstacle_radius_m": 0.055}},
+        {"name": "execution_scale_085", "simulation_overrides": {}, "action_scale": 0.85}
+      ]
+    },
+    "panda_payload": {
+      "robot": "Panda", "task": "Payload", "seed": 41028, "parent_steps": 240000,
+      "parent_sha256": "628b5be167895c22917a5fac9fd81d57ba2a89feb89e8e7d35d7d7c2d5caef2d",
+      "parent_format": "paper_payload_v1_full",
+      "parent_path": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+      "training_radius_family": [0.06, 0.0675, 0.075],
+      "development_layout_seed_start": 11730000, "action_sampling_seed": 11731000,
+      "independent_layout_seed_start": 11739000, "independent_action_seed": 11739500,
+      "conditions": [
+        {"name": "nominal", "task_overrides": {}},
+        {"name": "radius_070", "task_overrides": {"obstacle_radius": 0.07}},
+        {"name": "payload_wide", "task_overrides": {"payload_half_extents": [0.035, 0.025, 0.02]}},
+        {"name": "execution_scale_085", "task_overrides": {}, "action_scale": 0.85}
+      ]
+    }
+  }
+}

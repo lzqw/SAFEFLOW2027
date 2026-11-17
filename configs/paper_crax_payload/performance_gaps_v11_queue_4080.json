@@ -1,0 +1,62 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/source",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/queue_state.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2200
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "panda_payload-control",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "panda_payload",
+        "--arm",
+        "control",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11",
+        "--cuda-memory-fraction",
+        ".10"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-control",
+      "log": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/logs/panda_payload-control.log",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    },
+    {
+      "name": "panda_payload-p5",
+      "module": "scripts.paper_crax_payload.train_native_p5_adaptation",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/performance_gaps_v11.json",
+        "--line",
+        "panda_payload",
+        "--arm",
+        "p5",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11",
+        "--cuda-memory-fraction",
+        ".10"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/runs/panda_payload-p5",
+      "log": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/logs/panda_payload-p5.log",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    }
+  ]
+}
