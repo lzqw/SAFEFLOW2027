@@ -1,0 +1,14 @@
+{
+  "publication_branch": "results/performance-gaps-v11-20261117",
+  "source_commits_to_compact_publication_commits": {
+    "f618f23d573b91ced461775ac7fa4125e12ffec4": "1acaf38f",
+    "d97474dac98f91c1fac9cd6b20b0698b7e4fdccb": "1ef7c74a",
+    "1af96e429ec09cfdb3f737a85a30ff6032c8fc74": "9a6d5881",
+    "eb55ceb6": "402554c5"
+  },
+  "note": "Compact result branch contains the actual new source patches without unrelated local tuning history. Native stability_models.py is synchronized to the runtime dependency; its margin-supervision hook defaults to None and v11 does not override it. Original run_config source-file SHA256 values remain authoritative for each run version.",
+  "large_checkpoints_and_replay_in_git": false,
+  "independent_evaluation_started": false,
+  "new_pull_request_created": false,
+  "email_sent_by_agent": false
+}

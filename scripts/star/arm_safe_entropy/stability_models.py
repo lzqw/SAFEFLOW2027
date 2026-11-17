@@ -80,6 +80,10 @@ class StableArmLearner(ArmLearner):
         """Explicit opt-in development hook; historical learners add exactly zero."""
         return 0.
 
+    def margin_supervision_weights(self, batch):
+        """Opt-in saved-label emphasis; None preserves the original exact path."""
+        return None
+
     def update(self, batch):
         obs,action,reward,next_obs,done = [batch[k] for k in ('obs','action','reward','next_obs','done')]
         alpha = self.log_alpha.detach().exp()
@@ -89,6 +93,9 @@ class StableArmLearner(ArmLearner):
         if hasattr(self,'margin_online'):
             predicted = self.margin_online(obs,action)
             mask = (torch.rand_like(predicted) < .8).to(predicted.dtype)
+            emphasis = self.margin_supervision_weights(batch)
+            if emphasis is not None:
+                mask = mask * emphasis
             margin_loss = ((predicted-batch['margin']).square()*mask).sum()/mask.sum().clamp_min(1.)
             self.margin_opt.zero_grad(set_to_none=True)
             margin_loss.backward()
