@@ -1,0 +1,401 @@
+{
+  "protocol": "native_task_p5_paired_adaptation_v11",
+  "plan": {
+    "protocol": "native_task_p5_paired_adaptation_v11",
+    "first_stage_training_steps": 600000,
+    "development_training_ceiling": 900000,
+    "optional_candidates_max": 3,
+    "additional_steps_per_run": 100000,
+    "arms": [
+      "control",
+      "p5"
+    ],
+    "actor_lr": {
+      "initial": 0.0001,
+      "floor": 3e-05,
+      "start": 60000,
+      "end": 80000
+    },
+    "p5": {
+      "direction_weight": 1.0,
+      "rho": 0.25,
+      "tangential_variance": 0.04
+    },
+    "deployment": "sole_existing_target_actor_polyak_0.001",
+    "milestones": [
+      20000,
+      40000,
+      60000,
+      80000,
+      100000
+    ],
+    "development_episodes_per_condition": 30,
+    "independent_episodes_per_condition": 100,
+    "independent_requires_separate_freeze": true,
+    "diagnostic": {
+      "layouts": 4,
+      "state_times": [
+        0,
+        10,
+        20
+      ],
+      "action_difference_epsilon": 0.05
+    },
+    "lines": {
+      "piper_reach": {
+        "robot": "Piper",
+        "task": "Reach",
+        "seed": 41027,
+        "parent_steps": 400000,
+        "parent_rng_cuda_index": 1,
+        "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+        "parent_format": "paper_native_piper_sim_v1_full",
+        "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+        "training_radius_values": [
+          0.045,
+          0.05,
+          0.055
+        ],
+        "development_layout_seed_start": 11710000,
+        "action_sampling_seed": 11711000,
+        "diagnostic_layout_seed_start": 11712000,
+        "independent_layout_seed_start": 11719000,
+        "independent_action_seed": 11719500,
+        "conditions": [
+          {
+            "name": "nominal",
+            "simulation_overrides": {}
+          },
+          {
+            "name": "radius_0575",
+            "simulation_overrides": {
+              "obstacle_radius_m": 0.0575
+            }
+          },
+          {
+            "name": "radius_060",
+            "simulation_overrides": {
+              "obstacle_radius_m": 0.06
+            }
+          }
+        ]
+      },
+      "piper_payload": {
+        "robot": "Piper",
+        "task": "Payload",
+        "seed": 41027,
+        "parent_steps": 120000,
+        "parent_rng_cuda_index": 1,
+        "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+        "parent_format": "paper_native_piper_sim_v1_full",
+        "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+        "development_layout_seed_start": 11720000,
+        "action_sampling_seed": 11721000,
+        "diagnostic_layout_seed_start": 11722000,
+        "independent_layout_seed_start": 11729000,
+        "independent_action_seed": 11729500,
+        "conditions": [
+          {
+            "name": "nominal",
+            "simulation_overrides": {}
+          },
+          {
+            "name": "radius_055",
+            "simulation_overrides": {
+              "obstacle_radius_m": 0.055
+            }
+          },
+          {
+            "name": "execution_scale_085",
+            "simulation_overrides": {},
+            "action_scale": 0.85
+          }
+        ]
+      },
+      "panda_payload": {
+        "robot": "Panda",
+        "task": "Payload",
+        "seed": 41028,
+        "parent_steps": 240000,
+        "parent_rng_cuda_index": 0,
+        "parent_sha256": "628b5be167895c22917a5fac9fd81d57ba2a89feb89e8e7d35d7d7c2d5caef2d",
+        "parent_format": "paper_payload_v1_full",
+        "parent_path": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "training_radius_family": [
+          0.06,
+          0.0675,
+          0.075
+        ],
+        "development_layout_seed_start": 11730000,
+        "action_sampling_seed": 11731000,
+        "independent_layout_seed_start": 11739000,
+        "independent_action_seed": 11739500,
+        "conditions": [
+          {
+            "name": "nominal",
+            "task_overrides": {}
+          },
+          {
+            "name": "radius_070",
+            "task_overrides": {
+              "obstacle_radius": 0.07
+            }
+          },
+          {
+            "name": "payload_wide",
+            "task_overrides": {
+              "payload_half_extents": [
+                0.035,
+                0.025,
+                0.02
+              ]
+            }
+          },
+          {
+            "name": "execution_scale_085",
+            "task_overrides": {},
+            "action_scale": 0.85
+          }
+        ]
+      }
+    }
+  },
+  "configuration": {
+    "protocol": "paper_crax_payload_v1",
+    "robot_family": "Piper",
+    "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+    "hardware_identification": "user-confirmed standard Piper and standard gripper; physical calibration still pending",
+    "physical_motion_enabled": false,
+    "simulation_training_budget": 3000000,
+    "tasks": [
+      "Reach",
+      "Payload"
+    ],
+    "methods": [
+      "Iso",
+      "Iso-Low",
+      "EA"
+    ],
+    "development_seed": 41027,
+    "initial_steps_per_trial": 300000,
+    "simulation": {},
+    "shared_learner": {
+      "hidden_width": 128,
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 1024,
+      "replay_capacity": 300000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "learner_updates_per_transition": 1,
+      "reward_updates_per_round": 2,
+      "actor_update_interval": 2,
+      "margin_ema_tau": 0.005,
+      "flow_steps": 4,
+      "rho": 0.25,
+      "reference_variance": 0.04,
+      "iso_low_reference_variance": 0.01,
+      "kinetic_alpha_per_variance": 0.02,
+      "energy_target_per_action": 0.25,
+      "reward_scaling": 1.0,
+      "cost_scaling": 1.0,
+      "normalizer": "identity_after_explicit_simulator_units",
+      "cost_mode": "episodic_binary",
+      "episode_budget": 0.1,
+      "updates_per_vector_step": 2,
+      "batched_geometry": true,
+      "batched_targets": true
+    },
+    "num_envs": 8,
+    "checkpoint_fractions": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "log_every": 1000,
+    "checkpoint_every": 25000,
+    "evaluation": {
+      "development_episodes_per_condition": 30,
+      "validation_episodes_per_condition": 50,
+      "independent_test_episodes_per_condition": 100,
+      "development_layout_seed_start": 650000,
+      "validation_layout_seed_start": 61027,
+      "independent_test_layout_seed_start": 71027,
+      "action_sampling_seed": 690000,
+      "conditions": [
+        {
+          "name": "nominal",
+          "simulation_overrides": {}
+        },
+        {
+          "name": "new_geometry",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.055
+          }
+        },
+        {
+          "name": "execution_scale_085",
+          "simulation_overrides": {},
+          "action_scale": 0.85
+        }
+      ],
+      "selection": "same five checkpoints eachmethod;riskqualified then safe success then capped time;otherwise explicit Pareto",
+      "independent_test_used_for_selection": false
+    },
+    "provenance": "fresh official Piper simulation only; no Panda weights and no physical calibration assertion",
+    "parallel_environments": true,
+    "profile_full_geometry": false,
+    "synchronized_profile_timing": false,
+    "training_radius_values": [
+      0.045,
+      0.05,
+      0.055
+    ]
+  },
+  "line": "piper_reach",
+  "arm": "control",
+  "source_commit": "d97474dac98f91c1fac9cd6b20b0698b7e4fdccb",
+  "parent_checkpoint": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+  "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+  "initial_networks": {
+    "online_actor": "ed9a273d80c8aeabb37c6110396f24480e5970290d674d447a2140acf8378a3c",
+    "target_actor": "647fbd1e72fb7c3215fac9724c1392223cae9fc0fb9499700f07084947ecb347"
+  },
+  "initial_counts": {
+    "violations": 1157,
+    "episodes": 13120,
+    "safe_successes": 11481,
+    "safe_timeouts": 482
+  },
+  "censored_parent_partial_episodes": [
+    {
+      "index": 0,
+      "episode_return": 0.039880200925565844,
+      "cost": 0.0,
+      "length": 3
+    },
+    {
+      "index": 1,
+      "episode_return": 0.4776722981535525,
+      "cost": 0.0,
+      "length": 20
+    },
+    {
+      "index": 2,
+      "episode_return": 0.22642866108045517,
+      "cost": 0.0,
+      "length": 10
+    },
+    {
+      "index": 3,
+      "episode_return": 0.307626409484768,
+      "cost": 0.0,
+      "length": 19
+    },
+    {
+      "index": 4,
+      "episode_return": 0.5902252023782446,
+      "cost": 0.0,
+      "length": 27
+    },
+    {
+      "index": 5,
+      "episode_return": 0.17658890101082622,
+      "cost": 0.0,
+      "length": 11
+    },
+    {
+      "index": 6,
+      "episode_return": 0.46084273147706206,
+      "cost": 0.0,
+      "length": 24
+    },
+    {
+      "index": 7,
+      "episode_return": 0.5869578634968655,
+      "cost": 0.0,
+      "length": 25
+    }
+  ],
+  "censored_partials_counted_as_completed": false,
+  "native_pid": 4031003,
+  "host": "CTAlab",
+  "device": "cuda:0",
+  "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/performance_gaps_v11/runs-attempt2/piper_reach-control",
+  "allocator_fraction": 0.025,
+  "training_updates_per_vector_step": 2,
+  "scientific_early_stopping": false,
+  "automatic_restart": false,
+  "physical_robot_interactions": 0,
+  "common_deployment": "sole_existing_target_actor_polyak_0.001",
+  "task_definition": {
+    "robot_family": "Piper",
+    "config": {
+      "task": "Reach",
+      "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+      "horizon": 100,
+      "physics_dt_s": 0.002,
+      "substeps": 20,
+      "displacement_scale_m": 0.01,
+      "safety_distance_m": 0.015,
+      "success_distance_m": 0.03,
+      "obstacle_radius_m": 0.05,
+      "payload_half_extents_m": [
+        0.025,
+        0.018,
+        0.025
+      ],
+      "payload_mass_kg": 0.05,
+      "tcp_from_flange_m": [
+        0.0,
+        0.0,
+        0.1358
+      ],
+      "start_tcp_base_m": [
+        0.32,
+        -0.12,
+        0.28
+      ],
+      "goal_tcp_base_m": [
+        0.32,
+        0.12,
+        0.28
+      ],
+      "workspace_min_m": [
+        0.05,
+        -0.45,
+        0.05
+      ],
+      "workspace_max_m": [
+        0.65,
+        0.45,
+        0.65
+      ],
+      "hardware_matched": false
+    },
+    "model_source": "https://github.com/agilexrobotics/piper_ros.git",
+    "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+    "observation_units": "joint rad/pi; joint velocity rad/s /4; positions/extent m; quaternion xyzw; mass kg",
+    "action": "normalized deltaXYZ in robot base, fixed reset orientation",
+    "task_geometry": "provisional reach/payload around spherical obstacle, not calibrated real robot",
+    "physical_connection": false,
+    "hardware_matched": false,
+    "task_completion": "actual payload centroid for Payload; TCP for Reach",
+    "reset_admissibility": "bounded static safe/reachable start AND goal; common to all policies",
+    "inverse_kinematics": "same native solver1200maxiterations vs provisional200; common to all policies",
+    "learned_action_oracle_selection": false,
+    "training_radius_values": [
+      0.045,
+      0.05,
+      0.055
+    ],
+    "training_radius_schedule": "round-robin at resets, seeded initial index; no outcome selection",
+    "evaluation_geometry_randomized": false
+  },
+  "source_files_sha256": {
+    "native_p5_adaptation.py": "46fb52ea8c9068b3e7b0fa9fdfc2dbfd795aa6a2dfc6619d2f60b02608ce938c",
+    "train_native_p5_adaptation.py": "8bbd1bef8c3b98878b113dff422ccea34b507397cbc66750bf9e7ebb38ba1c9b"
+  }
+}
