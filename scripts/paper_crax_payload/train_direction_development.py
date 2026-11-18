@@ -49,7 +49,7 @@ def validate_config(config):
 
 
 def main(*, validator=validate_config, builder=build_development, format_name=FORMAT,
-         evaluator=development_evaluation, tracker_factory=None):
+         evaluator=development_evaluation, tracker_factory=None, replay_factory=None):
     from scripts.paper_crax_payload.train_component_study import initial_digest
     from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
     from scripts.star.arm_safe_entropy.train import Replay, atomic_json
@@ -138,7 +138,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
     for sig in (signal.SIGTERM, signal.SIGINT): signal.signal(sig, request_stop)
     try:
         envs = [make_environment(TaskConfig(version=config['task_version'])) for _ in range(2)]
-        replay = Replay(shared['replay_capacity'], 25)
+        replay = (replay_factory(config, arm, shared['replay_capacity'], 25)
+                  if replay_factory else Replay(shared['replay_capacity'], 25))
         if resume:
             replay.load_state_dict(resume['replay'])
             observations = np.stack([restore_environment(e, s) for e, s in zip(envs, resume['environments'])])
@@ -158,6 +159,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 obs, reward, done, truncated, info = env.step(action)
                 replay.add(obs=observations[index], action=action, reward=reward, next_obs=obs,
                     done=float(done or truncated), cost=info['cost'], margin=info['local_margin'])
+                if replay_factory:
+                    replay.observe_transition(index, bool(done or truncated), info)
                 steps += 1; lengths[index] += 1; returns[index] += reward; violations += int(info['violation'])
                 if tracker is not None:
                     tracker.observe(index, reward, bool(done or truncated), info)
@@ -180,6 +183,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                     complete_train_sps=steps/max(elapsed(), 1e-9), **learner.metrics())
                 if tracker is not None:
                     status.update(tracker.metrics())
+                if replay_factory:
+                    status.update(replay.metrics())
                 if not all(np.isfinite(v) for k, v in status.items() if k != 'state'):
                     raise FloatingPointError('Nonfinite training diagnostic')
                 progress.write(json.dumps(status)+'\n'); progress.flush(); trajectory.flush()
@@ -206,6 +211,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             new_training_transitions=steps, physical_robot_interactions=0)
         if tracker is not None:
             receipt['training_metrics'] = tracker.metrics()
+        if replay_factory:
+            receipt['replay_metrics'] = replay.metrics()
         atomic_json(args.output/'receipt.json', receipt)
         atomic_json(args.output/'status.json', dict(state='completed', steps=steps))
     except BaseException as error:

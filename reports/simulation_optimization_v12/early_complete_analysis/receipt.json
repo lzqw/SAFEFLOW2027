@@ -1,0 +1,254 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "complete_runs": 6,
+  "completed_native_receipts": [
+    {
+      "run": "E1-critic20k-2033",
+      "status": "completed",
+      "arm": {
+        "name": "E1-critic20k",
+        "component": "full",
+        "ramp_steps": 0,
+        "initial_fraction": 0.0,
+        "critic_only_updates": 18000
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 2112,
+      "training_violations": 273,
+      "safe_successes": 1226,
+      "safe_timeouts": 613,
+      "learner_updates": 98000,
+      "actor_updates": 40000,
+      "reward_updates": 196000,
+      "elapsed_seconds": 3716.1589379890065,
+      "evaluation_controls": 22069,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 1234,
+        "training_stall_episodes": 776,
+        "training_stall_windows": 23300,
+        "training_cumulative_return": 9725.13380799001,
+        "training_mean_completed_plus_partial_return": 4.604703507571028
+      }
+    },
+    {
+      "run": "E2-quarter50k-2033",
+      "status": "completed",
+      "arm": {
+        "name": "E2-quarter50k",
+        "component": "full",
+        "ramp_steps": 50000,
+        "initial_fraction": 0.25
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 2791,
+      "training_violations": 312,
+      "safe_successes": 2006,
+      "safe_timeouts": 473,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000,
+      "elapsed_seconds": 10205.5849945019,
+      "evaluation_controls": 17144,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2011,
+        "training_stall_episodes": 623,
+        "training_stall_windows": 16826,
+        "training_cumulative_return": 18849.28571678886,
+        "training_mean_completed_plus_partial_return": 6.7535957423105915
+      }
+    },
+    {
+      "run": "E2-quarter75k-2033",
+      "status": "completed",
+      "arm": {
+        "name": "E2-quarter75k",
+        "component": "full",
+        "ramp_steps": 75000,
+        "initial_fraction": 0.25
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 3084,
+      "training_violations": 279,
+      "safe_successes": 2323,
+      "safe_timeouts": 482,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000,
+      "elapsed_seconds": 3351.2173403780034,
+      "evaluation_controls": 17102,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2331,
+        "training_stall_episodes": 602,
+        "training_stall_windows": 16601,
+        "training_cumulative_return": 22817.307771203028,
+        "training_mean_completed_plus_partial_return": 7.398608226719529
+      }
+    },
+    {
+      "run": "P5-fixed-2033",
+      "status": "completed",
+      "arm": {
+        "name": "P5-fixed",
+        "component": "full",
+        "ramp_steps": 0,
+        "initial_fraction": 0.0
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 3157,
+      "training_violations": 313,
+      "safe_successes": 2482,
+      "safe_timeouts": 362,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000,
+      "elapsed_seconds": 10516.021407460328,
+      "evaluation_controls": 15354,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2487,
+        "training_stall_episodes": 517,
+        "training_stall_windows": 13228,
+        "training_cumulative_return": 24497.632088179435,
+        "training_mean_completed_plus_partial_return": 7.759782099518351
+      }
+    },
+    {
+      "run": "iso-2033",
+      "status": "completed",
+      "arm": {
+        "name": "iso",
+        "component": "iso"
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 2566,
+      "training_violations": 265,
+      "safe_successes": 1759,
+      "safe_timeouts": 542,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000,
+      "elapsed_seconds": 3763.7440792380075,
+      "evaluation_controls": 22105,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 1765,
+        "training_stall_episodes": 709,
+        "training_stall_windows": 19223,
+        "training_cumulative_return": 16316.192782546346,
+        "training_mean_completed_plus_partial_return": 6.358609813930766
+      }
+    },
+    {
+      "run": "metric-only-2033",
+      "status": "completed",
+      "arm": {
+        "name": "metric-only",
+        "component": "metric_only"
+      },
+      "steps": 100000,
+      "engineering_only": false,
+      "training_seed": 2033,
+      "initial_network_sha256": "7bea7176c07db9db7e599ca966f254744ac5f033ede24d8c39e84ca8a3a9f933",
+      "source_commit": "f2fea844dc79966c8c583c3029dfeeb441e95828",
+      "episodes": 3295,
+      "training_violations": 338,
+      "safe_successes": 2544,
+      "safe_timeouts": 413,
+      "learner_updates": 98000,
+      "actor_updates": 48500,
+      "reward_updates": 196000,
+      "elapsed_seconds": 3317.784239517001,
+      "evaluation_controls": 15022,
+      "evaluations": [
+        25000,
+        50000,
+        75000,
+        100000
+      ],
+      "independent_endpoint_test_executed": false,
+      "all_step_trajectories_retained": true,
+      "new_training_transitions": 100000,
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2558,
+        "training_stall_episodes": 518,
+        "training_stall_windows": 14894,
+        "training_cumulative_return": 24930.174752634124,
+        "training_mean_completed_plus_partial_return": 7.5660621404048936
+      }
+    }
+  ],
+  "progress_rows": 600,
+  "development_nodes": 72,
+  "development_episodes": 2160,
+  "independent_test_used": false
+}
