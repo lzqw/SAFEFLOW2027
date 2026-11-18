@@ -8,7 +8,8 @@ from statistics import mean
 
 
 SOURCES = ('round1_analysis', 'round2_analysis', 'round3_analysis',
-           'payload_round1_analysis', 'early_complete_analysis', 'followup_1357_analysis')
+           'payload_round1_analysis', 'early_complete_analysis', 'followup_1357_analysis',
+           'boundary_complete_analysis')
 
 
 def read(path):
