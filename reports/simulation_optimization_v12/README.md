@@ -3,6 +3,7 @@
 用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach前三轮与半强度后续、Payload新三臂与4mm后续、SafeReach早期六臂已完成；尚未同时达到全部目标。当前E4安全专用重采样运行，A100 E3保持完整预算，Panda显式Metric参考排队。最终模型尚未确定。
 
 - [最新：Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
+- [18个完整终点统一指标表与缺失值说明](CONSOLIDATED_METRICS_ZH.md)
 - [终止动作噪声归因：不同任务不宜统一降噪](TERMINAL_NOISE_REVIEW_ZH.md)
 - [Reach第三轮、Payload首轮完整结果](ROUND3_PAYLOAD_AND_FOLLOWUP_ZH.md)
 - [Reach训练风险—任务成功关系图](piper_tradeoff_figures_v2/reach_task_risk_pareto.png) 与 [Payload配对关系图](piper_tradeoff_figures_v2/payload_task_risk_pareto.png)（单训练seed DEV，不是独立结论）

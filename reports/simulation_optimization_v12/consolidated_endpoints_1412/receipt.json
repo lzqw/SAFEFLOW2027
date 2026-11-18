@@ -1,0 +1,98 @@
+{
+  "completed_runs": 18,
+  "completed_new_training_transitions": 1800000,
+  "development_endpoint_conditions": 58,
+  "development_endpoint_episodes": 4540,
+  "excluded_partial_runs": [
+    {
+      "source": "followup_1357_analysis",
+      "run": "E4-P5-safety-boundary4-2033",
+      "reason": "no complete100Kreceipt;excluded_from_endpoint_table"
+    },
+    {
+      "source": "followup_1357_analysis",
+      "run": "E4-metric-safety-boundary4-2033",
+      "reason": "no complete100Kreceipt;excluded_from_endpoint_table"
+    }
+  ],
+  "provenance": [
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/receipt.json",
+      "sha256": "acef485d2e78c7c55527032a90fc7b6e5bccd8c55045dee1dc871f535f97cda6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/training.csv",
+      "sha256": "b69c973f7a845bcc301404aecaaca21a0dd99942b94f9e62970ccc0975e08cff"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/dev_episodes.csv",
+      "sha256": "404e9dcd536e2743f6f6e8dace3a347dbf0703ac18b06d2017eeb84fbe4897a2"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/receipt.json",
+      "sha256": "5d0f31e8a824cc02dfa6e7ed601ecc5a2f6bed8baffb853deef2553713863a2f"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/training.csv",
+      "sha256": "9afafeefe4df55c7d9e9a90397cf79332f9c49b70354939d889988236904081e"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/dev_episodes.csv",
+      "sha256": "5150e90801790f94b50202a8e9e262ea5fddd03060c456e40ff0f7e593871099"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/receipt.json",
+      "sha256": "e7df09cbbefcea2aa161dec2eea89075e7037185b22063886991c9e84bb711eb"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/training.csv",
+      "sha256": "212f2fd153dda39676bbf9af69576624e32274bc2c8fdd73d9f2934cd5394acc"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/dev_episodes.csv",
+      "sha256": "b320c38e5d2bd7b151c9a72d154bec6d3c7f73df029a1abcd189f2e723802e1e"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/receipt.json",
+      "sha256": "e6b58ea9beead8033aca24763fc82c5d2a78915127734ac0863d1729402042cc"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/training.csv",
+      "sha256": "caa22b16ce694ff22fa90ca8e8ad9e09c46d7d68d8d80cf2dfdad6a7c281bcb6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/dev_episodes.csv",
+      "sha256": "50faf3d46f7cd59d68a826caed6546bb4c0c9691389415b10954f0ca3eaf35d9"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/receipt.json",
+      "sha256": "8e2243c5cbe31b8743a30909de34bb3c658ad89c5f78dbe6753ba802bc913ec6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/training.csv",
+      "sha256": "094b137de827a9edae25278e2bf593c74a0d45aff3d1b13dec88c0b9c1166a07"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/dev_episodes.csv",
+      "sha256": "0c7885baf0278a9c5406d9013f171c2c8d1a43470f03ceebd0ae13faa6f22f64"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_1357_analysis/receipt.json",
+      "sha256": "9c2c39255fbaabc7132e97973ad866a749aa87b23b8b2a0bcbc2a9161176c11a"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_1357_analysis/training.csv",
+      "sha256": "e58ff2dad447bc4a00611dfb803be71977b8edcba135b6dc3b5d30772d410777"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_1357_analysis/dev_episodes.csv",
+      "sha256": "00c6cefa78e576d0b4a34ba0775a0c1a6567f6866ecb63780093beeffe990ef0"
+    }
+  ],
+  "missing_metrics": "blank_not_zero",
+  "inference_aggregation": "mean of per-episode action quantiles;not pooled action latency quantiles",
+  "task_duration_is_not_inference_latency": true,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "evaluation_scope": "DEV_only;one_training_seed_per_task;no_crossseed_or_independent_claim"
+}
