@@ -54,7 +54,8 @@ def restore_fork_rng(state, line):
 
 
 def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptation,
-          format_name=FORMAT, piper_evaluator=evaluate_piper, tracker_factory=None):
+          format_name=FORMAT, piper_evaluator=evaluate_piper, tracker_factory=None,
+          payload_evaluator=evaluate_payload):
     plan = json.loads(args.plan.read_text())
     line = plan['lines'][args.line]
     if protocol_validator is not None:
@@ -180,6 +181,9 @@ def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptatio
         for callback in (protocol_validator, adaptation_attacher, piper_evaluator):
             path = Path(inspect.getfile(callback))
             manifest['source_files_sha256'][path.name] = sha256(path)
+        if not assets:
+            path = Path(inspect.getfile(payload_evaluator))
+            manifest['source_files_sha256'][path.name] = sha256(path)
         manifest['checkpoint_format'] = format_name
     atomic_json(output/('resume_manifest.json' if resumed else 'run_config.json'), manifest)
     stream = (output/'progress.jsonl').open('a' if resumed else 'x')
@@ -244,7 +248,7 @@ def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptatio
                 with target_deployment(learner):
                     result = (piper_evaluator(learner, evaluation, assets, line['task'],
                         plan['development_episodes_per_condition'], line['development_layout_seed_start']) if assets else
-                        evaluate_payload(learner, evaluation, plan['development_episodes_per_condition']))
+                        payload_evaluator(learner, evaluation, plan['development_episodes_per_condition']))
                 controls = result.get('physical_evaluation_transitions', result.get('new_simulation_evaluation_control_intervals', 0))
                 if assets:
                     controls = sum(r['length'] for c in result['conditions'] for r in c['records'])

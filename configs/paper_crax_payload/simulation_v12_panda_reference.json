@@ -1,0 +1,82 @@
+{
+  "protocol": "simulation_v12_panda_explicit_metric_reference",
+  "authorization": {
+    "piper_simulation": true,
+    "contact_response_gate_required": false,
+    "total_budget_cap": null
+  },
+  "additional_steps_per_run": 100000,
+  "arms": [
+    "Panda-P5-fixed",
+    "Panda-Metric-only"
+  ],
+  "actor_lr": {
+    "initial": 0.0001,
+    "floor": 0.00003,
+    "start": 60000,
+    "end": 80000
+  },
+  "p5": {
+    "direction_weight": 1,
+    "rho": 0.25,
+    "tangential_variance": 0.04
+  },
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [
+    20000,
+    40000,
+    60000,
+    80000,
+    100000
+  ],
+  "development_episodes_per_condition": 100,
+  "independent_requires_separate_freeze": true,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "lines": {
+    "panda_payload": {
+      "robot": "Panda",
+      "task": "Payload",
+      "seed": 41028,
+      "parent_steps": 240000,
+      "parent_rng_cuda_index": 0,
+      "parent_sha256": "628b5be167895c22917a5fac9fd81d57ba2a89feb89e8e7d35d7d7c2d5caef2d",
+      "parent_format": "paper_payload_v1_full",
+      "parent_path": "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+      "training_radius_family": [
+        0.06,
+        0.0675,
+        0.075
+      ],
+      "development_layout_seed_start": 11880000,
+      "action_sampling_seed": 11881000,
+      "conditions": [
+        {
+          "name": "nominal",
+          "task_overrides": {}
+        },
+        {
+          "name": "radius_070",
+          "task_overrides": {
+            "obstacle_radius": 0.07
+          }
+        },
+        {
+          "name": "payload_wide",
+          "task_overrides": {
+            "payload_half_extents": [
+              0.035,
+              0.025,
+              0.02
+            ]
+          }
+        },
+        {
+          "name": "execution_scale_085",
+          "task_overrides": {},
+          "action_scale": 0.85
+        }
+      ]
+    }
+  }
+}

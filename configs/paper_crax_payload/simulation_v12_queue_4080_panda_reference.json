@@ -1,0 +1,72 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-panda-reference",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_panda_reference.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2600
+  },
+  "prerequisite_receipts": [
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/E4-P5-safety-boundary4-2033/receipt.json",
+      "steps": 100000
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/E4-metric-safety-boundary4-2033/receipt.json",
+      "steps": 100000
+    }
+  ],
+  "jobs": [
+    {
+      "name": "panda_payload-Panda-P5-fixed",
+      "module": "scripts.paper_crax_payload.train_panda_reference_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_panda_reference.json",
+        "--arm",
+        "Panda-P5-fixed",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-panda-reference/panda_payload-Panda-P5-fixed",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/panda_payload-Panda-P5-fixed.log",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    },
+    {
+      "name": "panda_payload-Panda-Metric-only",
+      "module": "scripts.paper_crax_payload.train_panda_reference_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_panda_reference.json",
+        "--arm",
+        "Panda-Metric-only",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/runs/payload-ea-41028-v1/full_240000.pt",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-panda-reference/panda_payload-Panda-Metric-only",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/panda_payload-Panda-Metric-only.log",
+      "require_completed_receipt": true,
+      "required_steps": 340000
+    }
+  ]
+}
