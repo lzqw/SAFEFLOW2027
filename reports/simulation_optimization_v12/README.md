@@ -1,8 +1,11 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。当前Piper Reach三分支和SafeReach早期风险六臂均已登记并运行，最终模型尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach前两轮五臂、SafeReach早期六臂已完成；尚未同时达到全部目标。当前继续Reach组合与显式Metric-only、A100边界重采样及Payload对照，最终模型尚未确定。
 
-- [当前运行状态及首个DEV片段（保留负结果）](RUNNING_STATUS_ZH.md)
+- [最新完整Reach与早期风险结果](ROUND2_AND_EARLY_REVIEW_ZH.md)
+- [Payload最终coverage诊断和下一组三臂对照](PAYLOAD_NEXT_COMPARISON_ZH.md)
+- [追加全部任务/几何目标与结论边界](OBJECTIVE_UPDATE_ZH.md)
+- [首个DEV片段（历史运行记录，保留负结果）](RUNNING_STATUS_ZH.md)
 - [Piper Reach三分支预登记](ROUND1_PREREGISTRATION_ZH.md)
 - [SafeReach从头100K早期风险预登记](EARLY_SCREEN_PREREGISTRATION_ZH.md)
 - [任务来源与准备核对（已被最新授权更新）](PREPARATION_REVIEW_ZH.md)

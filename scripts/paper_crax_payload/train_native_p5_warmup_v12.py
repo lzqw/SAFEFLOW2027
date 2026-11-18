@@ -111,7 +111,8 @@ def evaluate(learner, config, assets, task, episodes, seed_start):
                         started=time.perf_counter_ns(); action=learner.action(obs[None])[0]
                         if learner.device.type=='cuda':torch.cuda.synchronize(learner.device)
                         durations.append(time.perf_counter_ns()-started)
-                        obs,reward,done,truncated,info=env.step(action)
+                        executed=np.clip(action*condition.get('action_scale',1.),-1.,1.)
+                        obs,reward,done,truncated,info=env.step(executed)
                         trajectory.append(env.task_position().tolist());total+=reward
                         minimum=min(minimum,info['minimum_distance'])
                         distances.append(float(info['distance_to_goal']))

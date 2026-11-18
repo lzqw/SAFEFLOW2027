@@ -1,0 +1,40 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-payload",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_payload.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "gpu_admission": {"index": 0, "minimum_free_mib": 2600},
+  "prerequisite_receipts": [
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r3/piper_reach-R3-activation2mm-quarter75k/receipt.json", "steps": 500000},
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r3/piper_reach-Metric-only/receipt.json", "steps": 500000}
+  ],
+  "jobs": [
+    {
+      "name": "piper_payload-Payload-P5-fixed",
+      "module": "scripts.paper_crax_payload.train_payload_comparison_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_payload_round1.json", "--arm", "Payload-P5-fixed", "--parent", "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/parent/full_120000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload/piper_payload-Payload-P5-fixed",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_payload-Payload-P5-fixed.log",
+      "require_completed_receipt": true, "required_steps": 220000
+    },
+    {
+      "name": "piper_payload-Payload-activation2mm",
+      "module": "scripts.paper_crax_payload.train_payload_comparison_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_payload_round1.json", "--arm", "Payload-activation2mm", "--parent", "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/parent/full_120000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload/piper_payload-Payload-activation2mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_payload-Payload-activation2mm.log",
+      "require_completed_receipt": true, "required_steps": 220000
+    },
+    {
+      "name": "piper_payload-Payload-Metric-only",
+      "module": "scripts.paper_crax_payload.train_payload_comparison_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_payload_round1.json", "--arm", "Payload-Metric-only", "--parent", "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/parent/full_120000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload/piper_payload-Payload-Metric-only",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_payload-Payload-Metric-only.log",
+      "require_completed_receipt": true, "required_steps": 220000
+    }
+  ]
+}
