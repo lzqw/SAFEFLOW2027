@@ -1,0 +1,86 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "complete_runs": 3,
+  "completed_native_receipts": [
+    {
+      "run": "piper_reach-R0-fixed",
+      "status": "completed",
+      "steps": 500000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 58,
+        "episodes": 3317,
+        "safe_successes": 3259,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 42713,
+      "elapsed_seconds": 1376.9729988999898,
+      "source_commit": "dd0932ca6b15e356dfcfd06824d0c87656e08475",
+      "line": "piper_reach",
+      "arm": "R0-fixed",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 3259,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 34529.12616537642,
+        "training_mean_completed_plus_partial_return": 10.40974560306796
+      }
+    },
+    {
+      "run": "piper_reach-R1-ramp50k",
+      "status": "completed",
+      "steps": 500000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 94,
+        "episodes": 3344,
+        "safe_successes": 3250,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 42749,
+      "elapsed_seconds": 1385.7482253680064,
+      "source_commit": "dd0932ca6b15e356dfcfd06824d0c87656e08475",
+      "line": "piper_reach",
+      "arm": "R1-ramp50k",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 3250,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 34086.370604475225,
+        "training_mean_completed_plus_partial_return": 10.193292644878955
+      }
+    },
+    {
+      "run": "piper_reach-R1-ramp75k",
+      "status": "completed",
+      "steps": 500000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 84,
+        "episodes": 3353,
+        "safe_successes": 3269,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 42534,
+      "elapsed_seconds": 1395.6928108400025,
+      "source_commit": "dd0932ca6b15e356dfcfd06824d0c87656e08475",
+      "line": "piper_reach",
+      "arm": "R1-ramp75k",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 3269,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 34392.30850067052,
+        "training_mean_completed_plus_partial_return": 10.257175216424253
+      }
+    }
+  ],
+  "progress_rows": 300,
+  "development_nodes": 45,
+  "development_episodes": 4500,
+  "independent_test_used": false
+}

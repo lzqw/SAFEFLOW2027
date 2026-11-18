@@ -1,0 +1,51 @@
+{
+  "status": "completed",
+  "summary": [
+    {
+      "arm": "R0-fixed",
+      "episodes": 12,
+      "violations": 2,
+      "false_safe": 0,
+      "unsafe_errors_mm": [
+        -0.20177239184536455,
+        0.05385390640912091
+      ],
+      "unsafe_gradient_cosines": [
+        0.9944688596748283,
+        0.9807923288561615
+      ]
+    },
+    {
+      "arm": "R1-ramp75k",
+      "episodes": 12,
+      "violations": 2,
+      "false_safe": 0,
+      "unsafe_errors_mm": [
+        -0.18504513601949601,
+        -0.06017507305082492
+      ],
+      "unsafe_gradient_cosines": [
+        0.9953057547441613,
+        0.990015588166899
+      ]
+    }
+  ],
+  "work": [
+    {
+      "arm": "R0-fixed",
+      "controls": 402,
+      "substeps": 8040,
+      "distance_calls": 8466
+    },
+    {
+      "arm": "R1-ramp75k",
+      "controls": 406,
+      "substeps": 8120,
+      "distance_calls": 8550
+    }
+  ],
+  "new_training_steps": 0,
+  "independent_test_used": false,
+  "physical_robot_interactions": 0,
+  "counterfactual_action_selection": false
+}

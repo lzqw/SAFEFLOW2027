@@ -1,0 +1,66 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-r2",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_r2.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 1800
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "piper_reach-R2-activation2mm",
+      "module": "scripts.paper_crax_payload.train_piper_refinement_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_piper_round2.json",
+        "--arm",
+        "R2-activation2mm",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".05"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R2-activation2mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-R2-activation2mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-R1-quarter75k",
+      "module": "scripts.paper_crax_payload.train_piper_refinement_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_piper_round2.json",
+        "--arm",
+        "R1-quarter75k",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".05"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R1-quarter75k",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-R1-quarter75k.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    }
+  ]
+}
