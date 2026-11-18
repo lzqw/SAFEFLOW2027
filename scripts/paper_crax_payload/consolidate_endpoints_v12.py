@@ -9,7 +9,7 @@ from statistics import mean
 
 SOURCES = ('round1_analysis', 'round2_analysis', 'round3_analysis',
            'payload_round1_analysis', 'early_complete_analysis', 'followup_complete_analysis',
-           'boundary_complete_analysis', 'localized_complete_analysis')
+           'boundary_complete_analysis', 'localized_complete_analysis', 'panda_reference_complete_analysis')
 
 
 def read(path):
@@ -64,7 +64,8 @@ def main():
             stage_plan = {'round1_analysis': 'simulation_v12_piper_round1.json',
                 'round2_analysis': 'simulation_v12_piper_round2.json',
                 'round3_analysis': 'simulation_v12_piper_round3.json',
-                'payload_round1_analysis': 'simulation_v12_payload_round1.json'}
+                'payload_round1_analysis': 'simulation_v12_payload_round1.json',
+                'panda_reference_complete_analysis': 'simulation_v12_panda_reference.json'}
             plan_name = stage_plan.get(source)
             if source.startswith('followup_'):
                 plan_name = 'simulation_v12_followup_'+task+'.json'

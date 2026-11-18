@@ -1,0 +1,61 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-matched-offload",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_matched_offload.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "projected_additional_output_gib": 12,
+  "foreign_processes_changed": false,
+  "jobs": [
+    {
+      "name": "A-no-lateLR-2034",
+      "module": "scripts.paper_crax_payload.train_matched_ablation_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_matched_ablation.json",
+        "--arm",
+        "A-no-lateLR",
+        "--seed",
+        "2034",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-no-lateLR-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/A-no-lateLR-2034.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    },
+    {
+      "name": "A-Metric-matchedLR-2034",
+      "module": "scripts.paper_crax_payload.train_matched_ablation_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_matched_ablation.json",
+        "--arm",
+        "A-Metric-matchedLR",
+        "--seed",
+        "2034",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-Metric-matchedLR-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/A-Metric-matchedLR-2034.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    }
+  ],
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 1800
+  },
+  "training_source_commit": "2f09231b"
+}

@@ -1,0 +1,61 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "complete_runs": 2,
+  "completed_native_receipts": [
+    {
+      "run": "panda_payload-Panda-Metric-only",
+      "status": "completed",
+      "steps": 340000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 446,
+        "episodes": 5646,
+        "safe_successes": 5200,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 38528,
+      "elapsed_seconds": 5426.0029205240135,
+      "source_commit": "8da55a682e897492a6bbdf0d9ef4c56fbbfe77e1",
+      "line": "panda_payload",
+      "arm": "Panda-Metric-only",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 5204,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 55254.767214831714,
+        "training_mean_completed_plus_partial_return": 9.786533335960275
+      }
+    },
+    {
+      "run": "panda_payload-Panda-P5-fixed",
+      "status": "completed",
+      "steps": 340000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 184,
+        "episodes": 5327,
+        "safe_successes": 5143,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 40103,
+      "elapsed_seconds": 5494.557797621004,
+      "source_commit": "8da55a682e897492a6bbdf0d9ef4c56fbbfe77e1",
+      "line": "panda_payload",
+      "arm": "Panda-P5-fixed",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 5143,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 57236.01678237805,
+        "training_mean_completed_plus_partial_return": 10.744512254998696
+      }
+    }
+  ],
+  "progress_rows": 200,
+  "development_nodes": 40,
+  "development_episodes": 4000,
+  "independent_test_used": false
+}

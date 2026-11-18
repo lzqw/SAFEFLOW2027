@@ -1,13 +1,14 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。现有Reach/ Payload、SafeReach早期六臂、E3/E4均已完成，总计22个100K开发端点；尚未同时达到全部目标。E3/E4因训练超时/stall代价未被选入确认；4080接续Panda显式Metric参考，A100释放槽登记单因素几何局部化。最终模型尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。现有Reach/ Payload、SafeReach早期/E3/E4/局部化及Panda参考均已完成，共26个100K开发端点；仍未全部达标。当前A100/4080各运行两组250K匹配消融，未再扫权重/温度。最终新版本尚未确定。
 
-- [最新：局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
+- [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
+- [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)
 - [E4完整结果与A100几何局部化历史登记](SAFETY_REPLAY_FINAL_AND_LOCALIZED_LAUNCH_ZH.md)
 - [Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
 - [E3完整负结果：低违规来自大量任务放弃](BOUNDARY_REPLAY_FINAL_REVIEW_ZH.md)
-- [最新22个完整终点训练指标](consolidated_endpoints_1503/training_endpoints.csv) 与 [逐条件DEV指标](consolidated_endpoints_1503/development_endpoints.csv)
+- [最新26个完整终点训练指标](consolidated_endpoints_1632/training_endpoints.csv) 与 [逐条件DEV指标](consolidated_endpoints_1632/development_endpoints.csv)
 - [统一指标口径与缺失值说明（首批18端点快照）](CONSOLIDATED_METRICS_ZH.md)
 - [终止动作噪声归因：不同任务不宜统一降噪](TERMINAL_NOISE_REVIEW_ZH.md)
 - [安全权重局部化的历史准备记录](LOCALIZED_GEOMETRY_PREPARATION_ZH.md)（已在E3/E4完成后另行正式登记启动）

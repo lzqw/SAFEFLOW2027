@@ -1,5 +1,6 @@
 {
   "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-matched-ablation",
+  "superseded_by": "pending-only handoff: queue_matched_adopted.json on A100 and simulation_v12_queue_4080_matched_offload.json; never restart original queue",
   "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
   "slots": 2,
   "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_matched_ablation.json",

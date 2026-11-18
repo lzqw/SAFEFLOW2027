@@ -1,0 +1,85 @@
+{
+  "protocol": "v12_matched_ablation_pending_only_handoff",
+  "original_queue_pid": 786815,
+  "original_queue_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_matched_ablation.json",
+  "training_source_commit": "2f09231b",
+  "training_processes_signalled": false,
+  "training_steps_replayed": 0,
+  "unix_time": 1795019728.4702857,
+  "adopted_jobs": [
+    {
+      "name": "A-full-P5-2034",
+      "pid": 786854,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_matched_ablation_v12",
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_matched_ablation.json",
+        "--arm",
+        "A-full-P5",
+        "--seed",
+        "2034",
+        "--cuda-memory-fraction",
+        ".025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-matched-ablation/A-full-P5-2034",
+        "--source-commit",
+        "2f09231b"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-matched-ablation/A-full-P5-2034",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/A-full-P5-2034.log",
+      "status": "running",
+      "started_unix": 1795019285.1778097,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 250000,
+      "expected_module": "scripts.paper_crax_payload.train_matched_ablation_v12"
+    },
+    {
+      "name": "A-no-direction-2034",
+      "pid": 786855,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_matched_ablation_v12",
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_matched_ablation.json",
+        "--arm",
+        "A-no-direction",
+        "--seed",
+        "2034",
+        "--cuda-memory-fraction",
+        ".025",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-matched-ablation/A-no-direction-2034",
+        "--source-commit",
+        "2f09231b"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-matched-ablation/A-no-direction-2034",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/A-no-direction-2034.log",
+      "status": "running",
+      "started_unix": 1795019285.1781867,
+      "slot_id": 1,
+      "visible_devices": "1",
+      "require_completed_receipt": true,
+      "required_steps": 250000,
+      "expected_module": "scripts.paper_crax_payload.train_matched_ablation_v12"
+    }
+  ],
+  "offloaded_pending_jobs": [
+    {
+      "name": "A-no-lateLR-2034",
+      "host": "4080",
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-no-lateLR-2034"
+    },
+    {
+      "name": "A-Metric-matchedLR-2034",
+      "host": "4080",
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-Metric-matchedLR-2034"
+    }
+  ]
+}
