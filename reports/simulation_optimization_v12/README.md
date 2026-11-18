@@ -5,6 +5,7 @@
 - [最新：Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
 - [18个完整终点统一指标表与缺失值说明](CONSOLIDATED_METRICS_ZH.md)
 - [终止动作噪声归因：不同任务不宜统一降噪](TERMINAL_NOISE_REVIEW_ZH.md)
+- [待完整结果审查的单因素实现：安全权重局部化，尚未启动](LOCALIZED_GEOMETRY_PREPARATION_ZH.md)
 - [Reach第三轮、Payload首轮完整结果](ROUND3_PAYLOAD_AND_FOLLOWUP_ZH.md)
 - [Reach训练风险—任务成功关系图](piper_tradeoff_figures_v2/reach_task_risk_pareto.png) 与 [Payload配对关系图](piper_tradeoff_figures_v2/payload_task_risk_pareto.png)（单训练seed DEV，不是独立结论）
 - [完整目标证据台账与未完成事项](REQUIREMENTS_STATUS_ZH.md)
