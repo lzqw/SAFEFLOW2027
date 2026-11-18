@@ -1,8 +1,9 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach前两轮五臂、SafeReach早期六臂已完成；尚未同时达到全部目标。当前继续Reach组合与显式Metric-only、A100边界重采样及Payload对照，最终模型尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach前三轮七臂、Payload新三臂、SafeReach早期六臂已完成；尚未同时达到全部目标。当前继续Reach半强度起步、Payload4mm激活与安全专用重采样，A100全损失重采样保持完整预算。最终模型尚未确定。
 
-- [最新完整Reach与早期风险结果](ROUND2_AND_EARLY_REVIEW_ZH.md)
+- [最新：Reach第三轮、Payload完整结果与定向后续](ROUND3_PAYLOAD_AND_FOLLOWUP_ZH.md)
+- [前一轮Reach与早期风险完整结果](ROUND2_AND_EARLY_REVIEW_ZH.md)
 - [最近运行交接与仍未完成事项](OPERATIONS_20261118_ZH.md)
 - [全部早期学习曲线](early_figures/early_training_tradeoffs.png) 与 [逐条件DEV曲线](early_figures/early_development_curves.png)
 - [逐时间节点/条件与基线的描述性比较](early_pairwise/summary.json)
