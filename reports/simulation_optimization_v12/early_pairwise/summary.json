@@ -1,0 +1,28 @@
+{
+  "candidate": "P5-fixed-2033",
+  "comparisons": [
+    {
+      "baseline": "iso-2033",
+      "development_nodes": 12,
+      "development_all_metrics_no_worse_nodes": 7,
+      "training_nodes": 100,
+      "training_count_metrics_no_worse_nodes": 5,
+      "first_training_violation_excess": 4000
+    },
+    {
+      "baseline": "metric-only-2033",
+      "development_nodes": 12,
+      "development_all_metrics_no_worse_nodes": 7,
+      "training_nodes": 100,
+      "training_count_metrics_no_worse_nodes": 31,
+      "first_training_violation_excess": 4000
+    }
+  ],
+  "interpretation": "descriptive only;one training seed;no universal dominance or statistical significance claim",
+  "earliest_node": 1000,
+  "unobserved_between_nodes": true,
+  "random_prefix_may_tie": true,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false
+}
