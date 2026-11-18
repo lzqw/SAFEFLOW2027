@@ -1,8 +1,9 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach/ Payload当前端点、SafeReach早期六臂和E3两臂均已完成，总计20个100K开发端点；尚未同时达到全部目标。E3因严重超时/停滞被拒绝扩大；E4安全专用重采样运行，Panda显式Metric参考排队。最终模型尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。现有Reach/ Payload、SafeReach早期六臂、E3/E4均已完成，总计22个100K开发端点；尚未同时达到全部目标。E3/E4因训练超时/stall代价未被选入确认；4080接续Panda显式Metric参考，A100释放槽登记单因素几何局部化。最终模型尚未确定。
 
-- [最新：Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
+- [最新：E4完整结果与A100几何局部化登记](SAFETY_REPLAY_FINAL_AND_LOCALIZED_LAUNCH_ZH.md)
+- [Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
 - [E3完整负结果：低违规来自大量任务放弃](BOUNDARY_REPLAY_FINAL_REVIEW_ZH.md)
 - [最新20个完整终点训练指标](consolidated_endpoints_1453/training_endpoints.csv) 与 [逐条件DEV指标](consolidated_endpoints_1453/development_endpoints.csv)
 - [统一指标口径与缺失值说明（首批18端点快照）](CONSOLIDATED_METRICS_ZH.md)

@@ -1,0 +1,78 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-localized",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_localized.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 75161927680,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "1"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "piper_reach-Reach-local5mm-fixed2mm",
+      "module": "scripts.paper_crax_payload.train_localized_geometry_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_localized_piper_reach.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "Reach-local5mm-fixed2mm",
+        "--parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-localized/piper_reach-Reach-local5mm-fixed2mm",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_reach-Reach-local5mm-fixed2mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_payload-Payload-local5mm-fixed4mm",
+      "module": "scripts.paper_crax_payload.train_localized_geometry_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_localized_piper_payload.json",
+        "--line",
+        "piper_payload",
+        "--arm",
+        "Payload-local5mm-fixed4mm",
+        "--parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-localized/piper_payload-Payload-local5mm-fixed4mm",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_payload-Payload-local5mm-fixed4mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 220000
+    }
+  ],
+  "projected_additional_output_gib": 20,
+  "foreign_processes_changed": false,
+  "prerequisite_receipts": [
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-boundary/E3-P5-boundary4-2033/receipt.json",
+      "steps": 100000
+    },
+    {
+      "path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-boundary/E3-metric-boundary4-2033/receipt.json",
+      "steps": 100000
+    }
+  ]
+}
