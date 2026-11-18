@@ -1,0 +1,104 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-early-offload",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_early_offload.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "iso-2033",
+      "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_early.json",
+        "--arm",
+        "iso",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-early-offload/iso-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/iso-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    },
+    {
+      "name": "E1-critic20k-2033",
+      "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_early.json",
+        "--arm",
+        "E1-critic20k",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-early-offload/E1-critic20k-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E1-critic20k-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    },
+    {
+      "name": "metric-only-2033",
+      "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_early.json",
+        "--arm",
+        "metric-only",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-early-offload/metric-only-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/metric-only-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    },
+    {
+      "name": "E2-quarter75k-2033",
+      "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_early.json",
+        "--arm",
+        "E2-quarter75k",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-early-offload/E2-quarter75k-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E2-quarter75k-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    }
+  ],
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 1400
+  },
+  "prerequisite_receipts": [
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R2-activation2mm/receipt.json",
+      "steps": 500000
+    },
+    {
+      "path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R1-quarter75k/receipt.json",
+      "steps": 500000
+    }
+  ]
+}
