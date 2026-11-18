@@ -1,0 +1,39 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-r1",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_r1.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 1800},
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "jobs": [
+    {
+      "name": "piper_reach-R0-fixed",
+      "module": "scripts.paper_crax_payload.train_native_p5_warmup_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_round1.json", "--arm", "R0-fixed", "--parent", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r1/piper_reach-R0-fixed",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-R0-fixed.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-R1-ramp50k",
+      "module": "scripts.paper_crax_payload.train_native_p5_warmup_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_round1.json", "--arm", "R1-ramp50k", "--parent", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r1/piper_reach-R1-ramp50k",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-R1-ramp50k.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-R1-ramp75k",
+      "module": "scripts.paper_crax_payload.train_native_p5_warmup_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_round1.json", "--arm", "R1-ramp75k", "--parent", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt", "--assets-receipt", "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12", "--cuda-memory-fraction", ".05"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r1/piper_reach-R1-ramp75k",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-R1-ramp75k.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    }
+  ]
+}

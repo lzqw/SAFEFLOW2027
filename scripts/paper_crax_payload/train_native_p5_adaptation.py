@@ -53,10 +53,13 @@ def restore_fork_rng(state, line):
     restore_rng(mapped)
 
 
-def train(args):
+def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptation,
+          format_name=FORMAT, piper_evaluator=evaluate_piper, tracker_factory=None):
     plan = json.loads(args.plan.read_text())
     line = plan['lines'][args.line]
-    if (plan['protocol'] != 'native_task_p5_paired_adaptation_v11'
+    if protocol_validator is not None:
+        protocol_validator(plan, args)
+    elif (plan['protocol'] != 'native_task_p5_paired_adaptation_v11'
             or plan['first_stage_training_steps'] != 600000
             or plan['development_training_ceiling'] != 900000
             or plan['additional_steps_per_run'] != 100000):
@@ -84,7 +87,7 @@ def train(args):
     learner = build_native(native, line, args.device)
     learner.load_state_dict(parent['learner'])  # Original strict native guard.
     initial_identity = dict(online_actor=actor_digest(learner.actor), target_actor=actor_digest(learner.target_actor))
-    learner = attach_adaptation(learner, plan, args.line, args.arm)
+    learner = adaptation_attacher(learner, plan, args.line, args.arm)
     dim = 34 if line['robot']=='Piper' else 45
     shared = native['shared_learner']
     replay = Replay(shared['replay_capacity'], dim)
@@ -123,6 +126,7 @@ def train(args):
     partial_returns = np.zeros(len(envs)); partial_costs = np.zeros(len(envs))
     partial_lengths = np.zeros(len(envs), dtype=np.int64)
     recent = deque(maxlen=100)
+    tracker = tracker_factory(len(envs)) if tracker_factory else None
     evaluation_controls = 0
     elapsed_before = 0.
     pkeys = ('partial_returns', 'partial_costs', 'partial_lengths') if assets else (
@@ -131,7 +135,7 @@ def train(args):
         cost=float(parent[pkeys[1]][i]), length=int(parent[pkeys[2]][i])) for i in range(len(envs))]
     resumed = torch.load(args.resume, map_location='cpu', weights_only=False) if args.resume else None
     if resumed:
-        if (resumed['format'] != FORMAT or resumed['plan'] != plan or resumed['line'] != args.line
+        if (resumed['format'] != format_name or resumed['plan'] != plan or resumed['line'] != args.line
                 or resumed['arm'] != args.arm or resumed['source_commit'] != args.source_commit):
             raise ValueError('Strict identical v11 resume only')
         learner.load_state_dict(resumed['learner']); replay.load_state_dict(resumed['replay'])
@@ -141,6 +145,8 @@ def train(args):
         recent = deque(resumed['recent'], maxlen=100)
         evaluation_controls = resumed['evaluation_controls']
         elapsed_before = resumed['elapsed_seconds']
+        if tracker is not None:
+            tracker.load_state_dict(resumed['training_tracker'])
         observations = np.stack([restore(e, s) for e, s in zip(envs, resumed['environments'])])
         restore_rng(resumed['rng'])
     else:
@@ -169,6 +175,12 @@ def train(args):
         common_deployment=plan['deployment'], task_definition=envs[0].definition(),
         source_files_sha256={name:sha256(Path(__file__).with_name(name)) for name in
             ('native_p5_adaptation.py', 'train_native_p5_adaptation.py')})
+    if protocol_validator is not None:
+        import inspect
+        for callback in (protocol_validator, adaptation_attacher, piper_evaluator):
+            path = Path(inspect.getfile(callback))
+            manifest['source_files_sha256'][path.name] = sha256(path)
+        manifest['checkpoint_format'] = format_name
     atomic_json(output/('resume_manifest.json' if resumed else 'run_config.json'), manifest)
     stream = (output/'progress.jsonl').open('a' if resumed else 'x')
     last_log = last_checkpoint = steps
@@ -178,12 +190,14 @@ def train(args):
 
     def checkpoint_out(name):
         storage_check(root)
-        state = dict(format=FORMAT, plan=plan, configuration=native, line=args.line, arm=args.arm,
+        state = dict(format=format_name, plan=plan, configuration=native, line=args.line, arm=args.arm,
             source_commit=args.source_commit, steps=steps, counts=counts, prefix=prefix,
             learner=learner.state_dict(), replay=replay.state_dict(), rng=capture_rng(),
             environments=[capture(e) for e in envs], partial_returns=partial_returns.copy(),
             partial_costs=partial_costs.copy(), partial_lengths=partial_lengths.copy(), recent=list(recent),
             evaluation_controls=evaluation_controls, elapsed_seconds=elapsed())
+        if tracker is not None:
+            state['training_tracker'] = tracker.state_dict()
         temporary = output/(name+'.tmp')
         torch.save(state, temporary); temporary.replace(output/name)
 
@@ -198,6 +212,8 @@ def train(args):
                 replay.add(obs=observations[i], action=actions[i], reward=reward, next_obs=observation,
                     done=float(done or truncated), cost=info['cost'], margin=info['local_margin'])
                 steps += 1; counts['violations'] += int(info['violation'])
+                if tracker is not None:
+                    tracker.observe(i, reward, bool(done or truncated), info)
                 partial_returns[i] += reward; partial_costs[i] += info['cost']; partial_lengths[i] += 1
                 if done or truncated:
                     counts['episodes'] += 1; counts['safe_successes'] += int(info['safe_success'])
@@ -217,6 +233,8 @@ def train(args):
                     elapsed_seconds=elapsed(), segment_sps=(steps-initial_segment_steps)/max(time.monotonic()-started,1e-9),
                     recent_success=float(np.mean([r['safe_success'] for r in recent])) if recent else 0.,
                     **learner.metrics())
+                if tracker is not None:
+                    row.update(tracker.metrics())
                 if not all(np.isfinite(v) for v in row.values()):
                     raise FloatingPointError('Nonfinite training diagnostic; no automatic retry')
                 stream.write(json.dumps(row, allow_nan=False)+'\n'); stream.flush()
@@ -224,7 +242,7 @@ def train(args):
                 print(json.dumps(row), flush=True); last_log = steps
             if milestones and steps==milestones[0]:
                 with target_deployment(learner):
-                    result = (evaluate_piper(learner, evaluation, assets, line['task'],
+                    result = (piper_evaluator(learner, evaluation, assets, line['task'],
                         plan['development_episodes_per_condition'], line['development_layout_seed_start']) if assets else
                         evaluate_payload(learner, evaluation, plan['development_episodes_per_condition']))
                 controls = result.get('physical_evaluation_transitions', result.get('new_simulation_evaluation_control_intervals', 0))
@@ -236,10 +254,13 @@ def train(args):
                 checkpoint_out(f'full_new_{new_steps}.pt'); milestones.pop(0)
             if steps-last_checkpoint >= 10000 or steps==target:
                 checkpoint_out('latest_full.pt'); last_checkpoint = steps
-        atomic_json(output/'receipt.json', dict(status='completed', steps=steps,
+        receipt = dict(status='completed', steps=steps,
             new_training_steps=steps-line['parent_steps'], segment_counts={k:counts[k]-prefix[k] for k in names},
             evaluation_controls=evaluation_controls, elapsed_seconds=elapsed(), source_commit=args.source_commit,
-            line=args.line, arm=args.arm, physical_robot_interactions=0))
+            line=args.line, arm=args.arm, physical_robot_interactions=0)
+        if tracker is not None:
+            receipt['training_metrics'] = tracker.metrics()
+        atomic_json(output/'receipt.json', receipt)
         atomic_json(output/'status.json', dict(state='completed', steps=steps, new_steps=steps-line['parent_steps']))
     except BaseException as error:
         atomic_json(output/'status.json', dict(state='engineering_interruption', steps=steps,

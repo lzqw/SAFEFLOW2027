@@ -19,7 +19,11 @@ def main():
         for job in q['jobs']:
             native=Path('/proc',str(job['pid']),'cmdline')
             command=native.read_bytes() if native.exists() else b''
-            live=str(job['output']).encode() in command and b'train_native_p5_adaptation' in command
+            expected_module = 'scripts.paper_crax_payload.train_native_p5_adaptation'
+            registered = job.get('command', [])
+            if '-m' in registered:
+                expected_module = registered[registered.index('-m')+1]
+            live=str(job['output']).encode() in command and expected_module.encode() in command
             path=Path(job['output'])/'status.json'
             rows.append(dict(name=job['name'],pid=job['pid'],native_handle_live=live,
                 queue_status=job['status'],progress=json.loads(path.read_text()) if path.exists() else None))
