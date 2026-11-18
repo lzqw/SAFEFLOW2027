@@ -3,6 +3,7 @@
 用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。Reach前三轮七臂、Payload新三臂、SafeReach早期六臂已完成；尚未同时达到全部目标。当前继续Reach半强度起步、Payload4mm激活与安全专用重采样，A100全损失重采样保持完整预算。最终模型尚未确定。
 
 - [最新：Reach第三轮、Payload完整结果与定向后续](ROUND3_PAYLOAD_AND_FOLLOWUP_ZH.md)
+- [Reach训练风险—任务成功关系图](piper_tradeoff_figures_v2/reach_task_risk_pareto.png) 与 [Payload配对关系图](piper_tradeoff_figures_v2/payload_task_risk_pareto.png)（单训练seed DEV，不是独立结论）
 - [完整目标证据台账与未完成事项](REQUIREMENTS_STATUS_ZH.md)
 - [Panda显式Metric匹配参考预登记（不是新候选回归通过）](PANDA_REFERENCE_PREREGISTRATION_ZH.md)
 - [前一轮Reach与早期风险完整结果](ROUND2_AND_EARLY_REVIEW_ZH.md)
