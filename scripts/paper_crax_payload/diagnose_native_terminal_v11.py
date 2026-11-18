@@ -15,7 +15,7 @@ from scripts.paper_crax_payload.train_native_p5_adaptation import sha256, storag
 from scripts.star.arm_safe_entropy.train import atomic_json
 
 
-def main():
+def main(*, protocol_path=None):
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('plan', 'protocol', 'runs', 'assets-receipt', 'data-root', 'output'):
         p.add_argument('--'+name, type=Path, required=True)
@@ -26,38 +26,48 @@ def main():
     if (sha256(assets['source_urdf']) != assets['source_sha256']
             or sha256(assets['resolved_urdf']) != assets['resolved_sha256']):
         raise ValueError('Pinned official simulation assets changed')
-    if protocol['protocol'] != 'v11_final100k_prospective_terminal_diagnostic':
-        raise ValueError('Use the registered terminal diagnostic')
+    if protocol_path is None:
+        if protocol['protocol'] != 'v11_final100k_prospective_terminal_diagnostic':
+            raise ValueError('Use the registered terminal diagnostic')
+    elif protocol != json.loads(protocol_path.read_text()):
+        raise ValueError('Use the exact registered new terminal diagnostic')
+    if protocol.get('training_plan_sha256') and sha256(args.plan) != protocol['training_plan_sha256']:
+        raise ValueError('Retain the registered native coverage training plan')
     if not args.output.resolve().is_relative_to(args.data_root.resolve(strict=True)):
         raise ValueError('Diagnostic output must remain on the data disk')
     storage_check(args.data_root)
     cases = []
     # Require all four completed endpoints before allocating a diagnostic run.
     for line_name in protocol['lines']:
+        spec = protocol['lines'][line_name]
+        native_line = spec.get('native_line', line_name)
         for arm in protocol['arms']:
-            directory = args.runs/(line_name+'-'+arm)
+            directory = args.runs/(spec.get('run_prefix', native_line)+'-'+arm)
             receipt = json.loads((directory/'receipt.json').read_text())
             if receipt['status'] != 'completed' or receipt['new_training_steps'] != 100000:
                 raise ValueError('Wait for full new100K endpoints')
-            cases.append(dict(line=line_name, arm=arm, checkpoint=str(directory/'full_new_100000.pt'),
+            cases.append(dict(line=line_name, native_line=native_line, arm=arm, checkpoint=str(directory/'full_new_100000.pt'),
                 checkpoint_sha256=sha256(directory/'full_new_100000.pt'),
                 receipt_sha256=sha256(directory/'receipt.json')))
+            if (protocol.get('checkpoint_sha256') and
+                    cases[-1]['checkpoint_sha256'] != protocol['checkpoint_sha256'][arm]):
+                raise ValueError('Require the registered coverage final endpoint')
     args.output.mkdir(parents=True, exist_ok=False)
     atomic_json(args.output/'registration.json', dict(protocol=protocol, cases=cases,
         source_commit=args.source_commit, automatic_retry=False, independent_test_used=False))
     visits, terminals, work = [], [], []
     for case in cases:
-        line_name, arm = case['line'], case['arm']; line = plan['lines'][line_name]
+        line_name, arm = case['line'], case['arm']; line = plan['lines'][case['native_line']]
         spec = protocol['lines'][line_name]
         saved = torch.load(case['checkpoint'], map_location='cpu', weights_only=False)
-        if (saved['format'] != FORMAT or saved['line'] != line_name or saved['arm'] != arm
+        if (saved['format'] != FORMAT or saved['line'] != case['native_line'] or saved['arm'] != arm
                 or saved['steps'] != line['parent_steps']+100000 or saved['plan'] != plan):
             raise ValueError('Only the identical registered fixed100K native checkpoint is admitted')
         native = saved['configuration']
         if native['model_commit'] != assets['model_commit']:
             raise ValueError('Checkpoint and official Piper asset commit differ')
         learner = build_native(native, line, 'cpu'); learner.set_transitions(line['parent_steps'])
-        attach_adaptation(learner, plan, line_name, arm); learner.load_state_dict(saved['learner'])
+        attach_adaptation(learner, plan, case['native_line'], arm); learner.load_state_dict(saved['learner'])
         del saved
         learner.actor.requires_grad_(False); learner.target_actor.requires_grad_(False)
         learner.margin_geometry.requires_grad_(False)
