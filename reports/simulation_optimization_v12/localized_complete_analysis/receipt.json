@@ -1,0 +1,61 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "complete_runs": 2,
+  "completed_native_receipts": [
+    {
+      "run": "piper_payload-Payload-local5mm-fixed4mm",
+      "status": "completed",
+      "steps": 220000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 162,
+        "episodes": 2988,
+        "safe_successes": 2824,
+        "safe_timeouts": 2
+      },
+      "evaluation_controls": 67004,
+      "elapsed_seconds": 4329.677192154806,
+      "source_commit": "d001ab7b",
+      "line": "piper_payload",
+      "arm": "Payload-local5mm-fixed4mm",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2824,
+        "training_stall_episodes": 7,
+        "training_stall_windows": 186,
+        "training_cumulative_return": 28685.349762711296,
+        "training_mean_completed_plus_partial_return": 9.60018399019789
+      }
+    },
+    {
+      "run": "piper_reach-Reach-local5mm-fixed2mm",
+      "status": "completed",
+      "steps": 500000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 102,
+        "episodes": 3409,
+        "safe_successes": 3307,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 41233,
+      "elapsed_seconds": 3940.461848922074,
+      "source_commit": "d001ab7b",
+      "line": "piper_reach",
+      "arm": "Reach-local5mm-fixed2mm",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 3307,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 34641.00582769407,
+        "training_mean_completed_plus_partial_return": 10.161632686328563
+      }
+    }
+  ],
+  "progress_rows": 200,
+  "development_nodes": 35,
+  "development_episodes": 3500,
+  "independent_test_used": false
+}

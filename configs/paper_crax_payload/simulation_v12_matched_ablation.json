@@ -1,0 +1,100 @@
+{
+  "protocol": "simulation_v12_fresh250k_matched_mechanism_ablation",
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "num_envs": 2,
+  "development_training_seeds": [
+    2034
+  ],
+  "steps_per_run": 250000,
+  "new_training_steps_registered": 1000000,
+  "total_budget_cap": null,
+  "contact_response_gate_required": false,
+  "arms": [
+    {
+      "name": "A-full-P5",
+      "component": "full",
+      "normal_shrink": true,
+      "direction_weight": 1,
+      "late_actor_lr_decay": true
+    },
+    {
+      "name": "A-no-direction",
+      "component": "full",
+      "normal_shrink": true,
+      "direction_weight": 0,
+      "late_actor_lr_decay": true
+    },
+    {
+      "name": "A-no-lateLR",
+      "component": "full",
+      "normal_shrink": true,
+      "direction_weight": 1,
+      "late_actor_lr_decay": false
+    },
+    {
+      "name": "A-Metric-matchedLR",
+      "component": "metric_only",
+      "normal_shrink": false,
+      "direction_weight": 0,
+      "late_actor_lr_decay": true
+    }
+  ],
+  "shared_learner": {
+    "actor_lr": 0.0001,
+    "critic_lr": 0.0003,
+    "batch_size": 256,
+    "replay_capacity": 150000,
+    "random_transitions": 2000,
+    "critic_only_updates": 1000,
+    "actor_update_interval": 2,
+    "reference_variance": 0.04,
+    "energy_target": 18.75,
+    "flow_steps": 4,
+    "width": 128,
+    "utd": 1,
+    "reward_updates_per_round": 2,
+    "target_samples": 4
+  },
+  "geometry": {
+    "ema_tau": 0.005,
+    "ramp_start": 10000,
+    "ramp_end": 30000
+  },
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "evaluation": {
+    "split": "development_only_even_at_final",
+    "milestones": [
+      25000,
+      50000,
+      75000,
+      100000,
+      150000,
+      200000,
+      250000
+    ],
+    "development_layout_seed_start": 11910000,
+    "action_seed": 11920000,
+    "development_episodes_each": 30,
+    "conditions": [
+      {
+        "name": "nominal",
+        "radius": 0.06,
+        "action_scale": 1
+      },
+      {
+        "name": "radius065",
+        "radius": 0.065,
+        "action_scale": 1
+      },
+      {
+        "name": "execution085",
+        "radius": 0.06,
+        "action_scale": 0.85
+      }
+    ]
+  },
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "physical_robot_interactions": 0,
+  "scientific_purpose": "matched_mechanism_attribution_not_winner_confirmation"
+}

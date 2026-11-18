@@ -1,0 +1,111 @@
+{
+  "completed_runs": 24,
+  "completed_new_training_transitions": 2400000,
+  "development_endpoint_conditions": 77,
+  "development_endpoint_episodes": 5600,
+  "excluded_partial_runs": [],
+  "provenance": [
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/receipt.json",
+      "sha256": "acef485d2e78c7c55527032a90fc7b6e5bccd8c55045dee1dc871f535f97cda6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/training.csv",
+      "sha256": "b69c973f7a845bcc301404aecaaca21a0dd99942b94f9e62970ccc0975e08cff"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round1_analysis/dev_episodes.csv",
+      "sha256": "404e9dcd536e2743f6f6e8dace3a347dbf0703ac18b06d2017eeb84fbe4897a2"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/receipt.json",
+      "sha256": "5d0f31e8a824cc02dfa6e7ed601ecc5a2f6bed8baffb853deef2553713863a2f"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/training.csv",
+      "sha256": "9afafeefe4df55c7d9e9a90397cf79332f9c49b70354939d889988236904081e"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round2_analysis/dev_episodes.csv",
+      "sha256": "5150e90801790f94b50202a8e9e262ea5fddd03060c456e40ff0f7e593871099"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/receipt.json",
+      "sha256": "e7df09cbbefcea2aa161dec2eea89075e7037185b22063886991c9e84bb711eb"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/training.csv",
+      "sha256": "212f2fd153dda39676bbf9af69576624e32274bc2c8fdd73d9f2934cd5394acc"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/round3_analysis/dev_episodes.csv",
+      "sha256": "b320c38e5d2bd7b151c9a72d154bec6d3c7f73df029a1abcd189f2e723802e1e"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/receipt.json",
+      "sha256": "e6b58ea9beead8033aca24763fc82c5d2a78915127734ac0863d1729402042cc"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/training.csv",
+      "sha256": "caa22b16ce694ff22fa90ca8e8ad9e09c46d7d68d8d80cf2dfdad6a7c281bcb6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/payload_round1_analysis/dev_episodes.csv",
+      "sha256": "50faf3d46f7cd59d68a826caed6546bb4c0c9691389415b10954f0ca3eaf35d9"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/receipt.json",
+      "sha256": "8e2243c5cbe31b8743a30909de34bb3c658ad89c5f78dbe6753ba802bc913ec6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/training.csv",
+      "sha256": "094b137de827a9edae25278e2bf593c74a0d45aff3d1b13dec88c0b9c1166a07"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/early_complete_analysis/dev_episodes.csv",
+      "sha256": "0c7885baf0278a9c5406d9013f171c2c8d1a43470f03ceebd0ae13faa6f22f64"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_complete_analysis/receipt.json",
+      "sha256": "9ec3b452658da4304575f4c753db6f475b048480eaafaac3166ab5653baf33fa"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_complete_analysis/training.csv",
+      "sha256": "e86f96d8585537a6a10154a37765af1296dfd888f938c3a57058dcfdee4c92e0"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/followup_complete_analysis/dev_episodes.csv",
+      "sha256": "a4885383a7aee8abcf63f3c8ae6263207dd98b82c48185ae64938e22f551cbc9"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/boundary_complete_analysis/receipt.json",
+      "sha256": "98b8d0e94f09fd5344325d0f408f13a30456d943e09e72f0e9ffae9fdf479e08"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/boundary_complete_analysis/training.csv",
+      "sha256": "b44b313a1a809c08a0ab2541a52c7370c495bc478ca2e17c54029e0d8fb56be6"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/boundary_complete_analysis/dev_episodes.csv",
+      "sha256": "4ede7348568b13abecb7b4f021e90b32c17367d35020e194b0f5651d2bb9a2eb"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/localized_complete_analysis/receipt.json",
+      "sha256": "3cd6924df70d73036a6d2f25cbbf063c5e1257f617a9fa3206dcef5cdc18328f"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/localized_complete_analysis/training.csv",
+      "sha256": "b430a4426256e6323243ffd411f51b3865b45ed44b490245497c258bc1931899"
+    },
+    {
+      "source": "reports/simulation_optimization_v12/localized_complete_analysis/dev_episodes.csv",
+      "sha256": "6dc6412674a8048647926d081a54a1962368d3ec6a09c9e2a17e065b59eafacf"
+    }
+  ],
+  "missing_metrics": "blank_not_zero",
+  "inference_aggregation": "mean of per-episode action quantiles;not pooled action latency quantiles",
+  "task_duration_is_not_inference_latency": true,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "evaluation_scope": "DEV_only;one_training_seed_per_task;no_crossseed_or_independent_claim"
+}

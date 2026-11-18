@@ -9,7 +9,7 @@ from statistics import mean
 
 SOURCES = ('round1_analysis', 'round2_analysis', 'round3_analysis',
            'payload_round1_analysis', 'early_complete_analysis', 'followup_complete_analysis',
-           'boundary_complete_analysis')
+           'boundary_complete_analysis', 'localized_complete_analysis')
 
 
 def read(path):
@@ -68,6 +68,8 @@ def main():
             plan_name = stage_plan.get(source)
             if source.startswith('followup_'):
                 plan_name = 'simulation_v12_followup_'+task+'.json'
+            if source == 'localized_complete_analysis':
+                plan_name = 'simulation_v12_localized_'+task+'.json'
             if native:
                 plan_path = args.reports.parents[1]/'configs/paper_crax_payload'/plan_name
                 seed = json.loads(plan_path.read_text())['lines'][task]['seed']
