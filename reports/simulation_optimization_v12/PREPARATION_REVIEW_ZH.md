@@ -1,5 +1,7 @@
 # v12仿真优化：来源核对、可复用实现与尚未解除的启动条件
 
+**后续授权已解除阻塞：**用户明确“预算额度不用管，你可以进行piper的仿真实验，gate不用管”。已按此启动[原生Piper三分支](ROUND1_PREREGISTRATION_ZH.md)和[SafeReach早期风险对照](EARLY_SCREEN_PREREGISTRATION_ZH.md)。不再要求旧接触响应gate，原始任务安全阈值/终止规则照常。下文保留启动前核对历史，不代表现在仍等待澄清。
+
 用户新任务全文：`/home/lzqw/.codex/attachments/e762b0ce-0e8e-4212-8f39-9f92ec6011a5/pasted-text-1.txt`，SHA256 `2afd0391ea89a1e0c433446dbae3e9ba6259b5f591f082c30e36cbe5cea577af`。本文件不是训练登记，也不表示已通过任务目标；没有启动候选训练或消耗新的训练预算。
 
 ## 已从原报告与实现核对
