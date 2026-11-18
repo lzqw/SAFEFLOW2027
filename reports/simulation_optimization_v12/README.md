@@ -5,10 +5,10 @@
 - [最新：E4完整结果与A100几何局部化登记](SAFETY_REPLAY_FINAL_AND_LOCALIZED_LAUNCH_ZH.md)
 - [Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
 - [E3完整负结果：低违规来自大量任务放弃](BOUNDARY_REPLAY_FINAL_REVIEW_ZH.md)
-- [最新20个完整终点训练指标](consolidated_endpoints_1453/training_endpoints.csv) 与 [逐条件DEV指标](consolidated_endpoints_1453/development_endpoints.csv)
+- [最新22个完整终点训练指标](consolidated_endpoints_1503/training_endpoints.csv) 与 [逐条件DEV指标](consolidated_endpoints_1503/development_endpoints.csv)
 - [统一指标口径与缺失值说明（首批18端点快照）](CONSOLIDATED_METRICS_ZH.md)
 - [终止动作噪声归因：不同任务不宜统一降噪](TERMINAL_NOISE_REVIEW_ZH.md)
-- [待完整结果审查的单因素实现：安全权重局部化，尚未启动](LOCALIZED_GEOMETRY_PREPARATION_ZH.md)
+- [安全权重局部化的历史准备记录](LOCALIZED_GEOMETRY_PREPARATION_ZH.md)（已在E3/E4完成后另行正式登记启动）
 - [Reach第三轮、Payload首轮完整结果](ROUND3_PAYLOAD_AND_FOLLOWUP_ZH.md)
 - [Reach训练风险—任务成功关系图](piper_tradeoff_figures_v2/reach_task_risk_pareto.png) 与 [Payload配对关系图](piper_tradeoff_figures_v2/payload_task_risk_pareto.png)（单训练seed DEV，不是独立结论）
 - [完整目标证据台账与未完成事项](REQUIREMENTS_STATUS_ZH.md)
