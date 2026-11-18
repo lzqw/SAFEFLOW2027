@@ -1,0 +1,61 @@
+{
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "complete_runs": 2,
+  "completed_native_receipts": [
+    {
+      "run": "piper_payload-Payload-activation4mm",
+      "status": "completed",
+      "steps": 220000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 108,
+        "episodes": 2838,
+        "safe_successes": 2730,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 72043,
+      "elapsed_seconds": 1692.7950197379978,
+      "source_commit": "99ee0f0df8d7d4cf3996fafa3d4c81c3a61bc246",
+      "line": "piper_payload",
+      "arm": "Payload-activation4mm",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 2730,
+        "training_stall_episodes": 2,
+        "training_stall_windows": 2,
+        "training_cumulative_return": 28174.53150801749,
+        "training_mean_completed_plus_partial_return": 9.927600954199256
+      }
+    },
+    {
+      "run": "piper_reach-Reach-half75k-activation2mm",
+      "status": "completed",
+      "steps": 500000,
+      "new_training_steps": 100000,
+      "segment_counts": {
+        "violations": 75,
+        "episodes": 3340,
+        "safe_successes": 3265,
+        "safe_timeouts": 0
+      },
+      "evaluation_controls": 42776,
+      "elapsed_seconds": 1406.8667365920264,
+      "source_commit": "99ee0f0df8d7d4cf3996fafa3d4c81c3a61bc246",
+      "line": "piper_reach",
+      "arm": "Reach-half75k-activation2mm",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 3265,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 34435.64725352308,
+        "training_mean_completed_plus_partial_return": 10.31007402800092
+      }
+    }
+  ],
+  "progress_rows": 232,
+  "development_nodes": 35,
+  "development_episodes": 3500,
+  "independent_test_used": false
+}

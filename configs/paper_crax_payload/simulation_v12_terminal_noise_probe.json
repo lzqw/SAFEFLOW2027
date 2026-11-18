@@ -1,0 +1,64 @@
+{
+  "protocol": "simulation_v12_terminal_noise_attribution",
+  "episodes_per_case": 12,
+  "cases": [
+    {
+      "name": "Reach-fixed2mm",
+      "line": "piper_reach",
+      "arm": "R2-activation2mm",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R2-activation2mm/full_new_100000.pt",
+      "checkpoint_sha256": "720a0f1ba93bad71ac44fe6be4aed49a38aa39de4219827421ade6c6b58aeb62",
+      "receipt": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-r2/piper_reach-R2-activation2mm/receipt.json",
+      "module": "scripts.paper_crax_payload.train_piper_refinement_v12",
+      "plan": "configs/paper_crax_payload/simulation_v12_piper_round2.json",
+      "radius_m": 0.06,
+      "layout_seed_start": 11890000,
+      "action_seed_start": 11891000
+    },
+    {
+      "name": "Reach-half75k",
+      "line": "piper_reach",
+      "arm": "Reach-half75k-activation2mm",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_reach-Reach-half75k-activation2mm/full_new_100000.pt",
+      "checkpoint_sha256": "94ddf550dd9388fc3cf8ab1b8eb2ee7c8282a0b0287355da9c257199c17005f5",
+      "receipt": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_reach-Reach-half75k-activation2mm/receipt.json",
+      "module": "scripts.paper_crax_payload.train_piper_followup_v12",
+      "plan": "configs/paper_crax_payload/simulation_v12_followup_piper_reach.json",
+      "radius_m": 0.06,
+      "layout_seed_start": 11890000,
+      "action_seed_start": 11891000
+    },
+    {
+      "name": "Payload-fixed",
+      "line": "piper_payload",
+      "arm": "Payload-P5-fixed",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload/piper_payload-Payload-P5-fixed/full_new_100000.pt",
+      "checkpoint_sha256": "7b9fd98ad299f6944cf17fde97c952e3e92668b5e63cbf8bb93a9dc804ca90eb",
+      "receipt": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload/piper_payload-Payload-P5-fixed/receipt.json",
+      "module": "scripts.paper_crax_payload.train_payload_comparison_v12",
+      "plan": "configs/paper_crax_payload/simulation_v12_payload_round1.json",
+      "radius_m": 0.0575,
+      "layout_seed_start": 11892000,
+      "action_seed_start": 11893000
+    },
+    {
+      "name": "Payload-4mm",
+      "line": "piper_payload",
+      "arm": "Payload-activation4mm",
+      "checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_payload-Payload-activation4mm/full_new_100000.pt",
+      "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+      "receipt": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_payload-Payload-activation4mm/receipt.json",
+      "module": "scripts.paper_crax_payload.train_piper_followup_v12",
+      "plan": "configs/paper_crax_payload/simulation_v12_followup_piper_payload.json",
+      "radius_m": 0.0575,
+      "layout_seed_start": 11892000,
+      "action_seed_start": 11893000
+    }
+  ],
+  "new_training_steps": 0,
+  "independent_test_used": false,
+  "physical_robot_interactions": 0,
+  "counterfactual_action_selection": false,
+  "selection": "all12newDEVlayouts_allterminalfailuresandsuccesses_noreplacements",
+  "CPU_only": true
+}
