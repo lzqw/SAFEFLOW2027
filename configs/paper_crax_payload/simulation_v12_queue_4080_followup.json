@@ -1,0 +1,106 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-followup",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_followup.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0"
+    }
+  ],
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2600
+  },
+  "jobs": [
+    {
+      "name": "piper_reach-Reach-half75k-activation2mm",
+      "module": "scripts.paper_crax_payload.train_piper_followup_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_followup_piper_reach.json",
+        "--line",
+        "piper_reach",
+        "--arm",
+        "Reach-half75k-activation2mm",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/parents/piper_reach_full_400000.pt",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".05"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_reach-Reach-half75k-activation2mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_reach-Reach-half75k-activation2mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 500000
+    },
+    {
+      "name": "piper_payload-Payload-activation4mm",
+      "module": "scripts.paper_crax_payload.train_piper_followup_v12",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_followup_piper_payload.json",
+        "--line",
+        "piper_payload",
+        "--arm",
+        "Payload-activation4mm",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/parent/full_120000.pt",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--cuda-memory-fraction",
+        ".05"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/piper_payload-Payload-activation4mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/piper_payload-Payload-activation4mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 220000
+    },
+    {
+      "name": "E4-P5-safety-boundary4-2033",
+      "module": "scripts.paper_crax_payload.train_safety_replay_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_safety_replay.json",
+        "--arm",
+        "E4-P5-safety-boundary4",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/E4-P5-safety-boundary4-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E4-P5-safety-boundary4-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    },
+    {
+      "name": "E4-metric-safety-boundary4-2033",
+      "module": "scripts.paper_crax_payload.train_safety_replay_v12",
+      "arguments": [
+        "--config",
+        "configs/paper_crax_payload/simulation_v12_safereach_safety_replay.json",
+        "--arm",
+        "E4-metric-safety-boundary4",
+        "--seed",
+        "2033",
+        "--cuda-memory-fraction",
+        ".04"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-followup/E4-metric-safety-boundary4-2033",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E4-metric-safety-boundary4-2033.log",
+      "require_completed_receipt": true,
+      "required_steps": 100000
+    }
+  ]
+}

@@ -20,8 +20,8 @@ class DirectionWarmup:
     def __post_init__(self):
         if type(self.ramp_steps) is not int or self.ramp_steps not in (0, 50000, 75000):
             raise ValueError('Use fixed P5 or a separately registered 50K/75K ramp')
-        if self.initial_fraction not in (0., .25):
-            raise ValueError('Use the proposed zero or quarter-strength initial coefficient')
+        if self.initial_fraction not in (0., .25, .5):
+            raise ValueError('Use a registered zero, quarter or half-strength initial coefficient')
         if self.ramp_steps == 0 and self.initial_fraction != 0.:
             raise ValueError('Fixed P5 has no warm-up initial fraction')
 

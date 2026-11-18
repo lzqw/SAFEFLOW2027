@@ -1,0 +1,89 @@
+{
+  "protocol": "simulation_v12_followup_piper_payload",
+  "optional_candidate": "piper_payload_radius_cover",
+  "authorization": {
+    "piper_simulation": true,
+    "contact_response_gate_required": false,
+    "total_budget_cap": null
+  },
+  "additional_steps_per_run": 100000,
+  "arms": [
+    "Payload-activation4mm"
+  ],
+  "candidates": {
+    "Payload-activation4mm": {
+      "component": "full",
+      "ramp_steps": 0,
+      "initial_fraction": 0,
+      "activation_offset_m": 0.004
+    }
+  },
+  "actor_lr": {
+    "initial": 0.0001,
+    "floor": 0.00003,
+    "start": 60000,
+    "end": 80000
+  },
+  "p5": {
+    "direction_weight": 1,
+    "rho": 0.25,
+    "tangential_variance": 0.04
+  },
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [
+    20000,
+    40000,
+    60000,
+    80000,
+    100000
+  ],
+  "development_episodes_per_condition": 100,
+  "independent_requires_separate_freeze": true,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "lines": {
+    "piper_payload": {
+      "robot": "Piper",
+      "task": "Payload",
+      "seed": 41027,
+      "parent_steps": 120000,
+      "parent_rng_cuda_index": 1,
+      "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/home/carla/4T/SAFEFLOW2027_PERFORMANCE_GAPS_V11/optional_payload_cover/parent/full_120000.pt",
+      "parent_sha256": "b4410cb9d0651cbb8b74ac7e98ff28290887e68c317c810b6156db4178a3ff75",
+      "training_radius_values": [
+        0.045,
+        0.05,
+        0.055
+      ],
+      "development_layout_seed_start": 11870000,
+      "action_sampling_seed": 11871000,
+      "conditions": [
+        {
+          "name": "nominal",
+          "simulation_overrides": {}
+        },
+        {
+          "name": "radius_055",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.055
+          }
+        },
+        {
+          "name": "radius_0575",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.0575
+          }
+        },
+        {
+          "name": "execution_scale_085",
+          "simulation_overrides": {},
+          "action_scale": 0.85
+        }
+      ]
+    }
+  },
+  "line_arms": {
+    "piper_payload": "Payload-activation4mm"
+  }
+}

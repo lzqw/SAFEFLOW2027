@@ -25,7 +25,6 @@ class BoundaryReplay(Replay):
         self.previous_margin = [None, None]
         self.writes = self.sampled = self.priority_sampled = 0
         self.pending = None
-
     def add(self, **values):
         if self.pending is not None:
             raise ValueError('Observe the previous real transition before adding another')
@@ -114,3 +113,19 @@ class BoundaryReplay(Replay):
         self.previous_margin = meta['previous_margin'].copy()
         self.writes, self.sampled, self.priority_sampled = (meta[k] for k in ('writes', 'sampled', 'priority_sampled'))
         self.pending = None
+
+
+class SafetyOnlyBoundaryReplay(BoundaryReplay):
+    """Keep native actor/reward sampling; prioritize only the safety batch."""
+    def sample(self, batch_size, device, recent=False):
+        ordinary = Replay.sample(self, batch_size, device, recent=recent)
+        ordinary['safety_batch'] = super().sample(batch_size, device, recent=recent)
+        return ordinary
+
+    def state_dict(self):
+        return super().state_dict() | dict(safety_only_boundary_replay_v12=True)
+
+    def load_state_dict(self, state):
+        if state.get('safety_only_boundary_replay_v12') is not True:
+            raise ValueError('Only identical safety-only replay resumes are admitted')
+        super().load_state_dict(state)

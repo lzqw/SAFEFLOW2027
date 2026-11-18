@@ -84,27 +84,29 @@ class StableArmLearner(ArmLearner):
         """Opt-in saved-label emphasis; None preserves the original exact path."""
         return None
 
-    def update(self, batch):
+    def update(self, batch, *, safety_batch=None):
         obs,action,reward,next_obs,done = [batch[k] for k in ('obs','action','reward','next_obs','done')]
+        safety = batch if safety_batch is None else safety_batch
+        safety_obs,safety_action,safety_next_obs,safety_done = [safety[k] for k in ('obs','action','next_obs','done')]
         alpha = self.log_alpha.detach().exp()
         margin_loss = torch.zeros((),device=self.device)
         # geometry is NEVER updated here: online margin training cannot change
         # the geometry used inside either reward update or the Actor update.
         if hasattr(self,'margin_online'):
-            predicted = self.margin_online(obs,action)
+            predicted = self.margin_online(safety_obs,safety_action)
             mask = (torch.rand_like(predicted) < .8).to(predicted.dtype)
-            emphasis = self.margin_supervision_weights(batch)
+            emphasis = self.margin_supervision_weights(safety)
             if emphasis is not None:
                 mask = mask * emphasis
-            margin_loss = ((predicted-batch['margin']).square()*mask).sum()/mask.sum().clamp_min(1.)
+            margin_loss = ((predicted-safety['margin']).square()*mask).sum()/mask.sum().clamp_min(1.)
             self.margin_opt.zero_grad(set_to_none=True)
             margin_loss.backward()
             nn.utils.clip_grad_norm_(self.margin_online.parameters(),10.)
             self.margin_opt.step()
         with torch.no_grad():
-            cost_action,_,_ = self.actor(next_obs,geometry=self.geometry)
-            cost_target = batch['cost']+(1.-done)*self.cost_qt(next_obs,cost_action).mean(0)
-        cost_loss = (self.cost_q(obs,action)-cost_target).square().mean()
+            cost_action,_,_ = self.actor(safety_next_obs,geometry=self.geometry)
+            cost_target = safety['cost']+(1.-safety_done)*self.cost_qt(safety_next_obs,cost_action).mean(0)
+        cost_loss = (self.cost_q(safety_obs,safety_action)-cost_target).square().mean()
         self.cost_opt.zero_grad(set_to_none=True)
         cost_loss.backward()
         nn.utils.clip_grad_norm_(self.cost_q.parameters(),10.)
