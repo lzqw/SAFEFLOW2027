@@ -1,0 +1,68 @@
+{
+  "status": "completed",
+  "summary": [
+    {
+      "case": "Reach-fixed2mm",
+      "episodes": 12,
+      "violations": 2,
+      "sampled_unsafe_clean_safe": 1,
+      "unsafe_mean_vn_over_vt": 0.6207736730575562,
+      "unsafe_mean_weight": 0.505635142326355
+    },
+    {
+      "case": "Reach-half75k",
+      "episodes": 12,
+      "violations": 1,
+      "sampled_unsafe_clean_safe": 1,
+      "unsafe_mean_vn_over_vt": 0.60402512550354,
+      "unsafe_mean_weight": 0.5279664993286133
+    },
+    {
+      "case": "Payload-fixed",
+      "episodes": 12,
+      "violations": 2,
+      "sampled_unsafe_clean_safe": 0,
+      "unsafe_mean_vn_over_vt": 0.6229634284973145,
+      "unsafe_mean_weight": 0.5027153939008713
+    },
+    {
+      "case": "Payload-4mm",
+      "episodes": 12,
+      "violations": 1,
+      "sampled_unsafe_clean_safe": 0,
+      "unsafe_mean_vn_over_vt": 0.584507405757904,
+      "unsafe_mean_weight": 0.5539901256561279
+    }
+  ],
+  "work": [
+    {
+      "case": "Reach-fixed2mm",
+      "controls": 321,
+      "physics_substeps": 6420,
+      "distance_calls": 6769
+    },
+    {
+      "case": "Reach-half75k",
+      "controls": 348,
+      "physics_substeps": 6960,
+      "distance_calls": 7336
+    },
+    {
+      "case": "Payload-fixed",
+      "controls": 383,
+      "physics_substeps": 7660,
+      "distance_calls": 8067
+    },
+    {
+      "case": "Payload-4mm",
+      "controls": 399,
+      "physics_substeps": 7980,
+      "distance_calls": 8403
+    }
+  ],
+  "new_training_steps": 0,
+  "independent_test_used": false,
+  "physical_robot_interactions": 0,
+  "counterfactual_action_selection": false,
+  "interpretation": "same terminal state action comparison only;not whole-policy deterministic evaluation or unique causal proof"
+}
