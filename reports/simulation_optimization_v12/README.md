@@ -5,6 +5,7 @@
 - [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
 - [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)
+- [250K完整消融的分析口径与硬件限制](ABLATION_ANALYSIS_RULES_ZH.md)
 - [E4完整结果与A100几何局部化历史登记](SAFETY_REPLAY_FINAL_AND_LOCALIZED_LAUNCH_ZH.md)
 - [Reach半强度与Payload4mm完整终点](FOLLOWUP_REVIEW_1357_ZH.md)
 - [E3完整负结果：低违规来自大量任务放弃](BOUNDARY_REPLAY_FINAL_REVIEW_ZH.md)
