@@ -124,7 +124,9 @@ def plot_gradient_curves(config, gradients, output):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    fig, axes = plt.subplots(2, 3, figsize=(13, 7), sharex=True, sharey='row')
+    columns = len(config['arms'])
+    fig, axes = plt.subplots(2, columns, figsize=(13*columns/3, 7),
+                             sharex=True, sharey='row', squeeze=False)
     for column, arm in enumerate(config['arms']):
         rows = [r for r in gradients if r['arm'] == arm['name']]
         steps = [r['absolute_steps']/1000 for r in rows]

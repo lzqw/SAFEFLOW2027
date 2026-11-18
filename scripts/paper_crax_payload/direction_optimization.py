@@ -18,13 +18,20 @@ def cosine_value(step, schedule, initial):
         initial-schedule.get('floor', schedule.get('final'))) * .5*(1.+math.cos(math.pi*x))
 
 
-def validate_config(config):
+def registered_development(config):
     from pathlib import Path
     import json
-    registered = json.loads(Path(__file__).resolve().parents[2].joinpath(
-        'configs/paper_crax_payload/direction_optimization_v7.json').read_text())
-    if config != registered:
-        raise ValueError('Use the complete registered round; later candidates require a new preregistration')
+    root = Path(__file__).resolve().parents[2]/'configs/paper_crax_payload'
+    for name in ('direction_optimization_v7.json', 'direction_optimization_v7_round2.json',
+                 'direction_optimization_v7_round3.json'):
+        path = root/name
+        if path.exists() and json.loads(path.read_text()) == config:
+            return path
+    raise ValueError('Use the complete registered round; later candidates require a new preregistration')
+
+
+def validate_config(config):
+    registered_development(config)
     budget = config['budget']
     if (budget['development_ceiling'] != 750000 or budget['confirmation_reserved'] != 1500000
             or sum(budget[k] for k in ('historical_v5','historical_v6','development_ceiling','confirmation_reserved')) != 3450000
