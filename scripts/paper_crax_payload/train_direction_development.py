@@ -48,7 +48,8 @@ def validate_config(config):
         raise ValueError('Use the registered reliability/ramp without additional tuning')
 
 
-def main(*, validator=validate_config, builder=build_development, format_name=FORMAT):
+def main(*, validator=validate_config, builder=build_development, format_name=FORMAT,
+         evaluator=development_evaluation, tracker_factory=None):
     from scripts.paper_crax_payload.train_component_study import initial_digest
     from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
     from scripts.star.arm_safe_entropy.train import Replay, atomic_json
@@ -80,6 +81,7 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
     steps = episodes = violations = successes = timeouts = evaluation_controls = 0
     episode_ids = [0, 0]; lengths = [0, 0]; returns = [0., 0.]
     evaluations = []; prior_elapsed = 0.; started = time.monotonic(); stop_requested = False
+    tracker = tracker_factory(2) if tracker_factory else None
     resume = None
     if args.resume:
         status = json.loads((args.output/'status.json').read_text())
@@ -96,6 +98,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             resume[k] for k in ('steps', 'episodes', 'violations', 'successes', 'timeouts', 'evaluation_controls'))
         episode_ids, lengths, returns = (resume[k] for k in ('episode_ids', 'lengths', 'returns'))
         evaluations = resume['evaluations']; prior_elapsed = resume['elapsed_seconds']
+        if tracker is not None:
+            tracker.load_state_dict(resume['training_tracker'])
     else:
         args.output.mkdir()
         atomic_json(args.output/'run_config.json', dict(format=format_name, configuration=config, arm=arm,
@@ -125,6 +129,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             steps=steps, episodes=episodes, violations=violations, successes=successes, timeouts=timeouts,
             evaluation_controls=evaluation_controls, evaluations=evaluations.copy(),
             episode_ids=episode_ids.copy(), lengths=lengths.copy(), returns=returns.copy(), elapsed_seconds=elapsed())
+        if tracker is not None:
+            state['training_tracker'] = tracker.state_dict()
         temporary = args.output/(name+'.tmp'); torch.save(state, temporary); temporary.replace(args.output/name)
     def request_stop(signum, frame):
         nonlocal stop_requested
@@ -153,6 +159,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 replay.add(obs=observations[index], action=action, reward=reward, next_obs=obs,
                     done=float(done or truncated), cost=info['cost'], margin=info['local_margin'])
                 steps += 1; lengths[index] += 1; returns[index] += reward; violations += int(info['violation'])
+                if tracker is not None:
+                    tracker.observe(index, reward, bool(done or truncated), info)
                 record(dict(record_type='step', env=index, episode_id=episode_ids[index], transitions=steps,
                     observation=obs.tolist(), tcp_xyz=env.ee_position().tolist(), executed_action=action.tolist(),
                     reward=reward, cost=info['cost'], margin=info['local_margin'], minimum_distance=info['minimum_distance'],
@@ -170,13 +178,15 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 status = dict(state='running', steps=steps, episodes=episodes, training_violations=violations,
                     safe_successes=successes, safe_timeouts=timeouts, elapsed_seconds=elapsed(),
                     complete_train_sps=steps/max(elapsed(), 1e-9), **learner.metrics())
+                if tracker is not None:
+                    status.update(tracker.metrics())
                 if not all(np.isfinite(v) for k, v in status.items() if k != 'state'):
                     raise FloatingPointError('Nonfinite training diagnostic')
                 progress.write(json.dumps(status)+'\n'); progress.flush(); trajectory.flush()
                 atomic_json(args.output/'status.json', status); print(json.dumps(status), flush=True)
             if not args.smoke_steps and steps in config['evaluation']['milestones'] and steps not in evaluations:
                 checkpoint(f'full_{steps}.pt')
-                value = development_evaluation(learner, config, steps)
+                value = evaluator(learner, config, steps)
                 evaluation_controls += value['native_controls']; evaluations.append(steps)
                 atomic_json(args.output/f'evaluation_{steps}.json', value)
             if steps % 25000 == 0 or steps == target: checkpoint('latest_full.pt')
@@ -186,14 +196,17 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             return
         record(dict(record_type='end', transitions=steps, unfinished_episode_lengths=lengths,
                     unfinished_episodes_not_counted_as_terminal=True))
-        atomic_json(args.output/'receipt.json', dict(status='completed', arm=arm, steps=steps,
+        receipt = dict(status='completed', arm=arm, steps=steps,
             engineering_only=bool(args.smoke_steps), training_seed=args.seed, initial_network_sha256=digest,
             source_commit=args.source_commit, episodes=episodes, training_violations=violations,
             safe_successes=successes, safe_timeouts=timeouts, learner_updates=learner.updates,
             actor_updates=learner.actor_updates, reward_updates=learner.reward_updates,
             elapsed_seconds=elapsed(), evaluation_controls=evaluation_controls, evaluations=evaluations,
             independent_endpoint_test_executed=False, all_step_trajectories_retained=True,
-            new_training_transitions=steps, physical_robot_interactions=0))
+            new_training_transitions=steps, physical_robot_interactions=0)
+        if tracker is not None:
+            receipt['training_metrics'] = tracker.metrics()
+        atomic_json(args.output/'receipt.json', receipt)
         atomic_json(args.output/'status.json', dict(state='completed', steps=steps))
     except BaseException as error:
         # An arbitrary exception may occur mid-collection; do not pretend it is

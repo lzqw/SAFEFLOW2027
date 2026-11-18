@@ -1,0 +1,53 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-early",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_early.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 53687091200,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "1"}],
+  "jobs": [
+    {
+      "name": "P5-fixed-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "P5-fixed", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/P5-fixed-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/P5-fixed-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    },
+    {
+      "name": "E2-quarter50k-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "E2-quarter50k", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/E2-quarter50k-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/E2-quarter50k-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    },
+    {
+      "name": "iso-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "iso", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/iso-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/iso-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    },
+    {
+      "name": "E1-critic20k-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "E1-critic20k", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/E1-critic20k-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/E1-critic20k-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    },
+    {
+      "name": "metric-only-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "metric-only", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/metric-only-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/metric-only-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    },
+    {
+      "name": "E2-quarter75k-2033", "module": "scripts.paper_crax_payload.train_safereach_early_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_safereach_early.json", "--arm", "E2-quarter75k", "--seed", "2033", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-early/E2-quarter75k-2033",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/E2-quarter75k-2033.log",
+      "require_completed_receipt": true, "required_steps": 100000
+    }
+  ]
+}

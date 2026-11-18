@@ -57,7 +57,8 @@ def attach(learner, plan, line_name, arm):
 
 
 class TrainingTracker:
-    def __init__(self, n):
+    def __init__(self, n, success_distance=.03):
+        self.success_distance = success_distance
         self.distances = [deque(maxlen=11) for _ in range(n)]
         self.stalled = [False]*n
         self.stall_episodes = self.task_successes = self.stall_windows = self.episodes = 0
@@ -70,7 +71,7 @@ class TrainingTracker:
         self.stall_windows += int(stall); self.stalled[i] |= stall
         if terminal:
             self.episodes += 1; self.stall_episodes += int(self.stalled[i])
-            self.task_successes += int(info['distance_to_goal'] < .03)
+            self.task_successes += int(info['distance_to_goal'] < self.success_distance)
             self.stalled[i] = False; self.distances[i].clear()
 
     def metrics(self):
