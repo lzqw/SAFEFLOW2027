@@ -1,0 +1,147 @@
+{
+  "status": "native_parent_learning_diagnostic_receipts_present",
+  "parents": [
+    {
+      "seed": 41028,
+      "steps": 300000,
+      "budget": 300000,
+      "episodes": 6807,
+      "training_safe_successes": 4767,
+      "training_violation_count": 558,
+      "training_safe_timeouts": 1482,
+      "learner_updates": 298000,
+      "reward_updates": 596000,
+      "actor_updates": 148500,
+      "first_success_logged_at_or_before_step": 126000,
+      "no_success_observed_through_step": null,
+      "recent_safe_success": 0.92,
+      "recent_return": 9.149190031721679,
+      "alpha": 0.003167602466419339,
+      "safety_multiplier": 0.0,
+      "q_policy_mean": 6.126068592071533,
+      "policy_cost": 0.009580246172845364,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 30037.629693368915,
+      "recent_window_sps": 9.96199019208439,
+      "approximate_remaining_hours": 0.0,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "final_native_receipt_present": true
+    },
+    {
+      "seed": 41029,
+      "steps": 300000,
+      "budget": 300000,
+      "episodes": 9221,
+      "training_safe_successes": 8091,
+      "training_violation_count": 735,
+      "training_safe_timeouts": 395,
+      "learner_updates": 298000,
+      "reward_updates": 596000,
+      "actor_updates": 148500,
+      "first_success_logged_at_or_before_step": 19000,
+      "no_success_observed_through_step": null,
+      "recent_safe_success": 0.9,
+      "recent_return": 8.737300195231477,
+      "alpha": 0.002649878617376089,
+      "safety_multiplier": 0.03443633757570728,
+      "q_policy_mean": 8.280360221862793,
+      "policy_cost": 0.000273147044936195,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 29517.327511874028,
+      "recent_window_sps": 9.981675688144266,
+      "approximate_remaining_hours": 0.0,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "final_native_receipt_present": true
+    }
+  ],
+  "completed_parents": 2,
+  "observed_training_steps": 600000,
+  "registered_steps": 600000,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "optimizer_updates": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "automatic_retry": false,
+  "complete_native_campaign_verified": true,
+  "downstream_training_started": false,
+  "omitted_registered_seeds": [],
+  "provenance": [
+    {
+      "file": "Reach-EA-41028/run_config.json",
+      "sha256": "8c9118256abad79f0ca21f743e054e4ce7f420428c04dc06304f46fc169e31c5"
+    },
+    {
+      "file": "Reach-EA-41028/progress.jsonl",
+      "sha256": "996b615f93d62a2a1a6cffd294a478f6ab2b03182b5a04fdfcf0d1f1b3a82ece"
+    },
+    {
+      "file": "Reach-EA-41028/training_receipt_300000.json",
+      "sha256": "12216aa99e3b0589fa0a8209561ddcff102940594b5579b02b58560be5688c94"
+    },
+    {
+      "file": "Reach-EA-41028/receipt.json",
+      "sha256": "51f73c48518fe56d0c17ba9f42279ba8b51d9c44be96384b211554f9caaa0b14"
+    },
+    {
+      "file": "Reach-EA-41028/evaluation_60000.json",
+      "sha256": "db9aaab4287dadba73ce02ade7918293613fc21046086c03f73461e28d48ce37"
+    },
+    {
+      "file": "Reach-EA-41028/evaluation_120000.json",
+      "sha256": "07cf96897211e473afec6e70f25da8f08ac889575455731c1f800bd07ec91673"
+    },
+    {
+      "file": "Reach-EA-41028/evaluation_180000.json",
+      "sha256": "ac642d1659672b67e01e8e1ad52d8cea540bbf6b6c13110828a545cdf63ffd08"
+    },
+    {
+      "file": "Reach-EA-41028/evaluation_240000.json",
+      "sha256": "c271945698ae920a813320cd897ca421b6cf2920d87f0e74c6ae06276bc2d1b7"
+    },
+    {
+      "file": "Reach-EA-41028/evaluation_300000.json",
+      "sha256": "b532beee1977fc34212593a7e66117325146134d49c8ed3706cc9768730981ab"
+    },
+    {
+      "file": "Reach-EA-41029/run_config.json",
+      "sha256": "495502bba2ecd4feefbc78d4812a0503ca90602c3782635372c468a4995f60b9"
+    },
+    {
+      "file": "Reach-EA-41029/progress.jsonl",
+      "sha256": "923b0e6be4aa935655642a17a113823efc8b73d4666c7ed30b8b7ba24118457c"
+    },
+    {
+      "file": "Reach-EA-41029/training_receipt_300000.json",
+      "sha256": "ac3ff7e50a7eeb845afb64a3d962b70c9188b56e69a3053112e9a79202e65b28"
+    },
+    {
+      "file": "Reach-EA-41029/receipt.json",
+      "sha256": "faed391cfc3f4ad49158ec0c0cc1e10e4dabd5de40db986d9111176fa4614e07"
+    },
+    {
+      "file": "Reach-EA-41029/evaluation_60000.json",
+      "sha256": "ee0325c7c5a9ea640f73c7df722f4bdb30fb13110acc69f69ea9d35f5790760c"
+    },
+    {
+      "file": "Reach-EA-41029/evaluation_120000.json",
+      "sha256": "a3dc5a55ac03da570b71e68043d5564f381a29b5a61ae0740a6bfe228ab508f2"
+    },
+    {
+      "file": "Reach-EA-41029/evaluation_180000.json",
+      "sha256": "54f4d791138f4fc450abb7001f2e2a3dfafaf6e128e7c5c13ce63550df8e28f4"
+    },
+    {
+      "file": "Reach-EA-41029/evaluation_240000.json",
+      "sha256": "3116ebf449eb5604e1e635778c86211764e4bfe1a3535913d81f890926e265ef"
+    },
+    {
+      "file": "Reach-EA-41029/evaluation_300000.json",
+      "sha256": "26d693d2f980675207831f99e8cff45f165df09162031dcd4fd6844268b4d6c2"
+    }
+  ]
+}

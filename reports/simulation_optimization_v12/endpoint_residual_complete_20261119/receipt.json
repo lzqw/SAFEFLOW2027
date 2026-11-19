@@ -1,0 +1,81 @@
+{
+  "status": "complete_offline_review",
+  "runs": 6,
+  "actual_completed_training_transitions": 1500000,
+  "development_nodes": 126,
+  "development_episodes": 3780,
+  "training_seed_count": 1,
+  "provenance": [
+    {
+      "arm": "A-full-P5",
+      "native_host": "447",
+      "source_commit": "2c06ca2a",
+      "receipt_sha256": "d86d19cfb0285d09e22aa596aab0fd85868c281cea7093ecb6efc571ae105b7b",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    },
+    {
+      "arm": "A-Iso-matchedLR",
+      "native_host": "447",
+      "source_commit": "2c06ca2a",
+      "receipt_sha256": "c92004fc1c7b5965ff21620f3cb50b3d4aaa6e7c8a638fd8090aa4413c2715b9",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    },
+    {
+      "arm": "A-no-lateLR",
+      "native_host": "447",
+      "source_commit": "2f09231b",
+      "receipt_sha256": "50c7f69ca4e015551adccdcc1c90d6ffd4ba2bdba05bc8e53f1efd820337d078",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    },
+    {
+      "arm": "A-Metric-matchedLR",
+      "native_host": "447",
+      "source_commit": "2f09231b",
+      "receipt_sha256": "5556babfd7e1d1bd3d272a4ef5de7c512502e1641e49eed03ab108ba7e2914eb",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    },
+    {
+      "arm": "E-control-P5",
+      "native_host": "447",
+      "source_commit": "499a4b6d",
+      "receipt_sha256": "1028436c8a3c5e8eebbe63cc98ddecf0563602ee2b3d1d76bc0c7d869f80b07a",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    },
+    {
+      "arm": "E-endpoint-residual",
+      "native_host": "447",
+      "source_commit": "499a4b6d",
+      "receipt_sha256": "91bc09aca8279bb251f312221c15498d0bfbeaa4ec04e54b82ab948cfd399feb",
+      "initial_network_sha256": "6eed16a4650593305c7ecb157ffe6d61c990b7c2fa1dad307a1a8025b6f31e6a"
+    }
+  ],
+  "all_registered_nodes_retained": true,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "hardware_split_disclosed": false,
+  "strict_causal_crosshardware_claim": false,
+  "same_hardware_confirmation": false,
+  "direction_taper_screen": false,
+  "endpoint_residual_screen": true,
+  "new_campaign_completed_training_transitions": 500000,
+  "historical_comparison_training_transitions": 1000000,
+  "contemporary_baselines": [
+    "E-control-P5"
+  ],
+  "historical_samehardware_baselines": [
+    "A-full-P5",
+    "A-Iso-matchedLR",
+    "A-no-lateLR",
+    "A-Metric-matchedLR"
+  ],
+  "pre_decay_prefix_comparison": {
+    "exact_recorded_prefix_match": true,
+    "first_observed_difference": null,
+    "different_nodes": 0,
+    "compared_nodes": 150,
+    "strict_lr_causal_claim_permitted": false,
+    "interpretation": "Same host removes hardware split; one seed and any early divergence still limit LR attribution"
+  },
+  "independent_test_used": false,
+  "winner_confirmation": false
+}
