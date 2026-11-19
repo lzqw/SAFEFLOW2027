@@ -45,6 +45,12 @@ def validate_shared_slots(plan):
             raise ValueError('Three complete registered150K suffixes from fixed400K parents required')
     if arms!={'P5-fixed','P5-activation2mm','Metric-only'} or len(registrations)!=1 or len(plans)!=1:
         raise ValueError('Every method once,one seed plan and one exact execution registration')
+    environments=plan.get('slot_environments')
+    if (not isinstance(environments,list) or len(environments)!=3
+            or any(not isinstance(env,dict) or not str(env.get('CUDA_VISIBLE_DEVICES','')).isdigit()
+                   for env in environments)
+            or len({env['CUDA_VISIBLE_DEVICES'] for env in environments})!=3):
+        raise ValueError('The explicit third-slot campaign requires three distinct single-GPU bindings')
 
 
 def prerequisites_ready(plan):
