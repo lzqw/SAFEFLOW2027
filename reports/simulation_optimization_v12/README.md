@@ -7,6 +7,7 @@
 - [同硬件四臂完整学习曲线](samehardware_figures_20261119/samehardware_learning_curves.png) 与 [论文PDF](samehardware_figures_20261119/samehardware_learning_curves.pdf)
 - [Reach独立父seed稳定性确认准备（尚未启动）](REACH_INDEPENDENT_SEED_PREPARATION_ZH.md)
 - [先生成两个真正独立300K原生父模型的有限登记](REACH_FRESH_PARENTS_PREREGISTRATION_ZH.md)
+- [两条独立父模型已实际开始训练](REACH_FRESH_PARENTS_RUNNING_ZH.md)
 - [冻结模型整段轨迹的两种部署模式实验登记](PIPER_DEPLOYMENT_MODES_PREREGISTRATION_ZH.md)
 - [最新Payload完整终点：拒绝Piper loss-only taper](PAYLOAD_TAPER_FINAL_20261119_ZH.md)
 - [整段轨迹部署评测已实际执行600回合](PIPER_DEPLOYMENT_MODES_RUNNING_ZH.md)
