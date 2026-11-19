@@ -37,6 +37,14 @@ def prerequisites_ready(plan):
     return True
 
 
+def receipt_completed(receipt, job):
+    if receipt.get('status') != 'completed':
+        return False
+    if job.get('required_steps') is not None:
+        return receipt.get(job.get('required_steps_field','steps')) == job['required_steps']
+    return True
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--plan',type=Path,required=True)
@@ -65,8 +73,7 @@ def main():
                     path=Path(record['output'])/'receipt.json'
                     try:
                         receipt=json.loads(path.read_text())
-                        success=receipt.get('status')=='completed'
-                        if record.get('required_steps') is not None:success &= receipt.get('steps')==record['required_steps']
+                        success=receipt_completed(receipt,record)
                     except (OSError,ValueError):success=False
                 record.update(exit_code=code,status='completed' if success else 'failed_not_restarted',finished_unix=time.time());del live[pid]
         while jobs and len(live)<plan['slots']:
@@ -104,7 +111,7 @@ def main():
             if 'slot_environments' in plan:env.update(plan['slot_environments'][slot])
             stream=log.open('x');proc=subprocess.Popen(command,cwd=project,env=env,stdout=stream,stderr=subprocess.STDOUT)
             record=dict(name=job['name'],pid=proc.pid,command=command,output=job['output'],log=str(log),status='running',started_unix=time.time(),slot_id=slot,visible_devices=env.get('CUDA_VISIBLE_DEVICES'))
-            record.update({k:job[k] for k in ('require_completed_receipt','required_steps') if k in job})
+            record.update({k:job[k] for k in ('require_completed_receipt','required_steps','required_steps_field') if k in job})
             records.append(record);live[proc.pid]=(proc,stream,record)
         save()
         if jobs or live:time.sleep(plan.get('poll_interval_seconds',5))

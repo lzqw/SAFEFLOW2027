@@ -1,0 +1,18 @@
+{
+  "protocol": "simulation_v12_native_reach_independent_parent_preparation",
+  "base_config": "configs/paper_crax_payload/piper_sim_v1.json",
+  "base_config_sha256": "84ff1e945d3003a30e58fb5d8e5202371b16cafd9401d00d286ccc4c5102285a",
+  "training_seeds": [41028, 41029],
+  "task": "Reach",
+  "method": "EA",
+  "training_steps_each": 300000,
+  "total_new_training_steps": 600000,
+  "development_layout_seed_start": 11990000,
+  "action_sampling_seed": 11991000,
+  "parent_selection": "fixed300K_no_best_checkpoint_selection",
+  "downstream_training_authorized_by_this_queue": false,
+  "independent_test_used": false,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "physical_robot_interactions": 0
+}

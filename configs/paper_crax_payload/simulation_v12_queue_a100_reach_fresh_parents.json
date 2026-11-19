@@ -1,0 +1,30 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-reach-fresh-parents",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_reach_fresh_parents.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 55834574848,
+  "projected_additional_output_gib": 2,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "1"}, {"CUDA_VISIBLE_DEVICES": "1"}],
+  "gpu_admission": {"index": 1, "minimum_free_mib": 6000},
+  "foreign_processes_changed": false,
+  "jobs": [
+    {
+      "name": "Reach-EA-fresh300K-41028",
+      "module": "scripts.paper_crax_payload.train_reach_fresh_parent_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_reach_fresh_parents.json", "--seed", "41028", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-reach-fresh-parents/Reach-EA-41028",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/Reach-EA-fresh300K-41028.log",
+      "require_completed_receipt": true, "required_steps": 300000, "required_steps_field": "training_steps"
+    },
+    {
+      "name": "Reach-EA-fresh300K-41029",
+      "module": "scripts.paper_crax_payload.train_reach_fresh_parent_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_reach_fresh_parents.json", "--seed", "41029", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-reach-fresh-parents/Reach-EA-41029",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/Reach-EA-fresh300K-41029.log",
+      "require_completed_receipt": true, "required_steps": 300000, "required_steps_field": "training_steps"
+    }
+  ]
+}
