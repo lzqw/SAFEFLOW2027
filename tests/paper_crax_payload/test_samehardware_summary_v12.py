@@ -19,8 +19,8 @@ def test_registered_controls_and_pre_lr_divergence_are_never_hidden():
     result = pre_decay_prefix(changed)
     assert result['first_observed_difference'] == dict(transitions=3000, differing_metrics=['reward_loss'])
     assert not result['strict_lr_causal_claim_permitted']
-    assert not terminal_state(dict(status='running', pending=0, live_native_pids=[123]))
-    assert terminal_state(dict(status='completed', pending=0, live_native_pids=[]))
+    assert not terminal_state(dict(status='running', pending=0, live_native_pids=[123],jobs=[]))
+    assert terminal_state(dict(status='completed', pending=0, live_native_pids=[],jobs=[]))
     with pytest.raises(RuntimeError, match='never retry'):
         terminal_state(dict(status='completed_with_failures'))
 
@@ -51,3 +51,42 @@ def test_candidate_criteria_preserve_timeout_tradeoffs_and_actual_curve_nodes():
     comparisons = training_curve_comparisons(rows,candidate,['A-full-P5'])
     assert [r['transitions'] for r in comparisons] == [1000,2000]
     assert all(r['delta_training_violations']==-2 for r in comparisons)
+
+
+def test_endpoint_residual_checks_preserve_new_control_and_reject_task_abandonment():
+    specs = registered_protocols(endpoint_residual=True)
+    assert len(specs)==6
+    candidate,control = 'E-endpoint-residual','E-control-P5'
+    assert specs[candidate]['evaluation']==specs['A-Iso-matchedLR']['evaluation']
+    windows,nodes = [],[]
+    for arm in (candidate,control,'A-full-P5','A-Iso-matchedLR','A-Metric-matchedLR'):
+        is_candidate = arm==candidate
+        for start,end in ((0,100000),(100000,250000),(0,250000)):
+            windows.append(dict(arm=arm,start_transitions=start,end_transitions=end,
+                training_violations=100 if is_candidate else 300,
+                safe_successes=500 if is_candidate else 1000,
+                safe_timeouts=200 if is_candidate else 50,
+                training_stall_episodes=200 if is_candidate else 50,
+                training_cumulative_return=5000 if is_candidate else 10000))
+        nodes.append(dict(arm=arm,transitions=250000,condition='nominal',
+            safe_successes=20 if is_candidate else 29,violations=0 if is_candidate else 1,
+            timeouts=10 if is_candidate else 0,stall_count=5 if is_candidate else 0))
+    checks = candidate_checks(windows,nodes,candidate,(control,'A-full-P5','A-Iso-matchedLR','A-Metric-matchedLR'))
+    paired = [r for r in checks if r['baseline']==control]
+    assert paired
+    assert all(r['satisfied'] for r in paired if r['criterion']=='first100K_violations_no_higher')
+    for criterion in ('safe_timeouts_no_higher','training_stall_episodes_no_higher',
+                      'training_safe_success_count_no_lower','cumulative_return_drop_at_most1percent',
+                      'DEV_safe_successes_no_worse','DEV_timeouts_no_worse','DEV_stall_count_no_worse'):
+        assert any(r['criterion']==criterion and not r['satisfied'] for r in paired)
+    assert not any(r['independent_confirmation'] for r in checks)
+
+
+def test_terminal_queue_flag_cannot_override_live_native_handle(monkeypatch):
+    from pathlib import Path
+    monkeypatch.setattr(Path,'read_bytes',lambda self:
+        b'python\x00-m\x00scripts.paper_crax_payload.train_endpoint_residual_v12\x00--output\x00/data/run')
+    queue = dict(status='completed',pending=0,live_native_pids=[],jobs=[dict(pid=123,output='/data/run')])
+    assert not terminal_state(queue)
+    monkeypatch.setattr(Path,'read_bytes',lambda self:b'unrelated-process')
+    assert terminal_state(queue)
