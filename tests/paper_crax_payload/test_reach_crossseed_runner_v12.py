@@ -111,3 +111,26 @@ def test_execution_admission_reserves_growth_and_same_seed_hardware(tmp_path,mon
     args.execution_registration.write_text(json.dumps(admission))
     with pytest.raises(ValueError,match='admission'):
         module.validate(p,args)
+
+
+def test_explicit_storage_budget_reserves_only_unwritten_growth_and_keeps40GiB(tmp_path,monkeypatch):
+    module,p,args,admission=admission_fixture(tmp_path,monkeypatch)
+    admission.update(storage_policy=module.STORAGE_POLICY,projected_output_gib_per_local_arm=2)
+    args.execution_registration.write_text(json.dumps(admission))
+    # Three absent outputs reserve the entire6GiB,including pending arms.
+    jobs=[j for j in admission['jobs'] if j['host']==module.platform.node()]
+    assert module.remaining_output_reserve(tmp_path,jobs)==6*1024**3
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=51*1024**3))
+    module.registered_storage_check(tmp_path,args)
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=46*1024**3-1))
+    with pytest.raises(OSError,match='40GiB'):module.registered_storage_check(tmp_path,args)
+    directory=Path(jobs[0]['output']);directory.mkdir();(directory/'full_new_20000.pt').write_bytes(b'x'*4096)
+    assert module.remaining_output_reserve(tmp_path,jobs)<6*1024**3
+    module.registered_storage_check(tmp_path,args)  # Past writes are not reserved twice.
+    reserve=module.remaining_output_reserve(tmp_path,jobs)
+    (directory/'latest_full.pt.tmp').write_bytes(b'x'*4096)
+    assert module.remaining_output_reserve(tmp_path,jobs)==reserve  # Never credit mutable/atomic writes.
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=39*1024**3))
+    with pytest.raises(OSError,match='40GiB'):module.registered_storage_check(tmp_path,args)
+    (directory/'external-link').symlink_to(args.plan)
+    with pytest.raises(ValueError,match='symlink'):module.remaining_output_reserve(tmp_path,jobs)

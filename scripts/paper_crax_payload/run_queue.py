@@ -24,6 +24,29 @@ def validate_slot_environments(plan):
         raise ValueError('GPU binding belongs to the released slot, not the next pending job')
 
 
+def validate_shared_slots(plan):
+    if 1<=plan['slots']<=2:return
+    # Only the fixed three-method/one-seed campaign may opt into a third
+    # shared slot. Other historic queues retain their original two-slot cap.
+    seed=plan.get('crossseed_three_arm_single_seed')
+    jobs=plan['jobs']
+    if (plan['slots']!=3 or seed not in (41028,41029) or len(jobs)!=3
+            or any(j.get('module')!='scripts.paper_crax_payload.train_reach_crossseed_v12' for j in jobs)):
+        raise ValueError('Only the explicit fixed crossseed three-arm campaign may use three shared slots')
+    arms=set();registrations=set();plans=set()
+    for job in jobs:
+        args=job['arguments']
+        def value(flag):
+            if args.count(flag)!=1:raise ValueError('Exact registered crossseed arguments required')
+            return args[args.index(flag)+1]
+        arms.add(value('--arm'));registrations.add(value('--execution-registration'));plans.add(value('--plan'))
+        if (not job.get('require_completed_receipt') or job.get('required_steps')!=550000
+                or value('--line')!='piper_reach'):
+            raise ValueError('Three complete registered150K suffixes from fixed400K parents required')
+    if arms!={'P5-fixed','P5-activation2mm','Metric-only'} or len(registrations)!=1 or len(plans)!=1:
+        raise ValueError('Every method once,one seed plan and one exact execution registration')
+
+
 def prerequisites_ready(plan):
     """Optional finite campaign dependency, not permission to restart failed work."""
     for spec in plan.get('prerequisite_receipts',[]):
@@ -54,7 +77,7 @@ def main():
         raise ValueError('Superseded queue plan: preserve historical registration, never duplicate its jobs')
     project=Path(plan['project']);state_path=Path(plan['state']);state_path.parent.mkdir(parents=True,exist_ok=True)
     if state_path.exists():raise FileExistsError('Inspect previous native handles; do not restart a queue blindly')
-    if not 1<=plan['slots']<=2:raise ValueError('Only bounded shared slots allowed')
+    validate_shared_slots(plan)
     validate_slot_environments(plan)
     jobs=plan['jobs'];live={};records=[];admission_wait_reason=None
     def save():
@@ -95,14 +118,18 @@ def main():
                 admission_wait_reason='waiting_for_disk_space;active_jobs_not_stopped'
                 break
             admission_wait_reason=None
+            slot=next_slot([item[2] for item in live.values()],plan['slots'])
             if plan.get('gpu_admission'):
                 admission = plan['gpu_admission']
-                free = int(subprocess.check_output(['nvidia-smi', '-i', str(admission['index']),
+                index=admission['index']
+                if index=='slot':
+                    index=plan['slot_environments'][slot].get('CUDA_VISIBLE_DEVICES','')
+                    if not index.isdigit():raise ValueError('One physical GPU per admitted slot required')
+                free = int(subprocess.check_output(['nvidia-smi', '-i', str(index),
                     '--query-gpu=memory.free', '--format=csv,noheader,nounits'], text=True, timeout=15).strip())
                 if free < admission['minimum_free_mib']:
                     admission_wait_reason='waiting_for_shared_GPU_memory;foreign_jobs_not_stopped'
                     break
-            slot=next_slot([item[2] for item in live.values()],plan['slots'])
             job=jobs.pop(0);log=Path(job['log']);log.parent.mkdir(parents=True,exist_ok=True)
             if Path(job['output']).exists():raise FileExistsError('Preserve original run output')
             command=[plan['python'],'-u','-m',job['module'],*job['arguments'],'--output',job['output'],'--source-commit',args.source_commit]

@@ -55,7 +55,7 @@ def restore_fork_rng(state, line):
 
 def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptation,
           format_name=FORMAT, piper_evaluator=evaluate_piper, tracker_factory=None,
-          payload_evaluator=evaluate_payload):
+          payload_evaluator=evaluate_payload, storage_guard=None):
     plan = json.loads(args.plan.read_text())
     line = plan['lines'][args.line]
     if protocol_validator is not None:
@@ -70,7 +70,8 @@ def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptatio
     output = args.output.resolve()
     if not output.is_relative_to(root) or root == Path('/home/lzqw'):
         raise ValueError('Output must resolve beneath the explicitly admitted data disk')
-    storage_check(root)
+    guard = storage_check if storage_guard is None else storage_guard
+    guard(root)
     if args.resume:
         if args.resume.parent.resolve() != output or not output.is_dir():
             raise ValueError('Resume in the original output directory only')
@@ -178,7 +179,10 @@ def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptatio
             ('native_p5_adaptation.py', 'train_native_p5_adaptation.py')})
     if protocol_validator is not None:
         import inspect
-        for callback in (protocol_validator, adaptation_attacher, piper_evaluator):
+        callbacks = (protocol_validator, adaptation_attacher, piper_evaluator)
+        if storage_guard is not None:
+            callbacks += (storage_guard,)
+        for callback in callbacks:
             path = Path(inspect.getfile(callback))
             manifest['source_files_sha256'][path.name] = sha256(path)
         if not assets:
@@ -193,7 +197,7 @@ def train(args, *, protocol_validator=None, adaptation_attacher=attach_adaptatio
         return elapsed_before+time.monotonic()-started
 
     def checkpoint_out(name):
-        storage_check(root)
+        guard(root)
         state = dict(format=format_name, plan=plan, configuration=native, line=args.line, arm=args.arm,
             source_commit=args.source_commit, steps=steps, counts=counts, prefix=prefix,
             learner=learner.state_dict(), replay=replay.state_dict(), rng=capture_rng(),

@@ -13,13 +13,68 @@ import shutil
 
 from scripts.paper_crax_payload.native_p5_adaptation import actor_digest
 from scripts.paper_crax_payload.prepare_reach_crossseed_v12 import validate_resolved,sha256
-from scripts.paper_crax_payload.train_native_p5_adaptation import train
+from scripts.paper_crax_payload.train_native_p5_adaptation import train,storage_check
 from scripts.paper_crax_payload.train_native_p5_warmup_v12 import evaluate as evaluate_native,TrainingTracker
 from scripts.paper_crax_payload.train_piper_comparison_v12 import attach as attach_original,ComparedPiperLearner
 from scripts.paper_crax_payload.evaluate_piper_deployment_modes_v12 import deployment_mode
 
 
 FORMAT='native_reach_crossseed_three_arm150K_v12_full'
+STORAGE_POLICY='40GiB_floor_plus_unwritten_registered_output_v1'
+OUTPUT_BUDGET_BYTES=2*1024**3
+MAX_PARENT_BYTES=192*1024**2
+
+
+def remaining_output_reserve(root,jobs):
+    """Credit only immutable materialized milestones; reserve all mutable writes.
+
+    The fixed34D full replay checkpoint is120-122MB; nine192MiB snapshots
+    including atomic/interruption writes plus <=128MiB DEV/logs fit in2GiB.
+    No saved node is removed and the absolute40GiB floor remains unchanged.
+    """
+    outputs=[Path(job['output']) for job in jobs]
+    resolved=[p.resolve() for p in outputs]
+    if (len(set(resolved))!=len(outputs) or any(not p.is_relative_to(root) or p==root for p in resolved)
+            or any(a!=b and (a.is_relative_to(b) or b.is_relative_to(a)) for a in resolved for b in resolved)):
+        raise ValueError('Independent,non-overlapping registered output directories on the admitted data disk required')
+    remaining=0
+    for directory in outputs:
+        if directory.is_symlink():raise ValueError('New budgeted outputs must not be directory symlinks')
+        written=stable_written=0
+        if directory.exists():
+            for path in directory.rglob('*'):
+                if path.is_symlink():raise ValueError('Do not count external symlink targets as materialized outputs')
+                try:
+                    if path.is_file():
+                        metadata=path.stat();size=metadata.st_blocks*512;written+=size
+                        # Immutable milestones appear once by atomic rename.
+                        # Do not credit latest_full,.tmp or growing logs:other
+                        # live writers may replace them during this scan.
+                        immutable=((path.name.startswith('full_new_') and path.suffix=='.pt')
+                            or (path.name.startswith('development_') and path.suffix=='.json'))
+                        if immutable:
+                            if metadata.st_nlink!=1:raise ValueError('Budgeted milestones must not be hardlinked aliases')
+                            stable_written+=size
+                except FileNotFoundError:
+                    # Another admitted writer may atomically replace its .tmp.
+                    # Counting fewer materialized bytes reserves MORE,not less.
+                    continue
+        if written+MAX_PARENT_BYTES+128*1024**2>OUTPUT_BUDGET_BYTES:
+            raise OSError('Registered2GiB budget must also cover next full save and DEV writes;re-admit explicitly')
+        remaining+=OUTPUT_BUDGET_BYTES-stable_written
+    return remaining
+
+
+def registered_storage_check(root,args):
+    admission=json.loads(args.execution_registration.read_text())
+    jobs=[j for j in admission['jobs'] if j.get('host')==platform.node()]
+    if admission.get('storage_policy')!=STORAGE_POLICY:
+        storage_check(root);return
+    if admission.get('projected_output_gib_per_local_arm')!=2 or not jobs:
+        raise ValueError('Explicit per-arm growth registration required;cannot silently relax old guard')
+    required=40*1024**3+remaining_output_reserve(root,jobs)
+    if shutil.disk_usage(root).free<required:
+        raise OSError('Preserve absolute40GiB headroom plus all remaining registered output growth')
 
 
 class CrossseedPiperLearner(ComparedPiperLearner):
@@ -71,10 +126,15 @@ def validate(plan,args):
                    for seed in (41028,41029))
             or sha256(args.plan)!=admission['plan_sha256_by_seed'][str(line['seed'])]):
         raise ValueError('Require separate exact six-job resource/source/recipe admission;preparation alone cannot launch')
-    # The original driver checks40GiB+10GiB before every checkpoint. Reserve its
-    # full50GiB threshold PLUS all admitted local output growth,not just initial files.
-    # At present A100~51GiB cannot admit several new full checkpoint lineages.
-    if shutil.disk_usage(root).free<(50+2*len(host_jobs))*1024**3:
+    if admission.get('storage_policy')==STORAGE_POLICY:
+        # This is an explicit engineering-only opt-in,not a change to the
+        # scientific template or the default50GiB original driver guard.
+        # Parent replay is already full at400K;model/replay sizes cannot grow
+        # with training age. No new module,trajectory dump or extra save is added.
+        if args.parent.stat().st_size>MAX_PARENT_BYTES:
+            raise OSError('Parent exceeds the measured192MiB full-checkpoint bound;re-admit growth first')
+        registered_storage_check(root,args)
+    elif shutil.disk_usage(root).free<(50+2*len(host_jobs))*1024**3:
         raise OSError('Reserve original50GiB checkpoint headroom plus2GiB for every local registered arm')
     # Parent loading stays in the original strict driver:full SHA/native dimensions,
     # inherited optimizers/replay/dual, task and CUDA generator0 must all match.
@@ -114,8 +174,11 @@ def main():
     p.add_argument('--source-commit',required=True);p.add_argument('--device',default='cuda:0')
     p.add_argument('--cuda-memory-fraction',type=float,default=.025)
     args=p.parse_args();args.resume=None
+    # Closure reads the exact pinned execution registration at launch and each
+    # complete save;the old default remains unchanged for every other runner.
+    def guard(root):registered_storage_check(root,args)
     train(args,protocol_validator=validate,adaptation_attacher=attach,format_name=FORMAT,
-        piper_evaluator=evaluate,tracker_factory=TrainingTracker)
+        piper_evaluator=evaluate,tracker_factory=TrainingTracker,storage_guard=guard)
 
 
 if __name__=='__main__':
