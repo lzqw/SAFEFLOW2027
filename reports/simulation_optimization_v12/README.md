@@ -4,6 +4,8 @@
 
 - [最新：4200回合完整部署模式结果及结论边界](PIPER_DEPLOYMENT_MODES_FINAL_ZH.md)
 - [Panda与SafeReach五模型同模式比较的固定登记](PANDA_SAFEREACH_DEPLOYMENT_MODES_REGISTRATION_ZH.md)
+- [Panda/SafeReach评测已实际启动](PANDA_SAFEREACH_MODES_RUNNING_ZH.md)
+- [Piper两模式全模型对比图](deployment_modes_figures_20261119/piper_deployment_modes.png) 与 [PDF](deployment_modes_figures_20261119/piper_deployment_modes.pdf)
 
 - [最新：同4080完整250K对照结果](SAMEHARDWARE_FINAL_20261119_ZH.md)
 - [当前候选已实际运行的接续记录](DIRECTION_TAPER_STARTED_20261119_ZH.md)
