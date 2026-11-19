@@ -1,0 +1,41 @@
+{
+  "protocol": "simulation_v12_shared_real100K_prefix_late_endpoint_ramp50K",
+  "task_version": "SafeReach-RelativeLayout-v3",
+  "num_envs": 2,
+  "development_training_seeds": [2034],
+  "steps_per_run": 250000,
+  "new_training_steps_registered": 300000,
+  "shared_prefix_steps_not_new": 100000,
+  "source_plan": "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json",
+  "source_arm": "A-full-P5",
+  "source_commit": "2c06ca2a",
+  "source_format": "safereach_fresh250k_samehardware_confirmation_v12_full",
+  "source_checkpoint_sha256": "2cbe93176d1117ffa835e1b89b6541d4f3248b1dfc0181c3eef9dcce249f9781",
+  "source_checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-full-P5-2034/full_100000.pt",
+  "arms": [
+    {"name": "L-control-continuation", "late_endpoint": false},
+    {"name": "L-endpoint-ramp100K150K", "late_endpoint": true}
+  ],
+  "late_endpoint": {"start_steps": 100000, "full_steps": 150000, "coefficient": 1.0, "scale_m": 0.015},
+  "shared_learner": {
+    "actor_lr": 0.0001, "critic_lr": 0.0003, "batch_size": 256, "replay_capacity": 150000,
+    "random_transitions": 2000, "critic_only_updates": 1000, "actor_update_interval": 2,
+    "reference_variance": 0.04, "energy_target": 18.75, "flow_steps": 4,
+    "width": 128, "utd": 1, "reward_updates_per_round": 2, "target_samples": 4
+  },
+  "geometry": {"ema_tau": 0.005, "ramp_start": 10000, "ramp_end": 30000},
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "evaluation": {
+    "split": "development_only_even_at_final",
+    "milestones": [25000, 50000, 75000, 100000, 150000, 200000, 250000],
+    "development_layout_seed_start": 11910000, "action_seed": 11920000,
+    "development_episodes_each": 30,
+    "conditions": [
+      {"name": "nominal", "radius": 0.06, "action_scale": 1},
+      {"name": "radius065", "radius": 0.065, "action_scale": 1},
+      {"name": "execution085", "radius": 0.06, "action_scale": 0.85}
+    ]
+  },
+  "scientific_early_stopping": false, "automatic_retry": false, "physical_robot_interactions": 0,
+  "scientific_purpose": "test_late_terminal_residual_without_replaying_or_erasing_genuine_original_first100K;not_full_goal_confirmation"
+}

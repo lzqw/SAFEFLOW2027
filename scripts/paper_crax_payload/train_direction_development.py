@@ -49,7 +49,7 @@ def validate_config(config):
 
 
 def main(*, validator=validate_config, builder=build_development, format_name=FORMAT,
-         evaluator=development_evaluation, tracker_factory=None, replay_factory=None):
+         evaluator=development_evaluation, tracker_factory=None, replay_factory=None,fork_initializer=None):
     from scripts.paper_crax_payload.train_component_study import initial_digest
     from scripts.star.arm_safe_entropy.environment import TaskConfig, make_environment
     from scripts.star.arm_safe_entropy.train import Replay, atomic_json
@@ -62,6 +62,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
     parser.add_argument('--cuda-memory-fraction', type=float, default=.08)
     parser.add_argument('--smoke-steps', type=int, default=0)
     parser.add_argument('--resume', type=Path)
+    if fork_initializer is not None:
+        parser.add_argument('--fork-from',type=Path)
     args = parser.parse_args(); config = json.loads(args.config.read_text()); validator(config)
     arm = next(a for a in config['arms'] if a['name'] == args.arm)
     target = args.smoke_steps or config['steps_per_run']
@@ -69,6 +71,8 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             or not 0 < args.cuda_memory_fraction <= .15): parser.error('Invalid bounded engineering/allocator budget')
     if args.output.exists() and not args.resume: parser.error('Preserve old output; resume explicitly')
     if not args.output.exists() and args.resume: parser.error('Resume only into the original run directory')
+    if getattr(args,'fork_from',None) and (args.resume or args.smoke_steps):
+        parser.error('Explicit scientific fork is separate from resume or engineering smoke')
     args.output.parent.mkdir(parents=True, exist_ok=True)
     if shutil.disk_usage(args.output.parent).free < 40*1024**3: parser.error('Require40GiB data disk reserve')
     torch.set_num_threads(1)
@@ -82,7 +86,7 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
     episode_ids = [0, 0]; lengths = [0, 0]; returns = [0., 0.]
     evaluations = []; prior_elapsed = 0.; started = time.monotonic(); stop_requested = False
     tracker = tracker_factory(2) if tracker_factory else None
-    resume = None
+    resume = None;fork_provenance=None
     if args.resume:
         status = json.loads((args.output/'status.json').read_text())
         if (args.resume.resolve() != (args.output/'interrupted_full.pt').resolve()
@@ -94,21 +98,27 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 or resume['steps'] != status['steps'] or resume['steps'] >= target or args.smoke_steps):
             raise ValueError('Resume the same incomplete native scientific job, not a revision')
         learner.load_state_dict(resume['learner'])
+        fork_provenance=resume.get('fork_provenance')
+    elif getattr(args,'fork_from',None):
+        args.output.mkdir()
+        resume,fork_provenance=fork_initializer(args,config,arm,learner)
+    if resume:
         steps, episodes, violations, successes, timeouts, evaluation_controls = (
             resume[k] for k in ('steps', 'episodes', 'violations', 'successes', 'timeouts', 'evaluation_controls'))
         episode_ids, lengths, returns = (resume[k] for k in ('episode_ids', 'lengths', 'returns'))
         evaluations = resume['evaluations']; prior_elapsed = resume['elapsed_seconds']
         if tracker is not None:
             tracker.load_state_dict(resume['training_tracker'])
-    else:
-        args.output.mkdir()
+    if not args.resume:
+        if not args.output.exists():args.output.mkdir()
         atomic_json(args.output/'run_config.json', dict(format=format_name, configuration=config, arm=arm,
             source_commit=args.source_commit, config_sha256=hashlib.sha256(args.config.read_bytes()).hexdigest(),
             native_pid=os.getpid(), host=platform.node(), device=args.device, training_seed=args.seed,
             initial_network_sha256=digest, target_transitions=target, engineering_only=bool(args.smoke_steps),
             cuda_allocator_fraction_cap=args.cuda_memory_fraction, torch=str(torch.__version__),
             numpy=np.__version__, evaluation_scope='development_only_including_final',
-            automatic_retry=False, physical_robot_interactions=0))
+            automatic_retry=False, physical_robot_interactions=0,
+            **(dict(fork_provenance=fork_provenance,initial_steps=fork_provenance['prefix_steps']) if fork_provenance else {})))
     trajectory = gzip.open(args.output/'trajectories.jsonl.gz', 'at' if resume else 'wt', compresslevel=3)
     progress = (args.output/'progress.jsonl').open('a' if resume else 'x')
     envs = []; replay = None
@@ -129,6 +139,7 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             steps=steps, episodes=episodes, violations=violations, successes=successes, timeouts=timeouts,
             evaluation_controls=evaluation_controls, evaluations=evaluations.copy(),
             episode_ids=episode_ids.copy(), lengths=lengths.copy(), returns=returns.copy(), elapsed_seconds=elapsed())
+        if fork_provenance is not None:state['fork_provenance']=fork_provenance
         if tracker is not None:
             state['training_tracker'] = tracker.state_dict()
         temporary = args.output/(name+'.tmp'); torch.save(state, temporary); temporary.replace(args.output/name)
@@ -147,6 +158,13 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 raise ValueError('Observed native state mismatch')
             restore_rng(resume['rng']); del resume
             record(dict(record_type='resume', transitions=steps, native_pid=os.getpid(), host=platform.node()))
+            if fork_provenance is not None and not args.resume:
+                for i,env in enumerate(envs):
+                    record(dict(record_type='initial',fork_continuation_not_reset=True,env=i,
+                        episode_id=episode_ids[i],transitions=steps,observation=observations[i].tolist(),
+                        tcp_xyz=env.ee_position().tolist(),start=env.start.tolist(),goal=env.goal.tolist(),
+                        obstacle=env.obstacle_position.tolist(),minimum_distance=env._distance()[0]))
+                atomic_json(args.output/'task_definition.json',envs[0].definition())
         else:
             observations = np.stack([reset(i) for i in range(2)])
             atomic_json(args.output/'task_definition.json', envs[0].definition())
@@ -181,6 +199,9 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
                 status = dict(state='running', steps=steps, episodes=episodes, training_violations=violations,
                     safe_successes=successes, safe_timeouts=timeouts, elapsed_seconds=elapsed(),
                     complete_train_sps=steps/max(elapsed(), 1e-9), **learner.metrics())
+                if fork_provenance is not None:
+                    status['new_steps']=steps-fork_provenance['prefix_steps']
+                    status['complete_train_sps']=status['new_steps']/max(elapsed(),1e-9)
                 if tracker is not None:
                     status.update(tracker.metrics())
                 if replay_factory:
@@ -209,6 +230,14 @@ def main(*, validator=validate_config, builder=build_development, format_name=FO
             elapsed_seconds=elapsed(), evaluation_controls=evaluation_controls, evaluations=evaluations,
             independent_endpoint_test_executed=False, all_step_trajectories_retained=True,
             new_training_transitions=steps, physical_robot_interactions=0)
+        if fork_provenance is not None:
+            receipt.update(fork_provenance=fork_provenance,initial_steps=fork_provenance['prefix_steps'],
+                new_training_transitions=steps-fork_provenance['prefix_steps'],
+                all_step_trajectories_retained_scope='original source prefix plus current suffix',
+                new_evaluation_controls=evaluation_controls-fork_provenance['prefix_evaluation_controls'],
+                new_training_violations=violations-fork_provenance['prefix_counts']['training_violations'],
+                new_safe_successes=successes-fork_provenance['prefix_counts']['safe_successes'],
+                new_safe_timeouts=timeouts-fork_provenance['prefix_counts']['safe_timeouts'])
         if tracker is not None:
             receipt['training_metrics'] = tracker.metrics()
         if replay_factory:

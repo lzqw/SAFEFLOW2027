@@ -1,0 +1,30 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-late-endpoint",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_late_endpoint.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 107374182400,
+  "projected_additional_output_gib": 12,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 2500},
+  "jobs": [
+    {
+      "name": "L-control-continuation-2034",
+      "module": "scripts.paper_crax_payload.train_late_endpoint_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_late_endpoint.json", "--arm", "L-control-continuation", "--seed", "2034", "--cuda-memory-fraction", ".06", "--fork-from", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-full-P5-2034/full_100000.pt"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-late-endpoint/L-control-continuation-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/L-control-continuation-2034.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    },
+    {
+      "name": "L-endpoint-ramp100K150K-2034",
+      "module": "scripts.paper_crax_payload.train_late_endpoint_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_late_endpoint.json", "--arm", "L-endpoint-ramp100K150K", "--seed", "2034", "--cuda-memory-fraction", ".06", "--fork-from", "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-full-P5-2034/full_100000.pt"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-late-endpoint/L-endpoint-ramp100K150K-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/L-endpoint-ramp100K150K-2034.log",
+      "require_completed_receipt": true, "required_steps": 250000
+    }
+  ]
+}
