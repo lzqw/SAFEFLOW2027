@@ -1,5 +1,7 @@
 # v12仿真优化
 
+- [最新01:16：A100达337K/336K；后续三臂按实测存档预算准备共享资源，未启动900K](CROSSSEED_MEASURED_STORAGE_20261119_ZH.md)
+
 - [最新01:04：4080配对后缀已实际新增1K，GPU94%；完整目标仍未完成](LATE_ENDPOINT_RUNNING_20261119_ZH.md)
 - [后100K连续残差单因素登记：保留真实前缀、不冒充从头多seed](LATE_ENDPOINT_REGISTRATION_ZH.md)
 
