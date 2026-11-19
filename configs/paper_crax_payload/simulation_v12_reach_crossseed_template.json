@@ -1,0 +1,41 @@
+{
+  "protocol": "simulation_v12_reach_crossseed_three_arm150K_preparation",
+  "training_seeds": [41028, 41029],
+  "parent_steps": 400000,
+  "additional_steps_per_run": 150000,
+  "total_new_training_steps": 900000,
+  "arms": ["P5-fixed", "P5-activation2mm", "Metric-only"],
+  "candidates": {
+    "P5-fixed": {"ramp_steps": 0, "initial_fraction": 0.0, "activation_offset_m": 0.0, "component": "full"},
+    "P5-activation2mm": {"ramp_steps": 0, "initial_fraction": 0.0, "activation_offset_m": 0.002, "component": "full"},
+    "Metric-only": {"ramp_steps": 0, "initial_fraction": 0.0, "activation_offset_m": 0.0, "component": "metric_only"}
+  },
+  "actor_lr": {"initial": 0.0001, "floor": 0.00003, "start": 60000, "end": 80000},
+  "p5": {"direction_weight": 1.0, "rho": 0.25, "tangential_variance": 0.04},
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [20000, 40000, 60000, 80000, 100000, 150000],
+  "development_episodes_per_condition": 100,
+  "development_layout_seed_start": 12020000,
+  "action_sampling_seed": 12021000,
+  "conditions": [
+    {"name": "nominal", "simulation_overrides": {}},
+    {"name": "radius_0575", "simulation_overrides": {"obstacle_radius_m": 0.0575}},
+    {"name": "radius_060", "simulation_overrides": {"obstacle_radius_m": 0.06}},
+    {"name": "execution_scale_085", "simulation_overrides": {}, "action_scale": 0.85}
+  ],
+  "same_mode_final_deployment_review": {
+    "new_steps": [100000, 150000],
+    "modes": ["sampled", "zero_noise"],
+    "applies_to_all_arms": true,
+    "not_an_independent_test": true
+  },
+  "parent_selection": "both_actual_fixed400K_no_seed_or_best_node_selection",
+  "parent_rng_cuda_index": 0,
+  "training_radius_values": [0.045, 0.05, 0.055],
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "independent_requires_separate_freeze": true,
+  "physical_robot_interactions": 0,
+  "preparation_only": true,
+  "training_launches": 0
+}
