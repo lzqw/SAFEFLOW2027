@@ -78,6 +78,7 @@ class UpdateGeometry(EndpointGeometry):
         if return_diagnostics:
             diagnostics = dict(valid=valid, zero_gradient=~valid,
                 beta=torch.full_like(weight, beta), raw_weight=raw_weight,
+                predicted_margin_m=margins.detach().mean(0),
                 agreement=agreement, endpoint=endpoint.detach(),
                 proposal_clipped=(proposal.detach().abs() > 1.).any(-1))
             return normal, weight, {k:v.detach() for k,v in diagnostics.items()}

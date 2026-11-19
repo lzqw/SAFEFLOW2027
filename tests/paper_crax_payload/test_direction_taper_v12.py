@@ -1,21 +1,24 @@
 import torch
+import pytest
 
+from scripts.paper_crax_payload.crax_models import UpdateGeometry
 from scripts.paper_crax_payload.direction_development import NormalShrinkActor, outward_loss
 from scripts.paper_crax_payload.direction_taper_v12 import DirectionTaperActor, direction_taper
 from scripts.star.arm_safe_entropy.endpoint_geometry import EndpointGeometry
 from scripts.star.arm_safe_entropy.geometry import LocalMarginEnsemble
 
 
-def test_direction_only_taper_preserves_exact_sampler_energy_rng_and_loss_boundary():
+@pytest.mark.parametrize('obs_dim,geometry_class', [(25,EndpointGeometry),(34,UpdateGeometry)])
+def test_direction_only_taper_preserves_exact_sampler_energy_rng_and_loss_boundary(obs_dim,geometry_class):
     torch.set_num_threads(1); torch.manual_seed(2034)
     margin = torch.tensor([-.02, -.01, -.005, 0., .01], requires_grad=True)
     torch.testing.assert_close(direction_taper(margin), torch.tensor([0., 0., .5, 1., 1.]))
     assert not direction_taper(margin).requires_grad
-    base = NormalShrinkActor(25, 128, variance=.04, rho=.25)
-    candidate = DirectionTaperActor(25, 128, variance=.04, rho=.25)
+    base = NormalShrinkActor(obs_dim, 128, variance=.04, rho=.25)
+    candidate = DirectionTaperActor(obs_dim, 128, variance=.04, rho=.25)
     candidate.load_state_dict(base.state_dict())
-    geometry = EndpointGeometry(LocalMarginEnsemble(25), transitions=100000)
-    obs = torch.randn(12,25); noise = torch.randn(4,12,3)
+    geometry = geometry_class(LocalMarginEnsemble(obs_dim), transitions=100000)
+    obs = torch.randn(12,obs_dim); noise = torch.randn(4,12,3)
     state = torch.random.get_rng_state()
     reference = base(obs, geometry=geometry, noise_increments=noise, return_reference=True)
     result = candidate(obs, geometry=geometry, noise_increments=noise, return_reference=True)
