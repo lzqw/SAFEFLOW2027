@@ -1,0 +1,57 @@
+{
+  "status": "complete_cross_task_deployment_DEV_review",
+  "cases": 5,
+  "modes": 2,
+  "conditions": 34,
+  "episodes": 3400,
+  "provenance": [
+    {
+      "file": "Panda-P5__sampled.json",
+      "sha256": "2dac512be77d78b6ab9a3194de865c3ff0aebc9e033a6242ab8a6d21c562a2f8"
+    },
+    {
+      "file": "Panda-P5__zero_noise.json",
+      "sha256": "d1c2ea6f477895c80971b09d79b0df1e7e72cadeb5c3bbd6db79d7fffa0573c8"
+    },
+    {
+      "file": "Panda-Metric__sampled.json",
+      "sha256": "9c9aca95880bcf3512dcd53f018f96cee45c737d8df8259fddc94d6cfe99bd51"
+    },
+    {
+      "file": "Panda-Metric__zero_noise.json",
+      "sha256": "b85965542178f64acd71bf666ca410380ddfd1250cb342083f85ca77a1178ed9"
+    },
+    {
+      "file": "SafeReach-P5__sampled.json",
+      "sha256": "8e4d822b47cf1367f81ac2094468d6451b6c52900113a9398374388895a0b092"
+    },
+    {
+      "file": "SafeReach-P5__zero_noise.json",
+      "sha256": "e9f4889fd8bc1539060c2b01ecae41e8d6f9339ed3929fa626823d3424af338f"
+    },
+    {
+      "file": "SafeReach-Iso__sampled.json",
+      "sha256": "57ba35e52e2c0e91f631a8ffdd93ea36d8377cf9fb2c52c5337691a80d6abd00"
+    },
+    {
+      "file": "SafeReach-Iso__zero_noise.json",
+      "sha256": "754138766acc2e7e3880cc9f0874b99df94682e2d04b0d08ed2ed27857f73805"
+    },
+    {
+      "file": "SafeReach-Metric__sampled.json",
+      "sha256": "2392477cf7cb0c28740c308fd64714213490a4933453a7bbfc18bc13f10241cf"
+    },
+    {
+      "file": "SafeReach-Metric__zero_noise.json",
+      "sha256": "c3a0b97beaeb312a48a5a790bf81b8f1523f04fc91ab5871ba2d1d63a6f0f3fe"
+    }
+  ],
+  "native_receipt_sha256": "a9e2981ad7b63cea3d7d0aadee01629a36cbbf0af5705facfee019c7218a39ae",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "training_seed_count_per_task": 1,
+  "winner_confirmation": false,
+  "panda_guard_scope": "fixed policy deployment only;not final algorithm multi seed regression",
+  "training_risk_reduction_demonstrated": false
+}

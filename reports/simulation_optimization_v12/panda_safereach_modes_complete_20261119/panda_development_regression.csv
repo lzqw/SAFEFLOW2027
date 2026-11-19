@@ -1,0 +1,5 @@
+condition,zero_noise_successes,sampled_successes,success_drop_no_more2pp,zero_noise_timeouts,sampled_timeouts,zero_noise_stalls,sampled_stalls,success_at_least95percent,independent_confirmation
+nominal,100,100,True,0,0,0,0,True,False
+radius_070,100,100,True,0,0,0,0,True,False
+payload_wide,100,97,True,0,0,0,0,True,False
+execution_scale_085,100,100,True,0,0,0,0,True,False
