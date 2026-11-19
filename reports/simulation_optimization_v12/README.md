@@ -1,6 +1,8 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。30个100K开发端点和六组250K均已完成，共4.5M新增训练transition（不同预算分开比较）。Reach与Payload loss-only taper均完整失败。另4200个完整DEV回合显示：zero_noise部署下Reach固定P5 57.5/60mm达97%/95%、同模式Metric95%/91%；Payload+4mm 55/57.5mm达96%/85%、Metric90%/78%，均无DEV timeout/stall。但训练风险/多seed/Panda仍未共同通过，不能称全面最优。当前4080固定SafeReach候选、A100两个独立300K父继续训练。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。30个100K开发端点和七组250K均已完成，共4.75M新增训练transition（不同预算分开比较）。Reach、Payload和SafeReach loss-only taper全部完整失败，不再追加。另4200个完整DEV回合显示：zero_noise部署下Reach固定P5 57.5/60mm达97%/95%、同模式Metric95%/91%；Payload+4mm 55/57.5mm达96%/85%、Metric90%/78%，均无DEV timeout/stall。但训练风险/多seed/Panda仍未共同通过，不能称全面最优。A100两个独立300K父和Panda/SafeReach3400回合部署评测继续运行，4080本批训练已结束。
+
+- [最新：SafeReach完整250K也拒绝loss-only taper](SAFEREACH_TAPER_FINAL_20261119_ZH.md)
 
 - [最新：4200回合完整部署模式结果及结论边界](PIPER_DEPLOYMENT_MODES_FINAL_ZH.md)
 - [Panda与SafeReach五模型同模式比较的固定登记](PANDA_SAFEREACH_DEPLOYMENT_MODES_REGISTRATION_ZH.md)

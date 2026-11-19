@@ -24,6 +24,8 @@
 
 2026-11-19新增零训练部署评测已完整4200回合：原固定P5 zero_noise Reach97%/95%对同模式Metric95%/91%；Payload+4mm zero_noise96%/85%对90%/78%，全部DEV无timeout/stall。这是新的部署策略/单父seed开发证据，不改原随机策略结果或训练风险；Payload+4mm历史训练stall2对原固定1/Metric0仍未解决。两个新独立父正在从头训练，但P5跨seed确认、Panda部署回归、SafeReach共同达标及新冻结独立测试均未完成。详见`PIPER_DEPLOYMENT_MODES_FINAL_ZH.md`。
 
+最新SafeReach loss-only taper已完整250K：前100K违规357、全程800，对固定P5的295/682升高；终点29/28/28仍低于Metric29/29/29的困难条件。任务部分恢复但风险失守，拒绝本候选，不继续扫taper阈值。现Piper/SafeReach这条训练改动均完整失败；不能把未达标候选送多seed掩盖负结果。Panda/SafeReach3400回合同模式部署评测继续执行，独立父两seed仍训练；最终目标保持未完成。见`SAFEREACH_TAPER_FINAL_20261119_ZH.md`。
+
 未把旧建议中“接触后继续动作、七离散方向”直接硬加到原生连续3D任务；原环境首次违规终止，数据改动须另明示实验定义，不能伪造违规后安全恢复。停止无效方向仍有效：不重复已证无任务收益的冻结/全损失过采样，不用不断加枝掩盖负结果。用户持续优化授权不代表可声称所有要求已达成。
 
 2026-11-19追加loss-only taper的Reach/Payload四臂均完整100K：Reach候选违规118对control48，57.5/60mm成功91%/83%对94%/91%；Payload候选违规178对118，55/57.5mm成功79%/63%对83%/64%。拒绝此Piper分支，不因模型梯度冲突下降晋升、不继续扫阈值。SafeReach同硬件四臂均完整250K，P5终点28/26/28对Iso29/29/30、Metric29/29/29，仍未共同达标；其固定候选已接续原登记250K，尚无终点。A100零训练完整部署模式评测按六个冻结模型/相同Metric处理执行，不能改写训练风险或当作原随机策略结果。Panda最终配置回归仍未做。详见`REACH_TAPER_FINAL_20261119_ZH.md`、`PAYLOAD_TAPER_FINAL_20261119_ZH.md`、`SAMEHARDWARE_FINAL_20261119_ZH.md`，全部节点及失败保留。
