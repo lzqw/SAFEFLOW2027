@@ -9,7 +9,8 @@
 - [保留完整P5的新终点余量残差固定登记与结论边界](ENDPOINT_RESIDUAL_PREREGISTRATION_ZH.md)
 - [公共30K真实动作池的六个margin模型结果](SAFEREACH_CALIBRATION_FINAL_ZH.md)
 
-- [最新：独立父训练中期，一条正常学习、一条零成功；完整保留失败seed](REACH_PARENT_LEARNING_DIAGNOSTIC_20261119_ZH.md)
+- [最新：独立父120K，一条仍零成功，另一条困难几何从29/30回退13/30](REACH_PARENTS_120K_ZH.md)
+- [独立父早期学习诊断：完整保留失败seed](REACH_PARENT_LEARNING_DIAGNOSTIC_20261119_ZH.md)
 - [Panda开发部署护栏满足，SafeReach同模式仍落后](PANDA_SAFEREACH_MODES_FINAL_ZH.md)
 
 - [最新：SafeReach完整250K也拒绝loss-only taper](SAFEREACH_TAPER_FINAL_20261119_ZH.md)
