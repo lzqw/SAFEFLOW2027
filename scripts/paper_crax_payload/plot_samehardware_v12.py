@@ -23,7 +23,9 @@ ARMS = {
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--analysis',type=Path,required=True); p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--endpoint-residual',action='store_true')
+    group=p.add_mutually_exclusive_group()
+    group.add_argument('--endpoint-residual',action='store_true')
+    group.add_argument('--late-endpoint',action='store_true')
     p.add_argument('--wait-checks',type=int,default=0,help='Optional finite half-hour wait for the strict complete analysis')
     args = p.parse_args()
     if not 0<=args.wait_checks<=48:
@@ -36,19 +38,32 @@ def main():
         if check+1<args.wait_checks:
             time.sleep(1800)
     receipt = json.loads((args.analysis/'receipt.json').read_text())
-    expected_runs = 6 if args.endpoint_residual else 4
+    expected_runs = 8 if args.late_endpoint else 6 if args.endpoint_residual else 4
+    if args.late_endpoint:
+        valid_scope=(receipt.get('new_campaign_completed_training_transitions')==300000
+            and receipt.get('shared_original_prefix_steps_not_new')==100000
+            and receipt.get('historical_comparison_training_transitions')==1500000
+            and receipt.get('inherited_first100K_not_new_confirmation') is True
+            and receipt.get('training_seed_count')==1)
+    else:
+        valid_scope=(receipt['development_nodes']==21*expected_runs
+            and receipt['actual_completed_training_transitions']==250000*expected_runs
+            and receipt.get('endpoint_residual_screen' if args.endpoint_residual else 'same_hardware_confirmation'))
     if (receipt['status'] != 'complete_offline_review' or receipt['runs'] != expected_runs
-            or receipt['development_nodes'] != 21*expected_runs
-            or receipt['actual_completed_training_transitions'] != 250000*expected_runs
             or not receipt.get('all_registered_nodes_retained')
             or receipt['independent_test_used'] is not False
-            or not receipt.get('endpoint_residual_screen' if args.endpoint_residual else 'same_hardware_confirmation')):
+            or not valid_scope):
         raise ValueError('Use every complete registered native run, not partial/best endpoints')
     arms = dict(ARMS)
-    if args.endpoint_residual:
+    if args.endpoint_residual or args.late_endpoint:
         arms = {k:(label+' (historical)',color,style) for k,(label,color,style) in arms.items()}
         arms.update({'E-control-P5':('P5 (current control)','#56B4E9','-.'),
                      'E-endpoint-residual':('P5 + endpoint residual','#CC79A7','-')})
+    if args.late_endpoint:
+        arms={k:(label+' (prior)' if k.startswith('E-') else label,color,style)
+              for k,(label,color,style) in arms.items()}
+        arms.update({'L-control-continuation':('P5 matched100K continuation','#E69F00','--'),
+                     'L-endpoint-ramp100K150K':('P5 + post100K residual','#882255','-')})
     training = read(args.analysis/'training.csv'); dev = read(args.analysis/'development_nodes.csv')
     args.output.mkdir(parents=True,exist_ok=False)
     plt.rcParams.update({'font.size':10,'pdf.fonttype':42,'figure.dpi':150,
@@ -90,10 +105,18 @@ def main():
     ax.axvspan(150,200,color='#999999',alpha=.09)
     ax.set_title('Cumulative safe training successes');ax.set_xlabel('Training transitions (thousands)')
     ax.set_xlim(0,250);ax.grid(alpha=.2)
-    scope = 'endpoint residual pair + historical references' if args.endpoint_residual else 'four original controls'
+    if args.late_endpoint:
+        for ax in axes.flat:
+            ax.axvline(100,color='#777777',linewidth=.8,linestyle=':')
+            ax.axvspan(100,150,color='#E69F00',alpha=.08)
+    scope = ('matched100K prefix + late residual pair + prior references' if args.late_endpoint else
+             'endpoint residual pair + historical references' if args.endpoint_residual else 'four original controls')
     fig.suptitle('SafeReach complete250K: '+scope+';one training seed2034,30 DEV layouts/condition',fontsize=12)
-    fig.supxlabel('Shading: registered150-200K actor LR decay. Lines connect saved nodes; no independent test or seed uncertainty.',fontsize=9)
-    basename = 'endpoint_residual_learning_curves' if args.endpoint_residual else 'samehardware_learning_curves'
+    annotation=('Late pair inherits identical observed0-100K prefix;gold100-150K residual ramp;gray150-200K LR decay.'
+                if args.late_endpoint else 'Shading: registered150-200K actor LR decay.')
+    fig.supxlabel(annotation+' Saved nodes connected;no independent test or seed uncertainty.',fontsize=9)
+    basename = ('late_endpoint_learning_curves' if args.late_endpoint else
+                'endpoint_residual_learning_curves' if args.endpoint_residual else 'samehardware_learning_curves')
     for suffix in ('png','pdf'):
         fig.savefig(args.output/(basename+'.'+suffix))
     plt.close(fig)
@@ -103,6 +126,8 @@ def main():
         training_seed_count=1,complete_native_runs=expected_runs,training_nodes=250*expected_runs,DEV_nodes=21*expected_runs,
         contemporary_baselines=receipt.get('contemporary_baselines'),
         historical_samehardware_baselines=receipt.get('historical_samehardware_baselines'),
+        shared_original_prefix_steps_not_new=receipt.get('shared_original_prefix_steps_not_new'),
+        new_campaign_completed_training_transitions=receipt.get('new_campaign_completed_training_transitions'),
         all_registered_nodes_included=True,new_training_steps=0,new_simulation_controls=0,
         independent_test_used=False,best_checkpoint_selected=False,
         uncertainty='No seed uncertainty or significance estimate;connected saved nodes are not continuous-time dominance'),indent=2)+'\n')
