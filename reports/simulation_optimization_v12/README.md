@@ -4,6 +4,7 @@
 
 - [最新：4080单因素候选/原P5对照两条已实际运行](ENDPOINT_RESIDUAL_STARTED_20261119_ZH.md)
 - [最新25K反证：候选7/90成功、82超时，当前不能算安全改进](ENDPOINT_RESIDUAL_25K_ZH.md)
+- [50K候选恢复：84/90成功、零超时，累计训练违规/超时仍未共同改善](ENDPOINT_RESIDUAL_50K_ZH.md)
 - [完整终点自动汇总规则：保留全部任务—风险代价](ENDPOINT_RESIDUAL_CLOSURE_ZH.md)
 - [4080终点余量残差15K中期：两条仍一致，候选尚未激活](ENDPOINT_RESIDUAL_INTERIM_15K_20261119_ZH.md)
 - [保留完整P5的新终点余量残差固定登记与结论边界](ENDPOINT_RESIDUAL_PREREGISTRATION_ZH.md)
