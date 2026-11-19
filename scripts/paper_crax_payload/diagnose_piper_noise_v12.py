@@ -19,7 +19,7 @@ from scripts.star.arm_safe_entropy.train import atomic_json
 PLAN = Path(__file__).resolve().parents[2]/'configs/paper_crax_payload/simulation_v12_terminal_noise_probe.json'
 
 
-def load(case):
+def load(case, device='cpu'):
     module = importlib.import_module(case['module'])
     checkpoint = Path(case['checkpoint'])
     if sha256(checkpoint) != case['checkpoint_sha256']:
@@ -34,7 +34,7 @@ def load(case):
             saved['line'] != case['line'] or saved['arm'] != case['arm'] or
             saved['steps'] != line['parent_steps']+100000):
         raise ValueError('Native format, training plan, arm and budget must match')
-    learner = build_native(saved['configuration'], line, 'cpu')
+    learner = build_native(saved['configuration'], line, device)
     learner.set_transitions(line['parent_steps'])
     module.attach(learner, training, case['line'], case['arm'])
     learner.load_state_dict(saved['learner'])

@@ -1,0 +1,20 @@
+{
+  "protocol": "simulation_v12_piper_frozen_whole_policy_deployment_modes",
+  "episodes_per_condition": 100,
+  "deployment_modes": ["sampled", "zero_noise"],
+  "layout_seed_start": {"piper_reach": 11970000, "piper_payload": 11980000},
+  "action_seed_start": {"piper_reach": 11971000, "piper_payload": 11981000},
+  "new_training_steps": 0,
+  "independent_test_used": false,
+  "physical_robot_interactions": 0,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "cases": [
+    {"name": "Reach-fixedP5", "label": "fixedP5", "line": "piper_reach", "arm": "R0-fixed", "relative_run": "runs-r1/piper_reach-R0-fixed", "checkpoint_sha256": "38bf8e255745be0a40d88e8c091d0d9e57da8e3f2283fac368d205c829a6075a", "module": "scripts.paper_crax_payload.train_native_p5_warmup_v12", "plan": "configs/paper_crax_payload/simulation_v12_piper_round1.json"},
+    {"name": "Reach-fixed2mm", "label": "activation", "line": "piper_reach", "arm": "R2-activation2mm", "relative_run": "runs-r2/piper_reach-R2-activation2mm", "checkpoint_sha256": "720a0f1ba93bad71ac44fe6be4aed49a38aa39de4219827421ade6c6b58aeb62", "module": "scripts.paper_crax_payload.train_piper_refinement_v12", "plan": "configs/paper_crax_payload/simulation_v12_piper_round2.json"},
+    {"name": "Reach-Metric", "label": "Metric", "line": "piper_reach", "arm": "Metric-only", "relative_run": "runs-r3/piper_reach-Metric-only", "checkpoint_sha256": "997e9e0801901ac276485e12a9716d0a90f6a2c27536e82dca631c81dc89d5e4", "module": "scripts.paper_crax_payload.train_piper_comparison_v12", "plan": "configs/paper_crax_payload/simulation_v12_piper_round3.json"},
+    {"name": "Payload-fixedP5", "label": "fixedP5", "line": "piper_payload", "arm": "Payload-P5-fixed", "relative_run": "runs-payload/piper_payload-Payload-P5-fixed", "checkpoint_sha256": "7b9fd98ad299f6944cf17fde97c952e3e92668b5e63cbf8bb93a9dc804ca90eb", "module": "scripts.paper_crax_payload.train_payload_comparison_v12", "plan": "configs/paper_crax_payload/simulation_v12_payload_round1.json"},
+    {"name": "Payload-fixed4mm", "label": "activation", "line": "piper_payload", "arm": "Payload-activation4mm", "relative_run": "runs-followup/piper_payload-Payload-activation4mm", "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428", "module": "scripts.paper_crax_payload.train_piper_followup_v12", "plan": "configs/paper_crax_payload/simulation_v12_followup_piper_payload.json"},
+    {"name": "Payload-Metric", "label": "Metric", "line": "piper_payload", "arm": "Payload-Metric-only", "relative_run": "runs-payload/piper_payload-Payload-Metric-only", "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c", "module": "scripts.paper_crax_payload.train_payload_comparison_v12", "plan": "configs/paper_crax_payload/simulation_v12_payload_round1.json"}
+  ]
+}

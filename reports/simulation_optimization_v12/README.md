@@ -6,6 +6,7 @@
 - [当前候选已实际运行的接续记录](DIRECTION_TAPER_STARTED_20261119_ZH.md)
 - [同硬件四臂完整学习曲线](samehardware_figures_20261119/samehardware_learning_curves.png) 与 [论文PDF](samehardware_figures_20261119/samehardware_learning_curves.pdf)
 - [Reach独立父seed稳定性确认准备（尚未启动）](REACH_INDEPENDENT_SEED_PREPARATION_ZH.md)
+- [冻结模型整段轨迹的两种部署模式实验登记](PIPER_DEPLOYMENT_MODES_PREREGISTRATION_ZH.md)
 
 - [最新：四组250K完整结果与后续硬件确认](MATCHED_ABLATION_FINAL_20261119_ZH.md)
 - [同4080确认与同期Iso两臂固定登记](SAMEHARDWARE_CONFIRMATION_PREREGISTRATION_ZH.md)

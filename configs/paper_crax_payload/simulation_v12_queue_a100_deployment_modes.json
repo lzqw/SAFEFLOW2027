@@ -1,0 +1,22 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-deployment-modes",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 1,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_deployment_modes.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 47244640256,
+  "projected_additional_output_gib": 2,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3000},
+  "jobs": [
+    {
+      "name": "Piper-whole-policy-deployment-modes",
+      "module": "scripts.paper_crax_payload.evaluate_piper_deployment_modes_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_deployment_modes.json", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/deployment-modes-evaluation",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/deployment-modes-evaluation.log",
+      "require_completed_receipt": true
+    }
+  ]
+}
