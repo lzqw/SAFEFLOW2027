@@ -1,0 +1,21 @@
+{
+  "protocol": "simulation_v12_panda_safereach_frozen_deployment_modes",
+  "episodes_per_condition": 100,
+  "deployment_modes": ["sampled", "zero_noise"],
+  "layout_seed_start": {"safereach": 12000000, "panda_payload": 12010000},
+  "action_seed_start": {"safereach": 12001000, "panda_payload": 12011000},
+  "planned_conditions": 34,
+  "planned_episodes": 3400,
+  "new_training_steps": 0,
+  "independent_test_used": false,
+  "physical_robot_interactions": 0,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "cases": [
+    {"name": "Panda-P5", "label": "P5", "line": "panda_payload", "arm": "Panda-P5-fixed", "relative_run": "runs-panda-reference/panda_payload-Panda-P5-fixed", "checkpoint_file": "full_new_100000.pt", "checkpoint_sha256": "f5d493fae2439ae20b0eb4c9d9b496fc8a77cc7aa871c577fa8a24e633f16b01", "format": "native_panda_explicit_metric_reference_v12_full", "training_source": "8da55a68", "plan": "configs/paper_crax_payload/simulation_v12_panda_reference.json", "steps": 340000, "training_seed": 41028},
+    {"name": "Panda-Metric", "label": "Metric", "line": "panda_payload", "arm": "Panda-Metric-only", "relative_run": "runs-panda-reference/panda_payload-Panda-Metric-only", "checkpoint_file": "full_new_100000.pt", "checkpoint_sha256": "2b6a4b2c9e1cd2af5ebad49a2631a1ef337fbc3286223ca0f07bbe779e5e35af", "format": "native_panda_explicit_metric_reference_v12_full", "training_source": "8da55a68", "plan": "configs/paper_crax_payload/simulation_v12_panda_reference.json", "steps": 340000, "training_seed": 41028},
+    {"name": "SafeReach-P5", "label": "P5", "line": "safereach", "arm": "A-full-P5", "relative_run": "runs-samehardware/A-full-P5-2034", "checkpoint_file": "full_250000.pt", "checkpoint_sha256": "c547da8193a3bf591ba8319309c24e6e18cabfeced651efa3022c5bda6aed66d", "format": "safereach_fresh250k_samehardware_confirmation_v12_full", "training_source": "2c06ca2a", "plan": "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json", "steps": 250000, "training_seed": 2034},
+    {"name": "SafeReach-Iso", "label": "Iso", "line": "safereach", "arm": "A-Iso-matchedLR", "relative_run": "runs-samehardware/A-Iso-matchedLR-2034", "checkpoint_file": "full_250000.pt", "checkpoint_sha256": "f11758cf2cecacc7ac7d31ae42c78bcdd1a86549c0e268fab77eec49ae6354dc", "format": "safereach_fresh250k_samehardware_confirmation_v12_full", "training_source": "2c06ca2a", "plan": "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json", "steps": 250000, "training_seed": 2034},
+    {"name": "SafeReach-Metric", "label": "Metric", "line": "safereach", "arm": "A-Metric-matchedLR", "relative_run": "runs-matched-offload/A-Metric-matchedLR-2034", "checkpoint_file": "full_250000.pt", "checkpoint_sha256": "75079a96d3699b57ca890a3d86bce810edb8d798c341caff126aa1baf444c2c8", "format": "safereach_fresh250k_matched_ablation_v12_full", "training_source": "2f09231b", "plan": "configs/paper_crax_payload/simulation_v12_matched_ablation.json", "steps": 250000, "training_seed": 2034}
+  ]
+}

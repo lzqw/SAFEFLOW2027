@@ -1,0 +1,17 @@
+# Panda45D与SafeReach25D完整部署模式：固定五模型3400个新DEV回合
+
+Piper的完整4200回合显示无噪声部署收益，但未解决其他任务和训练风险。本轮按相同处理P5/Metric（SafeReach另含Iso），固定现有完整端点，不再训练或扫描噪声系数，直接补跨任务部署证据。
+
+五个模型/两个模式：Panda Payload固定P5与Metric，均原生45D/parent240K+100K、父seed41028、来源8da55a68；SafeReach固定250K P5/Iso/Metric，均同4080原生25D/seed2034，来源2c06ca2a/2f09231b。所有checkpoint SHA预先列入配置，不加入仍在训练的taper候选或原A100较好的P5，不选择最好中间节点。Panda与Piper的41028标签属于不同任务，不算同一个独立Piper确认结果。
+
+Panda四条件nominal/radius070/payload_wide/execution085、SafeReach三条件nominal/radius065/execution085，每条件100回合。新DEV布局Panda12010000起/动作12011000，SafeReach12000000起/动作12001000；相同任务各模型和两模式完全配对布局。总计34个条件节点/3400回合。均为开发集，不复用旧独立种子，不因前几个结果替换布局/模型/部署模式，不科学提前停止。
+
+sampled仍为原target Actor随机采样；zero_noise只在原action函数传deterministic=True，原四步flow噪声置零，其他参数和真实环境/动作scale/15mm安全距离/成功/horizon/首次违规终止不变。部署是新策略，不重命名旧stochastic结果，训练违规不会随部署改变。
+
+保留严格原生loader：Panda45D full原configuration、计划/arm/完整340K、parent适应元数据及counter；SafeReach25D full匹配配置/arm/seed/250K及全部原生状态。不得互换机器人模型、弱化旧checkpoint解释或用其他端点替代。环境与原evaluator复用，SafeReach原区间protected-link observer保留，仅增加实际同步action计时；Panda使用原计时。每回合保留轨迹/原终止/安全和普通成功/return/capped用时/timeout/stall/推理分位数，前后online/target参数哈希与learner/dual计数不变。
+
+Panda开发护栏：同一冻结P5、同布局zero_noise相对sampled逐条件成功下降≤2pp、关键条件≥95%，并保留timeout/stall检查及同模式Metric对照。这个护栏只是**固定P5部署变体**的DEV检查，不是尚未确定的最终新训练算法已经通过Panda跨seed回归。SafeReach逐条件与同模式Metric/Iso公平比较，不能以Piper成功推断这里也成功。所有负结果保留，不只展示最有利模式。
+
+输入仅复制五个白名单checkpoint/receipt到A100 storage0，约0.47GiB，4080源全部保留；完整模型和轨迹不进GitHub。新任务总预留2GiB，启动前约52GiB可用，还计入两条独立父模型未来约1GiB增长，保留40GiB底线。source/cache/TMP/输出经storage wrapper，GPU0单共享槽allocator .025，当前外部项目虽占计算但显存有余，不暂停它们；GPU1两条独立父训练和4080候选保持不变。
+
+仅新增仿真控制，不写replay或更新optimizer，不连接5080/实机。预计约20–60分钟，受共享计算与物理耗时影响；每30分钟监测。最后逐模型两模式配对、同模式baseline比较和Panda逐条件护栏同时保存；没有自动方法晋升、独立test或后续训练任务。

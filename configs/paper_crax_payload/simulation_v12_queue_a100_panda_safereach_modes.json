@@ -1,0 +1,22 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-panda-safereach-modes",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 1,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_panda_safereach_modes.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 47244640256,
+  "projected_additional_output_gib": 2,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3000},
+  "jobs": [
+    {
+      "name": "Panda-SafeReach-frozen-deployment-modes",
+      "module": "scripts.paper_crax_payload.evaluate_panda_safereach_modes_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_panda_safereach_deployment_modes.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/panda-safereach-modes-evaluation",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/panda-safereach-modes-evaluation.log",
+      "require_completed_receipt": true
+    }
+  ]
+}
