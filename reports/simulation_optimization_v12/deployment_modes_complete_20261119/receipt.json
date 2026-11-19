@@ -1,0 +1,65 @@
+{
+  "status": "complete_deployment_mode_DEV_review",
+  "cases": 6,
+  "modes": 2,
+  "conditions": 42,
+  "episodes": 4200,
+  "provenance": [
+    {
+      "file": "Reach-fixedP5__sampled.json",
+      "sha256": "a6cc72dd568fc27d0bee4fc7adcf7c7f6183ff3966cad054f6c97ef0e3fdd820"
+    },
+    {
+      "file": "Reach-fixedP5__zero_noise.json",
+      "sha256": "c88fdd224e4b117cb19c976b28b7001a351c0f0ab7a50f93745193553f03cc96"
+    },
+    {
+      "file": "Reach-fixed2mm__sampled.json",
+      "sha256": "075da7d78d23dde43bb9119f60e53591ae6a2d68132e49d41024297d88a156c4"
+    },
+    {
+      "file": "Reach-fixed2mm__zero_noise.json",
+      "sha256": "abb024a48e7f7f14c2b53fbd0743d9e8c44c2af5c3eddc58d21d565e88fa9f23"
+    },
+    {
+      "file": "Reach-Metric__sampled.json",
+      "sha256": "6a49650f215937da4e838a20605325fa17b0532795ee72d56e7711f365ef6f4b"
+    },
+    {
+      "file": "Reach-Metric__zero_noise.json",
+      "sha256": "8d7b2055b7a0f2640ee36552a99690947f21b09d1fc85d0ba55ea4b1d60a533e"
+    },
+    {
+      "file": "Payload-fixedP5__sampled.json",
+      "sha256": "46926f9d32eb6d403877dc7d21c97155aa33f6c6965dd2442b193b52a7a21a0f"
+    },
+    {
+      "file": "Payload-fixedP5__zero_noise.json",
+      "sha256": "d7aad3d20ce79801e1a3f832852342bd0133556a3f3e08d11a7790ebd3f51e3d"
+    },
+    {
+      "file": "Payload-fixed4mm__sampled.json",
+      "sha256": "4589bd14302adc94a81f267e263c3ddc2a5dace3e8823b351208bf3c9d2a8459"
+    },
+    {
+      "file": "Payload-fixed4mm__zero_noise.json",
+      "sha256": "8633bfad6749deda22f42cf13d25fe2ce3987cd23aa097008247436fb2d49614"
+    },
+    {
+      "file": "Payload-Metric__sampled.json",
+      "sha256": "6ae654befa4e39f4ad5ed2e25bfa58431d9e76e0998ac6bf1d34745ff1a60bf6"
+    },
+    {
+      "file": "Payload-Metric__zero_noise.json",
+      "sha256": "7fe4fe80db0836f3b896a42854c27e34139dade30a2fd358d4734ce9f7f807c7"
+    }
+  ],
+  "native_receipt_sha256": "7e870378945eda0165c6a2476ef5f715ba6ee1b82e050e151062768521769940",
+  "training_seed_count": 1,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "training_risk_reduction_demonstrated": false,
+  "caution": "Zero noise is a separate deployment policy,not evidence of stochastic-policy or training-risk improvement"
+}

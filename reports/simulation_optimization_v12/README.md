@@ -1,6 +1,8 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。30个100K开发端点和六组250K均已完成，共4.5M新增训练transition（不同预算分开比较）。同4080完整P5/恒定LR的前150K关键指标精确一致，但lateLR未带来任务—安全共同改进；Reach与Payload loss-only taper均完整失败，不再追加。当前4080固定SafeReach候选正在训练，A100执行冻结模型的两种部署模式评测、零训练；仍未全面达标，最终新版本尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。30个100K开发端点和六组250K均已完成，共4.5M新增训练transition（不同预算分开比较）。Reach与Payload loss-only taper均完整失败。另4200个完整DEV回合显示：zero_noise部署下Reach固定P5 57.5/60mm达97%/95%、同模式Metric95%/91%；Payload+4mm 55/57.5mm达96%/85%、Metric90%/78%，均无DEV timeout/stall。但训练风险/多seed/Panda仍未共同通过，不能称全面最优。当前4080固定SafeReach候选、A100两个独立300K父继续训练。
+
+- [最新：4200回合完整部署模式结果及结论边界](PIPER_DEPLOYMENT_MODES_FINAL_ZH.md)
 
 - [最新：同4080完整250K对照结果](SAMEHARDWARE_FINAL_20261119_ZH.md)
 - [当前候选已实际运行的接续记录](DIRECTION_TAPER_STARTED_20261119_ZH.md)
