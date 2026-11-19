@@ -1,0 +1,32 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-endpoint-residual",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_endpoint_residual.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 98784247808,
+  "projected_additional_output_gib": 12,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 2400},
+  "jobs": [
+    {
+      "name": "E-control-P5-2034",
+      "module": "scripts.paper_crax_payload.train_endpoint_residual_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_endpoint_residual.json", "--arm", "E-control-P5", "--seed", "2034", "--cuda-memory-fraction", ".06"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-endpoint-residual/E-control-P5-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E-control-P5-2034.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    },
+    {
+      "name": "E-endpoint-residual-2034",
+      "module": "scripts.paper_crax_payload.train_endpoint_residual_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_endpoint_residual.json", "--arm", "E-endpoint-residual", "--seed", "2034", "--cuda-memory-fraction", ".06"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-endpoint-residual/E-endpoint-residual-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/E-endpoint-residual-2034.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    }
+  ]
+}

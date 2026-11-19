@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "source_commit": "19b9bd4f",
+  "provenance": [
+    {
+      "label": "P5",
+      "checkpoint_sha256": "c547da8193a3bf591ba8319309c24e6e18cabfeced651efa3022c5bda6aed66d",
+      "receipt_sha256": "d86d19cfb0285d09e22aa596aab0fd85868c281cea7093ecb6efc571ae105b7b",
+      "training_source": "2c06ca2a"
+    },
+    {
+      "label": "Iso",
+      "checkpoint_sha256": "f11758cf2cecacc7ac7d31ae42c78bcdd1a86549c0e268fab77eec49ae6354dc",
+      "receipt_sha256": "c92004fc1c7b5965ff21620f3cb50b3d4aaa6e7c8a638fd8090aa4413c2715b9",
+      "training_source": "2c06ca2a"
+    },
+    {
+      "label": "Metric",
+      "checkpoint_sha256": "75079a96d3699b57ca890a3d86bce810edb8d798c341caff126aa1baf444c2c8",
+      "receipt_sha256": "5556babfd7e1d1bd3d272a4ef5de7c512502e1641e49eed03ab108ba7e2914eb",
+      "training_source": "2f09231b"
+    }
+  ],
+  "saved_actual_controls": 30000,
+  "models_scored": 6,
+  "model_action_scores": 180000,
+  "unsafe_behavior_controls": 38,
+  "summary_rows": 108,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "optimizer_steps": 0,
+  "generated_policy_actions": 0,
+  "independent_test_used": false,
+  "all_saved_failures_retained": true,
+  "checkpoint_mutations": 0,
+  "uncertainty_is_not_calibrated_probability": true,
+  "causal_proof": false
+}
