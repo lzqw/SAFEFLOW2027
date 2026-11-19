@@ -37,3 +37,5 @@
 A100 Reach loss-only taper已完整失败并停止追加，该负结果不冒充SafeReach或Payload；两条Payload依旧按已登记100K运行。整体仍缺合格共同配置、跨独立父seed稳定性、Panda≤2pp回归和新冻结独立评测，目标未完成。
 
 数据：[完整三个训练区间](samehardware_complete_20261119/training_windows.csv)、[七DEV节点](samehardware_complete_20261119/development_nodes.csv)、[所有DEV回合](samehardware_complete_20261119/development_episodes.csv)、[所有1K训练节点](samehardware_complete_20261119/training.csv)、[逐节点差值](samehardware_complete_20261119/paired_nodes.csv)、[来源与前150K一致性](samehardware_complete_20261119/receipt.json)。服务器原始checkpoint/replay/轨迹及已退休观察日志保留，不额外删除证据。
+
+已生成[完整学习曲线PNG](samehardware_figures_20261119/samehardware_learning_curves.png)及[可用于论文排版的PDF](samehardware_figures_20261119/samehardware_learning_curves.pdf)：上排全部训练违规/累计return/timeout，下排全部七DEV节点的三个原条件。阴影只标原150–200K LR区间，不代表获益区间；连接保存点不证明连续每一步领先。没有跨训练seed误差条，全部4条曲线/负节点保留；stall仍见上表/CSV，不把timeout替代stall。
