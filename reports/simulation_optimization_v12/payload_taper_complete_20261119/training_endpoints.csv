@@ -1,0 +1,5 @@
+reference,source_commit,host,violations,safe_successes,safe_timeouts,training_stall_episodes,training_cumulative_return
+candidate,d904b9c8,CTAlab,178,2819,0,1,28475.82223832916
+control,d904b9c8,CTAlab,118,2711,0,2,27870.00712443888
+fixed,70b414cb,447,136,2738,0,1,27992.95194893683
+metric,70b414cb,447,197,2832,0,0,28436.36251186207

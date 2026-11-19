@@ -1,0 +1,34 @@
+{
+  "status": "complete_pair_comparison",
+  "line": "piper_payload",
+  "native_runs": 4,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "training_seed_count": 1,
+  "all_registered_nodes_retained": true,
+  "historical_crosshardware_limits_disclosed": true,
+  "sources": {
+    "candidate": {
+      "receipt_sha256": "a0d0a955cdfe64eb247f2e65c354551870482725c1caacfbad3e1fbcb5983680",
+      "source": "d904b9c8",
+      "host": "CTAlab"
+    },
+    "control": {
+      "receipt_sha256": "383bf6cd426ccc45a090c14b6fa35a3680a563bcfef41064e64952f0fe0cf325",
+      "source": "d904b9c8",
+      "host": "CTAlab"
+    },
+    "fixed": {
+      "receipt_sha256": "3985f5e075a55a7557814c4bf2fd41a0ab73c584f2adef0db769790d4c35b73a",
+      "source": "70b414cb",
+      "host": "447"
+    },
+    "metric": {
+      "receipt_sha256": "fdcd25a696f6c18181e6b4e2834592aecbebdd57f66b1a063db5f321b99a3a15",
+      "source": "70b414cb",
+      "host": "447"
+    }
+  }
+}
