@@ -66,3 +66,48 @@ def test_all_arms_receive_both_modes_and_all_extra_physics_is_counted(monkeypatc
     assert result['new_simulation_controls']==6
     assert [g['deployment_mode'] for g in result['conditions']]==['sampled','zero_noise']
     assert result['independent_test_used'] is False and learner.action(None) is False
+
+
+def admission_fixture(tmp_path,monkeypatch):
+    import scripts.paper_crax_payload.train_reach_crossseed_v12 as module
+    from scripts.paper_crax_payload.prepare_reach_crossseed_v12 import sha256
+    p=plan();path=tmp_path/'plan.json';path.write_text(json.dumps(p))
+    host=module.platform.node();output=tmp_path/'P5-fixed'
+    jobs=[dict(seed=seed,arm=arm,host=host if seed==41028 else 'other-test-host',
+        output=str(tmp_path/arm) if seed==41028 else '/other/'+arm,visible_devices='0')
+        for seed in (41028,41029) for arm in p['arms']]
+    admission=dict(status='admitted_fixed_crossseed900K_development',jobs=jobs,
+        template_sha256=p['template_sha256'],runner_source_commit='fixture-not-scientific-run',
+        runner_sha256=sha256(Path(module.__file__)),new_training_steps=900000,
+        independent_test_used=False,scientific_early_stopping=False,automatic_retry=False,
+        data_roots_by_host={host:str(tmp_path)},plan_sha256_by_seed={'41028':sha256(path)})
+    registration=tmp_path/'admission.json';registration.write_text(json.dumps(admission))
+    args=SimpleNamespace(execution_registration=registration,data_root=tmp_path,plan=path,resume=None,
+        line='piper_reach',arm='P5-fixed',parent=Path('/data/full_400000.pt'),output=output,
+        source_commit='fixture-not-scientific-run',device='cuda:0',cuda_memory_fraction=.025)
+    monkeypatch.setenv('CUDA_VISIBLE_DEVICES','0')
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=100*1024**3))
+    return module,p,args,admission
+
+
+def test_execution_admission_pins_output_host_and_one_gpu(tmp_path,monkeypatch):
+    module,p,args,admission=admission_fixture(tmp_path,monkeypatch)
+    module.validate(p,args)  # Identity/resource check only;no model loading or launch.
+    args.output=tmp_path/'unregistered-output'
+    with pytest.raises(ValueError,match='admission'):
+        module.validate(p,args)
+    args.output=tmp_path/'P5-fixed';monkeypatch.setenv('CUDA_VISIBLE_DEVICES','0,1')
+    with pytest.raises(ValueError,match='admission'):
+        module.validate(p,args)
+
+
+def test_execution_admission_reserves_growth_and_same_seed_hardware(tmp_path,monkeypatch):
+    module,p,args,admission=admission_fixture(tmp_path,monkeypatch)
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=51*1024**3))
+    with pytest.raises(OSError,match='headroom'):
+        module.validate(p,args)
+    monkeypatch.setattr(module.shutil,'disk_usage',lambda root:SimpleNamespace(free=100*1024**3))
+    admission['jobs'][1]['host']='other-test-host'
+    args.execution_registration.write_text(json.dumps(admission))
+    with pytest.raises(ValueError,match='admission'):
+        module.validate(p,args)
