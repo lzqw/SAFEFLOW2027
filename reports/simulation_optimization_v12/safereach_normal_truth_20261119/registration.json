@@ -1,0 +1,73 @@
+{
+  "protocol": "v12_same_saved_state_finite_difference_margin_normals",
+  "source_commit": "db41080a",
+  "specification": {
+    "window": [
+      240001,
+      250000
+    ],
+    "unsafe_controls": 38,
+    "near_safe_each_pool": 10,
+    "interior_safe_each_pool": 20,
+    "selection_seed": 993100,
+    "samples": 128,
+    "action_epsilon": 0.002,
+    "original_margin_tolerance_m": 2e-06,
+    "replay_repeat_tolerance_m": 2e-07,
+    "observation_tolerance": 2e-06,
+    "valid_gradient_norm": 1e-07,
+    "near_true_boundary_m": 0.005
+  },
+  "cases": [
+    {
+      "name": "SafeReach-P5",
+      "label": "P5",
+      "line": "safereach",
+      "arm": "A-full-P5",
+      "relative_run": "runs-samehardware/A-full-P5-2034",
+      "checkpoint_file": "full_250000.pt",
+      "checkpoint_sha256": "c547da8193a3bf591ba8319309c24e6e18cabfeced651efa3022c5bda6aed66d",
+      "format": "safereach_fresh250k_samehardware_confirmation_v12_full",
+      "training_source": "2c06ca2a",
+      "plan": "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json",
+      "steps": 250000,
+      "training_seed": 2034
+    },
+    {
+      "name": "SafeReach-Iso",
+      "label": "Iso",
+      "line": "safereach",
+      "arm": "A-Iso-matchedLR",
+      "relative_run": "runs-samehardware/A-Iso-matchedLR-2034",
+      "checkpoint_file": "full_250000.pt",
+      "checkpoint_sha256": "f11758cf2cecacc7ac7d31ae42c78bcdd1a86549c0e268fab77eec49ae6354dc",
+      "format": "safereach_fresh250k_samehardware_confirmation_v12_full",
+      "training_source": "2c06ca2a",
+      "plan": "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json",
+      "steps": 250000,
+      "training_seed": 2034
+    },
+    {
+      "name": "SafeReach-Metric",
+      "label": "Metric",
+      "line": "safereach",
+      "arm": "A-Metric-matchedLR",
+      "relative_run": "runs-matched-offload/A-Metric-matchedLR-2034",
+      "checkpoint_file": "full_250000.pt",
+      "checkpoint_sha256": "75079a96d3699b57ca890a3d86bce810edb8d798c341caff126aa1baf444c2c8",
+      "format": "safereach_fresh250k_matched_ablation_v12_full",
+      "training_source": "2f09231b",
+      "plan": "configs/paper_crax_payload/simulation_v12_matched_ablation.json",
+      "steps": 250000,
+      "training_seed": 2034
+    }
+  ],
+  "scope": "retrospective_native_training_states;not_current_candidate_or_independent_test",
+  "geometry_site": "direct_actual_terminal_action;not sampler_tail_pullback",
+  "physics_budget_controls": 1024,
+  "new_training_steps": 0,
+  "policy_actions_generated": 0,
+  "optimizer_steps": 0,
+  "oracle_action_selection": false,
+  "automatic_retry": false
+}

@@ -1,0 +1,36 @@
+{
+  "status": "completed_same_state_finite_difference_diagnostic",
+  "source_commit": "db41080a",
+  "provenance": [
+    {
+      "label": "P5",
+      "checkpoint_sha256": "c547da8193a3bf591ba8319309c24e6e18cabfeced651efa3022c5bda6aed66d",
+      "receipt_sha256": "d86d19cfb0285d09e22aa596aab0fd85868c281cea7093ecb6efc571ae105b7b"
+    },
+    {
+      "label": "Iso",
+      "checkpoint_sha256": "f11758cf2cecacc7ac7d31ae42c78bcdd1a86549c0e268fab77eec49ae6354dc",
+      "receipt_sha256": "c92004fc1c7b5965ff21620f3cb50b3d4aaa6e7c8a638fd8090aa4413c2715b9"
+    },
+    {
+      "label": "Metric",
+      "checkpoint_sha256": "75079a96d3699b57ca890a3d86bce810edb8d798c341caff126aa1baf444c2c8",
+      "receipt_sha256": "5556babfd7e1d1bd3d272a4ef5de7c512502e1641e49eed03ab108ba7e2914eb"
+    }
+  ],
+  "states": 128,
+  "unsafe_states": 38,
+  "models": 3,
+  "new_simulation_controls": 1024,
+  "physics_substeps": 20480,
+  "reset_settling_substeps": 20,
+  "max_margin_replay_error_m": 1.3090215132682825e-07,
+  "new_training_steps": 0,
+  "policy_actions_generated": 0,
+  "optimizer_steps": 0,
+  "independent_test_used": false,
+  "dropped_states": 0,
+  "causal_training_intervention": false,
+  "sampler_pullback_evaluated": false,
+  "true_flat_states": 16
+}

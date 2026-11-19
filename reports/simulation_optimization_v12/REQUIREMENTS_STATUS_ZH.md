@@ -46,4 +46,6 @@
 
 10:57 UTC前100K证据明确失败：残差候选违规394超过331.5上限、P5295、Iso345和Metric384；训练成功3206虽高于P52606，但低于Metric3356，timeout330高于Metric286、return低约5.9%。100K DEV候选27/25/24成功（76/90）三个条件均低于P528/26/26和Metric28/27/27，全部无timeout/stall。此候选不晋升多seed，不选50K较好checkpoint替代；仍遵守已登记固定250K、无科学提前停止规则，完整后期取舍待观察，不追加系数扫描。4080约120K/121K、GPU99%；A100父165K/169K、GPU1约91%，继续运行。见`ENDPOINT_RESIDUAL_100K_ZH.md`。
 
+追加小型定向诊断已完成：三个历史250K冻结EMA模型、128固定实际状态，全部38危险动作保留；原标签最大重放误差1.309e-7m，未放宽容差。1024仿真控制、零训练更新，P5危险动作direct-margin gradient cosine0.976、反向0/38，Metric0.967；16真实flat状态不造方向cosine。该结果不支持历史末期法向普遍错误，但不是当前候选100K/当前DEV或sampler pullback，不能解释早期394违规，也不支持候选晋升。无新增法向/温度/系数训练扫描；继续已登记完整预算。见`SAFEREACH_NORMALS_FINAL_ZH.md`。
+
 2026-11-19追加loss-only taper的Reach/Payload四臂均完整100K：Reach候选违规118对control48，57.5/60mm成功91%/83%对94%/91%；Payload候选违规178对118，55/57.5mm成功79%/63%对83%/64%。拒绝此Piper分支，不因模型梯度冲突下降晋升、不继续扫阈值。SafeReach同硬件四臂均完整250K，P5终点28/26/28对Iso29/29/30、Metric29/29/29，仍未共同达标；其固定候选已接续原登记250K，尚无终点。A100零训练完整部署模式评测按六个冻结模型/相同Metric处理执行，不能改写训练风险或当作原随机策略结果。Panda最终配置回归仍未做。详见`REACH_TAPER_FINAL_20261119_ZH.md`、`PAYLOAD_TAPER_FINAL_20261119_ZH.md`、`SAMEHARDWARE_FINAL_20261119_ZH.md`，全部节点及失败保留。

@@ -12,6 +12,7 @@
 - [4080终点余量残差15K中期：两条仍一致，候选尚未激活](ENDPOINT_RESIDUAL_INTERIM_15K_20261119_ZH.md)
 - [保留完整P5的新终点余量残差固定登记与结论边界](ENDPOINT_RESIDUAL_PREREGISTRATION_ZH.md)
 - [公共30K真实动作池的六个margin模型结果](SAFEREACH_CALIBRATION_FINAL_ZH.md)
+- [128状态有限差分：历史末期危险法向cosine0.976，不能解释当前早期失败](SAFEREACH_NORMALS_FINAL_ZH.md)
 
 - [最新：独立父120K，一条仍零成功，另一条困难几何从29/30回退13/30](REACH_PARENTS_120K_ZH.md)
 - [独立父早期学习诊断：完整保留失败seed](REACH_PARENT_LEARNING_DIAGNOSTIC_20261119_ZH.md)
