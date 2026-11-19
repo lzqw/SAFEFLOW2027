@@ -4,6 +4,7 @@
 - [独立半径覆盖固定200K登记：不选父、不自动启动下游](INDEPENDENT_RADIUS_REGISTRATION_ZH.md)
 - [固定400K终点后处理：新旧计数分开、等权双seed与真实SHA](INDEPENDENT_RADIUS_CLOSURE_ZH.md)
 - [后续三臂150K固定模板与真实父绑定程序（仅准备，未启动900K）](REACH_CROSSSEED_TEMPLATE_PREPARATION_ZH.md)
+- [三臂原生入口与公平双模式评测准备：仍待真实父及存储准入，未启动](REACH_CROSSSEED_RUNNER_PREPARATION_ZH.md)
 
 - [最新完整终点：四条训练完成，残差后期有益但不晋升，独立父55mm仍差](FINAL_RESIDUAL_AND_PARENTS_20261119_ZH.md)
 - [历史19:27中期：残差150K与独立父180K](INTERIM_150K_180K_20261119_ZH.md)
