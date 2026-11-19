@@ -3,6 +3,7 @@
 用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。26个100K开发端点和四组250K匹配消融均已完成；仍未全部达标。方向项产生后期安全收益，但完整P5未全面胜过Metric。下一项补同硬件确认与同期Iso，未继续扫已失败的权重/温度。最终新版本尚未确定。
 
 - [最新：四组250K完整结果与后续硬件确认](MATCHED_ABLATION_FINAL_20261119_ZH.md)
+- [同4080确认与同期Iso两臂固定登记](SAMEHARDWARE_CONFIRMATION_PREREGISTRATION_ZH.md)
 - [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
 - [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)

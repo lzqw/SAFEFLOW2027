@@ -1,0 +1,36 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-samehardware",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_samehardware.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "0"}],
+  "projected_additional_output_gib": 12,
+  "foreign_processes_changed": false,
+  "prerequisite_receipts": [
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-no-lateLR-2034/receipt.json", "steps": 250000},
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-matched-offload/A-Metric-matchedLR-2034/receipt.json", "steps": 250000}
+  ],
+  "jobs": [
+    {
+      "name": "A-full-P5-2034-samehardware",
+      "module": "scripts.paper_crax_payload.train_samehardware_confirmation_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json", "--arm", "A-full-P5", "--seed", "2034", "--cuda-memory-fraction", ".04"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-full-P5-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/A-full-P5-2034-samehardware.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    },
+    {
+      "name": "A-Iso-matchedLR-2034-samehardware",
+      "module": "scripts.paper_crax_payload.train_samehardware_confirmation_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_samehardware_confirmation.json", "--arm", "A-Iso-matchedLR", "--seed", "2034", "--cuda-memory-fraction", ".04"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-Iso-matchedLR-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/A-Iso-matchedLR-2034-samehardware.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    }
+  ],
+  "gpu_admission": {"index": 0, "minimum_free_mib": 1800}
+}
