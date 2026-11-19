@@ -6,8 +6,10 @@ Imports the original comparison learner;no change to its update mathematics.
 import argparse
 from copy import deepcopy
 import json
+import os
 from pathlib import Path
 import platform
+import shutil
 
 from scripts.paper_crax_payload.native_p5_adaptation import actor_digest
 from scripts.paper_crax_payload.prepare_reach_crossseed_v12 import validate_resolved,sha256
@@ -46,6 +48,8 @@ def validate(plan,args):
     jobs={(j['seed'],j['arm']) for j in admission['jobs']}
     expected={(seed,arm) for seed in (41028,41029) for arm in plan['arms']}
     root=Path(args.data_root).resolve(strict=True)
+    own_job=next((j for j in admission['jobs'] if j['seed']==line['seed'] and j['arm']==args.arm),{})
+    host_jobs=[j for j in admission['jobs'] if j.get('host')==platform.node()]
     if (args.resume or args.line!='piper_reach' or args.arm not in plan['arms']
             or args.parent.resolve()!=Path(line['parent_path']).resolve()
             or admission['status']!='admitted_fixed_crossseed900K_development'
@@ -57,8 +61,21 @@ def validate(plan,args):
             or admission['scientific_early_stopping'] is not False
             or admission['automatic_retry'] is not False
             or str(root)!=admission['data_roots_by_host'].get(platform.node())
+            or own_job.get('host')!=platform.node()
+            or args.output.resolve()!=Path(own_job.get('output','/')).resolve()
+            or os.environ.get('CUDA_VISIBLE_DEVICES')!=own_job.get('visible_devices')
+            or len(os.environ.get('CUDA_VISIBLE_DEVICES','').split(','))!=1
+            or not os.environ.get('CUDA_VISIBLE_DEVICES') or args.device!='cuda:0'
+            or args.cuda_memory_fraction!=.025
+            or any(len({j.get('host') for j in admission['jobs'] if j['seed']==seed})!=1
+                   for seed in (41028,41029))
             or sha256(args.plan)!=admission['plan_sha256_by_seed'][str(line['seed'])]):
         raise ValueError('Require separate exact six-job resource/source/recipe admission;preparation alone cannot launch')
+    # The original driver checks40GiB+10GiB before every checkpoint. Reserve its
+    # full50GiB threshold PLUS all admitted local output growth,not just initial files.
+    # At present A100~51GiB cannot admit several new full checkpoint lineages.
+    if shutil.disk_usage(root).free<(50+2*len(host_jobs))*1024**3:
+        raise OSError('Reserve original50GiB checkpoint headroom plus2GiB for every local registered arm')
     # Parent loading stays in the original strict driver:full SHA/native dimensions,
     # inherited optimizers/replay/dual, task and CUDA generator0 must all match.
 
