@@ -15,17 +15,74 @@ PLAN = Path(__file__).resolve().parents[2]/'configs/paper_crax_payload/simulatio
 CONFIRMATION_PLAN = PLAN.with_name('simulation_v12_samehardware_confirmation.json')
 
 
-def registered_protocols(same_hardware=False):
+def registered_protocols(same_hardware=False, direction_taper=False):
     original = json.loads(PLAN.read_text())
-    if not same_hardware:
+    if not same_hardware and not direction_taper:
         return {arm: original for arm in ARMS}
     confirmation = json.loads(CONFIRMATION_PLAN.read_text())
     for key in ('task_version', 'num_envs', 'development_training_seeds', 'steps_per_run',
                 'shared_learner', 'geometry', 'deployment', 'evaluation'):
         if confirmation[key] != original[key]:
             raise ValueError('Samehardware confirmation must retain the original scientific protocol')
-    return {'A-full-P5': confirmation, 'A-Iso-matchedLR': confirmation,
-            'A-no-lateLR': original, 'A-Metric-matchedLR': original}
+    result = {'A-full-P5': confirmation, 'A-Iso-matchedLR': confirmation,
+              'A-no-lateLR': original, 'A-Metric-matchedLR': original}
+    if direction_taper:
+        candidate = json.loads(PLAN.with_name('simulation_v12_direction_taper.json').read_text())
+        for key in ('task_version', 'num_envs', 'development_training_seeds', 'steps_per_run',
+                    'shared_learner', 'geometry', 'deployment', 'evaluation'):
+            if candidate[key] != original[key]:
+                raise ValueError('Direction-taper candidate must retain the common scientific protocol')
+        result['D-direction-only-taper'] = candidate
+    return result
+
+
+def candidate_checks(windows, nodes):
+    """Separate every explicit DEV criterion; no independent confirmation claim."""
+    candidate = 'D-direction-only-taper'; checks = []
+    def window(arm, start, end):
+        return next(r for r in windows if r['arm'] == arm and r['start_transitions'] == start and r['end_transitions'] == end)
+    def add(name, baseline, scope, observed, limit, relation):
+        checks.append(dict(criterion=name, baseline=baseline, scope=scope, candidate_value=observed,
+            comparison_limit=limit, relation=relation,
+            satisfied=observed<=limit if relation=='<=' else observed>=limit,
+            independent_confirmation=False))
+    early = window(candidate, 0, 100000); total = window(candidate, 0, 250000)
+    add('historical_first100K_violations', 'historical_Iso_331.5', '0-100K', early['training_violations'], 331.5, '<=')
+    for baseline in ('A-full-P5', 'A-Iso-matchedLR', 'A-Metric-matchedLR'):
+        reference = window(baseline, 0, 250000)
+        add('first100K_violations_no_higher', baseline, '0-100K', early['training_violations'],
+            window(baseline,0,100000)['training_violations'], '<=')
+        add('late_violations_no_higher', baseline, '100-250K', window(candidate,100000,250000)['training_violations'],
+            window(baseline,100000,250000)['training_violations'], '<=')
+        for key in ('safe_timeouts','training_stall_episodes'):
+            for start, end in ((0,100000),(100000,250000),(0,250000)):
+                add(key+'_no_higher', baseline, f'{start}-{end}', window(candidate,start,end)[key],
+                    window(baseline,start,end)[key], '<=')
+        for start, end in ((0,100000),(100000,250000),(0,250000)):
+            add('training_safe_success_count_no_lower', baseline, f'{start}-{end}',
+                window(candidate,start,end)['safe_successes'], window(baseline,start,end)['safe_successes'], '>=')
+        # For negative reference returns, permit a drop of1% of its magnitude.
+        add('cumulative_return_drop_at_most1percent', baseline, '0-250K', total['training_cumulative_return'],
+            reference['training_cumulative_return']-.01*abs(reference['training_cumulative_return']), '>=')
+        if baseline != 'A-full-P5':
+            add('training_violations_at_least20percent_lower', baseline, '0-250K', total['training_violations'],
+                .8*reference['training_violations'], '<=')
+        for row in (r for r in nodes if r['arm'] == candidate):
+            ref = next(r for r in nodes if r['arm'] == baseline and r['transitions'] == row['transitions'] and r['condition'] == row['condition'])
+            for key, relation in (('safe_successes','>='),('violations','<='),('timeouts','<='),('stall_count','<=')):
+                add('DEV_'+key+'_no_worse', baseline, f"{row['transitions']}:{row['condition']}", row[key], ref[key], relation)
+    return checks
+
+
+def training_curve_comparisons(progress, candidate, baselines):
+    indexed = {(r['arm'],r['steps']):r for r in progress}
+    comparisons = []
+    for row in (r for r in progress if r['arm'] == candidate):
+        for baseline in baselines:
+            ref = indexed[baseline,row['steps']]
+            comparisons.append(dict(candidate=candidate, baseline=baseline, transitions=row['steps'],
+                **{'delta_'+key:row[key]-ref[key] for key in COUNTS}))
+    return comparisons
 
 
 def pre_decay_prefix(progress):
@@ -62,16 +119,19 @@ def training_window(rows, start, end):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--runs', type=Path, required=True); p.add_argument('--output', type=Path, required=True)
-    p.add_argument('--same-hardware', action='store_true', help='Use registered4080 P5/Iso plus original4080 noLR/Metric')
-    args = p.parse_args(); protocols = registered_protocols(args.same_hardware)
+    group = p.add_mutually_exclusive_group()
+    group.add_argument('--same-hardware', action='store_true', help='Use registered4080 P5/Iso plus original4080 noLR/Metric')
+    group.add_argument('--direction-taper', action='store_true', help='Compare one complete candidate with all four4080 controls')
+    args = p.parse_args(); protocols = registered_protocols(args.same_hardware,args.direction_taper)
     windows = []; nodes = []; all_episodes = []; progress = []; provenance = []; identities = set()
     for arm, config in protocols.items():
         directory = args.runs/(arm+'-2034')
         manifest = json.loads((directory/'run_config.json').read_text())
         receipt = json.loads((directory/'receipt.json').read_text())
         expected = next(a for a in config['arms'] if a['name'] == arm)
-        if args.same_hardware:
-            source = '2c06ca2a' if arm in ('A-full-P5', 'A-Iso-matchedLR') else '2f09231b'
+        if args.same_hardware or args.direction_taper:
+            source = ('61bd30f0' if arm == 'D-direction-only-taper' else
+                      '2c06ca2a' if arm in ('A-full-P5', 'A-Iso-matchedLR') else '2f09231b')
             if manifest['host'] != '447' or manifest['source_commit'] != source:
                 raise ValueError('Require the exact registered4080 native controls, not the A100 P5 substitute')
         if (manifest['configuration'] != config or manifest['arm'] != expected or manifest['training_seed'] != 2034
@@ -79,7 +139,7 @@ def main():
                 or receipt['status'] != 'completed' or receipt['steps'] != 250000
                 or receipt['new_training_transitions'] != 250000 or receipt['engineering_only']
                 or receipt['source_commit'] != manifest['source_commit']):
-            raise ValueError('Need all four exact matched scientific250K receipts, never a partial/best endpoint')
+            raise ValueError('Need every exact registered scientific250K receipt, never a partial/best endpoint')
         identities.add(receipt['initial_network_sha256'])
         rows = [json.loads(s) for s in (directory/'progress.jsonl').read_text().splitlines()]
         if len(rows) != 250 or [r['steps'] for r in rows] != list(range(1000,250001,1000)):
@@ -113,24 +173,30 @@ def main():
         provenance.append(dict(arm=arm, native_host=manifest['host'], source_commit=manifest['source_commit'],
             receipt_sha256=hashlib.sha256((directory/'receipt.json').read_bytes()).hexdigest(),
             initial_network_sha256=receipt['initial_network_sha256']))
-    if len(identities) != 1: raise ValueError('All four must share identical registered initialization')
+    if len(identities) != 1: raise ValueError('All registered arms must share identical initialization')
     paired = []
-    for row in [r for r in nodes if r['arm'] == 'A-full-P5']:
-        for baseline in list(protocols)[1:]:
+    candidate_arm = 'D-direction-only-taper' if args.direction_taper else 'A-full-P5'
+    for row in [r for r in nodes if r['arm'] == candidate_arm]:
+        for baseline in (arm for arm in protocols if arm != candidate_arm):
             ref = next(r for r in nodes if r['arm'] == baseline and r['transitions'] == row['transitions'] and r['condition'] == row['condition'])
-            paired.append(dict(candidate='A-full-P5', baseline=baseline, transitions=row['transitions'],condition=row['condition'],
+            paired.append(dict(candidate=candidate_arm, baseline=baseline, transitions=row['transitions'],condition=row['condition'],
                 **{'delta_'+k:row[k]-ref[k] for k in ('safe_successes','violations','timeouts','stall_count','mean_return','mean_capped_seconds')}))
     args.output.mkdir(parents=True,exist_ok=False)
     for name, values in [('training_windows.csv',windows),('development_nodes.csv',nodes),
                          ('development_episodes.csv',all_episodes),('training.csv',progress),('paired_nodes.csv',paired)]:
         output(args.output/name,values)
+    if args.direction_taper:
+        output(args.output/'development_criteria.csv',candidate_checks(windows,nodes))
+        output(args.output/'training_curve_comparisons.csv',training_curve_comparisons(progress,candidate_arm,
+            [arm for arm in protocols if arm != candidate_arm]))
     (args.output/'receipt.json').write_text(json.dumps(dict(status='complete_offline_review',
-        runs=4, actual_completed_training_transitions=1000000, development_nodes=len(nodes),
+        runs=len(protocols), actual_completed_training_transitions=len(protocols)*250000, development_nodes=len(nodes),
         development_episodes=len(all_episodes), training_seed_count=1, provenance=provenance,
         all_registered_nodes_retained=True, new_training_steps=0, new_simulation_controls=0,
-        hardware_split_disclosed=not args.same_hardware, strict_causal_crosshardware_claim=False,
+        hardware_split_disclosed=not (args.same_hardware or args.direction_taper), strict_causal_crosshardware_claim=False,
         same_hardware_confirmation=args.same_hardware,
-        pre_decay_prefix_comparison=pre_decay_prefix(progress) if args.same_hardware else None,
+        direction_taper_screen=args.direction_taper,
+        pre_decay_prefix_comparison=pre_decay_prefix(progress) if args.same_hardware or args.direction_taper else None,
         independent_test_used=False, winner_confirmation=False),indent=2)+'\n')
 
 
