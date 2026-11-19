@@ -1,0 +1,65 @@
+{
+  "status": "complete_existing_DEV_analysis",
+  "provenance": [
+    {
+      "task": "Reach",
+      "arm": "fixed",
+      "relative_file": "round1_native/piper_reach-R0-fixed/development_100000.json",
+      "sha256": "ab162932b38a703d787c5cb342db5ccda7fbe29761f0d00e1cdf0ed6b80bc4dc"
+    },
+    {
+      "task": "Reach",
+      "arm": "ramp75k",
+      "relative_file": "round1_native/piper_reach-R1-ramp75k/development_100000.json",
+      "sha256": "3d1687940eb2ce18fe6c1abc6e7d262e7520ee823dd9501bd64670ca973ac00f"
+    },
+    {
+      "task": "Reach",
+      "arm": "fixed2mm",
+      "relative_file": "round2_native/piper_reach-R2-activation2mm/development_100000.json",
+      "sha256": "43c4d004cbf421e3e6ad51c969142545b2fefdc43b8fa35a711df480d9956c55"
+    },
+    {
+      "task": "Reach",
+      "arm": "half75k2mm",
+      "relative_file": "followup_native/piper_reach-Reach-half75k-activation2mm/development_100000.json",
+      "sha256": "8b0e5bf2dc9477c284940bb4d70a37561c469c97551dc54ad597a10c74fbed43"
+    },
+    {
+      "task": "Reach",
+      "arm": "Metric",
+      "relative_file": "round3_native/piper_reach-Metric-only/development_100000.json",
+      "sha256": "56b0f1ad770b5cf657a61a067d0bd7a5b9f576e63e4fad3e95f149ee119a4f86"
+    },
+    {
+      "task": "Payload",
+      "arm": "fixed",
+      "relative_file": "payload_round1_native/piper_payload-Payload-P5-fixed/development_100000.json",
+      "sha256": "dc52d6e16b91ebb5d1053b67cb288e4d58248782a7106058f1d9824489b24655"
+    },
+    {
+      "task": "Payload",
+      "arm": "fixed2mm",
+      "relative_file": "payload_round1_native/piper_payload-Payload-activation2mm/development_100000.json",
+      "sha256": "41504ab2292be61d70f82cad6f64b15ef620bbe0449663db93fa104bbe8694a0"
+    },
+    {
+      "task": "Payload",
+      "arm": "fixed4mm",
+      "relative_file": "followup_native/piper_payload-Payload-activation4mm/development_100000.json",
+      "sha256": "1e32a5a5ee7561aa6e694aa631224e11d15d04015c52a7fd37f586d8f9a6fd79"
+    },
+    {
+      "task": "Payload",
+      "arm": "Metric",
+      "relative_file": "payload_round1_native/piper_payload-Payload-Metric-only/development_100000.json",
+      "sha256": "ef4c837b93b3d50436690c8bedd4f00d7aa2bf859facfc18f95f179765bf6d28"
+    }
+  ],
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "training_seed_count": 1,
+  "winner_confirmation": false,
+  "caution": "Paired initial layouts are not identical visited states; selected historical arms are not independent replications"
+}

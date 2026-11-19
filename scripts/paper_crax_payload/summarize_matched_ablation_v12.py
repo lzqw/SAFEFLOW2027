@@ -12,6 +12,38 @@ COUNTS = ('training_violations', 'safe_successes', 'safe_timeouts', 'training_st
           'training_stall_windows', 'training_cumulative_return', 'ordinary_terminal_task_successes')
 ARMS = ('A-full-P5', 'A-no-direction', 'A-no-lateLR', 'A-Metric-matchedLR')
 PLAN = Path(__file__).resolve().parents[2]/'configs/paper_crax_payload/simulation_v12_matched_ablation.json'
+CONFIRMATION_PLAN = PLAN.with_name('simulation_v12_samehardware_confirmation.json')
+
+
+def registered_protocols(same_hardware=False):
+    original = json.loads(PLAN.read_text())
+    if not same_hardware:
+        return {arm: original for arm in ARMS}
+    confirmation = json.loads(CONFIRMATION_PLAN.read_text())
+    for key in ('task_version', 'num_envs', 'development_training_seeds', 'steps_per_run',
+                'shared_learner', 'geometry', 'deployment', 'evaluation'):
+        if confirmation[key] != original[key]:
+            raise ValueError('Samehardware confirmation must retain the original scientific protocol')
+    return {'A-full-P5': confirmation, 'A-Iso-matchedLR': confirmation,
+            'A-no-lateLR': original, 'A-Metric-matchedLR': original}
+
+
+def pre_decay_prefix(progress):
+    """Disclose numeric divergence before LR differs; never interpolate it away."""
+    indexed = {arm: {r['steps']: r for r in progress if r['arm'] == arm}
+               for arm in ('A-full-P5', 'A-no-lateLR')}
+    keys = COUNTS + ('actor_loss', 'reward_loss', 'margin_loss', 'cost_loss')
+    differences = []
+    for step in range(1000, 150001, 1000):
+        left, right = (indexed[arm][step] for arm in indexed)
+        differing = [key for key in keys if left[key] != right[key]]
+        if differing:
+            differences.append(dict(transitions=step, differing_metrics=differing))
+    return dict(exact_recorded_prefix_match=not differences,
+        first_observed_difference=differences[0] if differences else None,
+        different_nodes=len(differences), compared_nodes=150,
+        strict_lr_causal_claim_permitted=False,
+        interpretation='Same host removes hardware split; one seed and any early divergence still limit LR attribution')
 
 
 def training_window(rows, start, end):
@@ -30,13 +62,18 @@ def training_window(rows, start, end):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--runs', type=Path, required=True); p.add_argument('--output', type=Path, required=True)
-    args = p.parse_args(); config = json.loads(PLAN.read_text())
+    p.add_argument('--same-hardware', action='store_true', help='Use registered4080 P5/Iso plus original4080 noLR/Metric')
+    args = p.parse_args(); protocols = registered_protocols(args.same_hardware)
     windows = []; nodes = []; all_episodes = []; progress = []; provenance = []; identities = set()
-    for arm in ARMS:
+    for arm, config in protocols.items():
         directory = args.runs/(arm+'-2034')
         manifest = json.loads((directory/'run_config.json').read_text())
         receipt = json.loads((directory/'receipt.json').read_text())
         expected = next(a for a in config['arms'] if a['name'] == arm)
+        if args.same_hardware:
+            source = '2c06ca2a' if arm in ('A-full-P5', 'A-Iso-matchedLR') else '2f09231b'
+            if manifest['host'] != '447' or manifest['source_commit'] != source:
+                raise ValueError('Require the exact registered4080 native controls, not the A100 P5 substitute')
         if (manifest['configuration'] != config or manifest['arm'] != expected or manifest['training_seed'] != 2034
                 or receipt['arm'] != expected or receipt['training_seed'] != 2034
                 or receipt['status'] != 'completed' or receipt['steps'] != 250000
@@ -79,7 +116,7 @@ def main():
     if len(identities) != 1: raise ValueError('All four must share identical registered initialization')
     paired = []
     for row in [r for r in nodes if r['arm'] == 'A-full-P5']:
-        for baseline in ARMS[1:]:
+        for baseline in list(protocols)[1:]:
             ref = next(r for r in nodes if r['arm'] == baseline and r['transitions'] == row['transitions'] and r['condition'] == row['condition'])
             paired.append(dict(candidate='A-full-P5', baseline=baseline, transitions=row['transitions'],condition=row['condition'],
                 **{'delta_'+k:row[k]-ref[k] for k in ('safe_successes','violations','timeouts','stall_count','mean_return','mean_capped_seconds')}))
@@ -91,7 +128,9 @@ def main():
         runs=4, actual_completed_training_transitions=1000000, development_nodes=len(nodes),
         development_episodes=len(all_episodes), training_seed_count=1, provenance=provenance,
         all_registered_nodes_retained=True, new_training_steps=0, new_simulation_controls=0,
-        hardware_split_disclosed=True, strict_causal_crosshardware_claim=False,
+        hardware_split_disclosed=not args.same_hardware, strict_causal_crosshardware_claim=False,
+        same_hardware_confirmation=args.same_hardware,
+        pre_decay_prefix_comparison=pre_decay_prefix(progress) if args.same_hardware else None,
         independent_test_used=False, winner_confirmation=False),indent=2)+'\n')
 
 
