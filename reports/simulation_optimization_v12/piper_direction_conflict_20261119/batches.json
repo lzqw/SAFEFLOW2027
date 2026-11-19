@@ -1,0 +1,642 @@
+[
+  {
+    "case": "Reach-fixed2mm",
+    "line": "piper_reach",
+    "batch": 0,
+    "original_loss": 0.005486477166414261,
+    "tapered_loss": 0.000562811444979161,
+    "task_vs_original": {
+      "left_norm": 0.44100362062454224,
+      "right_norm": 0.3494008779525757,
+      "dot": -0.11340305209159851,
+      "cosine": -0.7359674572944641,
+      "left_loss_slope_under_negative_right_gradient": 0.11340305209159851
+    },
+    "task_vs_taper": {
+      "left_norm": 0.44100362062454224,
+      "right_norm": 0.04315902665257454,
+      "dot": -0.013414939865469933,
+      "cosine": -0.7048146724700928,
+      "left_loss_slope_under_negative_right_gradient": 0.013414939865469933
+    },
+    "base_vs_original": {
+      "left_norm": 0.3598281741142273,
+      "right_norm": 0.3494008779525757,
+      "dot": -0.1173538789153099,
+      "cosine": -0.9334225058555603,
+      "left_loss_slope_under_negative_right_gradient": 0.1173538789153099
+    },
+    "base_vs_taper": {
+      "left_norm": 0.3598281741142273,
+      "right_norm": 0.04315902665257454,
+      "dot": -0.014650925993919373,
+      "cosine": -0.9434052109718323,
+      "left_loss_slope_under_negative_right_gradient": 0.014650925993919373
+    },
+    "deep_safe_flow_point_fraction": 0.63671875,
+    "deep_safe_original_loss_fraction": 0.6672490835189819,
+    "mean_geometry_weight": 0.27744394540786743,
+    "mean_direction_weight": 0.04199274256825447,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-fixed2mm",
+    "line": "piper_reach",
+    "batch": 1,
+    "original_loss": 0.0057918657548725605,
+    "tapered_loss": 0.0003884033067151904,
+    "task_vs_original": {
+      "left_norm": 0.5239982604980469,
+      "right_norm": 0.38550132513046265,
+      "dot": -0.16036641597747803,
+      "cosine": -0.7938852310180664,
+      "left_loss_slope_under_negative_right_gradient": 0.16036641597747803
+    },
+    "task_vs_taper": {
+      "left_norm": 0.5239982604980469,
+      "right_norm": 0.035002220422029495,
+      "dot": -0.013854832388460636,
+      "cosine": -0.7553980350494385,
+      "left_loss_slope_under_negative_right_gradient": 0.013854832388460636
+    },
+    "base_vs_original": {
+      "left_norm": 0.399850070476532,
+      "right_norm": 0.38550132513046265,
+      "dot": -0.15099188685417175,
+      "cosine": -0.9795588850975037,
+      "left_loss_slope_under_negative_right_gradient": 0.15099188685417175
+    },
+    "base_vs_taper": {
+      "left_norm": 0.399850070476532,
+      "right_norm": 0.035002220422029495,
+      "dot": -0.013154747895896435,
+      "cosine": -0.9399175643920898,
+      "left_loss_slope_under_negative_right_gradient": 0.013154747895896435
+    },
+    "deep_safe_flow_point_fraction": 0.6865234375,
+    "deep_safe_original_loss_fraction": 0.7490621209144592,
+    "mean_geometry_weight": 0.28471124172210693,
+    "mean_direction_weight": 0.038530342280864716,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-fixed2mm",
+    "line": "piper_reach",
+    "batch": 2,
+    "original_loss": 0.00663829455152154,
+    "tapered_loss": 0.0008414792246185243,
+    "task_vs_original": {
+      "left_norm": 0.5272504687309265,
+      "right_norm": 0.367360919713974,
+      "dot": -0.14699536561965942,
+      "cosine": -0.7589159607887268,
+      "left_loss_slope_under_negative_right_gradient": 0.14699536561965942
+    },
+    "task_vs_taper": {
+      "left_norm": 0.5272504687309265,
+      "right_norm": 0.043272361159324646,
+      "dot": -0.017839929088950157,
+      "cosine": -0.7819257974624634,
+      "left_loss_slope_under_negative_right_gradient": 0.017839929088950157
+    },
+    "base_vs_original": {
+      "left_norm": 0.42915254831314087,
+      "right_norm": 0.367360919713974,
+      "dot": -0.1537095308303833,
+      "cosine": -0.9749810099601746,
+      "left_loss_slope_under_negative_right_gradient": 0.1537095308303833
+    },
+    "base_vs_taper": {
+      "left_norm": 0.42915254831314087,
+      "right_norm": 0.043272361159324646,
+      "dot": -0.01721242070198059,
+      "cosine": -0.9268718361854553,
+      "left_loss_slope_under_negative_right_gradient": 0.01721242070198059
+    },
+    "deep_safe_flow_point_fraction": 0.6708984375,
+    "deep_safe_original_loss_fraction": 0.7354229688644409,
+    "mean_geometry_weight": 0.28153789043426514,
+    "mean_direction_weight": 0.04084064066410065,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-fixed2mm",
+    "line": "piper_reach",
+    "batch": 3,
+    "original_loss": 0.007227272726595402,
+    "tapered_loss": 0.000514147337526083,
+    "task_vs_original": {
+      "left_norm": 0.5276924967765808,
+      "right_norm": 0.3876338005065918,
+      "dot": -0.14949315786361694,
+      "cosine": -0.7308340668678284,
+      "left_loss_slope_under_negative_right_gradient": 0.14949315786361694
+    },
+    "task_vs_taper": {
+      "left_norm": 0.5276924967765808,
+      "right_norm": 0.04242938756942749,
+      "dot": -0.015603872947394848,
+      "cosine": -0.6969228982925415,
+      "left_loss_slope_under_negative_right_gradient": 0.015603872947394848
+    },
+    "base_vs_original": {
+      "left_norm": 0.3319200575351715,
+      "right_norm": 0.3876338005065918,
+      "dot": -0.12568418681621552,
+      "cosine": -0.9768446087837219,
+      "left_loss_slope_under_negative_right_gradient": 0.12568418681621552
+    },
+    "base_vs_taper": {
+      "left_norm": 0.3319200575351715,
+      "right_norm": 0.04242938756942749,
+      "dot": -0.013321238569915295,
+      "cosine": -0.9458980560302734,
+      "left_loss_slope_under_negative_right_gradient": 0.013321238569915295
+    },
+    "deep_safe_flow_point_fraction": 0.6494140625,
+    "deep_safe_original_loss_fraction": 0.6696327328681946,
+    "mean_geometry_weight": 0.27750763297080994,
+    "mean_direction_weight": 0.044974435120821,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-half75k",
+    "line": "piper_reach",
+    "batch": 0,
+    "original_loss": 0.005061357747763395,
+    "tapered_loss": 0.0004901454085484147,
+    "task_vs_original": {
+      "left_norm": 0.49149781465530396,
+      "right_norm": 0.3605070114135742,
+      "dot": -0.10164487361907959,
+      "cosine": -0.5736541748046875,
+      "left_loss_slope_under_negative_right_gradient": 0.10164487361907959
+    },
+    "task_vs_taper": {
+      "left_norm": 0.49149781465530396,
+      "right_norm": 0.03213363513350487,
+      "dot": -0.006964570377022028,
+      "cosine": -0.4409738779067993,
+      "left_loss_slope_under_negative_right_gradient": 0.006964570377022028
+    },
+    "base_vs_original": {
+      "left_norm": 0.30820420384407043,
+      "right_norm": 0.3605070114135742,
+      "dot": -0.09696848690509796,
+      "cosine": -0.8727268576622009,
+      "left_loss_slope_under_negative_right_gradient": 0.09696848690509796
+    },
+    "base_vs_taper": {
+      "left_norm": 0.30820420384407043,
+      "right_norm": 0.03213363513350487,
+      "dot": -0.007562796585261822,
+      "cosine": -0.7636317610740662,
+      "left_loss_slope_under_negative_right_gradient": 0.007562796585261822
+    },
+    "deep_safe_flow_point_fraction": 0.6201171875,
+    "deep_safe_original_loss_fraction": 0.683340847492218,
+    "mean_geometry_weight": 0.2757624685764313,
+    "mean_direction_weight": 0.040426429361104965,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-half75k",
+    "line": "piper_reach",
+    "batch": 1,
+    "original_loss": 0.005874458700418472,
+    "tapered_loss": 0.000532540085259825,
+    "task_vs_original": {
+      "left_norm": 0.5294691920280457,
+      "right_norm": 0.42965269088745117,
+      "dot": -0.10348248481750488,
+      "cosine": -0.4548923373222351,
+      "left_loss_slope_under_negative_right_gradient": 0.10348248481750488
+    },
+    "task_vs_taper": {
+      "left_norm": 0.5294691920280457,
+      "right_norm": 0.048064615577459335,
+      "dot": -0.010774461552500725,
+      "cosine": -0.4233790934085846,
+      "left_loss_slope_under_negative_right_gradient": 0.010774461552500725
+    },
+    "base_vs_original": {
+      "left_norm": 0.31175634264945984,
+      "right_norm": 0.42965269088745117,
+      "dot": -0.07833723723888397,
+      "cosine": -0.5848377346992493,
+      "left_loss_slope_under_negative_right_gradient": 0.07833723723888397
+    },
+    "base_vs_taper": {
+      "left_norm": 0.31175634264945984,
+      "right_norm": 0.048064615577459335,
+      "dot": -0.008525321260094643,
+      "cosine": -0.5689446330070496,
+      "left_loss_slope_under_negative_right_gradient": 0.008525321260094643
+    },
+    "deep_safe_flow_point_fraction": 0.6650390625,
+    "deep_safe_original_loss_fraction": 0.6345688104629517,
+    "mean_geometry_weight": 0.28112462162971497,
+    "mean_direction_weight": 0.041209444403648376,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-half75k",
+    "line": "piper_reach",
+    "batch": 2,
+    "original_loss": 0.006250135134905577,
+    "tapered_loss": 0.0009891618974506855,
+    "task_vs_original": {
+      "left_norm": 0.4595876932144165,
+      "right_norm": 0.41307252645492554,
+      "dot": -0.07288454473018646,
+      "cosine": -0.38392001390457153,
+      "left_loss_slope_under_negative_right_gradient": 0.07288454473018646
+    },
+    "task_vs_taper": {
+      "left_norm": 0.4595876932144165,
+      "right_norm": 0.052518330514431,
+      "dot": -0.0121463593095541,
+      "cosine": -0.5032303333282471,
+      "left_loss_slope_under_negative_right_gradient": 0.0121463593095541
+    },
+    "base_vs_original": {
+      "left_norm": 0.32346218824386597,
+      "right_norm": 0.41307252645492554,
+      "dot": -0.06370645016431808,
+      "cosine": -0.47679704427719116,
+      "left_loss_slope_under_negative_right_gradient": 0.06370645016431808
+    },
+    "base_vs_taper": {
+      "left_norm": 0.32346218824386597,
+      "right_norm": 0.052518330514431,
+      "dot": -0.008346588350832462,
+      "cosine": -0.49133142828941345,
+      "left_loss_slope_under_negative_right_gradient": 0.008346588350832462
+    },
+    "deep_safe_flow_point_fraction": 0.6923828125,
+    "deep_safe_original_loss_fraction": 0.6765759587287903,
+    "mean_geometry_weight": 0.28399771451950073,
+    "mean_direction_weight": 0.04091159254312515,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Reach-half75k",
+    "line": "piper_reach",
+    "batch": 3,
+    "original_loss": 0.005659956950694323,
+    "tapered_loss": 0.0006783574935980141,
+    "task_vs_original": {
+      "left_norm": 0.5671045780181885,
+      "right_norm": 0.34534764289855957,
+      "dot": -0.1422525942325592,
+      "cosine": -0.7263410091400146,
+      "left_loss_slope_under_negative_right_gradient": 0.1422525942325592
+    },
+    "task_vs_taper": {
+      "left_norm": 0.5671045780181885,
+      "right_norm": 0.04825989156961441,
+      "dot": -0.01920023187994957,
+      "cosine": -0.7015473246574402,
+      "left_loss_slope_under_negative_right_gradient": 0.01920023187994957
+    },
+    "base_vs_original": {
+      "left_norm": 0.4676664173603058,
+      "right_norm": 0.34534764289855957,
+      "dot": -0.1603972315788269,
+      "cosine": -0.9931255578994751,
+      "left_loss_slope_under_negative_right_gradient": 0.1603972315788269
+    },
+    "base_vs_taper": {
+      "left_norm": 0.4676664173603058,
+      "right_norm": 0.04825989156961441,
+      "dot": -0.02117811143398285,
+      "cosine": -0.938349723815918,
+      "left_loss_slope_under_negative_right_gradient": 0.02117811143398285
+    },
+    "deep_safe_flow_point_fraction": 0.6767578125,
+    "deep_safe_original_loss_fraction": 0.6712628602981567,
+    "mean_geometry_weight": 0.2738807201385498,
+    "mean_direction_weight": 0.04241584613919258,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-fixed",
+    "line": "piper_payload",
+    "batch": 0,
+    "original_loss": 0.005626280792057514,
+    "tapered_loss": 8.188223000615835e-05,
+    "task_vs_original": {
+      "left_norm": 0.8388568758964539,
+      "right_norm": 0.29387328028678894,
+      "dot": -0.22970429062843323,
+      "cosine": -0.9317966103553772,
+      "left_loss_slope_under_negative_right_gradient": 0.22970429062843323
+    },
+    "task_vs_taper": {
+      "left_norm": 0.8388568758964539,
+      "right_norm": 0.007360126357525587,
+      "dot": -0.005214385688304901,
+      "cosine": -0.8445590138435364,
+      "left_loss_slope_under_negative_right_gradient": 0.005214385688304901
+    },
+    "base_vs_original": {
+      "left_norm": 0.5184729099273682,
+      "right_norm": 0.29387328028678894,
+      "dot": -0.1361604928970337,
+      "cosine": -0.8936448097229004,
+      "left_loss_slope_under_negative_right_gradient": 0.1361604928970337
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5184729099273682,
+      "right_norm": 0.007360126357525587,
+      "dot": -0.0031174044124782085,
+      "cosine": -0.8169243335723877,
+      "left_loss_slope_under_negative_right_gradient": 0.0031174044124782085
+    },
+    "deep_safe_flow_point_fraction": 0.8115234375,
+    "deep_safe_original_loss_fraction": 0.9112688899040222,
+    "mean_geometry_weight": 0.2235397845506668,
+    "mean_direction_weight": 0.013044570572674274,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-fixed",
+    "line": "piper_payload",
+    "batch": 1,
+    "original_loss": 0.006031139753758907,
+    "tapered_loss": 0.00044980912934988737,
+    "task_vs_original": {
+      "left_norm": 0.9261457324028015,
+      "right_norm": 0.32602712512016296,
+      "dot": -0.25956669449806213,
+      "cosine": -0.8596385717391968,
+      "left_loss_slope_under_negative_right_gradient": 0.25956669449806213
+    },
+    "task_vs_taper": {
+      "left_norm": 0.9261457324028015,
+      "right_norm": 0.014907611533999443,
+      "dot": -0.008546266704797745,
+      "cosine": -0.6189976930618286,
+      "left_loss_slope_under_negative_right_gradient": 0.008546266704797745
+    },
+    "base_vs_original": {
+      "left_norm": 0.5542147159576416,
+      "right_norm": 0.32602712512016296,
+      "dot": -0.16422930359840393,
+      "cosine": -0.9089057445526123,
+      "left_loss_slope_under_negative_right_gradient": 0.16422930359840393
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5542147159576416,
+      "right_norm": 0.014907611533999443,
+      "dot": -0.004286664538085461,
+      "cosine": -0.5188398957252502,
+      "left_loss_slope_under_negative_right_gradient": 0.004286664538085461
+    },
+    "deep_safe_flow_point_fraction": 0.822265625,
+    "deep_safe_original_loss_fraction": 0.836080014705658,
+    "mean_geometry_weight": 0.2209204137325287,
+    "mean_direction_weight": 0.022005880251526833,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-fixed",
+    "line": "piper_payload",
+    "batch": 2,
+    "original_loss": 0.005498780868947506,
+    "tapered_loss": 0.0005249913083389401,
+    "task_vs_original": {
+      "left_norm": 1.0786495208740234,
+      "right_norm": 0.39687591791152954,
+      "dot": -0.3960706889629364,
+      "cosine": -0.9252042174339294,
+      "left_loss_slope_under_negative_right_gradient": 0.3960706889629364
+    },
+    "task_vs_taper": {
+      "left_norm": 1.0786495208740234,
+      "right_norm": 0.04515450820326805,
+      "dot": -0.04368947446346283,
+      "cosine": -0.8970060348510742,
+      "left_loss_slope_under_negative_right_gradient": 0.04368947446346283
+    },
+    "base_vs_original": {
+      "left_norm": 0.6959244608879089,
+      "right_norm": 0.39687591791152954,
+      "dot": -0.2711719870567322,
+      "cosine": -0.9818112254142761,
+      "left_loss_slope_under_negative_right_gradient": 0.2711719870567322
+    },
+    "base_vs_taper": {
+      "left_norm": 0.6959244608879089,
+      "right_norm": 0.04515450820326805,
+      "dot": -0.030177749693393707,
+      "cosine": -0.9603369235992432,
+      "left_loss_slope_under_negative_right_gradient": 0.030177749693393707
+    },
+    "deep_safe_flow_point_fraction": 0.8095703125,
+    "deep_safe_original_loss_fraction": 0.770491361618042,
+    "mean_geometry_weight": 0.2292194664478302,
+    "mean_direction_weight": 0.02292281575500965,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-fixed",
+    "line": "piper_payload",
+    "batch": 3,
+    "original_loss": 0.006139629054814577,
+    "tapered_loss": 0.0003741990076377988,
+    "task_vs_original": {
+      "left_norm": 0.9070839881896973,
+      "right_norm": 0.35857224464416504,
+      "dot": -0.2998146712779999,
+      "cosine": -0.9217829704284668,
+      "left_loss_slope_under_negative_right_gradient": 0.2998146712779999
+    },
+    "task_vs_taper": {
+      "left_norm": 0.9070839881896973,
+      "right_norm": 0.02896886132657528,
+      "dot": -0.02362382970750332,
+      "cosine": -0.8990241885185242,
+      "left_loss_slope_under_negative_right_gradient": 0.02362382970750332
+    },
+    "base_vs_original": {
+      "left_norm": 0.5488317012786865,
+      "right_norm": 0.35857224464416504,
+      "dot": -0.19108769297599792,
+      "cosine": -0.9709946513175964,
+      "left_loss_slope_under_negative_right_gradient": 0.19108769297599792
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5488317012786865,
+      "right_norm": 0.02896886132657528,
+      "dot": -0.014574671164155006,
+      "cosine": -0.9167019724845886,
+      "left_loss_slope_under_negative_right_gradient": 0.014574671164155006
+    },
+    "deep_safe_flow_point_fraction": 0.8056640625,
+    "deep_safe_original_loss_fraction": 0.8481967449188232,
+    "mean_geometry_weight": 0.23200048506259918,
+    "mean_direction_weight": 0.02412799745798111,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-4mm",
+    "line": "piper_payload",
+    "batch": 0,
+    "original_loss": 0.008201216347515583,
+    "tapered_loss": 0.0007806643261574209,
+    "task_vs_original": {
+      "left_norm": 0.7891872525215149,
+      "right_norm": 0.42720118165016174,
+      "dot": -0.3108323812484741,
+      "cosine": -0.9219635725021362,
+      "left_loss_slope_under_negative_right_gradient": 0.3108323812484741
+    },
+    "task_vs_taper": {
+      "left_norm": 0.7891872525215149,
+      "right_norm": 0.05714435130357742,
+      "dot": -0.04015740752220154,
+      "cosine": -0.8904556632041931,
+      "left_loss_slope_under_negative_right_gradient": 0.04015740752220154
+    },
+    "base_vs_original": {
+      "left_norm": 0.45936325192451477,
+      "right_norm": 0.42720118165016174,
+      "dot": -0.15993860363960266,
+      "cosine": -0.8150131106376648,
+      "left_loss_slope_under_negative_right_gradient": 0.15993860363960266
+    },
+    "base_vs_taper": {
+      "left_norm": 0.45936325192451477,
+      "right_norm": 0.05714435130357742,
+      "dot": -0.021428968757390976,
+      "cosine": -0.8163411617279053,
+      "left_loss_slope_under_negative_right_gradient": 0.021428968757390976
+    },
+    "deep_safe_flow_point_fraction": 0.724609375,
+    "deep_safe_original_loss_fraction": 0.7448912858963013,
+    "mean_geometry_weight": 0.24640971422195435,
+    "mean_direction_weight": 0.038702525198459625,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-4mm",
+    "line": "piper_payload",
+    "batch": 1,
+    "original_loss": 0.008865615352988243,
+    "tapered_loss": 0.0008260049507953227,
+    "task_vs_original": {
+      "left_norm": 0.927888810634613,
+      "right_norm": 0.4986633360385895,
+      "dot": -0.4308328628540039,
+      "cosine": -0.9311195611953735,
+      "left_loss_slope_under_negative_right_gradient": 0.4308328628540039
+    },
+    "task_vs_taper": {
+      "left_norm": 0.927888810634613,
+      "right_norm": 0.0496574304997921,
+      "dot": -0.03605199232697487,
+      "cosine": -0.7824364900588989,
+      "left_loss_slope_under_negative_right_gradient": 0.03605199232697487
+    },
+    "base_vs_original": {
+      "left_norm": 0.5350390672683716,
+      "right_norm": 0.4986633360385895,
+      "dot": -0.2557078003883362,
+      "cosine": -0.9584093689918518,
+      "left_loss_slope_under_negative_right_gradient": 0.2557078003883362
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5350390672683716,
+      "right_norm": 0.0496574304997921,
+      "dot": -0.023098602890968323,
+      "cosine": -0.8693926334381104,
+      "left_loss_slope_under_negative_right_gradient": 0.023098602890968323
+    },
+    "deep_safe_flow_point_fraction": 0.6923828125,
+    "deep_safe_original_loss_fraction": 0.6635201573371887,
+    "mean_geometry_weight": 0.24585728347301483,
+    "mean_direction_weight": 0.049503251910209656,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-4mm",
+    "line": "piper_payload",
+    "batch": 2,
+    "original_loss": 0.008500421419739723,
+    "tapered_loss": 0.001077722874470055,
+    "task_vs_original": {
+      "left_norm": 0.9679475426673889,
+      "right_norm": 0.5205641388893127,
+      "dot": -0.4811740517616272,
+      "cosine": -0.954940140247345,
+      "left_loss_slope_under_negative_right_gradient": 0.4811740517616272
+    },
+    "task_vs_taper": {
+      "left_norm": 0.9679475426673889,
+      "right_norm": 0.07271048426628113,
+      "dot": -0.06243754178285599,
+      "cosine": -0.8871497511863708,
+      "left_loss_slope_under_negative_right_gradient": 0.06243754178285599
+    },
+    "base_vs_original": {
+      "left_norm": 0.5920400023460388,
+      "right_norm": 0.5205641388893127,
+      "dot": -0.29619088768959045,
+      "cosine": -0.9610509276390076,
+      "left_loss_slope_under_negative_right_gradient": 0.29619088768959045
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5920400023460388,
+      "right_norm": 0.07271048426628113,
+      "dot": -0.03928184509277344,
+      "cosine": -0.9125229716300964,
+      "left_loss_slope_under_negative_right_gradient": 0.03928184509277344
+    },
+    "deep_safe_flow_point_fraction": 0.7197265625,
+    "deep_safe_original_loss_fraction": 0.7206270098686218,
+    "mean_geometry_weight": 0.24023157358169556,
+    "mean_direction_weight": 0.05356469005346298,
+    "risk_group_is_model_estimate_not_true_margin": true
+  },
+  {
+    "case": "Payload-4mm",
+    "line": "piper_payload",
+    "batch": 3,
+    "original_loss": 0.007248311769217253,
+    "tapered_loss": 0.0004351548559498042,
+    "task_vs_original": {
+      "left_norm": 0.9469449520111084,
+      "right_norm": 0.5075801610946655,
+      "dot": -0.4456535577774048,
+      "cosine": -0.9271883964538574,
+      "left_loss_slope_under_negative_right_gradient": 0.4456535577774048
+    },
+    "task_vs_taper": {
+      "left_norm": 0.9469449520111084,
+      "right_norm": 0.02130463905632496,
+      "dot": -0.015333193354308605,
+      "cosine": -0.7600351572036743,
+      "left_loss_slope_under_negative_right_gradient": 0.015333193354308605
+    },
+    "base_vs_original": {
+      "left_norm": 0.5545252561569214,
+      "right_norm": 0.5075801610946655,
+      "dot": -0.26124507188796997,
+      "cosine": -0.9281585216522217,
+      "left_loss_slope_under_negative_right_gradient": 0.26124507188796997
+    },
+    "base_vs_taper": {
+      "left_norm": 0.5545252561569214,
+      "right_norm": 0.02130463905632496,
+      "dot": -0.008400125429034233,
+      "cosine": -0.711033821105957,
+      "left_loss_slope_under_negative_right_gradient": 0.008400125429034233
+    },
+    "deep_safe_flow_point_fraction": 0.7197265625,
+    "deep_safe_original_loss_fraction": 0.7218624353408813,
+    "mean_geometry_weight": 0.2510739266872406,
+    "mean_direction_weight": 0.0381738618016243,
+    "risk_group_is_model_estimate_not_true_margin": true
+  }
+]

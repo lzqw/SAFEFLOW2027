@@ -11,6 +11,7 @@
 - [单候选250K方向损失局部化登记](DIRECTION_TAPER_SCREEN_PREREGISTRATION_ZH.md)
 - [候选部署与真实等待状态（尚未训练）](DIRECTION_TAPER_QUEUED_20261119_ZH.md)
 - [同硬件真实前100K：风险达标但任务仍有代价](SAMEHARDWARE_FIRST100K_ZH.md)
+- [Piper原生方向冲突诊断与同硬件单因素筛选](PIPER_DIRECTION_TAPER_SCREEN_ZH.md)
 - [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
 - [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)

@@ -1,0 +1,34 @@
+{
+  "protocol": "simulation_v12_piper_reach_direction_loss_taper",
+  "authorization": {"piper_simulation": true, "contact_response_gate_required": false, "total_budget_cap": null},
+  "additional_steps_per_run": 100000,
+  "arms": ["Reach-fixed2mm-control", "Reach-direction-taper2mm"],
+  "candidates": {
+    "Reach-fixed2mm-control": {"component": "full", "ramp_steps": 0, "initial_fraction": 0.0, "activation_offset_m": 0.002},
+    "Reach-direction-taper2mm": {"component": "full", "ramp_steps": 0, "initial_fraction": 0.0, "activation_offset_m": 0.002}
+  },
+  "taper_enabled": {"Reach-fixed2mm-control": false, "Reach-direction-taper2mm": true},
+  "direction_taper": {"support_start_m": -0.01, "full_strength_m": 0.0, "shape": "cubic_smoothstep", "scope": "direction_loss_only", "detached": true},
+  "actor_lr": {"initial": 0.0001, "floor": 0.00003, "start": 60000, "end": 80000},
+  "p5": {"direction_weight": 1.0, "rho": 0.25, "tangential_variance": 0.04},
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [20000, 40000, 60000, 80000, 100000],
+  "development_episodes_per_condition": 100,
+  "independent_requires_separate_freeze": true,
+  "scientific_early_stopping": false, "automatic_retry": false,
+  "lines": {
+    "piper_reach": {
+      "robot": "Piper", "task": "Reach", "seed": 41027, "parent_steps": 400000,
+      "parent_rng_cuda_index": 1, "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt",
+      "parent_sha256": "17f3b355b4bb85244c57fe81cb8d7ca8c2bd9c1bbc03f2e131e117cb5709d16b",
+      "training_radius_values": [0.045, 0.05, 0.055],
+      "development_layout_seed_start": 11810000, "action_sampling_seed": 11811000,
+      "conditions": [
+        {"name": "nominal", "simulation_overrides": {}},
+        {"name": "radius_0575", "simulation_overrides": {"obstacle_radius_m": 0.0575}},
+        {"name": "radius_060", "simulation_overrides": {"obstacle_radius_m": 0.06}}
+      ]
+    }
+  }
+}

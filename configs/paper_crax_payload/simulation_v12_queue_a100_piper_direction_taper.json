@@ -1,0 +1,46 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-piper-direction-taper",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_piper_direction_taper.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 55834574848,
+  "projected_additional_output_gib": 4,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "1"}, {"CUDA_VISIBLE_DEVICES": "1"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 1, "minimum_free_mib": 6000},
+  "jobs": [
+    {
+      "name": "piper_reach-Reach-fixed2mm-control",
+      "module": "scripts.paper_crax_payload.train_piper_direction_taper_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_direction_taper_reach.json", "--line", "piper_reach", "--arm", "Reach-fixed2mm-control", "--parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-piper-direction-taper/piper_reach-Reach-fixed2mm-control",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_reach-Reach-fixed2mm-control.log",
+      "require_completed_receipt": true, "required_steps": 500000
+    },
+    {
+      "name": "piper_reach-Reach-direction-taper2mm",
+      "module": "scripts.paper_crax_payload.train_piper_direction_taper_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_direction_taper_reach.json", "--line", "piper_reach", "--arm", "Reach-direction-taper2mm", "--parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/reach-radius-ea-100k/full_400000.pt", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-piper-direction-taper/piper_reach-Reach-direction-taper2mm",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_reach-Reach-direction-taper2mm.log",
+      "require_completed_receipt": true, "required_steps": 500000
+    },
+    {
+      "name": "piper_payload-Payload-fixed4mm-control",
+      "module": "scripts.paper_crax_payload.train_piper_direction_taper_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_direction_taper_payload.json", "--line", "piper_payload", "--arm", "Payload-fixed4mm-control", "--parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-piper-direction-taper/piper_payload-Payload-fixed4mm-control",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_payload-Payload-fixed4mm-control.log",
+      "require_completed_receipt": true, "required_steps": 220000
+    },
+    {
+      "name": "piper_payload-Payload-direction-taper4mm",
+      "module": "scripts.paper_crax_payload.train_piper_direction_taper_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_piper_direction_taper_payload.json", "--line", "piper_payload", "--arm", "Payload-direction-taper4mm", "--parent", "/storage_0/SAFEFLOW2027_lzqw_uid1007/robot_gap_v2/runs/transfer-ea-300k/full_120000.pt", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json", "--data-root", "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12", "--cuda-memory-fraction", ".025"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-piper-direction-taper/piper_payload-Payload-direction-taper4mm",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/piper_payload-Payload-direction-taper4mm.log",
+      "require_completed_receipt": true, "required_steps": 220000
+    }
+  ]
+}

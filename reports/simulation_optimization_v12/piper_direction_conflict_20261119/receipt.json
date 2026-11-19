@@ -1,0 +1,43 @@
+{
+  "status": "completed",
+  "sources": [
+    {
+      "case": "Reach-fixed2mm",
+      "checkpoint_sha256": "720a0f1ba93bad71ac44fe6be4aed49a38aa39de4219827421ade6c6b58aeb62",
+      "receipt_sha256": "48e4cad1ce8a105637fc1dd72b22e90c21bb2c0cfd6964a5471c73927da8c76b",
+      "native_observation_dim": 34,
+      "training_plan_sha256": "292062ec02b019d4875fbc134d68ae4686861b11177474ff1fd16782ece35ccb"
+    },
+    {
+      "case": "Reach-half75k",
+      "checkpoint_sha256": "94ddf550dd9388fc3cf8ab1b8eb2ee7c8282a0b0287355da9c257199c17005f5",
+      "receipt_sha256": "8709e84b212121f5a1b264c3b470524dace995af03010cc1fab93c3026fc2f2f",
+      "native_observation_dim": 34,
+      "training_plan_sha256": "da91b7427d1ff6f4ca8f3dd39e4a126afe3cb4e17927c8e7e1b39723c533d519"
+    },
+    {
+      "case": "Payload-fixed",
+      "checkpoint_sha256": "7b9fd98ad299f6944cf17fde97c952e3e92668b5e63cbf8bb93a9dc804ca90eb",
+      "receipt_sha256": "3985f5e075a55a7557814c4bf2fd41a0ab73c584f2adef0db769790d4c35b73a",
+      "native_observation_dim": 34,
+      "training_plan_sha256": "d113c78c7b39da8186933442ea3d7f5bd515263e0dbb73b93f9774a7f833de14"
+    },
+    {
+      "case": "Payload-4mm",
+      "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+      "receipt_sha256": "969d604f012d2ff8276943e735f3b59fefa6d6480c61d9d2df17233efb66abcf",
+      "native_observation_dim": 34,
+      "training_plan_sha256": "b9339a7461519c0f3a335706f0bc6a032e9ce19e03812cfca33ae433c142b48a"
+    }
+  ],
+  "sampled_saved_states": 4096,
+  "diagnostic_batches": 16,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "optimizer_steps": 0,
+  "checkpoint_mutations": 0,
+  "physical_robot_interactions": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "scope": "Native training replay;not unseen57.5/60mm trajectory or causal proof"
+}
