@@ -8,6 +8,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import statistics
 
 from scripts.paper_crax_payload.summarize_simulation_v12 import output
 
@@ -58,10 +59,11 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--runs', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--require-complete', action='store_true', help='Require both full native receipts and all five DEV nodes')
     args = p.parse_args()
     plan = json.loads(PLAN.read_text())
     base = json.loads((PROJECT/plan['base_config']).read_text())
-    summaries, curves, nodes, episodes, provenance = [], [], [], [], []
+    summaries, curves, nodes, episodes, provenance, endpoints = [], [], [], [], [], []
 
     def read(path):
         raw = path.read_bytes()
@@ -97,9 +99,31 @@ def main():
                     or any(receipt[k] != rows[-1][k] for k in COUNTERS[1:4])):
                 raise ValueError('Final native receipt and curve disagree')
             summary['final_native_receipt_present'] = True
+        if args.require_complete:
+            receipt = json.loads(read(directory/'receipt.json'))
+            milestones = [int(plan['training_steps_each']*f) for f in expected['checkpoint_fractions']]
+            saved_milestones = sorted(int(p.stem.split('_')[-1]) for p in directory.glob('evaluation_*.json'))
+            if (not summary['final_native_receipt_present'] or receipt['status']!='completed'
+                    or receipt['training_steps']!=plan['training_steps_each']
+                    or receipt['newly_collected_transitions']!=plan['training_steps_each']
+                    or receipt['initial_steps']!=0 or receipt['engineering'] is not False
+                    or receipt['training_seed']!=seed or receipt['training_source_commit']!='22d4966f'
+                    or receipt['training_episodes']!=rows[-1]['episodes']
+                    or any(receipt[k]!=rows[-1][k] for k in COUNTERS[1:])
+                    or [r['steps'] for r in rows]!=list(range(1000,300001,1000))
+                    or saved_milestones!=milestones):
+                raise ValueError('Need both complete native scientific budgets and every registered DEV node')
+            checkpoint = directory/'full_300000.pt'
+            digest = hashlib.sha256()
+            with checkpoint.open('rb') as stream:
+                for block in iter(lambda:stream.read(1024*1024),b''):
+                    digest.update(block)
+            endpoints.append(dict(seed=seed,fixed_parent_steps=300000,checkpoint_sha256=digest.hexdigest(),
+                checkpoint_bytes=checkpoint.stat().st_size,checkpoint_file=str(checkpoint.relative_to(args.runs)),
+                selection='fixed300K_all_seeds_no_best_node_selection',downstream_training_started=False))
         summaries.append(summary)
         curves.extend(dict(seed=seed, **row) for row in rows)
-        for path in sorted(directory.glob('evaluation_*.json')):
+        for path in sorted(directory.glob('evaluation_*.json'),key=lambda p:int(p.stem.split('_')[-1])):
             step = int(path.stem.split('_')[-1])
             if step > rows[-1]['steps']:
                 raise ValueError('Evaluation snapshot is ahead of its progress snapshot; resync')
@@ -130,6 +154,22 @@ def main():
     for filename, values in (('parents.csv', summaries), ('training.csv', curves),
             ('development_nodes.csv', nodes), ('development_episodes.csv', episodes)):
         output(args.output/filename, values)
+    if args.require_complete:
+        aggregate = []
+        for step in sorted({r['steps'] for r in nodes}):
+            for condition in expected['evaluation']['conditions']:
+                subset = [r for r in nodes if r['steps']==step and r['condition']==condition['name']]
+                rates = [r['safe_success_count']/r['episodes'] for r in subset]
+                if len(rates)!=len(plan['training_seeds']):
+                    raise ValueError('Every registered seed must contribute equally at every node')
+                aggregate.append(dict(steps=step,condition=condition['name'],training_seeds=len(rates),
+                    episodes_per_seed=30,success_mean=statistics.mean(rates),success_best=max(rates),
+                    success_worst=min(rates),success_sd_sample=statistics.stdev(rates),
+                    violation_rate_mean=statistics.mean(r['violation_count']/r['episodes'] for r in subset),
+                    timeout_rate_mean=statistics.mean(r['safe_timeout_count']/r['episodes'] for r in subset),
+                    independent_test_used=False,winner_confirmation=False))
+        output(args.output/'equal_seed_development.csv',aggregate)
+        output(args.output/'fixed_parent_checkpoints.csv',endpoints)
     receipt = dict(status=('native_parent_learning_diagnostic_receipts_present'
         if all(r['final_native_receipt_present'] for r in summaries)
         else 'partial_native_parent_learning_diagnostic'), parents=summaries,
@@ -137,6 +177,8 @@ def main():
         observed_training_steps=sum(r['steps'] for r in summaries), registered_steps=600000,
         new_training_steps=0, new_simulation_controls=0, optimizer_updates=0,
         independent_test_used=False, winner_confirmation=False, automatic_retry=False,
+        complete_native_campaign_verified=args.require_complete,
+        downstream_training_started=False,
         omitted_registered_seeds=[], provenance=provenance)
     (args.output/'receipt.json').write_text(json.dumps(receipt, indent=2, allow_nan=False)+'\n')
 

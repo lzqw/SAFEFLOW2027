@@ -78,3 +78,44 @@ def test_partial_native_two_seed_export_preserves_layout_seed(tmp_path, monkeypa
     assert receipt['observed_training_steps'] == 60000
     assert len(receipt['parents']) == 2 and receipt['omitted_registered_seeds'] == []
     assert (destination/'development_episodes.csv').read_text().splitlines()[1].startswith('41028,30000,nominal,11990000,')
+    monkeypatch.setattr(sys,'argv',['summarize','--runs',str(tmp_path),'--output',str(tmp_path/'rejected'),
+        '--require-complete'])
+    with pytest.raises(FileNotFoundError):
+        main()
+    assert not (tmp_path/'rejected').exists()
+
+    # Build a complete receipt/node fixture while retaining the zero-success seed.
+    for seed in plan['training_seeds']:
+        directory = tmp_path/f'Reach-EA-{seed}'
+        rows = []
+        for step in range(1000,300001,1000):
+            row = deepcopy(curve()[0])
+            row.update(steps=step,episodes=step//100,training_safe_timeouts=step//100-2,
+                learner_updates=max(0,step-2000),reward_updates=2*max(0,step-2000),
+                actor_updates=max(0,(step-3000)//2),cumulative_elapsed_seconds=step/10)
+            rows.append(row)
+        (directory/'progress.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+        last = rows[-1]
+        common = dict(training_seed=seed,training_steps=300000,
+            **{k:last[k] for k in ('training_safe_successes','training_violation_count','training_safe_timeouts')})
+        (directory/'training_receipt_300000.json').write_text(json.dumps(dict(common,status='completed_native_checkpoint')))
+        (directory/'receipt.json').write_text(json.dumps(dict(common,status='completed',
+            newly_collected_transitions=300000,initial_steps=0,engineering=False,training_source_commit='22d4966f',
+            training_episodes=last['episodes'],learner_updates=last['learner_updates'],
+            reward_updates=last['reward_updates'],actor_updates=last['actor_updates'])))
+        (directory/'full_300000.pt').write_bytes(b'fixture_only_not_a_loadable_scientific_checkpoint')
+        evaluation = json.loads((directory/'evaluation_30000.json').read_text())
+        (directory/'evaluation_30000.json').unlink()
+        for step in (60000,120000,180000,240000,300000):
+            (directory/f'evaluation_{step}.json').write_text(json.dumps(evaluation))
+    monkeypatch.setattr(sys,'argv',['summarize','--runs',str(tmp_path),'--output',str(tmp_path/'complete'),
+        '--require-complete'])
+    main()
+    receipt = json.loads((tmp_path/'complete/receipt.json').read_text())
+    assert receipt['complete_native_campaign_verified'] and receipt['completed_parents']==2
+    assert receipt['observed_training_steps']==600000
+    assert receipt['winner_confirmation'] is False and receipt['downstream_training_started'] is False
+    import csv
+    aggregates = list(csv.DictReader((tmp_path/'complete/equal_seed_development.csv').read_text().splitlines()))
+    assert len(aggregates)==15
+    assert all(float(r['success_worst'])==0 for r in aggregates)
