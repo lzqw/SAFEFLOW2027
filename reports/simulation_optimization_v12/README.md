@@ -3,6 +3,7 @@
 用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。30个100K开发端点和七组250K均已完成，共4.75M新增训练transition（不同预算分开比较）。Reach、Payload和SafeReach loss-only taper全部完整失败，不再追加。两项部署实验共7600个完整DEV回合：Piper有明显zero_noise收益；Panda P5四条件100%满足此次固定模型部署DEV护栏；SafeReach P5 zero_noise96/98/96仍低于同模式Metric98/99/99。因此训练风险、多seed、最终独立确认及全面最优仍未解决。当前A100两个独立300K父继续训练；新增公共30K真实动作margin诊断不支持P5数值拟合更差，新4080终点余量残差候选与同源码原P5对照已实际开始各250K（未计入完成4.75M）。
 
 - [最新：4080单因素候选/原P5对照两条已实际运行](ENDPOINT_RESIDUAL_STARTED_20261119_ZH.md)
+- [4080终点余量残差15K中期：两条仍一致，候选尚未激活](ENDPOINT_RESIDUAL_INTERIM_15K_20261119_ZH.md)
 - [保留完整P5的新终点余量残差固定登记与结论边界](ENDPOINT_RESIDUAL_PREREGISTRATION_ZH.md)
 - [公共30K真实动作池的六个margin模型结果](SAFEREACH_CALIBRATION_FINAL_ZH.md)
 
