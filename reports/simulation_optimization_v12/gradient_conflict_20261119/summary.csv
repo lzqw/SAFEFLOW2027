@@ -1,0 +1,5 @@
+arm,transitions,batches,task_direction_conflict_batches,base_direction_conflict_batches,mean_task_direction_cosine,deep_safe_direction_loss_fraction,deep_safe_sample_fraction,near_unsafe_sample_fraction
+A-full-P5,100000,4,4,3,-0.33625608775764704,0.8885612307428269,0.9658203125,0.005859375
+A-full-P5,250000,4,4,4,-0.6971812695264816,0.9790842704135208,0.96484375,0.0048828125
+A-no-direction,100000,4,4,3,-0.32261417945846915,0.8925919325805493,0.947265625,0.001953125
+A-no-direction,250000,4,4,4,-0.43489015847444534,0.9270438435178355,0.9267578125,0.00390625

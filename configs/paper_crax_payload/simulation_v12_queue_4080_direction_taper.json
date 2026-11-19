@@ -1,0 +1,28 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-direction-taper",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 1,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_direction_taper.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 85899345920,
+  "projected_additional_output_gib": 6,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}],
+  "foreign_processes_changed": false,
+  "prerequisite_receipts": [
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-full-P5-2034/receipt.json", "steps": 250000},
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-samehardware/A-Iso-matchedLR-2034/receipt.json", "steps": 250000},
+    {"path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/samehardware-analysis/receipt.json", "expected_status": "complete_offline_review"}
+  ],
+  "gpu_admission": {"index": 0, "minimum_free_mib": 1800},
+  "jobs": [
+    {
+      "name": "D-direction-only-taper-2034",
+      "module": "scripts.paper_crax_payload.train_direction_taper_v12",
+      "arguments": ["--config", "configs/paper_crax_payload/simulation_v12_direction_taper.json", "--arm", "D-direction-only-taper", "--seed", "2034", "--cuda-memory-fraction", ".04"],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-direction-taper/D-direction-only-taper-2034",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/D-direction-only-taper-2034.log",
+      "require_completed_receipt": true,
+      "required_steps": 250000
+    }
+  ]
+}

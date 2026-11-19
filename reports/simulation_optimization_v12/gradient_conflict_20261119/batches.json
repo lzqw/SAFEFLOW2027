@@ -1,0 +1,914 @@
+[
+  {
+    "arm": "A-full-P5",
+    "transitions": 100000,
+    "batch": 0,
+    "task_loss": -8.251816749572754,
+    "direction_loss": 0.002756153466179967,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0027506647165864706,
+    "task_vs_direction": {
+      "left_norm": 0.7332806587219238,
+      "right_norm": 0.16429901123046875,
+      "dot": -0.05769951269030571,
+      "cosine": -0.47892439365386963,
+      "left_loss_slope_under_negative_right_gradient": 0.05769951269030571
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.5823732018470764,
+      "right_norm": 0.16429901123046875,
+      "dot": -0.02366071566939354,
+      "cosine": -0.24728144705295563,
+      "left_loss_slope_under_negative_right_gradient": 0.02366071566939354
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 2,
+        "loss_contribution": 4.6906825446058065e-05,
+        "left_norm": 0.7332806587219238,
+        "right_norm": 0.0014584546443074942,
+        "dot": -0.00038959059747867286,
+        "cosine": -0.3642883896827698,
+        "left_loss_slope_under_negative_right_gradient": 0.00038959059747867286
+      },
+      "interior": {
+        "samples": 7,
+        "loss_contribution": 0.0007090854924172163,
+        "left_norm": 0.7332806587219238,
+        "right_norm": 0.0365159772336483,
+        "dot": -0.012793388217687607,
+        "cosine": -0.4777849018573761,
+        "left_loss_slope_under_negative_right_gradient": 0.012793388217687607
+      },
+      "deep_safe": {
+        "samples": 247,
+        "loss_contribution": 0.0020001609809696674,
+        "left_norm": 0.7332806587219238,
+        "right_norm": 0.13316985964775085,
+        "dot": -0.044516537338495255,
+        "cosine": -0.45587438344955444,
+        "left_loss_slope_under_negative_right_gradient": 0.044516537338495255
+      }
+    },
+    "mean_geometry_weight": 0.12971879541873932,
+    "high20_weight_mean": 0.2811114192008972,
+    "sampled_action_clipped_component_fraction": 0.20703125,
+    "per_state_loss_sum_matches": 2.3283064365386963e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 100000,
+    "batch": 1,
+    "task_loss": -7.641829490661621,
+    "direction_loss": 0.003283456666395068,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0027506647165864706,
+    "task_vs_direction": {
+      "left_norm": 0.8036434054374695,
+      "right_norm": 0.16108417510986328,
+      "dot": -0.04606618732213974,
+      "cosine": -0.3558492064476013,
+      "left_loss_slope_under_negative_right_gradient": 0.04606618732213974
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.5754720568656921,
+      "right_norm": 0.16108417510986328,
+      "dot": -0.010982001200318336,
+      "cosine": -0.11846891045570374,
+      "left_loss_slope_under_negative_right_gradient": 0.010982001200318336
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 4,
+        "loss_contribution": 2.4725239200051874e-05,
+        "left_norm": 0.8036434054374695,
+        "right_norm": 0.0024123189505189657,
+        "dot": -0.0009360165568068624,
+        "cosine": -0.48282018303871155,
+        "left_loss_slope_under_negative_right_gradient": 0.0009360165568068624
+      },
+      "interior": {
+        "samples": 6,
+        "loss_contribution": 0.0001512811577413231,
+        "left_norm": 0.8036434054374695,
+        "right_norm": 0.008676794357597828,
+        "dot": -0.00329148443415761,
+        "cosine": -0.4720294773578644,
+        "left_loss_slope_under_negative_right_gradient": 0.00329148443415761
+      },
+      "deep_safe": {
+        "samples": 246,
+        "loss_contribution": 0.0031074504368007183,
+        "left_norm": 0.8036434054374695,
+        "right_norm": 0.15528811514377594,
+        "dot": -0.041838690638542175,
+        "cosine": -0.3352559208869934,
+        "left_loss_slope_under_negative_right_gradient": 0.041838690638542175
+      }
+    },
+    "mean_geometry_weight": 0.12485234439373016,
+    "high20_weight_mean": 0.28347527980804443,
+    "sampled_action_clipped_component_fraction": 0.1927083283662796,
+    "per_state_loss_sum_matches": 2.3283064365386963e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 100000,
+    "batch": 2,
+    "task_loss": -7.870914936065674,
+    "direction_loss": 0.002923669759184122,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0027506647165864706,
+    "task_vs_direction": {
+      "left_norm": 1.6015228033065796,
+      "right_norm": 0.13321784138679504,
+      "dot": -0.01010732538998127,
+      "cosine": -0.047374073415994644,
+      "left_loss_slope_under_negative_right_gradient": 0.01010732538998127
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 1.6365444660186768,
+      "right_norm": 0.13321784138679504,
+      "dot": 0.011404599994421005,
+      "cosine": 0.05231061950325966,
+      "left_loss_slope_under_negative_right_gradient": -0.011404599994421005
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 0,
+        "loss_contribution": 0.0,
+        "left_norm": 1.6015228033065796,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 9,
+        "loss_contribution": 0.00018417858518660069,
+        "left_norm": 1.6015228033065796,
+        "right_norm": 0.008077769540250301,
+        "dot": -0.007376875728368759,
+        "cosine": -0.5702271461486816,
+        "left_loss_slope_under_negative_right_gradient": 0.007376875728368759
+      },
+      "deep_safe": {
+        "samples": 247,
+        "loss_contribution": 0.002739490708336234,
+        "left_norm": 1.6015228033065796,
+        "right_norm": 0.1283397078514099,
+        "dot": -0.0027304505929350853,
+        "cosine": -0.013284345157444477,
+        "left_loss_slope_under_negative_right_gradient": 0.0027304505929350853
+      }
+    },
+    "mean_geometry_weight": 0.1287800371646881,
+    "high20_weight_mean": 0.2881249785423279,
+    "sampled_action_clipped_component_fraction": 0.20703125,
+    "per_state_loss_sum_matches": 4.656612873077393e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 100000,
+    "batch": 3,
+    "task_loss": -7.414520263671875,
+    "direction_loss": 0.003669591387733817,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0027506647165864706,
+    "task_vs_direction": {
+      "left_norm": 0.675609827041626,
+      "right_norm": 0.14229021966457367,
+      "dot": -0.044497571885585785,
+      "cosine": -0.46287667751312256,
+      "left_loss_slope_under_negative_right_gradient": 0.044497571885585785
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.6312337517738342,
+      "right_norm": 0.14229021966457367,
+      "dot": -0.022204197943210602,
+      "cosine": -0.24721215665340424,
+      "left_loss_slope_under_negative_right_gradient": 0.022204197943210602
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 0,
+        "loss_contribution": 0.0,
+        "left_norm": 0.675609827041626,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 7,
+        "loss_contribution": 0.00029161403654143214,
+        "left_norm": 0.675609827041626,
+        "right_norm": 0.011086241342127323,
+        "dot": -0.0019378048600628972,
+        "cosine": -0.25871986150741577,
+        "left_loss_slope_under_negative_right_gradient": 0.0019378048600628972
+      },
+      "deep_safe": {
+        "samples": 249,
+        "loss_contribution": 0.0033779775258153677,
+        "left_norm": 0.675609827041626,
+        "right_norm": 0.13298484683036804,
+        "dot": -0.04255976900458336,
+        "cosine": -0.47369757294654846,
+        "left_loss_slope_under_negative_right_gradient": 0.04255976900458336
+      }
+    },
+    "mean_geometry_weight": 0.13176755607128143,
+    "high20_weight_mean": 0.27882009744644165,
+    "sampled_action_clipped_component_fraction": 0.1940104216337204,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 250000,
+    "batch": 0,
+    "task_loss": -9.643651008605957,
+    "direction_loss": 0.003045812714844942,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0014526224695146084,
+    "task_vs_direction": {
+      "left_norm": 0.2274315506219864,
+      "right_norm": 0.22940963506698608,
+      "dot": -0.036592185497283936,
+      "cosine": -0.7013357281684875,
+      "left_loss_slope_under_negative_right_gradient": 0.036592185497283936
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.16546747088432312,
+      "right_norm": 0.22940963506698608,
+      "dot": -0.032198578119277954,
+      "cosine": -0.8482276201248169,
+      "left_loss_slope_under_negative_right_gradient": 0.032198578119277954
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 0.0,
+        "left_norm": 0.2274315506219864,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 4,
+        "loss_contribution": 6.8538465711753815e-06,
+        "left_norm": 0.2274315506219864,
+        "right_norm": 0.001022240612655878,
+        "dot": -0.00011172299855388701,
+        "cosine": -0.4805501699447632,
+        "left_loss_slope_under_negative_right_gradient": 0.00011172299855388701
+      },
+      "deep_safe": {
+        "samples": 251,
+        "loss_contribution": 0.0030389586463570595,
+        "left_norm": 0.2274315506219864,
+        "right_norm": 0.22858794033527374,
+        "dot": -0.036480456590652466,
+        "cosine": -0.7017077207565308,
+        "left_loss_slope_under_negative_right_gradient": 0.036480456590652466
+      }
+    },
+    "mean_geometry_weight": 0.14213824272155762,
+    "high20_weight_mean": 0.25850197672843933,
+    "sampled_action_clipped_component_fraction": 0.2278645783662796,
+    "per_state_loss_sum_matches": 4.656612873077393e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 250000,
+    "batch": 1,
+    "task_loss": -9.724592208862305,
+    "direction_loss": 0.002987870015203953,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0014526224695146084,
+    "task_vs_direction": {
+      "left_norm": 0.21700261533260345,
+      "right_norm": 0.2186550348997116,
+      "dot": -0.02922990173101425,
+      "cosine": -0.6160314679145813,
+      "left_loss_slope_under_negative_right_gradient": 0.02922990173101425
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.11305829137563705,
+      "right_norm": 0.2186550348997116,
+      "dot": -0.021785102784633636,
+      "cosine": -0.8812471628189087,
+      "left_loss_slope_under_negative_right_gradient": 0.021785102784633636
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 2,
+        "loss_contribution": 0.0,
+        "left_norm": 0.21700261533260345,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 9,
+        "loss_contribution": 5.882106961507816e-06,
+        "left_norm": 0.21700261533260345,
+        "right_norm": 0.00077654147753492,
+        "dot": -5.740122287534177e-05,
+        "cosine": -0.3406367599964142,
+        "left_loss_slope_under_negative_right_gradient": 5.740122287534177e-05
+      },
+      "deep_safe": {
+        "samples": 245,
+        "loss_contribution": 0.0029819877818226814,
+        "left_norm": 0.21700261533260345,
+        "right_norm": 0.21801605820655823,
+        "dot": -0.029172498732805252,
+        "cosine": -0.6166236400604248,
+        "left_loss_slope_under_negative_right_gradient": 0.029172498732805252
+      }
+    },
+    "mean_geometry_weight": 0.1421869546175003,
+    "high20_weight_mean": 0.27343282103538513,
+    "sampled_action_clipped_component_fraction": 0.2291666716337204,
+    "per_state_loss_sum_matches": 2.3283064365386963e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 250000,
+    "batch": 2,
+    "task_loss": -9.651611328125,
+    "direction_loss": 0.0037037606816738844,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0014526224695146084,
+    "task_vs_direction": {
+      "left_norm": 0.3039499521255493,
+      "right_norm": 0.2660824656486511,
+      "dot": -0.06978609412908554,
+      "cosine": -0.862880289554596,
+      "left_loss_slope_under_negative_right_gradient": 0.06978609412908554
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.23056499660015106,
+      "right_norm": 0.2660824656486511,
+      "dot": -0.05719180405139923,
+      "cosine": -0.9322323203086853,
+      "left_loss_slope_under_negative_right_gradient": 0.05719180405139923
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 0.0,
+        "left_norm": 0.3039499521255493,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 7,
+        "loss_contribution": 0.00012377143139019608,
+        "left_norm": 0.3039499521255493,
+        "right_norm": 0.010167011991143227,
+        "dot": -0.0019839154556393623,
+        "cosine": -0.6419892311096191,
+        "left_loss_slope_under_negative_right_gradient": 0.0019839154556393623
+      },
+      "deep_safe": {
+        "samples": 248,
+        "loss_contribution": 0.003579988842830062,
+        "left_norm": 0.3039499521255493,
+        "right_norm": 0.2574758231639862,
+        "dot": -0.06780217587947845,
+        "cosine": -0.8663733601570129,
+        "left_loss_slope_under_negative_right_gradient": 0.06780217587947845
+      }
+    },
+    "mean_geometry_weight": 0.1404174417257309,
+    "high20_weight_mean": 0.27359482645988464,
+    "sampled_action_clipped_component_fraction": 0.21484375,
+    "per_state_loss_sum_matches": 4.656612873077393e-10
+  },
+  {
+    "arm": "A-full-P5",
+    "transitions": 250000,
+    "batch": 3,
+    "task_loss": -9.637688636779785,
+    "direction_loss": 0.003046689322218299,
+    "active_direction_coefficient": 1,
+    "safety_multiplier": 0.0,
+    "alpha": 0.0014526224695146084,
+    "task_vs_direction": {
+      "left_norm": 0.23727892339229584,
+      "right_norm": 0.25130635499954224,
+      "dot": -0.03628333657979965,
+      "cosine": -0.6084775924682617,
+      "left_loss_slope_under_negative_right_gradient": 0.03628333657979965
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.1692795306444168,
+      "right_norm": 0.25130635499954224,
+      "dot": -0.031495820730924606,
+      "cosine": -0.7403634786605835,
+      "left_loss_slope_under_negative_right_gradient": 0.031495820730924606
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 4.802978946827352e-05,
+        "left_norm": 0.23727892339229584,
+        "right_norm": 0.0076401084661483765,
+        "dot": -0.00023369718110188842,
+        "cosine": -0.12891241908073425,
+        "left_loss_slope_under_negative_right_gradient": 0.00023369718110188842
+      },
+      "interior": {
+        "samples": 11,
+        "loss_contribution": 8.285189687740058e-05,
+        "left_norm": 0.23727892339229584,
+        "right_norm": 0.014244983904063702,
+        "dot": -0.001041137846186757,
+        "cosine": -0.3080258071422577,
+        "left_loss_slope_under_negative_right_gradient": 0.001041137846186757
+      },
+      "deep_safe": {
+        "samples": 244,
+        "loss_contribution": 0.0029158079996705055,
+        "left_norm": 0.23727892339229584,
+        "right_norm": 0.23573540151119232,
+        "dot": -0.035008504986763,
+        "cosine": -0.625877857208252,
+        "left_loss_slope_under_negative_right_gradient": 0.035008504986763
+      }
+    },
+    "mean_geometry_weight": 0.15045465528964996,
+    "high20_weight_mean": 0.29527509212493896,
+    "sampled_action_clipped_component_fraction": 0.2005208283662796,
+    "per_state_loss_sum_matches": 4.656612873077393e-10
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 100000,
+    "batch": 0,
+    "task_loss": -8.22691535949707,
+    "direction_loss": 0.0067883264273405075,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.18726072941147592,
+    "alpha": 0.003818313591182232,
+    "task_vs_direction": {
+      "left_norm": 2.0840415954589844,
+      "right_norm": 0.25588494539260864,
+      "dot": -0.09843334555625916,
+      "cosine": -0.18458275496959686,
+      "left_loss_slope_under_negative_right_gradient": 0.09843334555625916
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 2.0538992881774902,
+      "right_norm": 0.25588494539260864,
+      "dot": -0.04185984283685684,
+      "cosine": -0.07964778691530228,
+      "left_loss_slope_under_negative_right_gradient": 0.04185984283685684
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 0,
+        "loss_contribution": 0.0,
+        "left_norm": 2.0840415954589844,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 12,
+        "loss_contribution": 0.0004673234361689538,
+        "left_norm": 2.0840415954589844,
+        "right_norm": 0.022611085325479507,
+        "dot": -0.017251692712306976,
+        "cosine": -0.36610352993011475,
+        "left_loss_slope_under_negative_right_gradient": 0.017251692712306976
+      },
+      "deep_safe": {
+        "samples": 244,
+        "loss_contribution": 0.006321003194898367,
+        "left_norm": 2.0840415954589844,
+        "right_norm": 0.2347109615802765,
+        "dot": -0.08118166029453278,
+        "cosine": -0.16596564650535583,
+        "left_loss_slope_under_negative_right_gradient": 0.08118166029453278
+      }
+    },
+    "mean_geometry_weight": 0.1355314403772354,
+    "high20_weight_mean": 0.2899382710456848,
+    "sampled_action_clipped_component_fraction": 0.2005208283662796,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 100000,
+    "batch": 1,
+    "task_loss": -7.826267242431641,
+    "direction_loss": 0.008754388429224491,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.18726072941147592,
+    "alpha": 0.003818313591182232,
+    "task_vs_direction": {
+      "left_norm": 0.8726811408996582,
+      "right_norm": 0.32397839426994324,
+      "dot": -0.17022305727005005,
+      "cosine": -0.6020696759223938,
+      "left_loss_slope_under_negative_right_gradient": 0.17022305727005005
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.4048081338405609,
+      "right_norm": 0.32397839426994324,
+      "dot": -0.06972455978393555,
+      "cosine": -0.5316435098648071,
+      "left_loss_slope_under_negative_right_gradient": 0.06972455978393555
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 0,
+        "loss_contribution": 0.0,
+        "left_norm": 0.8726811408996582,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 13,
+        "loss_contribution": 0.0005827199784107506,
+        "left_norm": 0.8726811408996582,
+        "right_norm": 0.03914481773972511,
+        "dot": -0.0206321831792593,
+        "cosine": -0.603969931602478,
+        "left_loss_slope_under_negative_right_gradient": 0.0206321831792593
+      },
+      "deep_safe": {
+        "samples": 243,
+        "loss_contribution": 0.008171668276190758,
+        "left_norm": 0.8726811408996582,
+        "right_norm": 0.2860415577888489,
+        "dot": -0.1495908945798874,
+        "cosine": -0.5992670655250549,
+        "left_loss_slope_under_negative_right_gradient": 0.1495908945798874
+      }
+    },
+    "mean_geometry_weight": 0.13942952454090118,
+    "high20_weight_mean": 0.29442596435546875,
+    "sampled_action_clipped_component_fraction": 0.1809895783662796,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 100000,
+    "batch": 2,
+    "task_loss": -7.4494452476501465,
+    "direction_loss": 0.009574038907885551,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.18726072941147592,
+    "alpha": 0.003818313591182232,
+    "task_vs_direction": {
+      "left_norm": 1.638082504272461,
+      "right_norm": 0.33356449007987976,
+      "dot": -0.011614061892032623,
+      "cosine": -0.021255364641547203,
+      "left_loss_slope_under_negative_right_gradient": 0.011614061892032623
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 1.3463630676269531,
+      "right_norm": 0.33356449007987976,
+      "dot": 0.08197161555290222,
+      "cosine": 0.182524636387825,
+      "left_loss_slope_under_negative_right_gradient": -0.08197161555290222
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 1.8945780539070256e-05,
+        "left_norm": 1.638082504272461,
+        "right_norm": 0.003386548487469554,
+        "dot": -0.0006936893332749605,
+        "cosine": -0.12504662573337555,
+        "left_loss_slope_under_negative_right_gradient": 0.0006936893332749605
+      },
+      "interior": {
+        "samples": 15,
+        "loss_contribution": 0.0016099405474960804,
+        "left_norm": 1.638082504272461,
+        "right_norm": 0.04625128209590912,
+        "dot": -0.01078859530389309,
+        "cosine": -0.14239847660064697,
+        "left_loss_slope_under_negative_right_gradient": 0.01078859530389309
+      },
+      "deep_safe": {
+        "samples": 240,
+        "loss_contribution": 0.007945152930915356,
+        "left_norm": 1.638082504272461,
+        "right_norm": 0.2860194146633148,
+        "dot": -0.00013177143409848213,
+        "cosine": -0.00028124835807830095,
+        "left_loss_slope_under_negative_right_gradient": 0.00013177143409848213
+      }
+    },
+    "mean_geometry_weight": 0.14201369881629944,
+    "high20_weight_mean": 0.3070625960826874,
+    "sampled_action_clipped_component_fraction": 0.1809895783662796,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 100000,
+    "batch": 3,
+    "task_loss": -7.683370590209961,
+    "direction_loss": 0.009135641157627106,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.18726072941147592,
+    "alpha": 0.003818313591182232,
+    "task_vs_direction": {
+      "left_norm": 0.9351224303245544,
+      "right_norm": 0.37123966217041016,
+      "dot": -0.16751904785633087,
+      "cosine": -0.48254892230033875,
+      "left_loss_slope_under_negative_right_gradient": 0.16751904785633087
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.8026930689811707,
+      "right_norm": 0.37123966217041016,
+      "dot": -0.05202501267194748,
+      "cosine": -0.17458555102348328,
+      "left_loss_slope_under_negative_right_gradient": 0.05202501267194748
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 1.6986713262667763e-06,
+        "left_norm": 0.9351224303245544,
+        "right_norm": 0.000676860217936337,
+        "dot": -0.0003797037061303854,
+        "cosine": -0.5998979210853577,
+        "left_loss_slope_under_negative_right_gradient": 0.0003797037061303854
+      },
+      "interior": {
+        "samples": 12,
+        "loss_contribution": 0.000998356263153255,
+        "left_norm": 0.9351224303245544,
+        "right_norm": 0.04702325910329819,
+        "dot": -0.01398157887160778,
+        "cosine": -0.3179618716239929,
+        "left_loss_slope_under_negative_right_gradient": 0.01398157887160778
+      },
+      "deep_safe": {
+        "samples": 243,
+        "loss_contribution": 0.008135586977005005,
+        "left_norm": 0.9351224303245544,
+        "right_norm": 0.32676759362220764,
+        "dot": -0.15315775573253632,
+        "cosine": -0.501223623752594,
+        "left_loss_slope_under_negative_right_gradient": 0.15315775573253632
+      }
+    },
+    "mean_geometry_weight": 0.14281316101551056,
+    "high20_weight_mean": 0.30320093035697937,
+    "sampled_action_clipped_component_fraction": 0.1809895783662796,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 250000,
+    "batch": 0,
+    "task_loss": -9.599401473999023,
+    "direction_loss": 0.009239811450242996,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.0,
+    "alpha": 0.002594592748209834,
+    "task_vs_direction": {
+      "left_norm": 0.5155172944068909,
+      "right_norm": 0.4858996868133545,
+      "dot": -0.11298204213380814,
+      "cosine": -0.4510447084903717,
+      "left_loss_slope_under_negative_right_gradient": 0.11298204213380814
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.1925106942653656,
+      "right_norm": 0.4858996868133545,
+      "dot": -0.03568541631102562,
+      "cosine": -0.3814953863620758,
+      "left_loss_slope_under_negative_right_gradient": 0.03568541631102562
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 2,
+        "loss_contribution": 6.13400770816952e-05,
+        "left_norm": 0.5155172944068909,
+        "right_norm": 0.005976620130240917,
+        "dot": -0.0015314192278310657,
+        "cosine": -0.4970444440841675,
+        "left_loss_slope_under_negative_right_gradient": 0.0015314192278310657
+      },
+      "interior": {
+        "samples": 16,
+        "loss_contribution": 0.0009682917734608054,
+        "left_norm": 0.5155172944068909,
+        "right_norm": 0.04788662865757942,
+        "dot": -0.011488527990877628,
+        "cosine": -0.46537911891937256,
+        "left_loss_slope_under_negative_right_gradient": 0.011488527990877628
+      },
+      "deep_safe": {
+        "samples": 238,
+        "loss_contribution": 0.008210179395973682,
+        "left_norm": 0.5155172944068909,
+        "right_norm": 0.43401992321014404,
+        "dot": -0.09996209293603897,
+        "cosine": -0.4467683732509613,
+        "left_loss_slope_under_negative_right_gradient": 0.09996209293603897
+      }
+    },
+    "mean_geometry_weight": 0.16912853717803955,
+    "high20_weight_mean": 0.3185938596725464,
+    "sampled_action_clipped_component_fraction": 0.1809895783662796,
+    "per_state_loss_sum_matches": 9.313225746154785e-10
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 250000,
+    "batch": 1,
+    "task_loss": -9.612771987915039,
+    "direction_loss": 0.009157384745776653,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.0,
+    "alpha": 0.002594592748209834,
+    "task_vs_direction": {
+      "left_norm": 0.4327140748500824,
+      "right_norm": 0.42624151706695557,
+      "dot": -0.057501502335071564,
+      "cosine": -0.3117614686489105,
+      "left_loss_slope_under_negative_right_gradient": 0.057501502335071564
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.12263031303882599,
+      "right_norm": 0.42624151706695557,
+      "dot": -0.01043147873133421,
+      "cosine": -0.19956864416599274,
+      "left_loss_slope_under_negative_right_gradient": 0.01043147873133421
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 0.0,
+        "left_norm": 0.4327140748500824,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 25,
+        "loss_contribution": 0.001076182583346963,
+        "left_norm": 0.4327140748500824,
+        "right_norm": 0.05123302340507507,
+        "dot": -0.006152685731649399,
+        "cosine": -0.2775323987007141,
+        "left_loss_slope_under_negative_right_gradient": 0.006152685731649399
+      },
+      "deep_safe": {
+        "samples": 230,
+        "loss_contribution": 0.008081203326582909,
+        "left_norm": 0.4327140748500824,
+        "right_norm": 0.376913458108902,
+        "dot": -0.051348812878131866,
+        "cosine": -0.3148384392261505,
+        "left_loss_slope_under_negative_right_gradient": 0.051348812878131866
+      }
+    },
+    "mean_geometry_weight": 0.17429961264133453,
+    "high20_weight_mean": 0.338614821434021,
+    "sampled_action_clipped_component_fraction": 0.1848958283662796,
+    "per_state_loss_sum_matches": 0.0
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 250000,
+    "batch": 2,
+    "task_loss": -9.613040924072266,
+    "direction_loss": 0.0069015235640108585,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.0,
+    "alpha": 0.002594592748209834,
+    "task_vs_direction": {
+      "left_norm": 0.46751055121421814,
+      "right_norm": 0.3901083767414093,
+      "dot": -0.08923225849866867,
+      "cosine": -0.48926618695259094,
+      "left_loss_slope_under_negative_right_gradient": 0.08923225849866867
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.19701461493968964,
+      "right_norm": 0.3901083767414093,
+      "dot": -0.05406055599451065,
+      "cosine": -0.7033909559249878,
+      "left_loss_slope_under_negative_right_gradient": 0.05406055599451065
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 1,
+        "loss_contribution": 7.230733345409135e-09,
+        "left_norm": 0.46751055121421814,
+        "right_norm": 4.171126784058288e-05,
+        "dot": -4.342022293712944e-06,
+        "cosine": -0.22266258299350739,
+        "left_loss_slope_under_negative_right_gradient": 4.342022293712944e-06
+      },
+      "interior": {
+        "samples": 14,
+        "loss_contribution": 7.815560093149543e-05,
+        "left_norm": 0.46751055121421814,
+        "right_norm": 0.003994452767074108,
+        "dot": -0.0008281882619485259,
+        "cosine": -0.44348645210266113,
+        "left_loss_slope_under_negative_right_gradient": 0.0008281882619485259
+      },
+      "deep_safe": {
+        "samples": 241,
+        "loss_contribution": 0.00682336138561368,
+        "left_norm": 0.46751055121421814,
+        "right_norm": 0.38643333315849304,
+        "dot": -0.088399738073349,
+        "cosine": -0.48931097984313965,
+        "left_loss_slope_under_negative_right_gradient": 0.088399738073349
+      }
+    },
+    "mean_geometry_weight": 0.15691545605659485,
+    "high20_weight_mean": 0.2954050302505493,
+    "sampled_action_clipped_component_fraction": 0.1822916716337204,
+    "per_state_loss_sum_matches": 9.313225746154785e-10
+  },
+  {
+    "arm": "A-no-direction",
+    "transitions": 250000,
+    "batch": 3,
+    "task_loss": -9.515403747558594,
+    "direction_loss": 0.007877271622419357,
+    "active_direction_coefficient": 0,
+    "safety_multiplier": 0.0,
+    "alpha": 0.002594592748209834,
+    "task_vs_direction": {
+      "left_norm": 0.461824893951416,
+      "right_norm": 0.4334135353565216,
+      "dot": -0.09757621586322784,
+      "cosine": -0.4874882698059082,
+      "left_loss_slope_under_negative_right_gradient": 0.09757621586322784
+    },
+    "task_cost_entropy_vs_direction": {
+      "left_norm": 0.19462695717811584,
+      "right_norm": 0.4334135353565216,
+      "dot": -0.06643851101398468,
+      "cosine": -0.7876157760620117,
+      "left_loss_slope_under_negative_right_gradient": 0.06643851101398468
+    },
+    "groups": {
+      "near_or_unsafe": {
+        "samples": 0,
+        "loss_contribution": 0.0,
+        "left_norm": 0.461824893951416,
+        "right_norm": 0.0,
+        "dot": 0.0,
+        "cosine": null,
+        "left_loss_slope_under_negative_right_gradient": -0.0
+      },
+      "interior": {
+        "samples": 16,
+        "loss_contribution": 0.00023641744337510318,
+        "left_norm": 0.461824893951416,
+        "right_norm": 0.02455451339483261,
+        "dot": -0.005351245403289795,
+        "cosine": -0.47189590334892273,
+        "left_loss_slope_under_negative_right_gradient": 0.005351245403289795
+      },
+      "deep_safe": {
+        "samples": 240,
+        "loss_contribution": 0.0076408544555306435,
+        "left_norm": 0.461824893951416,
+        "right_norm": 0.40903037786483765,
+        "dot": -0.09222496300935745,
+        "cosine": -0.4882200360298157,
+        "left_loss_slope_under_negative_right_gradient": 0.09222496300935745
+      }
+    },
+    "mean_geometry_weight": 0.16689711809158325,
+    "high20_weight_mean": 0.30048733949661255,
+    "sampled_action_clipped_component_fraction": 0.1614583283662796,
+    "per_state_loss_sum_matches": 0.0
+  }
+]

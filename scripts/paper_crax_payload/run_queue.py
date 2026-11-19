@@ -30,7 +30,8 @@ def prerequisites_ready(plan):
         path=Path(spec['path'])
         if not path.exists():return False
         record=json.loads(path.read_text())
-        if record.get('status')!='completed' or record.get('steps')!=spec['steps']:
+        if (record.get('status') != spec.get('expected_status', 'completed')
+                or ('steps' in spec and record.get('steps') != spec['steps'])):
             raise ValueError('Prerequisite exists but did not complete the registered budget')
         if record.get('engineering_only'):raise ValueError('Engineering smoke is not a scientific prerequisite')
     return True

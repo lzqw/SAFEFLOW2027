@@ -1,0 +1,24 @@
+{
+  "protocol": "v12_saved_replay_gradient_conflict",
+  "source_commit": "1dbe6b0b",
+  "arms": [
+    "A-full-P5",
+    "A-no-direction"
+  ],
+  "checkpoints": [
+    100000,
+    250000
+  ],
+  "batch_size": 256,
+  "batches_per_checkpoint": 4,
+  "sampling": "half uniform valid replay;half recent10K;fixed diagnostic RNG991700+batch",
+  "risk_groups": "generated action EMA margin:near_or_unsafe>=-2mm;interior[-10,-2)mm;deep_safe<-10mm",
+  "actor": "saved online actor;one stochastic trajectory per sampled state",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "optimizer_steps": 0,
+  "independent_test_used": false,
+  "checkpoint_mutations": 0,
+  "automatic_retry": false,
+  "interpretation": "Gradient alignment on saved visited-state distribution;not true risk, causal proof, or inference policy"
+}
