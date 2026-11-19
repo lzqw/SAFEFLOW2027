@@ -1,0 +1,34 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-independent-radius",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_independent_radius.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 49392123904,
+  "projected_additional_output_gib": 6,
+  "slot_environments": [{"CUDA_VISIBLE_DEVICES": "0"}, {"CUDA_VISIBLE_DEVICES": "1"}],
+  "foreign_processes_changed": false,
+  "gpu_admission": {"index": 0, "minimum_free_mib": 3000},
+  "prerequisite_receipts": [
+    {"path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_reach_fresh_parents.json", "expected_status": "completed"},
+    {"path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/reach-fresh-parents-complete-analysis/receipt.json", "expected_status": "native_parent_learning_diagnostic_receipts_present"}
+  ],
+  "jobs": [
+    {
+      "name": "Reach-EA-independent-radius100K-41028",
+      "module": "scripts.paper_crax_payload.train_reach_independent_radius_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_reach_independent_radius.json", "--seed", "41028", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41028",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/Reach-EA-radius100K-41028.log",
+      "require_completed_receipt": true, "required_steps": 400000, "required_steps_field": "training_steps"
+    },
+    {
+      "name": "Reach-EA-independent-radius100K-41029",
+      "module": "scripts.paper_crax_payload.train_reach_independent_radius_v12",
+      "arguments": ["--plan", "configs/paper_crax_payload/simulation_v12_reach_independent_radius.json", "--seed", "41029", "--assets-receipt", "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json"],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41029",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/Reach-EA-radius100K-41029.log",
+      "require_completed_receipt": true, "required_steps": 400000, "required_steps_field": "training_steps"
+    }
+  ]
+}

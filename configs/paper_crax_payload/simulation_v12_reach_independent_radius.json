@@ -1,0 +1,32 @@
+{
+  "protocol": "simulation_v12_two_independent_reach_parents_finite_radius100K",
+  "parent_plan": "configs/paper_crax_payload/simulation_v12_reach_fresh_parents.json",
+  "training_seeds": [41028, 41029],
+  "parent_steps": 300000,
+  "target_steps": 400000,
+  "new_steps_each": 100000,
+  "total_new_training_steps": 200000,
+  "training_radius_values": [0.045, 0.05, 0.055],
+  "parent_cuda_rng_index": 0,
+  "fork_rng": "native_piper_distribution_fork_reseeds_by_original_seed;not_exact_parent_rng_resume",
+  "recipe": "original_piper_train_geometry_adaptation_no_batching_or_algorithm_change",
+  "selection": "both_fixed300K_parents_to_fixed400K_no_best_checkpoint_or_seed_selection",
+  "evaluation": "native_fixed400K_DEV_three_conditions30episodes;not_independent_test",
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "downstream_training_started": false,
+  "physical_robot_interactions": 0,
+  "projected_total_output_gib": 6,
+  "parents": [
+    {
+      "seed": 41028,
+      "relative_checkpoint": "runs-reach-fresh-parents/Reach-EA-41028/full_300000.pt",
+      "checkpoint_sha256": "a1cb1a5860a8210fb126e640068ae685b0233b09cdfd4e10ac5b288eca929703"
+    },
+    {
+      "seed": 41029,
+      "relative_checkpoint": "runs-reach-fresh-parents/Reach-EA-41029/full_300000.pt",
+      "checkpoint_sha256": "26061e7111e3f55bc2fed96adc348be46fc93ebd5430e27f381822e99a4f1e04"
+    }
+  ]
+}
