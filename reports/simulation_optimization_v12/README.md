@@ -1,6 +1,9 @@
 # v12仿真优化
 
-用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。26个100K开发端点和四组250K匹配消融均已完成；仍未全部达标。方向项产生后期安全收益，但完整P5未全面胜过Metric。下一项补同硬件确认与同期Iso，未继续扫已失败的权重/温度。最终新版本尚未确定。
+用户已允许Piper仿真、解除总预算限制，并取消接触响应gate。28个100K开发端点和六组250K均已完成，共4.3M新增训练transition（不同预算分开比较）。同4080完整P5/恒定LR的前150K关键指标精确一致，但lateLR未带来任务—安全共同改进；Reach loss-only taper已完整失败，不再追加。当前4080固定SafeReach候选正在训练，A100两条Payload继续；仍未全面达标，最终新版本尚未确定。
+
+- [最新：同4080完整250K对照结果](SAMEHARDWARE_FINAL_20261119_ZH.md)
+- [当前候选已实际运行的接续记录](DIRECTION_TAPER_STARTED_20261119_ZH.md)
 
 - [最新：四组250K完整结果与后续硬件确认](MATCHED_ABLATION_FINAL_20261119_ZH.md)
 - [同4080确认与同期Iso两臂固定登记](SAMEHARDWARE_CONFIRMATION_PREREGISTRATION_ZH.md)
@@ -9,7 +12,7 @@
 - [Piper困难几何的逐布局失败定位](PIPER_FAILURE_PATTERNS_20261119_ZH.md)
 - [方向—任务梯度诊断与候选准备](DIRECTION_TAPER_PREPARATION_ZH.md)
 - [单候选250K方向损失局部化登记](DIRECTION_TAPER_SCREEN_PREREGISTRATION_ZH.md)
-- [候选部署与真实等待状态（尚未训练）](DIRECTION_TAPER_QUEUED_20261119_ZH.md)
+- [候选历史部署与等待状态（现已启动）](DIRECTION_TAPER_QUEUED_20261119_ZH.md)
 - [同硬件真实前100K：风险达标但任务仍有代价](SAMEHARDWARE_FIRST100K_ZH.md)
 - [Piper原生方向冲突诊断与同硬件单因素筛选](PIPER_DIRECTION_TAPER_SCREEN_ZH.md)
 - [A100两条Reach实际运行与Payload接续](PIPER_DIRECTION_TAPER_RUNNING_20261119_ZH.md)
