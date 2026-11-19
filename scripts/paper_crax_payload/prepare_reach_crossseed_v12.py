@@ -55,6 +55,7 @@ def bind(template,summary,endpoints,seed,destination_parent):
     plan['compiled_training_seed']=seed
     plan['new_training_steps_this_seed']=450000
     plan['template_sha256']=sha256(TEMPLATE)
+    plan['parent_compilation_evidence']=dict(summary=deepcopy(summary),endpoints=deepcopy(endpoints))
     plan['lines']={'piper_reach':dict(robot='Piper',task='Reach',seed=seed,parent_steps=400000,
         parent_format='paper_native_piper_sim_v1_full',parent_path=str(destination_parent),
         parent_sha256=row['checkpoint_sha256'],parent_source_commit='10ba914c',parent_rng_cuda_index=0,
@@ -62,6 +63,15 @@ def bind(template,summary,endpoints,seed,destination_parent):
         development_layout_seed_start=template['development_layout_seed_start'],
         action_sampling_seed=template['action_sampling_seed'],conditions=deepcopy(template['conditions']))}
     return plan
+
+
+def validate_resolved(plan):
+    evidence=plan['parent_compilation_evidence'];line=plan['lines']['piper_reach']
+    expected=bind(json.loads(TEMPLATE.read_text()),evidence['summary'],evidence['endpoints'],
+        plan['compiled_training_seed'],Path(line['parent_path']))
+    if plan!=expected:
+        raise ValueError('Compiled scientific recipe/evidence changed;do not silently tune a resolved plan')
+    return line
 
 
 def main():

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.paper_crax_payload.prepare_reach_crossseed_v12 import TEMPLATE,RADIUS_PLAN,bind
+from scripts.paper_crax_payload.prepare_reach_crossseed_v12 import TEMPLATE,RADIUS_PLAN,bind,validate_resolved
 
 
 def fixture():
@@ -30,6 +30,10 @@ def test_fixed_pair_three_arms_fair_budget_and_actual_seed_parent_rng0():
         assert plan['same_mode_final_deployment_review']['applies_to_all_arms']
         assert all(v['ramp_steps']==0 for v in plan['candidates'].values())
         assert plan['preparation_only'] and plan['training_launches']==0
+        assert validate_resolved(plan)==plan['lines']['piper_reach']
+        changed=deepcopy(plan);changed['additional_steps_per_run']=100000
+        with pytest.raises(ValueError,match='recipe'):
+            validate_resolved(changed)
 
 
 @pytest.mark.parametrize('damage',['missing_seed','partial','rng1','wrong_parent','sha_provenance','tuned_recipe'])
