@@ -1,0 +1,22 @@
+{
+  "status": "complete_existing_data_plot",
+  "input_receipt_sha256": "38529e38e966c688eceea81df0eb81064532bb5afb4e4c595c3a4d9031b6e190",
+  "source_commits": [
+    "2c06ca2a",
+    "2c06ca2a",
+    "2f09231b",
+    "2f09231b"
+  ],
+  "training_seed_count": 1,
+  "complete_native_runs": 4,
+  "training_nodes": 1000,
+  "DEV_nodes": 84,
+  "contemporary_baselines": null,
+  "historical_samehardware_baselines": null,
+  "all_registered_nodes_included": true,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "best_checkpoint_selected": false,
+  "uncertainty": "No seed uncertainty or significance estimate;connected saved nodes are not continuous-time dominance"
+}
