@@ -9,6 +9,7 @@
 - [Piper困难几何的逐布局失败定位](PIPER_FAILURE_PATTERNS_20261119_ZH.md)
 - [方向—任务梯度诊断与候选准备](DIRECTION_TAPER_PREPARATION_ZH.md)
 - [单候选250K方向损失局部化登记](DIRECTION_TAPER_SCREEN_PREREGISTRATION_ZH.md)
+- [候选部署与真实等待状态（尚未训练）](DIRECTION_TAPER_QUEUED_20261119_ZH.md)
 - [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
 - [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)
