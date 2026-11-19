@@ -1,0 +1,34 @@
+{
+  "status": "complete_pair_comparison",
+  "line": "piper_reach",
+  "native_runs": 4,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "training_seed_count": 1,
+  "all_registered_nodes_retained": true,
+  "historical_crosshardware_limits_disclosed": true,
+  "sources": {
+    "candidate": {
+      "receipt_sha256": "1837aa266b8d06a5b2be5bcedb26fbce8005c2a92096033621da13fdfd83622f",
+      "source": "d904b9c8",
+      "host": "CTAlab"
+    },
+    "control": {
+      "receipt_sha256": "15c88c549fc4d68bbfdf4876daea49e2f6e346be671817071217c7f78c992d1b",
+      "source": "d904b9c8",
+      "host": "CTAlab"
+    },
+    "fixed": {
+      "receipt_sha256": "eb4a97885b16889d225daf7bf0affc9e76a7ddb1026b566cbae4347cddac1481",
+      "source": "dd0932ca6b15e356dfcfd06824d0c87656e08475",
+      "host": "447"
+    },
+    "metric": {
+      "receipt_sha256": "c6b1c87bf5b798904a8dce6d49a267287a611e435823370b4e7c74c27989cdfa",
+      "source": "cba886b1",
+      "host": "447"
+    }
+  }
+}

@@ -14,6 +14,7 @@
 - [Piper原生方向冲突诊断与同硬件单因素筛选](PIPER_DIRECTION_TAPER_SCREEN_ZH.md)
 - [A100两条Reach实际运行与Payload接续](PIPER_DIRECTION_TAPER_RUNNING_20261119_ZH.md)
 - [最新中期反证：Reach局部化候选当前未改善](DIRECTION_TAPER_INTERIM_20261119_ZH.md)
+- [最新Reach完整结果：拒绝taper，固定对照达标但稳定性未证](REACH_TAPER_FINAL_20261119_ZH.md)
 - [最新：Panda完整结果与未启动消融的双机加速交接](PANDA_FINAL_AND_ABLATION_HANDOFF_ZH.md)
 - [局部化完整结果，拒绝继续扫温度](LOCALIZED_FINAL_REVIEW_ZH.md)
 - [新seed250K匹配方向项/lateLR机制实验](MATCHED_ABLATION_PREREGISTRATION_ZH.md)
