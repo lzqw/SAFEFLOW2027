@@ -63,6 +63,7 @@ class EndpointGeometry:
             normal, weight = torch.zeros_like(proposal), zero
             diagnostics = dict(valid=zero.bool(), beta=torch.full_like(zero, beta),
                 raw_weight=zero, zero_gradient=zero.bool(),
+                predicted_margin_m=zero,
                 proposal_clipped=(proposal.detach().abs() > 1.).any(-1))
         else:
             with frozen_parameters(actor, self.margin), torch.enable_grad():
@@ -90,6 +91,7 @@ class EndpointGeometry:
             weight = beta * raw_weight  # Exactly one mixture/ramp factor.
             diagnostics = dict(valid=valid, zero_gradient=~valid,
                 beta=torch.full_like(weight, beta), raw_weight=raw_weight,
+                predicted_margin_m=margins.detach().mean(0),
                 agreement=agreement, endpoint=endpoint.detach(),
                 proposal_clipped=(proposal.detach().abs() > 1.).any(-1))
         normal, weight = normal.detach(), weight.detach()

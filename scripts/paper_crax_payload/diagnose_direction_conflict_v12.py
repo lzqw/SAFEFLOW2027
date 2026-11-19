@@ -36,6 +36,7 @@ def comparison(left, right):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, required=True); p.add_argument('--source-commit', required=True)
+    p.add_argument('--direction-taper', action='store_true', help='Offline loss-only candidate;never change checkpoint or action')
     args = p.parse_args(); torch.set_num_threads(1)
     if not args.output.resolve().is_relative_to(ROOT.resolve(strict=True)):
         raise ValueError('Keep output under the admitted A100 data root')
@@ -43,6 +44,7 @@ def main():
         raise OSError('Require40GiB reserve plus1GiB diagnostic growth allowance')
     config = json.loads(PLAN.read_text()); args.output.mkdir(exist_ok=False)
     registration = dict(protocol='v12_saved_replay_gradient_conflict', source_commit=args.source_commit,
+        direction_taper_diagnostic=args.direction_taper,
         arms=ARMS, checkpoints=STEPS, batch_size=256, batches_per_checkpoint=4,
         sampling='half uniform valid replay;half recent10K;fixed diagnostic RNG991700+batch',
         risk_groups='generated action EMA margin:near_or_unsafe>=-2mm;interior[-10,-2)mm;deep_safe<-10mm',
@@ -62,6 +64,9 @@ def main():
                     or saved['seed'] != 2034 or saved['steps'] != step or saved['source_commit'] != '2f09231b'):
                 raise ValueError('Use the four registered original A100 native checkpoints')
             learner = build(config, spec, 2034, 'cpu'); learner.load_state_dict(saved['learner'])
+            if args.direction_taper:
+                from scripts.paper_crax_payload.direction_taper_v12 import DirectionTaperActor
+                learner.actor.__class__ = DirectionTaperActor
             replay = saved['replay']; parameters = tuple(learner.actor.parameters())
             for batch in range(4):
                 rng = np.random.default_rng(991700+batch)
@@ -74,7 +79,8 @@ def main():
                     task = -learner.q(obs, action).min(0).values.mean()
                     cost = learner.safety_multiplier*learner.cost_q(obs, action).mean()
                     entropy = learner.log_alpha.detach().exp()*energy.mean()
-                    direction = outward_loss(trace['velocities'], trace['normals'], trace['weights'], .25)
+                    direction_weights = trace['direction_weights'] if args.direction_taper else trace['weights']
+                    direction = outward_loss(trace['velocities'], trace['normals'], direction_weights, .25)
                     task_grad = gradient(task, parameters); dir_grad = gradient(direction, parameters)
                     base_grad = gradient(task+cost+entropy, parameters)
                     with torch.no_grad():
@@ -83,7 +89,7 @@ def main():
                                 'interior': (margin < -.002) & (margin >= -.01), 'deep_safe': margin < -.01}
                     speed_scale = (.25*trace['velocities'].square().sum(-1).sum(-1).mean()).detach()+1e-6
                     outward = (trace['velocities']*trace['normals']).sum(-1).clamp_min(0)
-                    per_state = .25*(trace['weights']*outward.square()).sum(-1)/speed_scale
+                    per_state = .25*(direction_weights*outward.square()).sum(-1)/speed_scale
                     groups = {}
                     for name, mask in bins.items():
                         contribution = (per_state*mask).mean()
@@ -96,6 +102,7 @@ def main():
                         task_vs_direction=comparison(task_grad, dir_grad),
                         task_cost_entropy_vs_direction=comparison(base_grad, dir_grad), groups=groups,
                         mean_geometry_weight=float(trace['weights'].mean()),
+                        mean_direction_loss_weight=float(direction_weights.mean()),
                         high20_weight_mean=float(trace['weights'].mean(-1).topk(52).values.mean()),
                         sampled_action_clipped_component_fraction=float((action.detach().abs()>=.99999).float().mean()),
                         per_state_loss_sum_matches=float((per_state.mean()-direction).detach().abs())))
