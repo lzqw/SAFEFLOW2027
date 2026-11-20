@@ -1,5 +1,9 @@
 # v12仿真优化
 
+2026-11-20 16:06：[Payload双独立父已在A100 GPU1和4080实际启动，各300K](PAYLOAD_INDEPENDENT_PARENTS_STARTED_20261120_ZH.md)。A100继续原Reach Metric，4080继续第三Reach父；共四条训练，按30分钟监测。A100已有同40K Metric数据，P5+2mm的57.5/60mm为95%/86%对Metric86%/68%，但新增训练timeout/stall和成功数代价仍保留。
+
+- [更新全体已观测学习曲线](crossseed_learning_curves_1605_20261120/reach_crossseed_progress.png)、[PDF](crossseed_learning_curves_1605_20261120/reach_crossseed_progress.pdf)。
+
 2026-11-20 15:38当前阶段：900K开发对照已有五个完整终点750K，A100最后一条Metric仍运行；4080三方法已全部完成并启动真正独立第三父seed41030固定300K。双seed P5+2mm终点sampled的57.5mm为98%/99%、60mm91%/97%，成功率目标达到，但训练timeout/stall和成功数仍有代价，尚未形成全面优胜结论。
 
 - [五个完整终点、双seed目标与训练代价、第三独立父已启动](CROSSSEED_FIVE_ENDPOINTS_AND_THIRD_PARENT_20261120_ZH.md)。
