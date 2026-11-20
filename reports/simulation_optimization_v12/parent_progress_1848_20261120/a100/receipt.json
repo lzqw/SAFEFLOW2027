@@ -1,0 +1,71 @@
+{
+  "status": "observed_native_parent_development_snapshot",
+  "host": "CTAlab",
+  "unix_time": 1795171563.5361066,
+  "parents": [
+    {
+      "training_seed": 42028,
+      "task": "Payload",
+      "steps": 102000,
+      "budget": 300000,
+      "episodes": 1082,
+      "training_safe_successes": 0,
+      "training_violation_count": 101,
+      "training_safe_timeouts": 981,
+      "learner_updates": 100000,
+      "reward_updates": 200000,
+      "actor_updates": 49500,
+      "first_success_logged_at_or_before_step": null,
+      "no_success_observed_through_step": 102000,
+      "recent_safe_success": 0.0,
+      "recent_return": -1.3230984450960905,
+      "alpha": 1.4381449545908254e-05,
+      "safety_multiplier": 0.00043502695424043475,
+      "q_policy_mean": -0.3487488627433777,
+      "policy_cost": 9.735756611917168e-05,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 9687.8160041417,
+      "recent_window_sps": 10.015954953961527,
+      "approximate_remaining_hours": 5.491238753849059,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": false
+    }
+  ],
+  "native_handles": [
+    {
+      "training_seed": 42028,
+      "native_pid": 452062,
+      "native_handle_live": true
+    }
+  ],
+  "provenance": [
+    {
+      "training_seed": 42028,
+      "file": "runs-payload-parents-20261120/Payload-EA-42028/run_config.json",
+      "sha256": "89bb689d6d5a84a87a4e41918e1ca70309074491a2066763a57f23de69621744",
+      "bytes": 10010
+    },
+    {
+      "training_seed": 42028,
+      "file": "runs-payload-parents-20261120/Payload-EA-42028/evaluation_60000.json",
+      "sha256": "fde70e7eb16318220bbf5ed6373af749f57100d54a6a42fce4220e1e148cb825",
+      "bytes": 1239922
+    },
+    {
+      "training_seed": 42028,
+      "file": "runs-payload-parents-20261120/Payload-EA-42028/progress.jsonl",
+      "sha256": "7c3dde31c90177f93310f34aeac794d5d6c80d5e78134e3e88e7a40fac46db42",
+      "bytes": 134103
+    }
+  ],
+  "development_nodes": 3,
+  "development_episodes": 90,
+  "complete_three_seed_confirmation": false,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0
+}

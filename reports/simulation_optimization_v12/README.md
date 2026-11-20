@@ -1,5 +1,7 @@
 # v12仿真优化
 
+2026-11-20 18:48：[同100K两模式齐全、第三父240K回退及Payload持续零成功](MATCHED100K_AND_PARENT_REGRESSION_1848_20261120_ZH.md)。四条仍live：A100 Metric137K/150K、Payload父102K/300K；4080 Reach父253K/300K、Payload父203K/300K。A100候选60mm sampled88%/zero_noise98%，不混合模式；第三Reach父55mm DEV从21/30回落16/30，仍等待固定300K终点。
+
 2026-11-20 17:35：[第三Reach父训练恢复、两个Payload父仍零成功、A100同80K三方法结果](PARENTS_AND_MATCHED80K_1735_20261120_ZH.md)。四条仍运行；Reach第三父162K训练成功2292，120K DEV为30/21/30；Payload116K/60K均零成功，低违规不能当改进。A100候选80K的57.5/60mm为98%/90%，Metric90%/72%，训练代价全部保留。
 
 2026-11-20 16:06：[Payload双独立父已在A100 GPU1和4080实际启动，各300K](PAYLOAD_INDEPENDENT_PARENTS_STARTED_20261120_ZH.md)。A100继续原Reach Metric，4080继续第三Reach父；共四条训练，按30分钟监测。A100已有同40K Metric数据，P5+2mm的57.5/60mm为95%/86%对Metric86%/68%，但新增训练timeout/stall和成功数代价仍保留。
