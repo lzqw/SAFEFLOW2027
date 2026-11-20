@@ -1,0 +1,39 @@
+{
+  "status": "partial_crossseed_development_snapshot",
+  "training_seed": 41028,
+  "fixed_new_steps": 20000,
+  "available_arms": [
+    "P5-fixed",
+    "P5-activation2mm",
+    "Metric-only"
+  ],
+  "missing_arms": [],
+  "provenance": [
+    {
+      "arm": "P5-fixed",
+      "native_evaluation_sha256": "de0297ea6cc571cac9180d2b71d4d03768b7859bc53ee335ae4355a2f3f66b15",
+      "native_manifest_sha256": "694992f7a43e34c2d7fbe50069d62b2fea6fe546454ab6fe154463089ab95a4e",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51"
+    },
+    {
+      "arm": "P5-activation2mm",
+      "native_evaluation_sha256": "559fe3bda2c0c63577b2656072e5f4c8f639e8b1fe8b7c0252ab261e9477125e",
+      "native_manifest_sha256": "8a2da3870fc37f7b7bb1f289e903e908c382b4ef6aa41e3cae3b6b49505af054",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51"
+    },
+    {
+      "arm": "Metric-only",
+      "native_evaluation_sha256": "14ba2e2052c24ecc89b070b216aff718e733d2ab7fe28741ca09b77cdd590fa6",
+      "native_manifest_sha256": "b20849a13a21a39d7f7422f0de153c7f6287d3da73c700144087961ac3960224",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51"
+    }
+  ],
+  "development_episodes": 1200,
+  "execution_registration_sha256": "cf744ff2765b20f6083e1f45e1223db00000fe311bd5d07b3d88b4513b0361a1",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "complete_crossseed_campaign": false,
+  "physical_robot_interactions": 0
+}

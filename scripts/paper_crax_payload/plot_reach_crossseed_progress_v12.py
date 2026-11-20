@@ -50,12 +50,17 @@ def main():
             if [int(r['new_steps']) for r in rows] != list(range(1000, step+1, 1000)):
                 raise ValueError('Whole native1K prefix required')
             key = (seed, arm)
+            old = curves.get(key, [])
+            overlap = min(len(rows), len(old))
+            if old[:overlap] != rows[:overlap]:
+                raise ValueError('Every repeated training prefix must agree')
             if key not in curves or step > int(curves[key][-1]['new_steps']):
                 curves[key] = rows  # Longest observed prefix, never best-performing node.
         sources.append(dict(directory=directory.name,
             receipt_sha256=sha256(directory/'receipt.json'),
             nodes_sha256=sha256(directory/'development_nodes.csv'),
             training_sha256=sha256(directory/'training.csv')))
+    completed_seeds = set()
     for directory in args.host_summary:
         receipt = json.loads((directory/'receipt.json').read_text())
         seed = receipt['training_seed']
@@ -65,6 +70,9 @@ def main():
                 or receipt['independent_test_used'] is not False
                 or receipt['winner_confirmation'] is not False):
             raise ValueError('Require the complete native host development summary')
+        if seed in completed_seeds:
+            raise ValueError('Each completed native seed once')
+        completed_seeds.add(seed)
         for row in read(directory/'development_nodes.csv'):
             key = (seed, row['arm'], row['deployment_mode'], row['condition'], int(row['new_steps']))
             if (int(row['training_seed']) != seed or int(row['episodes']) != 100
@@ -151,8 +159,10 @@ def main():
         status='partial_existing_data_learning_curves', sources=sources, resource_sources=resource_sources,
         archived_dev_nodes=len(nodes), plotted_training_prefixes={f'{s}/{a}':int(r[-1]['new_steps'])
             for (s,a),r in curves.items()}, training_seed_count=len({s for s,a in curves}),
-        deployment_mode='sampled', metric_pending=any((s, 'Metric-only') not in curves for s in STYLES),
-        complete_campaign=len(args.host_summary) == 2,
+        deployment_mode='sampled', metric_pending=any(
+            (s, 'Metric-only') not in curves or int(curves[(s, 'Metric-only')][-1]['new_steps']) < 150000
+            for s in STYLES), complete_campaign=completed_seeds == set(STYLES),
+        generator_sha256=sha256(Path(__file__)),
         new_training_steps=0, new_simulation_controls=0, independent_test_used=False,
         best_checkpoint_selected=False, physical_robot_interactions=0,
         connected_nodes_do_not_prove_continuous_dominance=True), indent=2)+'\n')

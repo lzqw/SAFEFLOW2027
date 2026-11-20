@@ -1,0 +1,17 @@
+training_seed,arm,new_steps,condition,deployment_mode,episodes,safe_successes,violations,timeouts,stall_count,mean_return,mean_capped_seconds,independent_test_used
+41028,P5-fixed,150000,nominal,sampled,100,100,0,0,0,10.772188973368136,1.2044,False
+41028,P5-fixed,150000,radius_0575,sampled,100,97,3,0,0,10.142918186672082,1.334,False
+41028,P5-fixed,150000,radius_060,sampled,100,86,14,0,0,7.882265414864258,1.6368,False
+41028,P5-fixed,150000,execution_scale_085,sampled,100,100,0,0,0,10.715007519818784,1.4100000000000001,False
+41028,P5-fixed,150000,nominal,zero_noise,100,100,0,0,0,10.785044590722954,1.1584,False
+41028,P5-fixed,150000,radius_0575,zero_noise,100,100,0,0,0,10.771844262360359,1.2044,False
+41028,P5-fixed,150000,radius_060,zero_noise,100,99,1,0,0,10.567533040450849,1.2388,False
+41028,P5-fixed,150000,execution_scale_085,zero_noise,100,100,0,0,0,10.72972764777537,1.358,False
+41028,P5-activation2mm,150000,nominal,sampled,100,100,0,0,0,10.770748968436672,1.2116,False
+41028,P5-activation2mm,150000,radius_0575,sampled,100,98,2,0,0,10.34765566261977,1.3132,False
+41028,P5-activation2mm,150000,radius_060,sampled,100,91,9,0,0,8.915981083474556,1.5084,False
+41028,P5-activation2mm,150000,execution_scale_085,sampled,100,100,0,0,0,10.714797217406815,1.4140000000000001,False
+41028,P5-activation2mm,150000,nominal,zero_noise,100,100,0,0,0,10.78233269751577,1.1703999999999999,False
+41028,P5-activation2mm,150000,radius_0575,zero_noise,100,100,0,0,0,10.769844658895469,1.2136,False
+41028,P5-activation2mm,150000,radius_060,zero_noise,100,97,3,0,0,10.164448643832092,1.3036,False
+41028,P5-activation2mm,150000,execution_scale_085,zero_noise,100,100,0,0,0,10.729331726343942,1.3664,False

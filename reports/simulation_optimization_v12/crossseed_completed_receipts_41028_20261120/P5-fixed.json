@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "steps": 550000,
+  "new_training_steps": 150000,
+  "segment_counts": {
+    "violations": 78,
+    "episodes": 4942,
+    "safe_successes": 4862,
+    "safe_timeouts": 2
+  },
+  "evaluation_controls": 97667,
+  "elapsed_seconds": 17009.920891437214,
+  "source_commit": "77a517d5",
+  "line": "piper_reach",
+  "arm": "P5-fixed",
+  "physical_robot_interactions": 0,
+  "training_metrics": {
+    "ordinary_terminal_task_successes": 4862,
+    "training_stall_episodes": 2,
+    "training_stall_windows": 81,
+    "training_cumulative_return": 51584.55697203466,
+    "training_mean_completed_plus_partial_return": 10.437992102799406
+  }
+}

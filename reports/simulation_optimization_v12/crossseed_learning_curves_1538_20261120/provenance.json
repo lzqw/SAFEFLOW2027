@@ -1,0 +1,98 @@
+{
+  "status": "partial_existing_data_learning_curves",
+  "sources": [
+    {
+      "directory": "crossseed_dev100K_41028_20261120_1535",
+      "receipt_sha256": "a87f4854524bec74878a748c250d6168760ad8478e54cd67e44c3ca6d16668ff",
+      "nodes_sha256": "d95bf8af08d6e31039af96f4173dae272cef621e355c774b97795aac09b8b017",
+      "training_sha256": "94b61e3ca6606202688aae111538fad1d297e87af98d8ca69d447c602828ce25"
+    },
+    {
+      "directory": "crossseed_dev150K_41028_20261120_1535",
+      "receipt_sha256": "90a53642318d619e9227f487263b4ea12fd62758c7e0d0c3ea19069040629172",
+      "nodes_sha256": "3649ea69acb5604cce1c27c3b85e41e9e3f62977b2c4031347925ba3b31de939",
+      "training_sha256": "e7bda4107e83cd1085c782ec379611b8aafc9030e8a7e7c0e4ae05fce19379e1"
+    },
+    {
+      "directory": "crossseed_dev20K_41028_20261120",
+      "receipt_sha256": "4efc84f2c7ad80a36660520059991e0744f2ffdfc4fd1b45ffe25b1e2b6a2c4e",
+      "nodes_sha256": "233ff65462930073e49991e197e727337e5a5b7630c00f1e733d49391ede1be1",
+      "training_sha256": "06923c3aaee7836b072e632bd8a8729f0f9da28e4d7724c1c13d2ddd546eb63f"
+    },
+    {
+      "directory": "crossseed_dev20K_41028_20261120_1535",
+      "receipt_sha256": "940841d73ae6a96da050051c7c8418416ef90d80262bb165302f5d6b7bbf726e",
+      "nodes_sha256": "d4e1ed8393026d163d4880a1c1ccb14eeca886523c356e83f72c3b5702b63f3c",
+      "training_sha256": "7d080132241b75321be48bba3acfeec81a9c169f39650ad14749051274133675"
+    },
+    {
+      "directory": "crossseed_dev20K_41029_20261120",
+      "receipt_sha256": "ceb795bd2f89290bdaf1055cd55a4c0b70ef959015897e4e4bc1e2d565146866",
+      "nodes_sha256": "e6b8500daecea35e5aada357cee6f00a0c9c3d8aba94129623547ed8cbf152e5",
+      "training_sha256": "f1822e9585b0da87b05dee1b78506a808152642b3b783efa46bc7bc7bc846f48"
+    },
+    {
+      "directory": "crossseed_dev40K_41028_20261120_1535",
+      "receipt_sha256": "94836f1b99b0b65eb38f50d2e3a9b74f5c3b587a738ee018bdc5a6b03a175f64",
+      "nodes_sha256": "1188dd3d1e4d590e016f8a71d7e062cbd956d5fbbc177aac225c9519d6ede2b2",
+      "training_sha256": "01eff9cf446a11715b67243decb404e6871dcd1ddcca6d1e2be8cb64b2eac0bf"
+    },
+    {
+      "directory": "crossseed_dev40K_41029_20261120",
+      "receipt_sha256": "7e82bdfedef136e46fdc011dc34e66654a9af464254776fb6a391fc3791f1ade",
+      "nodes_sha256": "19ea4f6865462b68320ff73266257c975ed033627b700ebe216f1fa40e4d7ba2",
+      "training_sha256": "64319802c3b839aa655a58b5b3059856bd48e16c2aa4b76806f846e9b22de9eb"
+    },
+    {
+      "directory": "crossseed_dev60K_41028_20261120_1535",
+      "receipt_sha256": "52a51ea6e1b52de9618b8e3238ede92ea75d6137141932c6a759d8190b2d1f21",
+      "nodes_sha256": "608df36dc827a6777efd39e9bbb17358d7251889a6fdb6e5f636b55534f4f2a1",
+      "training_sha256": "b70f49862391ea316c8bc196c73b2252c61aeb0e44c9431ae475096118c34af0"
+    },
+    {
+      "directory": "crossseed_dev60K_41029_20261120",
+      "receipt_sha256": "a9b3ce91e0e6e2dfa892064dfcc4123e6927235aa4bb79087630430385b4d662",
+      "nodes_sha256": "80e213b45caeaad8b9edf1a2603831ac0428ec94e88327a01731388bed5a51a5",
+      "training_sha256": "9717361b06cb27f267a697c16b2eb9f2e769cfca059b5ffbfa8591e065c34189"
+    },
+    {
+      "directory": "crossseed_dev80K_41028_20261120_1535",
+      "receipt_sha256": "7d0e28645c0ce387bd646cc153f186f63c02b926a8c8a78dd849badf7df1399e",
+      "nodes_sha256": "d940c2d31031945ad50682a574eed6b9e8550bdb82d185083de513a670019c60",
+      "training_sha256": "bba1ffb051772b949f73d655c194dfd3618d76332340937a813b75d56fe2e7c2"
+    },
+    {
+      "directory": "crossseed_complete_41029_20261120",
+      "receipt_sha256": "b8a96d81a34c210430e2c10136979dd2feca819a3713afaed32a61add802b951",
+      "nodes_sha256": "437a3599dfe1e8df37e32a3d0d1cb111af57e497180d2036bedab839b8c808d1",
+      "training_sha256": "3d679086e43d1728eea3fd7c9d2d8269daca9f1667f8424a2b8f20cff93003c1"
+    }
+  ],
+  "resource_sources": [
+    {
+      "file": "a100.json",
+      "sha256": "e082a8cf28d81a1cbc26c4a1821d28dd9351b0c10419693e9ffa64c8f82e6177",
+      "unix_time": 1795159277.7475226
+    }
+  ],
+  "archived_dev_nodes": 164,
+  "plotted_training_prefixes": {
+    "41028/P5-fixed": 150000,
+    "41028/P5-activation2mm": 150000,
+    "41028/Metric-only": 20000,
+    "41029/P5-fixed": 150000,
+    "41029/P5-activation2mm": 150000,
+    "41029/Metric-only": 150000
+  },
+  "training_seed_count": 2,
+  "deployment_mode": "sampled",
+  "metric_pending": true,
+  "complete_campaign": false,
+  "generator_sha256": "3db09e762f4ed61f0bb997355a374065beafc62207e9fada0198a9784d2b0eea",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "best_checkpoint_selected": false,
+  "physical_robot_interactions": 0,
+  "connected_nodes_do_not_prove_continuous_dominance": true
+}

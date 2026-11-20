@@ -32,11 +32,12 @@
 
 ## SAFEFlow：当前实验与程序入口
 
-2026-11-20更新：v12的4080两条250K延迟残差实验、A100两个400K独立父均已完成。
-延迟残差后150K违规降低10.34%，但最终任务表现仍低于Metric-only，未达到全面最优。
-双seed三方法各新增150K的900K开发对照已在A100和4080启动，保留相同预算、全部失败与两种部署模式。
+2026-11-20 15:38更新：v12双seed三方法900K开发对照已有五个完整终点，A100最后Metric仍运行。
+P5+2mm两个seed终点sampled的57.5mm为98%/99%、60mm91%/97%，达到Reach成功率目标，但训练timeout/stall和成功数仍有代价，尚未达到全面最优。
+4080三方法已全部完成；已启动真正独立第三父seed41030固定300K，保留相同配方、全部失败与完整预算。
 
 - [当前v12结果、程序和运行入口](reports/simulation_optimization_v12/README.md)。
+- [最新五个终点、双seed成功率及训练代价、第三父实际运行](reports/simulation_optimization_v12/CROSSSEED_FIVE_ENDPOINTS_AND_THIRD_PARENT_20261120_ZH.md)、[完整已观测学习曲线](reports/simulation_optimization_v12/crossseed_learning_curves_1538_20261120/reach_crossseed_progress.png)。
 - [本轮完整终点报告及下一阶段实际进程](reports/simulation_optimization_v12/COMPLETE_ENDPOINTS_AND_NEXT_STAGE_20261120_ZH.md)。
 - [完整学习曲线](reports/simulation_optimization_v12/late_endpoint_complete_native/late_endpoint_learning_curves.png)、[两个独立父的逐条件结果](reports/simulation_optimization_v12/independent_radius_complete_native/development_nodes.csv)。
 - [真实父SHA与六任务执行登记](reports/simulation_optimization_v12/crossseed900K_execution_20261120/execution_registration.json)、[双seed逐条件合并与本地自动归档](reports/simulation_optimization_v12/CROSSSEED_ANALYSIS_HANDOFF_20261120_ZH.md)。

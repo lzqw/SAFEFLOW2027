@@ -1,0 +1,92 @@
+{
+  "unix_time": 1795159277.7475226,
+  "queue_status": "running",
+  "pending": 0,
+  "jobs": [
+    {
+      "name": "Reach-41028-P5-fixed",
+      "pid": 164911,
+      "native_handle_live": false,
+      "queue_status": "completed",
+      "progress": {
+        "state": "completed",
+        "steps": 550000,
+        "new_steps": 150000
+      }
+    },
+    {
+      "name": "Reach-41028-P5-activation2mm",
+      "pid": 164913,
+      "native_handle_live": false,
+      "queue_status": "completed",
+      "progress": {
+        "state": "completed",
+        "steps": 550000,
+        "new_steps": 150000
+      }
+    },
+    {
+      "name": "Reach-41028-Metric-only",
+      "pid": 376702,
+      "native_handle_live": true,
+      "queue_status": "running",
+      "progress": {
+        "state": "running",
+        "native_pid": 376702,
+        "steps": 425000,
+        "new_steps": 25000,
+        "violations": 73,
+        "episodes": 883,
+        "safe_successes": 810,
+        "safe_timeouts": 0,
+        "elapsed_seconds": 2708.1767041152343,
+        "segment_sps": 9.231303095986702,
+        "recent_success": 0.92,
+        "actor_loss": -7.878391265869141,
+        "energy": 19.26949119567871,
+        "clipping_rate": 0.0517578125,
+        "q_policy_mean": 7.937727928161621,
+        "q_policy_max": 10.084431648254395,
+        "policy_cost": 2.116742052749032e-06,
+        "geometry_zero_gradient_fraction": 0.0,
+        "geometry_proposal_clipped_fraction": 0.1455078125,
+        "mean_reference_vn": 0.03999999910593033,
+        "mean_reference_vt": 0.03999999910593033,
+        "mean_geometry_weight": 0.24912476539611816,
+        "alpha_before": 0.003078930312767625,
+        "reward_td": 0.09690724313259125,
+        "reward_loss": 0.07282803952693939,
+        "reward_q_abs_max": 10.096816062927246,
+        "q_replay_mean": 7.931707859039307,
+        "q_replay_above_upper_fraction": 0.0,
+        "alpha": 0.00307922693900764,
+        "cost_loss": 0.00390625,
+        "margin_loss": 2.592160228687135e-07,
+        "direction_loss": 0.0,
+        "high_weight_reference_vn_over_vt": 0.0,
+        "high_weight_outward_speed": 0.0,
+        "high_weight_geometry_weight": 0.0,
+        "safety_multiplier": 3.256837997339785,
+        "geometry_beta": 1.0,
+        "learner_updates": 423000,
+        "reward_updates": 846000,
+        "actor_updates": 211000,
+        "transitions": 425000,
+        "warmup_safety_episodes": 35,
+        "adaptation_steps": 25000,
+        "actor_lr_effective": 0.0001,
+        "direction_weight_effective": 0.0,
+        "activation_offset_m": 0.0,
+        "ordinary_terminal_task_successes": 810,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 8020.114964931771,
+        "training_mean_completed_plus_partial_return": 9.082802904792493
+      }
+    }
+  ],
+  "gpu_free_memory_and_utilization": "0, 80450 MiB, 22 %\n1, 80996 MiB, 0 %",
+  "data_disk_free_gib": 48.6398811340332,
+  "poll_interval_seconds": 1800,
+  "foreign_processes_changed": false
+}

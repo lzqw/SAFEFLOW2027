@@ -1,0 +1,38 @@
+{
+  "plan": {
+    "protocol": "simulation_v12_native_reach_third_independent_parent",
+    "reference_plan": "configs/paper_crax_payload/simulation_v12_reach_fresh_parents.json",
+    "base_config_sha256": "84ff1e945d3003a30e58fb5d8e5202371b16cafd9401d00d286ccc4c5102285a",
+    "training_seed": 41030,
+    "task": "Reach",
+    "method": "EA",
+    "training_steps": 300000,
+    "development_layout_seed_start": 11990000,
+    "action_sampling_seed": 11991000,
+    "host": "447",
+    "data_root": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+    "projected_output_gib": 2,
+    "minimum_free_floor_gib": 40,
+    "initialization": "fresh_networks_optimizers_replay_dual_environment_rng_no_parent_import",
+    "parent_selection": "fixed300K_no_best_checkpoint_selection",
+    "future_radius_stage_requires_actual300K_checkpoint": true,
+    "downstream_training_started_by_this_queue": false,
+    "independent_test_used": false,
+    "scientific_early_stopping": false,
+    "automatic_retry": false,
+    "physical_robot_interactions": 0
+  },
+  "source_commit": "58bf769dceb1eabd2eec07c627decf68d810c2aa",
+  "plan_sha256": "7a17859c5afc5b3c043d95294d5628e5acf146a894940a6de702c3ecde8cb9dd",
+  "reference_plan_sha256": "8f63ddc5c1ed0daf8000ed24bad9cb1876d898c3eb343b2e014454bcdaf03735",
+  "config_sha256": "5bc27a43b005466b6fb2b691f5e0b1d08b4493bd9d0f69858740af9ffc6f72f2",
+  "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-parent-20261120/Reach-EA-41030",
+  "host": "447",
+  "saved_cuda_rng_index": 0,
+  "changed_recipe_fields": [
+    "development_seed"
+  ],
+  "independent_test_used": false,
+  "downstream_training_started": false,
+  "automatic_retry": false
+}

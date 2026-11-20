@@ -1,6 +1,9 @@
 # v12仿真优化
 
-2026-11-20当前阶段：上一轮完整训练已结束；双seed三方法900K开发对照已实际启动，尚未形成最终方法结论。A100承载seed41028、4080承载41029，每seed固定P5、P5+2mm和Metric-only各新增150K，同seed方法在同一主机。每机两条并行，第三条接续；不按中期DEV选最好模型。
+2026-11-20 15:38当前阶段：900K开发对照已有五个完整终点750K，A100最后一条Metric仍运行；4080三方法已全部完成并启动真正独立第三父seed41030固定300K。双seed P5+2mm终点sampled的57.5mm为98%/99%、60mm91%/97%，成功率目标达到，但训练timeout/stall和成功数仍有代价，尚未形成全面优胜结论。
+
+- [五个完整终点、双seed目标与训练代价、第三独立父已启动](CROSSSEED_FIVE_ENDPOINTS_AND_THIRD_PARENT_20261120_ZH.md)。
+- [全部已观测sampled学习曲线PNG](crossseed_learning_curves_1538_20261120/reach_crossseed_progress.png)、[PDF](crossseed_learning_curves_1538_20261120/reach_crossseed_progress.pdf)、[4080完整三方法9600回合](crossseed_complete_41029_20261120/development_episodes.csv)。
 
 - [10:51检查与seed41029的20/40/60K完整前缀：后两节点60mm为93%/94%，A100出现1次训练超时](CROSSSEED_1051_AND_60K_20261120_ZH.md)。
 - [双seed首个20K DEV：57.5mm均值97.5%、60mm均值88.5%](CROSSSEED_BOTH20K_20261120_ZH.md)。
@@ -12,7 +15,7 @@
 - [两个真实400K父的等权DEV](independent_radius_complete_native/equal_seed_development.csv)、[逐seed结果](independent_radius_complete_native/development_nodes.csv)、[完成收据](independent_radius_complete_native/receipt.json)。
 - [全部要求及缺口](REQUIREMENTS_STATUS_ZH.md)。
 
-延迟残差后150K训练违规347对P5387，但250K DEV28/28/28仍低于Metric29/29/29；Piper两个400K父在55mm分别21/30、25/30，55mm已经属于训练域。两组完整结果合计新增500K，不将继承前缀或历史比较重新计数。57.5/60mm跨seed目标、Payload、最终配置Panda回归、SafeReach全程领先与新独立确认仍未完成。
+历史延迟残差后150K训练违规347对P5387，但250K DEV28/28/28仍低于Metric29/29/29；两个400K父55mm分别21/30、25/30，55mm已属训练域。后续双seed+2mm的Reach终点数值现已达到目标，但完整双seedMetric比较、联合训练条件、Payload、最终配置Panda回归、SafeReach全程领先与新独立确认仍未完成。
 
 半小时资源监测与终点自动归档运行中；新大型存档、缓存和临时文件留数据盘。下面是原始历史记录，标题中的“最新”“当前”“尚未启动”仅表示记录当时的状态，不代表当前队列。
 
