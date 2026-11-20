@@ -1,0 +1,111 @@
+{
+  "project": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/source-crossseed900K-20261120",
+  "python": "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/queue_crossseed900K_20261120.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 49392123904,
+  "projected_additional_output_gib": 6,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2500
+  },
+  "jobs": [
+    {
+      "name": "Reach-41028-P5-fixed",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/reach-three-arm150K-41028.json",
+        "--parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41028/full_400000.pt",
+        "--arm",
+        "P5-fixed",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+        "--execution-registration",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-P5-fixed",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/crossseed-41028-P5-fixed.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41028-P5-activation2mm",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/reach-three-arm150K-41028.json",
+        "--parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41028/full_400000.pt",
+        "--arm",
+        "P5-activation2mm",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+        "--execution-registration",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "1"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-P5-activation2mm",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/crossseed-41028-P5-activation2mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41028-Metric-only",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/reach-three-arm150K-41028.json",
+        "--parent",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41028/full_400000.pt",
+        "--arm",
+        "Metric-only",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+        "--execution-registration",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-Metric-only",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/crossseed-41028-Metric-only.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    }
+  ],
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "foreign_processes_changed": false
+}

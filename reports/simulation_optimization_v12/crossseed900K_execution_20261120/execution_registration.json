@@ -1,0 +1,68 @@
+{
+  "status": "admitted_fixed_crossseed900K_development",
+  "template_sha256": "c37f48ca5eab2ba3639480c81eb2c0a83a6fe8d92789464681c18addd32a7f7e",
+  "runner_source_commit": "77a517d5",
+  "runner_sha256": "dff84995bb07fb9d5716ab630be8eaa407cd8b97c92bad304889f8f6659106c9",
+  "new_training_steps": 900000,
+  "independent_test_used": false,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "storage_policy": "40GiB_floor_plus_unwritten_registered_output_v1",
+  "projected_output_gib_per_local_arm": 2,
+  "data_roots_by_host": {
+    "CTAlab": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12",
+    "447": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12"
+  },
+  "plan_sha256_by_seed": {
+    "41028": "0e7699a658ac0637137be422b42d35365ccafa36b41133f54125c881df0226e5",
+    "41029": "50e6ca8c82c85c2d2beb42b8c16cab4b3cc9ad4921d8025ab6a73ab09ab0cd76"
+  },
+  "jobs": [
+    {
+      "seed": 41028,
+      "arm": "P5-fixed",
+      "host": "CTAlab",
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-P5-fixed",
+      "visible_devices": "0"
+    },
+    {
+      "seed": 41028,
+      "arm": "P5-activation2mm",
+      "host": "CTAlab",
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-P5-activation2mm",
+      "visible_devices": "1"
+    },
+    {
+      "seed": 41028,
+      "arm": "Metric-only",
+      "host": "CTAlab",
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-crossseed900K-20261120/Reach-41028-Metric-only",
+      "visible_devices": "0"
+    },
+    {
+      "seed": 41029,
+      "arm": "P5-fixed",
+      "host": "447",
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-P5-fixed",
+      "visible_devices": "0"
+    },
+    {
+      "seed": 41029,
+      "arm": "P5-activation2mm",
+      "host": "447",
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-P5-activation2mm",
+      "visible_devices": "0"
+    },
+    {
+      "seed": 41029,
+      "arm": "Metric-only",
+      "host": "447",
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-Metric-only",
+      "visible_devices": "0"
+    }
+  ],
+  "same_seed_methods_remain_on_one_host": true,
+  "shared_gpu_foreign_processes_untouched": true,
+  "physical_robot_interactions": 0,
+  "completed_parent_analysis": "independent_radius_complete_native/receipt.json"
+}

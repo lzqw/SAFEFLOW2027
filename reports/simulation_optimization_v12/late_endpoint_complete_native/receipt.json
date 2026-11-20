@@ -1,0 +1,65 @@
+{
+  "status": "complete_offline_review",
+  "runs": 8,
+  "new_campaign_completed_training_transitions": 300000,
+  "shared_original_prefix_steps_not_new": 100000,
+  "historical_comparison_training_transitions": 1500000,
+  "new_simulation_controls": 0,
+  "new_training_steps": 0,
+  "training_seed_count": 1,
+  "provenance": [
+    {
+      "arm": "A-full-P5",
+      "receipt_sha256": "d86d19cfb0285d09e22aa596aab0fd85868c281cea7093ecb6efc571ae105b7b",
+      "source_commit": "2c06ca2a",
+      "native_host": "447"
+    },
+    {
+      "arm": "A-Iso-matchedLR",
+      "receipt_sha256": "c92004fc1c7b5965ff21620f3cb50b3d4aaa6e7c8a638fd8090aa4413c2715b9",
+      "source_commit": "2c06ca2a",
+      "native_host": "447"
+    },
+    {
+      "arm": "A-no-lateLR",
+      "receipt_sha256": "50c7f69ca4e015551adccdcc1c90d6ffd4ba2bdba05bc8e53f1efd820337d078",
+      "source_commit": "2f09231b",
+      "native_host": "447"
+    },
+    {
+      "arm": "A-Metric-matchedLR",
+      "receipt_sha256": "5556babfd7e1d1bd3d272a4ef5de7c512502e1641e49eed03ab108ba7e2914eb",
+      "source_commit": "2f09231b",
+      "native_host": "447"
+    },
+    {
+      "arm": "E-control-P5",
+      "receipt_sha256": "1028436c8a3c5e8eebbe63cc98ddecf0563602ee2b3d1d76bc0c7d869f80b07a",
+      "source_commit": "499a4b6d",
+      "native_host": "447"
+    },
+    {
+      "arm": "E-endpoint-residual",
+      "receipt_sha256": "91bc09aca8279bb251f312221c15498d0bfbeaa4ec04e54b82ab948cfd399feb",
+      "source_commit": "499a4b6d",
+      "native_host": "447"
+    },
+    {
+      "arm": "L-control-continuation",
+      "receipt_sha256": "1b72aca520d39f7df3d482b3e4c3a67fc0233db3da277f370ba06e6b8c5c67a1",
+      "source_commit": "7eda9c8f",
+      "native_host": "447"
+    },
+    {
+      "arm": "L-endpoint-ramp100K150K",
+      "receipt_sha256": "dfb02da38f51ab49b6010987c06942897fdbb94888a21181029bcbfcf1f9acfc",
+      "source_commit": "7eda9c8f",
+      "native_host": "447"
+    }
+  ],
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "all_registered_nodes_retained": true,
+  "inherited_first100K_not_new_confirmation": true,
+  "physical_robot_interactions": 0
+}

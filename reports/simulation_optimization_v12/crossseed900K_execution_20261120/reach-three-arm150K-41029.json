@@ -1,0 +1,203 @@
+{
+  "protocol": "simulation_v12_reach_crossseed_three_arm150K_preparation",
+  "additional_steps_per_run": 150000,
+  "arms": [
+    "P5-fixed",
+    "P5-activation2mm",
+    "Metric-only"
+  ],
+  "candidates": {
+    "P5-fixed": {
+      "ramp_steps": 0,
+      "initial_fraction": 0.0,
+      "activation_offset_m": 0.0,
+      "component": "full"
+    },
+    "P5-activation2mm": {
+      "ramp_steps": 0,
+      "initial_fraction": 0.0,
+      "activation_offset_m": 0.002,
+      "component": "full"
+    },
+    "Metric-only": {
+      "ramp_steps": 0,
+      "initial_fraction": 0.0,
+      "activation_offset_m": 0.0,
+      "component": "metric_only"
+    }
+  },
+  "actor_lr": {
+    "initial": 0.0001,
+    "floor": 3e-05,
+    "start": 60000,
+    "end": 80000
+  },
+  "p5": {
+    "direction_weight": 1.0,
+    "rho": 0.25,
+    "tangential_variance": 0.04
+  },
+  "deployment": "sole_existing_target_actor_polyak_0.001",
+  "milestones": [
+    20000,
+    40000,
+    60000,
+    80000,
+    100000,
+    150000
+  ],
+  "development_episodes_per_condition": 100,
+  "same_mode_final_deployment_review": {
+    "new_steps": [
+      100000,
+      150000
+    ],
+    "modes": [
+      "sampled",
+      "zero_noise"
+    ],
+    "applies_to_all_arms": true,
+    "not_an_independent_test": true
+  },
+  "parent_selection": "both_actual_fixed400K_no_seed_or_best_node_selection",
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "independent_requires_separate_freeze": true,
+  "physical_robot_interactions": 0,
+  "preparation_only": true,
+  "training_launches": 0,
+  "compiled_training_seed": 41029,
+  "new_training_steps_this_seed": 450000,
+  "template_sha256": "c37f48ca5eab2ba3639480c81eb2c0a83a6fe8d92789464681c18addd32a7f7e",
+  "parent_compilation_evidence": {
+    "summary": {
+      "status": "complete_independent_radius200K_summary",
+      "training_seeds": [
+        41028,
+        41029
+      ],
+      "new_completed_training_transitions": 200000,
+      "cumulative_lineage_transitions": 800000,
+      "completed_runs": 2,
+      "development_conditions": 6,
+      "development_episodes": 180,
+      "provenance": [
+        {
+          "seed": 41028,
+          "checkpoint_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+          "parent_checkpoint_sha256": "a1cb1a5860a8210fb126e640068ae685b0233b09cdfd4e10ac5b288eca929703",
+          "source_commit": "10ba914c",
+          "receipt_sha256": "97f5a5c065193e29f29f16edcb92e1ae59463d7805c3157508ca4e7ed654e11d",
+          "parent_receipt_sha256": "51f73c48518fe56d0c17ba9f42279ba8b51d9c44be96384b211554f9caaa0b14",
+          "native_dev_sha256": "732547e6aee03d0adb603a72a404610f4efa91d18c6ba923238444169a4a2b4d",
+          "progress_sha256": "9e1da25a440504f0d145ea0ba5dcf68d84dae2f6c53254aa045c2bfbd665382b"
+        },
+        {
+          "seed": 41029,
+          "checkpoint_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+          "parent_checkpoint_sha256": "26061e7111e3f55bc2fed96adc348be46fc93ebd5430e27f381822e99a4f1e04",
+          "source_commit": "10ba914c",
+          "receipt_sha256": "302b315c967a5f63f4e1f3f2f07ac32b400d3b3b4245a8aadde7af3e46e378c0",
+          "parent_receipt_sha256": "faed391cfc3f4ad49158ec0c0cc1e10e4dabd5de40db986d9111176fa4614e07",
+          "native_dev_sha256": "dcb45636275dcccd605b8d7d99b9a518075e55e7660940bce1c5cb3ea660b0db",
+          "progress_sha256": "b81b6847044f1d21c38dca5ffe6038d42d99f2512bb7f0054e413c58c599adaf"
+        }
+      ],
+      "new_training_steps": 0,
+      "new_simulation_controls": 0,
+      "optimizer_steps": 0,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "downstream_training_started": false,
+      "training_radius_055_is_not_unseen_geometry": true,
+      "automatic_retry": false
+    },
+    "endpoints": [
+      {
+        "seed": 41028,
+        "parent_steps": 300000,
+        "total_steps": 400000,
+        "new_training_steps": 100000,
+        "new_training_violation_count": "448",
+        "new_training_safe_successes": "3216",
+        "new_training_safe_timeouts": "0",
+        "new_training_episodes": "3664",
+        "cumulative_training_violation_count": "1006",
+        "cumulative_training_safe_successes": "7983",
+        "cumulative_training_safe_timeouts": "1482",
+        "cumulative_training_episodes": "10471",
+        "parent_checkpoint_sha256": "a1cb1a5860a8210fb126e640068ae685b0233b09cdfd4e10ac5b288eca929703",
+        "checkpoint_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+        "checkpoint_bytes": "120950533",
+        "saved_cuda_rng_index": 0,
+        "output_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41028",
+        "downstream_training_started": false,
+        "scientific_scope": "EA radius coverage;not P5 vs Metric confirmation"
+      },
+      {
+        "seed": 41029,
+        "parent_steps": 300000,
+        "total_steps": 400000,
+        "new_training_steps": 100000,
+        "new_training_violation_count": "330",
+        "new_training_safe_successes": "3258",
+        "new_training_safe_timeouts": "0",
+        "new_training_episodes": "3588",
+        "cumulative_training_violation_count": "1065",
+        "cumulative_training_safe_successes": "11349",
+        "cumulative_training_safe_timeouts": "395",
+        "cumulative_training_episodes": "12809",
+        "parent_checkpoint_sha256": "26061e7111e3f55bc2fed96adc348be46fc93ebd5430e27f381822e99a4f1e04",
+        "checkpoint_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+        "checkpoint_bytes": "120224261",
+        "saved_cuda_rng_index": 0,
+        "output_path": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-independent-radius/Reach-EA-41029",
+        "downstream_training_started": false,
+        "scientific_scope": "EA radius coverage;not P5 vs Metric confirmation"
+      }
+    ]
+  },
+  "lines": {
+    "piper_reach": {
+      "robot": "Piper",
+      "task": "Reach",
+      "seed": 41029,
+      "parent_steps": 400000,
+      "parent_format": "paper_native_piper_sim_v1_full",
+      "parent_path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/parents/Reach-EA-41029/full_400000.pt",
+      "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+      "parent_source_commit": "10ba914c",
+      "parent_rng_cuda_index": 0,
+      "training_radius_values": [
+        0.045,
+        0.05,
+        0.055
+      ],
+      "development_layout_seed_start": 12020000,
+      "action_sampling_seed": 12021000,
+      "conditions": [
+        {
+          "name": "nominal",
+          "simulation_overrides": {}
+        },
+        {
+          "name": "radius_0575",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.0575
+          }
+        },
+        {
+          "name": "radius_060",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.06
+          }
+        },
+        {
+          "name": "execution_scale_085",
+          "simulation_overrides": {},
+          "action_scale": 0.85
+        }
+      ]
+    }
+  }
+}

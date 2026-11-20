@@ -1,0 +1,111 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-crossseed900K-20261120",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "slots": 2,
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_crossseed900K_20261120.json",
+  "poll_interval_seconds": 30,
+  "minimum_free_disk_bytes": 49392123904,
+  "projected_additional_output_gib": 6,
+  "gpu_admission": {
+    "index": 0,
+    "minimum_free_mib": 2500
+  },
+  "jobs": [
+    {
+      "name": "Reach-41029-P5-fixed",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/reach-three-arm150K-41029.json",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/parents/Reach-EA-41029/full_400000.pt",
+        "--arm",
+        "P5-fixed",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--execution-registration",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-P5-fixed",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/crossseed-41029-P5-fixed.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41029-P5-activation2mm",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/reach-three-arm150K-41029.json",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/parents/Reach-EA-41029/full_400000.pt",
+        "--arm",
+        "P5-activation2mm",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--execution-registration",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-P5-activation2mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/crossseed-41029-P5-activation2mm.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41029-Metric-only",
+      "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+      "arguments": [
+        "--plan",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/reach-three-arm150K-41029.json",
+        "--parent",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/parents/Reach-EA-41029/full_400000.pt",
+        "--arm",
+        "Metric-only",
+        "--line",
+        "piper_reach",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--data-root",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+        "--execution-registration",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/crossseed900K-20261120/execution_registration.json",
+        "--device",
+        "cuda:0",
+        "--cuda-memory-fraction",
+        ".025"
+      ],
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-crossseed900K-20261120/Reach-41029-Metric-only",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/crossseed-41029-Metric-only.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    }
+  ],
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "foreign_processes_changed": false
+}

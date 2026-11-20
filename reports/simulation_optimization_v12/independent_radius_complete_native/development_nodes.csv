@@ -1,0 +1,7 @@
+seed,condition,episodes,safe_success_count,violation_count,safe_timeout_count,mean_return,mean_capped_seconds,geometry_scope,independent_test_used
+41028,nominal,30,30,0,0,10.785014934692326,1.1626666666666667,nominal_or_execution,False
+41028,new_geometry,30,21,9,0,4.594148368756583,2.010666666666667,trained_radius,False
+41028,execution_scale_085,30,30,0,0,10.727250071675064,1.3453333333333335,nominal_or_execution,False
+41029,nominal,30,30,0,0,10.784039248551268,1.1440000000000001,nominal_or_execution,False
+41029,new_geometry,30,25,5,0,7.368084942032019,1.6346666666666667,trained_radius,False
+41029,execution_scale_085,30,30,0,0,10.736216903484586,1.344,nominal_or_execution,False

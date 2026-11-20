@@ -1,0 +1,4 @@
+condition,training_seeds,episodes_per_seed,success_mean,success_best,success_worst,success_sd_sample,violation_mean,timeout_mean,independent_test_used
+nominal,2,30,1.0,1.0,1.0,0.0,0.0,0.0,False
+new_geometry,2,30,0.7666666666666666,0.8333333333333334,0.7,0.09428090415820639,0.23333333333333334,0.0,False
+execution_scale_085,2,30,1.0,1.0,1.0,0.0,0.0,0.0,False
