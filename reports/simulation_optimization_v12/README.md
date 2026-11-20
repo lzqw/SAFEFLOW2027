@@ -1,5 +1,7 @@
 # v12仿真优化
 
+2026-11-20 18:59：[第三Reach原生100K扩域入口已准备、尚未启动](THIRD_RADIUS_READY_NOT_STARTED_1859_20261120_ZH.md)。A100 Metric145K/150K、Reach第三父266K/300K仍live；4080 Payload217K仍零成功且出现Q与动作幅度上升，完整保留。扩域必须等待真实固定300K终点、原父退出及三个实际SHA，未抢跑或替代模型。
+
 2026-11-20 18:48：[同100K两模式齐全、第三父240K回退及Payload持续零成功](MATCHED100K_AND_PARENT_REGRESSION_1848_20261120_ZH.md)。四条仍live：A100 Metric137K/150K、Payload父102K/300K；4080 Reach父253K/300K、Payload父203K/300K。A100候选60mm sampled88%/zero_noise98%，不混合模式；第三Reach父55mm DEV从21/30回落16/30，仍等待固定300K终点。
 
 2026-11-20 17:35：[第三Reach父训练恢复、两个Payload父仍零成功、A100同80K三方法结果](PARENTS_AND_MATCHED80K_1735_20261120_ZH.md)。四条仍运行；Reach第三父162K训练成功2292，120K DEV为30/21/30；Payload116K/60K均零成功，低违规不能当改进。A100候选80K的57.5/60mm为98%/90%，Metric90%/72%，训练代价全部保留。
