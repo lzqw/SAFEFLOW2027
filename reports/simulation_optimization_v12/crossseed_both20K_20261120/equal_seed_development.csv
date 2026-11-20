@@ -1,0 +1,9 @@
+arm,new_steps,condition,deployment_mode,training_seed_count,episodes_per_seed,success_41028,success_41029,success_mean,success_worst,success_best,success_sd_sample,independent_test_used,metric_comparison_available
+P5-fixed,20000,nominal,sampled,2,100,1.0,1.0,1.0,1.0,1.0,0.0,False,False
+P5-activation2mm,20000,nominal,sampled,2,100,1.0,1.0,1.0,1.0,1.0,0.0,False,False
+P5-fixed,20000,radius_0575,sampled,2,100,0.95,0.95,0.95,0.95,0.95,0.0,False,False
+P5-activation2mm,20000,radius_0575,sampled,2,100,0.96,0.99,0.975,0.96,0.99,0.021213203435596444,False,False
+P5-fixed,20000,radius_060,sampled,2,100,0.86,0.86,0.86,0.86,0.86,0.0,False,False
+P5-activation2mm,20000,radius_060,sampled,2,100,0.89,0.88,0.885,0.88,0.89,0.007071067811865481,False,False
+P5-fixed,20000,execution_scale_085,sampled,2,100,1.0,1.0,1.0,1.0,1.0,0.0,False,False
+P5-activation2mm,20000,execution_scale_085,sampled,2,100,1.0,1.0,1.0,1.0,1.0,0.0,False,False
