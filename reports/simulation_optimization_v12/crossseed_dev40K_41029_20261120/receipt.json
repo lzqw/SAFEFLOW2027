@@ -1,0 +1,34 @@
+{
+  "status": "partial_crossseed_development_snapshot",
+  "training_seed": 41029,
+  "fixed_new_steps": 40000,
+  "available_arms": [
+    "P5-fixed",
+    "P5-activation2mm"
+  ],
+  "missing_arms": [
+    "Metric-only"
+  ],
+  "provenance": [
+    {
+      "arm": "P5-fixed",
+      "native_evaluation_sha256": "11b9ead74f35b6d64bb64f2f3dd51e19fe416bfb2e0400eaa900b25edf45deb4",
+      "native_manifest_sha256": "f621746b30bc577f367e5b9c6a2ea2c03ecbca662676802e17a83d28074d289f",
+      "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4"
+    },
+    {
+      "arm": "P5-activation2mm",
+      "native_evaluation_sha256": "4c18dafa9a5c03af37bcbaf64be65144d9fc296425ed1ce6b1f0f34fae349ece",
+      "native_manifest_sha256": "b8a1a158d2aac65bef5f5724edac2541572f557bd46b2ce2339a67e6aec74922",
+      "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4"
+    }
+  ],
+  "development_episodes": 800,
+  "execution_registration_sha256": "cf744ff2765b20f6083e1f45e1223db00000fe311bd5d07b3d88b4513b0361a1",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "complete_crossseed_campaign": false,
+  "physical_robot_interactions": 0
+}

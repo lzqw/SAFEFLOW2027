@@ -1,0 +1,9 @@
+training_seed,arm,new_steps,condition,deployment_mode,episodes,safe_successes,violations,timeouts,stall_count,mean_return,mean_capped_seconds,independent_test_used
+41029,P5-fixed,40000,nominal,sampled,100,100,0,0,0,10.772803410663439,1.194,False
+41029,P5-fixed,40000,radius_0575,sampled,100,99,1,0,0,10.553499017881846,1.288,False
+41029,P5-fixed,40000,radius_060,sampled,100,94,6,0,0,9.51632440023024,1.4292,False
+41029,P5-fixed,40000,execution_scale_085,sampled,100,100,0,0,0,10.71791752075109,1.4092,False
+41029,P5-activation2mm,40000,nominal,sampled,100,100,0,0,0,10.772025583676795,1.1984,False
+41029,P5-activation2mm,40000,radius_0575,sampled,100,99,1,0,0,10.552915063993114,1.286,False
+41029,P5-activation2mm,40000,radius_060,sampled,100,93,7,0,0,9.31147558514645,1.4556,False
+41029,P5-activation2mm,40000,execution_scale_085,sampled,100,100,0,0,0,10.714318411799562,1.4104,False
