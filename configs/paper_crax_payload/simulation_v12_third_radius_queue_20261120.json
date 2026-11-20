@@ -1,0 +1,50 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-third-radius-preparation-20261120",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_third_radius_20261120.json",
+  "slots": 1,
+  "poll_seconds": 30,
+  "minimum_free_disk_bytes": 47244640256,
+  "gpu_admission": {
+    "index": "slot",
+    "minimum_free_mib": 2048
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/third-parent-runtime-20261120/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/third-parent-runtime-20261120/cache",
+      "TORCH_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/third-parent-runtime-20261120/cache/torch",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Reach-EA-third-radius100K-41030",
+      "module": "scripts.paper_crax_payload.train_reach_third_radius_20261120",
+      "arguments": [
+        "--parent-sha256",
+        "342de2dd71798dc69739b42b7d5ad8af42f9d20f03fb37fa1ffcac019cc1cd3e",
+        "--parent-receipt-sha256",
+        "8c508adca403be561e38812ba81eeba80d67b915189fff0bd2c7d483e73c70b8",
+        "--parent-manifest-sha256",
+        "b3cd1a4fdaf2fdd6bfb611457cf71943285e6a89cc317eacc88f4bef1515fcee",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-radius-20261120/Reach-EA-41030",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/third-radius-41030-20261120.log",
+      "require_completed_receipt": true,
+      "required_steps": 400000,
+      "required_steps_field": "training_steps"
+    }
+  ],
+  "automatic_retry": false,
+  "foreign_processes_changed": false,
+  "downstream_method_confirmation_started": false
+}
