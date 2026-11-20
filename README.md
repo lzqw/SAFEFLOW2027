@@ -32,7 +32,21 @@
 
 ## SAFEFlow：当前实验与程序入口
 
-2026-11-16最新：v6三分支从共同100K完整状态各新增150K到250K，450K及1080开发回合已完成。
+2026-11-20更新：v12的4080两条250K延迟残差实验、A100两个400K独立父均已完成。
+延迟残差后150K违规降低10.34%，但最终任务表现仍低于Metric-only，未达到全面最优。
+双seed三方法各新增150K的900K开发对照已在A100和4080启动，保留相同预算、全部失败与两种部署模式。
+
+- [当前v12结果、程序和运行入口](reports/simulation_optimization_v12/README.md)。
+- [本轮完整终点报告及下一阶段实际进程](reports/simulation_optimization_v12/COMPLETE_ENDPOINTS_AND_NEXT_STAGE_20261120_ZH.md)。
+- [完整学习曲线](reports/simulation_optimization_v12/late_endpoint_complete_native/late_endpoint_learning_curves.png)、[两个独立父的逐条件结果](reports/simulation_optimization_v12/independent_radius_complete_native/development_nodes.csv)。
+- [真实父SHA与六任务执行登记](reports/simulation_optimization_v12/crossseed900K_execution_20261120/execution_registration.json)、[双seed逐条件合并与本地自动归档](reports/simulation_optimization_v12/CROSSSEED_ANALYSIS_HANDOFF_20261120_ZH.md)。
+- [全部要求与尚未完成的证据台账](reports/simulation_optimization_v12/REQUIREMENTS_STATUS_ZH.md)。
+
+资源按30分钟监测；大模型与原始大文件留服务器数据盘。所有本轮节点仍属DEV，最终多seed独立确认尚未完成，不使用5080或实体机器人。下面v5/v6预算和候选状态是对应历史阶段记录，不代表当前队列或当前总预算。
+
+### 历史开发阶段
+
+2026-11-16：v6三分支从共同100K完整状态各新增150K到250K，450K及1080开发回合已完成。
 [v6最终完整审查](reports/direction_annealing_v6/FINAL_DEVELOPMENT_REVIEW_ZH.md)：
 A终点88/90、B90/90、C86/90；B训练违规比A多27.4%，没有同时改善训练安全和执行的统一赢家。
 [v6方案与预算调整](reports/direction_annealing_v6/PLAN_ZH.md)、
@@ -65,7 +79,8 @@ A终点88/90、B90/90、C86/90；B训练违规比A多27.4%，没有同时改善�
 - [原状态续跑资源交接](reports/nonhardware_v4/E08_FULLSTATE_RESOURCE_RESUME_ZH.md)：所有原prefix同盘归档，全部科学预算完成，不改配置、不重复旧评测；大检查点不上传GitHub。
 - [结果收集及图表入口](reports/nonhardware_v4/DISTRIBUTED_ANALYSIS_ZH.md)：大模型、原始轨迹和replay留服务器数据盘，GitHub保存程序、紧凑证据、报告及图表。
 
-当前工作分支为`codex/paper-robot-gap-v2`，[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)；
+当前关键结果发布分支为`results/performance-gaps-v11-20261117`，实现工作分支为`codex/paper-robot-gap-v2`。
+[PR #15](https://github.com/lzqw/SAFEFLOW2027/pull/15)保留为历史入口；本轮仅更新结果分支，不创建PR或评论。
 分支发布不表示已合并main。5080／实机按用户要求暂缓，不发送邮件。
 下方STAR与OmniSafe内容保留为历史方法入口及上游框架说明，不代表最新训练状态。
 

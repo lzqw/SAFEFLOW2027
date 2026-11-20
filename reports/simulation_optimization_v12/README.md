@@ -1,8 +1,23 @@
 # v12仿真优化
 
-- [最新01:16：A100达337K/336K；后续三臂按实测存档预算准备共享资源，未启动900K](CROSSSEED_MEASURED_STORAGE_20261119_ZH.md)
+2026-11-20当前阶段：上一轮完整训练已结束；双seed三方法900K开发对照已实际启动，尚未形成最终方法结论。A100承载seed41028、4080承载41029，每seed固定P5、P5+2mm和Metric-only各新增150K，同seed方法在同一主机。每机两条并行，第三条接续；不按中期DEV选最好模型。
 
-- [最新01:04：4080配对后缀已实际新增1K，GPU94%；完整目标仍未完成](LATE_ENDPOINT_RUNNING_20261119_ZH.md)
+- [最新完整终点与当前900K实际启动状态](COMPLETE_ENDPOINTS_AND_NEXT_STAGE_20261120_ZH.md)。
+- [六任务执行登记、源码及真实父SHA](crossseed900K_execution_20261120/execution_registration.json)。
+- [两台机器终点自动汇总、逐seed比较与本地归档](CROSSSEED_ANALYSIS_HANDOFF_20261120_ZH.md)。
+- [延迟残差完整学习曲线PNG](late_endpoint_complete_native/late_endpoint_learning_curves.png)、[PDF](late_endpoint_complete_native/late_endpoint_learning_curves.pdf)、[训练分段统计](late_endpoint_complete_native/training_windows.csv)。
+- [两个真实400K父的等权DEV](independent_radius_complete_native/equal_seed_development.csv)、[逐seed结果](independent_radius_complete_native/development_nodes.csv)、[完成收据](independent_radius_complete_native/receipt.json)。
+- [全部要求及缺口](REQUIREMENTS_STATUS_ZH.md)。
+
+延迟残差后150K训练违规347对P5387，但250K DEV28/28/28仍低于Metric29/29/29；Piper两个400K父在55mm分别21/30、25/30，55mm已经属于训练域。两组完整结果合计新增500K，不将继承前缀或历史比较重新计数。57.5/60mm跨seed目标、Payload、最终配置Panda回归、SafeReach全程领先与新独立确认仍未完成。
+
+半小时资源监测与终点自动归档运行中；新大型存档、缓存和临时文件留数据盘。下面是原始历史记录，标题中的“最新”“当前”“尚未启动”仅表示记录当时的状态，不代表当前队列。
+
+## 历史登记与结果
+
+- [历史01:16：A100达337K/336K；后续三臂按实测存档预算准备，尚未启动](CROSSSEED_MEASURED_STORAGE_20261119_ZH.md)
+
+- [历史01:04：4080配对后缀实际新增1K](LATE_ENDPOINT_RUNNING_20261119_ZH.md)
 - [后100K连续残差单因素登记：保留真实前缀、不冒充从头多seed](LATE_ENDPOINT_REGISTRATION_ZH.md)
 
 - [最新00:46：A100两条318K/400K，4080源码/资产准备到位但未启动900K](CROSSSEED_4080_STAGING_20261119_ZH.md)
