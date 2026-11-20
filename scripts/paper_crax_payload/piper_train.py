@@ -233,7 +233,9 @@ def evaluate_piper(learner, config, assets, task, episodes, seed_start, conditio
         distance_queries=sum(r['distance_queries'] for r in results), physical_robot_interactions=0)
 
 
-def train(args):
+def train(args, *, storage_guard=None):
+    if storage_guard is not None:
+        storage_guard()
     config = json.loads(args.config.read_text())
     assets = json.loads(args.assets_receipt.read_text())
     if args.task not in config['tasks'] or assets['model_commit'] != config['model_commit']:
@@ -362,6 +364,8 @@ def train(args):
     stream = (args.output/'progress.jsonl').open('w')
 
     def checkpoint(filename='latest_full.pt'):
+        if storage_guard is not None:
+            storage_guard()
         checkpoint_started = time.monotonic()
         state = dict(format=FORMAT, robot_family='Piper', configuration=config, model_commit=config['model_commit'],
             geometry_adaptation=adaptation, task_transfer=transfer,

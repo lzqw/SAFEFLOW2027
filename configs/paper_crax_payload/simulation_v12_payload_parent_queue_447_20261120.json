@@ -1,0 +1,48 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-payload-parents-20261120",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_payload_parent_42029_20261120.json",
+  "slots": 1,
+  "poll_seconds": 30,
+  "minimum_free_disk_bytes": 47244640256,
+  "gpu_admission": {
+    "index": "slot",
+    "minimum_free_mib": 2048
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/payload-parent-runtime-20261120/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/payload-parent-runtime-20261120/cache",
+      "TORCH_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/payload-parent-runtime-20261120/cache/torch",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Payload-EA-independent-42029",
+      "module": "scripts.paper_crax_payload.train_payload_fresh_parents_20261120",
+      "arguments": [
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_payload_fresh_parents_20261120.json",
+        "--seed",
+        "42029",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--device",
+        "cuda:0"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload-parents-20261120/Payload-EA-42029",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/payload-parent-42029-20261120.log",
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "required_steps_field": "training_steps"
+    }
+  ],
+  "automatic_retry": false,
+  "foreign_processes_changed": false,
+  "downstream_training_started": false
+}
