@@ -2,6 +2,7 @@
 
 2026-11-20当前阶段：上一轮完整训练已结束；双seed三方法900K开发对照已实际启动，尚未形成最终方法结论。A100承载seed41028、4080承载41029，每seed固定P5、P5+2mm和Metric-only各新增150K，同seed方法在同一主机。每机两条并行，第三条接续；不按中期DEV选最好模型。
 
+- [首个20K DEV：seed41029的P5+2mm在57.5mm为99%、60mm为88%，60mm仍未达标](CROSSSEED_FIRST20K_20261120_ZH.md)。
 - [最新完整终点与当前900K实际启动状态](COMPLETE_ENDPOINTS_AND_NEXT_STAGE_20261120_ZH.md)。
 - [六任务执行登记、源码及真实父SHA](crossseed900K_execution_20261120/execution_registration.json)。
 - [两台机器终点自动汇总、逐seed比较与本地归档](CROSSSEED_ANALYSIS_HANDOFF_20261120_ZH.md)。
