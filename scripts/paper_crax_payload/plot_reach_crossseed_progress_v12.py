@@ -145,7 +145,9 @@ def main():
     if counter_plotted:
         handles.append(Line2D([], [], color='#555555', marker='x', linestyle='', label=args.counter_label))
     fig.legend(handles=handles, loc='lower center', bbox_to_anchor=(.5, .055), ncol=3, fontsize=9)
-    fig.suptitle('Reach development: two-seed campaign | sampled deployment | unequal observed progress', fontsize=13)
+    campaign_label = ('complete fixed 150K endpoints' if completed_seeds == set(STYLES)
+                      else 'unequal observed progress')
+    fig.suptitle('Reach development: two-seed campaign | sampled deployment | '+campaign_label, fontsize=13)
     fig.text(.5, .16, 'New training transitions after each 400K parent (thousands)', ha='center', fontsize=10)
     footer = 'All archived fixed DEV nodes and full 1K prefixes. No independent test or checkpoint selection.'
     if counter_plotted:

@@ -1,0 +1,32 @@
+{
+  "training_seed": 41030,
+  "source_commit": "255b737b69c61481e094043789f1ac6ae53a04e2",
+  "parent_checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-parent-20261120/Reach-EA-41030/full_300000.pt",
+  "parent_sha256": "342de2dd71798dc69739b42b7d5ad8af42f9d20f03fb37fa1ffcac019cc1cd3e",
+  "parent_receipt_sha256": "8c508adca403be561e38812ba81eeba80d67b915189fff0bd2c7d483e73c70b8",
+  "parent_manifest_sha256": "b3cd1a4fdaf2fdd6bfb611457cf71943285e6a89cc317eacc88f4bef1515fcee",
+  "config_sha256": "6e7d5eeec3439f1bef293f1bcdd4548abbdabef45dbce7d97dee4b27e02f7a89",
+  "initial_steps": 300000,
+  "target_steps": 400000,
+  "new_training_budget": 100000,
+  "changed_scientific_fields": [
+    "training_radius_values"
+  ],
+  "training_radius_values": [
+    0.045,
+    0.05,
+    0.055
+  ],
+  "inherited_counts": {
+    "training_violation_count": 778,
+    "training_safe_successes": 7064,
+    "training_safe_timeouts": 846,
+    "training_episodes": 8688
+  },
+  "fork_rng": "native_distribution_fork_reseeded_by_original_seed_not_exact_resume",
+  "independent_test_used": false,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "downstream_method_confirmation_started": false,
+  "physical_robot_interactions": 0
+}

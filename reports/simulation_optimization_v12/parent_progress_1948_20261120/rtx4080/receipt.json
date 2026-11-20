@@ -1,0 +1,171 @@
+{
+  "status": "observed_native_parent_development_snapshot",
+  "host": "447",
+  "unix_time": 1795175155.4602807,
+  "parents": [
+    {
+      "training_seed": 41030,
+      "task": "Reach",
+      "steps": 300000,
+      "budget": 300000,
+      "episodes": 8688,
+      "training_safe_successes": 7064,
+      "training_violation_count": 778,
+      "training_safe_timeouts": 846,
+      "learner_updates": 298000,
+      "reward_updates": 596000,
+      "actor_updates": 148500,
+      "first_success_logged_at_or_before_step": 67000,
+      "no_success_observed_through_step": null,
+      "recent_safe_success": 0.91,
+      "recent_return": 8.947033107417418,
+      "alpha": 0.003460200969129801,
+      "safety_multiplier": 0.00023719441406985577,
+      "q_policy_mean": 7.330604076385498,
+      "policy_cost": 0.001620216527953744,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 13838.113322229008,
+      "recent_window_sps": 19.31221092429173,
+      "approximate_remaining_hours": 0.0,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": true
+    },
+    {
+      "training_seed": 42029,
+      "task": "Payload",
+      "steps": 272000,
+      "budget": 300000,
+      "episodes": 2913,
+      "training_safe_successes": 0,
+      "training_violation_count": 263,
+      "training_safe_timeouts": 2650,
+      "learner_updates": 270000,
+      "reward_updates": 540000,
+      "actor_updates": 134500,
+      "first_success_logged_at_or_before_step": null,
+      "no_success_observed_through_step": 272000,
+      "recent_safe_success": 0.0,
+      "recent_return": -1.049802332798279,
+      "alpha": 2.91686192213092e-05,
+      "safety_multiplier": 4.606935467484875,
+      "q_policy_mean": -0.663536787033081,
+      "policy_cost": 7.123322575353086e-06,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 13279.208389232983,
+      "recent_window_sps": 24.16475727554345,
+      "approximate_remaining_hours": 0.3218645107455506,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": false
+    }
+  ],
+  "native_handles": [
+    {
+      "training_seed": 41030,
+      "native_pid": 2203200,
+      "native_handle_live": false
+    },
+    {
+      "training_seed": 42029,
+      "native_pid": 2213979,
+      "native_handle_live": true
+    }
+  ],
+  "provenance": [
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/run_config.json",
+      "sha256": "b3cd1a4fdaf2fdd6bfb611457cf71943285e6a89cc317eacc88f4bef1515fcee",
+      "bytes": 10012
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_120000.json",
+      "sha256": "d7c03a2119fdaecf59ad29d6506c49a243822d6540da926a413fe88b2ffb5ddb",
+      "bytes": 412621
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_180000.json",
+      "sha256": "03b3f8ad0c0a32f3f476dc014bac4a4bff59763a00a9c59e32415c5891e5bb45",
+      "bytes": 365272
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_240000.json",
+      "sha256": "9dd43f00564ab671d65f371fcaae4e1306790dac9ee8d4267d0e7d9c626861fb",
+      "bytes": 355203
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_300000.json",
+      "sha256": "2c60954c36c69500ae403b9f708f677daef9f84ba1e131404784bddd28a9dc5b",
+      "bytes": 344461
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_60000.json",
+      "sha256": "cf96a7b1ffc1cd7a4438f8fe0af06134621269214b9ae8815541378972a7e767",
+      "bytes": 1236170
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/progress.jsonl",
+      "sha256": "ef10300abab62ee894fc80d1cd69072366598c1268cd162f172edaf87647b5bf",
+      "bytes": 395818
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/receipt.json",
+      "sha256": "8c508adca403be561e38812ba81eeba80d67b915189fff0bd2c7d483e73c70b8",
+      "bytes": 1639
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/run_config.json",
+      "sha256": "809a892efd7372c47aeba08c3963a19820c6553d3ca8dc19281fe399782accb1",
+      "bytes": 10016
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/evaluation_120000.json",
+      "sha256": "748b53f93be1409977342314802e47de539062b09a21540a22f3705235345461",
+      "bytes": 1177120
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/evaluation_180000.json",
+      "sha256": "2359e3880cb845bfb6d8f1e7866b13142c64689719e308b23bf4d29720e75c0e",
+      "bytes": 1246742
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/evaluation_240000.json",
+      "sha256": "cdcce6487c40a910415af5571dab4d8502f8a81e08f9ea9900ac43f3d7b02f52",
+      "bytes": 1215685
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/evaluation_60000.json",
+      "sha256": "3b45a5c1539f8bab90978f8adef8070b523fe167bce38b7c927c66e009baeb17",
+      "bytes": 1248129
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/progress.jsonl",
+      "sha256": "20356985fa87b25b568e4f7aa7d115020e88b051303b239344380bbaae7f359d",
+      "bytes": 358946
+    }
+  ],
+  "development_nodes": 27,
+  "development_episodes": 810,
+  "complete_three_seed_confirmation": false,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0
+}

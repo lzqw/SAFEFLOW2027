@@ -1,0 +1,92 @@
+{
+  "status": "complete_two_seed_three_arm_development_review",
+  "completed_new_training_transitions": 900000,
+  "training_seeds": [
+    41028,
+    41029
+  ],
+  "completed_runs": 6,
+  "development_nodes": 192,
+  "development_episodes": 19200,
+  "provenance": [
+    {
+      "seed": 41028,
+      "host": "CTAlab",
+      "summary_sha256": "6c84c673a0edc0e092ef10b433faf33769a318abbfcb21a118bbfa60b79f321d",
+      "nodes_sha256": "69ba7a7ff368123620d169f4d4ff4c69ac7c5a20e2be9687f6b374e9fc93c9d2",
+      "native": [
+        {
+          "seed": 41028,
+          "arm": "P5-fixed",
+          "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+          "receipt_sha256": "630aaefb88583f346b892a46c3a6b1edf110a4a80930964baabd36e14488d5fe",
+          "manifest_sha256": "694992f7a43e34c2d7fbe50069d62b2fea6fe546454ab6fe154463089ab95a4e",
+          "endpoint_checkpoint_sha256": "40d8b0bdad1d085ba3605474dd1abc3928e18784db63bcb5aa90c07974c7bf46"
+        },
+        {
+          "seed": 41028,
+          "arm": "P5-activation2mm",
+          "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+          "receipt_sha256": "228b88b42db99183a68efc2b20f029b4e6b2258cfb73e4204285f7c63c855b4d",
+          "manifest_sha256": "8a2da3870fc37f7b7bb1f289e903e908c382b4ef6aa41e3cae3b6b49505af054",
+          "endpoint_checkpoint_sha256": "eb717a4f8bfcfe063bb06f350aab5da1b6d5b59a28591ec3fa05a7655c3cd8fa"
+        },
+        {
+          "seed": 41028,
+          "arm": "Metric-only",
+          "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+          "receipt_sha256": "6bf78996d327bd850c880d4bc6fc48b9244136b42a97fbb0338b88958e4e6738",
+          "manifest_sha256": "b20849a13a21a39d7f7422f0de153c7f6287d3da73c700144087961ac3960224",
+          "endpoint_checkpoint_sha256": "9c8cafcedc2876304a6c3f67cfcddee591aa8c78b8a67a3fc2cca93b10731c2c"
+        }
+      ]
+    },
+    {
+      "seed": 41029,
+      "host": "447",
+      "summary_sha256": "b8a96d81a34c210430e2c10136979dd2feca819a3713afaed32a61add802b951",
+      "nodes_sha256": "437a3599dfe1e8df37e32a3d0d1cb111af57e497180d2036bedab839b8c808d1",
+      "native": [
+        {
+          "seed": 41029,
+          "arm": "P5-fixed",
+          "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+          "receipt_sha256": "30fc497bb17abd86bca74ea0c50f44336af1d45399610bf7d1733f020be73e22",
+          "manifest_sha256": "f621746b30bc577f367e5b9c6a2ea2c03ecbca662676802e17a83d28074d289f",
+          "endpoint_checkpoint_sha256": "f71db027825f72f21251ed0230a8b8517075bf64490159e60080a8e8b36ddedc"
+        },
+        {
+          "seed": 41029,
+          "arm": "P5-activation2mm",
+          "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+          "receipt_sha256": "3aa5137999d487de7387598cb2f09f8f6fb463dbc465ca8f4e3f5963bd99e9f9",
+          "manifest_sha256": "b8a1a158d2aac65bef5f5724edac2541572f557bd46b2ce2339a67e6aec74922",
+          "endpoint_checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301"
+        },
+        {
+          "seed": 41029,
+          "arm": "Metric-only",
+          "parent_sha256": "66d8cf8b115fe8edc0bd4dbcd7e10c51899d1124309768a9e53ea591e5f2bff4",
+          "receipt_sha256": "850c4e939048ea2644b1e30e8cfb35a74f093b44bfa26731452c2a91b76814ca",
+          "manifest_sha256": "7181d4eae27b3eceeb423c1a789ca0d9babf463c24dd9539558c99d1daf7b49b",
+          "endpoint_checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006"
+        }
+      ]
+    }
+  ],
+  "execution_registration_sha256": "cf744ff2765b20f6083e1f45e1223db00000fe311bd5d07b3d88b4513b0361a1",
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "global_objective_complete": false,
+  "missing_confirmation": [
+    "Panda final-configuration regression",
+    "Payload optimization",
+    "SafeReach from-start superiority",
+    "third independent training seed",
+    "frozen unseen evaluation",
+    "same-campaign Iso comparison"
+  ],
+  "physical_robot_interactions": 0
+}

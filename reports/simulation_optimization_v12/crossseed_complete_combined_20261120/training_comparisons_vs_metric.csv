@@ -1,0 +1,5 @@
+training_seed,arm,new_steps,violations,metric_violations,violations_at_most_80percent_metric,successes_not_lower,timeouts_not_higher,stalls_not_higher,return_within_one_percent,scope,iso_comparison_available,independent_confirmation
+41028,P5-fixed,150000,78,307,True,False,False,False,True,400K-to550K suffix only; inherited risks not removed,False,False
+41028,P5-activation2mm,150000,70,307,True,False,False,False,True,400K-to550K suffix only; inherited risks not removed,False,False
+41029,P5-fixed,150000,60,268,True,False,True,True,True,400K-to550K suffix only; inherited risks not removed,False,False
+41029,P5-activation2mm,150000,50,268,True,False,False,False,True,400K-to550K suffix only; inherited risks not removed,False,False

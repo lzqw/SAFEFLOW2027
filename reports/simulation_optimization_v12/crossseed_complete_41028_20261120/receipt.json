@@ -1,0 +1,120 @@
+{
+  "status": "complete_crossseed_one_host_development_summary",
+  "host": "CTAlab",
+  "training_seed": 41028,
+  "completed_runs": 3,
+  "completed_new_training_transitions": 450000,
+  "inherited_parent_transitions_not_new": 400000,
+  "progress_rows": 450,
+  "development_nodes": 96,
+  "development_episodes": 9600,
+  "native_receipts": [
+    {
+      "training_seed": 41028,
+      "status": "completed",
+      "steps": 550000,
+      "new_training_steps": 150000,
+      "segment_counts": {
+        "violations": 78,
+        "episodes": 4942,
+        "safe_successes": 4862,
+        "safe_timeouts": 2
+      },
+      "evaluation_controls": 97667,
+      "elapsed_seconds": 17009.920891437214,
+      "source_commit": "77a517d5",
+      "line": "piper_reach",
+      "arm": "P5-fixed",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 4862,
+        "training_stall_episodes": 2,
+        "training_stall_windows": 81,
+        "training_cumulative_return": 51584.55697203466,
+        "training_mean_completed_plus_partial_return": 10.437992102799406
+      }
+    },
+    {
+      "training_seed": 41028,
+      "status": "completed",
+      "steps": 550000,
+      "new_training_steps": 150000,
+      "segment_counts": {
+        "violations": 70,
+        "episodes": 4903,
+        "safe_successes": 4831,
+        "safe_timeouts": 2
+      },
+      "evaluation_controls": 100128,
+      "elapsed_seconds": 17190.171478763223,
+      "source_commit": "77a517d5",
+      "line": "piper_reach",
+      "arm": "P5-activation2mm",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 4831,
+        "training_stall_episodes": 2,
+        "training_stall_windows": 86,
+        "training_cumulative_return": 51313.32666704664,
+        "training_mean_completed_plus_partial_return": 10.465699911696236
+      }
+    },
+    {
+      "training_seed": 41028,
+      "status": "completed",
+      "steps": 550000,
+      "new_training_steps": 150000,
+      "segment_counts": {
+        "violations": 307,
+        "episodes": 5273,
+        "safe_successes": 4965,
+        "safe_timeouts": 1
+      },
+      "evaluation_controls": 92345,
+      "elapsed_seconds": 16904.497337851208,
+      "source_commit": "77a517d5",
+      "line": "piper_reach",
+      "arm": "Metric-only",
+      "physical_robot_interactions": 0,
+      "training_metrics": {
+        "ordinary_terminal_task_successes": 4965,
+        "training_stall_episodes": 1,
+        "training_stall_windows": 61,
+        "training_cumulative_return": 50533.445124841695,
+        "training_mean_completed_plus_partial_return": 9.583433552975857
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "seed": 41028,
+      "arm": "P5-fixed",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+      "receipt_sha256": "630aaefb88583f346b892a46c3a6b1edf110a4a80930964baabd36e14488d5fe",
+      "manifest_sha256": "694992f7a43e34c2d7fbe50069d62b2fea6fe546454ab6fe154463089ab95a4e",
+      "endpoint_checkpoint_sha256": "40d8b0bdad1d085ba3605474dd1abc3928e18784db63bcb5aa90c07974c7bf46"
+    },
+    {
+      "seed": 41028,
+      "arm": "P5-activation2mm",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+      "receipt_sha256": "228b88b42db99183a68efc2b20f029b4e6b2258cfb73e4204285f7c63c855b4d",
+      "manifest_sha256": "8a2da3870fc37f7b7bb1f289e903e908c382b4ef6aa41e3cae3b6b49505af054",
+      "endpoint_checkpoint_sha256": "eb717a4f8bfcfe063bb06f350aab5da1b6d5b59a28591ec3fa05a7655c3cd8fa"
+    },
+    {
+      "seed": 41028,
+      "arm": "Metric-only",
+      "parent_sha256": "f1fe0a051824887cd711b98d90da77fd1c5963298dd5241a62fa88c0b696cd51",
+      "receipt_sha256": "6bf78996d327bd850c880d4bc6fc48b9244136b42a97fbb0338b88958e4e6738",
+      "manifest_sha256": "b20849a13a21a39d7f7422f0de153c7f6287d3da73c700144087961ac3960224",
+      "endpoint_checkpoint_sha256": "9c8cafcedc2876304a6c3f67cfcddee591aa8c78b8a67a3fc2cca93b10731c2c"
+    }
+  ],
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "all_registered_nodes_retained": true,
+  "physical_robot_interactions": 0
+}

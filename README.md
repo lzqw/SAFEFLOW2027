@@ -32,6 +32,8 @@
 
 ## SAFEFlow：当前实验与程序入口
 
+2026-11-20 19:48：[900K双seed六条完整结果与第三Reach扩域实际启动](reports/simulation_optimization_v12/CROSSSEED900K_COMPLETE_AND_THIRD_RADIUS_STARTED_20261120_ZH.md)。候选Reach成功率与训练违规改善明确，但成功数/timeout/stall仍有代价，尚非全面最优。19200DEV已合并；第三Reach父300K回退完整保留，后续100K扩域已新增1K。两个Payload父继续训练。
+
 2026-11-20 18:59：[继续运行与第三Reach扩域准备](reports/simulation_optimization_v12/THIRD_RADIUS_READY_NOT_STARTED_1859_20261120_ZH.md)。A100最后Metric145K/150K、第三Reach父266K/300K；后续100K入口已准备但等待真实父完成，未启动。Payload仍零成功，其Q和违规上升完整保留。
 
 2026-11-20 18:48：[最新同100K两部署模式与父学习反证](reports/simulation_optimization_v12/MATCHED100K_AND_PARENT_REGRESSION_1848_20261120_ZH.md)。A100最后Metric137K/150K；第三Reach父253K但240K DEV回退，Payload两父仍零成功。四条完整预算继续，保留所有节点与失败，不宣称全面最优。

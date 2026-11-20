@@ -1,5 +1,7 @@
 # 目标证据台账：不把局部DEV进展当作全面完成
 
+2026-11-20 19:48：900K六条/19200DEV全部完成并自动归档；候选sampled57.5/60mm均值98.5%/94%，Metric92.5%/85.5%，违规合计120对575（少79.13%），但成功9701对9998、timeout/stall各3对1，联合最优仍失败。第三父固定300K已完成，55mm9/30的回退保留；真实SHA绑定后原生100K扩域已实际新增1K。两Payload父仍零成功，Panda/SafeReach/独立测试等仍未完成。见[完整最终对照与新运行](CROSSSEED900K_COMPLETE_AND_THIRD_RADIUS_STARTED_20261120_ZH.md)。
+
 2026-11-20 18:48：同100K A100候选sampled57.5/60mm97%/88%、zero_noise100%/98%，Metric分别87%/77%、94%/93%；违规53对229但训练成功少78、多1timeout/stall，仍不联合达标。第三Reach父240K DEV55mm回退16/30，两个Payload父203K/102K仍零成功；全部保留，四条继续固定预算。详见[新结果与反证](MATCHED100K_AND_PARENT_REGRESSION_1848_20261120_ZH.md)。
 
 2026-11-20 17:35：A100同80K候选57.5/60mm98%/90%对Metric90%/72%，但候选训练成功少57并多1timeout/stall，不联合达标。第三Reach父162K已2292次成功，120K DEV55mm21/30；Payload两个独立父116K/60K仍零成功，保留全部timeout，未当安全收益。四条仍live，完整预算继续，详见[父诊断及同80K证据](PARENTS_AND_MATCHED80K_1735_20261120_ZH.md)。

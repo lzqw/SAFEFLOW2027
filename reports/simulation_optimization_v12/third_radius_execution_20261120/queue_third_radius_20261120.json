@@ -1,0 +1,47 @@
+{
+  "pid": 2715497,
+  "source_commit": "255b737b69c61481e094043789f1ac6ae53a04e2",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "Reach-EA-third-radius100K-41030",
+      "pid": 2715499,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_reach_third_radius_20261120",
+        "--parent-sha256",
+        "342de2dd71798dc69739b42b7d5ad8af42f9d20f03fb37fa1ffcac019cc1cd3e",
+        "--parent-receipt-sha256",
+        "8c508adca403be561e38812ba81eeba80d67b915189fff0bd2c7d483e73c70b8",
+        "--parent-manifest-sha256",
+        "b3cd1a4fdaf2fdd6bfb611457cf71943285e6a89cc317eacc88f4bef1515fcee",
+        "--assets-receipt",
+        "/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--device",
+        "cuda:0",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-radius-20261120/Reach-EA-41030",
+        "--source-commit",
+        "255b737b69c61481e094043789f1ac6ae53a04e2"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-radius-20261120/Reach-EA-41030",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/third-radius-41030-20261120.log",
+      "status": "running",
+      "started_unix": 1795175213.0317411,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 400000,
+      "required_steps_field": "training_steps"
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    2715499
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}
