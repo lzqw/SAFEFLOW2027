@@ -1,5 +1,7 @@
 # 目标证据台账：不把局部DEV进展当作全面完成
 
+2026-11-20 17:35：A100同80K候选57.5/60mm98%/90%对Metric90%/72%，但候选训练成功少57并多1timeout/stall，不联合达标。第三Reach父162K已2292次成功，120K DEV55mm21/30；Payload两个独立父116K/60K仍零成功，保留全部timeout，未当安全收益。四条仍live，完整预算继续，详见[父诊断及同80K证据](PARENTS_AND_MATCHED80K_1735_20261120_ZH.md)。
+
 2026-11-20 16:06：新增Payload两个真正独立原生EA父seed42028/42029各300K，A100 GPU1/4080共享GPU0已实际更新，属于父准备而非Payload优化胜出。A100 Reach Metric固定40K的57.5/60mm为86%/68%，候选95%/86%，训练违规112对16，但候选安全成功少18且多1次timeout/stall，不能宣布联合领先。第三Reach父41K仍零成功，完整保留。详见[新执行与40K证据](PAYLOAD_INDEPENDENT_PARENTS_STARTED_20261120_ZH.md)。
 
 2026-11-20 15:38：双seed P5+2mm固定550K终点sampled的57.5mm98%/99%、60mm91%/97%，均值98.5%/94%、60mm最差91%和SD4.24pp，达到Reach数值目标。候选训练违规合计120对固定138，但成功少53、timeout/stall各3对2，不能认定联合优胜。4080三方法450K/9600个DEV回合全齐；A100最后Metric在15:34新增32K仍live。第三独立父seed41030已于4080从头启动300K，不是第三seed方法确认；Payload、Panda最终配置回归、SafeReach早期和新独立测试仍缺。详见[完整终点与后续执行报告](CROSSSEED_FIVE_ENDPOINTS_AND_THIRD_PARENT_20261120_ZH.md)。下方更早记录及表格反映当时状态，不能覆盖本次更新。

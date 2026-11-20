@@ -32,6 +32,8 @@
 
 ## SAFEFlow：当前实验与程序入口
 
+2026-11-20 17:35：[最新父学习诊断与同80K三方法对照](reports/simulation_optimization_v12/PARENTS_AND_MATCHED80K_1735_20261120_ZH.md)：第三Reach父已恢复，Payload两个父仍零成功；四条完整预算继续，全部失败保留。候选80K困难几何优于Metric，但训练成功/timeout代价仍不支持全面最优。
+
 2026-11-20 16:06：[A100空出的GPU1与4080已启动两个独立Payload父，各固定300K](reports/simulation_optimization_v12/PAYLOAD_INDEPENDENT_PARENTS_STARTED_20261120_ZH.md)。原Reach Metric和第三Reach父继续，共四条真实训练；已有40K同期Metric及[更新学习曲线](reports/simulation_optimization_v12/crossseed_learning_curves_1605_20261120/reach_crossseed_progress.png)。这一步补独立父基础，不代表Payload优化已经完成。
 
 2026-11-20 15:38更新：v12双seed三方法900K开发对照已有五个完整终点，A100最后Metric仍运行。

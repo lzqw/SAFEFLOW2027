@@ -1,0 +1,65 @@
+{
+  "status": "observed_native_parent_development_snapshot",
+  "host": "CTAlab",
+  "unix_time": 1795167157.9897895,
+  "parents": [
+    {
+      "training_seed": 42028,
+      "task": "Payload",
+      "steps": 60000,
+      "budget": 300000,
+      "episodes": 655,
+      "training_safe_successes": 0,
+      "training_violation_count": 86,
+      "training_safe_timeouts": 569,
+      "learner_updates": 58000,
+      "reward_updates": 116000,
+      "actor_updates": 28500,
+      "first_success_logged_at_or_before_step": null,
+      "no_success_observed_through_step": 60000,
+      "recent_safe_success": 0.0,
+      "recent_return": -1.6039494084072359,
+      "alpha": 6.222394586075097e-05,
+      "safety_multiplier": 0.2547189798729421,
+      "q_policy_mean": -0.3835470974445343,
+      "policy_cost": 0.00014343002112582326,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 5274.55489261169,
+      "recent_window_sps": 10.046116939271005,
+      "approximate_remaining_hours": 6.636063174425314,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": false
+    }
+  ],
+  "native_handles": [
+    {
+      "training_seed": 42028,
+      "native_pid": 452062,
+      "native_handle_live": true
+    }
+  ],
+  "provenance": [
+    {
+      "training_seed": 42028,
+      "file": "runs-payload-parents-20261120/Payload-EA-42028/run_config.json",
+      "sha256": "89bb689d6d5a84a87a4e41918e1ca70309074491a2066763a57f23de69621744",
+      "bytes": 10010
+    },
+    {
+      "training_seed": 42028,
+      "file": "runs-payload-parents-20261120/Payload-EA-42028/progress.jsonl",
+      "sha256": "f2ce95a524bf9cb86fc1ddf5fd5f3ecdd8e52721bcc2fc85a2d65b0fce93aae0",
+      "bytes": 78670
+    }
+  ],
+  "development_nodes": 0,
+  "development_episodes": 0,
+  "complete_three_seed_confirmation": false,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0
+}

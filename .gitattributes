@@ -42,3 +42,4 @@ reports/star/shapo_p47_four_env_artifacts/**/*.csv binary -eol
 # Cross-seed figure provenance binds native CSV bytes, including CRLF.
 reports/simulation_optimization_v12/crossseed_dev*/*.csv -text -eol whitespace=cr-at-eol
 reports/simulation_optimization_v12/crossseed_complete_41029_20261120/*.csv -text -eol whitespace=cr-at-eol
+reports/simulation_optimization_v12/parent_progress_1735_20261120/**/*.csv -text -eol whitespace=cr-at-eol

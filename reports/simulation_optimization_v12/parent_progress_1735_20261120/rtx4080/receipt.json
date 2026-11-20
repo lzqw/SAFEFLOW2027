@@ -1,0 +1,129 @@
+{
+  "status": "observed_native_parent_development_snapshot",
+  "host": "447",
+  "unix_time": 1795167158.1976728,
+  "parents": [
+    {
+      "training_seed": 41030,
+      "task": "Reach",
+      "steps": 162000,
+      "budget": 300000,
+      "episodes": 3498,
+      "training_safe_successes": 2292,
+      "training_violation_count": 360,
+      "training_safe_timeouts": 846,
+      "learner_updates": 160000,
+      "reward_updates": 320000,
+      "actor_updates": 79500,
+      "first_success_logged_at_or_before_step": 67000,
+      "no_success_observed_through_step": null,
+      "recent_safe_success": 0.9,
+      "recent_return": 8.759275008946538,
+      "alpha": 0.0007564411498606205,
+      "safety_multiplier": 0.32335685070120934,
+      "q_policy_mean": 6.270461082458496,
+      "policy_cost": 0.0045906491577625275,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 6879.787231263006,
+      "recent_window_sps": 19.881753508575496,
+      "approximate_remaining_hours": 1.9280660187643515,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": false
+    },
+    {
+      "training_seed": 42029,
+      "task": "Payload",
+      "steps": 116000,
+      "budget": 300000,
+      "episodes": 1203,
+      "training_safe_successes": 0,
+      "training_violation_count": 85,
+      "training_safe_timeouts": 1118,
+      "learner_updates": 114000,
+      "reward_updates": 228000,
+      "actor_updates": 56500,
+      "first_success_logged_at_or_before_step": null,
+      "no_success_observed_through_step": 116000,
+      "recent_safe_success": 0.0,
+      "recent_return": -1.1460161816635879,
+      "alpha": 1.3342018974071834e-05,
+      "safety_multiplier": 0.024658820220516908,
+      "q_policy_mean": -0.31684207916259766,
+      "policy_cost": 2.920144470408559e-05,
+      "actor_updates_advancing_in_last_log_interval": true,
+      "elapsed_seconds": 5270.569949611963,
+      "recent_window_sps": 19.881459524585527,
+      "approximate_remaining_hours": 2.5707927050278587,
+      "eta_includes_future_evaluation_overhead": false,
+      "independent_test_used": false,
+      "winner_confirmation": false,
+      "complete_native_receipt_observed": false
+    }
+  ],
+  "native_handles": [
+    {
+      "training_seed": 41030,
+      "native_pid": 2203200,
+      "native_handle_live": true
+    },
+    {
+      "training_seed": 42029,
+      "native_pid": 2213979,
+      "native_handle_live": true
+    }
+  ],
+  "provenance": [
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/run_config.json",
+      "sha256": "b3cd1a4fdaf2fdd6bfb611457cf71943285e6a89cc317eacc88f4bef1515fcee",
+      "bytes": 10012
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_120000.json",
+      "sha256": "d7c03a2119fdaecf59ad29d6506c49a243822d6540da926a413fe88b2ffb5ddb",
+      "bytes": 412621
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/evaluation_60000.json",
+      "sha256": "cf96a7b1ffc1cd7a4438f8fe0af06134621269214b9ae8815541378972a7e767",
+      "bytes": 1236170
+    },
+    {
+      "training_seed": 41030,
+      "file": "runs-third-parent-20261120/Reach-EA-41030/progress.jsonl",
+      "sha256": "b3353b61b0ecdcbc614107dba96ae71fc9449ba76465f7cf479b17b25f42540a",
+      "bytes": 214058
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/run_config.json",
+      "sha256": "809a892efd7372c47aeba08c3963a19820c6553d3ca8dc19281fe399782accb1",
+      "bytes": 10016
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/evaluation_60000.json",
+      "sha256": "3b45a5c1539f8bab90978f8adef8070b523fe167bce38b7c927c66e009baeb17",
+      "bytes": 1248129
+    },
+    {
+      "training_seed": 42029,
+      "file": "runs-payload-parents-20261120/Payload-EA-42029/progress.jsonl",
+      "sha256": "73a3c144ebfdad3336c84d6ec5979020c87c9fde4109da3a04792422e0b05960",
+      "bytes": 152225
+    }
+  ],
+  "development_nodes": 9,
+  "development_episodes": 270,
+  "complete_three_seed_confirmation": false,
+  "independent_test_used": false,
+  "winner_confirmation": false,
+  "new_training_steps": 0,
+  "new_simulation_controls": 0,
+  "physical_robot_interactions": 0
+}
