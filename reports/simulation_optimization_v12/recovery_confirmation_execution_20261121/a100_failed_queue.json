@@ -1,0 +1,45 @@
+{
+  "pid": 452060,
+  "source_commit": "870e7e81ce29ab0b06a24fe546544d1f848ad666",
+  "status": "completed_with_failures",
+  "jobs": [
+    {
+      "name": "Payload-EA-independent-42028",
+      "pid": 452062,
+      "command": [
+        "/home/lzqw/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.train_payload_fresh_parents_20261120",
+        "--plan",
+        "configs/paper_crax_payload/simulation_v12_payload_fresh_parents_20261120.json",
+        "--seed",
+        "42028",
+        "--assets-receipt",
+        "/home/lzqw/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json",
+        "--device",
+        "cuda:0",
+        "--output",
+        "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-payload-parents-20261120/Payload-EA-42028",
+        "--source-commit",
+        "870e7e81ce29ab0b06a24fe546544d1f848ad666"
+      ],
+      "output": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/runs-payload-parents-20261120/Payload-EA-42028",
+      "log": "/storage_0/SAFEFLOW2027_lzqw_uid1007/simulation_v12/logs/payload-parent-42028-20261120.log",
+      "status": "failed_not_restarted",
+      "started_unix": 1795161851.7033641,
+      "slot_id": 0,
+      "visible_devices": "1",
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "required_steps_field": "training_steps",
+      "exit_code": 1,
+      "finished_unix": 1795179075.5600972
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

@@ -1,0 +1,37 @@
+{
+  "pid": 743366,
+  "source_commit": "075f8f5ec117e2b331b3909ba1521c0a02981b7c",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "Payload42028-recovery150Kto300K",
+      "pid": 743368,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.resume_payload42028_20261121",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload-recovery-20261121/Payload-EA-42028",
+        "--source-commit",
+        "075f8f5ec117e2b331b3909ba1521c0a02981b7c"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload-recovery-20261121/Payload-EA-42028",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/payload42028-recovery-20261121.log",
+      "status": "running",
+      "started_unix": 1795244748.0960712,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "required_steps_field": "training_steps"
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    743368
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

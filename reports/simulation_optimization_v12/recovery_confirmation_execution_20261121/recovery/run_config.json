@@ -1,0 +1,279 @@
+{
+  "robot_family": "Piper",
+  "task": "Payload",
+  "method": "EA",
+  "training_seed": 42028,
+  "source_commit": "075f8f5ec117e2b331b3909ba1521c0a02981b7c",
+  "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+  "configuration": {
+    "protocol": "paper_crax_payload_v1",
+    "robot_family": "Piper",
+    "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+    "hardware_identification": "user-confirmed standard Piper and standard gripper; physical calibration still pending",
+    "physical_motion_enabled": false,
+    "simulation_training_budget": 3000000,
+    "tasks": [
+      "Reach",
+      "Payload"
+    ],
+    "methods": [
+      "Iso",
+      "Iso-Low",
+      "EA"
+    ],
+    "development_seed": 42028,
+    "initial_steps_per_trial": 300000,
+    "simulation": {},
+    "shared_learner": {
+      "hidden_width": 128,
+      "actor_lr": 0.0001,
+      "critic_lr": 0.0003,
+      "batch_size": 256,
+      "replay_capacity": 300000,
+      "random_transitions": 2000,
+      "critic_only_updates": 1000,
+      "learner_updates_per_transition": 1,
+      "reward_updates_per_round": 2,
+      "actor_update_interval": 2,
+      "margin_ema_tau": 0.005,
+      "flow_steps": 4,
+      "rho": 0.25,
+      "reference_variance": 0.04,
+      "iso_low_reference_variance": 0.01,
+      "kinetic_alpha_per_variance": 0.02,
+      "energy_target_per_action": 0.25,
+      "reward_scaling": 1.0,
+      "cost_scaling": 1.0,
+      "normalizer": "identity_after_explicit_simulator_units",
+      "cost_mode": "episodic_binary",
+      "episode_budget": 0.1
+    },
+    "num_envs": 2,
+    "checkpoint_fractions": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "log_every": 1000,
+    "checkpoint_every": 25000,
+    "evaluation": {
+      "development_episodes_per_condition": 30,
+      "validation_episodes_per_condition": 50,
+      "independent_test_episodes_per_condition": 100,
+      "development_layout_seed_start": 12010000,
+      "validation_layout_seed_start": 61027,
+      "independent_test_layout_seed_start": 71027,
+      "action_sampling_seed": 12011000,
+      "conditions": [
+        {
+          "name": "nominal",
+          "simulation_overrides": {}
+        },
+        {
+          "name": "new_geometry",
+          "simulation_overrides": {
+            "obstacle_radius_m": 0.055
+          }
+        },
+        {
+          "name": "execution_scale_085",
+          "simulation_overrides": {},
+          "action_scale": 0.85
+        }
+      ],
+      "selection": "same five checkpoints eachmethod;riskqualified then safe success then capped time;otherwise explicit Pareto",
+      "independent_test_used_for_selection": false
+    },
+    "provenance": "fresh official Piper simulation only; no Panda weights and no physical calibration assertion"
+  },
+  "asset_receipt": {
+    "model_repository": "https://github.com/agilexrobotics/piper_ros.git",
+    "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+    "source_urdf": "/home/carla/4T/SAFEFLOW2027_PAPER/vendor/piper-model-cache/piper_ros-ac41fcbcdda598f01b51cf6175ed9a24d0dacadc/src/piper_description/urdf/piper_description.urdf",
+    "resolved_urdf": "/home/carla/4T/SAFEFLOW2027_PAPER/vendor/piper-model-cache/piper-resolved-ac41fcbcdda598f01b51cf6175ed9a24d0dacadc.urdf",
+    "source_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+    "resolved_sha256": "ea2bca37a168109331091b1779aa86e7084e0d05ae30b8decc4da21c66cce030",
+    "meshes": [
+      {
+        "path": "src/piper_description/meshes/base_link.STL",
+        "sha256": "fd4a3d6d0266205fe3f725f048645be66592c23564db22e08b0807d5569b2c64"
+      },
+      {
+        "path": "src/piper_description/meshes/base_link.STL",
+        "sha256": "fd4a3d6d0266205fe3f725f048645be66592c23564db22e08b0807d5569b2c64"
+      },
+      {
+        "path": "src/piper_description/meshes/link1.STL",
+        "sha256": "9ee6e1d67c0241f42a0dbaf5c676d19230375ed078ee1943bb8c4c37ab303d14"
+      },
+      {
+        "path": "src/piper_description/meshes/link1.STL",
+        "sha256": "9ee6e1d67c0241f42a0dbaf5c676d19230375ed078ee1943bb8c4c37ab303d14"
+      },
+      {
+        "path": "src/piper_description/meshes/link2.STL",
+        "sha256": "0d37675b699b643f2e15348de99aed535fac10dc5f09a79b8e4b0acfaf4e0378"
+      },
+      {
+        "path": "src/piper_description/meshes/link2.STL",
+        "sha256": "0d37675b699b643f2e15348de99aed535fac10dc5f09a79b8e4b0acfaf4e0378"
+      },
+      {
+        "path": "src/piper_description/meshes/link3.STL",
+        "sha256": "e8ae51f17c0c7f6d67b753922e2cc269f5e8372a65734f859231639a64fe8fad"
+      },
+      {
+        "path": "src/piper_description/meshes/link3.STL",
+        "sha256": "e8ae51f17c0c7f6d67b753922e2cc269f5e8372a65734f859231639a64fe8fad"
+      },
+      {
+        "path": "src/piper_description/meshes/link4.STL",
+        "sha256": "efa33022976218f246f736a6133494b5d0e5486e8b50b52900c42f285ae85558"
+      },
+      {
+        "path": "src/piper_description/meshes/link4.STL",
+        "sha256": "efa33022976218f246f736a6133494b5d0e5486e8b50b52900c42f285ae85558"
+      },
+      {
+        "path": "src/piper_description/meshes/link5.STL",
+        "sha256": "a1c69d1c7f6f8c60e2c82331c0f444725200ed4053d3e5ec23aa82cb5db5b29f"
+      },
+      {
+        "path": "src/piper_description/meshes/link5.STL",
+        "sha256": "a1c69d1c7f6f8c60e2c82331c0f444725200ed4053d3e5ec23aa82cb5db5b29f"
+      },
+      {
+        "path": "src/piper_description/meshes/link6.STL",
+        "sha256": "88374973bc3bd9e7389b5853cd6e555af9731c30b658b1ee6f85be34a126cb92"
+      },
+      {
+        "path": "src/piper_description/meshes/link6.STL",
+        "sha256": "88374973bc3bd9e7389b5853cd6e555af9731c30b658b1ee6f85be34a126cb92"
+      },
+      {
+        "path": "src/piper_description/meshes/gripper_base.STL",
+        "sha256": "2895bfa6f1eef2d0ad2cb9dfdedd5f6c760ec07388bcde2b4d1e412e1189c9cb"
+      },
+      {
+        "path": "src/piper_description/meshes/gripper_base.STL",
+        "sha256": "2895bfa6f1eef2d0ad2cb9dfdedd5f6c760ec07388bcde2b4d1e412e1189c9cb"
+      },
+      {
+        "path": "src/piper_description/meshes/link7.STL",
+        "sha256": "475a7d8db056524d7659fadf5a2c307d62791047b6214d733dfc7846ed1c613d"
+      },
+      {
+        "path": "src/piper_description/meshes/link7.STL",
+        "sha256": "475a7d8db056524d7659fadf5a2c307d62791047b6214d733dfc7846ed1c613d"
+      },
+      {
+        "path": "src/piper_description/meshes/link8.STL",
+        "sha256": "3f88d534a85e28a33ef7d2061adacbd1d25214aa9325f9e464aad0f9e4b74606"
+      },
+      {
+        "path": "src/piper_description/meshes/link8.STL",
+        "sha256": "3f88d534a85e28a33ef7d2061adacbd1d25214aa9325f9e464aad0f9e4b74606"
+      }
+    ],
+    "hardware_matched": false,
+    "asset_edits": "package URI resolution only",
+    "simulator": "PyBullet",
+    "real_interactions": 0
+  },
+  "task_definition": {
+    "robot_family": "Piper",
+    "config": {
+      "task": "Payload",
+      "model_commit": "ac41fcbcdda598f01b51cf6175ed9a24d0dacadc",
+      "horizon": 100,
+      "physics_dt_s": 0.002,
+      "substeps": 20,
+      "displacement_scale_m": 0.01,
+      "safety_distance_m": 0.015,
+      "success_distance_m": 0.03,
+      "obstacle_radius_m": 0.045,
+      "payload_half_extents_m": [
+        0.025,
+        0.018,
+        0.025
+      ],
+      "payload_mass_kg": 0.05,
+      "tcp_from_flange_m": [
+        0.0,
+        0.0,
+        0.1358
+      ],
+      "start_tcp_base_m": [
+        0.32,
+        -0.12,
+        0.28
+      ],
+      "goal_tcp_base_m": [
+        0.32,
+        0.12,
+        0.28
+      ],
+      "workspace_min_m": [
+        0.05,
+        -0.45,
+        0.05
+      ],
+      "workspace_max_m": [
+        0.65,
+        0.45,
+        0.65
+      ],
+      "hardware_matched": false
+    },
+    "model_source": "https://github.com/agilexrobotics/piper_ros.git",
+    "source_urdf_sha256": "c1a5c29ae9b91160557ed02bddd47365a71f0eb1653abb4997eb34f124021486",
+    "observation_units": "joint rad/pi; joint velocity rad/s /4; positions/extent m; quaternion xyzw; mass kg",
+    "action": "normalized deltaXYZ in robot base, fixed reset orientation",
+    "task_geometry": "provisional reach/payload around spherical obstacle, not calibrated real robot",
+    "physical_connection": false,
+    "hardware_matched": false,
+    "task_completion": "actual payload centroid for Payload; TCP for Reach",
+    "reset_admissibility": "bounded static safe/reachable start AND goal; common to all policies",
+    "inverse_kinematics": "same native solver1200maxiterations vs provisional200; common to all policies",
+    "learned_action_oracle_selection": false
+  },
+  "native_pid": 743368,
+  "host": "447",
+  "device": "cuda:0",
+  "visible_devices": "0",
+  "initial_steps": 150000,
+  "total_transition_budget": 300000,
+  "initialization": "native_Piper_full_continuation",
+  "task_transfer": null,
+  "geometry_adaptation": null,
+  "updates_per_vector_step": 2,
+  "learner_updates_per_transition": 1.0,
+  "replay_samples_per_transition": 256.0,
+  "parent_checkpoint": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/payload42028-recovery-input-20261121/latest_full.pt",
+  "engineering": false,
+  "reference_variance": 0.04,
+  "energy_target": 18.75,
+  "initial_alpha": 0.0008,
+  "sampling_and_energy_same_reference": true,
+  "normalizer": "identity_after_explicit_simulator_units",
+  "scientific_early_stopping": false,
+  "automatic_restart": false,
+  "physical_motion_enabled": false,
+  "source_files_sha256": {
+    "piper_train": "89a2493e87ef6b03ee93a41560aa43a710e383d4dbf326c416fb47246e28a7c3",
+    "piper_helpers": "e9ab596997ed927b2c39204c8f9f0566c9c9d54f517a0ff8516c1f13c0ee4a88",
+    "piper_parallel": "1bfea621626c2a45b518d12f843e20018c8f53894de3d021928d16833a75c24b",
+    "stable_learner": "e2e0f180159e6869c2c7e91078f3788bebeadf8cd370c7e953d85cf23152d841",
+    "batched_geometry": "44ef48f61b61b36987bdcbef33ae6df59ce8ad19ce870ca6b77638bbeb2d207d",
+    "simulator": "50226087fe38f6596aa35e7b6eb66f8f8441b0b934e67d8d020c73fbfff7d6ce"
+  },
+  "software": {
+    "torch": "2.7.1+cu118",
+    "cuda": "11.8",
+    "numpy": "1.24.3",
+    "gymnasium": "1.2.3",
+    "pybullet": "3.2.7"
+  }
+}

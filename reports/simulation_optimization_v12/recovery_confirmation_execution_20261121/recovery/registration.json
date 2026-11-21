@@ -1,0 +1,18 @@
+{
+  "source_commit": "075f8f5ec117e2b331b3909ba1521c0a02981b7c",
+  "original_source_commit": "870e7e81ce29ab0b06a24fe546544d1f848ad666",
+  "checkpoint_sha256": "6839e61e35f7b5ead69b1cf9f1c4b9d27b24141cb3f1795a33aed538fa4f0579",
+  "original_manifest_sha256": "89bb689d6d5a84a87a4e41918e1ca70309074491a2066763a57f23de69621744",
+  "original_progress_sha256": "0d185be98c04d29734c9a2a94e63d9e3e1c98b15c7edd4f15a4e83c496505b5e",
+  "restored_steps": 150000,
+  "original_observed_steps": 175000,
+  "target_steps": 300000,
+  "abandoned_segment_steps": 25000,
+  "reason": "A100 data-disk40GiB guard;original exit1 retained",
+  "restore": "networks_optimizers_replay_dual_alpha_environments_partial_episodes_CPU_and_single_CUDA_RNG",
+  "cross_hardware_bitwise_equivalence_claimed": false,
+  "fresh_initialization": false,
+  "independent_test_used": false,
+  "automatic_retry": false,
+  "original_evidence_retained": true
+}

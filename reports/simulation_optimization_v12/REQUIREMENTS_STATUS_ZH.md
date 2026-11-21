@@ -1,5 +1,7 @@
 # 目标证据台账：不把局部DEV进展当作全面完成
 
+2026-11-21 15:08：第三Reach扩域400K完成，55mm已训练域24/30；第三seed固定三方法各150K确认已实际启动，两P5新增1K、Metric排队，仍未完成三seed方法确认。Payload42029完整300K零成功是负结果；A10042028在175K因磁盘保护exit1，盘25G，转4080从150K实际恢复到151K，原丢失25K完整保留。不能将175K中断说成完成或低违规说成任务改进。见[恢复、完整失败与新确认执行](OVERNIGHT_RESULTS_RECOVERY_AND_THIRD_CONFIRMATION_20261121_ZH.md)。
+
 2026-11-20 19:48：900K六条/19200DEV全部完成并自动归档；候选sampled57.5/60mm均值98.5%/94%，Metric92.5%/85.5%，违规合计120对575（少79.13%），但成功9701对9998、timeout/stall各3对1，联合最优仍失败。第三父固定300K已完成，55mm9/30的回退保留；真实SHA绑定后原生100K扩域已实际新增1K。两Payload父仍零成功，Panda/SafeReach/独立测试等仍未完成。见[完整最终对照与新运行](CROSSSEED900K_COMPLETE_AND_THIRD_RADIUS_STARTED_20261120_ZH.md)。
 
 2026-11-20 18:48：同100K A100候选sampled57.5/60mm97%/88%、zero_noise100%/98%，Metric分别87%/77%、94%/93%；违规53对229但训练成功少78、多1timeout/stall，仍不联合达标。第三Reach父240K DEV55mm回退16/30，两个Payload父203K/102K仍零成功；全部保留，四条继续固定预算。详见[新结果与反证](MATCHED100K_AND_PARENT_REGRESSION_1848_20261120_ZH.md)。

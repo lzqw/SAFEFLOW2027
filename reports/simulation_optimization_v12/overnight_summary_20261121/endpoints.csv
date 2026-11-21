@@ -1,0 +1,4 @@
+run,training_seed,task,status,initial_steps,observed_steps,target_steps,observed_segment_steps,training_safe_successes,training_violation_count,training_safe_timeouts,inherited_counts_included,independent_test_used
+third_radius,41030,Reach,completed,300000,400000,400000,100000,10309,1139,846,True,False
+payload42029,42029,Payload,completed,0,300000,300000,300000,0,270,2929,False,False
+payload42028_failure,42028,Payload,engineering_interrupted,0,175000,300000,175000,0,167,1678,False,False
