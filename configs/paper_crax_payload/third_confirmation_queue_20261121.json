@@ -1,0 +1,74 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-recovery-confirmation-20261121",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_third_confirmation_20261121.json",
+  "slots": 2,
+  "poll_seconds": 30,
+  "minimum_free_disk_bytes": 51539607552,
+  "gpu_admission": {
+    "index": "slot",
+    "minimum_free_mib": 2048
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache",
+      "TORCH_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache/torch"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache",
+      "TORCH_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache/torch"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Reach-41030-P5-fixed",
+      "module": "scripts.paper_crax_payload.train_third_seed_confirmation_20261121",
+      "arguments": [
+        "--arm",
+        "P5-fixed"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-confirmation-20261121/Reach-41030-P5-fixed",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/third-confirmation-P5-fixed-20261121.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41030-P5-activation2mm",
+      "module": "scripts.paper_crax_payload.train_third_seed_confirmation_20261121",
+      "arguments": [
+        "--arm",
+        "P5-activation2mm"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-confirmation-20261121/Reach-41030-P5-activation2mm",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/third-confirmation-P5-activation2mm-20261121.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    },
+    {
+      "name": "Reach-41030-Metric-only",
+      "module": "scripts.paper_crax_payload.train_third_seed_confirmation_20261121",
+      "arguments": [
+        "--arm",
+        "Metric-only"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-confirmation-20261121/Reach-41030-Metric-only",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/third-confirmation-Metric-only-20261121.log",
+      "require_completed_receipt": true,
+      "required_steps": 550000
+    }
+  ],
+  "automatic_retry": false,
+  "foreign_processes_changed": false
+}

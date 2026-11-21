@@ -1,0 +1,38 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-recovery-confirmation-20261121",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_payload42028_recovery_20261121.json",
+  "slots": 1,
+  "poll_seconds": 30,
+  "minimum_free_disk_bytes": 51539607552,
+  "gpu_admission": {
+    "index": "slot",
+    "minimum_free_mib": 2048
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache",
+      "TORCH_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache/torch"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Payload42028-recovery150Kto300K",
+      "module": "scripts.paper_crax_payload.resume_payload42028_20261121",
+      "arguments": [],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-payload-recovery-20261121/Payload-EA-42028",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/payload42028-recovery-20261121.log",
+      "require_completed_receipt": true,
+      "required_steps": 300000,
+      "required_steps_field": "training_steps"
+    }
+  ],
+  "automatic_retry": false,
+  "foreign_processes_changed": false
+}

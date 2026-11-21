@@ -1,0 +1,20 @@
+{
+  "protocol": "simulation_v12_reach_third_seed_three_arm150K",
+  "compiled_training_seed": 41030,
+  "parent_sha256": "9fe1abe406ff7a18dd4415018605e487039bfc7fdc8c95548a3f180201d8f0f9",
+  "parent_source_commit": "255b737b69c61481e094043789f1ac6ae53a04e2",
+  "parent_path": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runs-third-radius-20261120/Reach-EA-41030/full_400000.pt",
+  "parent_steps": 400000,
+  "target_steps": 550000,
+  "new_training_steps": 450000,
+  "reference_template": "configs/paper_crax_payload/simulation_v12_reach_crossseed_template.json",
+  "independent_test_used": false,
+  "scientific_early_stopping": false,
+  "automatic_retry": false,
+  "selection": "actual_fixed400K_third_parent_no_best_node_selection",
+  "host": "447",
+  "data_root": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+  "visible_devices": "0",
+  "projected_total_output_gib": 8,
+  "minimum_free_floor_gib": 40
+}
