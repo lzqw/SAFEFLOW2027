@@ -1,0 +1,84 @@
+{
+  "protocol": {
+    "protocol": "simulation_v12_selected_seed_frozen_holdout_20261123",
+    "selection_decision": "Retrospective selection using prior DEV, after user explicitly removed every-seed-optimal requirement; all failed seeds retained.",
+    "claim_scope": "Selected task-specific models only; not all-seed or all-task superiority and not proof of training-risk improvement.",
+    "deployment_mode": "zero_noise",
+    "episodes_per_condition": 200,
+    "host": "447",
+    "data_root": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12",
+    "new_training_steps": 0,
+    "optimizer_updates": 0,
+    "holdout_used_for_selection": false,
+    "independent_test_used": true,
+    "repeat_after_outcome_for_model_selection": false,
+    "automatic_retry": false,
+    "physical_robot_interactions": 0,
+    "tasks": {
+      "Reach": {
+        "training_seed": 41029,
+        "layout_seed_start": 12310000,
+        "action_seed_start": 12311000,
+        "cases": [
+          {
+            "name": "SAFEFlow-Reach-41029-2mm",
+            "arm": "P5-activation2mm",
+            "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+            "relative_run": "runs-crossseed900K-20261120/Reach-41029-P5-activation2mm",
+            "checkpoint_file": "full_new_150000.pt",
+            "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301",
+            "new_training_steps": 150000,
+            "total_steps": 550000
+          },
+          {
+            "name": "Metric-Reach-41029",
+            "arm": "Metric-only",
+            "module": "scripts.paper_crax_payload.train_reach_crossseed_v12",
+            "relative_run": "runs-crossseed900K-20261120/Reach-41029-Metric-only",
+            "checkpoint_file": "full_new_150000.pt",
+            "checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006",
+            "new_training_steps": 150000,
+            "total_steps": 550000
+          }
+        ]
+      },
+      "Payload": {
+        "training_seed": 41027,
+        "layout_seed_start": 12320000,
+        "action_seed_start": 12321000,
+        "cases": [
+          {
+            "name": "SAFEFlow-Payload-41027-4mm",
+            "arm": "Payload-activation4mm",
+            "module": "scripts.paper_crax_payload.train_piper_followup_v12",
+            "relative_run": "runs-followup/piper_payload-Payload-activation4mm",
+            "checkpoint_file": "full_new_100000.pt",
+            "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+            "new_training_steps": 100000,
+            "total_steps": 220000
+          },
+          {
+            "name": "Metric-Payload-41027",
+            "arm": "Payload-Metric-only",
+            "module": "scripts.paper_crax_payload.train_payload_comparison_v12",
+            "relative_run": "runs-payload/piper_payload-Payload-Metric-only",
+            "checkpoint_file": "full_new_100000.pt",
+            "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c",
+            "new_training_steps": 100000,
+            "total_steps": 220000
+          }
+        ]
+      }
+    }
+  },
+  "task": "Reach",
+  "source_commit": "b6192b9bd264dd4731ee5f9edfcec209edf00f2b",
+  "plan_sha256": "f146344f53fdd9360067560cd088d5cceea7f660b44cf77764a7acbc10e7b55d",
+  "native_pid": 1661850,
+  "host": "447",
+  "retrospective_DEV_model_selection": true,
+  "prospective_seed_disjoint_holdout": true,
+  "independent_test_used": true,
+  "training_launches": 0,
+  "physical_robot_interactions": 0
+}

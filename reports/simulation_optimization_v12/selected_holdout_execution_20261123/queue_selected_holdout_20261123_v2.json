@@ -1,0 +1,65 @@
+{
+  "pid": 1661848,
+  "source_commit": "b6192b9bd264dd4731ee5f9edfcec209edf00f2b",
+  "status": "running",
+  "jobs": [
+    {
+      "name": "Reach-selected-seed-holdout",
+      "pid": 1661850,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+        "--task",
+        "Reach",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Reach",
+        "--source-commit",
+        "b6192b9bd264dd4731ee5f9edfcec209edf00f2b"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Reach",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Reach-20261123-v2.log",
+      "status": "running",
+      "started_unix": 1795402976.9301512,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes"
+    },
+    {
+      "name": "Payload-selected-seed-holdout",
+      "pid": 1661852,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+        "--task",
+        "Payload",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Payload",
+        "--source-commit",
+        "b6192b9bd264dd4731ee5f9edfcec209edf00f2b"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Payload",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Payload-20261123-v2.log",
+      "status": "running",
+      "started_unix": 1795402976.941782,
+      "slot_id": 1,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes"
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [
+    1661850,
+    1661852
+  ],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}

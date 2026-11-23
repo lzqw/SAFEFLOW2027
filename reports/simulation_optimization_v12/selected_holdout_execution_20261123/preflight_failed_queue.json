@@ -1,0 +1,66 @@
+{
+  "pid": 1660594,
+  "source_commit": "c2069cfb8f41393005592ad1ced2b3251f595688",
+  "status": "completed_with_failures",
+  "jobs": [
+    {
+      "name": "Reach-selected-seed-holdout",
+      "pid": 1660596,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+        "--task",
+        "Reach",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Reach",
+        "--source-commit",
+        "c2069cfb8f41393005592ad1ced2b3251f595688"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Reach",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Reach-20261123.log",
+      "status": "failed_not_restarted",
+      "started_unix": 1795402813.3395169,
+      "slot_id": 0,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes",
+      "exit_code": 1,
+      "finished_unix": 1795402818.3532784
+    },
+    {
+      "name": "Payload-selected-seed-holdout",
+      "pid": 1660598,
+      "command": [
+        "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+        "-u",
+        "-m",
+        "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+        "--task",
+        "Payload",
+        "--output",
+        "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Payload",
+        "--source-commit",
+        "c2069cfb8f41393005592ad1ced2b3251f595688"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Payload",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Payload-20261123.log",
+      "status": "failed_not_restarted",
+      "started_unix": 1795402813.3529727,
+      "slot_id": 1,
+      "visible_devices": "0",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes",
+      "exit_code": 1,
+      "finished_unix": 1795402818.3533046
+    }
+  ],
+  "pending": 0,
+  "live_native_pids": [],
+  "automatic_restart": false,
+  "foreign_processes_changed": false,
+  "admission_wait_reason": null
+}
