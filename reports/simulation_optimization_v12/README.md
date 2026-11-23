@@ -1,5 +1,7 @@
 # v12仿真优化
 
+2026-11-23：[按用户新要求，不再追求每seed最优，保留全三seed并推进有效模型](EVIDENCE_SCOPE_AND_SELECTED_HOLDOUT_20261123_ZH.md)。九条训练已完成1.35M、28800DEV；候选训练违规合计199对Metric1342，但各seed权衡和固定P5崩塌均保留。下一项为预先冻结的Reach41029/Payload41027同模式新布局评测3200回合，不追加失败seed训练，不将成功案例宣传为跨seed稳定。
+
 2026-11-21 15:08：[昨夜完整结果、A100磁盘中断转4080恢复、第三seed三方法确认已启动](OVERNIGHT_RESULTS_RECOVERY_AND_THIRD_CONFIRMATION_20261121_ZH.md)。第三Reach400K DEV30/24/30；Payload42029完整300K仍零成功。A10042028于175K空间保护退出，已从最后真实150K断点恢复到151K，原丢失25K保留；第三seed两P5各新增1K、Metric排队。A100盘约25G，暂不新增大任务；4080三条共享运行，启动快照GPU98%。
 
 2026-11-20 19:48：[900K六条全部完成、19200个DEV回合完整结论，第三Reach原生100K扩域已启动](CROSSSEED900K_COMPLETE_AND_THIRD_RADIUS_STARTED_20261120_ZH.md)。候选sampled57.5/60mm均值98.5%/94%对Metric92.5%/85.5%，训练违规少79.13%但成功少297、timeout/stall各多2，尚不联合最优。第三父300K的55mm仅9/30，保留回退；扩域已实际新增1K。两个Payload父仍运行且零成功，旧900K归档服务在成功合并后正常结束。

@@ -1,0 +1,115 @@
+{
+  "status": "complete_three_seed_development_evidence",
+  "completed_runs": 9,
+  "completed_new_training_transitions": 1350000,
+  "development_nodes": 288,
+  "development_episodes": 28800,
+  "provenance": [
+    {
+      "seed": 41028,
+      "receipt_sha256": "6c84c673a0edc0e092ef10b433faf33769a318abbfcb21a118bbfa60b79f321d"
+    },
+    {
+      "seed": 41029,
+      "receipt_sha256": "b8a96d81a34c210430e2c10136979dd2feca819a3713afaed32a61add802b951"
+    },
+    {
+      "seed": 41030,
+      "arm": "P5-fixed",
+      "receipt_sha256": "7a5864a259039bbff38dac522e156b3d4aa3f7620de0da971893eab98cae1c79",
+      "evaluations": [
+        {
+          "file": "development_20000.json",
+          "sha256": "85a1e2fb3bb0323570b089cf8ca4cc5dd6865266d71bfe8d5992166ae93a57bf"
+        },
+        {
+          "file": "development_40000.json",
+          "sha256": "ab20ef1bf8a14cc7c34d3300f97c59e0cb5afc0fab272e3897e065d5153faf67"
+        },
+        {
+          "file": "development_60000.json",
+          "sha256": "b0b9c37594a349744f1d0f1a721a8229cfb93780de4d67051c6c342d0a86ae93"
+        },
+        {
+          "file": "development_80000.json",
+          "sha256": "c5c4074dae3d026a9c5b230cf942a940fd9df78fba188e8fd7d086bed3f02c04"
+        },
+        {
+          "file": "development_100000.json",
+          "sha256": "7fcf5ccfa89092e5522b30e5c17704460d81e33cbeff0302176d19af6152c44c"
+        },
+        {
+          "file": "development_150000.json",
+          "sha256": "9b9986a83193cf9b536be8704c59fe40685288575fae0f550fff97fd6582f2cd"
+        }
+      ]
+    },
+    {
+      "seed": 41030,
+      "arm": "P5-activation2mm",
+      "receipt_sha256": "0b35ae418df05a2a1578a44383493528a58e73f8a382b80848fbba5b66e6dae0",
+      "evaluations": [
+        {
+          "file": "development_20000.json",
+          "sha256": "068b0bb758aea3cfb2f81141d3ba60673c28c5d48214ee026baa5dbf528317a4"
+        },
+        {
+          "file": "development_40000.json",
+          "sha256": "e802671aabfc662bf2135dcea2ebc6e120ee1739d5e85175d157c61e0c452761"
+        },
+        {
+          "file": "development_60000.json",
+          "sha256": "36cf667914b622cdc9e4ebb9718b20985ed88d0bc8f66793cbd3ff5354395371"
+        },
+        {
+          "file": "development_80000.json",
+          "sha256": "63e294b7d75567c00daf6dfd0f59cadb1113d465bea7d6622c176f1d5cfb5ee9"
+        },
+        {
+          "file": "development_100000.json",
+          "sha256": "5158bd6bf01cf3b78a1985e12eb9e0467a392620d3c15358d8996e012e2b2885"
+        },
+        {
+          "file": "development_150000.json",
+          "sha256": "03087094d3f8ee69234a5f93f31fbd2d49366d18ed37bf87d55f4a6bf754363f"
+        }
+      ]
+    },
+    {
+      "seed": 41030,
+      "arm": "Metric-only",
+      "receipt_sha256": "d76fbed855d638a7725a36112be1f57b55f3311ef06a44fa36daf6dac728c7e0",
+      "evaluations": [
+        {
+          "file": "development_20000.json",
+          "sha256": "61f584a056811dcc5baf6e6e0a3a64a2061ef0bdcdbca25398e9d6dd3a01eca5"
+        },
+        {
+          "file": "development_40000.json",
+          "sha256": "6d5beb167ebe23c7c01fbc0e0bdcfaae019a39b1a9649e4cecd37da98c688759"
+        },
+        {
+          "file": "development_60000.json",
+          "sha256": "5302b11c675846b8d55182b9a2d18b4278d72b165db17e23f699911ceecad8c9"
+        },
+        {
+          "file": "development_80000.json",
+          "sha256": "79c3cad5d3343855f86d706593576b78f277742f3cf296fb469928ad5672ed64"
+        },
+        {
+          "file": "development_100000.json",
+          "sha256": "53c264b9e9ed17cfbe4fdb0edf5d2efe8413679c60716421d43faf14c82c8620"
+        },
+        {
+          "file": "development_150000.json",
+          "sha256": "b33deabeb2bf601d6ed3e6f396257392cfed099a5d8492cd5d01d20d2fae8866"
+        }
+      ]
+    }
+  ],
+  "independent_test_used": false,
+  "all_failures_retained": true,
+  "every_seed_optimal_required_by_current_user": false,
+  "selected_seed_evidence_not_population_robustness": true,
+  "global_objective_complete": false
+}

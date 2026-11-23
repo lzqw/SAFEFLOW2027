@@ -1,0 +1,62 @@
+{
+  "project": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/source-selected-holdout-20261123",
+  "python": "/home/carla/4T/SAFEFLOW2027_ARM/env/bin/python",
+  "state": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/queue_selected_holdout_20261123.json",
+  "slots": 2,
+  "poll_seconds": 30,
+  "minimum_free_disk_bytes": 45097156608,
+  "gpu_admission": {
+    "index": "slot",
+    "minimum_free_mib": 2048
+  },
+  "slot_environments": [
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache"
+    },
+    {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/tmp",
+      "XDG_CACHE_HOME": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/runtime-20261121/cache"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Reach-selected-seed-holdout",
+      "module": "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+      "arguments": [
+        "--task",
+        "Reach"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Reach",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Reach-20261123.log",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes"
+    },
+    {
+      "name": "Payload-selected-seed-holdout",
+      "module": "scripts.paper_crax_payload.evaluate_selected_seed_holdout_20261123",
+      "arguments": [
+        "--task",
+        "Payload"
+      ],
+      "output": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/selected-seed-frozen-holdout-20261123/Payload",
+      "log": "/home/carla/4T/SAFEFLOW2027_SIMULATION_V12/logs/selected-holdout-Payload-20261123.log",
+      "require_completed_receipt": true,
+      "required_steps": 1600,
+      "required_steps_field": "evaluated_episodes"
+    }
+  ],
+  "automatic_retry": false,
+  "foreign_processes_changed": false
+}
