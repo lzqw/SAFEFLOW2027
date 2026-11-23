@@ -1,5 +1,7 @@
 # 目标证据台账：不把局部DEV进展当作全面完成
 
+2026-11-23：所选 Piper 模型新布局验证完成。Reach 57.5／60mm 均100%，Payload 55／57.5mm 为95.5%／90%，困难几何均优于同模式 Metric-only；名义和执行缩放条件安全成功率打平。3200回合均无超时和停滞，不消除历史训练代价，也不推广到全部 seed 或随机部署。SafeReach 早期目标及 Panda 最终配置回归仍未完成。见[正式新布局结果](SELECTED_HOLDOUT_COMPLETE_20261123_ZH.md)。
+
 2026-11-23用户最新口径优先：不要求每个seed最优，只需有seed作为证据；停止以最差seed/SD或每seed联合最优作为继续推进的硬条件。它们继续公开为稳定性描述，不删除失败或将个别seed成功推广成总体稳定结论。全三seed已完成1.35M/28800DEV；P5+2mm有明确正面证据，固定P5第三seed崩塌保留。接下来冻结已有有效Reach41029/Payload41027模型，做新布局同模式Metric比较，详见[完整证据与最新推进口径](EVIDENCE_SCOPE_AND_SELECTED_HOLDOUT_20261123_ZH.md)。下方历史表格中的“每seed/SD必须通过”不再作为新任务硬门槛；其余安全、失败披露、Panda/SafeReach目标与独立集边界不变。
 
 2026-11-21 15:08：第三Reach扩域400K完成，55mm已训练域24/30；第三seed固定三方法各150K确认已实际启动，两P5新增1K、Metric排队，仍未完成三seed方法确认。Payload42029完整300K零成功是负结果；A10042028在175K因磁盘保护exit1，盘25G，转4080从150K实际恢复到151K，原丢失25K完整保留。不能将175K中断说成完成或低违规说成任务改进。见[恢复、完整失败与新确认执行](OVERNIGHT_RESULTS_RECOVERY_AND_THIRD_CONFIRMATION_20261121_ZH.md)。

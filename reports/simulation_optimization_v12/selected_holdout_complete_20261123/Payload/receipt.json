@@ -1,0 +1,66 @@
+{
+  "status": "completed",
+  "task": "Payload",
+  "source_commit": "b6192b9bd264dd4731ee5f9edfcec209edf00f2b",
+  "plan_sha256": "f146344f53fdd9360067560cd088d5cceea7f660b44cf77764a7acbc10e7b55d",
+  "evaluated_episodes": 1600,
+  "conditions": 8,
+  "provenance": [
+    {
+      "case": "SAFEFlow-Payload-41027-4mm",
+      "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+      "receipt_sha256": "969d604f012d2ff8276943e735f3b59fefa6d6480c61d9d2df17233efb66abcf",
+      "manifest_sha256": "2f505bc0070bf9d882423b6b9faaae82461810cad4c2e12d81e110aced1f3b35",
+      "source_commit": "99ee0f0df8d7d4cf3996fafa3d4c81c3a61bc246",
+      "historical_training_counts": {
+        "violations": 108,
+        "episodes": 2838,
+        "safe_successes": 2730,
+        "safe_timeouts": 0
+      },
+      "historical_training_metrics": {
+        "ordinary_terminal_task_successes": 2730,
+        "training_stall_episodes": 2,
+        "training_stall_windows": 2,
+        "training_cumulative_return": 28174.53150801749,
+        "training_mean_completed_plus_partial_return": 9.927600954199256
+      },
+      "training_task": "Payload",
+      "training_seed": 41027,
+      "checkpoint_steps": 220000
+    },
+    {
+      "case": "Metric-Payload-41027",
+      "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c",
+      "receipt_sha256": "fdcd25a696f6c18181e6b4e2834592aecbebdd57f66b1a063db5f321b99a3a15",
+      "manifest_sha256": "5b2d4f307da3cb42c356db7e4065da70e04e6bd481e65a7640224ce687e9f645",
+      "source_commit": "70b414cb",
+      "historical_training_counts": {
+        "violations": 197,
+        "episodes": 3029,
+        "safe_successes": 2832,
+        "safe_timeouts": 0
+      },
+      "historical_training_metrics": {
+        "ordinary_terminal_task_successes": 2832,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 28436.36251186207,
+        "training_mean_completed_plus_partial_return": 9.388036484602862
+      },
+      "training_task": "Payload",
+      "training_seed": 41027,
+      "checkpoint_steps": 220000
+    }
+  ],
+  "new_training_steps": 0,
+  "optimizer_updates": 0,
+  "independent_test_used": true,
+  "holdout_used_for_selection": false,
+  "retrospective_DEV_model_selection": true,
+  "training_seed_count": 1,
+  "scope": "Selected task-specific models only; not all-seed or all-task superiority and not proof of training-risk improvement.",
+  "all_seed_failures_remain_in_evidence": true,
+  "global_objective_complete": false,
+  "physical_robot_interactions": 0
+}

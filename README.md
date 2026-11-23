@@ -32,7 +32,7 @@
 
 ## SAFEFlow：当前实验与程序入口
 
-2026-11-23 11:03：[按最新证据口径推进的3200回合新布局评测已运行](reports/simulation_optimization_v12/SELECTED_HOLDOUT_RUNNING_20261123_ZH.md)。固定已有有效seed模型，同模式Metric比较，不再为了每seed最优追加训练；全三seed失败记录仍保留，尚无新holdout终点。
+2026-11-23：[3200回合新布局评测已完成](reports/simulation_optimization_v12/SELECTED_HOLDOUT_COMPLETE_20261123_ZH.md)。所选 Reach 60mm 为100%对95.5%，Payload 57.5mm 为90%对78%，同为无噪声部署；只支持所选模型，全部训练 seed 的失败及训练代价继续保留。
 
 2026-11-23：[完整三seed结果及按最新要求调整的证据范围](reports/simulation_optimization_v12/EVIDENCE_SCOPE_AND_SELECTED_HOLDOUT_20261123_ZH.md)。不要求每seed最优；保留全部失败，推进已有成功seed模型的新布局公平对照。三seed1.35M与28800DEV已完整汇总，下一项先冻结模型/模式/布局，再评测，不把择优seed当总体稳定证明。
 

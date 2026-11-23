@@ -1,0 +1,5 @@
+task,condition,mode,candidate,baseline,both_safe,candidate_only_safe,baseline_only_safe,neither_safe,delta_safe_successes,delta_ordinary_terminal_task_successes,delta_violations,delta_timeouts,delta_stall_count,delta_mean_return,delta_mean_capped_seconds,delta_mean_episode_inference_p50_ms,delta_mean_episode_inference_p95_ms
+Payload,nominal,zero_noise,SAFEFlow-Payload-41027-4mm,Metric-Payload-41027,200,0,0,0,0,0,0,0,0,-0.00616802939052441,0.012199999999999989,0.06364680499999675,0.12134006125000418
+Payload,radius_055,zero_noise,SAFEFlow-Payload-41027-4mm,Metric-Payload-41027,179,12,3,6,9,9,-9,0,0,0.9168249741613206,-0.10120000000000062,-0.019470062499997276,0.07714383574999673
+Payload,radius_0575,zero_noise,SAFEFlow-Payload-41027-4mm,Metric-Payload-41027,153,27,3,17,24,24,-24,0,0,2.461253143301204,-0.30200000000000116,0.07841799000000371,0.21657537250001369
+Payload,execution_scale_085,zero_noise,SAFEFlow-Payload-41027-4mm,Metric-Payload-41027,200,0,0,0,0,0,0,0,0,-0.010912835037130364,0.026800000000001045,-0.07223880000000005,-0.31596031475000075

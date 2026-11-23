@@ -1,0 +1,5 @@
+task,condition,mode,candidate,baseline,both_safe,candidate_only_safe,baseline_only_safe,neither_safe,delta_safe_successes,delta_ordinary_terminal_task_successes,delta_violations,delta_timeouts,delta_stall_count,delta_mean_return,delta_mean_capped_seconds,delta_mean_episode_inference_p50_ms,delta_mean_episode_inference_p95_ms
+Reach,nominal,zero_noise,SAFEFlow-Reach-41029-2mm,Metric-Reach-41029,200,0,0,0,0,0,0,0,0,-0.014060679390782482,0.053400000000000114,-0.006848905000001793,-1.0040841420000026
+Reach,radius_0575,zero_noise,SAFEFlow-Reach-41029-2mm,Metric-Reach-41029,196,4,0,0,4,4,-4,0,0,0.3954402968699213,0.0017999999999986915,0.021716695000001174,0.6455399487499989
+Reach,radius_060,zero_noise,SAFEFlow-Reach-41029-2mm,Metric-Reach-41029,191,9,0,0,9,9,-9,0,0,0.910545949229002,-0.06760000000000144,0.02609382750000222,-0.6489612942500083
+Reach,execution_scale_085,zero_noise,SAFEFlow-Reach-41029-2mm,Metric-Reach-41029,200,0,0,0,0,0,0,0,0,-0.016780889182788528,0.0593999999999999,0.05072841749999668,-1.0739054652499993

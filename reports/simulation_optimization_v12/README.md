@@ -1,6 +1,6 @@
 # v12仿真优化
 
-2026-11-23 11:03：[有效Reach/Payload两个seed模型的固定新布局评测已实际运行](SELECTED_HOLDOUT_RUNNING_20261123_ZH.md)，共3200回合、同模式Metric公平比较、零训练。两进程1661850/1661852 live，半小时监测与本地自动归档已启动；资产预检查的零回合工程失败保留，不重选模型或布局。当前没有新holdout最终成功率结果。
+2026-11-23 11:11：[3200回合新布局全部完成](SELECTED_HOLDOUT_COMPLETE_20261123_ZH.md)。所选 Reach 57.5／60mm 均100%，同模式 Metric 98%／95.5%；Payload 55／57.5mm 为95.5%／90%，Metric 91%／78%。全部无评测超时或停滞；其余 seed 的失败和历史训练代价保留。启动记录见[执行报告](SELECTED_HOLDOUT_RUNNING_20261123_ZH.md)。
 
 2026-11-23：[按用户新要求，不再追求每seed最优，保留全三seed并推进有效模型](EVIDENCE_SCOPE_AND_SELECTED_HOLDOUT_20261123_ZH.md)。九条训练已完成1.35M、28800DEV；候选训练违规合计199对Metric1342，但各seed权衡和固定P5崩塌均保留。下一项为预先冻结的Reach41029/Payload41027同模式新布局评测3200回合，不追加失败seed训练，不将成功案例宣传为跨seed稳定。
 

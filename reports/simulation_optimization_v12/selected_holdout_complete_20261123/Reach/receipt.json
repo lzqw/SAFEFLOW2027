@@ -1,0 +1,66 @@
+{
+  "status": "completed",
+  "task": "Reach",
+  "source_commit": "b6192b9bd264dd4731ee5f9edfcec209edf00f2b",
+  "plan_sha256": "f146344f53fdd9360067560cd088d5cceea7f660b44cf77764a7acbc10e7b55d",
+  "evaluated_episodes": 1600,
+  "conditions": 8,
+  "provenance": [
+    {
+      "case": "SAFEFlow-Reach-41029-2mm",
+      "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301",
+      "receipt_sha256": "3aa5137999d487de7387598cb2f09f8f6fb463dbc465ca8f4e3f5963bd99e9f9",
+      "manifest_sha256": "b8a1a158d2aac65bef5f5724edac2541572f557bd46b2ce2339a67e6aec74922",
+      "source_commit": "77a517d5",
+      "historical_training_counts": {
+        "violations": 50,
+        "episodes": 4921,
+        "safe_successes": 4870,
+        "safe_timeouts": 1
+      },
+      "historical_training_metrics": {
+        "ordinary_terminal_task_successes": 4870,
+        "training_stall_episodes": 1,
+        "training_stall_windows": 53,
+        "training_cumulative_return": 51936.12365666287,
+        "training_mean_completed_plus_partial_return": 10.553977577049963
+      },
+      "training_task": "Reach",
+      "training_seed": 41029,
+      "checkpoint_steps": 550000
+    },
+    {
+      "case": "Metric-Reach-41029",
+      "checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006",
+      "receipt_sha256": "850c4e939048ea2644b1e30e8cfb35a74f093b44bfa26731452c2a91b76814ca",
+      "manifest_sha256": "7181d4eae27b3eceeb423c1a789ca0d9babf463c24dd9539558c99d1daf7b49b",
+      "source_commit": "77a517d5",
+      "historical_training_counts": {
+        "violations": 268,
+        "episodes": 5301,
+        "safe_successes": 5033,
+        "safe_timeouts": 0
+      },
+      "historical_training_metrics": {
+        "ordinary_terminal_task_successes": 5033,
+        "training_stall_episodes": 0,
+        "training_stall_windows": 0,
+        "training_cumulative_return": 51659.080569486396,
+        "training_mean_completed_plus_partial_return": 9.745157624879532
+      },
+      "training_task": "Reach",
+      "training_seed": 41029,
+      "checkpoint_steps": 550000
+    }
+  ],
+  "new_training_steps": 0,
+  "optimizer_updates": 0,
+  "independent_test_used": true,
+  "holdout_used_for_selection": false,
+  "retrospective_DEV_model_selection": true,
+  "training_seed_count": 1,
+  "scope": "Selected task-specific models only; not all-seed or all-task superiority and not proof of training-risk improvement.",
+  "all_seed_failures_remain_in_evidence": true,
+  "global_objective_complete": false,
+  "physical_robot_interactions": 0
+}
