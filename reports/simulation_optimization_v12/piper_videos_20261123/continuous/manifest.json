@@ -1,0 +1,110 @@
+{
+  "scope": "Exploratory paired fixed-layout radius sweep, separate from the original frozen test",
+  "original_checkpoint_plan_sha256": "f146344f53fdd9360067560cd088d5cceea7f660b44cf77764a7acbc10e7b55d",
+  "training_radii_mm": [
+    45,
+    50,
+    55
+  ],
+  "evaluation_mode": "zero_noise",
+  "selected_cases": {
+    "Reach": [
+      {
+        "case": "SAFEFlow-Reach-41029-2mm",
+        "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301"
+      },
+      {
+        "case": "Metric-Reach-41029",
+        "checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006"
+      }
+    ],
+    "Payload": [
+      {
+        "case": "SAFEFlow-Payload-41027-4mm",
+        "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428"
+      },
+      {
+        "case": "Metric-Payload-41027",
+        "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c"
+      }
+    ]
+  },
+  "per_task": {
+    "Reach": {
+      "radii_mm": [
+        45,
+        50,
+        55,
+        60,
+        65,
+        70,
+        75
+      ],
+      "demo_layout_seed": 12310075,
+      "total_batch_layouts": 20,
+      "batch_layout_seeds": [
+        12310000,
+        12310001,
+        12310002,
+        12310003,
+        12310004,
+        12310005,
+        12310006,
+        12310007,
+        12310008,
+        12310009,
+        12310010,
+        12310011,
+        12310012,
+        12310013,
+        12310014,
+        12310015,
+        12310016,
+        12310017,
+        12310018,
+        12310019
+      ]
+    },
+    "Payload": {
+      "radii_mm": [
+        45,
+        50,
+        55,
+        57.5,
+        60,
+        65,
+        70
+      ],
+      "demo_layout_seed": 12320005,
+      "total_batch_layouts": 20,
+      "batch_layout_seeds": [
+        12320000,
+        12320001,
+        12320002,
+        12320003,
+        12320004,
+        12320006,
+        12320007,
+        12320008,
+        12320009,
+        12320010,
+        12320011,
+        12320012,
+        12320013,
+        12320014,
+        12320015,
+        12320016,
+        12320017,
+        12320018,
+        12320019,
+        12320020
+      ]
+    }
+  },
+  "reset_policy": "Match start joint state, tip, goal and obstacle center to the original 45 mm scene",
+  "total_batch_policy_layout_attempts": 560,
+  "video_demo_attempts": 28,
+  "video_sha256": "d342e4c342a42cba5839339ba748577dc4a99b06fb77e4fa942936e8b3a6179e",
+  "new_training_steps": 0,
+  "physical_robot_interactions": 0
+}

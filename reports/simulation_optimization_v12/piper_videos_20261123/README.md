@@ -1,5 +1,20 @@
 # Piper 仿真视频
 
+## 连续半径扫描：Reach → Payload
+
+[播放完整视频](continuous/piper_reach_then_payload_radius_progression.mp4) · [预览](continuous/piper_reach_then_payload_radius_progression.png) · [逐档汇总](continuous/summary.csv) · [逐布局结果](continuous/rollouts.csv) · [模型及视频校验信息](continuous/manifest.json)
+
+两项任务的几何覆盖训练均使用 **45、50、55 mm** 的球形障碍半径。视频先展示 Reach（45 → 50 → 55 → 60 → 65 → 70 → 75 mm），再展示 Payload（45 → 50 → 55 → 57.5 → 60 → 65 → 70 mm）。左为 SAFEFlow，右为 Metric-only。模型冻结、无噪声推理，同一起点、目标和障碍中心，仅改变障碍半径。
+
+每项任务展示一个已选布局，并另用 20 个固定布局做逐档配对统计；回放布局不计入这 20 个。原布局不能安全初始化时不替换，也不计为途中失败。安全停止表示净距跌破 15 mm 阈值，不等于碰撞。这是每任务一个已选训练 seed、复用已有布局的探索性扫描，不是独立测试或实机结果。
+
+**片段时间：** 00:00 Reach 训练设置，00:26 Reach 70 mm，00:34 Reach 汇总，00:40 Payload 训练设置，00:59 Payload 57.5 mm，01:12 Payload 汇总。
+
+- **Reach 70 mm：** 20 个布局有 7 个可初始化，SAFEFlow 安全到达 7 个，Metric-only 到达 4 个。到 75 mm 时，演示布局不能初始化，统计批次也仅剩 1 个可运行布局。
+- **Payload 60 mm：** 演示布局上两者均安全停止；另测的 20 个布局中有 17 个可初始化，SAFEFlow 安全到达 17 个，Metric-only 到达 13 个。65 mm 时只有 13 个可初始化，两者分别到达 6 个和 5 个。
+
+[评测与渲染脚本](../../../scripts/paper_crax_payload/render_piper_radius_progression.py)使用原冻结检查点和 Piper 仿真资产；逐布局 CSV 记录评测布局和终止类型，清单记录检查点哈希。
+
 ## 常规与困难：同一个 SAFEFlow Reach 模型
 
 [播放 45 mm vs. 60 mm 对比](reach_nominal45_vs_hard60.mp4) · [预览](reach_nominal45_vs_hard60.png) · [回放数据](reach_nominal45_vs_hard60.json)
