@@ -8,6 +8,8 @@
 
 ## SAFEFlow 与 Metric-only
 
+[播放 70 mm 障碍对比](reach_70mm_safeflow_vs_metric.mp4) · [预览](reach_70mm_safeflow_vs_metric.png) · [数据](reach_70mm_safeflow_vs_metric.json)。同一原布局（12310075），只把障碍半径提高到 70 mm；左侧 SAFEFlow 安全到达，净距 17.78 mm；右侧 Metric-only 在第 2 步低于 15 mm 阈值（14.33 mm）停止，未碰撞。这是单布局压力测试，不是 70 mm 成功率。
+
 以下三段左侧 SAFEFlow，右侧 Metric-only；同一布局、无噪声部署，半速播放。红色是障碍，绿色是目标，黄色是夹持负载。
 
 1. [Reach：60 mm 障碍绕行](reach_60mm_comparison.mp4) — SAFEFlow 到达，Metric-only 触发安全停止。

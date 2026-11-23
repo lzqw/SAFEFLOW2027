@@ -1,0 +1,40 @@
+{
+  "task": "Reach",
+  "layout_seed": 12310075,
+  "training_seed": 41029,
+  "obstacle_radius_m": 0.07,
+  "safety_threshold_m": 0.015,
+  "deployment_mode": "zero_noise",
+  "playback_speed": 0.5,
+  "video": "reach_70mm_safeflow_vs_metric.mp4",
+  "scope": "Exploratory single-layout comparison; not a success rate",
+  "original_60mm_layout_preserved": true,
+  "new_training_steps": 0,
+  "physical_robot_interactions": 0,
+  "cases": [
+    {
+      "case": "SAFEFlow-Reach-41029-2mm",
+      "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301",
+      "safe_success": true,
+      "violation": false,
+      "timeout": false,
+      "collision": false,
+      "steps": 31,
+      "terminal_time_s": 1.24,
+      "minimum_clearance_m": 0.017779700110580623,
+      "peak_tip_height_m": 0.39066314697265625
+    },
+    {
+      "case": "Metric-Reach-41029",
+      "checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006",
+      "safe_success": false,
+      "violation": true,
+      "timeout": false,
+      "collision": false,
+      "steps": 2,
+      "terminal_time_s": 0.08,
+      "minimum_clearance_m": 0.014333694684739218,
+      "peak_tip_height_m": 0.30783089995384216
+    }
+  ]
+}
