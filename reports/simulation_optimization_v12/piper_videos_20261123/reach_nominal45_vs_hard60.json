@@ -1,0 +1,37 @@
+{
+  "task": "Reach",
+  "case": "SAFEFlow-Reach-41029-2mm",
+  "training_seed": 41029,
+  "layout_seed": 12310075,
+  "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301",
+  "deployment_mode": "zero_noise",
+  "playback_speed": 0.5,
+  "video": "reach_nominal45_vs_hard60.mp4",
+  "physical_robot_interactions": 0,
+  "new_training_steps": 0,
+  "scope": "One held-out example rendered from the frozen policy, not new evaluation statistics",
+  "conditions": [
+    {
+      "condition": "nominal",
+      "obstacle_radius_m": 0.045,
+      "safe_success": true,
+      "violation": false,
+      "steps": 27,
+      "terminal_time_s": 1.08,
+      "minimum_clearance_m": 0.02614089174296129,
+      "peak_tip_height_m": 0.3746243417263031,
+      "max_archived_trajectory_error_m": 0.0
+    },
+    {
+      "condition": "radius_060",
+      "obstacle_radius_m": 0.06,
+      "safe_success": true,
+      "violation": false,
+      "steps": 29,
+      "terminal_time_s": 1.16,
+      "minimum_clearance_m": 0.020574713742894407,
+      "peak_tip_height_m": 0.38351842761039734,
+      "max_archived_trajectory_error_m": 0.0
+    }
+  ]
+}

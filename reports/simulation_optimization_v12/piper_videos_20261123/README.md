@@ -1,6 +1,14 @@
 # Piper 仿真视频
 
-左侧 SAFEFlow，右侧 Metric-only；同一布局、无噪声部署，半速播放。红色是障碍，绿色是目标，黄色是夹持负载。
+## 常规与困难：同一个 SAFEFlow Reach 模型
+
+[播放 45 mm vs. 60 mm 对比](reach_nominal45_vs_hard60.mp4) · [预览](reach_nominal45_vs_hard60.png) · [回放数据](reach_nominal45_vs_hard60.json)
+
+左侧为常规 45 mm，右侧为困难 60 mm（均指障碍球半径）。起点、目标、障碍中心及检查点相同；两边均安全到达。末端在困难布局中抬高约 8.9 mm，最小净距从 26.14 mm 降到 20.57 mm，仍高于 15 mm 阈值。
+
+## SAFEFlow 与 Metric-only
+
+以下三段左侧 SAFEFlow，右侧 Metric-only；同一布局、无噪声部署，半速播放。红色是障碍，绿色是目标，黄色是夹持负载。
 
 1. [Reach：60 mm 障碍绕行](reach_60mm_comparison.mp4) — SAFEFlow 到达，Metric-only 触发安全停止。
 2. [Payload：57.5 mm 障碍搬运](payload_57_5mm_comparison.mp4) — SAFEFlow 到达，Metric-only 触发安全停止。
