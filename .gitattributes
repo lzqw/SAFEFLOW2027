@@ -9,6 +9,7 @@ reports/direction_polyak_v10/**/*.csv binary -eol
 *.gif binary
 *.pdf binary
 *.stl binary
+reports/simulation_optimization_v12/piper_videos_20261123/*.mp4 binary -eol
 reports/robot_gap_v2/reach_release/bundles/**/*.pt binary -eol
 reports/robot_gap_v2/reach_adapted_release/bundles/**/*.pt binary -eol
 reports/robot_gap_v2/payload_closure/bundles/**/*.pt binary -eol
