@@ -86,8 +86,8 @@ def main():
     torch.cuda.set_per_process_memory_fraction(.025,torch.device('cuda:0'))
     assets_path=Path('/home/carla/4T/SAFEFLOW2027_PAPER/analysis/piper/assets-ac41fcb.json')
     assets=json.loads(assets_path.read_text())
-    if (sha256(assets['source_urdf'])!=assets['source_sha256']
-            or sha256(assets['resolved_urdf'])!=assets['resolved_sha256']):
+    if (sha256(Path(assets['source_urdf']))!=assets['source_sha256']
+            or sha256(Path(assets['resolved_urdf']))!=assets['resolved_sha256']):
         raise ValueError('Original official simulation assets changed')
     args.output.mkdir(parents=True,exist_ok=False)
     atomic_json(args.output/'run_config.json',dict(protocol=spec,task=args.task,
