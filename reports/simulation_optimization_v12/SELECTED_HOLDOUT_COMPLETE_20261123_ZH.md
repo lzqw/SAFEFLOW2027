@@ -1,5 +1,7 @@
 # 3200回合新布局：所选 Reach 和 Payload 模型在困难几何复现优势
 
+[查看 Piper 仿真视频：Reach、Payload 和失败反例](piper_videos_20261123/README.md)。
+
 2026-11-23（UTC+8），Reach 于11:10、Payload 于11:11结束，两任务退出码均为0。按[预先提交的冻结协议](../../configs/paper_crax_payload/selected_seed_frozen_holdout_20261123.json)完成四个固定模型、八个任务条件、每模型每条件200回合，总计3200回合；没有训练、调参、选中间检查点或按结果换布局。所有模型都用原目标 actor 和无噪声部署。模型和训练 seed 选自历史开发证据，本批新布局未参与选择，所以这里只验证所选模型，不证明全 seed 稳定或随机部署也有相同表现。
 
 |任务／几何|SAFEFlow 安全成功|同 seed Metric-only|成功率差|违规：SAFEFlow／Metric|

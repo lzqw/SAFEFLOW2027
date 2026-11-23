@@ -1,0 +1,94 @@
+{
+  "scope": "Illustrative selected paired examples rerendered from archived frozen holdout models, not new evaluation statistics",
+  "examples": [
+    {
+      "video": "reach_60mm_comparison.mp4",
+      "task": "Reach",
+      "condition": "radius_060",
+      "layout_seed": 12310075,
+      "training_seed": 41029,
+      "sources": [
+        {
+          "case": "SAFEFlow-Reach-41029-2mm",
+          "checkpoint_sha256": "3441775e4b83f5ca9037740c1e3ccc130267fca9178a500095ec31d5fd0e6301",
+          "terminal_safe_success": true,
+          "terminal_violation": false,
+          "steps": 29,
+          "minimum_distance_m": 0.020574713742894407,
+          "archived_minimum_distance_m": 0.020574713742894407,
+          "max_replay_path_error_m": 0.0
+        },
+        {
+          "case": "Metric-Reach-41029",
+          "checkpoint_sha256": "fafb9f9bf25830d1cc28c23248c250587cab6669888669447ee74c6386b66006",
+          "terminal_safe_success": false,
+          "terminal_violation": true,
+          "steps": 11,
+          "minimum_distance_m": 0.014977787567551595,
+          "archived_minimum_distance_m": 0.014977787567551595,
+          "max_replay_path_error_m": 0.0
+        }
+      ]
+    },
+    {
+      "video": "payload_57_5mm_comparison.mp4",
+      "task": "Payload",
+      "condition": "radius_0575",
+      "layout_seed": 12320005,
+      "training_seed": 41027,
+      "sources": [
+        {
+          "case": "SAFEFlow-Payload-41027-4mm",
+          "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+          "terminal_safe_success": true,
+          "terminal_violation": false,
+          "steps": 35,
+          "minimum_distance_m": 0.015790798409585423,
+          "archived_minimum_distance_m": 0.015790798409585423,
+          "max_replay_path_error_m": 0.0
+        },
+        {
+          "case": "Metric-Payload-41027",
+          "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c",
+          "terminal_safe_success": false,
+          "terminal_violation": true,
+          "steps": 15,
+          "minimum_distance_m": 0.014635861389960335,
+          "archived_minimum_distance_m": 0.014635861389960335,
+          "max_replay_path_error_m": 0.0
+        }
+      ]
+    },
+    {
+      "video": "payload_57_5mm_safeflow_failure.mp4",
+      "task": "Payload",
+      "condition": "radius_0575",
+      "layout_seed": 12320025,
+      "training_seed": 41027,
+      "sources": [
+        {
+          "case": "SAFEFlow-Payload-41027-4mm",
+          "checkpoint_sha256": "d4f31bd9fabd8d951085afe6cb20ebfaac37fa4007a9394dadec4f6bcbb99428",
+          "terminal_safe_success": false,
+          "terminal_violation": true,
+          "steps": 12,
+          "minimum_distance_m": 0.014534878252274251,
+          "archived_minimum_distance_m": 0.014534878252274251,
+          "max_replay_path_error_m": 0.0
+        },
+        {
+          "case": "Metric-Payload-41027",
+          "checkpoint_sha256": "dd35eb595be2d1a804b989cd8532bf704c85f60603059f774527d819afc0c01c",
+          "terminal_safe_success": true,
+          "terminal_violation": false,
+          "steps": 36,
+          "minimum_distance_m": 0.015529132067316785,
+          "archived_minimum_distance_m": 0.015529132067316785,
+          "max_replay_path_error_m": 0.0
+        }
+      ]
+    }
+  ],
+  "new_training_steps": 0,
+  "physical_robot_interactions": 0
+}
